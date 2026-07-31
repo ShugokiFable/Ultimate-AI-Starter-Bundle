@@ -76,7 +76,8 @@
         "codebase-memory-mcp-windows-amd64.zip"
       ],
       "install": "zip-extract",
-      "exe_rel": "codebase-memory-mcp.exe"
+      "exe_rel": "codebase-memory-mcp.exe",
+      "scope_note": " NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default."
     },
     {
       "install": "pip-or-wheel",
@@ -358,7 +359,7 @@
       "scope_note": "Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts."
     }
   ],
-  "pack_version": "5.2.0",
+  "pack_version": "5.2.1",
   "updated_utc": "2026-07-31T21:03:41.653768Z",
   "providers": {
     "Grok": {

@@ -76,15 +76,25 @@ Upstream: https://github.com/DeusData/codebase-memory-mcp
 
 Verify: `codebase-memory-mcp.exe --version`
 
-### Install
+### Install (MCP stdio only — do NOT enable the HTTP UI)
 
 ```powershell
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/DeusData/codebase-memory-mcp/main/install.ps1 -OutFile install.ps1
 Unblock-File .\install.ps1
-.\install.ps1 --ui
+.\install.ps1
+# Prefer WITHOUT --ui. --ui / --ui=true opens "Codebase Discovery" on port 9749
+# and on Windows often pops "Select an app to open..." dialogs.
 ```
 
-Optional UI: `codebase-memory-mcp --ui=true --port=9749`
+**Required defaults for this pack (do not turn these on unless the user asks):**
+
+```powershell
+codebase-memory-mcp config set auto_index false
+codebase-memory-mcp config set auto_watch false
+codebase-memory-mcp --ui=false
+```
+
+Do **not** wire MCP with `--ui=true` args. Agents should call `index_repository` manually when needed.
 
 ### Grok Build MCP block (example — edit path)
 

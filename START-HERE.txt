@@ -47,3 +47,11 @@ headroom wrap / GROK_MODELS_BASE_URL (model shows as "unknown", 401s).
 claude-mem is Claude Code only (needs Bun). Not for Grok/Codex/Kimi/Hermes.
 
 Read: V5-CHANGELOG.md | V5-AIO-GUIDE.md | README.md
+CODEBASE-MEMORY (important)
+---------------------------
+MCP only. NEVER enable the HTTP UI:
+  codebase-memory-mcp --ui=false
+  codebase-memory-mcp config set auto_index false
+  codebase-memory-mcp config set auto_watch false
+Do NOT run install.ps1 --ui (causes Windows "Select an app / Codebase Discovery").
+Index on demand with the index_repository tool.

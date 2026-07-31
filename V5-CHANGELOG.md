@@ -295,3 +295,22 @@ grok
 .\INSTALL-V5-AIO.ps1
 .\INSTALL-V5-AIO.ps1 -WithExtras
 ```
+
+## v5.2.1 Codebase-memory UI / auto_index safety
+
+Date: 2026-07-31
+
+### Problem
+`codebase-memory-mcp --ui=true` / `install.ps1 --ui` enables the HTTP
+"Codebase Discovery" UI (port 9749). On Windows this frequently pops
+**Select an app to open...** dialogs and confuses agents.
+
+Some install notes / Auto.txt also set `auto_index true`.
+
+### Fix
+- Document and enforce: `auto_index=false`, `auto_watch=false`, `--ui=false`
+- MCP wiring is stdio only (exe path, no UI args) for all providers
+- Skills no longer recommend `install.ps1 --ui`
+- Codex SessionStart "Code discovery" echo hooks removed on affected machines
+- Index via `index_repository` tool on demand only
+
