@@ -1,4 +1,8 @@
-# V5.0.0 changelog
+# Ultimate AI Starter Bundle - changelog
+
+**Rename (v5.2.0 branding):** this pack is no longer titled "Skyrim AI only".
+It is the **Ultimate AI Starter Bundle** - multi-provider AI toolkit with an
+optional deep Skyrim SE/AE stack. Repo/folder names may still say V5 for history.
 
 Date: 2026-07-31  
 Base: Skyrim-AI-FINAL-MANUAL-INSTALL-v4.3.0
@@ -118,7 +122,11 @@ Grok/Codex/Claude wiring and force a manual reinstall + `Fix-Grok-Codebase-Memor
 ### Manual recovery (if CBM is broken again)
 ```powershell
 cd "$env:LOCALAPPDATA\Programs\codebase-memory-mcp"
-# follow Install.txt / install.ps1 --ui
+# Ultimate AI Starter Bundle - changelog
+
+**Rename (v5.2.0 branding):** this pack is no longer titled "Skyrim AI only".
+It is the **Ultimate AI Starter Bundle** - multi-provider AI toolkit with an
+optional deep Skyrim SE/AE stack. Repo/folder names may still say V5 for history.
 powershell -ExecutionPolicy Bypass -File .\Fix-Grok-Codebase-Memory-Direct.ps1
 ```
 Then fully restart Grok and confirm `/mcp` shows codebase-memory-mcp.
@@ -149,7 +157,11 @@ break Grok/Codex/Claude wiring and force manual reinstall +
 ### Manual recovery (if CBM broken again)
 ```powershell
 cd "$env:LOCALAPPDATA\Programs\codebase-memory-mcp"
-# follow Install.txt / install.ps1 --ui
+# Ultimate AI Starter Bundle - changelog
+
+**Rename (v5.2.0 branding):** this pack is no longer titled "Skyrim AI only".
+It is the **Ultimate AI Starter Bundle** - multi-provider AI toolkit with an
+optional deep Skyrim SE/AE stack. Repo/folder names may still say V5 for history.
 powershell -ExecutionPolicy Bypass -File .\Fix-Grok-Codebase-Memory-Direct.ps1
 ```
 Then fully restart Grok and confirm `/mcp` shows codebase-memory-mcp.
@@ -228,7 +240,11 @@ Non-overlapping third-party skills/MCP (see CATALOG scope notes):
 ### Upgrade from v5.0.2
 ```powershell
 .\TOOLS\Ensure-Headroom-Grok.ps1 -Repair
-# new PowerShell window, then: grok
+# Ultimate AI Starter Bundle - changelog
+
+**Rename (v5.2.0 branding):** this pack is no longer titled "Skyrim AI only".
+It is the **Ultimate AI Starter Bundle** - multi-provider AI toolkit with an
+optional deep Skyrim SE/AE stack. Repo/folder names may still say V5 for history.
 .\INSTALL-V5-AIO.ps1 -WithExtras
 ```
 
@@ -252,7 +268,11 @@ Default install **does NOT** set `GROK_MODELS_BASE_URL` or run `headroom install
 ### Repair if you already ran v5.0.2
 ```powershell
 .\TOOLS\Ensure-Headroom-Grok.ps1 -Repair
-# open a NEW PowerShell window
+# Ultimate AI Starter Bundle - changelog
+
+**Rename (v5.2.0 branding):** this pack is no longer titled "Skyrim AI only".
+It is the **Ultimate AI Starter Bundle** - multi-provider AI toolkit with an
+optional deep Skyrim SE/AE stack. Repo/folder names may still say V5 for history.
 grok
 ```
 

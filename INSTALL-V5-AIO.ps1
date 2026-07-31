@@ -1,6 +1,6 @@
-﻿<#
+<#
 .SYNOPSIS
-  Skyrim AI V5 - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
+  Ultimate AI Starter Bundle V5 - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
 
 .DESCRIPTION
   New users: run this once from the pack root.
@@ -82,7 +82,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Skyrim AI V5.2.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v5.2.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""

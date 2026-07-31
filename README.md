@@ -1,14 +1,20 @@
-# Skyrim AI FINAL MANUAL INSTALL v5.0.0
+# Ultimate AI Starter Bundle v5.2.0
 
-All-in-one portable toolkit for AI-assisted Skyrim SE/AE modding.
+**Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
-Installs provider skill packs (Claude, Codex, Grok, Kimi, Hermes), wires MCP tools, and bundles offline installers for the current AI/Skyrim tooling stack.
+Install skills, MCP servers, plugins, and offline tools for:
+
+- **Claude Code**, **Codex**, **Grok**, **Kimi**, **Hermes**
+- Code graph memory, context compression, browser/scrape MCPs
+- Optional deep **Skyrim SE/AE** modding stack (houseCARL, Spooky, Forge, frameworks)
+
+Skyrim is a major included domain. The pack is also a general "good start" for serious AI-assisted development.
 
 ## Quick start
 
 **Windows**
 
-1. Clone or download this repo.
+1. Clone or download this repo (or unzip the release).
 2. Double-click `INSTALL-V5-AIO.bat`, or run:
 
 ```powershell
@@ -22,6 +28,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V5-AIO.ps1
 ```powershell
 .\INSTALL-V5-AIO.ps1 -Providers Grok,Claude
 .\INSTALL-V5-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-V5-AIO.ps1 -WithExtras
 .\INSTALL-V5-AIO.ps1 -SkillsOnly
 .\INSTALL-V5-AIO.ps1 -ToolsOnly
 .\INSTALL-V5-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
@@ -155,6 +162,11 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## Version
+
+**v5.1.0** — Headroom/Grok wrap made auth aware; extra skills and MCP servers added.
+Based on `Skyrim-AI-FINAL-MANUAL-INSTALL-v5.0.0`.
 
 ## License
 

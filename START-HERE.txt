@@ -1,7 +1,11 @@
-﻿SKYRIM AI V5.2.0 â€” ALL-IN-ONE TOOLKIT
-=====================================
+Ultimate AI Starter Bundle V5.2.0 - ALL-IN-ONE STARTER
+========================================
 
-NEW USERS â€” ONE COMMAND
+Not just Skyrim. This is a full multi-provider AI starter bundle:
+skills, MCP tools, plugins, and offline installers - with a deep
+optional Skyrim SE/AE modding stack built in.
+
+NEW USERS - ONE COMMAND
 -----------------------
 Double-click:
 
@@ -12,15 +16,15 @@ Or PowerShell from this folder:
     powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V5-AIO.ps1
 
 That installs:
-  â€¢ Provider skills (Claude, Codex, Grok, Kimi, Hermes) â€” ~82 skills each
-  â€¢ houseCARL MCP (+ MO2 or Vortex shim setup)
-  â€¢ Spooky's AutoMod Toolkit
-  â€¢ codebase-memory-mcp
-  â€¢ Headroom (context compression)
-  â€¢ Superpowers + Ponytail (skills/plugins)
-  â€¢ CodeBurn (npm/npx, optional)
-  â€¢ Grok MCP wiring
-  â€¢ Tool discovery state
+  - Provider skills (Claude, Codex, Grok, Kimi, Hermes)
+  - houseCARL MCP (+ MO2 or Vortex shim setup) for Skyrim data-layer work
+  - Spooky's AutoMod Toolkit
+  - codebase-memory-mcp (code structure graph)
+  - Headroom (context compression MCP - not Grok inference wrap)
+  - Superpowers + Ponytail (skills/plugins)
+  - CodeBurn (npm/npx, optional)
+  - Optional extras: -WithExtras (code-review, obsidian, firecrawl, playwright, ...)
+  - MCP wiring for the providers you select
 
 Then FULLY restart your AI app(s).
 
@@ -28,76 +32,18 @@ OPTIONS
 -------
   .\INSTALL-V5-AIO.ps1 -Providers Grok,Claude
   .\INSTALL-V5-AIO.ps1 -Mode OnlineLatest
+  .\INSTALL-V5-AIO.ps1 -WithExtras
   .\INSTALL-V5-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
-  .\INSTALL-V5-AIO.ps1 -SkillsOnly
-  .\INSTALL-V5-AIO.ps1 -ToolsOnly
-
-Modes:
-  BundledFirst  (default) use BUNDLED-TOOLS\offline, else GitHub
-  OnlineLatest            always GitHub releases/latest
-  BundledOnly             offline zips only (no network)
-
-UPDATE TOOLS LATER
--------------------
-  .\TOOLS\Update-From-GitHub.ps1
-  .\TOOLS\Update-From-GitHub.ps1 -Components housecarl,codebase-memory -UpdateCatalogOffline
-  .\TOOLS\Ensure-Tools.ps1
-
-HOUSECARL (MO2 OR VORTEX)
--------------------------
-  .\TOOLS\Setup-HouseCarl.ps1
-  .\TOOLS\Setup-HouseCarl.ps1 -RefreshOnly
-
-Docs: TOOLS\housecarl\README.md
-PDF:  TOOLS\housecarl\houseCARL-Vortex-shim-setup.pdf
-
-MANUAL / ADVANCED LAYOUT
-------------------------
-  1-RECOMMENDED-SEPARATE-TAILORED\   per-AI skill trees
-  2-OPTIONAL-SHARED-GENERIC\
-  BUNDLED-TOOLS\offline\             shipped tool zips/wheels
-  BUNDLED-TOOLS\plugins\             Superpowers + Ponytail trees
-  BUNDLED-TOOLS\CATALOG.json         component registry
-  COPY-TO-YOUR-WORKSPACE\
-  TOOLS\                             scripts
-  _V5-CANONICAL-SKILLS\              maintainer master skills
-
-NOT BUNDLED
------------
-  Skyrim Forge product â€” install yourself; set SKYRIM_FORGE_ROOT
-  or place INSTALLATION.json beside the skyrim-forge skill.
-
-AI CONTRACT
------------
-  Skills teach portable discovery. If a tool is missing, the AI must
-  recommend INSTALL-V5-AIO.ps1 / Ensure-Tools.ps1 / Update-From-GitHub.ps1
-  â€” never invent drive letters or fake MCP results.
-
-Read: V5-CHANGELOG.md | V5-AIO-GUIDE.md | BUNDLED-TOOLS\THIRD-PARTY-NOTICES.md
 
 HEADROOM + GROK (MCP only - do NOT wrap Grok inference)
-----------------------------------------------------
-Headroom compresses context. It can also proxy a CLI's inference traffic,
-BUT its Grok proxy talks to https://api.x.ai and needs XAI_API_KEY.
+-------------------------------------------------------
+Headroom MCP tools are fine. Do NOT route subscription Grok through
+headroom wrap / GROK_MODELS_BASE_URL (model shows as "unknown", 401s).
 
-If you sign in to Grok with a SUBSCRIPTION (the normal login), your endpoint
-is https://cli-chat-proxy.grok.com - Headroom cannot forward that. Wrapping it
-breaks Grok: the model shows as "unknown", grok-4.5 disappears, and every turn
-fails with 401. v5.0 of this pack applied that wrap automatically. v5.2 does not.
+  .\TOOLS\Ensure-Headroom-Grok.ps1
+  .\TOOLS\Ensure-Headroom-Grok.ps1 -Repair
+  .\TOOLS\Ensure-Headroom-Grok.ps1 -CheckOnly
 
-The installer now only registers Headroom as an MCP server, which gives Grok
-headroom_compress / headroom_retrieve / headroom_stats. That is on-demand
-compression, not automatic traffic compression. For a subscription account it
-is the only mode that works.
+claude-mem is Claude Code only (needs Bun). Not for Grok/Codex/Kimi/Hermes.
 
-    .\TOOLS\Ensure-Headroom-Grok.ps1             MCP registration (auth aware)
-    .\TOOLS\Ensure-Headroom-Grok.ps1 -CheckOnly  report only
-    .\TOOLS\Ensure-Headroom-Grok.ps1 -Repair     undo a v5.0 wrap that broke Grok
-    .\TOOLS\Ensure-Headroom-Grok.ps1 -Wrap       opt in (refuses without XAI_API_KEY)
-
-GROK SHOWS "unknown" MODEL? Run:
-
-    .\TOOLS\Ensure-Headroom-Grok.ps1 -Repair
-
-then open a NEW PowerShell window and run: grok
-
+Read: V5-CHANGELOG.md | V5-AIO-GUIDE.md | README.md

@@ -431,11 +431,7 @@
       "note": "For Headroom pip install"
     }
   },
-  "notes": [
-    "Bundled offline copies are the pack author snapshot for offline/easy install.",
-    "Use -Mode OnlineLatest or TOOLS\\Update-From-GitHub.ps1 to fetch newer releases.",
-    "Skyrim Forge is NOT redistributed here \u2014 install separately and set SKYRIM_FORGE_ROOT.",
-    "Third-party licenses remain with upstream projects (GPL/MIT/etc).",
-    "Extras (code-review-skill, obsidian-skills, claude-mem, playwright-mcp, firecrawl-mcp, perplexity-mcp) are OPT-IN: run INSTALL-V5-AIO.ps1 -WithExtras. Each carries a scope_note defining its non-overlap boundary against the Skyrim skills."
-  ]
+  "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
+  "pack_name": "Ultimate-AI-Starter-Bundle",
+  "display_name": "Ultimate AI Starter Bundle"
 }
