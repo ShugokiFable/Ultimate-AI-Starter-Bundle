@@ -156,11 +156,6 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
 
-## Version
-
-**v5.1.0** — Headroom/Grok wrap made auth aware; extra skills and MCP servers added.
-Based on `Skyrim-AI-FINAL-MANUAL-INSTALL-v5.0.0`.
-
 ## License
 
 Pack documentation and original installer scripts are provided as-is for personal and community use. Third-party tools inside `BUNDLED-TOOLS` keep their own licenses (see notices file).
