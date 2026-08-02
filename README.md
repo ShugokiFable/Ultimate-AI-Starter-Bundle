@@ -172,7 +172,9 @@ Based on `Skyrim-AI-FINAL-MANUAL-INSTALL-v5.0.0`.
 
 Pack documentation and original installer scripts are provided as-is for personal and community use. Third-party tools inside `BUNDLED-TOOLS` keep their own licenses (see notices file).
 
-## Current release: v5.2.0
+## Current release: v5.2.2
+
+- **Windows console-flash fix:** stale `headroom-*` scheduled tasks are removed or disabled during normal setup, including missing `ensure-headroom.cmd` argument targets.
 
 - **Grok + Headroom:** MCP only by default. Do **not** wrap subscription Grok through Headroom (that was the v5.0.2 bug: model "unknown" / 401).
 - **Repair:** `.\TOOLS\Ensure-Headroom-Grok.ps1 -Repair`

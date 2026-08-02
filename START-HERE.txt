@@ -55,3 +55,8 @@ MCP only. NEVER enable the HTTP UI:
   codebase-memory-mcp config set auto_watch false
 Do NOT run install.ps1 --ui (causes Windows "Select an app / Codebase Discovery").
 Index on demand with the index_repository tool.
+
+V5.2.2 WINDOWS TERMINAL-FLASH FIX
+------------------------------------
+Normal setup now removes or disables stale Headroom scheduled tasks whose
+deployment script or manifest no longer exists.

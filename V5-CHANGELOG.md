@@ -314,3 +314,22 @@ Some install notes / Auto.txt also set `auto_index true`.
 - Codex SessionStart "Code discovery" echo hooks removed on affected machines
 - Index via `index_repository` tool on demand only
 
+## v5.2.2 Headroom scheduled-task console-flash fix
+
+Date: 2026-08-01
+
+### Problem
+Old Headroom `persistent-task` deployments could leave `headroom-*` Scheduled
+Tasks after their deployment manifest or `ensure-headroom.cmd` was removed.
+The previous cleanup checked only `Actions.Execute`, so a task using
+`cmd.exe /c <missing-script>` looked valid because `cmd.exe` still existed.
+Cleanup also ran only inside the Grok repair path.
+
+### Fix
+- Inspect Headroom script paths embedded in Scheduled Task arguments.
+- Treat a default Headroom deploy task without its manifest as orphaned.
+- Run cleanup during every normal setup before checking for `headroom.exe`.
+- Disable a stale task when unregistering it is denied, preventing further
+  blink-and-vanish console windows.
+- Preserve valid tasks whose target and deployment manifest still exist.
+- Add a PowerShell regression test for all three cases.

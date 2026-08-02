@@ -1,4 +1,4 @@
-﻿# Ensure-Headroom-Grok.ps1  (v5.2.0 - auth aware)
+# Ensure-Headroom-Grok.ps1  (v5.2.2 - auth aware)
 #
 # WHY THIS WAS REWRITTEN
 # ----------------------
@@ -172,21 +172,103 @@ function Repair-GrokProfileFunction {
   }
 }
 
-# `headroom install remove` deletes the deploy scripts but can leave its two
-# scheduled tasks behind pointing at the now-missing ensure-headroom.cmd.
-# They are inert once the manifest is gone; tidy them when we have the rights.
+# Older Headroom persistent deployments can leave scheduled tasks behind after
+# their manifest or ensure-headroom.cmd has been removed. A task that launches
+# cmd.exe /c <missing-script> still flashes a console window, so checking only
+# Actions.Execute is insufficient: cmd.exe exists while its argument target does
+# not. Detect both the executable and script paths carried in task arguments.
+function Get-HeadroomTaskActionTargetPaths($Action) {
+  $targets = @()
+
+  $execute = [Environment]::ExpandEnvironmentVariables([string]$Action.Execute).Trim()
+  if ($execute) {
+    $execute = $execute.Trim([char]34, [char]39)
+    if ($execute -match '(?i)(?:headroom|\.headroom).*\.(?:cmd|bat|ps1|exe)$') {
+      $targets += $execute
+    }
+  }
+
+  $arguments = [Environment]::ExpandEnvironmentVariables([string]$Action.Arguments)
+  if ($arguments) {
+    $quoted = [regex]::Matches(
+      $arguments,
+      '"([^"]*(?:headroom|\.headroom)[^"]*\.(?:cmd|bat|ps1|exe))"',
+      [Text.RegularExpressions.RegexOptions]::IgnoreCase
+    )
+    foreach ($match in $quoted) {
+      $targets += $match.Groups[1].Value
+    }
+
+    foreach ($token in ($arguments -split '\s+')) {
+      $candidate = $token.Trim([char]34, [char]39)
+      if ($candidate -match '(?i)(?:headroom|\.headroom).*\.(?:cmd|bat|ps1|exe)$') {
+        $targets += $candidate
+      }
+    }
+  }
+
+  return @($targets | Where-Object { $_ } | Select-Object -Unique)
+}
+
+function Test-HeadroomTaskOrphaned($Task) {
+  $actionText = @(
+    $Task.Actions | ForEach-Object { "$($_.Execute) $($_.Arguments)" }
+  ) -join ' '
+
+  foreach ($action in @($Task.Actions)) {
+    foreach ($target in @(Get-HeadroomTaskActionTargetPaths $action)) {
+      if ([IO.Path]::IsPathRooted($target) -and -not (Test-Path -LiteralPath $target)) {
+        return $true
+      }
+    }
+  }
+
+  $manifestPath = Get-HeadroomManifestPath
+  if (
+    -not (Test-Path -LiteralPath $manifestPath) -and
+    $actionText -match '(?i)(?:ensure-headroom|[\\/]\.headroom[\\/]deploy[\\/]default)'
+  ) {
+    return $true
+  }
+
+  return $false
+}
+
 function Remove-OrphanHeadroomTasks {
+  if (-not (Get-Command Get-ScheduledTask -ErrorAction SilentlyContinue)) {
+    return
+  }
+
   $tasks = @(Get-ScheduledTask -TaskName 'headroom-*' -ErrorAction SilentlyContinue)
   foreach ($t in $tasks) {
-    $exec = @($t.Actions | ForEach-Object { $_.Execute }) | Where-Object { $_ }
-    $orphan = $true
-    foreach ($e in $exec) { if (Test-Path -LiteralPath $e) { $orphan = $false } }
-    if (-not $orphan) { Ok ("scheduled task still live, leaving alone: " + $t.TaskName); continue }
+    if (-not (Test-HeadroomTaskOrphaned $t)) {
+      Ok ("scheduled task still live, leaving alone: " + $t.TaskName)
+      continue
+    }
+
+    $removeArgs = @{
+      TaskName    = $t.TaskName
+      Confirm     = $false
+      ErrorAction = 'Stop'
+    }
+    if ($t.TaskPath) { $removeArgs.TaskPath = $t.TaskPath }
+
     try {
-      Unregister-ScheduledTask -TaskName $t.TaskName -Confirm:$false -ErrorAction Stop
+      Unregister-ScheduledTask @removeArgs
       Ok ("removed orphaned scheduled task: " + $t.TaskName)
     } catch {
-      Warn ("could not remove scheduled task " + $t.TaskName + " (needs an elevated shell). It is inert - its target script is gone.")
+      $disableArgs = @{
+        TaskName    = $t.TaskName
+        ErrorAction = 'Stop'
+      }
+      if ($t.TaskPath) { $disableArgs.TaskPath = $t.TaskPath }
+
+      try {
+        Disable-ScheduledTask @disableArgs | Out-Null
+        Warn ("could not remove orphaned scheduled task, so it was disabled: " + $t.TaskName)
+      } catch {
+        Warn ("could not remove or disable scheduled task " + $t.TaskName + "; run this script once as Administrator.")
+      }
     }
   }
 }
@@ -203,6 +285,11 @@ function Register-HeadroomMcp([string]$Hr) {
 
 # ---- main -----------------------------------------------------------------
 Step 'Headroom + Grok (auth aware)'
+# Clean stale persistent-task remnants on every normal run. This must happen
+# before Find-HeadroomExe because the executable may already have been removed.
+if (-not $CheckOnly) {
+  Remove-OrphanHeadroomTasks
+}
 $hr = Find-HeadroomExe
 if (-not $hr) {
   Bad 'headroom.exe not found. Install Headroom first (AIO component "headroom", or: pip install headroom-ai[mcp]).'
