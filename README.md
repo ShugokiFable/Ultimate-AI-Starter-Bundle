@@ -2,6 +2,12 @@
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
+Simply download and extract and point your ai agent to the extracted folder and say: Install all non overlapping skills, plugins and tool you may use from my ai starter bundle https://github.com/ShugokiFable/Ultimate-AI-Starter-Bundle im pretty sure you are already connected to the mcp codebase index but make sure you are and you know how to use it.
+
+Make sure you have all skills that are newer also like if you have old skills or old stuff that contradicts remove it
+
+you keep asking windows to open codebase discovery thingy so yeah stop making this shit pop up on my screen. other ai's I used use it with MCP
+
 Install skills, MCP servers, plugins, and offline tools for:
 
 - **Claude Code**, **Codex**, **Grok**, **Kimi**, **Hermes**
