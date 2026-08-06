@@ -76,14 +76,14 @@ Upstream: https://github.com/DeusData/codebase-memory-mcp
 
 Verify: `codebase-memory-mcp.exe --version`
 
-### Install (MCP stdio; the HTTP dashboard is optional and global)
+### Install (MCP stdio only — do NOT enable the HTTP UI)
 
 ```powershell
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/DeusData/codebase-memory-mcp/main/install.ps1 -OutFile install.ps1
 Unblock-File .\install.ps1
 .\install.ps1
-# Run install.ps1 WITHOUT --ui. That installer flag is what triggers the Windows
-# "Select an app to open..." / "Codebase Discovery" dialog - not the dashboard itself.
+# Prefer WITHOUT --ui. --ui / --ui=true opens "Codebase Discovery" on port 9749
+# and on Windows often pops "Select an app to open..." dialogs.
 ```
 
 **Required defaults for this pack (do not turn these on unless the user asks):**
@@ -91,46 +91,10 @@ Unblock-File .\install.ps1
 ```powershell
 codebase-memory-mcp config set auto_index false
 codebase-memory-mcp config set auto_watch false
+codebase-memory-mcp --ui=false
 ```
 
-### The dashboard (`--ui`, `--port`) is GLOBAL, shared state
-
-`--ui` and `--port` are **persisted into the tool's own config**, not into any one agent's
-MCP entry. Every agent shares a single setting. Passing `--ui=false` from one provider
-therefore turns the dashboard off for **all** of them on the next restart. This is the
-single most common way the dashboard "randomly" disappears.
-
-- **Never put `--ui` or `--port` in MCP `args`.** Keep `args = []` in every provider config.
-- Toggle it once, out of band:
-
-```powershell
-codebase-memory-mcp --ui=true     # enable dashboard (persisted globally)
-codebase-memory-mcp --ui=false    # disable dashboard (persisted globally)
-codebase-memory-mcp --port=9749   # change port (persisted globally)
-```
-
-- Dashboard: <http://127.0.0.1:9749/> (graph, stats, ADRs). It is served by the
-  codebase-memory-mcp process itself and binds to loopback only.
-
-### Keeping the dashboard up
-
-The dashboard is served **by a codebase-memory-mcp process**, and that process exits as soon
-as its stdin closes. A server started by an MCP client therefore serves the dashboard only
-while that client is attached - the page goes dead the moment the client disconnects or the
-app restarts. This is why the dashboard seems to work and then vanish for no reason.
-
-For a dashboard that stays up, run one standalone keep-alive host, which holds stdin open:
-
-```powershell
-& "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\Start-codebase-memory-UI.bat"
-```
-
-Run **one** UI host only - port 9749 has a single binder. MCP clients keep `args = []` and
-coexist with that host normally; they never need to own the dashboard themselves. Verified:
-the standalone host serves <http://127.0.0.1:9749/> while MCP tool calls keep working.
-
-Indexing is still manual either way: agents call `index_repository` when needed. The
-dashboard only visualizes what is already indexed; it never triggers an index.
+Do **not** wire MCP with `--ui=true` args. Agents should call `index_repository` manually when needed.
 
 ### Grok Build MCP block (example — edit path)
 

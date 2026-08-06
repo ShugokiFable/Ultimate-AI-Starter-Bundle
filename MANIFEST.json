@@ -26,8 +26,8 @@
     },
     {
         "path":  "START-HERE.txt",
-        "size":  4106,
-        "sha256":  "ba84a8149103119adfc7d28086d7237165cda248dad576ac1bb3b0d38147018c"
+        "size":  1900,
+        "sha256":  "2904c4370072b5a7e35f1d8d1b5104a6232ef76991753111e1676c950b146af8"
     },
     {
         "path":  "V4.2-LOG-REGRESSION-AUDIT.md",
@@ -41,8 +41,8 @@
     },
     {
         "path":  "V5-CHANGELOG.md",
-        "size":  17769,
-        "sha256":  "0e03e47ae563f8c3bcef31cd64794e28d72372a24d1f81129563ea41623826ad"
+        "size":  2925,
+        "sha256":  "8465d3a904f298b4eb3277e814d79a14f535b465589954e2bb9f58af2d71cfe9"
     },
     {
         "path":  "V5-INTEGRATION-AUDIT.md",
@@ -141,8 +141,8 @@
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -2296,8 +2296,8 @@
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -4436,8 +4436,8 @@
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -6576,8 +6576,8 @@
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -8721,8 +8721,8 @@
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -10866,8 +10866,8 @@
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -13016,8 +13016,8 @@
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -15151,8 +15151,8 @@
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -17286,8 +17286,8 @@
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -19426,8 +19426,8 @@
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -21656,8 +21656,8 @@
     },
     {
         "path":  "_V5-CANONICAL-SKILLS/codebase-memory/SKILL.md",
-        "size":  6806,
-        "sha256":  "e25178144fdd16c065064ad7b80eae91b5ff2e8519d46a819355a7339ba4d95d"
+        "size":  4443,
+        "sha256":  "39cc4b6a79dcfad246d9a78055c93ddabbeabf68b69201b3f519d9a2ac72610e"
     },
     {
         "path":  "_V5-CANONICAL-SKILLS/codeburn/SKILL.md",

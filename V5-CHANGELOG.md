@@ -334,62 +334,13 @@ Cleanup also ran only inside the Grok repair path.
 - Preserve valid tasks whose target and deployment manifest still exist.
 - Add a PowerShell regression test for all three cases.
 
-## v5.2.3 codebase-memory dashboard guidance fix
+## v5.2.3 AIO Instruction preamble
 
-Date: 2026-08-06
+Date: 2026-08-03
 
-### Problem
-The pack shipped two contradictory instructions for the same setting.
-Skills and `START-HERE.txt` said to **never** enable the codebase-memory HTTP
-UI and to run `codebase-memory-mcp --ui=false`, while the Grok `config.toml`
-this same pack writes warned *not* to pass `--ui=false` because it would kill
-the dashboard for the other AI apps.
+### Added
+- `AIO-INSTRUCTION.txt` (and `AIO Instruction.txt`) at pack root — high-signal
+  AI preamble (truth-seeking process, confidence calibration, no yes-man).
+- Copies under `COPY-TO-YOUR-WORKSPACE/` and `PROMPTS/` when present.
+- START-HERE + README usage notes.
 
-The Grok comment was the correct one. `--ui` and `--port` are **persisted into
-the codebase-memory-mcp config itself**, not into a per-agent MCP entry, so a
-single `--ui=false` from any one provider silently disables the dashboard for
-every other provider on the next restart. Following the old instruction turned
-off a working, loopback-only feature pack-wide, and made the dashboard appear
-to vanish at random.
-
-The "Select an app / Codebase Discovery" Windows dialog that motivated the
-original warning comes from running the upstream `install.ps1 --ui`, not from
-the dashboard itself.
-
-### Fix
-- Rewrite the `codebase-memory` skill UI section for all five providers
-  (10 provider copies + `_V5-CANONICAL-SKILLS`, 11 files total).
-- Supersede the earlier `--ui=false` guidance: it is no longer a required default.
-- State that `--ui` / `--port` are global, shared, persisted settings and must
-  never appear in MCP `args`; `args = []` stays correct for every provider.
-- Document the toggle as an out-of-band, one-time command, and give the
-  dashboard URL <http://127.0.0.1:9749/> (loopback only).
-- Keep `auto_index=false` and `auto_watch=false` as required defaults; indexing
-  stays manual via `index_repository`.
-- Retain the `install.ps1 --ui` warning, correctly scoped to the installer flag.
-- Correct `START-HERE.txt`, which also still carried a stale V5.2.0 title.
-
-## v5.2.4 dashboard keep-alive
-
-Date: 2026-08-06
-
-### Problem
-v5.2.3 correctly established that `--ui` and `--port` are global, persisted
-state and must not appear in MCP `args`, but it stopped short of explaining how
-to keep the dashboard running. That left a real gap: following v5.2.3 exactly,
-the dashboard still appears to work and then vanish.
-
-The HTTP dashboard is served **by a codebase-memory-mcp process**, and that
-process exits as soon as its stdin closes. A server spawned by an MCP client
-serves the dashboard only while that client stays attached, so the page dies
-whenever the AI app restarts or disconnects.
-
-### Fix
-- Document the standalone keep-alive host that ships beside the exe,
-  `Start-codebase-memory-UI.bat`, which holds stdin open so the dashboard
-  survives independently of any AI app.
-- Note that port 9749 has a single binder, so exactly one UI host should run.
-- Confirm MCP clients keep `args = []` and coexist with that host: verified
-  the standalone host serving http://127.0.0.1:9749/ while MCP tool calls
-  continued to succeed.
-- Applied to all 11 `codebase-memory` skill copies and `START-HERE.txt`.

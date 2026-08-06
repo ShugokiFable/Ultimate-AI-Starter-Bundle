@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V5.2.4 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V5.2.0 - ALL-IN-ONE STARTER
 ========================================
 
 Not just Skyrim. This is a full multi-provider AI starter bundle:
@@ -49,45 +49,28 @@ claude-mem is Claude Code only (needs Bun). Not for Grok/Codex/Kimi/Hermes.
 Read: V5-CHANGELOG.md | V5-AIO-GUIDE.md | README.md
 CODEBASE-MEMORY (important)
 ---------------------------
-Keep indexing manual:
+MCP only. NEVER enable the HTTP UI:
+  codebase-memory-mcp --ui=false
   codebase-memory-mcp config set auto_index false
   codebase-memory-mcp config set auto_watch false
+Do NOT run install.ps1 --ui (causes Windows "Select an app / Codebase Discovery").
 Index on demand with the index_repository tool.
-
-The HTTP dashboard is optional and GLOBAL. --ui and --port persist in the
-tool's own config and are shared by every AI app you have wired, so never put
-them in MCP args - keep args = [] everywhere. A --ui=false sent from one
-provider disables the dashboard for ALL of them on the next restart. Toggle it
-once, out of band:
-  codebase-memory-mcp --ui=true      (dashboard on, persisted globally)
-  codebase-memory-mcp --ui=false     (dashboard off, persisted globally)
-View at http://127.0.0.1:9749/ - graph, stats, ADRs; loopback only.
-Do NOT run install.ps1 --ui (that installer flag is what causes the Windows
-"Select an app / Codebase Discovery" dialog, not the dashboard itself).
-
-KEEPING THE DASHBOARD UP: the page is served BY a codebase-memory-mcp process,
-and that process exits when its stdin closes. A server started by an AI app
-therefore serves the dashboard only while that app is attached, so the page
-dies when the app restarts. For a dashboard that stays up, run ONE standalone
-keep-alive host (it holds stdin open):
-  %LOCALAPPDATA%\Programs\codebase-memory-mcp\Start-codebase-memory-UI.bat
-Only one UI host - port 9749 has a single binder. MCP clients keep args = []
-and coexist with it normally.
-
-V5.2.4 DASHBOARD KEEP-ALIVE
-------------------------------------
-v5.2.3 correctly identified --ui as global, persisted state, but did not say
-how to keep the dashboard alive. The dashboard dies with the process serving
-it, so a standalone keep-alive host is required. Documented above.
-
-V5.2.3 CODEBASE-MEMORY DASHBOARD GUIDANCE FIX
-------------------------------------
-Earlier packs said to NEVER enable the codebase-memory HTTP UI and shipped
-`--ui=false`. That contradicted the Grok config this same pack writes, and
-because the flag is global it silently disabled the dashboard for every
-other AI app. Corrected above: keep MCP args empty, toggle --ui out of band.
 
 V5.2.2 WINDOWS TERMINAL-FLASH FIX
 ------------------------------------
 Normal setup now removes or disables stale Headroom scheduled tasks whose
 deployment script or manifest no longer exists.
+
+AI PREAMBLE (optional but recommended)
+--------------------------------------
+Copy or point the AI at:
+
+    AIO-INSTRUCTION.txt
+
+This is the pack's high-signal reasoning preamble (truth-seeking process,
+confidence calibration, no yes-man). Put it in your workspace, paste into
+the system/custom instructions, or tell the agent:
+
+    Follow AIO-INSTRUCTION.txt for every complex or factual request.
+
+Also on disk as: AIO Instruction.txt (same content)

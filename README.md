@@ -2,12 +2,6 @@
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
-**Simply download and extract and point your ai agent to the extracted folder and say: Install all non overlapping skills, plugins and tool you may use from my ai starter bundle https://github.com/ShugokiFable/Ultimate-AI-Starter-Bundle if some overlap replace the older ones for newer ones, use common sense. Connect to the mcp's servers such as codebase index and you know how to use it.**
-
-Make sure you have all skills that are newer also like if you have old skills or old stuff that contradicts remove it
-
-you keep asking windows to open codebase discovery thingy so yeah stop making this shit pop up on my screen. other ai's I used use it with MCP
-
 Install skills, MCP servers, plugins, and offline tools for:
 
 - **Claude Code**, **Codex**, **Grok**, **Kimi**, **Hermes**
@@ -15,6 +9,27 @@ Install skills, MCP servers, plugins, and offline tools for:
 - Optional deep **Skyrim SE/AE** modding stack (houseCARL, Spooky, Forge, frameworks)
 
 Skyrim is a major included domain. The pack is also a general "good start" for serious AI-assisted development.
+
+
+## AI preamble (`AIO-INSTRUCTION.txt`)
+
+Optional but recommended high-signal system preamble for agents using this pack:
+
+- Truth-seeking process (decompose → distinguish → solve → verify → calibrate confidence)
+- Correct the user when wrong (no yes-man)
+- Prefer recent sources for informational claims
+- Honest uncertainty / confidence scores
+
+**How to use**
+
+1. Keep the file at the pack root (`AIO-INSTRUCTION.txt`).
+2. Copy it into your workspace, **or** paste into provider custom instructions, **or** open a session with:
+
+```text
+Follow AIO-INSTRUCTION.txt for every complex or factual request.
+```
+
+Same content is also stored as `AIO Instruction.txt`.
 
 ## Quick start
 
@@ -178,11 +193,9 @@ Based on `Skyrim-AI-FINAL-MANUAL-INSTALL-v5.0.0`.
 
 Pack documentation and original installer scripts are provided as-is for personal and community use. Third-party tools inside `BUNDLED-TOOLS` keep their own licenses (see notices file).
 
-## Current release: v5.2.4
+## Current release: v5.2.2
 
-- **codebase-memory dashboard:** the pack no longer tells you to disable the HTTP UI. The dashboard is served by a codebase-memory-mcp process and dies with it, so keeping it up needs one standalone keep-alive host (`Start-codebase-memory-UI.bat`). `--ui` / `--port` are global, persisted settings shared by every wired AI app, so they must never appear in MCP `args`. Dashboard: <http://127.0.0.1:9749/>.
-
-- **Windows console-flash fix (v5.2.2):** stale `headroom-*` scheduled tasks are removed or disabled during normal setup, including missing `ensure-headroom.cmd` argument targets.
+- **Windows console-flash fix:** stale `headroom-*` scheduled tasks are removed or disabled during normal setup, including missing `ensure-headroom.cmd` argument targets.
 
 - **Grok + Headroom:** MCP only by default. Do **not** wrap subscription Grok through Headroom (that was the v5.0.2 bug: model "unknown" / 401).
 - **Repair:** `.\TOOLS\Ensure-Headroom-Grok.ps1 -Repair`
