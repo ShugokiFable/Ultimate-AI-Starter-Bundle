@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V5.2.3 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V5.2.4 - ALL-IN-ONE STARTER
 ========================================
 
 Not just Skyrim. This is a full multi-provider AI starter bundle:
@@ -64,6 +64,21 @@ once, out of band:
 View at http://127.0.0.1:9749/ - graph, stats, ADRs; loopback only.
 Do NOT run install.ps1 --ui (that installer flag is what causes the Windows
 "Select an app / Codebase Discovery" dialog, not the dashboard itself).
+
+KEEPING THE DASHBOARD UP: the page is served BY a codebase-memory-mcp process,
+and that process exits when its stdin closes. A server started by an AI app
+therefore serves the dashboard only while that app is attached, so the page
+dies when the app restarts. For a dashboard that stays up, run ONE standalone
+keep-alive host (it holds stdin open):
+  %LOCALAPPDATA%\Programs\codebase-memory-mcp\Start-codebase-memory-UI.bat
+Only one UI host - port 9749 has a single binder. MCP clients keep args = []
+and coexist with it normally.
+
+V5.2.4 DASHBOARD KEEP-ALIVE
+------------------------------------
+v5.2.3 correctly identified --ui as global, persisted state, but did not say
+how to keep the dashboard alive. The dashboard dies with the process serving
+it, so a standalone keep-alive host is required. Documented above.
 
 V5.2.3 CODEBASE-MEMORY DASHBOARD GUIDANCE FIX
 ------------------------------------

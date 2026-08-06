@@ -368,3 +368,28 @@ the dashboard itself.
   stays manual via `index_repository`.
 - Retain the `install.ps1 --ui` warning, correctly scoped to the installer flag.
 - Correct `START-HERE.txt`, which also still carried a stale V5.2.0 title.
+
+## v5.2.4 dashboard keep-alive
+
+Date: 2026-08-06
+
+### Problem
+v5.2.3 correctly established that `--ui` and `--port` are global, persisted
+state and must not appear in MCP `args`, but it stopped short of explaining how
+to keep the dashboard running. That left a real gap: following v5.2.3 exactly,
+the dashboard still appears to work and then vanish.
+
+The HTTP dashboard is served **by a codebase-memory-mcp process**, and that
+process exits as soon as its stdin closes. A server spawned by an MCP client
+serves the dashboard only while that client stays attached, so the page dies
+whenever the AI app restarts or disconnects.
+
+### Fix
+- Document the standalone keep-alive host that ships beside the exe,
+  `Start-codebase-memory-UI.bat`, which holds stdin open so the dashboard
+  survives independently of any AI app.
+- Note that port 9749 has a single binder, so exactly one UI host should run.
+- Confirm MCP clients keep `args = []` and coexist with that host: verified
+  the standalone host serving http://127.0.0.1:9749/ while MCP tool calls
+  continued to succeed.
+- Applied to all 11 `codebase-memory` skill copies and `START-HERE.txt`.

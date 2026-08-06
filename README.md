@@ -178,9 +178,9 @@ Based on `Skyrim-AI-FINAL-MANUAL-INSTALL-v5.0.0`.
 
 Pack documentation and original installer scripts are provided as-is for personal and community use. Third-party tools inside `BUNDLED-TOOLS` keep their own licenses (see notices file).
 
-## Current release: v5.2.3
+## Current release: v5.2.4
 
-- **codebase-memory dashboard:** the pack no longer tells you to disable the HTTP UI. `--ui` / `--port` are global, persisted settings shared by every wired AI app, so they must never appear in MCP `args`. Dashboard: <http://127.0.0.1:9749/>.
+- **codebase-memory dashboard:** the pack no longer tells you to disable the HTTP UI. The dashboard is served by a codebase-memory-mcp process and dies with it, so keeping it up needs one standalone keep-alive host (`Start-codebase-memory-UI.bat`). `--ui` / `--port` are global, persisted settings shared by every wired AI app, so they must never appear in MCP `args`. Dashboard: <http://127.0.0.1:9749/>.
 
 - **Windows console-flash fix (v5.2.2):** stale `headroom-*` scheduled tasks are removed or disabled during normal setup, including missing `ensure-headroom.cmd` argument targets.
 

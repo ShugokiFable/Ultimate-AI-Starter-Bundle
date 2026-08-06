@@ -112,6 +112,23 @@ codebase-memory-mcp --port=9749   # change port (persisted globally)
 - Dashboard: <http://127.0.0.1:9749/> (graph, stats, ADRs). It is served by the
   codebase-memory-mcp process itself and binds to loopback only.
 
+### Keeping the dashboard up
+
+The dashboard is served **by a codebase-memory-mcp process**, and that process exits as soon
+as its stdin closes. A server started by an MCP client therefore serves the dashboard only
+while that client is attached - the page goes dead the moment the client disconnects or the
+app restarts. This is why the dashboard seems to work and then vanish for no reason.
+
+For a dashboard that stays up, run one standalone keep-alive host, which holds stdin open:
+
+```powershell
+& "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\Start-codebase-memory-UI.bat"
+```
+
+Run **one** UI host only - port 9749 has a single binder. MCP clients keep `args = []` and
+coexist with that host normally; they never need to own the dashboard themselves. Verified:
+the standalone host serves <http://127.0.0.1:9749/> while MCP tool calls keep working.
+
 Indexing is still manual either way: agents call `index_repository` when needed. The
 dashboard only visualizes what is already indexed; it never triggers an index.
 
