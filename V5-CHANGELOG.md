@@ -334,6 +334,12 @@ Cleanup also ran only inside the Grok repair path.
 - Preserve valid tasks whose target and deployment manifest still exist.
 - Add a PowerShell regression test for all three cases.
 
+## v5.2.5 AIO Instruction preamble (shipped)
+
+Date: 2026-08-06
+
+Same content as the v5.2.3 doc entry; released as **v5.2.5** because v5.2.3/v5.2.4 tags already existed on the remote.
+
 ## v5.2.3 AIO Instruction preamble
 
 Date: 2026-08-03
