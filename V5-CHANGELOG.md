@@ -333,3 +333,38 @@ Cleanup also ran only inside the Grok repair path.
   blink-and-vanish console windows.
 - Preserve valid tasks whose target and deployment manifest still exist.
 - Add a PowerShell regression test for all three cases.
+
+## v5.2.3 codebase-memory dashboard guidance fix
+
+Date: 2026-08-06
+
+### Problem
+The pack shipped two contradictory instructions for the same setting.
+Skills and `START-HERE.txt` said to **never** enable the codebase-memory HTTP
+UI and to run `codebase-memory-mcp --ui=false`, while the Grok `config.toml`
+this same pack writes warned *not* to pass `--ui=false` because it would kill
+the dashboard for the other AI apps.
+
+The Grok comment was the correct one. `--ui` and `--port` are **persisted into
+the codebase-memory-mcp config itself**, not into a per-agent MCP entry, so a
+single `--ui=false` from any one provider silently disables the dashboard for
+every other provider on the next restart. Following the old instruction turned
+off a working, loopback-only feature pack-wide, and made the dashboard appear
+to vanish at random.
+
+The "Select an app / Codebase Discovery" Windows dialog that motivated the
+original warning comes from running the upstream `install.ps1 --ui`, not from
+the dashboard itself.
+
+### Fix
+- Rewrite the `codebase-memory` skill UI section for all five providers
+  (10 provider copies + `_V5-CANONICAL-SKILLS`, 11 files total).
+- Supersede the earlier `--ui=false` guidance: it is no longer a required default.
+- State that `--ui` / `--port` are global, shared, persisted settings and must
+  never appear in MCP `args`; `args = []` stays correct for every provider.
+- Document the toggle as an out-of-band, one-time command, and give the
+  dashboard URL <http://127.0.0.1:9749/> (loopback only).
+- Keep `auto_index=false` and `auto_watch=false` as required defaults; indexing
+  stays manual via `index_repository`.
+- Retain the `install.ps1 --ui` warning, correctly scoped to the installer flag.
+- Correct `START-HERE.txt`, which also still carried a stale V5.2.0 title.

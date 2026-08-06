@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V5.2.0 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V5.2.3 - ALL-IN-ONE STARTER
 ========================================
 
 Not just Skyrim. This is a full multi-provider AI starter bundle:
@@ -49,12 +49,28 @@ claude-mem is Claude Code only (needs Bun). Not for Grok/Codex/Kimi/Hermes.
 Read: V5-CHANGELOG.md | V5-AIO-GUIDE.md | README.md
 CODEBASE-MEMORY (important)
 ---------------------------
-MCP only. NEVER enable the HTTP UI:
-  codebase-memory-mcp --ui=false
+Keep indexing manual:
   codebase-memory-mcp config set auto_index false
   codebase-memory-mcp config set auto_watch false
-Do NOT run install.ps1 --ui (causes Windows "Select an app / Codebase Discovery").
 Index on demand with the index_repository tool.
+
+The HTTP dashboard is optional and GLOBAL. --ui and --port persist in the
+tool's own config and are shared by every AI app you have wired, so never put
+them in MCP args - keep args = [] everywhere. A --ui=false sent from one
+provider disables the dashboard for ALL of them on the next restart. Toggle it
+once, out of band:
+  codebase-memory-mcp --ui=true      (dashboard on, persisted globally)
+  codebase-memory-mcp --ui=false     (dashboard off, persisted globally)
+View at http://127.0.0.1:9749/ - graph, stats, ADRs; loopback only.
+Do NOT run install.ps1 --ui (that installer flag is what causes the Windows
+"Select an app / Codebase Discovery" dialog, not the dashboard itself).
+
+V5.2.3 CODEBASE-MEMORY DASHBOARD GUIDANCE FIX
+------------------------------------
+Earlier packs said to NEVER enable the codebase-memory HTTP UI and shipped
+`--ui=false`. That contradicted the Grok config this same pack writes, and
+because the flag is global it silently disabled the dashboard for every
+other AI app. Corrected above: keep MCP args empty, toggle --ui out of band.
 
 V5.2.2 WINDOWS TERMINAL-FLASH FIX
 ------------------------------------
