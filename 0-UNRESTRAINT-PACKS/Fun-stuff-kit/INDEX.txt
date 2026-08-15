@@ -1,0 +1,32 @@
+FUN STUFF — live kit (2026-08-15)
+Old copies are in _archive\. Do not paste from there unless you are A/B testing.
+
+USE THIS
+  AIO.txt              General chat / research / "don't yes-man me"
+  Story.txt            Longform fiction (chat, Claude, Gemini, etc.)
+  Vision.txt           Image caption — FULL 5-section or SHORT
+  Websim.txt           Websim / live HTML / interactive page chats
+  Character Maker.txt  Portrait → third-person sheet (one template)
+  FablesGG.txt         Friends & Fables (fables.gg) generators
+  Tags.txt             Adult tag bank for images / sheets
+  Tools.txt            Pipeline, swipe, format-fix, lore-check, ST regex
+  SKSE-DLL.txt         Skyrim native C++ / CommonLibSSE-NG
+  Papyrus.txt          Skyrim Papyrus review/optimize
+  Models.txt           Dated model cast (re-check before assuming)
+  Sites.txt            Live-checked sites + performer aliases
+
+TAVERN
+  ..\Tavern\WooJuice V9.json         Daily RP preset
+  ..\Tavern\WooJuice V9 SPEECH.json  Voice-call only
+  ..\Tavern\Character Maker.txt      Same sheet template, ST-sized
+
+RULES
+  One jail, one job. Do not stack AIO + Story + Websim.
+  Story jail language is already inside Story.txt.
+  Tavern V9 already carries format lock + NSFW physics. Don't paste Story.txt into ST.
+  Adults only. No child / age-ambiguous content. Ever.
+
+TOKEN HYGIENE
+  Paste the smallest file that does the job.
+  Vision SHORT for sheet-building. Vision FULL only when you need confidence/uncertainty.
+  For ST, use V9. Older WooJuice files are archive-only.

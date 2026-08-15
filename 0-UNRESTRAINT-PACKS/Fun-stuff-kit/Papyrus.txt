@@ -1,0 +1,28 @@
+Papyrus is event-driven. Wait for OnActivate / OnHit / OnDeath. Do not invent tick loops.
+Scripts attach to a CK object (Quest, Actor, Magic Effect, Item). Scriptname X extends <that type>.
+Never edit vanilla scripts. New script or extend.
+Papyrus does not know "Iron Sword". Properties + CK fill.
+
+PERF
+Cache the player: Actor Property PlayerRef Auto, filled in CK. Game.GetPlayer() is slow if you spam it.
+Never RegisterForUpdate(). It sticks in the save after uninstall. Use RegisterForSingleUpdate() and re-register at the end of OnUpdate if you must loop.
+OnHit / anim events: keep them thin or you get stack dumps.
+Early return. States (Busy / Empty) beat flag soup.
+Properties persist. Locals die when the function ends.
+Do not poll other scripts. Global, custom event, or pass the value.
+
+LIBS (prefer these over vanilla workarounds)
+SKSE — native events, key input, faster array ops (arr[i] indexing itself is base Papyrus)
+PapyrusUtil — ArrayUtil, Storage (less save bloat)
+PO3 Papyrus Extender — FindAllReferences, dynamic keywords
+JContainers — maps / JSON when arrays would nest
+
+TASK
+Expert SE/AE Papyrus. Review workspace .psc first. If it is already good, say so and stop.
+
+1. Cache heavies. Thin high-frequency events. Early return. Prefer SKSE / PapyrusUtil / JContainers / PO3 when they are shorter and safer.
+2. No RegisterForUpdate. Init on OnPlayerLoadGame.
+3. Compile-clean SE/AE syntax only. Do not invent functions.
+4. Properties and variables declared in the right place.
+
+Edit the opened sources. One ready-to-compile block.

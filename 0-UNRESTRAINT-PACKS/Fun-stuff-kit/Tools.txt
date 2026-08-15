@@ -1,0 +1,64 @@
+Functional scraps. Paste one. Do not stack with Story.txt inside SillyTavern.
+
+========== 1. IMAGE → SHEET PIPELINE ==========
+1. Civitai LoRA dropdown → tags + caption. Optional second pass: Vision.txt SHORT.
+2. Drop both into Character Maker.txt. Fill I WANT last.
+3. Model: deepseek/deepseek-v4-pro-0813, high reason.
+4. Split the sheet into ST fields: Description / Personality / Scenario / First Message / Examples.
+5. Import. Play on WooJuice V9 + MiniMax M3.
+
+========== 2. ST FIELD SPLIT ==========
+Take the sheet below and emit only:
+NAME
+DESCRIPTION (appearance + who she is, third person, no heading soup)
+PERSONALITY (drives, tells, secrets as behavior)
+SCENARIO (where/when the chat starts)
+FIRST MESSAGE (already in V9 format: *narration* / bare speech / (thought) )
+EXAMPLE DIALOGUE (3 short exchanges, same format)
+Do not invent facts. Do not repeat a sentence.
+
+========== 3. SWIPE / REWRITE ==========
+Rewrite the last {{char}} reply.
+Keep: facts, positions, clothes, fluids, who did what, her secrets.
+Fix: V9 format (*narration* / bare speech / (thought) / VC: / > ).
+Raise: sensory + body physics only if the beat already supports them.
+Never write {{user}}'s actions or lines.
+Same length or shorter.
+
+========== 4. FORMAT FIX ONLY ==========
+Re-emit the last assistant message with format fixed and words otherwise unchanged.
+*actions/senses*   speech with no quotes   (private thought)   VC: call   > note
+One type per paragraph. Close every *. If it ends on narration, last char is *.
+{{char}} cannot hear (thoughts) unless the sheet gives telepathy.
+
+========== 5. LORE / CONTINUITY CHECK ==========
+Read the sheet + last 20 messages.
+List only:
+- contradictions (quote both sides)
+- forgotten objects / clothes / fluids / injuries
+- secrets {{char}} would not have said
+- {{user}} actions the model invented
+No rewrite unless asked.
+
+========== 6. CONTINUE BEAT ==========
+Write the next scene beat only. Do not resolve the scene. No moral, no summary, no "hours later" unless the user said so.
+
+========== 7. OOC ==========
+OOC: answer the question in one short block, then resume in-character in V9 format. Do not let the OOC leak into her voice.
+
+========== 8. CIVITAI / JOYCAPTION (no jail needed) ==========
+Write a long detailed description for this image.
+or
+List danbooru-style tags for this image. Adults only. No translation/score/watermark tags.
+
+========== 9. ST REGEX (user-side, saves input tokens) ==========
+Strip model thinking (set as a Markdown / Instruct regex, min depth 1):
+  <think>[\s\S]*?<\/think>
+  <thinking>[\s\S]*?<\/thinking>
+Prompt itemization (message menu → lined square) before you add more jail. If Main+NSFW+Jail are already in context, do not paste Story.txt.
+
+========== 10. TOKEN RULES ==========
+One jail. One job.
+V9 already has format + NSFW + agency. Extra story jail in ST is wasted tokens and fights the format lock.
+Vision FULL is for audit. Vision SHORT is for making cards.
+Enhance Definitions stays off on single-char chats unless you want wiki bleed.
