@@ -1,9 +1,9 @@
 ---
 name: skyrim-forge
-description: Use Skyrim Forge 4.2 as the primary typed automation broker for Skyrim mod development and validation.
+description: Use Skyrim Forge (5.x) as the primary typed automation broker for Skyrim mod development and validation.
 ---
 
-# Skyrim Forge 4.2
+# Skyrim Forge 5.x
 
 ## Resolve this installation
 
@@ -21,6 +21,32 @@ If the descriptor is unavailable, resolve Forge in this order:
 Never assume a drive letter or reconstruct the application elsewhere.
 
 Run `forge doctor` before major Skyrim work.
+
+## Venv health (Windows) — the provider-runtime trap
+
+Forge's MCP server runs from `<root>/.venv/Scripts/python.exe -m skyrim_forge mcp`.
+If that venv was created from a **provider runtime cache** python (e.g.
+`~/.cache/codex-runtimes/.../python.exe`), it dies the moment the runtime cache is
+deleted or that provider is uninstalled. Symptom: MCP clients (Grok, Claude Code,
+Codex) hang at startup waiting on a server that cannot boot; the venv python
+prints `No Python at '<runtime cache path>'`.
+
+Check: `cat <root>/.venv/pyvenv.cfg` — if `home =` points into a cache dir, repair:
+
+```text
+py -3.12 -m venv "<root>/.venv"
+"<root>/.venv/Scripts/python.exe" -m pip install "<root>"
+```
+
+Forge has zero external dependencies and a local build backend, so this is
+fast and offline. Verify the MCP server answers (must return JSON, not hang):
+
+```text
+printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"probe","version":"1"}}}\n' | "<root>/.venv/Scripts/python.exe" -m skyrim_forge mcp
+```
+
+Then restart the MCP client. Never build the venv from a provider runtime
+python — use a stable interpreter (system Python, `py -3.x`, or `uv`).
 
 Use Forge inspection and typed jobs before inventing one-off scripts. Never launch xEdit, Creation Kit, LOOT, or Wrye Bash and leave the user to click. Use an Automation Fabric job or report that the required adapter is unavailable.
 

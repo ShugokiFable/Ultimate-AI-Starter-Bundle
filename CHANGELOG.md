@@ -3,6 +3,12 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.2.1
+
+`skyrim-forge` skill: 5.x version refresh + provider-runtime venv trap documented with
+repair recipe (MCP clients hang at startup when the venv's base interpreter lives in a
+deleted provider runtime cache). See `V7.2.1-CHANGELOG.md`.
+
 ## 7.2.0
 
 Makes the tooling enforce what v7.0.0 only documented. `fanout_providers.py` now scopes
