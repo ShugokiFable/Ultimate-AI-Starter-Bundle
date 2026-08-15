@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V6.9.2 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V6.9.3 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -116,6 +116,7 @@ no yes-man. Also on disk as "AIO Instruction.txt" (same content).
 
 READ NEXT
 ---------
+  V6.9.3-CHANGELOG.md  Hermes unrestraint skill; all providers verified live
   V6.9.2-CHANGELOG.md  ULTIMATE unrestraint update: 0-UNRESTRAINT-PACKS
   V6.9.1-CHANGELOG.md  caption + sheet skills; jail kits not imported
   V6.9.0-CHANGELOG.md  adult-fiction in scope; no jailbreak layer
