@@ -1,36 +1,36 @@
-﻿{
-    "generated_utc":  "2026-07-31T03:51:58.6350085Z",
-    "files":  [
-                  {
-                      "name":  "codebase-memory-mcp-windows-amd64.zip",
-                      "size":  37387929,
-                      "sha256":  "92f96896f952e539f0d6cb34d7892a25064b677ccbf808b8f8310ad897e86f2c"
-                  },
-                  {
-                      "name":  "headroom_ai-0.33.0-cp310-abi3-win_amd64.whl",
-                      "size":  13339743,
-                      "sha256":  "30669b6109a645efab95819685056ec74efc3096e7b6de4feee46c6a6790cb91"
-                  },
-                  {
-                      "name":  "houseCARL-1.9.0.zip",
-                      "size":  17647713,
-                      "sha256":  "56349058cdf6a090d2029dedf283db0aaa66a13ddd9560864bdceecced376947"
-                  },
-                  {
-                      "name":  "ponytail-v4.8.4.zip",
-                      "size":  1130233,
-                      "sha256":  "cb3c88042fe54c464ee283a8ecc1fe3adf63f68815846caff2d19362d71e8599"
-                  },
-                  {
-                      "name":  "spookys-automod-toolkit-v1.11.2.zip",
-                      "size":  68584007,
-                      "sha256":  "2e7848961785eedda3702851d477d878cf01e98a61710ca50fe8b0aafcb28bef"
-                  },
-                  {
-                      "name":  "superpowers-v6.2.0.zip",
-                      "size":  622789,
-                      "sha256":  "b1f6996d6877dca249e3a320fc97d164ecdf3c418e3856304bdfff3df640747b"
-                  }
-              ],
-    "pack_version":  "5.0.0"
+{
+ "generated": "2026-08-14",
+ "pack_version": "6.0.0",
+ "assets": [
+  {
+   "file": "codebase-memory-mcp-windows-amd64.zip",
+   "size": 37387929,
+   "sha256": "92f96896f952e539f0d6cb34d7892a25064b677ccbf808b8f8310ad897e86f2c"
+  },
+  {
+   "file": "headroom_ai-0.33.0-cp310-abi3-win_amd64.whl",
+   "size": 13339743,
+   "sha256": "30669b6109a645efab95819685056ec74efc3096e7b6de4feee46c6a6790cb91"
+  },
+  {
+   "file": "houseCARL-1.9.0.zip",
+   "size": 17647713,
+   "sha256": "56349058cdf6a090d2029dedf283db0aaa66a13ddd9560864bdceecced376947"
+  },
+  {
+   "file": "ponytail-v4.9.0.zip",
+   "size": 1149510,
+   "sha256": "361c15a62c49584c40436ed162527d61c067c55eea621cf49c4a8d2de7e77163"
+  },
+  {
+   "file": "spookys-automod-toolkit-v1.11.2.zip",
+   "size": 68584007,
+   "sha256": "2e7848961785eedda3702851d477d878cf01e98a61710ca50fe8b0aafcb28bef"
+  },
+  {
+   "file": "superpowers-v6.3.0.zip",
+   "size": 671445,
+   "sha256": "3d4b48b75d6ea46047183b73938088cbf22196518b3c46873446a5ff11b02104"
+  }
+ ]
 }

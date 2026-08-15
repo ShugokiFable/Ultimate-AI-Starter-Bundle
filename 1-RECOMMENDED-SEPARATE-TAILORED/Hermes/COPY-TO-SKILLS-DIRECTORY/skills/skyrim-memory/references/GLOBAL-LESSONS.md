@@ -1,6 +1,6 @@
-# Hermes Agent Skyrim global lessons
+# Claude Code Skyrim global lessons
 
-Provider control: Resolve HERMES_HOME/profile, preserve SOUL/native memory, and prevent silent skill drift.
+Provider control: Load minimal skills, persist state before context boundaries, and do not promote auto memory without evidence.
 
 # Skyrim AI Global Lessons
 

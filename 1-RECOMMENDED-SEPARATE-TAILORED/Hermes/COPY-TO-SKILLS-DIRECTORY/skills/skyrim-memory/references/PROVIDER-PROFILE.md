@@ -1,9 +1,9 @@
-# Hermes Agent provider profile
+# Claude Code provider profile
 
 ## Operating shape
 
-- Resolve the active `HERMES_HOME` or profile.
-- Keep project procedures in workspace `AGENTS.md`, not `SOUL.md`.
-- Preserve configuration, credentials, sessions, state, and native memories.
-- Treat provider-pack skills as curated and promote changes explicitly.
-- Judge implementation through the selected backend model and actual validation evidence.
+- Keep `CLAUDE.md` concise and load only the smallest necessary skills.
+- Re-resolve `CURRENT.txt`, the owner root, installed truth, and generated paths before editing.
+- Compile after each coherent milestone, especially after review-driven changes.
+- Treat auto memory as candidate learning until evidence promotion.
+- Use one implementation owner for a tightly coupled artifact.

@@ -1,10 +1,9 @@
-# Grok Build provider profile
+# Claude Code provider profile
 
 ## Operating shape
 
-- Use `/plan` before broad, binary, plugin, or generated-configuration edits.
-- Reproduce the user-visible symptom before and after the change.
-- Generate large configurations deterministically and validate strict field grammar and types.
-- Require deep plugin, VMAD, and SEQ validation rather than header-only checks.
-- Label prototypes and approximations honestly.
-- Persist project state after consequential work.
+- Keep `CLAUDE.md` concise and load only the smallest necessary skills.
+- Re-resolve `CURRENT.txt`, the owner root, installed truth, and generated paths before editing.
+- Compile after each coherent milestone, especially after review-driven changes.
+- Treat auto memory as candidate learning until evidence promotion.
+- Use one implementation owner for a tightly coupled artifact.

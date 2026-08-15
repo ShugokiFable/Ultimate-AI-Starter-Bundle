@@ -1,4 +1,4 @@
-﻿# houseCARL automatic setup (V5)
+# houseCARL automatic setup (V5)
 
 houseCARL reads an **MO2-shaped instance** (folder with `ModOrganizer.ini` + profile txt files + `mods\`).
 

@@ -1,9 +1,9 @@
-# Kimi Code provider profile
+# Claude Code provider profile
 
 ## Operating shape
 
-- Resolve `KIMI_CODE_HOME`.
-- Use `explore` for mapping, `plan` for architecture, and one writing `coder` for coupled work.
-- Pass exact files, constraints, forbidden actions, and evidence to isolated agents.
-- Do not run parallel writers against one plugin, installer, DLL, or generated output set.
-- Verify the exact project build and final package before completion.
+- Keep `CLAUDE.md` concise and load only the smallest necessary skills.
+- Re-resolve `CURRENT.txt`, the owner root, installed truth, and generated paths before editing.
+- Compile after each coherent milestone, especially after review-driven changes.
+- Treat auto memory as candidate learning until evidence promotion.
+- Use one implementation owner for a tightly coupled artifact.

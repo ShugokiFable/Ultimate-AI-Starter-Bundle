@@ -1,4 +1,4 @@
-﻿---
+---
 name: skyrim-tool-router
 description: First router for any Skyrim SE/AE modding task. Classifies the job and loads only the specialist skills needed,
   preventing overlapping workflows and unnecessary context.

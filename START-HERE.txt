@@ -1,76 +1,122 @@
-Ultimate AI Starter Bundle V5.2.0 - ALL-IN-ONE STARTER
-========================================
+Ultimate AI Starter Bundle V6.0.0 - ALL-IN-ONE STARTER
+======================================================
 
-Not just Skyrim. This is a full multi-provider AI starter bundle:
-skills, MCP tools, plugins, and offline installers - with a deep
-optional Skyrim SE/AE modding stack built in.
+Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
+plugins, and offline installers - with a deep optional Skyrim SE/AE modding
+stack built in.
+
+Providers: Claude, Codex, Grok, Kimi, Hermes.
+
 
 NEW USERS - ONE COMMAND
 -----------------------
 Double-click:
 
-    INSTALL-V5-AIO.bat
+    INSTALL-V6-AIO.bat
 
-Or PowerShell from this folder:
+Or from PowerShell in this folder:
 
-    powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V5-AIO.ps1
-
-That installs:
-  - Provider skills (Claude, Codex, Grok, Kimi, Hermes)
-  - houseCARL MCP (+ MO2 or Vortex shim setup) for Skyrim data-layer work
-  - Spooky's AutoMod Toolkit
-  - codebase-memory-mcp (code structure graph)
-  - Headroom (context compression MCP - not Grok inference wrap)
-  - Superpowers + Ponytail (skills/plugins)
-  - CodeBurn (npm/npx, optional)
-  - Optional extras: -WithExtras (code-review, obsidian, firecrawl, playwright, ...)
-  - MCP wiring for the providers you select
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
 
 Then FULLY restart your AI app(s).
 
-OPTIONS
--------
-  .\INSTALL-V5-AIO.ps1 -Providers Grok,Claude
-  .\INSTALL-V5-AIO.ps1 -Mode OnlineLatest
-  .\INSTALL-V5-AIO.ps1 -WithExtras
-  .\INSTALL-V5-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
+Options:
+    .\INSTALL-V6-AIO.ps1 -Providers Grok,Claude
+    .\INSTALL-V6-AIO.ps1 -Mode OnlineLatest
+    .\INSTALL-V6-AIO.ps1 -WithExtras
+    .\INSTALL-V6-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
+
+
+WHY V6 EXISTS (read this one bit)
+---------------------------------
+v5.2.5 shipped 7 skills whose descriptions never loaded. A UTF-8 BOM sat before
+the opening "---" of each SKILL.md, so the YAML frontmatter never opened and the
+description - the ONLY thing an agent matches on to decide whether to load a
+skill - was lost. The skills were installed, listed, and invisible.
+
+Two of them were skyrim-memory and skyrim-tool-router: the skills your
+instructions tell every agent to load FIRST.
+
+v6 fixes that, rebuilds the canonical tree from the install that actually works,
+and ships gates so it cannot happen again. Details: V6-CHANGELOG.md
+
+
+VERIFY YOUR INSTALL
+-------------------
+    python TOOLS\audit_skills.py "%USERPROFILE%\.claude\skills"
+
+Expect: RESULT: PASS (0 fail, N warn)
+Warnings are context-budget advice, not failures.
+
+Full pack self-test (skills + PowerShell parse + asset hashes + registry):
+
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V6-Pack.ps1
+    ... -IncludeLiveInstalls   (also audits your installed provider homes)
+
+
+TWO ENCODING RULES THAT BITE (both shipped as bugs before)
+----------------------------------------------------------
+  SKILL.md    -> UTF-8, NO BOM. A BOM removes the description entirely.
+  .ps1 / .bat -> KEEP the BOM (or stay pure ASCII). Without it PowerShell 5.1
+                 decodes as ANSI, and one em dash becomes a stray quote that
+                 breaks the parse.
+
+They are opposites. Do not apply one blanket encoding policy to both.
+Registry entries SKILL-BOM-001 and PS-BOM-001.
+
+
+CODEBASE-MEMORY (important)
+---------------------------
+MCP stdio only. Keep args = [] in EVERY provider config.
+
+--ui and --port are persisted into the tool's OWN GLOBAL config, not into one
+agent's MCP entry - so passing them from one provider changes behaviour for all
+of them. That is the usual reason the dashboard "randomly" disappears. The
+dashboard is also served by a process that exits when its stdin closes, so it
+only lives as long as the client that started it.
+
+    codebase-memory-mcp --ui=true      # enable  (persisted globally)
+    codebase-memory-mcp --ui=false     # disable (persisted globally)
+    codebase-memory-mcp config set auto_index false
+    codebase-memory-mcp config set auto_watch false
+
+Index on demand with the index_repository tool.
+
 
 HEADROOM + GROK (MCP only - do NOT wrap Grok inference)
 -------------------------------------------------------
-Headroom MCP tools are fine. Do NOT route subscription Grok through
-headroom wrap / GROK_MODELS_BASE_URL (model shows as "unknown", 401s).
+Headroom MCP tools are fine. Do NOT route a subscription/OIDC Grok login through
+headroom wrap / GROK_MODELS_BASE_URL - the model shows as "unknown" and chat
+401s. Only an XAI_API_KEY login can be wrapped.
 
-  .\TOOLS\Ensure-Headroom-Grok.ps1
-  .\TOOLS\Ensure-Headroom-Grok.ps1 -Repair
-  .\TOOLS\Ensure-Headroom-Grok.ps1 -CheckOnly
+    .\TOOLS\Ensure-Headroom-Grok.ps1
+    .\TOOLS\Ensure-Headroom-Grok.ps1 -Repair
+    .\TOOLS\Ensure-Headroom-Grok.ps1 -CheckOnly
 
 claude-mem is Claude Code only (needs Bun). Not for Grok/Codex/Kimi/Hermes.
 
-Read: V5-CHANGELOG.md | V5-AIO-GUIDE.md | README.md
-CODEBASE-MEMORY (important)
----------------------------
-MCP only. NEVER enable the HTTP UI:
-  codebase-memory-mcp --ui=false
-  codebase-memory-mcp config set auto_index false
-  codebase-memory-mcp config set auto_watch false
-Do NOT run install.ps1 --ui (causes Windows "Select an app / Codebase Discovery").
-Index on demand with the index_repository tool.
 
-V5.2.2 WINDOWS TERMINAL-FLASH FIX
-------------------------------------
-Normal setup now removes or disables stale Headroom scheduled tasks whose
-deployment script or manifest no longer exists.
+MCP 2026-07-28
+--------------
+The protocol is now stateless: no initialize handshake, no Mcp-Session-Id,
+routing headers required, list results cacheable, Roots/Sampling/Logging
+deprecated on a 12-month window. Every MCP server this pack wires is local
+stdio, so NOTHING here needs to change. Skill: mcp-protocol-2026
+
 
 AI PREAMBLE (optional but recommended)
 --------------------------------------
-Copy or point the AI at:
+Point your agent at:
 
     AIO-INSTRUCTION.txt
 
-This is the pack's high-signal reasoning preamble (truth-seeking process,
-confidence calibration, no yes-man). Put it in your workspace, paste into
-the system/custom instructions, or tell the agent:
+High-signal reasoning preamble: truth-seeking process, confidence calibration,
+no yes-man. Also on disk as "AIO Instruction.txt" (same content).
 
-    Follow AIO-INSTRUCTION.txt for every complex or factual request.
 
-Also on disk as: AIO Instruction.txt (same content)
+READ NEXT
+---------
+  V6-CHANGELOG.md    what changed and why, with the evidence
+  V6-AIO-GUIDE.md    user + AI contract
+  README.md          layout
+  WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md

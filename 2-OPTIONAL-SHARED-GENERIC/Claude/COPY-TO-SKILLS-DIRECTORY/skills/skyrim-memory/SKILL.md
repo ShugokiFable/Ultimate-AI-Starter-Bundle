@@ -1,15 +1,18 @@
-﻿---
+---
 name: skyrim-memory
-description: Consult the shared Skyrim evidence registry before substantial mod creation, repair, debugging, packaging, plugin,
-  Papyrus, runtime-patching, follower, OStim, or native DLL work.
+description: Consult the Claude Code Skyrim evidence registry before substantial mod work so previously observed failures
+  are not repeated.
+when_to_use: Before substantial Skyrim creation, repair, debugging, packaging, publishing, plugin, Papyrus, runtime-patching,
+  follower, OStim, or DLL work
 metadata:
+  version: 5.0.0
   provider: shared-generic
+  updated: '2026-07-31'
+  architecture: self-contained-skill-references
   provider_pack_version: 1.0.0
   base_library: Skyrim-Agent-Skills-v6
-  updated: '2026-07-31'
   error_registry_revision: 4.3.0
   final_pack_version: 5.0.0
-  version: 5.0.0
 ---
 
 # Skyrim evidence registry
@@ -45,7 +48,7 @@ runtime behavior.
 ## Registry scope
 
 - `shared-cross-provider` entries apply to every supported AI application.
-- `provider-specific` entries apply only to the currently configured application.
+- `provider-specific` entries apply only to Claude.
 - Do not reinterpret another provider's entry as a failure of this provider.
 
 ## Project-local learning

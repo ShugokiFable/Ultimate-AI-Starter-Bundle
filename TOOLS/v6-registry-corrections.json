@@ -1,0 +1,87 @@
+{
+  "_comment": "Corrections applied 2026-08-14 after runtime contradiction. Merged by id, so these REPLACE the entries first written in v6-registry-additions.json. The originals implied a conversion that was later confirmed broken in game.",
+  "entries": [
+    {
+      "id": "ARMA-RACE-001",
+      "title": "ArmorAddon Race=DefaultRace matches nothing; AdditionalRaces is the real gate",
+      "tags": ["plugin", "armor", "race", "standalone-npc", "rendering"],
+      "symptom": "An actor renders no body, hands, feet or outfit, while every FormID resolves, every file is present, every mesh parses, and every file-level validator passes.",
+      "root_cause": "Race=DefaultRace is not a wildcard. Verified by reading the installed game: vanilla NakedTorso 000D67:Skyrim.esm has Race=DefaultRace AND explicitly lists 10 AdditionalRaces including NordRace; NordRace.ArmorRace is a null link, so there is no armor-race indirection to fall back on. An ARMA whose AdditionalRaces list is empty therefore matches only actors literally of DefaultRace. Dropping a body-framework master strips that master's races out of the list and leaves exactly that state.",
+      "prevention": [
+        "After retargeting an NPC's race, walk NPC_.RNAM -> WNAM (skin ARMO) and DOFT -> OTFT.INAM -> each ARMO's MODL armatures -> each ARMA, and assert the race is reachable.",
+        "Keep Race=DefaultRace AND list the real races, mirroring vanilla.",
+        "Read race FormIDs out of the installed game, never from recall."
+      ],
+      "required_validation": [
+        "Race-reachability walk returns at least one matching armature per worn ARMO",
+        "IMPORTANT: passing this walk is necessary, NOT sufficient. See NPC-STANDALONE-001 - a build that passed it still rendered an invisible body in game."
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "The DefaultRace/AdditionalRaces mechanics above were read directly from the installed Skyrim.esm via houseCARL on 2026-08-14 and stand on their own. The conversion that prompted the investigation was later confirmed BROKEN in game, so this entry documents the mechanic only and must not be cited as a successful repair."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": ["Claude", "Codex", "Grok", "Kimi", "Hermes"],
+      "provider_control": "Treat an empty AdditionalRaces list as a defect, but do not treat fixing it as proof the actor now renders."
+    },
+    {
+      "id": "VAL-REACH-001",
+      "title": "Adding another static check does not turn tool-validated into runtime-confirmed",
+      "tags": ["validation", "process", "ship-gate", "all-models"],
+      "symptom": "A ship gate reports PASS with zero failures and the feature still does not work in game. A defect is then found, a new check is written that catches it, the build passes again - and it is STILL broken in game.",
+      "root_cause": "Static validation answers 'does this reference resolve?'. It never answers 'does the engine traverse this at runtime?'. Each new check closes one known hole and says nothing about the unknown ones. Treating 'my new check now passes' as 'the defect class is closed' is the same error as the original PASS, one level up.",
+      "prevention": [
+        "Never report a fix as working on the strength of a validator alone. State RUNTIME STATUS explicitly and keep it at tool-validated until a human confirms in the real environment.",
+        "When a runtime symptom is reported, do not assume the first defect found is the only cause.",
+        "If the environment cannot be tested by the agent, say so before delivery, not after."
+      ],
+      "required_validation": [
+        "A human confirms the observable behaviour in the real runtime",
+        "Until then the correct status is tool-validated, never PASS-as-working"
+      ],
+      "evidence_status": "user-confirmed-runtime",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-08-14: a conversion passed a full ship gate (0 failures). A race-reachability defect was then found, fixed, and a new gate written that failed the old build and passed the new one. The user installed the new build and reported the body still invisible and the face wrong. Both the original PASS and the post-fix PASS were wrong."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": ["Claude", "Codex", "Grok", "Kimi", "Hermes"],
+      "provider_control": "Every gate result must be reported with its evidence level attached. 'PASS' alone is not a claim about the game."
+    },
+    {
+      "id": "NPC-STANDALONE-001",
+      "title": "Retargeting an NPC's race to drop a body-framework master is not a validated technique",
+      "tags": ["npc", "race", "facegen", "standalone", "scope"],
+      "symptom": "A follower converted to 'fully standalone' by dropping a custom-race/body master renders with an invisible body and a wrong, default-looking face, despite passing every static check.",
+      "root_cause": "Not fully diagnosed. Two independent systems are disturbed at once. (1) Armature race matching - see ARMA-RACE-001. (2) Baked FaceGen is race-coupled: the head geometry, the NPC's face-morph and face-part data and the tint layers are authored against the original race's head, and Skyrim does not re-derive them when the race changes. A Creation Kit FaceGen re-bake is the normal remedy, which is unavailable when policy forbids launching the CK.",
+      "prevention": [
+        "Do not offer 'fully standalone by race retarget' as a low-risk option for a follower whose face is baked FaceGen.",
+        "Raise the FaceGen re-bake requirement as a BLOCKER at the point the approach is chosen, not after delivery.",
+        "Prefer keeping the original master when the face matters; a body-system conversion does not require dropping it.",
+        "Also verify the skin ARMO's own Race field - a custom skin ARMO with no RNAM was observed and not explained."
+      ],
+      "required_validation": [
+        "Human confirmation in game that body AND face render correctly",
+        "Nothing short of that counts for this technique"
+      ],
+      "evidence_status": "contradicted",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-08-14: user installed the build and reported 'face was defaulty weird, body was invisible'. Explicitly not a BodySlide issue - meshes shipped pre-built and no BodySlide run was required."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": ["Claude", "Codex", "Grok", "Kimi", "Hermes"],
+      "provider_control": "Treat this whole approach as unproven. Do not cite it, or any artifact produced by it, as a working example."
+    }
+  ]
+}

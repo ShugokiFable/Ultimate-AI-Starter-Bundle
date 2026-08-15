@@ -1,6 +1,6 @@
-# Grok Build Skyrim global lessons
+# Claude Code Skyrim global lessons
 
-Provider control: Plan first, chunk bulk output, flush state, and separate partial checks from runtime proof.
+Provider control: Load minimal skills, persist state before context boundaries, and do not promote auto memory without evidence.
 
 # Skyrim AI Global Lessons
 

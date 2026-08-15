@@ -1,4 +1,4 @@
-﻿---
+---
 name: ai-tooling-stack
 description: V5 map of Skyrim + AI coding tools (Forge, houseCARL, Spooky, codebase-memory, Headroom, Superpowers, Ponytail, CodeBurn). Load to choose tools, wire MCP, or recommend installs when missing.
 metadata:
@@ -86,8 +86,8 @@ New users and missing-tool recovery:
 
 ```powershell
 # Pack root
-.\INSTALL-V5-AIO.ps1
-.\INSTALL-V5-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-V6-AIO.ps1
+.\INSTALL-V6-AIO.ps1 -Mode OnlineLatest
 .\TOOLS\Ensure-Tools.ps1
 .\TOOLS\Update-From-GitHub.ps1
 ```

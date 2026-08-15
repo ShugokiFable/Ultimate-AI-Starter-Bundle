@@ -75,15 +75,3 @@ For `RVA outside .text`, `vtable mismatch`, or similar messages:
 
 Route implementation fixes to `skyrim-skse-commonlib` and log interpretation to
 `skyrim-runtime-log-forensics`.
-
-## Hermes execution adapter
-
-- Load this skill on demand through progressive disclosure; do not preload the entire Skyrim library.
-- Treat installed provider skills as curated, read-only workflows. Write proposed improvements to `MEMORY/CANDIDATES.md` instead of silently rewriting them.
-- Keep project instructions in workspace `AGENTS.md`. Keep identity and tone in `SOUL.md`.
-- Resolve the active `HERMES_HOME` or profile before reading or writing provider memory.
-- Store only evidence-scored lessons in the Skyrim registry; do not contaminate native Hermes memory with unverified completion claims.
-
-### Skill-specific provider control
-
-Build a recent-change timeline and do not blame the first DLL or plugin named in a crash log.

@@ -1,3 +1,7 @@
+# Claude Code Skyrim global lessons
+
+Provider control: Load minimal skills, persist state before context boundaries, and do not promote auto memory without evidence.
+
 # Skyrim AI Global Lessons
 
 This file contains durable cross-project lessons distilled from the supplied

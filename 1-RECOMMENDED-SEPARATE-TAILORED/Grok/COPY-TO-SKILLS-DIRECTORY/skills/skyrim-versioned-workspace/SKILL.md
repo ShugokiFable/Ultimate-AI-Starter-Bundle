@@ -13,6 +13,7 @@ metadata:
   base_library: Skyrim-Agent-Skills-v6
   error_registry_revision: 4.3.0
   final_pack_version: 4.3.0
+when_to_use: Use for mandatory workspace ownership and version-snapshot workflow for skyrim mod creation or editing.
 ---
 
 # Versioned Skyrim workspace
@@ -97,13 +98,13 @@ automatically. Every other application must call it explicitly before the action
 Report the workspace root, project root, parent version, active version, copied
 file count, changelog status, build status, final package hash, and remaining risks.
 
-## Grok Build execution adapter
+## Claude Code execution adapter
 
-- Enter `/plan` before broad edits, architecture changes, plugin work, DLL work, or large generated configurations.
-- For bulk output, generate and validate deterministic chunks rather than one giant hand-edited file.
-- Subagents may research or review independently; one implementation owner merges changes.
-- Use `/flush` before ending a consequential session and record unresolved work in project state files.
-- Never convert speed, a clean parser pass, or a confident summary into a runtime-success claim.
+- Keep `CLAUDE.md` concise and use this skill for procedural detail.
+- Load only the skills needed for the current milestone because invoked skill content remains in context.
+- Use high or xhigh effort for risky architecture, plugins, DLLs, and hostile review.
+- Before compaction or a usage boundary, persist exact state, commands, uncommitted changes, and remaining validation.
+- Treat auto memory as candidate learning, not verified truth, until it passes the memory-promotion protocol.
 
 ### Skill-specific provider control
 

@@ -13,10 +13,8 @@ metadata:
   base_library: Skyrim-Agent-Skills-v6
   error_registry_revision: 4.3.0
   final_pack_version: 4.3.0
-type: prompt
-whenToUse: Prepare a Nexus Mods release page, BBCode description, requirements, permissions, changelog, credits, troubleshooting,
-  and file metadata after the artifact passes the ship gate.
-disableModelInvocation: false
+when_to_use: Use for prepare a nexus mods release page, bbcode description, requirements, permissions, changelog, credits,
+  troubleshooting, and file metadata after the artifact passes the ship gate.
 ---
 
 # Nexus publishing
@@ -59,13 +57,13 @@ Use this hierarchy for version-sensitive facts:
 
 Do not substitute memory, an old example, or a plausible token. Record the evidence path or URL in `VALIDATION.md`.
 
-## Kimi Code execution adapter
+## Claude Code execution adapter
 
-- Use `explore` for read-only mapping and `plan` for architecture before dispatching a writing `coder`.
-- Every sub-agent has isolated context. Pass exact paths, requirements, constraints, and evidence in each delegation.
-- Avoid parallel `coder` agents on the same plugin, FOMOD, generated config, or tightly coupled source tree.
-- Use sub-agents only when independence justifies their separate token cost.
-- Persist a Markdown handoff before starting a fresh session or compacting a long one.
+- Keep `CLAUDE.md` concise and use this skill for procedural detail.
+- Load only the skills needed for the current milestone because invoked skill content remains in context.
+- Use high or xhigh effort for risky architecture, plugins, DLLs, and hostile review.
+- Before compaction or a usage boundary, persist exact state, commands, uncommitted changes, and remaining validation.
+- Treat auto memory as candidate learning, not verified truth, until it passes the memory-promotion protocol.
 
 ### Skill-specific provider control
 

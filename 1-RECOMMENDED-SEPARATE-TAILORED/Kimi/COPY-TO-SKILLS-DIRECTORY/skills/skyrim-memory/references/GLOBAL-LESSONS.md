@@ -1,6 +1,6 @@
-# Kimi Code Skyrim global lessons
+# Claude Code Skyrim global lessons
 
-Provider control: Pass complete delegation packets to isolated subagents and resolve KIMI_CODE_HOME.
+Provider control: Load minimal skills, persist state before context boundaries, and do not promote auto memory without evidence.
 
 # Skyrim AI Global Lessons
 
