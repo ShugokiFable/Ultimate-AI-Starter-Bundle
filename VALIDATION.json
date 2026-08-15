@@ -1,9 +1,9 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "6.9.0",
+ "version": "6.9.1",
  "generated": "2026-08-15",
- "base": "v6.8.2",
- "canonical_skills": 89,
+ "base": "v6.9.0",
+ "canonical_skills": 91,
  "provider_trees": 10,
  "registry_entries": 85,
  "gates": [
