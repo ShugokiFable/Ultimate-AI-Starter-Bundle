@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Merge the completeness gate into Hermes's real config.yaml.
+"""Merge a pack gate into Hermes's real config.yaml.
 
 Two things make this worth a script rather than a text append:
 
@@ -15,7 +15,7 @@ Two things make this worth a script rather than a text append:
    merges one key, and writes back.
 
 Usage:
-    hermes_wire.py <hermes-exe> <python-exe> <gate.py> [--remove]
+    hermes_wire.py <hermes-exe> <python-exe> <gate.py> [--remove] [--all-tools]
 """
 from __future__ import annotations
 
@@ -29,6 +29,7 @@ except ImportError:
     print("SKIP: PyYAML not available; cannot safely edit Hermes config.")
     raise SystemExit(0)
 
+# Set from the gate being wired, so wiring a second gate cannot strip the first.
 MARKER = "completeness_gate.py"
 
 
@@ -53,6 +54,9 @@ def main() -> int:
         return 0
     hermes, python, gate = sys.argv[1], sys.argv[2], sys.argv[3]
     remove = "--remove" in sys.argv
+
+    global MARKER
+    MARKER = Path(gate).name  # only ever touch the entries for THIS gate
 
     cfg = config_path(hermes)
     if cfg is None:
@@ -90,11 +94,14 @@ def main() -> int:
         # quoting and Hermes's shlex.split, where backslashes do not.
         py = python.replace("\\", "/")
         gt = gate.replace("\\", "/")
-        hooks.setdefault("pre_tool_call", []).append({
-            "matcher": "terminal",
-            "command": f'"{py}" "{gt}" --pre',
-            "timeout": 20,
-        })
+        entry = {"command": f'"{py}" "{gt}" --pre', "timeout": 20}
+        # A gate that inspects file writes must see every tool, and Hermes's
+        # tool names are not something to guess at: omitting the matcher is the
+        # documented way to match all of them, and the gate ignores any payload
+        # shape it does not recognise anyway.
+        if "--all-tools" not in sys.argv:
+            entry = {"matcher": "terminal", **entry}
+        hooks.setdefault("pre_tool_call", []).append(entry)
         hooks.setdefault("pre_verify", []).append({
             "command": f'"{py}" "{gt}" --stop',
             "timeout": 40,

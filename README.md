@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.8.1
+# Ultimate AI Starter Bundle v6.8.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -20,6 +20,8 @@ earn its cost.
 - **Finish the job, not the sentence** — the request is the goal, not the
   checklist; docs, version and cleanup are part of shipping
 - Read for intent, not wording; no yes-man; correct a wrong premise
+- **Verify, don't assume** — use the tool that would settle it; ask if none
+  exists; assume only as a last resort and label it
 - Never invent a fact, API, path, version or command
 - An explicit evidence order: runtime output > tool verdict > docs > recall
 - Report what you did *not* do, and never call partial work finished
@@ -109,6 +111,7 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V6.8.2-CHANGELOG.md](V6.8.2-CHANGELOG.md)
 - [V6.8.1-CHANGELOG.md](V6.8.1-CHANGELOG.md)
 - [V6.8-CHANGELOG.md](V6.8-CHANGELOG.md)
 - [V6.5-CHANGELOG.md](V6.5-CHANGELOG.md)
@@ -192,6 +195,28 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v6.8.2
+
+Stop Assuming. Agents have a filesystem, Firecrawl, and a code index, and still
+answer from memory. v6.8.2 adds a control, not another reminder:
+
+- **Assumption gate** — refuses a drive that does not exist on this machine,
+  another user's home hardcoded into a script, and unread remote content piped
+  into a shell. Same installer as the completeness gate. Precise, cheap, fail
+  open, self-tested before it is wired.
+- **Hermes installer routed through the tool.** v6.8.1 documented `hermes
+  config path` and then still wrote to `~/.hermes/config.yaml`. Now
+  `hermes_wire.py` asks the executable and merges YAML instead of appending.
+- **The pack gates itself.** `VERSION.txt` + `CHANGELOG.md` are the files the
+  completeness gate actually reads.
+- **Verify-first AIO-INSTRUCTION** (rules 4/5/9). Token budget held.
+- **`TOOLS/Build-Toolbelt.ps1`** writes a machine-local inventory of MCP
+  servers and CLIs that actually exist.
+- **MCP pins refreshed** (`context7@4.0.2`, `sequential-thinking@2026.7.4`)
+  after a broken npx cache shipped as "installed".
+
+Full detail in [V6.8.2-CHANGELOG.md](V6.8.2-CHANGELOG.md).
 
 ## What's new in v6.8.1
 

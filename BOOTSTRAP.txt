@@ -16,7 +16,10 @@ do not ask me to run anything you can run yourself.
 
 3. Run:
      powershell -NoProfile -ExecutionPolicy Bypass -File .\TOOLS\Install-Completeness-Gate.ps1
-   This installs the hook that stops you shipping half a release.
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\TOOLS\Add-Reasoning-MCPs.ps1 -Refresh
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\TOOLS\Build-Toolbelt.ps1
+   Gates stop a half-release and an unverified path. The MCP script pins the
+   one-shot servers. The toolbelt lists what is actually installed.
 
 4. Verify, and fix anything that fails rather than reporting it to me:
      python TOOLS\audit_skills.py "%USERPROFILE%\.claude\skills"

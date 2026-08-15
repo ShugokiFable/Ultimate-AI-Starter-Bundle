@@ -34,8 +34,9 @@ Modes
     completeness_gate.py --stop    Stop: keep the turn going
     completeness_gate.py --selftest
 
-Wire it with hooks/ultimate-bundle.json. Claude, Grok, Codex, Kimi and Hermes
-all read the same Claude-compatible hook shape.
+Wire it with Install-Completeness-Gate.ps1. Claude and Grok read the
+Claude-compatible hook shape. Codex loads a plugin. Hermes is merged by
+hermes_wire.py. Kimi has no hook system.
 """
 from __future__ import annotations
 

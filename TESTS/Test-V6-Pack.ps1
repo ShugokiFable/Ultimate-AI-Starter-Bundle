@@ -133,6 +133,18 @@ sys.exit(1 if (dup or bad) else 0)
     } else { Bad 'ERROR-REGISTRY.json not found' }
 }
 
+Section '6. Gate self-tests'
+$gateDir = Join-Path $PackRoot 'TOOLS\hooks'
+foreach ($g in @('completeness_gate.py', 'assumption_gate.py')) {
+    $gp = Join-Path $gateDir $g
+    if (-not (Test-Path -LiteralPath $gp)) { Bad "$g missing"; continue }
+    if (-not $py) { Bad "python not found; $g --selftest skipped"; continue }
+    $out = & $py.Source $gp --selftest 2>&1 | Out-String
+    if ($out -match 'PASS') { Good "$g  self-test PASS" } else { Bad "$g self-test failed: $out" }
+}
+$wire = Join-Path $gateDir 'hermes_wire.py'
+if (Test-Path -LiteralPath $wire) { Good 'hermes_wire.py present' } else { Bad 'hermes_wire.py missing' }
+
 Write-Host ''
 if ($fail -eq 0) {
     Write-Host "PACK GATE: PASS" -ForegroundColor Green

@@ -6,8 +6,8 @@
  },
  {
   "path": ".gitignore",
-  "size": 347,
-  "sha256": "ffe3ac6b2333f176d9f71c1c75dd9f2759eb8681ded677c2cfc960937b83f283"
+  "size": 623,
+  "sha256": "7c5d3f7c9d92cd70ec58e62e2c10251b9e1bbfd9f0c85ee8a6cb0147c89262c8"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-MAP.md",
@@ -25060,29 +25060,24 @@
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
  },
  {
-  "path": "3-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK/Other-Games-Modding-Skills-Mega-Pack-v2.1.0-MANUAL.zip",
-  "size": 137810,
-  "sha256": "8f127182fdc75f05d1643e1302f395112b55ebe67abb0f0b6bb4313e7037d2d2"
- },
- {
   "path": "3-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK/README-FIRST.md",
   "size": 284,
   "sha256": "fe8659270d10347882699f61ce5ae69ecc35facb8ceb9bcebe5dc91caf206eac"
  },
  {
   "path": "AIO Instruction.txt",
-  "size": 2463,
-  "sha256": "df2a7f505ea075588f7a41bd21e9b751614b660516098874be808a657e975ae0"
+  "size": 2472,
+  "sha256": "3bae9dbd0b7dd159f8b1865fec6ebf735c2913985f3b843367a8c6e78035b700"
  },
  {
   "path": "AIO-INSTRUCTION.txt",
-  "size": 2463,
-  "sha256": "df2a7f505ea075588f7a41bd21e9b751614b660516098874be808a657e975ae0"
+  "size": 2472,
+  "sha256": "3bae9dbd0b7dd159f8b1865fec6ebf735c2913985f3b843367a8c6e78035b700"
  },
  {
   "path": "BOOTSTRAP.txt",
-  "size": 1906,
-  "sha256": "2763d13dba0d1eace2bece6d5171ad72741ad85e571e6dedef452aacc54777cd"
+  "size": 2166,
+  "sha256": "d3c2df66babe5fba26da5b69fe36bc638aef0d80a884c7e09f043dbc9c19c549"
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
@@ -26890,6 +26885,11 @@
   "sha256": "c977fb34ec6614400673cc3d73e9979eb5428d35e1413c50ab4b1cef47eb7b3b"
  },
  {
+  "path": "CHANGELOG.md",
+  "size": 631,
+  "sha256": "4366ef06a8837f48464a51f906b996552d9b4e28750575773d318f3a50b16111"
+ },
+ {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
   "size": 4120,
   "sha256": "1d8dfc41890986660dfeea6f5317e7f7cb1d335cc34eeef79cd7882dd8553a51"
@@ -26961,8 +26961,8 @@
  },
  {
   "path": "INSTALL-V6-AIO.ps1",
-  "size": 32790,
-  "sha256": "d86a7858fae41aa5b58dcc66db26cbef24f145e8e310a2dc08dee53e139e6360"
+  "size": 33503,
+  "sha256": "1f55fa8cdeb1a0a584ad9dde8f5c0236c240a7de7182da3c31e31fc75293d032"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -26996,8 +26996,8 @@
  },
  {
   "path": "README.md",
-  "size": 13059,
-  "sha256": "43441409e210e28d540b433195e12c450567eba648d9e319fc10a09e2e9789ab"
+  "size": 14384,
+  "sha256": "e0823b4640e076d3d88f39d9a124032f137aafb9272c2b883ce87a289d686570"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -27006,8 +27006,8 @@
  },
  {
   "path": "START-HERE.txt",
-  "size": 4416,
-  "sha256": "2352259711787e7c46ca6876487a33e0cbde1db28ed689708ef15548d8768a0f"
+  "size": 4491,
+  "sha256": "3869349ef7b4dc9c9387b009b8ee2cdb2b4b9c87066f4a18c8de979ff4ea6cfd"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -27016,13 +27016,18 @@
  },
  {
   "path": "TESTS/Test-V6-Pack.ps1",
-  "size": 5728,
-  "sha256": "709c40b8d0bd70fe1e1108b262f2ead5ea7b1ab39441cf9cf6a1ec1e5d743326"
+  "size": 6361,
+  "sha256": "e54bf38ecf9d2008522b517ae93b5c2f6fd75e1feeb84a1ebc1ab9f9ad8bf754"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 7760,
-  "sha256": "05e10f04d05a07c9f7d333b2c1a0f34ad5d42b6b8e2106bd9eb46c2ec1401c00"
+  "size": 9183,
+  "sha256": "e8c97a010be64a4367a9c99b05a50435a8385f0877f6fad4618497a72d5e521a"
+ },
+ {
+  "path": "TOOLS/Build-Toolbelt.ps1",
+  "size": 5716,
+  "sha256": "52ef8ed0de5565537b32e799457a02c368d09536ebf11ffde1719cdc3bc55279"
  },
  {
   "path": "TOOLS/Ensure-Headroom-Grok.ps1",
@@ -27041,8 +27046,8 @@
  },
  {
   "path": "TOOLS/Install-Completeness-Gate.ps1",
-  "size": 13212,
-  "sha256": "c3a7738513002cbd75b26b32c004eed4325ffcbedea692375a3b7d187d02763d"
+  "size": 14147,
+  "sha256": "cd162114442c408d234788154cbfcd4c597c094168d32ca43826d0c0275e8dd5"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -27091,43 +27096,53 @@
  },
  {
   "path": "TOOLS/generate_manifest.py",
-  "size": 1238,
-  "sha256": "b46969c7c22700b8eb59e515bedabc9d6179994ee8d3a31fed70a16c3831f965"
+  "size": 1678,
+  "sha256": "1cb52cbbd9706d9ba099db6e76971249baf217b6660077abf488684e71041314"
+ },
+ {
+  "path": "TOOLS/hooks/assumption_gate.py",
+  "size": 16498,
+  "sha256": "bfaad61f42d5b7924a454ab1dd41275f2c83ae57396f04a9b9465395225d379f"
  },
  {
   "path": "TOOLS/hooks/completeness_gate.py",
-  "size": 12490,
-  "sha256": "2620554c8e59e59240202eb6876e534ec4239914249eb0bc4db101ac278b2abb"
+  "size": 12546,
+  "sha256": "a163afdf366bae89ed53e0b4d450c781c028e657ee5376780575eb4533c0c336"
  },
  {
   "path": "TOOLS/hooks/hermes_wire.py",
-  "size": 4153,
-  "sha256": "f5cb1f24edce09eb49348d0c8c605a1b1343d0db1882bc5071e6d35c84287a10"
+  "size": 4661,
+  "sha256": "40aee6c7445b20938e335175d70068c671f0dae934a5a0f409547adf4d9a1a38"
  },
  {
   "path": "TOOLS/hooks/plugin/.claude-plugin/marketplace.json",
-  "size": 575,
-  "sha256": "d08f4e7f1b3618f4636f6a08e7b51d329057a0a86d26a9d2631361a2f0ca499e"
+  "size": 555,
+  "sha256": "7dc10049aea10b56be4f03c05476b5d87b6332616a3b2561fcda99af62b9f15b"
  },
  {
   "path": "TOOLS/hooks/plugin/completeness-gate/.claude-plugin/plugin.json",
-  "size": 510,
-  "sha256": "77c4755bd6d4abf2e05fe127b99817650a8d6b17201834d1a0b11e28356b0c37"
+  "size": 536,
+  "sha256": "cbba3ab232aa90606818b7a1bcee408d7f27512b80cacd5929498d9984bad608"
+ },
+ {
+  "path": "TOOLS/hooks/plugin/completeness-gate/hooks/assumption_gate.py",
+  "size": 16498,
+  "sha256": "bfaad61f42d5b7924a454ab1dd41275f2c83ae57396f04a9b9465395225d379f"
  },
  {
   "path": "TOOLS/hooks/plugin/completeness-gate/hooks/completeness_gate.py",
-  "size": 12490,
-  "sha256": "2620554c8e59e59240202eb6876e534ec4239914249eb0bc4db101ac278b2abb"
+  "size": 12546,
+  "sha256": "a163afdf366bae89ed53e0b4d450c781c028e657ee5376780575eb4533c0c336"
  },
  {
   "path": "TOOLS/hooks/plugin/completeness-gate/hooks/hooks.json",
-  "size": 658,
-  "sha256": "0003269ee7b379c3d5b2660d926d532c7eb15629f36f3e94e4d2260cde568b95"
+  "size": 1352,
+  "sha256": "2f3cc7aa82cacec06092c4c3bb867547706031d953439a5f8e04a551e5ec0433"
  },
  {
   "path": "TOOLS/hooks/ultimate-bundle.json",
-  "size": 1028,
-  "sha256": "c0e74b5b2e3a3725fe824f0b2678dac3240339bd0a5e310c0b812008b10b5fef"
+  "size": 1498,
+  "sha256": "5b89518e1cebcb98e1c9d1415f4427447108d255332fa8c367662b7bdb84e590"
  },
  {
   "path": "TOOLS/housecarl/README.md",
@@ -27181,8 +27196,8 @@
  },
  {
   "path": "V6-AIO-GUIDE.md",
-  "size": 2322,
-  "sha256": "710a789b43816cc129594a59c3cccc8d6d10ab7569783fee9060b0b93cd2812a"
+  "size": 2807,
+  "sha256": "cc1ab35766f2976840e75db695ff788921f21b42171a598bdacd0668583fc70c"
  },
  {
   "path": "V6-CHANGELOG.md",
@@ -27205,9 +27220,19 @@
   "sha256": "200df3988e71344469fe6a70c163a58d314971399bf755eab96595ad1ed63820"
  },
  {
+  "path": "V6.8.2-CHANGELOG.md",
+  "size": 3742,
+  "sha256": "971512909bcfac60f21a9bc323b66fdb0b71b8a0ca872ff8fd82deea2e044543"
+ },
+ {
   "path": "VALIDATION.json",
-  "size": 451,
-  "sha256": "36d7cd3ace75025ede977b8a27454e9dba3c4e2785ded58a7d431f3d131ba874"
+  "size": 592,
+  "sha256": "4e4302bdf4b6246e5edaf7a0421d509d82b7ee7ae6e3f2a4bc264cb7703cbebf"
+ },
+ {
+  "path": "VERSION.txt",
+  "size": 33,
+  "sha256": "3d3cdbfa25286bf9a787c040bcc5a5376f010945192afede988d5135eee155a5"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",

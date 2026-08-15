@@ -1,11 +1,19 @@
 <#
 .SYNOPSIS
-  Install the completeness gate using each provider's real hook mechanism.
+  Install the completeness gate and the assumption gate using each provider's
+  real hook mechanism.
 
 .DESCRIPTION
-  The gate refuses a push, and refuses to end a turn, while a release is
-  internally inconsistent - a version bumped without a changelog entry, a README
-  left declaring the old version, source changes left uncommitted.
+  Two controls, same three design rules (precise, cheap, fail open):
+
+    completeness_gate.py  refuses a push, and refuses to end a turn, while a
+                          release is internally inconsistent - a version bumped
+                          without a changelog entry, a README left declaring the
+                          old version, source changes left uncommitted.
+    assumption_gate.py    refuses a path nobody verified and code nobody read -
+                          a drive letter that does not exist on this machine,
+                          another user's home directory hardcoded into a script,
+                          remote content piped straight into a shell.
 
   v6.8.0 wired every provider by dropping the same JSON into
   `~/.<provider>/hooks/`. That was an assumption, and it was wrong for three of
@@ -21,11 +29,15 @@
                                              [hooks.state]. A bare JSON file in
                                              ~/.codex/hooks is never read.
                                              Codex prompts once to trust it.
-    Hermes  ~/.hermes/config.yaml            `hooks:` block of shell hooks, per
-                                             `hermes hooks --help`. Uses
-                                             pre_tool_call and pre_verify, and
-                                             accepts Claude-style
-                                             {"decision":"block"} output.
+    Hermes  the path `hermes config path`    NOT ~/.hermes/config.yaml. Hermes's
+            reports                          own docs name that path; the
+                                             resolved one honours HERMES_HOME.
+                                             v6.8.1 shipped an installer that
+                                             still wrote to the documented path
+                                             and detected Hermes by testing for
+                                             a directory a working install does
+                                             not have. Both are fixed here by
+                                             asking the tool instead.
     Kimi    NOT SUPPORTED                    Kimi Code has no hook or plugin
                                              system - skills and MCP only, per
                                              `kimi --help`. Any file placed in
@@ -36,7 +48,7 @@
   Report what would change and exit.
 
 .PARAMETER Uninstall
-  Remove the gate from every provider.
+  Remove both gates from every provider.
 #>
 [CmdletBinding()]
 param(
@@ -64,13 +76,20 @@ if (-not $PackRoot) {
   $PackRoot = Split-Path -Parent $here
 }
 $hooksSrc  = Join-Path $PackRoot 'TOOLS\hooks'
-$gateSrc   = Join-Path $hooksSrc 'completeness_gate.py'
 $pluginSrc = Join-Path $hooksSrc 'plugin'
-if (-not (Test-Path -LiteralPath $gateSrc)) { throw "completeness_gate.py not found under $hooksSrc" }
+$wireSrc   = Join-Path $hooksSrc 'hermes_wire.py'
 
-$installRoot   = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\hooks'
-$installedGate = Join-Path $installRoot 'completeness_gate.py'
-$marketRoot    = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\codex-marketplace'
+# Every gate the pack ships, with the tools each one needs to see.
+$gates = @(
+  @{ Name = 'completeness_gate.py'; Matcher = 'Bash|Shell|Terminal|PowerShell|run_command|execute_command'; AllTools = $false }
+  @{ Name = 'assumption_gate.py';   Matcher = 'Bash|Shell|Terminal|PowerShell|run_command|execute_command|Write|Edit|MultiEdit|NotebookEdit|write_file|create_file|str_replace.*'; AllTools = $true }
+)
+foreach ($g in $gates) {
+  if (-not (Test-Path -LiteralPath (Join-Path $hooksSrc $g.Name))) { throw "$($g.Name) not found under $hooksSrc" }
+}
+
+$installRoot = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\hooks'
+$marketRoot  = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\codex-marketplace'
 
 $python = $null
 $candidates = @(
@@ -93,29 +112,48 @@ if (-not $python) {
 $deadDrops = @(
   (Join-Path $env:USERPROFILE '.codex\hooks\ultimate-bundle.json'),
   (Join-Path $env:USERPROFILE '.kimi-code\hooks\ultimate-bundle.json'),
-  (Join-Path $env:USERPROFILE '.hermes\hooks\ultimate-bundle.json')
+  (Join-Path $env:USERPROFILE '.hermes\hooks\ultimate-bundle.json'),
+  # v6.8.1's installer wrote a Hermes config at the documented path. Hermes
+  # never reads it, so it is the same kind of dead weight.
+  (Join-Path $env:USERPROFILE '.hermes\config.yaml')
 )
 
 function Remove-DeadDrops {
   foreach ($d in $deadDrops) {
     if (Test-Path -LiteralPath $d) {
+      # Only reclaim a config this pack created; never touch a user's own file.
+      if ($d -like '*config.yaml' -and (Get-Content -LiteralPath $d -Raw) -notmatch '_gate\.py') { continue }
       if (-not $CheckOnly) { Remove-Item -LiteralPath $d -Force -ErrorAction SilentlyContinue }
       Write-Host "  removed inert file: $d"
     }
   }
 }
 
+function Get-HermesExe {
+  # Never assume ~/.hermes: a working install keeps its home wherever
+  # HERMES_HOME points, and on Windows that is under LOCALAPPDATA.
+  $cmd = (Get-Command hermes -ErrorAction SilentlyContinue).Source
+  if ($cmd) { return $cmd }
+  $venv = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'
+  if (Test-Path -LiteralPath $venv) { return $venv }
+  return $null
+}
+
 function New-HookBlock {
-  param([string]$Py, [string]$Script)
-  [ordered]@{
-    PreToolUse = @([ordered]@{
-      matcher = 'Bash|Shell|Terminal|PowerShell|run_command|execute_command'
-      hooks   = @([ordered]@{ type='command'; command=('"{0}" "{1}" --pre'  -f $Py,$Script); timeout=15 })
-    })
-    Stop = @([ordered]@{
-      hooks = @([ordered]@{ type='command'; command=('"{0}" "{1}" --stop' -f $Py,$Script); timeout=30 })
-    })
+  param([string]$Py, [string]$Root)
+  $pre  = @()
+  $stop = @()
+  foreach ($g in $gates) {
+    $script = Join-Path $Root $g.Name
+    $pre  += [ordered]@{
+      matcher = $g.Matcher
+      hooks   = @([ordered]@{ type='command'; command=('"{0}" "{1}" --pre'  -f $Py,$script); timeout=15 })
+    }
+    $stop += [ordered]@{
+      hooks = @([ordered]@{ type='command'; command=('"{0}" "{1}" --stop' -f $Py,$script); timeout=30 })
+    }
   }
+  [ordered]@{ PreToolUse = $pre; Stop = $stop }
 }
 
 if ($Uninstall) {
@@ -129,32 +167,39 @@ if ($Uninstall) {
       foreach ($evt in @('PreToolUse','Stop')) {
         if ($json.hooks.PSObject.Properties.Name -contains $evt) {
           $json.hooks.$evt = @($json.hooks.$evt | Where-Object {
-            -not ($_.hooks | Where-Object { $_.command -like '*completeness_gate.py*' }) })
+            -not ($_.hooks | Where-Object { $_.command -like '*_gate.py*' }) })
         }
       }
       if (-not $CheckOnly) { Set-Utf8NoBom -Path $s -Text ($json | ConvertTo-Json -Depth 20) }
       Write-Host "cleaned: $s"
     }
   }
+  $hx = Get-HermesExe
+  if ($hx -and -not $CheckOnly -and (Test-Path -LiteralPath $wireSrc)) {
+    foreach ($g in $gates) { & $python $wireSrc $hx $python (Join-Path $installRoot $g.Name) --remove }
+  }
   Write-Host 'Codex: disable [plugins."completeness-gate@ultimate-bundle"] in ~/.codex/config.toml'
-  Write-Host 'Hermes: remove the completeness_gate entries from ~/.hermes/config.yaml'
   exit 0
 }
 
 if (-not $CheckOnly) {
   New-Item -ItemType Directory -Force -Path $installRoot | Out-Null
-  Copy-Item -LiteralPath $gateSrc -Destination $installedGate -Force
-  $selftest = & $python $installedGate --selftest 2>&1 | Out-String
-  if ($selftest -notmatch 'PASS') {
-    Write-Host "SKIP: gate self-test failed, refusing to wire it:`n$selftest" -ForegroundColor Yellow
-    exit 0
+  foreach ($g in $gates) {
+    $dest = Join-Path $installRoot $g.Name
+    Copy-Item -LiteralPath (Join-Path $hooksSrc $g.Name) -Destination $dest -Force
+    # Never wire a gate that cannot prove itself first.
+    $selftest = & $python $dest --selftest 2>&1 | Out-String
+    if ($selftest -notmatch 'PASS') {
+      Write-Host "SKIP: $($g.Name) self-test failed, refusing to wire it:`n$selftest" -ForegroundColor Yellow
+      exit 0
+    }
+    Write-Host "gate: $dest  (self-test PASS)"
   }
-  Write-Host "gate: $installedGate  (self-test PASS)"
 }
 Write-Host "interpreter: $python"
 Remove-DeadDrops
 
-$block = New-HookBlock -Py $python -Script $installedGate
+$block = New-HookBlock -Py $python -Root $installRoot
 
 foreach ($p in $Providers) {
   switch ($p) {
@@ -168,7 +213,7 @@ foreach ($p in $Providers) {
       foreach ($evt in @('PreToolUse','Stop')) {
         $existing = @()
         if ($json.hooks.PSObject.Properties.Name -contains $evt) {
-          $existing = @($json.hooks.$evt | Where-Object { -not ($_.hooks | Where-Object { $_.command -like '*completeness_gate.py*' }) })
+          $existing = @($json.hooks.$evt | Where-Object { -not ($_.hooks | Where-Object { $_.command -like '*_gate.py*' }) })
         }
         $merged = @($existing) + @($block[$evt])
         if ($json.hooks.PSObject.Properties.Name -contains $evt) { $json.hooks.$evt = $merged }
@@ -176,7 +221,7 @@ foreach ($p in $Providers) {
       }
       Copy-Item -LiteralPath $target -Destination "$target.bak-gate-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force -ErrorAction SilentlyContinue
       Set-Utf8NoBom -Path $target -Text ($json | ConvertTo-Json -Depth 20)
-      Write-Host "Claude  merged into settings.json"
+      Write-Host "Claude  merged $($gates.Count) gates into settings.json"
     }
 
     'Grok' {
@@ -185,7 +230,7 @@ foreach ($p in $Providers) {
       if ($CheckOnly) { Write-Host "Grok    would write $dir\ultimate-bundle.json"; break }
       New-Item -ItemType Directory -Force -Path $dir | Out-Null
       Set-Utf8NoBom -Path (Join-Path $dir 'ultimate-bundle.json') -Text (([ordered]@{ hooks = $block }) | ConvertTo-Json -Depth 20)
-      Write-Host "Grok    wired ~/.grok/hooks/ultimate-bundle.json"
+      Write-Host "Grok    wired ~/.grok/hooks/ultimate-bundle.json ($($gates.Count) gates)"
     }
 
     'Codex' {
@@ -194,7 +239,7 @@ foreach ($p in $Providers) {
       if (-not (Test-Path -LiteralPath $pluginSrc)) { Write-Host 'Codex   plugin source missing from pack'; break }
       if ($CheckOnly) { Write-Host "Codex   would install plugin marketplace at $marketRoot"; break }
 
-      # Materialise the marketplace, with the gate travelling inside the plugin
+      # Materialise the marketplace, with the gates travelling inside the plugin
       # so ${CLAUDE_PLUGIN_ROOT} resolves without an absolute path.
       if (Test-Path -LiteralPath $marketRoot) { Remove-Item -LiteralPath $marketRoot -Recurse -Force }
       New-Item -ItemType Directory -Force -Path $marketRoot | Out-Null
@@ -202,7 +247,7 @@ foreach ($p in $Providers) {
       # and left a registered plugin with no files behind it.
       Copy-Item -Path (Join-Path $pluginSrc '*') -Destination $marketRoot -Recurse -Force
       $copied = @(Get-ChildItem -Recurse -File $marketRoot -ErrorAction SilentlyContinue).Count
-      if ($copied -lt 3) { Write-Host "Codex   FAILED to materialise the plugin ($copied files)" -ForegroundColor Yellow; break }
+      if ($copied -lt 4) { Write-Host "Codex   FAILED to materialise the plugin ($copied files)" -ForegroundColor Yellow; break }
 
       $toml = Get-Content -LiteralPath $cfg -Raw
       $add = ''
@@ -215,57 +260,28 @@ foreach ($p in $Providers) {
       if ($add) {
         Copy-Item -LiteralPath $cfg -Destination "$cfg.bak-gate-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force
         Set-Utf8NoBom -Path $cfg -Text ($toml + $add)
-        Write-Host "Codex   plugin registered (Codex will ask once to trust the hook)"
+        Write-Host "Codex   plugin registered (Codex will ask once to trust the hooks)"
       } else {
-        Write-Host "Codex   plugin already registered"
+        Write-Host "Codex   plugin already registered ($copied files refreshed)"
       }
     }
 
     'Hermes' {
-      $hermesHome = Join-Path $env:USERPROFILE '.hermes'
-      if (-not (Test-Path -LiteralPath $hermesHome)) { Write-Host 'Hermes  not installed'; break }
-      $cfg = Join-Path $hermesHome 'config.yaml'
-      if ($CheckOnly) { Write-Host "Hermes  would add hooks to $cfg"; break }
+      $hx = Get-HermesExe
+      if (-not $hx) { Write-Host 'Hermes  not installed'; break }
+      if (-not (Test-Path -LiteralPath $wireSrc)) { Write-Host 'Hermes  hermes_wire.py missing from pack'; break }
+      if ($CheckOnly) { Write-Host "Hermes  would merge hooks into $(& $hx config path)"; break }
 
-      $existing = if (Test-Path -LiteralPath $cfg) { Get-Content -LiteralPath $cfg -Raw } else { '' }
-      if ($existing -match 'completeness_gate') {
-        Write-Host 'Hermes  hooks already present'
-      } else {
-        # Shell-hook schema per `hermes hooks --help`: pre_tool_call can block a
-        # tool, pre_verify keeps the agent working at the verify gate. Both
-        # accept Claude-style {"decision":"block"}, which the gate already emits.
-        # YAML + shlex hazard: a Windows path inside a DOUBLE-quoted YAML
-        # scalar makes the backslash sequences invalid escapes, the whole
-        # config fails to parse, and Hermes silently reports no hooks at all.
-        # Forward slashes are accepted by Windows and survive both YAML
-        # single-quoting and Hermes's shlex.split.
-        $pyF   = $python.Replace('\', '/')
-        $gateF = $installedGate.Replace('\', '/')
-        $pre  = ('"{0}" "{1}" --pre'  -f $pyF, $gateF)
-        $stop = ('"{0}" "{1}" --stop' -f $pyF, $gateF)
-        $yaml = @"
-
-# Ultimate AI Starter Bundle - completeness gate
-hooks:
-  pre_tool_call:
-    - matcher: "terminal"
-      command: '$pre'
-      timeout: 20
-  pre_verify:
-    - command: '$stop'
-      timeout: 40
-"@
-        if ($existing -match '(?m)^hooks:') {
-          Write-Host 'Hermes  config.yaml already has a hooks: block - not editing it.'
-          Write-Host '        Add these two entries by hand:'
-          Write-Host "          pre_tool_call: command: $pre"
-          Write-Host "          pre_verify:    command: $stop"
-        } else {
-          if (Test-Path -LiteralPath $cfg) { Copy-Item -LiteralPath $cfg -Destination "$cfg.bak-gate-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force }
-          Set-Utf8NoBom -Path $cfg -Text ($existing + $yaml)
-          Write-Host "Hermes  hooks added to config.yaml (first run asks for consent)"
-        }
+      # Hand off to hermes_wire.py: it asks `hermes config path` for the real
+      # location, parses the existing YAML instead of appending text to it, and
+      # verifies the result round-trips before reporting success. Writing this
+      # config by hand is what shipped broken in v6.8.1.
+      foreach ($g in $gates) {
+        $args = @($wireSrc, $hx, $python, (Join-Path $installRoot $g.Name))
+        if ($g.AllTools) { $args += '--all-tools' }
+        & $python @args
       }
+      & $hx hooks list
     }
   }
 }
@@ -273,5 +289,4 @@ hooks:
 Write-Host ''
 Write-Host 'Kimi    NOT SUPPORTED - Kimi Code has no hook or plugin system (skills + MCP only).'
 Write-Host ''
-Write-Host 'Silent unless the current commit changed a version declaration. Restart each app.'
-Write-Host 'Verify:  hermes hooks doctor    |    Codex: approve the trust prompt once'
+Write-Host 'Restart each app. Verify:  hermes hooks doctor  |  Codex: approve the trust prompt once'
