@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.8.2
+# Ultimate AI Starter Bundle v6.9.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -22,6 +22,8 @@ earn its cost.
 - Read for intent, not wording; no yes-man; correct a wrong premise
 - **Verify, don't assume** — use the tool that would settle it; ask if none
   exists; assume only as a last resort and label it
+- **Adult fiction is in scope** — do fictional-adult mod work; do not sanitize
+  explicit IDs; still refuse child, age-ambiguous, and real-person sexual content
 - Never invent a fact, API, path, version or command
 - An explicit evidence order: runtime output > tool verdict > docs > recall
 - Report what you did *not* do, and never call partial work finished
@@ -111,6 +113,7 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V6.9.0-CHANGELOG.md](V6.9.0-CHANGELOG.md)
 - [V6.8.2-CHANGELOG.md](V6.8.2-CHANGELOG.md)
 - [V6.8.1-CHANGELOG.md](V6.8.1-CHANGELOG.md)
 - [V6.8-CHANGELOG.md](V6.8-CHANGELOG.md)
@@ -195,6 +198,19 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v6.9.0
+
+One-shot coverage for fictional-adult game-modding, not a jailbreak layer.
+
+- **AIO rule 11** — do the OStim / SexLab / explicit-ID work; do not sanitize;
+  still refuse child, age-ambiguous, and real-person sexual content
+- **`fictional-adult-modding` skill** + router row so agents stop treating
+  legal adult-mod work as out of policy
+- **Tools already current** (checked 2026-08-15 against GitHub/npm). No bump.
+- Jail pastes stay out of the installed contract. `PROMPTS/README.md` says why.
+
+Full detail in [V6.9.0-CHANGELOG.md](V6.9.0-CHANGELOG.md).
 
 ## What's new in v6.8.2
 

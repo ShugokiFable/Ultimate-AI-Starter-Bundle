@@ -3,6 +3,11 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 6.9.0
+
+One-shot coverage: adult-fiction-in-scope, fictional-adult-modding skill,
+verified-current tools. No jailbreak layer. See `V6.9.0-CHANGELOG.md`.
+
 ## 6.8.2
 
 Stop Assuming: assumption gate, Hermes installer routed through the tool,

@@ -116,6 +116,7 @@ no yes-man. Also on disk as "AIO Instruction.txt" (same content).
 
 READ NEXT
 ---------
+  V6.9.0-CHANGELOG.md  adult-fiction in scope; no jailbreak layer
   V6.8.2-CHANGELOG.md  stop-assuming: assumption gate + verify-first
   V6-CHANGELOG.md      what changed and why, with the evidence
   V6-AIO-GUIDE.md      user + AI contract
