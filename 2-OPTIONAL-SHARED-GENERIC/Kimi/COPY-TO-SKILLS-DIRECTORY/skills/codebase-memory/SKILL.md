@@ -276,6 +276,11 @@ Run **one** UI host only - port 9749 has a single binder. MCP clients keep `args
 coexist with that host normally; they never need to own the dashboard themselves. Verified:
 the standalone host serves <http://127.0.0.1:9749/> while MCP tool calls keep working.
 
+**Cold-daemon stall:** if the daemon is down (port 9749 not listening), the next MCP spawn
+cold-boots it and the first turn can stall ~30s; the spawn logs
+`version_cohort.claimed_unheld` while waiting. Keep the host bat running at login to avoid
+the per-boot penalty. If a client reports cbm "unavailable", check the port first.
+
 Indexing is still manual either way: agents call `index_repository` when needed. The
 dashboard only visualizes what is already indexed; it never triggers an index.
 
