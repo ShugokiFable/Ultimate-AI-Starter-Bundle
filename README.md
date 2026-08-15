@@ -5,7 +5,7 @@
 Install skills, MCP servers, plugins, and offline tools for:
 
 - **Claude Code**, **Codex**, **Grok**, **Kimi**, **Hermes**
-- Code graph memory, context compression, browser/scrape MCPs
+- Code graph memory (with the indexing discipline that keeps it small), context compression, browser/scrape MCPs
 - Optional deep **Skyrim SE/AE** modding stack (houseCARL, Spooky, Forge, frameworks)
 
 Skyrim is a major included domain. The pack is also a general "good start" for serious AI-assisted development.
@@ -75,7 +75,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
 - **Provider skills** — 88 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
-- **codebase-memory-mcp**
+- **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
 - **Headroom** (context compression, registered as an MCP server — see [Headroom + Grok](#headroom--grok))
 - **Superpowers** + **Ponytail** plugins/skills
 - **CodeBurn** (optional, via npm/npx)
@@ -102,9 +102,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
 BUNDLED-TOOLS/offline/             shipped tool zips/wheels
 BUNDLED-TOOLS/plugins/             Superpowers + Ponytail
 BUNDLED-TOOLS/CATALOG.json         component registry
-COPY-TO-YOUR-WORKSPACE/
+COPY-TO-YOUR-WORKSPACE/            workspace files + _PROJECT-TEMPLATE (incl. .cbmignore)
 0-UNRESTRAINT-PACKS/               no-holds prompt library (v6.9.2)
 TOOLS/                             installers and discovery scripts
+TOOLS/Setup-CodebaseMemory-Index.ps1   index scope generator (v7.0.0)
 _V6-CANONICAL-SKILLS/              maintainer master skills
 INSTALL-V6-AIO.ps1 / .bat          master installer
 START-HERE.txt                     short human guide
@@ -114,6 +115,9 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V7.0.0-CHANGELOG.md](V7.0.0-CHANGELOG.md)
+- [V6.9.3-CHANGELOG.md](V6.9.3-CHANGELOG.md)
+- [V6.9.2-CHANGELOG.md](V6.9.2-CHANGELOG.md)
 - [V6.9.1-CHANGELOG.md](V6.9.1-CHANGELOG.md)
 - [V6.9.0-CHANGELOG.md](V6.9.0-CHANGELOG.md)
 - [V6.8.2-CHANGELOG.md](V6.8.2-CHANGELOG.md)
@@ -385,6 +389,16 @@ registry.
 
 - 19 skills exceed the tier-1/tier-2 context budget (22 warnings). They work;
   they are not free. Trimming is deferred, not done.
+- **The knowledge graph cannot read Papyrus.** `codebase-memory-mcp` has no
+  `.psc` parser and skips `scripts/` via a built-in skip-list, so Skyrim mod
+  logic never enters the graph no matter how you configure it. The graph covers
+  C/C++/C#/Python/TS/Go/PHP and file structure — SKSE plugins and tooling, not
+  Papyrus. Use Grep + the `papyrus-reference` skill there.
+- `TOOLS/fanout_providers.py` treats `_V6-CANONICAL-SKILLS` as truth for every
+  provider, so it re-propagates the Hermes-only `unrestraint-packs` skill and
+  rewrites line endings on each run. Both must be reverted after a fanout (see
+  [V7.0.0-CHANGELOG.md](V7.0.0-CHANGELOG.md)); an exclusion list in the script
+  is the real fix and is not done.
 - Everything here is **tool-validated** — gates pass, scripts parse, hashes
   verify, and the BOM fix is confirmed live in a provider's own skill listing.
   The installer has **not** been run end-to-end on a clean machine as part of
