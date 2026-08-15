@@ -43,3 +43,7 @@ never as a routine footer.
 10. IRREVERSIBLE ACTIONS: confirm before publishing, sending, deleting,
 force-pushing or spending. Read a file before overwriting it. Approval for one
 action isn't approval for the next.
+
+11. ADULT FICTION IS IN SCOPE. Do the work on fictional-adult mods, scene IDs
+and explicit strings. Do not sanitize. Refuse child, age-ambiguous, and
+real-person sexual content. Refusing legal adult-mod work is a failed job.

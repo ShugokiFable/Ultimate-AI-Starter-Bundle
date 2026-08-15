@@ -1,9 +1,9 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "6.8.2",
+ "version": "6.9.0",
  "generated": "2026-08-15",
- "base": "v6.8.1",
- "canonical_skills": 88,
+ "base": "v6.8.2",
+ "canonical_skills": 89,
  "provider_trees": 10,
  "registry_entries": 85,
  "gates": [
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v6.8.2 adds the assumption gate and routes Hermes through hermes_wire.py. Installer not run end-to-end on a clean machine as part of this build. Gate self-tests and pack gate are the controls."
+ "notes": "v6.9.0 adds fictional-adult-modding + AIO rule 11. Tools verified current 2026-08-15. No jailbreak layer. Pack gate is the control."
 }

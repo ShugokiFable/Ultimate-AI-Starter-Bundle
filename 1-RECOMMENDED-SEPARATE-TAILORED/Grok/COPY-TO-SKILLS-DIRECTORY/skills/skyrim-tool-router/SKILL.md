@@ -57,6 +57,7 @@ Optional process overlays (not Skyrim-specific): `using-superpowers`, `systemati
 | Biped slot / equip slot audit | `biped-slot-reference` | houseCARL |
 | Generated tool-output plugins (DynDOLOD, PG, …) | `tool-output-awareness` | before any patch from winners |
 | SexLab to OStim migration | `skyrim-sexlab-to-ostim-modernization` | plugin, Papyrus, FOMOD |
+| OStim / SexLab / revealing armor / SOS / explicit IDs | `fictional-adult-modding` | then the specialist row; do not sanitize |
 | Mantella configuration or source | `mantella-config` | Papyrus or voiced dialogue |
 | Installer | `skyrim-fomod-packaging` | ship gate; Forge FOMOD jobs when available |
 | Final release validation | `skyrim-ship-gate` | FOMOD or publishing |

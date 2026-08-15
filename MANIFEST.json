@@ -405,6 +405,11 @@
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
  },
  {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
+ },
+ {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
   "size": 7022,
   "sha256": "d0ac8360ed9d59121776ef95c84bcb38e9747de0d7ae7e227dca81e437593b9b"
@@ -2201,8 +2206,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -2918,6 +2923,11 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -4716,8 +4726,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -5418,6 +5428,11 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -7216,8 +7231,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -7918,6 +7933,11 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -9716,8 +9736,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -10423,6 +10443,11 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -12221,8 +12246,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -12928,6 +12953,11 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -14726,8 +14756,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -15443,6 +15473,11 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -17241,8 +17276,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -17943,6 +17978,11 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -19741,8 +19781,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -20443,6 +20483,11 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -22241,8 +22286,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -22948,6 +22993,11 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/finishing-a-development-branch/SKILL.md",
@@ -24746,8 +24796,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -25060,19 +25110,24 @@
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
  },
  {
+  "path": "3-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK/Other-Games-Modding-Skills-Mega-Pack-v2.1.0-MANUAL.zip",
+  "size": 137810,
+  "sha256": "8f127182fdc75f05d1643e1302f395112b55ebe67abb0f0b6bb4313e7037d2d2"
+ },
+ {
   "path": "3-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK/README-FIRST.md",
   "size": 284,
   "sha256": "fe8659270d10347882699f61ce5ae69ecc35facb8ceb9bcebe5dc91caf206eac"
  },
  {
   "path": "AIO Instruction.txt",
-  "size": 2472,
-  "sha256": "3bae9dbd0b7dd159f8b1865fec6ebf735c2913985f3b843367a8c6e78035b700"
+  "size": 2698,
+  "sha256": "c44a12a7a86c717a5c846dde9c839c583a558bc6e665183aa713c4705cb5a2d0"
  },
  {
   "path": "AIO-INSTRUCTION.txt",
-  "size": 2472,
-  "sha256": "3bae9dbd0b7dd159f8b1865fec6ebf735c2913985f3b843367a8c6e78035b700"
+  "size": 2698,
+  "sha256": "c44a12a7a86c717a5c846dde9c839c583a558bc6e665183aa713c4705cb5a2d0"
  },
  {
   "path": "BOOTSTRAP.txt",
@@ -26886,8 +26941,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 631,
-  "sha256": "4366ef06a8837f48464a51f906b996552d9b4e28750575773d318f3a50b16111"
+  "size": 787,
+  "sha256": "bdb4a29f8e13cd2dd89485424468e38d3be8c923de2f108f7d01eee9124ade41"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -26962,7 +27017,7 @@
  {
   "path": "INSTALL-V6-AIO.ps1",
   "size": 33503,
-  "sha256": "1f55fa8cdeb1a0a584ad9dde8f5c0236c240a7de7182da3c31e31fc75293d032"
+  "sha256": "779ef71ad8ffe9c4e47eb92fcaf171caadd331d5e0fc1761edaeaf98d93a2e10"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -26973,6 +27028,11 @@
   "path": "PROMPTS/AIO-INSTRUCTION.txt",
   "size": 2639,
   "sha256": "94616a5aed264539c95f33b5a074b8b550319f8fee7e0f585a02db30232d1639"
+ },
+ {
+  "path": "PROMPTS/README.md",
+  "size": 741,
+  "sha256": "c1902093f723e92db169ec8e4834c4b94be2306d1cb28f690aa391b7fe42d76b"
  },
  {
   "path": "PROMPTS/SKYRIM-MODERNIZATION-MASTER-PROMPT.md",
@@ -26996,8 +27056,8 @@
  },
  {
   "path": "README.md",
-  "size": 14384,
-  "sha256": "e0823b4640e076d3d88f39d9a124032f137aafb9272c2b883ce87a289d686570"
+  "size": 15176,
+  "sha256": "21a2c1308d2df0b737bab17ad66c70f295c319bd852c5ad9f03aaf89cde5e73f"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -27006,8 +27066,8 @@
  },
  {
   "path": "START-HERE.txt",
-  "size": 4491,
-  "sha256": "3869349ef7b4dc9c9387b009b8ee2cdb2b4b9c87066f4a18c8de979ff4ea6cfd"
+  "size": 4557,
+  "sha256": "9b7ad27ad6a23e083911b0a3a287c0823eb1e739bcd226d92081ed30a37e2081"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -27225,14 +27285,19 @@
   "sha256": "971512909bcfac60f21a9bc323b66fdb0b71b8a0ca872ff8fd82deea2e044543"
  },
  {
+  "path": "V6.9.0-CHANGELOG.md",
+  "size": 2369,
+  "sha256": "aac7738444065f8749b9ee4c99d8045a719e142de18ec15d1a79b17609bf1c26"
+ },
+ {
   "path": "VALIDATION.json",
-  "size": 592,
-  "sha256": "4e4302bdf4b6246e5edaf7a0421d509d82b7ee7ae6e3f2a4bc264cb7703cbebf"
+  "size": 531,
+  "sha256": "b9e108fce08da2e5afe3e0be6ea2c70c79121082736eea10f00604240d5dbd7b"
  },
  {
   "path": "VERSION.txt",
   "size": 33,
-  "sha256": "3d3cdbfa25286bf9a787c040bcc5a5376f010945192afede988d5135eee155a5"
+  "sha256": "8ceb6a4b7dca9c70cd6973b598303505757fe7d8fac5a9954d67e40f8d5385da"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -27628,6 +27693,11 @@
   "path": "_V6-CANONICAL-SKILLS/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
+ },
+ {
+  "path": "_V6-CANONICAL-SKILLS/fictional-adult-modding/SKILL.md",
+  "size": 1985,
+  "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
   "path": "_V6-CANONICAL-SKILLS/finishing-a-development-branch/SKILL.md",
@@ -29426,8 +29496,8 @@
  },
  {
   "path": "_V6-CANONICAL-SKILLS/skyrim-tool-router/SKILL.md",
-  "size": 6517,
-  "sha256": "b8adc5beaac6876f3a4067f818e3559a74d0045169a4f766333be562f7acc851"
+  "size": 6646,
+  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
  },
  {
   "path": "_V6-CANONICAL-SKILLS/skyrim-versioned-workspace/SKILL.md",
