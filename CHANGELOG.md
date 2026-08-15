@@ -3,6 +3,17 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.0.0
+
+Indexing discipline for codebase-memory-mcp. The `codebase-memory` skill now covers
+**how to index**, not just how to query: `.cbmignore` is case-sensitive, Papyrus is
+never parsed, versioned workspaces must resolve against `CURRENT.txt`, and the
+dashboard's NODES/EDGES tiles read 0 on a healthy index. Ships a `.cbmignore`
+template in the project template and `TOOLS/Setup-CodebaseMemory-Index.ps1` to
+generate correct scope, including the source-carrier exception. Rebuilt a real
+45-project index from ~570,000 nodes to 54,553 using exactly these rules.
+See `V7.0.0-CHANGELOG.md`.
+
 ## 6.9.3
 
 Hermes `unrestraint-packs` skill (routes to the 0-UNRESTRAINT-PACKS library) added to

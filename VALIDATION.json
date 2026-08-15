@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "6.9.3",
+ "version": "7.0.0",
  "generated": "2026-08-15",
- "base": "v6.9.2",
+ "base": "v6.9.3",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v6.9.2 adds 0-UNRESTRAINT-PACKS (operator kit + 4 upstream sources, 324 files) and V6.9.2 agent-config wiring. Tools verified current 2026-08-15. Pack gate is the control."
+ "notes": "v7.0.0 adds codebase-memory indexing discipline: rewritten codebase-memory skill (indexing half), .cbmignore project template, and TOOLS/Setup-CodebaseMemory-Index.ps1. Findings measured on a real 45-project index rebuilt from ~570,000 to 54,553 nodes; setup script dry-run across 38 projects reproduced all five source-carrier exceptions found by hand. Installer not run end-to-end on a clean machine. Pack gate is the control."
 }
