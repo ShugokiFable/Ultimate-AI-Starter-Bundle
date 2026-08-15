@@ -29,11 +29,17 @@
 
 .PARAMETER CheckOnly
   Report what would change and exit.
+
+.PARAMETER Refresh
+  Rewrite an existing entry so pins and timeouts stay current. Without this,
+  a server that is already declared is left alone - which is how a broken
+  unpinned npx cache survived an upgrade.
 #>
 [CmdletBinding()]
 param(
   [string[]]$Providers = @('Claude', 'Grok', 'Codex', 'Kimi', 'Hermes'),
-  [switch]$CheckOnly
+  [switch]$CheckOnly,
+  [switch]$Refresh
 )
 
 $ErrorActionPreference = 'Stop'
@@ -54,19 +60,22 @@ if (-not (Get-Command npx -ErrorAction SilentlyContinue)) {
   exit 0
 }
 
-# Pinned majors, not "@latest": a server that silently changes its tool surface
-# mid-session is worse than one that is a point release behind.
+# Exact versions, not "@latest" and not a bare major. A major-only pin still
+# lets npx reuse a broken cache (observed: context7@4 missing
+# @modelcontextprotocol/core/dist/internal.mjs; sequential-thinking unpinned
+# missing zod). A server that silently changes its tool surface mid-session is
+# worse than one a point release behind.
 $servers = @(
   @{
     id   = 'context7'
-    args = @('-y', '@upstash/context7-mcp@4')
+    args = @('-y', '@upstash/context7-mcp@4.0.2')
     note = 'live library/API docs - stops invented signatures'
     env  = @{}
     key  = 'CONTEXT7_API_KEY'   # optional: higher rate limits
   },
   @{
     id   = 'sequential-thinking'
-    args = @('-y', '@modelcontextprotocol/server-sequential-thinking')
+    args = @('-y', '@modelcontextprotocol/server-sequential-thinking@2026.7.4')
     note = 'explicit problem decomposition'
     env  = @{}
     key  = $null
@@ -101,7 +110,10 @@ function Add-ToJsonMcp {
   }
   $added = @()
   foreach ($s in $servers) {
-    if ($json.$Section.PSObject.Properties.Name -contains $s.id) { continue }
+    if ($json.$Section.PSObject.Properties.Name -contains $s.id) {
+      if (-not $Refresh) { continue }
+      $json.$Section.PSObject.Properties.Remove($s.id)
+    }
     $entry = [ordered]@{ command = 'npx'; args = $s.args }
     # $env:$name is not valid PowerShell; resolve the name dynamically.
     $keyValue = if ($s.key) { [Environment]::GetEnvironmentVariable($s.key) } else { $null }
@@ -158,10 +170,30 @@ foreach ($p in $Providers) {
     $text = if (Test-Path -LiteralPath $t.Path) { Get-Content -LiteralPath $t.Path -Raw } else { '' }
     $append = ''
     $added = @()
+    # Grok also reads ~/.claude.json. A second copy of the same server is two
+    # handshakes for one name, which is how "MCP is slow to start" starts.
+    $claudeJson = Join-Path $env:USERPROFILE '.claude.json'
+    $claudeHas = @()
+    if ($p -eq 'Grok' -and (Test-Path -LiteralPath $claudeJson)) {
+      try {
+        $cj = Get-Content -LiteralPath $claudeJson -Raw | ConvertFrom-Json
+        if ($cj.mcpServers) { $claudeHas = @($cj.mcpServers.PSObject.Properties.Name) }
+      } catch { }
+    }
+
     foreach ($s in $servers) {
-      if ($text -match [regex]::Escape("[$($t.Section).$($s.id)]")) { continue }
+      if ($p -eq 'Grok' -and $claudeHas -contains $s.id) {
+        Write-Host ("{0,-7} inherits {1} from ~/.claude.json (not duplicated)" -f $p, $s.id)
+        continue
+      }
+      $already = $text -match [regex]::Escape("[$($t.Section).$($s.id)]")
+      if ($already) {
+        Write-Host ("{0,-7} {1} already in {2} (not duplicated)" -f $p, $s.id, $t.Path)
+        continue
+      }
       $argList = ($s.args | ForEach-Object { '"' + $_ + '"' }) -join ', '
-      $append += "`r`n# $($s.note)`r`n[$($t.Section).$($s.id)]`r`ncommand = `"npx`"`r`nargs = [$argList]`r`n"
+      $timeout = if ($p -eq 'Grok') { "startup_timeout_sec = 90`r`n" } else { '' }
+      $append += "`r`n# $($s.note)`r`n[$($t.Section).$($s.id)]`r`ncommand = `"npx`"`r`nargs = [$argList]`r`n$timeout"
       $added += $s.id
     }
     if ($added.Count -and -not $CheckOnly) {

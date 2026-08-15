@@ -1,5 +1,5 @@
 {
-  "description": "Completeness gate - refuse a half-finished release.",
+  "description": "Completeness and assumption gates - refuse a half-finished release and an unverified path.",
   "hooks": {
     "PreToolUse": [
       {
@@ -8,6 +8,21 @@
           {
             "type": "command",
             "command": "python \"${CLAUDE_PLUGIN_ROOT}/hooks/completeness_gate.py\" --pre",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/hooks/assumption_gate.py\" --pre",
+            "timeout": 15
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit|write_file|create_file|str_replace.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/hooks/assumption_gate.py\" --pre",
             "timeout": 15
           }
         ]
@@ -19,6 +34,11 @@
           {
             "type": "command",
             "command": "python \"${CLAUDE_PLUGIN_ROOT}/hooks/completeness_gate.py\" --stop",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/hooks/assumption_gate.py\" --stop",
             "timeout": 30
           }
         ]

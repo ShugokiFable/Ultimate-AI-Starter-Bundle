@@ -1,15 +1,17 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "6.0.0",
- "generated": "2026-08-14",
- "base": "v5.2.5",
+ "version": "6.8.2",
+ "generated": "2026-08-15",
+ "base": "v6.8.1",
  "canonical_skills": 88,
  "provider_trees": 10,
  "registry_entries": 85,
  "gates": [
   "TESTS/Test-V6-Pack.ps1",
-  "TOOLS/audit_skills.py"
+  "TOOLS/audit_skills.py",
+  "TOOLS/hooks/completeness_gate.py --selftest",
+  "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "Installer not run end-to-end on a clean machine as part of this build. BOM fix confirmed live: all four provider homes audit 0 BOM / 0 unparseable."
+ "notes": "v6.8.2 adds the assumption gate and routes Hermes through hermes_wire.py. Installer not run end-to-end on a clean machine as part of this build. Gate self-tests and pack gate are the controls."
 }

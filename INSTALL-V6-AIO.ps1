@@ -637,20 +637,39 @@ $state = @{
 $state | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stateDir 'install-state.json') -Encoding UTF8
 $log | Set-Content (Join-Path $stateDir 'install-log.txt') -Encoding UTF8
 
-# Completeness gate: refuses a push, and refuses to end a turn, while a release
-# is internally inconsistent. Every provider's prose already says 'be thorough';
-# this is the layer that can actually refuse.
+# Completeness + assumption gates. Every provider's prose already says 'be
+# thorough' and 'do not assume'; these are the layers that can actually refuse.
 if (-not $ToolsOnly) {
   $gateInstaller = Join-Path $PackRoot 'TOOLS\Install-Completeness-Gate.ps1'
   if (Test-Path -LiteralPath $gateInstaller) {
     try {
       & powershell -NoProfile -ExecutionPolicy Bypass -File $gateInstaller -Providers $Providers
-      L 'completeness gate installed'
+      L 'completeness + assumption gates installed'
     } catch {
-      Write-V5Warn ('Completeness gate: ' + $_.Exception.Message)
+      Write-V5Warn ('Gates: ' + $_.Exception.Message)
     }
   } else {
     Write-V5Warn 'TOOLS\Install-Completeness-Gate.ps1 missing from pack'
+  }
+
+  $mcpReason = Join-Path $PackRoot 'TOOLS\Add-Reasoning-MCPs.ps1'
+  if (Test-Path -LiteralPath $mcpReason) {
+    try {
+      & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpReason -Providers $Providers
+      L 'reasoning MCP servers wired'
+    } catch {
+      Write-V5Warn ('Reasoning MCPs: ' + $_.Exception.Message)
+    }
+  }
+
+  $toolbelt = Join-Path $PackRoot 'TOOLS\Build-Toolbelt.ps1'
+  if (Test-Path -LiteralPath $toolbelt) {
+    try {
+      & powershell -NoProfile -ExecutionPolicy Bypass -File $toolbelt
+      L 'toolbelt inventory written'
+    } catch {
+      Write-V5Warn ('Toolbelt: ' + $_.Exception.Message)
+    }
   }
 }
 
@@ -666,8 +685,9 @@ Write-Host '  2. Grok: run /mcp and confirm housecarl, codebase-memory-mcp, head
 Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANCE path.'
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
-Write-Host '  7. Paste AIO-INSTRUCTION.txt into each AI custom-instructions box.'
 Write-Host '  6. Optional Forge: set SKYRIM_FORGE_ROOT or skill INSTALLATION.json'
+Write-Host '  7. Paste AIO-INSTRUCTION.txt into each AI custom-instructions box.'
+Write-Host '  8. Codex: approve the one-time plugin trust prompt. Hermes: hermes --accept-hooks once.'
 Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'
 Write-Host 'Missing tools: run TOOLS\Ensure-Tools.ps1 or INSTALL-V6-AIO.ps1 - do not invent paths.'

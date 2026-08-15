@@ -20,6 +20,13 @@ def main():
     total = 0
     for dp, dirs, fs in os.walk(root):
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+        rel_dir = os.path.relpath(dp, root).replace('\\', '/')
+        # Offline assets are the zip/whl files in this folder. Extracted
+        # copies (same name, no extension) are local cache.
+        if rel_dir == 'BUNDLED-TOOLS/offline':
+            dirs[:] = []
+        if rel_dir == '3-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK':
+            dirs[:] = [d for d in dirs if not d.startswith('Other-Games-Modding-Skills-Mega-Pack-v2.1.0')]
         for f in sorted(fs):
             if f in SKIP_NAMES:
                 continue

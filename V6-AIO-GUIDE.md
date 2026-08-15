@@ -65,6 +65,20 @@ Env vars (user scope): `HOUSECARL_MCP`, `HouseCarl__Mo2InstanceDir`, `SKYRIM_MO2
 houseCARL still needs an MO2-shaped tree. Setup builds `%LOCALAPPDATA%\houseCARL-Shim`.
 Refresh after LO changes: `Setup-HouseCarl.ps1 -RefreshOnly`.
 
+## Gates (v6.8.2)
+
+```powershell
+.\TOOLS\Install-Completeness-Gate.ps1
+python TOOLS\hooks\completeness_gate.py --selftest
+python TOOLS\hooks\assumption_gate.py --selftest
+.\TOOLS\Build-Toolbelt.ps1
+Get-Content $env:LOCALAPPDATA\Skyrim-AI-V5\TOOLBELT.md
+```
+
+The completeness gate refuses a half-finished release. The assumption gate
+refuses a path nobody verified. Both fail open. Hermes is wired by asking
+`hermes config path`, not by writing the documented `~/.hermes/config.yaml`.
+
 ## Verification
 
 ```powershell

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "ultimate-bundle",
-  "description": "Ultimate AI Starter Bundle - controls that refuse incomplete work.",
+  "description": "Ultimate AI Starter Bundle - controls that refuse incomplete or assumed work.",
   "owner": {
     "name": "Ultimate AI Starter Bundle",
     "url": "https://github.com/ShugokiFable/Ultimate-AI-Starter-Bundle"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "completeness-gate",
-      "description": "Refuses a push, and refuses to end a turn, while a release is internally inconsistent.",
+      "description": "Refuses a half-finished release and an unverified path.",
       "source": "./completeness-gate",
       "category": "productivity"
     }

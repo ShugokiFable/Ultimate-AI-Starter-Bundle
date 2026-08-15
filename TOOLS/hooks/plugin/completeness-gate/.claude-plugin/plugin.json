@@ -1,7 +1,7 @@
 {
   "name": "completeness-gate",
-  "version": "6.8.1",
-  "description": "Refuses a push, and refuses to end a turn, while a release is internally inconsistent: a version bumped with no changelog entry, a README still declaring the old version, uncommitted source left behind.",
+  "version": "6.8.2",
+  "description": "Refuses a half-finished release and an unverified path. Completeness: version bumped with no changelog or a stale README. Assumption: a drive that does not exist, another user's home, or unread remote content piped into a shell.",
   "author": {
     "name": "Ultimate AI Starter Bundle"
   },
