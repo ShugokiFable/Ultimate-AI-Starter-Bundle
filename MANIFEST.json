@@ -20,6 +20,16 @@
   "sha256": "af5612ebb7194e97941db876245832fb6dd5287bab60138e43e2ca3fdacb62f8"
  },
  {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
+ },
+ {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
   "size": 4887,
   "sha256": "5ebd9c4e11be2b99d4f459ac06103d5fd1f37b46ab64898a9d9113f1f078d657"
@@ -2206,8 +2216,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -2538,6 +2548,16 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-PROVIDER-HOME/AGENTS.md",
   "size": 5535,
   "sha256": "0a071b12c7c9c0d0245c6516d7b06f9bbbafbb51f03ee4f05fc0b1858c1dfe5f"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -4726,8 +4746,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -5043,6 +5063,16 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-MAP.md",
   "size": 1121,
   "sha256": "f87dc4ee196d3d8323620fb8481a79e296f5b982277e2669332a190bc21e41ab"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -7231,8 +7261,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -7548,6 +7578,16 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-MAP.md",
   "size": 1131,
   "sha256": "ba04bb540aeba1ae8bcf083810bc4dee2007b2e5c3280fae4842e8acb8ec1957"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -9736,8 +9776,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -10058,6 +10098,16 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-PROVIDER-HOME/AGENTS.md",
   "size": 5404,
   "sha256": "d837a454da0c7e29725fd99936fbf274534ee686df4dcb1ba1cf1d4f4c42b543"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -12246,8 +12296,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -12568,6 +12618,16 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-PROVIDER-HOME/CLAUDE.md",
   "size": 5457,
   "sha256": "924eecd037118ac44581200209a376e51ed61c384ab4bb28d4b270ed6fb3c394"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -14756,8 +14816,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -15088,6 +15148,16 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-PROVIDER-HOME/AGENTS.md",
   "size": 5532,
   "sha256": "37f4c34ab22c00b7398cd84d464639273471a59ac085cfaa0efe4899b5c95dc4"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -17276,8 +17346,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -17593,6 +17663,16 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-MAP.md",
   "size": 917,
   "sha256": "64139a4dba219929ea733da9fee6dae8837c33cab0cd4a1c5acfa34b001c2738"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -19781,8 +19861,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -20098,6 +20178,16 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-MAP.md",
   "size": 923,
   "sha256": "f7dacb82aa5e9a4b9a1086485a6a21fd6109e4ac790fa30f01bde5722e38bbbc"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -22286,8 +22376,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -22608,6 +22698,16 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-PROVIDER-HOME/AGENTS.md",
   "size": 5401,
   "sha256": "6408e782c6cca5efca606e2baba15f2446438825427e68e43e22c02a193bdc31"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
@@ -24796,8 +24896,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -26941,8 +27041,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 787,
-  "sha256": "bdb4a29f8e13cd2dd89485424468e38d3be8c923de2f108f7d01eee9124ade41"
+  "size": 913,
+  "sha256": "02725326b452422f3329dc02c1cc1ca4527db17b2c4d59a46c60e95d58d4f379"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -27017,7 +27117,7 @@
  {
   "path": "INSTALL-V6-AIO.ps1",
   "size": 33503,
-  "sha256": "779ef71ad8ffe9c4e47eb92fcaf171caadd331d5e0fc1761edaeaf98d93a2e10"
+  "sha256": "44a728d2294237d4fbc65450a467a70182e9144f8a8e9498197e1590d7fd1e3b"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -27031,8 +27131,8 @@
  },
  {
   "path": "PROMPTS/README.md",
-  "size": 741,
-  "sha256": "c1902093f723e92db169ec8e4834c4b94be2306d1cb28f690aa391b7fe42d76b"
+  "size": 900,
+  "sha256": "6440b967e2ee8eb6e3edbdcc8e2083e4d511a7658eec103fc5b9e60c6c51f044"
  },
  {
   "path": "PROMPTS/SKYRIM-MODERNIZATION-MASTER-PROMPT.md",
@@ -27056,8 +27156,8 @@
  },
  {
   "path": "README.md",
-  "size": 15176,
-  "sha256": "21a2c1308d2df0b737bab17ad66c70f295c319bd852c5ad9f03aaf89cde5e73f"
+  "size": 15461,
+  "sha256": "656747372da99b2b074f82db3212e0ad11c7cfac77edb177bc83bb995c9fc519"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -27066,8 +27166,8 @@
  },
  {
   "path": "START-HERE.txt",
-  "size": 4557,
-  "sha256": "9b7ad27ad6a23e083911b0a3a287c0823eb1e739bcd226d92081ed30a37e2081"
+  "size": 4627,
+  "sha256": "b1c2fd10cd90cc62d8acb4d7d18c946fb11445484252f3d692b1c1fbbc6c047f"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -27290,14 +27390,19 @@
   "sha256": "aac7738444065f8749b9ee4c99d8045a719e142de18ec15d1a79b17609bf1c26"
  },
  {
+  "path": "V6.9.1-CHANGELOG.md",
+  "size": 1259,
+  "sha256": "55dac9d2992ad3c969c89ba42cfdd72945bebaa88417e4c892fbf2f8a09635aa"
+ },
+ {
   "path": "VALIDATION.json",
   "size": 531,
-  "sha256": "b9e108fce08da2e5afe3e0be6ea2c70c79121082736eea10f00604240d5dbd7b"
+  "sha256": "38438d6c3b9321c9bb8ba5797638091defbc1bdd2eb4fda851e556d5e110b794"
  },
  {
   "path": "VERSION.txt",
   "size": 33,
-  "sha256": "8ceb6a4b7dca9c70cd6973b598303505757fe7d8fac5a9954d67e40f8d5385da"
+  "sha256": "bd02c947fb9ebc0362c86f1504f70c31be42c5fb3a058a49f6c4e97e04ad7168"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -27308,6 +27413,16 @@
   "path": "WINDOWS-PATH-MAP.md",
   "size": 2860,
   "sha256": "aefbb74ce8a679618abb4bb0a2b86d5b634a101d1bb294cf20da7711bed7f78c"
+ },
+ {
+  "path": "_V6-CANONICAL-SKILLS/adult-character-sheet/SKILL.md",
+  "size": 1723,
+  "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
+ },
+ {
+  "path": "_V6-CANONICAL-SKILLS/adult-image-caption/SKILL.md",
+  "size": 1711,
+  "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
   "path": "_V6-CANONICAL-SKILLS/ai-tooling-stack/SKILL.md",
@@ -29496,8 +29611,8 @@
  },
  {
   "path": "_V6-CANONICAL-SKILLS/skyrim-tool-router/SKILL.md",
-  "size": 6646,
-  "sha256": "f5bb5b7089afbfbceacf339dfb6846edcb7cdb6004f3ff5fb957456bf1f65b6a"
+  "size": 6874,
+  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
  },
  {
   "path": "_V6-CANONICAL-SKILLS/skyrim-versioned-workspace/SKILL.md",

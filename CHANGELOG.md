@@ -3,6 +3,11 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 6.9.1
+
+Caption + sheet skills from the operator's Fun stuff kit. Jailbreak
+repos not imported. See `V6.9.1-CHANGELOG.md`.
+
 ## 6.9.0
 
 One-shot coverage: adult-fiction-in-scope, fictional-adult-modding skill,

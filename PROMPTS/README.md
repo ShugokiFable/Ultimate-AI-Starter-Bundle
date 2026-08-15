@@ -10,6 +10,9 @@ of the real contract wastes tokens and fights the format lock. Adult-fiction
 game-modding is already in scope (rule 11). Child / age-ambiguous / real-person
 sexual content is still refused.
 
-SillyTavern / card / caption kits live in the operator's own prompt folder,
-not in this pack. Do not merge those jails into Claude, Grok, Codex, Kimi, or
-Hermes system instructions.
+Caption and sheet **technique** from that kit now lives in the skills
+`adult-image-caption` and `adult-character-sheet`. The jail headers, site
+lists, and performer aliases were not copied.
+
+SillyTavern presets stay in the operator's own prompt folder. Do not merge
+those jails into Claude, Grok, Codex, Kimi, or Hermes system instructions.

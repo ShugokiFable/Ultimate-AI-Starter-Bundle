@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.9.0
+# Ultimate AI Starter Bundle v6.9.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -113,6 +113,7 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V6.9.1-CHANGELOG.md](V6.9.1-CHANGELOG.md)
 - [V6.9.0-CHANGELOG.md](V6.9.0-CHANGELOG.md)
 - [V6.8.2-CHANGELOG.md](V6.8.2-CHANGELOG.md)
 - [V6.8.1-CHANGELOG.md](V6.8.1-CHANGELOG.md)
@@ -198,6 +199,15 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v6.9.1
+
+Useful Fun stuff techniques, not the jail collections:
+
+- `adult-image-caption` and `adult-character-sheet`
+- Jailbreak GitHub kits were **not** imported
+
+Full detail in [V6.9.1-CHANGELOG.md](V6.9.1-CHANGELOG.md).
 
 ## What's new in v6.9.0
 
