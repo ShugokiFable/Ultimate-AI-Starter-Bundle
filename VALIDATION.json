@@ -1,27 +1,15 @@
-﻿{
-    "smoke":  {
-                  "parse_scripts":  "PASS",
-                  "vortex_shim":  "PASS",
-                  "skills_only_grok":  "PASS"
-              },
-    "github_update":  "TOOLS/Update-From-GitHub.ps1",
-    "bundled_offline":  [
-                            "houseCARL-1.9.0.zip",
-                            "spookys-automod-toolkit-v1.11.2.zip",
-                            "codebase-memory-mcp-windows-amd64.zip",
-                            "headroom_ai-0.33.0-cp310-abi3-win_amd64.whl",
-                            "superpowers-v6.2.0.zip",
-                            "ponytail-v4.8.4.zip"
-                        ],
-    "version":  "5.0.0",
-    "modes":  [
-                  "BundledFirst",
-                  "OnlineLatest",
-                  "BundledOnly"
-              ],
-    "housecarl_setup":  "TOOLS/Setup-HouseCarl.ps1",
-    "pack":  "Skyrim-AI-FINAL-MANUAL-INSTALL",
-    "aio":  true,
-    "installer":  "INSTALL-V5-AIO.ps1",
-    "ensure":  "TOOLS/Ensure-Tools.ps1"
+{
+ "pack": "Ultimate AI Starter Bundle",
+ "version": "6.0.0",
+ "generated": "2026-08-14",
+ "base": "v5.2.5",
+ "canonical_skills": 88,
+ "provider_trees": 10,
+ "registry_entries": 85,
+ "gates": [
+  "TESTS/Test-V6-Pack.ps1",
+  "TOOLS/audit_skills.py"
+ ],
+ "runtime_status": "tool-validated",
+ "notes": "Installer not run end-to-end on a clean machine as part of this build. BOM fix confirmed live: all four provider homes audit 0 BOM / 0 unparseable."
 }

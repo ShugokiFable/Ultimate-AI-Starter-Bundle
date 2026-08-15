@@ -96,15 +96,3 @@ action=ABORTED
 Disable a failing optional feature as a reversible mitigation, then perform
 module-ownership and isolation testing. Do not publish a culprit list based only
 on mod category.
-
-## Hermes execution adapter
-
-- Load this skill on demand through progressive disclosure; do not preload the entire Skyrim library.
-- Treat installed provider skills as curated, read-only workflows. Write proposed improvements to `MEMORY/CANDIDATES.md` instead of silently rewriting them.
-- Keep project instructions in workspace `AGENTS.md`. Keep identity and tone in `SOUL.md`.
-- Resolve the active `HERMES_HOME` or profile before reading or writing provider memory.
-- Store only evidence-scored lessons in the Skyrim registry; do not contaminate native Hermes memory with unverified completion claims.
-
-### Skill-specific provider control
-
-Pin the runtime matrix, build cleanly, inspect dependencies and exports, and provide a rollback test.

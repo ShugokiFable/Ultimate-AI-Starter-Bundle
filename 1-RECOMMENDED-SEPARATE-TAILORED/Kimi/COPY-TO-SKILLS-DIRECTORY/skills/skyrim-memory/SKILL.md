@@ -1,11 +1,9 @@
-﻿---
+---
 name: skyrim-memory
-description: Consult the Kimi Code Skyrim evidence registry before substantial mod work so previously observed failures are
-  not repeated.
-type: prompt
-whenToUse: Before substantial Skyrim creation, repair, debugging, packaging, publishing, plugin, Papyrus, runtime-patching,
+description: Consult the Claude Code Skyrim evidence registry before substantial mod work so previously observed failures
+  are not repeated.
+when_to_use: Before substantial Skyrim creation, repair, debugging, packaging, publishing, plugin, Papyrus, runtime-patching,
   follower, OStim, or DLL work
-disableModelInvocation: false
 metadata:
   version: 5.0.0
   provider: kimi
@@ -50,7 +48,7 @@ runtime behavior.
 ## Registry scope
 
 - `shared-cross-provider` entries apply to every supported AI application.
-- `provider-specific` entries apply only to Kimi.
+- `provider-specific` entries apply only to Claude.
 - Do not reinterpret another provider's entry as a failure of this provider.
 
 ## Project-local learning

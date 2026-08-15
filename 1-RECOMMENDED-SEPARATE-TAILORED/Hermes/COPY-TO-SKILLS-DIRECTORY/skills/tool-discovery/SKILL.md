@@ -1,4 +1,4 @@
-﻿---
+---
 name: tool-discovery
 description: Resolve optional Skyrim and AI tooling on the current machine without assuming drive letters or usernames. Use at session start, when a tool path is unknown, or before recommending install.
 metadata:
@@ -179,8 +179,8 @@ New users and missing-tool recovery:
 
 ```powershell
 # Pack root
-.\INSTALL-V5-AIO.ps1
-.\INSTALL-V5-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-V6-AIO.ps1
+.\INSTALL-V6-AIO.ps1 -Mode OnlineLatest
 .\TOOLS\Ensure-Tools.ps1
 .\TOOLS\Update-From-GitHub.ps1
 ```

@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v5.2.2
+# Ultimate AI Starter Bundle v6.0.0
 
 ## Fixed
 

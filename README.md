@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v5.2.0
+# Ultimate AI Starter Bundle v6.0.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -36,10 +36,10 @@ Same content is also stored as `AIO Instruction.txt`.
 **Windows**
 
 1. Clone or download this repo (or unzip the release).
-2. Double-click `INSTALL-V5-AIO.bat`, or run:
+2. Double-click `INSTALL-V6-AIO.bat`, or run:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V5-AIO.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
 ```
 
 3. Fully restart your AI app(s).
@@ -47,12 +47,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V5-AIO.ps1
 ### Common options
 
 ```powershell
-.\INSTALL-V5-AIO.ps1 -Providers Grok,Claude
-.\INSTALL-V5-AIO.ps1 -Mode OnlineLatest
-.\INSTALL-V5-AIO.ps1 -WithExtras
-.\INSTALL-V5-AIO.ps1 -SkillsOnly
-.\INSTALL-V5-AIO.ps1 -ToolsOnly
-.\INSTALL-V5-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
+.\INSTALL-V6-AIO.ps1 -Providers Grok,Claude
+.\INSTALL-V6-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-V6-AIO.ps1 -WithExtras
+.\INSTALL-V6-AIO.ps1 -SkillsOnly
+.\INSTALL-V6-AIO.ps1 -ToolsOnly
+.\INSTALL-V6-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
 ```
 
 | Mode | Behavior |
@@ -63,7 +63,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V5-AIO.ps1
 
 ## What gets installed
 
-- **Provider skills** — ~82 skills per AI (Claude, Codex, Grok, Kimi, Hermes)
+- **Provider skills** — 88 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp**
@@ -95,25 +95,25 @@ BUNDLED-TOOLS/plugins/             Superpowers + Ponytail
 BUNDLED-TOOLS/CATALOG.json         component registry
 COPY-TO-YOUR-WORKSPACE/
 TOOLS/                             installers and discovery scripts
-_V5-CANONICAL-SKILLS/              maintainer master skills
-INSTALL-V5-AIO.ps1 / .bat          master installer
+_V6-CANONICAL-SKILLS/              maintainer master skills
+INSTALL-V6-AIO.ps1 / .bat          master installer
 START-HERE.txt                     short human guide
 ```
 
 ## Docs
 
 - [START-HERE.txt](START-HERE.txt)
-- [V5-AIO-GUIDE.md](V5-AIO-GUIDE.md)
-- [V5-CHANGELOG.md](V5-CHANGELOG.md)
-- [V5-INTEGRATION-AUDIT.md](V5-INTEGRATION-AUDIT.md)
+- [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V6-CHANGELOG.md](V6-CHANGELOG.md)
 - [BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md](BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md)
 - [WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md](WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md)
+- Historical: [V5-CHANGELOG.md](V5-CHANGELOG.md), [V5-INTEGRATION-AUDIT.md](V5-INTEGRATION-AUDIT.md), [RELEASE-NOTES-v5.2.2.md](RELEASE-NOTES-v5.2.2.md), [V4.3-CLAUDE-REVIEW-AUDIT.md](V4.3-CLAUDE-REVIEW-AUDIT.md), [V4.2-LOG-REGRESSION-AUDIT.md](V4.2-LOG-REGRESSION-AUDIT.md)
 
 ## AI contract
 
 Skills teach **portable discovery**. Paths are resolved from env vars, `LOCALAPPDATA`, and `PATH` — never hardcoded drive letters or usernames.
 
-If a tool is missing, the AI should recommend `INSTALL-V5-AIO.ps1`, `Ensure-Tools.ps1`, or `Update-From-GitHub.ps1` — not invent paths or fake MCP results.
+If a tool is missing, the AI should recommend `INSTALL-V6-AIO.ps1`, `Ensure-Tools.ps1`, or `Update-From-GitHub.ps1` — not invent paths or fake MCP results.
 
 ## Third-party components
 
@@ -184,19 +184,62 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
 
+## What's new in v6.0.0
+
+v6 is a **correctness release**. Full detail in [V6-CHANGELOG.md](V6-CHANGELOG.md).
+
+- **7 skills per install had no usable description.** A UTF-8 BOM before the
+  opening `---` of a `SKILL.md` stops a strict YAML reader from ever opening the
+  frontmatter, so the `description` is lost — and the description is the only
+  thing an agent matches on when deciding whether to load a skill. The skill is
+  installed, listed, and invisible. Two of the seven were `skyrim-memory` and
+  `skyrim-tool-router`, the skills the instructions say to load *first*.
+- **The inverse rule, found while fixing that one.** A `.ps1` **needs** its BOM:
+  PowerShell 5.1 decodes a BOM-less file as ANSI, and one em dash then breaks
+  the parse. v6 classifies by execution target — skills are normalised, Windows
+  scripts are copied byte-for-byte.
+- **Canonical rebuilt from a working install**, which had drifted ahead of the
+  bundle: 3 missing validator scripts, corrected `codebase-memory` guidance, and
+  6 uncaptured extras skills. All 10 provider trees are now *generated* from it.
+- **Evidence registry 70 → 85 entries**, each tied to a real failure.
+- **New skill `mcp-protocol-2026`** for the stateless 2026-07-28 MCP revision.
+- **Superpowers 6.3.0**, **Ponytail 4.9.0**; offline assets re-fetched and
+  hash-verified.
+- **Grok + Headroom:** MCP only by default. Do **not** wrap subscription Grok
+  through Headroom (the v5.0.2 bug: model "unknown" / 401). Repair with
+  `.\TOOLS\Ensure-Headroom-Grok.ps1 -Repair`.
+- **Extras:** `.\INSTALL-V6-AIO.ps1 -WithExtras` (claude-mem is Claude Code only
+  and needs Bun).
+
+## Gates (new in v6)
+
+```powershell
+python TOOLS\audit_skills.py <skills-dir>
+powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V6-Pack.ps1
+python TOOLS\install_live_skills.py _V6-CANONICAL-SKILLS --check
+```
+
+v5.2.5's registry had *already warned* that BOM/encoding drift breaks
+valid-looking files, and v5.2.5 shipped BOMs anyway. A warning in a document is
+not a control; these are. `Test-V6-Pack.ps1` checks every skill tree, parses
+every shipped `.ps1`, verifies offline-asset hashes, and sanity-checks the
+registry.
+
+## Known limitations
+
+- 19 skills exceed the tier-1/tier-2 context budget (22 warnings). They work;
+  they are not free. Trimming is deferred, not done.
+- Everything here is **tool-validated** — gates pass, scripts parse, hashes
+  verify, and the BOM fix is confirmed live in a provider's own skill listing.
+  The installer has **not** been run end-to-end on a clean machine as part of
+  this build.
+
 ## Version
 
-**v5.1.0** — Headroom/Grok wrap made auth aware; extra skills and MCP servers added.
-Based on `Skyrim-AI-FINAL-MANUAL-INSTALL-v5.0.0`.
+**v6.0.0** — 2026-08-14. Based on v5.2.5.
 
 ## License
 
-Pack documentation and original installer scripts are provided as-is for personal and community use. Third-party tools inside `BUNDLED-TOOLS` keep their own licenses (see notices file).
-
-## Current release: v5.2.2
-
-- **Windows console-flash fix:** stale `headroom-*` scheduled tasks are removed or disabled during normal setup, including missing `ensure-headroom.cmd` argument targets.
-
-- **Grok + Headroom:** MCP only by default. Do **not** wrap subscription Grok through Headroom (that was the v5.0.2 bug: model "unknown" / 401).
-- **Repair:** `.\TOOLS\Ensure-Headroom-Grok.ps1 -Repair`
-- **Extras:** `.\INSTALL-V5-AIO.ps1 -WithExtras` (claude-mem is Claude Code only and needs Bun)
+Pack documentation and original installer scripts are provided as-is for
+personal and community use. Third-party tools inside `BUNDLED-TOOLS` keep their
+own licenses (see [BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md](BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md)).

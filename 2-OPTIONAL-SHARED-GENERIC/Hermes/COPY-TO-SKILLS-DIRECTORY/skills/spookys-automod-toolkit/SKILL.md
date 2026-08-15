@@ -1,4 +1,4 @@
-﻿---
+---
 name: spookys-automod-toolkit
 description: Drive Spooky's AutoMod Toolkit CLI for Skyrim ESP, Papyrus, MCM, NIF, BSA/BA2, audio, and SKSE project workflows. Resolve toolkit root portably; recommend install when missing. Use with module skills skyrim-esp, skyrim-papyrus, skyrim-mcm, skyrim-nif, skyrim-archive, skyrim-audio, skyrim-skse.
 metadata:

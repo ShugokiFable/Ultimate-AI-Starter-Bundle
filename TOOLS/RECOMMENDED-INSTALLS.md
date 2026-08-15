@@ -1,9 +1,9 @@
-﻿# Recommended installs (V5 AIO)
+# Recommended installs (V5 AIO)
 
 ## Easiest
 
 ```powershell
-.\INSTALL-V5-AIO.bat
+.\INSTALL-V6-AIO.bat
 ```
 
 ## What you get

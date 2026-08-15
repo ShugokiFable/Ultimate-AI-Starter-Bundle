@@ -1,6 +1,6 @@
-﻿---
+---
 name: housecarl
-description: Work with Skyrim Special Edition load-order records through the houseCARL MCP server â€” set or switch the MO2 instance, inspect active plugins and conflict trees, read records, query across plugins, author reviewable patch ESPs, create or remove records, and edit leveled lists or composed structs. Also the routing skill for the bundled Skyrim helpers (mutagen-reference, papyrus-reference, skypatcher-authoring, spid-authoring, kid-authoring). Use whenever the user mentions houseCARL, an MO2 modlist, plugins, load order, conflicts, ESP patches, overrides, a record type (ARMO/WEAP/NPC_/LVLI/MGEF/â€¦), leveled lists, keywords, or a no-ESP runtime distribution â€” even when the task looks like a single edit, load this first to pick the right tool and read before you write.
+description: Work with Skyrim Special Edition load-order records through the houseCARL MCP server — set or switch the MO2 instance, inspect active plugins and conflict trees, read records, query across plugins, author reviewable patch ESPs, create or remove records, and edit leveled lists or composed structs. Also the routing skill for the bundled Skyrim helpers (mutagen-reference, papyrus-reference, skypatcher-authoring, spid-authoring, kid-authoring). Use whenever the user mentions houseCARL, an MO2 modlist, plugins, load order, conflicts, ESP patches, overrides, a record type (ARMO/WEAP/NPC_/LVLI/MGEF/…), leveled lists, keywords, or a no-ESP runtime distribution — even when the task looks like a single edit, load this first to pick the right tool and read before you write.
 ---
 
 # houseCARL
@@ -20,7 +20,7 @@ Use this skill for data-layer Skyrim Special Edition modding through the configu
    - `housecarl_set_field` for a single scalar or simple-collection edit.
    - `housecarl_bulk_apply` for several edits in one patch, dict merges, leveled-list entries, effects, or other composed structs.
    - `housecarl_create_record` for a new top-level record (it needs an EditorID).
-   - `housecarl_remove_record` only to drop a record or override from a houseCARL-owned patch â€” never from a source mod.
+   - `housecarl_remove_record` only to drop a record or override from a houseCARL-owned patch — never from a source mod.
 4. Accumulate related edits into one patch with `into=<patch filename>` after the first write returns a patch name.
 5. Prefer runtime, no-ESP INI systems when they fit the user's intent:
    - `skypatcher-authoring` for SkyPatcher record edits.
@@ -30,13 +30,13 @@ Use this skill for data-layer Skyrim Special Edition modding through the configu
 
 ## FormID notes
 
-houseCARL tools use `XXXXXX:Plugin.esp` FormIDs â€” six hex digits, then the filename of the master that defines the record. SkyPatcher, SPID, and KID each use their own FormID syntax; consult their skills before writing INI lines.
+houseCARL tools use `XXXXXX:Plugin.esp` FormIDs — six hex digits, then the filename of the master that defines the record. SkyPatcher, SPID, and KID each use their own FormID syntax; consult their skills before writing INI lines.
 
 ## Safety notes
 
 - houseCARL patches are reviewable output mods. Tell the user which patch was created or extended.
 - Don't invent schemas or field paths. If `mutagen-reference` has no entry for a type, say so directly rather than guessing.
-- Don't reach for record edits when the user explicitly wants a no-ESP / runtime distribution file â€” use SkyPatcher, SPID, or KID instead.
+- Don't reach for record edits when the user explicitly wants a no-ESP / runtime distribution file — use SkyPatcher, SPID, or KID instead.
 
 ---
 
@@ -45,8 +45,8 @@ houseCARL tools use `XXXXXX:Plugin.esp` FormIDs â€” six hex digits, then th
 This skill originally targets Claude Code + houseCARL MCP. On **any** AI:
 
 1. Load `tool-discovery` and confirm `housecarl-mcp` is FOUND **and** MCP tools are actually listed in the session.
-2. If the binary exists but MCP tools are absent â†’ tell the user to register MCP for **this** app and fully restart.
-3. If neither binary nor MCP â†’ recommend:
+2. If the binary exists but MCP tools are absent → tell the user to register MCP for **this** app and fully restart.
+3. If neither binary nor MCP → recommend:
 
 ```text
 INSTALL houseCARL:
@@ -62,7 +62,7 @@ INSTALL houseCARL:
 ```
 
 4. FormIDs for houseCARL tools: `XXXXXX:Plugin.esp` (six hex + defining master filename).
-5. SkyPatcher / SPID / KID FormID dialects differ â€” use their authoring skills.
+5. SkyPatcher / SPID / KID FormID dialects differ — use their authoring skills.
 6. Always load `tool-output-awareness` before patch writes from conflict winners.
 7. Prefer runtime INI frameworks when the user wants no-ESP distribution.
 8. Codex users: a `codex\housecarl` stub may exist in the product zip; MCP is still required.
@@ -144,8 +144,8 @@ New users and missing-tool recovery:
 
 ```powershell
 # Pack root
-.\INSTALL-V5-AIO.ps1
-.\INSTALL-V5-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-V6-AIO.ps1
+.\INSTALL-V6-AIO.ps1 -Mode OnlineLatest
 .\TOOLS\Ensure-Tools.ps1
 .\TOOLS\Update-From-GitHub.ps1
 ```

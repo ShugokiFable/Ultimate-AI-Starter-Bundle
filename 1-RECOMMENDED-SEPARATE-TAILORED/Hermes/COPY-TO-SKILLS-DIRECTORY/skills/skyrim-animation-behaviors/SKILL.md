@@ -73,15 +73,3 @@ scripts\audit_missing_animations.py --log <APoseFix-log> --root <deployed-mod-ro
 
 The script checks loose files and optional supplied archive-inventory text. It
 does not parse BSA archives and must label archive coverage accordingly.
-
-## Hermes execution adapter
-
-- Load this skill on demand through progressive disclosure; do not preload the entire Skyrim library.
-- Treat installed provider skills as curated, read-only workflows. Write proposed improvements to `MEMORY/CANDIDATES.md` instead of silently rewriting them.
-- Keep project instructions in workspace `AGENTS.md`. Keep identity and tone in `SOUL.md`.
-- Resolve the active `HERMES_HOME` or profile before reading or writing provider memory.
-- Store only evidence-scored lessons in the Skyrim registry; do not contaminate native Hermes memory with unverified completion claims.
-
-### Skill-specific provider control
-
-Treat generated behavior output as a build artifact and record the exact Nemesis, Pandora, BFCO, or OAR matrix used.

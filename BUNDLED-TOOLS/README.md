@@ -7,7 +7,7 @@ Offline snapshots + GitHub update path for Skyrim AI V5 AIO.
 Double-click or run from pack root:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V5-AIO.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
 ```
 
 ## Layout

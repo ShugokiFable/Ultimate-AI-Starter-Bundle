@@ -1,0 +1,450 @@
+{
+  "_comment": "New evidence-backed entries added in v6. ARMA-RACE-001 and VAL-REACH-001 were MOVED to v6-registry-corrections.json on 2026-08-14 after a runtime contradiction; that file is authoritative for them. Apply additions first, then corrections.",
+  "entries": [
+    {
+      "id": "SKILL-BOM-001",
+      "title": "UTF-8 BOM in SKILL.md silently removes a skill's description and breaks discovery",
+      "tags": [
+        "skills",
+        "encoding",
+        "packaging",
+        "all-models"
+      ],
+      "symptom": "A skill is installed and listed, but the agent never loads it and its description renders as an empty '---' in the skill listing.",
+      "root_cause": "The file begins with a UTF-8 BOM, so a strict YAML frontmatter reader sees \\ufeff--- instead of --- , never opens the block, and the description is lost. The description is the only signal an agent uses to decide whether to load a skill, so a BOM makes the skill effectively invisible while looking perfectly fine on disk.",
+      "prevention": [
+        "Write every SKILL.md as UTF-8 WITHOUT BOM and LF endings.",
+        "Never generate skill files with PowerShell 5.1 Out-File/Set-Content defaults (see PS-ENC-001).",
+        "Run the shipped skill audit after any packaging step and fail the build on an unparseable frontmatter."
+      ],
+      "required_validation": [
+        "Strict regex ^---\\n must match at byte 0 of every SKILL.md",
+        "A description key must be present inside the opened block"
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-08-14 audit: v5.2.5 shipped 5 BOM'd canonical skills; all four live provider installs carried 7, including skyrim-memory and skyrim-tool-router - the two skills the workspace instructions mandate loading FIRST. Confirmed independently by the harness skill listing rendering those exact 7 as '---'."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Registry entry ENC-001 already warned that BOM breaks valid-looking files; the pack still shipped BOMs. Automate the check - a written warning is not a control."
+    },
+    {
+      "id": "PLUG-HEDR-003",
+      "title": "TES4 HEDR numRecords counts records PLUS groups",
+      "tags": [
+        "plugin",
+        "header",
+        "validation"
+      ],
+      "symptom": "A hand-built or binary-patched plugin fails a header audit with 'HEDR numRecords N != records+groups M', and the instinct is to loosen the validator.",
+      "root_cause": "numRecords is the count of records plus GRUP groups, not records alone.",
+      "prevention": [
+        "When writing a plugin programmatically, set numRecords = records + groups.",
+        "Verify empirically against installed masters before 'fixing' a validator that disagrees."
+      ],
+      "required_validation": [
+        "Compare against a vanilla master: Skyrim.esm HEDR 920181 = 869687 records + 50494 groups"
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "Measured across 45 deployed plugins: 44 match records+groups, 1 degenerate 0/0/0, zero matched records-only. Re-confirmed 2026-08-14: a plugin writer emitting the record count alone produced 15/11 where both source plugins stored 19/23."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Any ESP writer must compute records+groups when rewriting the header."
+    },
+    {
+      "id": "FRAME-SPID-KEY-002",
+      "title": "SPID keywords belong in field 2; a keyword in field 3 can discard the whole line",
+      "tags": [
+        "spid",
+        "framework",
+        "distribution"
+      ],
+      "symptom": "A SPID line never applies. po3_SpellPerkItemDistributor.log shows 'Filter (X) SKIP - invalid formtype (KYWD)'.",
+      "root_cause": "The grammar is Form|StringFilters|FormFilters|LevelFilters|Traits|Index/Count|Chance. Keywords are StringFilters (field 2). Field 3 accepts Faction/Race/Class/CombatStyle/Outfit/Location forms only. SPID drops the rejected filter and continues, so if the keyword was the line's only positive filter, nothing valid remains and the entry is discarded. Negative keywords are dropped silently, quietly widening every surviving line.",
+      "prevention": [
+        "Put keywords in field 2 only.",
+        "Read 'Registered N/M Packages' in the log PROCESSING section - it is printed before any NPC loads, so it separates 'entry rejected' from 'no matching NPC yet'.",
+        "Do not use -*wildcard: SPID strips the - and exact-matches the remainder."
+      ],
+      "required_validation": [
+        "grep -c 'invalid formtype (KYWD)' the SPID log and group by ini",
+        "Compare Registered counts against Factions/Perks/Outfits, which are normally near 100%"
+      ],
+      "evidence_status": "runtime-evidenced",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-08-13, Vivid Routines 2.19: 94 of 150 'Package =' lines never registered, and a quest blacklist built across v2.10-v2.19 had been inert the entire time."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Validate SPID field placement before shipping; confirm against the runtime log, not the ini alone."
+    },
+    {
+      "id": "OAR-OVERLAY-001",
+      "title": "An OAR user.json replaces config.json wholesale, so overlays silently revert upstream fixes",
+      "tags": [
+        "oar",
+        "animation",
+        "overlay",
+        "maintenance"
+      ],
+      "symptom": "After an upstream animation pack updates, conditions that the pack fixed behave as though they were never fixed - e.g. a heavy shield fails hero conditions and the block animation looks missing.",
+      "root_cause": "user.json does not merge with config.json; it replaces it. An overlay generated against an older version of the pack pins the old conditions forever, reverting anything upstream changed.",
+      "prevention": [
+        "Generate overlays as [your gate] + upstream config.json conditions[1:], and regenerate on every upstream update.",
+        "Diff overlay conditions[1:] against the upstream config.json to detect drift.",
+        "Consider dropping the overlay entirely if upstream gained its own gating mechanism."
+      ],
+      "required_validation": [
+        "Every overlay body matches the current upstream conditions",
+        "Your own gate is unchanged across the regeneration"
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-07-23: 236 overlays re-synced; 18 shield folders tested ArmorLight twice instead of ArmorLight OR ArmorHeavy, and 28 parry folders had lost isPerfParryingCMF added by a later upstream version."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Treat any user.json overlay as a maintenance obligation tied to the upstream version."
+    },
+    {
+      "id": "MCM-GLOB-001",
+      "title": "A per-frame globals-to-members copy makes your INI and FOMOD preset inert",
+      "tags": [
+        "skse",
+        "mcm",
+        "ini",
+        "native"
+      ],
+      "symptom": "Users report that INI edits are invisible in the MCM and have no effect, while MCM changes apply instantly and persist.",
+      "root_cause": "The plugin exposes settings as both an INI and an MCM backed by ESP GLOB records, and its per-frame update copies globals into members. Whenever the ESP is active the INI is dead, including the preset chosen in the FOMOD. Re-reading the INI on menu close does not help - the next frame overwrites it.",
+      "prevention": [
+        "Push INI -> globals once at SKSE::MessagingInterface::kDataLoaded, which fires before a save is deserialized.",
+        "Do NOT also refresh inside the bind step: at bind time globals still hold compiled-in defaults and would discard the INI values."
+      ],
+      "required_validation": [
+        "New game honours the INI/FOMOD preset",
+        "Loading an existing save restores that save's configured values",
+        "MCM edits still apply instantly"
+      ],
+      "evidence_status": "user-confirmed-runtime",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "NPC Pathing NG 2.4.8: symptom user-reported, fix shipped as a kDataLoaded seed."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Audit any dual INI+MCM plugin for a per-frame globals copy before trusting its INI."
+    },
+    {
+      "id": "RM-SLIDER-001",
+      "title": "RaceMenu slider families are additive channels, not alternative dialects",
+      "tags": [
+        "racemenu",
+        "facegen",
+        "preset"
+      ],
+      "symptom": "A generated face reads flat and over-exaggerated, worst on whichever axis the most slider families cover.",
+      "root_cause": "EFM, CME, NSK and SPG/ECE register separate morph targets and RaceMenu applies every registered morph. Writing the same anatomical measurement into several families applies the displacement two to four times.",
+      "prevention": [
+        "Pick ONE family per measurement when writing a jslot.",
+        "A family's own fan-out (EFM_Nose_Width / _Wing_Width) is fine - that is different anatomy."
+      ],
+      "required_validation": [
+        "Confirm the target TRI actually carries the morph names of the family you chose"
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-08-06 verified on install: EFM registers EFM_Jaw_Width; the vanilla FemaleHeadChargen.tri that CME_JawWidth drives carries JawNarrow/JawWide and zero EFM_/CME_/NSK_/SPG_ prefixed names. Two disjoint targets, both applied."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Any tool writing jslot sliders must choose one family per measurement."
+    },
+    {
+      "id": "RM-JSLOT-001",
+      "title": "A jslot carries no overlay data, and LoadExternalCharacterEx cannot set hair colour",
+      "tags": [
+        "racemenu",
+        "follower",
+        "preset",
+        "papyrus"
+      ],
+      "symptom": "Body tattoos never transfer to a generated follower, and follower hair colour stays the template default. Reports look incoherent because a full application restart 'fixes' the colour while an in-session save/reload does not.",
+      "root_cause": "A jslot's top-level keys are actor, bodyMorphs, faceTextures, headParts, modNames, mods, morphs, tintInfo, transforms, version - there is no overlay data, so no preset-side fix can transfer overlays. Separately, LoadCharacterPresetEx is the only CharGen loader taking a ColorForm; LoadExternalCharacterEx has no such parameter, so HCLF is never written. In-session the engine builds the head from ActorBase HCLF; after a restart it reads the copied FaceGeom NIF, which has the colour baked in.",
+      "prevention": [
+        "Transfer overlays explicitly via NiOverride layer copying; never expect a preset to carry them.",
+        "Set hair colour with ColorForm.SetColor + ActorBase.SetHairColor before the loader call.",
+        "Any symptom that survives save/reload but dies on a full restart is this cache split."
+      ],
+      "required_validation": [
+        "Verify hair colour after a full application restart, not only after save/reload"
+      ],
+      "evidence_status": "user-confirmed-runtime",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "Build a Follower 2.5.0-2.5.8 never wrote follower hair colour; fixed 2.5.9 on 2026-08-05."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Distinguish the two head-build paths before diagnosing any appearance bug."
+    },
+    {
+      "id": "LOC-FULL-001",
+      "title": "Localised masters store FULL as a string ID, so text matching finds zero vanilla NPCs",
+      "tags": [
+        "plugin",
+        "localisation",
+        "registry",
+        "coverage"
+      ],
+      "symptom": "A name-driven registry or patch claims broad coverage but contains no vanilla NPCs at all, leaving an invisible vanilla-sized hole.",
+      "root_cause": "Skyrim.esm and the DLC are localised: FULL is a 4-byte string ID resolved from .STRINGS, not text. Any tool matching on FULL text silently drops every master-file NPC.",
+      "prevention": [
+        "Resolve vanilla NPCs by FormID + EditorID (EditorID is not localised).",
+        "Alternatively read a plain-ESP override such as USSEP, which does carry readable FULL.",
+        "Never treat 'present in the registry' as 'covered'."
+      ],
+      "required_validation": [
+        "Count assignments whose defining plugin is a master; if zero, the matcher is name-based"
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-07-28: a Mantella bio assignment registry had 0 of 745 assignments from any master; all 745 were mod-added NPCs across 143 plugins."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Audit any name-matched dataset for master-file coverage before relying on it."
+    },
+    {
+      "id": "PS-ENC-001",
+      "title": "PowerShell 5.1 Get-Content/Set-Content double-encodes UTF-8 into mojibake",
+      "tags": [
+        "encoding",
+        "tooling",
+        "windows",
+        "all-models"
+      ],
+      "symptom": "Em dashes and other non-ASCII turn into sequences like a-euro-quote. Nothing fails to build; the corruption only shows at runtime, to the user.",
+      "root_cause": "Get-Content reads a BOM-less UTF-8 file using the system ANSI code page, decoding each multi-byte character into several Latin-1 characters. Set-Content -Encoding utf8 then writes those back as UTF-8, double-encoding them.",
+      "prevention": [
+        "Edit source files with byte-safe tools (Edit/Write, sed, perl, python), not PowerShell 5.1 text cmdlets.",
+        "If PowerShell must rewrite a file, set an explicit UTF-8 encoding on BOTH read and write.",
+        "Repair existing damage by reversing the transform, not by hand-patching strings."
+      ],
+      "required_validation": [
+        "Scan generated text files for mojibake signatures before shipping",
+        "Note that Python's cp1252 codec rejects 0x81, 0x8D, 0x8F, 0x90, 0x9D, which .NET maps to control characters - a reverse table needs those five"
+      ],
+      "evidence_status": "user-confirmed-runtime",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-07-29: corrupted 29 lines of a XAML file and shipped to the user. The same root cause produced the mojibake still present in the v5.2.5 housecarl skill description."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Packaging scripts must not round-trip skill or source text through PowerShell 5.1 text cmdlets."
+    },
+    {
+      "id": "DEP-HASH-001",
+      "title": "Hash-verify a binary before attributing a regression to its version number",
+      "tags": [
+        "native",
+        "release",
+        "process"
+      ],
+      "symptom": "A user reports a regression 'introduced in version X', and effort goes into diffing source between releases.",
+      "root_cause": "Consecutive releases can ship a byte-identical binary. If the DLL did not change, no behaviour change can originate in native code, and the real cause is elsewhere (config, load order, another mod).",
+      "prevention": [
+        "Compare the shipped binary hashes across the two versions before any source archaeology.",
+        "If identical, redirect the investigation to configuration and environment."
+      ],
+      "required_validation": [
+        "sha256 of the binary in each release archive"
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "Three consecutive releases shipped a hash-identical DLL, ruling out a claimed native regression."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Cheapest possible first step on any 'version X broke it' report."
+    },
+    {
+      "id": "PS-BOM-001",
+      "title": "A .ps1 needs its BOM as much as a SKILL.md needs to not have one",
+      "tags": [
+        "encoding",
+        "powershell",
+        "windows",
+        "packaging",
+        "all-models"
+      ],
+      "symptom": "A PowerShell script that parsed fine suddenly fails with 'The string is missing the terminator' or 'Missing closing }' after a packaging or normalisation pass, at a line that looks completely ordinary.",
+      "root_cause": "Windows PowerShell 5.1 decodes a BOM-less file using the system ANSI code page. A single non-ASCII character - an em dash is the usual one - is stored as multiple UTF-8 bytes, and under CP1252 one of those bytes decodes to a quote character. That stray quote closes a string early and the parse collapses several lines later. The rule is the exact INVERSE of the skill rule: SKILL.md must have NO BOM (a BOM stops the YAML frontmatter opening, losing the description), while a .ps1 must HAVE a BOM unless it is pure ASCII.",
+      "prevention": [
+        "Treat .ps1/.psm1/.psd1/.bat/.cmd as byte-verbatim in any packaging step: never strip the BOM, never rewrite line endings (.bat wants CRLF).",
+        "If a script must be BOM-less, keep it strictly ASCII.",
+        "Never apply one blanket encoding policy to a tree containing both skills and Windows scripts."
+      ],
+      "required_validation": [
+        "Parse every shipped .ps1 with [System.Management.Automation.Language.Parser]::ParseFile after packaging",
+        "Flag any BOM-less script containing bytes > 127"
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-08-14: a v6 packaging pass rewrote the pack's scripts as BOM-less LF UTF-8. Update-From-GitHub.ps1 went from 0 to 5 parse errors; the only non-ASCII character in it was one em dash on line 49, and the reported failure was on line 64. Restoring the BOM restored a clean parse across all 64 scripts."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Packaging tools must classify files by execution target, not by 'is it text'."
+    },
+    {
+      "id": "SKILL-LINK-001",
+      "title": "A dangling junction silently replaces a skill with nothing",
+      "tags": [
+        "skills",
+        "windows",
+        "install",
+        "all-models"
+      ],
+      "symptom": "A skill directory is listed by the provider and appears installed, but the agent behaves as though the skill does not exist. Directory listings show it; every read of it fails.",
+      "root_cause": "The entry is a Windows junction (or symlink) pointing at a target that no longer exists - typically a shared cross-tool skills directory that was moved or never created. The link still appears in a directory listing, so counts look right, while every read through it fails. Tooling makes this worse: Python treats a junction as a directory rather than a symlink, so an ordinary recursive copy or backup recurses into the dead link and aborts, and symlinks=True does not prevent it.",
+      "prevention": [
+        "Install provider skills as real files in the provider's own home; do not point them at a shared cross-tool directory.",
+        "Installers must detect reparse points before walking or backing up a skills tree, and clear a DANGLING link (removing the link, never a live target) before writing.",
+        "Compare the count of skills that actually READ against the count that merely LIST."
+      ],
+      "required_validation": [
+        "Enumerate reparse points under each provider skills directory and resolve each target",
+        "An audit that opens every SKILL.md, rather than one that only lists directories"
+      ],
+      "evidence_status": "tool-validated",
+      "sources": [
+        {
+          "provider": "claude",
+          "note": "2026-08-14: .grok\\skills\\skyrim-memory was a junction to %USERPROFILE%\\.agents\\skills\\skyrim-memory, a directory that did not exist. Grok therefore had no skyrim-memory at all - the skill its own instructions require loading first - while still reporting 87 installed skills. Replaced with real files; Grok now audits 88/88 clean."
+        }
+      ],
+      "provider_pack": "shared",
+      "scope": "shared-cross-provider",
+      "applies_to": [
+        "Claude",
+        "Codex",
+        "Grok",
+        "Kimi",
+        "Hermes"
+      ],
+      "provider_control": "Provider-native skills belong in the provider's own home; the pack's own rule against cross-tool shared skill directories exists for this reason."
+    }
+  ]
+}

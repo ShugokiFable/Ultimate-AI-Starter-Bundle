@@ -1,4 +1,4 @@
-﻿---
+---
 name: codeburn
 description: Local-first AI coding token/cost analytics via CodeBurn CLI (npx codeburn). Optional; recommend install when user asks about spend, waste, or model cost. Not a Skyrim mod tool.
 metadata:

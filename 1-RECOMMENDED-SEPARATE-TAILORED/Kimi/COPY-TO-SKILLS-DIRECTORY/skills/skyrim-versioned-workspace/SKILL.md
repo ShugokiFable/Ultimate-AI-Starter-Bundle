@@ -13,10 +13,7 @@ metadata:
   base_library: Skyrim-Agent-Skills-v6
   error_registry_revision: 4.3.0
   final_pack_version: 4.3.0
-type: prompt
-whenToUse: Mandatory workspace ownership and version-snapshot workflow for Skyrim mod creation or editing. Use before the
-  first write so agents do not overwrite deployed files or duplicate another agent's project.
-disableModelInvocation: false
+when_to_use: Use for mandatory workspace ownership and version-snapshot workflow for skyrim mod creation or editing.
 ---
 
 # Versioned Skyrim workspace
@@ -101,13 +98,13 @@ automatically. Every other application must call it explicitly before the action
 Report the workspace root, project root, parent version, active version, copied
 file count, changelog status, build status, final package hash, and remaining risks.
 
-## Kimi Code execution adapter
+## Claude Code execution adapter
 
-- Use `explore` for read-only mapping and `plan` for architecture before dispatching a writing `coder`.
-- Every sub-agent has isolated context. Pass exact paths, requirements, constraints, and evidence in each delegation.
-- Avoid parallel `coder` agents on the same plugin, FOMOD, generated config, or tightly coupled source tree.
-- Use sub-agents only when independence justifies their separate token cost.
-- Persist a Markdown handoff before starting a fresh session or compacting a long one.
+- Keep `CLAUDE.md` concise and use this skill for procedural detail.
+- Load only the skills needed for the current milestone because invoked skill content remains in context.
+- Use high or xhigh effort for risky architecture, plugins, DLLs, and hostile review.
+- Before compaction or a usage boundary, persist exact state, commands, uncommitted changes, and remaining validation.
+- Treat auto memory as candidate learning, not verified truth, until it passes the memory-promotion protocol.
 
 ### Skill-specific provider control
 

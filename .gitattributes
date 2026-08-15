@@ -1,0 +1,10 @@
+# Byte fidelity is the point of this release.
+#
+# v6 exists because encoding damage shipped silently: a UTF-8 BOM made 7 skills
+# undiscoverable, and stripping a BOM from a .ps1 broke PowerShell 5.1's parse.
+# Git's autocrlf would rewrite line endings on checkout, so a clone would not be
+# byte-identical to the released pack and MANIFEST.json hashes would not verify.
+#
+# Disable all normalisation. Every file is stored and checked out exactly as
+# built.
+* -text

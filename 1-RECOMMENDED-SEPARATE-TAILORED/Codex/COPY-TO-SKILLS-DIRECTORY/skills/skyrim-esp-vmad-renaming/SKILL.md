@@ -13,6 +13,9 @@ metadata:
   base_library: Skyrim-Agent-Skills-v6
   error_registry_revision: 4.3.0
   final_pack_version: 4.3.0
+when_to_use: Use for perform a narrowly scoped rename of script, property, or string data inside skyrim plugin vmad while
+  preserving binary structure.
+effort: high
 ---
 
 # VMAD renaming
@@ -55,13 +58,13 @@ Use this hierarchy for version-sensitive facts:
 
 Do not substitute memory, an old example, or a plausible token. Record the evidence path or URL in `VALIDATION.md`.
 
-## Codex execution adapter
+## Claude Code execution adapter
 
-- Follow the active `AGENTS.md` instruction chain before this skill.
-- Use a written plan for difficult or high-risk work, but keep the plan tied to executable gates.
-- Delegate only independent exploration, research, or review. One owner edits a tightly coupled file set.
-- Preserve a clean diff and request an independent verification pass before calling the artifact complete.
-- Do not write custom files into Codex's native `memories` directory; durable Skyrim lessons belong in the provider registry.
+- Keep `CLAUDE.md` concise and use this skill for procedural detail.
+- Load only the skills needed for the current milestone because invoked skill content remains in context.
+- Use high or xhigh effort for risky architecture, plugins, DLLs, and hostile review.
+- Before compaction or a usage boundary, persist exact state, commands, uncommitted changes, and remaining validation.
+- Treat auto memory as candidate learning, not verified truth, until it passes the memory-promotion protocol.
 
 ### Skill-specific provider control
 

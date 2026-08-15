@@ -1,4 +1,4 @@
-# Kimi Code evidence memory
+# Claude Code evidence memory
 
 This is an evidence-scored Skyrim lesson database used by the provider-specific
 `skyrim-memory` skill.

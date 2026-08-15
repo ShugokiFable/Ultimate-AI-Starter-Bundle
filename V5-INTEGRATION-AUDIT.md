@@ -1,4 +1,4 @@
-﻿# V5 integration audit
+# V5 integration audit
 
 ## Sources integrated
 
@@ -66,7 +66,7 @@ Runtime MCP connectivity on end-user machines is **not** claimed by this pack al
 
 ## AIO installer layer
 
-- `INSTALL-V5-AIO.ps1` / `.bat` smoke: SkillsOnly Grok **PASS**
+- `INSTALL-V6-AIO.ps1` / `.bat` smoke: SkillsOnly Grok **PASS**
 - Offline bundle hashes in `BUNDLED-TOOLS/OFFLINE-MANIFEST.json`
 - GitHub latest via `TOOLS/Update-From-GitHub.ps1`
 - Scripts parse clean after ASCII sanitize **PASS**

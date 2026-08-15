@@ -57,15 +57,3 @@ When reviewing SPID, KID, BOS, CDF, FLM, SkyPatcher, or similar configurations:
 
 Specifically reject SPID `Weapon =`, incomplete LevelFilters such as `65/`,
 comma TraitFilters, and more than seven value sections.
-
-## Hermes execution adapter
-
-- Load this skill on demand through progressive disclosure; do not preload the entire Skyrim library.
-- Treat installed provider skills as curated, read-only workflows. Write proposed improvements to `MEMORY/CANDIDATES.md` instead of silently rewriting them.
-- Keep project instructions in workspace `AGENTS.md`. Keep identity and tone in `SOUL.md`.
-- Resolve the active `HERMES_HOME` or profile before reading or writing provider memory.
-- Store only evidence-scored lessons in the Skyrim registry; do not contaminate native Hermes memory with unverified completion claims.
-
-### Skill-specific provider control
-
-Remain read-only unless the user explicitly authorizes fixes; rank findings by runtime and data-loss risk.

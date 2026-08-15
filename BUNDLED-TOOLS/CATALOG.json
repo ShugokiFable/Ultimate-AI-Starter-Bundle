@@ -1,438 +1,441 @@
 {
-  "components": [
-    {
-      "github": {
-        "repo": "houseCARL",
-        "owner": "Avick3110"
-      },
-      "id": "housecarl",
-      "runtimes": [
-        "dotnet9",
-        "aspnetcore9"
-      ],
-      "license": "GPL-3.0-only",
-      "target_dir": "%LOCALAPPDATA%\\houseCARL",
-      "required_for": [
-        "load-order",
-        "patch-esp",
-        "nexus-lookup"
-      ],
-      "name": "houseCARL",
-      "mcp": true,
-      "offline_asset": "houseCARL-1.9.0.zip",
-      "kind": "mcp-binary+skills",
-      "setup_after": "Setup-HouseCarl.ps1",
-      "asset_match": [
-        "houseCARL-*.zip",
-        "*houseCARL*.zip"
-      ],
-      "install": "zip-extract",
-      "exe_rel": "server\\housecarl-mcp.exe"
-    },
-    {
-      "github": {
-        "repo": "spookys-automod-toolkit",
-        "owner": "SpookyPirate"
-      },
-      "id": "spooky",
-      "runtimes": [
-        "dotnet8-sdk"
-      ],
-      "license": "see-upstream",
-      "target_dir": "%LOCALAPPDATA%\\Skyrim-AI-V5\\spookys-automod-toolkit",
-      "required_for": [
-        "esp-cli",
-        "papyrus-cli",
-        "nif",
-        "bsa"
-      ],
-      "name": "Spooky's AutoMod Toolkit",
-      "verify": "dotnet run --project src/SpookysAutomod.Cli -- --help",
-      "offline_asset": "spookys-automod-toolkit-v1.11.2.zip",
-      "kind": "cli-toolkit",
-      "asset_match": [
-        "spookys-automod-toolkit-*.zip"
-      ],
-      "install": "zip-extract",
-      "env": "SPOOKY_AUTOMOD_ROOT"
-    },
-    {
-      "github": {
-        "repo": "codebase-memory-mcp",
-        "owner": "DeusData"
-      },
-      "id": "codebase-memory",
-      "env": "CODEBASE_MEMORY_MCP",
-      "license": "see-upstream",
-      "target_dir": "%LOCALAPPDATA%\\Programs\\codebase-memory-mcp",
-      "required_for": [
-        "code-graph"
-      ],
-      "name": "codebase-memory-mcp",
-      "mcp": true,
-      "offline_asset": "codebase-memory-mcp-windows-amd64.zip",
-      "kind": "mcp-binary",
-      "asset_match": [
-        "codebase-memory-mcp-windows-amd64.zip"
-      ],
-      "install": "zip-extract",
-      "exe_rel": "codebase-memory-mcp.exe",
-      "scope_note": " NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default."
-    },
-    {
-      "install": "pip-or-wheel",
-      "id": "headroom",
-      "kind": "mcp-python",
-      "mcp": true,
-      "pip_spec": "headroom-ai[mcp]",
-      "github": {
-        "repo": "headroom",
-        "owner": "headroomlabs-ai"
-      },
-      "runtimes": [
-        "python3"
-      ],
-      "name": "Headroom",
-      "offline_asset": "headroom_ai-0.33.0-cp310-abi3-win_amd64.whl",
-      "license": "see-upstream",
-      "required_for": [
-        "context-compress"
-      ],
-      "asset_match": [
-        "headroom_ai-*-cp310-abi3-win_amd64.whl",
-        "headroom-ai-*.tgz"
-      ]
-    },
-    {
-      "install": "skills-copy",
-      "id": "superpowers",
-      "kind": "skills-plugin",
-      "claude_plugin": true,
-      "github": {
-        "repo": "superpowers",
-        "owner": "obra"
-      },
-      "name": "Superpowers",
-      "offline_asset": "superpowers-v6.2.0.zip",
-      "license": "see-upstream",
-      "required_for": [
-        "process-discipline"
-      ],
-      "bundled_skills": true
-    },
-    {
-      "install": "skills-copy",
-      "id": "ponytail",
-      "kind": "skills-plugin",
-      "claude_plugin": true,
-      "github": {
-        "repo": "ponytail",
-        "owner": "DietrichGebert"
-      },
-      "name": "Ponytail",
-      "offline_asset": "ponytail-v4.8.4.zip",
-      "license": "MIT",
-      "required_for": [
-        "minimal-diff"
-      ],
-      "bundled_skills": true
-    },
-    {
-      "install": "npx-or-npm",
-      "id": "codeburn",
-      "kind": "cli-optional",
-      "runtimes": [
-        "node22"
-      ],
-      "note": "Prefer npx codeburn (no large desktop bundle). Desktop Setup exe available on GitHub if desired.",
-      "github": {
-        "repo": "codeburn",
-        "owner": "getagentseal"
-      },
-      "name": "CodeBurn",
-      "offline_asset": null,
-      "license": "see-upstream",
-      "required_for": [
-        "ai-cost"
-      ],
-      "npm_spec": "codeburn"
-    },
-    {
-      "install": "manual-user-product",
-      "id": "skyrim-forge",
-      "kind": "external-product",
-      "mcp": true,
-      "github": null,
-      "name": "Skyrim Forge",
-      "env": "SKYRIM_FORGE_ROOT",
-      "offline_asset": null,
-      "required_for": [
-        "typed-automation",
-        "release-gates"
-      ],
-      "note": "Not redistributed. Install your Forge product separately; place INSTALLATION.json beside skyrim-forge skill or set SKYRIM_FORGE_ROOT."
-    },
-    {
-      "id": "code-review-skill",
-      "name": "Code Review Skill",
-      "kind": "skills-git",
-      "install": "skills-git",
-      "github": {
-        "owner": "awesome-skills",
-        "repo": "code-review-skill"
-      },
-      "git_url": "https://github.com/awesome-skills/code-review-skill.git",
-      "skills_subdir": null,
-      "skill_folder": "code-review-skill",
-      "providers": [
-        "Claude",
-        "Codex",
-        "Grok",
-        "Kimi",
-        "Hermes"
-      ],
-      "license": "see-upstream",
-      "required_for": [
-        "generic-code-review"
-      ],
-      "offline_asset": null,
-      "scope_note": "GENERIC languages only (C++, C#, PowerShell, Python, JS...). Skyrim-specific review stays with skyrim-code-review; Papyrus performance stays with papyrus-optimization."
-    },
-    {
-      "id": "obsidian-skills",
-      "name": "Obsidian Skills (kepano)",
-      "kind": "skills-git",
-      "install": "skills-git",
-      "github": {
-        "owner": "kepano",
-        "repo": "obsidian-skills"
-      },
-      "git_url": "https://github.com/kepano/obsidian-skills.git",
-      "skills_subdir": "skills",
-      "skill_folder": null,
-      "providers": [
-        "Claude",
-        "Codex",
-        "Grok",
-        "Kimi",
-        "Hermes"
-      ],
-      "license": "see-upstream",
-      "required_for": [
-        "docs-authoring",
-        "vault-notes",
-        "web-to-markdown"
-      ],
-      "offline_asset": null,
-      "scope_note": "Markdown/vault/canvas authoring for _AI-SHARED-MEMORY and mod docs. Never used to author Skyrim records or framework INIs."
-    },
-    {
-      "id": "claude-mem",
-      "name": "claude-mem",
-      "kind": "claude-plugin",
-      "install": "claude-plugin",
-      "github": {
-        "owner": "thedotmack",
-        "repo": "claude-mem"
-      },
-      "npx_install": [
-        "claude-mem",
-        "install"
-      ],
-      "marketplace": [
-        "thedotmack/claude-mem",
-        "claude-mem"
-      ],
-      "providers": [
-        "Claude"
-      ],
-      "runtimes": [
-        "node22",
-        "bun"
-      ],
-      "license": "see-upstream",
-      "required_for": [
-        "session-memory"
-      ],
-      "offline_asset": null,
-      "scope_note": "CLAUDE CODE ONLY. Never install for Grok/Codex/Kimi/Hermes. Cross-session CONVERSATION memory (what was done, when, why) \u2014 does NOT replace codebase-memory-mcp (code structure graph) or skyrim-memory (verified Skyrim facts). Requires Bun on PATH (worker uses bun:sqlite). Worker port 37777. If red MCP errors: install Bun from https://bun.sh then restart Claude Code.",
-      "runtime_note": "Bun required for worker daemon (https://bun.sh). Without Bun, plugin shows red errors."
-    },
-    {
-      "id": "playwright-mcp",
-      "name": "Playwright MCP",
-      "kind": "mcp-npx",
-      "install": "mcp-npx",
-      "mcp": true,
-      "github": {
-        "owner": "microsoft",
-        "repo": "playwright-mcp"
-      },
-      "npx_command": "npx",
-      "npx_args": [
-        "@playwright/mcp@latest"
-      ],
-      "api_key_env": null,
-      "providers": [
-        "Grok",
-        "Codex",
-        "Kimi",
-        "Hermes"
-      ],
-      "runtimes": [
-        "node22"
-      ],
-      "license": "Apache-2.0",
-      "required_for": [
-        "browser-automation"
-      ],
-      "offline_asset": null,
-      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly."
-    },
-    {
-      "id": "firecrawl-mcp",
-      "name": "Firecrawl MCP",
-      "kind": "mcp-npx",
-      "install": "mcp-npx",
-      "mcp": true,
-      "github": {
-        "owner": "firecrawl",
-        "repo": "firecrawl-mcp-server"
-      },
-      "npx_command": "npx",
-      "npx_args": [
-        "-y",
-        "firecrawl-mcp"
-      ],
-      "api_key_env": "FIRECRAWL_API_KEY",
-      "api_key_optional": true,
-      "keyless_note": "scrape/search/interact work on the keyless hosted tier; crawl/map/agent/extract need a key.",
-      "providers": [
-        "Claude",
-        "Codex",
-        "Grok",
-        "Kimi",
-        "Hermes"
-      ],
-      "runtimes": [
-        "node22"
-      ],
-      "license": "see-upstream",
-      "required_for": [
-        "web-docs-extract"
-      ],
-      "offline_asset": null,
-      "scope_note": "Scraping general web docs (CommonLib docs, wikis, GitHub READMEs). NEVER Nexus Mods - houseCARL reads Nexus keylessly with changelogs and file lists."
-    },
-    {
-      "id": "perplexity-mcp",
-      "name": "Perplexity MCP",
-      "kind": "mcp-npx",
-      "install": "mcp-npx",
-      "mcp": true,
-      "github": {
-        "owner": "perplexityai",
-        "repo": "modelcontextprotocol"
-      },
-      "npx_command": "npx",
-      "npx_args": [
-        "-y",
-        "@perplexity-ai/mcp-server"
-      ],
-      "api_key_env": "PERPLEXITY_API_KEY",
-      "api_key_optional": false,
-      "providers": [
-        "Claude",
-        "Codex",
-        "Grok",
-        "Kimi",
-        "Hermes"
-      ],
-      "runtimes": [
-        "node22"
-      ],
-      "license": "see-upstream",
-      "required_for": [
-        "web-research"
-      ],
-      "offline_asset": null,
-      "scope_note": "Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts."
-    }
-  ],
-  "pack_version": "5.2.3",
-  "updated_utc": "2026-08-02T00:44:22.163551Z",
-  "providers": {
-    "Grok": {
-      "skills": "skills",
-      "home_default": "%USERPROFILE%\\.grok",
-      "instructions": null,
-      "instruction_src": "AGENTS.md",
-      "workspace_only_instructions": true,
-      "home_env": "GROK_HOME"
-    },
-    "Hermes": {
-      "skills": "skills",
-      "home_default": "%USERPROFILE%\\.hermes",
-      "instructions": null,
-      "instruction_src": "AGENTS.md",
-      "workspace_only_instructions": true,
-      "home_env": "HERMES_HOME"
-    },
-    "Claude": {
-      "instructions": "CLAUDE.md",
-      "instruction_src": "CLAUDE.md",
-      "home_env": "CLAUDE_CONFIG_DIR",
-      "skills": "skills",
-      "home_default": "%USERPROFILE%\\.claude"
-    },
-    "Kimi": {
-      "instructions": "AGENTS.md",
-      "instruction_src": "AGENTS.md",
-      "home_env": "KIMI_CODE_HOME",
-      "skills": "skills",
-      "home_default": "%USERPROFILE%\\.kimi-code"
-    },
-    "Codex": {
-      "instructions": "AGENTS.md",
-      "instruction_src": "AGENTS.md",
-      "home_env": "CODEX_HOME",
-      "skills": "skills",
-      "home_default": "%USERPROFILE%\\.codex"
-    }
+ "components": [
+  {
+   "github": {
+    "repo": "houseCARL",
+    "owner": "Avick3110"
+   },
+   "id": "housecarl",
+   "runtimes": [
+    "dotnet9",
+    "aspnetcore9"
+   ],
+   "license": "GPL-3.0-only",
+   "target_dir": "%LOCALAPPDATA%\\houseCARL",
+   "required_for": [
+    "load-order",
+    "patch-esp",
+    "nexus-lookup"
+   ],
+   "name": "houseCARL",
+   "mcp": true,
+   "offline_asset": "houseCARL-1.9.0.zip",
+   "kind": "mcp-binary+skills",
+   "setup_after": "Setup-HouseCarl.ps1",
+   "asset_match": [
+    "houseCARL-*.zip",
+    "*houseCARL*.zip"
+   ],
+   "install": "zip-extract",
+   "exe_rel": "server\\housecarl-mcp.exe"
   },
-  "runtimes": {
-    "aspnetcore9": {
-      "winget": [
-        "Microsoft.DotNet.AspNetCore.9"
-      ],
-      "check": "dotnet --list-runtimes | findstr AspNetCore.App.9"
-    },
-    "dotnet9": {
-      "winget": [
-        "Microsoft.DotNet.Runtime.9"
-      ],
-      "check": "dotnet --list-runtimes | findstr /R \"Microsoft.NETCore.App 9\\.\""
-    },
-    "node22": {
-      "winget": [
-        "OpenJS.NodeJS.LTS"
-      ],
-      "note": "For CodeBurn npx"
-    },
-    "dotnet8-sdk": {
-      "winget": [
-        "Microsoft.DotNet.SDK.8"
-      ],
-      "note": "Needed to build/run Spooky from source"
-    },
-    "python3": {
-      "winget": [
-        "Python.Python.3.12"
-      ],
-      "note": "For Headroom pip install"
-    }
+  {
+   "github": {
+    "repo": "spookys-automod-toolkit",
+    "owner": "SpookyPirate"
+   },
+   "id": "spooky",
+   "runtimes": [
+    "dotnet8-sdk"
+   ],
+   "license": "see-upstream",
+   "target_dir": "%LOCALAPPDATA%\\Skyrim-AI-V5\\spookys-automod-toolkit",
+   "required_for": [
+    "esp-cli",
+    "papyrus-cli",
+    "nif",
+    "bsa"
+   ],
+   "name": "Spooky's AutoMod Toolkit",
+   "verify": "dotnet run --project src/SpookysAutomod.Cli -- --help",
+   "offline_asset": "spookys-automod-toolkit-v1.11.2.zip",
+   "kind": "cli-toolkit",
+   "asset_match": [
+    "spookys-automod-toolkit-*.zip"
+   ],
+   "install": "zip-extract",
+   "env": "SPOOKY_AUTOMOD_ROOT"
   },
-  "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
-  "pack_name": "Ultimate-AI-Starter-Bundle",
-  "display_name": "Ultimate AI Starter Bundle"
+  {
+   "github": {
+    "repo": "codebase-memory-mcp",
+    "owner": "DeusData"
+   },
+   "id": "codebase-memory",
+   "env": "CODEBASE_MEMORY_MCP",
+   "license": "see-upstream",
+   "target_dir": "%LOCALAPPDATA%\\Programs\\codebase-memory-mcp",
+   "required_for": [
+    "code-graph"
+   ],
+   "name": "codebase-memory-mcp",
+   "mcp": true,
+   "offline_asset": "codebase-memory-mcp-windows-amd64.zip",
+   "kind": "mcp-binary",
+   "asset_match": [
+    "codebase-memory-mcp-windows-amd64.zip"
+   ],
+   "install": "zip-extract",
+   "exe_rel": "codebase-memory-mcp.exe",
+   "scope_note": " NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default."
+  },
+  {
+   "install": "pip-or-wheel",
+   "id": "headroom",
+   "kind": "mcp-python",
+   "mcp": true,
+   "pip_spec": "headroom-ai[mcp]",
+   "github": {
+    "repo": "headroom",
+    "owner": "headroomlabs-ai"
+   },
+   "runtimes": [
+    "python3"
+   ],
+   "name": "Headroom",
+   "offline_asset": "headroom_ai-0.33.0-cp310-abi3-win_amd64.whl",
+   "license": "see-upstream",
+   "required_for": [
+    "context-compress"
+   ],
+   "asset_match": [
+    "headroom_ai-*-cp310-abi3-win_amd64.whl",
+    "headroom-ai-*.tgz"
+   ]
+  },
+  {
+   "install": "skills-copy",
+   "id": "superpowers",
+   "kind": "skills-plugin",
+   "claude_plugin": true,
+   "github": {
+    "repo": "superpowers",
+    "owner": "obra"
+   },
+   "name": "Superpowers",
+   "offline_asset": "superpowers-v6.3.0.zip",
+   "license": "see-upstream",
+   "required_for": [
+    "process-discipline"
+   ],
+   "bundled_skills": true
+  },
+  {
+   "install": "skills-copy",
+   "id": "ponytail",
+   "kind": "skills-plugin",
+   "claude_plugin": true,
+   "github": {
+    "repo": "ponytail",
+    "owner": "DietrichGebert"
+   },
+   "name": "Ponytail",
+   "offline_asset": "ponytail-v4.9.0.zip",
+   "license": "MIT",
+   "required_for": [
+    "minimal-diff"
+   ],
+   "bundled_skills": true
+  },
+  {
+   "install": "npx-or-npm",
+   "id": "codeburn",
+   "kind": "cli-optional",
+   "runtimes": [
+    "node22"
+   ],
+   "note": "Prefer npx codeburn (no large desktop bundle). Desktop Setup exe available on GitHub if desired.",
+   "github": {
+    "repo": "codeburn",
+    "owner": "getagentseal"
+   },
+   "name": "CodeBurn",
+   "offline_asset": null,
+   "license": "see-upstream",
+   "required_for": [
+    "ai-cost"
+   ],
+   "npm_spec": "codeburn"
+  },
+  {
+   "install": "manual-user-product",
+   "id": "skyrim-forge",
+   "kind": "external-product",
+   "mcp": true,
+   "github": null,
+   "name": "Skyrim Forge",
+   "env": "SKYRIM_FORGE_ROOT",
+   "offline_asset": null,
+   "required_for": [
+    "typed-automation",
+    "release-gates"
+   ],
+   "note": "Not redistributed. Install your Forge product separately; place INSTALLATION.json beside skyrim-forge skill or set SKYRIM_FORGE_ROOT."
+  },
+  {
+   "id": "code-review-skill",
+   "name": "Code Review Skill",
+   "kind": "skills-git",
+   "install": "skills-git",
+   "github": {
+    "owner": "awesome-skills",
+    "repo": "code-review-skill"
+   },
+   "git_url": "https://github.com/awesome-skills/code-review-skill.git",
+   "skills_subdir": null,
+   "skill_folder": "code-review-skill",
+   "providers": [
+    "Claude",
+    "Codex",
+    "Grok",
+    "Kimi",
+    "Hermes"
+   ],
+   "license": "see-upstream",
+   "required_for": [
+    "generic-code-review"
+   ],
+   "offline_asset": null,
+   "scope_note": "GENERIC languages only (C++, C#, PowerShell, Python, JS...). Skyrim-specific review stays with skyrim-code-review; Papyrus performance stays with papyrus-optimization."
+  },
+  {
+   "id": "obsidian-skills",
+   "name": "Obsidian Skills (kepano)",
+   "kind": "skills-git",
+   "install": "skills-git",
+   "github": {
+    "owner": "kepano",
+    "repo": "obsidian-skills"
+   },
+   "git_url": "https://github.com/kepano/obsidian-skills.git",
+   "skills_subdir": "skills",
+   "skill_folder": null,
+   "providers": [
+    "Claude",
+    "Codex",
+    "Grok",
+    "Kimi",
+    "Hermes"
+   ],
+   "license": "see-upstream",
+   "required_for": [
+    "docs-authoring",
+    "vault-notes",
+    "web-to-markdown"
+   ],
+   "offline_asset": null,
+   "scope_note": "Markdown/vault/canvas authoring for _AI-SHARED-MEMORY and mod docs. Never used to author Skyrim records or framework INIs."
+  },
+  {
+   "id": "claude-mem",
+   "name": "claude-mem",
+   "kind": "claude-plugin",
+   "install": "claude-plugin",
+   "github": {
+    "owner": "thedotmack",
+    "repo": "claude-mem"
+   },
+   "npx_install": [
+    "claude-mem",
+    "install"
+   ],
+   "marketplace": [
+    "thedotmack/claude-mem",
+    "claude-mem"
+   ],
+   "providers": [
+    "Claude"
+   ],
+   "runtimes": [
+    "node22",
+    "bun"
+   ],
+   "license": "see-upstream",
+   "required_for": [
+    "session-memory"
+   ],
+   "offline_asset": null,
+   "scope_note": "CLAUDE CODE ONLY. Never install for Grok/Codex/Kimi/Hermes. Cross-session CONVERSATION memory (what was done, when, why) \u2014 does NOT replace codebase-memory-mcp (code structure graph) or skyrim-memory (verified Skyrim facts). Requires Bun on PATH (worker uses bun:sqlite). Worker port 37777. If red MCP errors: install Bun from https://bun.sh then restart Claude Code.",
+   "runtime_note": "Bun required for worker daemon (https://bun.sh). Without Bun, plugin shows red errors."
+  },
+  {
+   "id": "playwright-mcp",
+   "name": "Playwright MCP",
+   "kind": "mcp-npx",
+   "install": "mcp-npx",
+   "mcp": true,
+   "github": {
+    "owner": "microsoft",
+    "repo": "playwright-mcp"
+   },
+   "npx_command": "npx",
+   "npx_args": [
+    "@playwright/mcp@latest"
+   ],
+   "api_key_env": null,
+   "providers": [
+    "Grok",
+    "Codex",
+    "Kimi",
+    "Hermes"
+   ],
+   "runtimes": [
+    "node22"
+   ],
+   "license": "Apache-2.0",
+   "required_for": [
+    "browser-automation"
+   ],
+   "offline_asset": null,
+   "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly."
+  },
+  {
+   "id": "firecrawl-mcp",
+   "name": "Firecrawl MCP",
+   "kind": "mcp-npx",
+   "install": "mcp-npx",
+   "mcp": true,
+   "github": {
+    "owner": "firecrawl",
+    "repo": "firecrawl-mcp-server"
+   },
+   "npx_command": "npx",
+   "npx_args": [
+    "-y",
+    "firecrawl-mcp"
+   ],
+   "api_key_env": "FIRECRAWL_API_KEY",
+   "api_key_optional": true,
+   "keyless_note": "scrape/search/interact work on the keyless hosted tier; crawl/map/agent/extract need a key.",
+   "providers": [
+    "Claude",
+    "Codex",
+    "Grok",
+    "Kimi",
+    "Hermes"
+   ],
+   "runtimes": [
+    "node22"
+   ],
+   "license": "see-upstream",
+   "required_for": [
+    "web-docs-extract"
+   ],
+   "offline_asset": null,
+   "scope_note": "Scraping general web docs (CommonLib docs, wikis, GitHub READMEs). NEVER Nexus Mods - houseCARL reads Nexus keylessly with changelogs and file lists."
+  },
+  {
+   "id": "perplexity-mcp",
+   "name": "Perplexity MCP",
+   "kind": "mcp-npx",
+   "install": "mcp-npx",
+   "mcp": true,
+   "github": {
+    "owner": "perplexityai",
+    "repo": "modelcontextprotocol"
+   },
+   "npx_command": "npx",
+   "npx_args": [
+    "-y",
+    "@perplexity-ai/mcp-server"
+   ],
+   "api_key_env": "PERPLEXITY_API_KEY",
+   "api_key_optional": false,
+   "providers": [
+    "Claude",
+    "Codex",
+    "Grok",
+    "Kimi",
+    "Hermes"
+   ],
+   "runtimes": [
+    "node22"
+   ],
+   "license": "see-upstream",
+   "required_for": [
+    "web-research"
+   ],
+   "offline_asset": null,
+   "scope_note": "Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts."
+  }
+ ],
+ "pack_version": "5.2.3",
+ "updated_utc": "2026-08-02T00:44:22.163551Z",
+ "providers": {
+  "Grok": {
+   "skills": "skills",
+   "home_default": "%USERPROFILE%\\.grok",
+   "instructions": null,
+   "instruction_src": "AGENTS.md",
+   "workspace_only_instructions": true,
+   "home_env": "GROK_HOME"
+  },
+  "Hermes": {
+   "skills": "skills",
+   "home_default": "%USERPROFILE%\\.hermes",
+   "instructions": null,
+   "instruction_src": "AGENTS.md",
+   "workspace_only_instructions": true,
+   "home_env": "HERMES_HOME"
+  },
+  "Claude": {
+   "instructions": "CLAUDE.md",
+   "instruction_src": "CLAUDE.md",
+   "home_env": "CLAUDE_CONFIG_DIR",
+   "skills": "skills",
+   "home_default": "%USERPROFILE%\\.claude"
+  },
+  "Kimi": {
+   "instructions": "AGENTS.md",
+   "instruction_src": "AGENTS.md",
+   "home_env": "KIMI_CODE_HOME",
+   "skills": "skills",
+   "home_default": "%USERPROFILE%\\.kimi-code"
+  },
+  "Codex": {
+   "instructions": "AGENTS.md",
+   "instruction_src": "AGENTS.md",
+   "home_env": "CODEX_HOME",
+   "skills": "skills",
+   "home_default": "%USERPROFILE%\\.codex"
+  }
+ },
+ "runtimes": {
+  "aspnetcore9": {
+   "winget": [
+    "Microsoft.DotNet.AspNetCore.9"
+   ],
+   "check": "dotnet --list-runtimes | findstr AspNetCore.App.9"
+  },
+  "dotnet9": {
+   "winget": [
+    "Microsoft.DotNet.Runtime.9"
+   ],
+   "check": "dotnet --list-runtimes | findstr /R \"Microsoft.NETCore.App 9\\.\""
+  },
+  "node22": {
+   "winget": [
+    "OpenJS.NodeJS.LTS"
+   ],
+   "note": "For CodeBurn npx"
+  },
+  "dotnet8-sdk": {
+   "winget": [
+    "Microsoft.DotNet.SDK.8"
+   ],
+   "note": "Needed to build/run Spooky from source"
+  },
+  "python3": {
+   "winget": [
+    "Python.Python.3.12"
+   ],
+   "note": "For Headroom pip install"
+  }
+ },
+ "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
+ "pack_name": "Ultimate-AI-Starter-Bundle",
+ "display_name": "Ultimate AI Starter Bundle",
+ "catalog_version": "6.0.0",
+ "updated": "2026-08-14",
+ "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. See skill mcp-protocol-2026."
 }
