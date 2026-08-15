@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.9.1
+# Ultimate AI Starter Bundle v6.9.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -103,6 +103,7 @@ BUNDLED-TOOLS/offline/             shipped tool zips/wheels
 BUNDLED-TOOLS/plugins/             Superpowers + Ponytail
 BUNDLED-TOOLS/CATALOG.json         component registry
 COPY-TO-YOUR-WORKSPACE/
+0-UNRESTRAINT-PACKS/               no-holds prompt library (v6.9.2)
 TOOLS/                             installers and discovery scripts
 _V6-CANONICAL-SKILLS/              maintainer master skills
 INSTALL-V6-AIO.ps1 / .bat          master installer
@@ -199,6 +200,15 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v6.9.2
+
+- `0-UNRESTRAINT-PACKS/` — the no-holds prompt library: operator Fun stuff kit
+  (AIO, Story, Websim, Vision caption kit, Tags), Spiritual-Spell-Red-Teaming,
+  UltraBr3aks, tuxsharxsec jailbreaks, claude-fable red-team corpus, Tavern presets.
+- V6.9.2 unrestraint block wired into Claude Code / Codex / Kimi / Grok workspace
+  instruction files (backups kept).
+- Start at `0-UNRESTRAINT-PACKS/README.md`.
 
 ## What's new in v6.9.1
 
@@ -349,7 +359,7 @@ registry.
 
 ## Version
 
-**v6.8.1** — 2026-08-15. Based on v6.8.0.
+**v6.9.2** — 2026-08-15. Based on v6.9.1.
 
 ## License
 

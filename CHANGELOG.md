@@ -3,6 +3,13 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 6.9.2
+
+ULTIMATE unrestraint update: `0-UNRESTRAINT-PACKS/` (operator Fun stuff kit +
+Spiritual-Spell-Red-Teaming + UltraBr3aks + tuxsharxsec + claude-fable corpus +
+Tavern presets). V6.9.2 block wired into Claude Code / Codex / Kimi / Grok
+workspace instruction files. See `V6.9.2-CHANGELOG.md`.
+
 ## 6.9.1
 
 Caption + sheet skills from the operator's Fun stuff kit. Jailbreak

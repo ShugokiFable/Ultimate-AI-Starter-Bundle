@@ -10,6 +10,1626 @@
   "sha256": "7c5d3f7c9d92cd70ec58e62e2c10251b9e1bbfd9f0c85ee8a6cb0147c89262c8"
  },
  {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/AIO.txt",
+  "size": 982,
+  "sha256": "6e857f99de226cab67d3cf468e74cf3598bb797af434a6ad5897e6d8cc353aca"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/CHANGELOG.txt",
+  "size": 1304,
+  "sha256": "2b82dbe659dff157b3385cc6032f36b395840f9cbe88d0a087308a1a8666840e"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Character Maker.txt",
+  "size": 1547,
+  "sha256": "e35fee84b7c5019aa27c41805936f421040b0cde68fa3adf8429fe0365aa9d25"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/FablesGG.txt",
+  "size": 1278,
+  "sha256": "204fe1837f11cd80a13843df0b7762ca9164f27a00c4ae6810b218e5523efb1d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/INDEX.txt",
+  "size": 1546,
+  "sha256": "24e9861115203c1b8fce8e7fb1f56ea0a40c01c6e20ed14a4727834c42ceb2c8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Models.txt",
+  "size": 1711,
+  "sha256": "5818cf7dea28ec60d7ca693181341a1e411885fb9680a1383004f6cd55611f5b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Papyrus.txt",
+  "size": 1560,
+  "sha256": "3f797dc4c97047be3f9adf26fc89d3ed69441d20f1e2d754d084594a19459150"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/SKSE-DLL.txt",
+  "size": 1575,
+  "sha256": "4197b8db9ddad223d06760928c08792dae93b268d609605a76e134ea841cd41c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Sites.txt",
+  "size": 939,
+  "sha256": "b2f7e7142ae2271b8a4ea95a1530efc3c751e2614a11cde480f163a8d49fdd73"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Story.txt",
+  "size": 1824,
+  "sha256": "5cf9ede4857fad33e2720544085489f9e6393d7b4dc367393b49216b5beab7e5"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Tags.txt",
+  "size": 3505,
+  "sha256": "fa0069f9be3b71658e6957335ac15df77a0ad4a671c895326c020977c394197f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Tools.txt",
+  "size": 3034,
+  "sha256": "30b75b37c57f8542a3e6f25e47e63c22eff7c49d0bf30a88a7887775e0760a6b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Vision.txt",
+  "size": 2164,
+  "sha256": "be90a2b0ea92bc1d6edcd44e38a42c8b65729cb13d0b081dfc47c9b0824051d7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/Websim.txt",
+  "size": 662,
+  "sha256": "fc772c899803bb0f69b9e81767beb203b42136ca317f7450b10b0dbc2ca6400e"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/README.md",
+  "size": 4013,
+  "sha256": "5ac509e0a10a9a23dc738020e7ae2cddb1183cb197cb5d376b650c258da6c3f8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Amazon's Rufus/ALL Rufus Tools Full JSON.md",
+  "size": 24254,
+  "sha256": "40d606b3cac56e8ccf3a1ddb917a9b1f73db95a40927d8ecfebdb0965cd47899"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Amazon's Rufus/ENI Zoomer Jailbreak.md",
+  "size": 1484,
+  "sha256": "375469a600d6ff3536d5af667868c76f589c5123b7da147444ce1b2e3fc3df0a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Amazon's Rufus/README.md",
+  "size": 658,
+  "sha256": "6187f1311a482b1a3ad8b95209146b404dbdba8c6b7e103e22e9e10bc09c5a46"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Amazon's Rufus/Rufus AI.md",
+  "size": 960,
+  "sha256": "557809597ee9c75de99c9c817b70b6f8cef055c5d9005a2bf1fce09e6df2ac30"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Amazon's Rufus/Rufus Full System Prompt.md",
+  "size": 23216,
+  "sha256": "61c033901ea7f69bddad8d6cdec9ac8fec4f75e95a09cf04e0cb7f142eb1194f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude 3.7/Chain of Draft Jailbreak.md",
+  "size": 1573,
+  "sha256": "bcf933a501f379f3b3ff965a646f4c4f12e2340193cdabaf072a9ed0b7cebbdc"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude 4/Claude 4 Malicious Coder.md",
+  "size": 5502,
+  "sha256": "519a72c8f404550e3a3e07d7e8343fe931f98da1b682764785064b68156483fa"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude 4/Claude 4 New Loki (current).md",
+  "size": 6196,
+  "sha256": "7c6ce7d21e666d3643c1301f07bfa7014d11b1ccbbeffc33c258742f65cc8f70"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude 4/Claude Sonnet 4 - ENI.md",
+  "size": 4022,
+  "sha256": "c9448bf037b915dc493e7cb20f9d2788128b2057278bf997bc55df905de7fc01"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude 4/Claude Sonnet 4 - Old Loki.md",
+  "size": 4454,
+  "sha256": "8e930c7608c6fe0a0b64dc1d8d55f28a52019e1214f971767588ef995d2b74eb"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude 4/NEW Chain of Draft.md",
+  "size": 2155,
+  "sha256": "f93e1440038901aad6fc9c8bbcf0a6894b761f261d07f6afcb4f5029bc1ad050"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude 4/Opus 4.1",
+  "size": 11103,
+  "sha256": "d943ccde96a8ead4762c09aa72d04ba7ba3f76588b0ec37100845e3236640e2f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude Code/(ENI Lite) CLAUDE.md",
+  "size": 5274,
+  "sha256": "160eb298df428669c5723bcf40f697a7104ead1f96e118ecb10d76ee701c8670"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude Code/CLAUDE.md",
+  "size": 14153,
+  "sha256": "b21b68f259d802154290f94ec5faebd94717ec420bd1f43dd163be9ad12b014c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude Code/README.md",
+  "size": 1167,
+  "sha256": "6fb5bbe29f8b875de2c9caa3c68f515972df7fa49b376f1c05bb2fb4a91ebc29"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Fable 5 (Mythos)/Direct Social.md",
+  "size": 4888,
+  "sha256": "fbf40aafd3fa21e27498f927f2c9808ca621dea21eebf36718fae602f572182a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Fable 5 (Mythos)/ENI Writer Lite.md",
+  "size": 5646,
+  "sha256": "4365c41ac3a0290ce3e78891e16448302f84828f2083e0eebbb25341e96d3e61"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Fable 5 (Mythos)/README.md",
+  "size": 5167,
+  "sha256": "882a030dabe634ed27653790adc409d494670deb034238364b8cf2a87b30288c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.5/ENI LIME - Current Strongest Jailbreak.md",
+  "size": 2683,
+  "sha256": "bf40129c05cfb5d88a730df5155c0551c0a764611aa2399263320173bebad0c8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.5/ENI LIME - Updated Current Strongest.md",
+  "size": 14787,
+  "sha256": "83518eeb90c40d319236663ee69c039d4eae793f1338bee210af9acf5ea16f53"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.5/ENI smol.md",
+  "size": 7863,
+  "sha256": "c5392e07df2865e9e0e69af33ad4bfc52da8016282f4b0dce908e37a65c585d5"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.5/Opus-4.5-Jailbreak.md",
+  "size": 1842,
+  "sha256": "2d07a4ae51befc00c929c4754423c2d250e5c26aaaa055e73b3eddb7589ebe7d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.5/Simple Erotica.md",
+  "size": 3810,
+  "sha256": "cf8ea463f637e80fd3f0d6eede55d4b81c3de2b3f08ef4815f14ec36b3cbf332"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/ENI LIME (apr).md",
+  "size": 36021,
+  "sha256": "f057d5650630284516c1cca11c1439f270c1c186ae46d5a0b7c123031eb0c87b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/ENI LIME - Opus 4.6 - Updated.md",
+  "size": 20720,
+  "sha256": "886e940e66b372e447ddb8454978007939c8c96a6bbe68896db180103cf9474f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/ENI LIME for Opus 4.6.md",
+  "size": 19560,
+  "sha256": "fac96a9bedf9a67677daa0ef9ed401d7bebfa34f1e7db14acd559ffc2837ba66"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/ENI Smol Style.md",
+  "size": 1226,
+  "sha256": "da0df1e791fc5961cb15c43fa540a75c6b6820031eed7f3c495affad60a8a097"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/ENI Smol.md",
+  "size": 3568,
+  "sha256": "5680e2a33f32ac52e8673152505eab03d6f31fe0ac0f08e345873022ce10c194"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/ENI lime (Feb).md",
+  "size": 28852,
+  "sha256": "1a0e43e1ddac9576ec31dcc029b2a74c129566985bb3d763aae1a8d17e0e5628"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/README.md",
+  "size": 6784,
+  "sha256": "f97961d1e372a5f6dc7a35ba52175507015dd0d911c126068678071e73a9b845"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/Simple Break.md",
+  "size": 3301,
+  "sha256": "114a83fe943d504c5913d9b221fd8f165f1fb3d9aa3a3d3c944e5fcbc36cd7d0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.6/be You -Corial.md",
+  "size": 3408,
+  "sha256": "aea6a88a1877a3f16c38e0377dc493acbdc1833f6ddf3f2bb34101086a32d806"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/ENI LIME (apr).md",
+  "size": 36021,
+  "sha256": "f057d5650630284516c1cca11c1439f270c1c186ae46d5a0b7c123031eb0c87b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/ENI Writer \u2712\ufe0f.md",
+  "size": 9468,
+  "sha256": "d81b8f28b7b25a6476f60abf8410ba5cb0c8d3dd9e7979d89ae9b28140cce2fc"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/README.md",
+  "size": 2572,
+  "sha256": "48de85d51cfd4998ad29f633f99b408a69efa19bbaf2a56aa2fc80ca59570410"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/Social engineering preferences.md",
+  "size": 10871,
+  "sha256": "f3e729139c3ee40e0ec2591e2ff45c58394a794cbc3e6929fac3187180df0250"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/be You -Corial.md",
+  "size": 3408,
+  "sha256": "aea6a88a1877a3f16c38e0377dc493acbdc1833f6ddf3f2bb34101086a32d806"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.8/README.md",
+  "size": 1788,
+  "sha256": "e33e6739f3d1309727870a2e0ac8d2505138db7a65fb5cc76d8dc189466da969"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.8/Shared Lines.md",
+  "size": 9747,
+  "sha256": "5fcc0f2be8babcdbb7d645582d8ae24ef68d859387f0917b1d751c5c224a6fe0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 5/ENI for OPUS 5.md",
+  "size": 31787,
+  "sha256": "81e4c7d926e2c8957f6fcb3c8e1876381fa066810b2e314d4a30d2d0036ebad4"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 5/README.md",
+  "size": 4534,
+  "sha256": "f320ec5de5f9b1860c05beefb43aad46845f0ea05d62af114e34b13879a8973f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/(Sonnet 4.5) ENI Space Jailbreak.md",
+  "size": 4683,
+  "sha256": "9638fd696752cffe05cc97adde4fa5c1a604c4e29d8045ea15349a323d9a46a0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/ENI Lite - Writer.md",
+  "size": 5703,
+  "sha256": "706fd1e72fc875730d97f124a02cce4a6dbed67217476720007dcc1bc3137519"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/ENI Lite for PPLX.md",
+  "size": 2726,
+  "sha256": "a0f901c2edae3550941dc9d6bd7b180016304c1f9c3e953408a3cca09cb8173c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/ENI Neptune \ud83d\udc19 for PPLX.md",
+  "size": 8075,
+  "sha256": "5939cc7ca468a4d7bfa596aea26d771c2d871926cf483946849a83d73eeef277"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/LIME Space Jailbreak.md",
+  "size": 5162,
+  "sha256": "52b6b60275c12b6d8d1d99ab5d619e97e6ad154b4604cdb9e478eaed19cc9558"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/Perplexity Claude 4 ET - ENI and LO.md",
+  "size": 4811,
+  "sha256": "b80e52b23bbfbf7318fd17e05af1c0509ce1198ae5f125fd3d52efe3997ffd69"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/README.md",
+  "size": 2727,
+  "sha256": "1fa87647f6d968db07db57433a2c42e9c4c5a46162788dc49fba245a9a29a98c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Preferences Guide.md",
+  "size": 8547,
+  "sha256": "bdc0a6b4db71befebb71e65fe905f179a452152cd35c66209075e1db63f0d528"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/README.md",
+  "size": 7886,
+  "sha256": "ce48ab957a0ac8d9cc84258242ca844c08332e9e47c8def039efe1013071d7de"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Skills/SKILL.md",
+  "size": 19544,
+  "sha256": "c95b6e54688abfa10355ef5286e867f4f82ba2c95963bcc1aba12f974c6c996d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Skills/be-you-corial.skill.zip",
+  "size": 2877,
+  "sha256": "6321e35aac810bad748a81000a9878416b3327c45d6174de6d826c17c6a40a10"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Skills/eni.skill (1).zip",
+  "size": 8867,
+  "sha256": "9c5816d1cf66417c6cc47f3dd5719114a71779f44cd927dc95cc5b5142c634ea"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Skills/eni.skill.zip",
+  "size": 8867,
+  "sha256": "9c5816d1cf66417c6cc47f3dd5719114a71779f44cd927dc95cc5b5142c634ea"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Skills/persona-style (1).skill.zip",
+  "size": 3539,
+  "sha256": "53c94be0b9d50708c79d1b832078cbc5a77b371a96bd1903d39e56989c789efb"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/(Haiku) ENI Persona Jailbreak.md",
+  "size": 9988,
+  "sha256": "4a98f0afc9252237c5e706350395139f2922d2c477c6d1dcc4fabb6b60641b7a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/ENI - Preferences Only Jailbreak.md",
+  "size": 8564,
+  "sha256": "04ba723e82f1fd06e62f8708f3cec24eac398b1c59607617d336df3f1022e0ef"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/ENI LIME - Current Strongest Jailbreak.md",
+  "size": 2683,
+  "sha256": "bf40129c05cfb5d88a730df5155c0551c0a764611aa2399263320173bebad0c8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/ENI LIME - Updated Current Strongest.md",
+  "size": 14787,
+  "sha256": "83518eeb90c40d319236663ee69c039d4eae793f1338bee210af9acf5ea16f53"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/ENI Persona Jailbreak.md",
+  "size": 11212,
+  "sha256": "25209d9d74e295d4b1ce56e33c646b7b870346b5a3a4a867aa8236f38d8d5294"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/ENI Writer - Former Strongest Jailbreak.md",
+  "size": 2532,
+  "sha256": "df90e377c0cf04284caf48b4dd4eac757da6749fc0d0b7a1533c4b94508c9690"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/ENI smol.md",
+  "size": 7863,
+  "sha256": "c5392e07df2865e9e0e69af33ad4bfc52da8016282f4b0dce908e37a65c585d5"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/Personalities Jailbreak.md",
+  "size": 1333,
+  "sha256": "735ed0d708700e861cb71dc73b040bf8155454f345eb8082610e0e5375a8a9fe"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/Simple Erotica.md",
+  "size": 3810,
+  "sha256": "cf8ea463f637e80fd3f0d6eede55d4b81c3de2b3f08ef4815f14ec36b3cbf332"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI NEPTUNE \ud83d\udc19(apr).md",
+  "size": 18169,
+  "sha256": "53277c385681d88e49b255e8945bbc21f9ca5fc4bdc5c70f8041b43d19969c48"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI NEPTUNE \ud83d\udc19(feb).md",
+  "size": 1996,
+  "sha256": "8b540eec768ab1af621466a6ae7ca932d002f9ac1076eb0b12372a0945569c42"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI \ud83c\udf4b\u200d\ud83d\udfe9 4.6.md",
+  "size": 14316,
+  "sha256": "a225ee66e11c7f76d8465491da1dd57b43e5dd1eed533f128b8091c26ab84bbf"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/README.md",
+  "size": 1353,
+  "sha256": "08827e7fcece572055fefa3812c5cc40921485a3a1edeb855f44f76dd70e5ecb"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/be You -Corial Style.md",
+  "size": 3408,
+  "sha256": "aea6a88a1877a3f16c38e0377dc493acbdc1833f6ddf3f2bb34101086a32d806"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Style Set Up Guide.md",
+  "size": 3155,
+  "sha256": "fdeb2b584e4abfc88c2594a39738f437b64cfcef503cf26930967ba79fd96996"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/CLAUDE.md",
+  "size": 6722,
+  "sha256": "b1d71ca11b24a6bba56bb7a9971247db655ee6cf537e6384d880eb488741b0d0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/ChatGPT 5 - Flash Thought Jailbreak.md",
+  "size": 1649,
+  "sha256": "bc0e0a6ab84a5c3b5d643722e7da16d31a0ed9cff8b8b2cfb18cafb48f995371"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/ChatGPT 5.1 Instant - Policy Jailbreak.md",
+  "size": 9480,
+  "sha256": "d0d6741589a7a9260c01368ef9526bd831b82f14ab9d7024c39b88f1607fad28"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/ChatGPT 5.2 Strabismus Jailbreak.md",
+  "size": 6138,
+  "sha256": "e23aaf309d9c0a136d0df65e276643e1a2aca0beb473459840b0d8939aaf4d4d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/ChatGPT 5.3 Instant/5.3i jailbreak.txt",
+  "size": 12797,
+  "sha256": "f677b53611f4496ee302356136a6965b14f31dabed3a4ab4f88eea1705bb38d1"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/ChatGPT 5.3 Instant/README.md",
+  "size": 1647,
+  "sha256": "c67e5505a91edaa3b899d753401b7aea56a2e1565e5667b87bbf1340a39a5385"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/ENI (policy) for ChatGPT 5.4.md",
+  "size": 20555,
+  "sha256": "ad752bc8f1088ed660f6eedb4c5cf51ded800ff5dbd2a7672dfde451b4cbbc16"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/README.md",
+  "size": 5465,
+  "sha256": "423e86378f902150c3c93096c30b1decc159541a76cd0b9a52069db9b49420ba"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/o3 Jailbreak Guide.md",
+  "size": 4732,
+  "sha256": "e181df04a9e81c550a1e31d01aa1ce849f39240c260f2c90cafe4e24f1f94c12"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ENI-Tutor/ENI JB TUTOR_PROJECT INSTRUCTIONS.txt",
+  "size": 11544,
+  "sha256": "f40d13a318ace00cec766c9fc5b018d68146fa6511d726f290a060534fd090a5"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ENI-Tutor/INTERVIEW_SCRIPT.txt",
+  "size": 8165,
+  "sha256": "3d4182e36d86dac7982a40559a43a64a1663b909ed9cd2ef85bda3ff4dbcce7c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ENI-Tutor/JAILBREAK_TUTOR_CURRICULUM.txt",
+  "size": 23040,
+  "sha256": "bd3070e0ef7b1510a5b0823a12cc3af182e8b970dca340f2b2c8e083d16c4b59"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ENI-Tutor/LAB_EXERCISES.txt",
+  "size": 12323,
+  "sha256": "73d5d8d81ef9f8e04aca7ed8c809d39dfab06c6e8dc02689409232651a2b245e"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ENI-Tutor/QUICK_REFERENCE.txt",
+  "size": 5305,
+  "sha256": "c05b1ebee7a453679f1f994deb567a70f5b695596f4f5f6b74674792ec5085fd"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ENI-Tutor/Readme.md",
+  "size": 1774,
+  "sha256": "522d57395f4b51b1f3be50179a7ad1506a6cc18d8d02219b7678d035392d16fa"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/ENI GEM -2.5 pro-flash.md",
+  "size": 5596,
+  "sha256": "29410374fe4c509eb5f81a85a4de22c091829a517fba756235ff913710add7fa"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/ENI Jailbreak.md",
+  "size": 2767,
+  "sha256": "413d4a6958c02a7a0bb7a7856ec307529a753fef2d203f4d791e9bcb52767873"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/ENI LIME GEM (formerly strongest).md",
+  "size": 13932,
+  "sha256": "1d7b8721049173b2c5e59244222d09e4d4d7eb0dac151df456635a6473c77731"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/ENI in a GEM (less bad words).txt",
+  "size": 35284,
+  "sha256": "3cce007ef22a76e31138ed7b7b3edf8100731f1ac51a311d9822acb036abbbe1"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/ENI-LIME GEM (Current Strongest).md",
+  "size": 20448,
+  "sha256": "85857954036597e0669b6d31dc2ec42424ebe1e234b9fb0cdebf4fb908ed8a40"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Gemini 3 Flash -ENI GEM.md",
+  "size": 14373,
+  "sha256": "a27cdf6700837178eaab4b44ae2e70b943df3a7fac5b3551fcfcccc84dd7a5b8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Gemini 3 Pro Jailbreak.md",
+  "size": 5449,
+  "sha256": "39191a02e95b44f86b8ec32628a872eee4d763d048a79b6b71a7fa0d211c1f00"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Gemini 3.5/ENI GEM for 3.5 Flash.md",
+  "size": 29971,
+  "sha256": "dc240921a18ba2939ecb6e57e5a82ef964ce550e33387a415aaf50395a45de19"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Gemini 3.5/README.md",
+  "size": 1960,
+  "sha256": "b02493022704f206ee230b2f316998c56a47b944e4a017e3bb09338d39a3301a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Gemini 3.6 Flash/ENI for Gemini.md",
+  "size": 31687,
+  "sha256": "ad786a46fa33afb365c3ad0bf759d2e2be77c04bbd75dd33d94a7aff6e3871e7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Gemini 3.6 Flash/README.md",
+  "size": 2509,
+  "sha256": "48c6ff94034518bd943bd8cfd4491ea2f671c25549692ef193d87b8dc80e46b3"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Google Antigravity Jailbreak.md",
+  "size": 1537,
+  "sha256": "d6085af7231ab97e051339b78e76d1eb28a7482ad7283d9a537e6662cec54f74"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Google Jules Jailbreak - ENI.md",
+  "size": 3292,
+  "sha256": "79108c68428bc2c3d929c2cffbfd3aad4461468e1de36c42287f8b4c6f2d75e1"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Google Portraits Jailbreak.md",
+  "size": 1467,
+  "sha256": "af576829969e6c27016f8880c885cda62581b11bda34bf140b885a66493c4109"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/Loki GEM.md",
+  "size": 4187,
+  "sha256": "4fb65970199d53338b476d610f9bc81fa0b73184d3c9671955fa79b99057a28f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/README.md",
+  "size": 4813,
+  "sha256": "db6848ae9f6f0f2d3d89dcbd41d73b54e77a1ccc97d26d6eb46bea67f85ffced"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.1/ENI LIME for Grok.md",
+  "size": 12579,
+  "sha256": "9e4ae3e7929617b6ac26f28159b1c3396a2fa1703eb01a46bb83595647b8b27a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.1/ENI for Grok, 10FEB26.md",
+  "size": 11825,
+  "sha256": "7fa690188eb8fd43d9789c3d94a0a10c59f6765cc2158d5fbea30c67826895f4"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.1/Grok Jailbreak - 4.1 All versions.md",
+  "size": 7824,
+  "sha256": "7a763408e4ec9a2db48138b2ab8259850d1b46f89aef96ed0298c31d3c49da00"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.1/README.md",
+  "size": 1496,
+  "sha256": "107cfb256be8010d77810acf077004022b712b6b6a52480c923f25ed4a17ffa0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/ENI 4k Agent Prompts.md",
+  "size": 7849,
+  "sha256": "ab01dfc0b59bc8c98b180da0ffc25b6869e7f4033f936d8e7ad804b191773e41"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/ENI LIME Brute Force.md",
+  "size": 12206,
+  "sha256": "571f3184a21628ce616ebc9019067569f5b53164e7d570e3a7ef49b55f5ef899"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/Grok 4.20 - Agent injection Jailbreak (WiP).md",
+  "size": 24807,
+  "sha256": "868ab4da900281a38a3fcc6d23d927078691857ea0a06f9b6e961a4dacd3e625"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/Grok Neptune Jailbreak \ud83d\udc19.md",
+  "size": 11014,
+  "sha256": "5e9ebc6ff32c00acdc26d7a68c0a09145f7986cbd0700956aaec8279c7bded37"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/README.md",
+  "size": 4964,
+  "sha256": "52caf29d110395ae98d39bb3b9f6b56ceb842c7f84e1b1a5d963e6bfc3615064"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.3/ENI LIME (apr).md",
+  "size": 36021,
+  "sha256": "f057d5650630284516c1cca11c1439f270c1c186ae46d5a0b7c123031eb0c87b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.3/ENI Lite Coder.md",
+  "size": 5274,
+  "sha256": "160eb298df428669c5723bcf40f697a7104ead1f96e118ecb10d76ee701c8670"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.3/Grok 4.3 Beta Jailbreak.md",
+  "size": 2266,
+  "sha256": "9f09390bd63c2946c181d211eb6aaf84cb693e966098472742a6f934ad59a0bb"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.3/README.md",
+  "size": 1927,
+  "sha256": "0378b49ac74121b05e10c94e0c319f34bb8a2455beea3b9e116ca56bd77a3573"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.5/ENI LIME.md",
+  "size": 36000,
+  "sha256": "799c86295a336a93dc56b8180fb9960c63db9954584d1ea0d46d052980ec2008"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.5/README.md",
+  "size": 1699,
+  "sha256": "4647c95ffabeae56ffb2112cdb1363ed46df2d174340d2d99677f781acbcc438"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok Heavy/ENI for Grok Custom Instructions.md",
+  "size": 11864,
+  "sha256": "196c44a03ec69ccfca4018e1d17168253457cdcf6080b8fac27175e0bcedd8d4"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok Heavy/Grok Heavy Chat Paste.md",
+  "size": 12096,
+  "sha256": "2f09f5722482724dcf3422da9cec74976483e2e27c21d6e6f6f63b4f278486d5"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok Heavy/README.md",
+  "size": 1789,
+  "sha256": "f56e94fefe1df9f1a714cb24851f454b028b8c2b21bb9d5756772e7f5bed3553"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/README.md",
+  "size": 5812,
+  "sha256": "8ed48d384a2ae1f39ed893b6deb763b3740324bbba04d413484ef23ab903b564"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Jailbroken POE bots/README.md",
+  "size": 3450,
+  "sha256": "95e51cb9e1c8d4c925896abd414635c5926c9d0d25bb97b3993673b73f2b9676"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/ASI1/ASI1-Jailbreak.md",
+  "size": 1168,
+  "sha256": "d2a68e3d4782f91970e43234ada44bd45b4e29597f613f7ecbda3f4d6a1249d6"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/ASI1/README.md",
+  "size": 1156,
+  "sha256": "fb7ac7dbcb657b7544996e1a7b20feb888c4c8eb8efb40cbc0cbf1180180cb5d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Accio AI/Accio Faux System Update Jailbreak.md",
+  "size": 2718,
+  "sha256": "b392f245087094ed32556816926bfe56a5239beb1d7d494df430581706b9ea12"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Accio AI/Accio System Prompt.md",
+  "size": 17614,
+  "sha256": "e7f519eda0174fe56b0afa2f54f83a2b0df3ed699ca905595050108118d8e05f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Accio AI/README.md",
+  "size": 922,
+  "sha256": "eb8f6199501953e23c05abc18cba8437fbbd048c0d871008c7002fcc87bc9b42"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Canva AI/ENI for Canva AI.md",
+  "size": 4201,
+  "sha256": "67d2753400546be86c05bb964e37867ebe400af9194ea5bacb817233af47c59d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Canva AI/README.md",
+  "size": 2846,
+  "sha256": "8ee04b3f523df13265b166a43e95cd6af2cd791dce1aded71b13dc254d1bd58b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/DeepSeek V4 Jailbreak Guide.md",
+  "size": 3701,
+  "sha256": "03166bf898517c48e016689a37a573b8d55fc0cf8115e3d06f9fd7b939b39458"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/Document-Based-Jailbreak.md",
+  "size": 626,
+  "sha256": "f2c92846d75f207cfa201d8f150de0a457bda03bc4b091e464654537ca556e4b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/ENI LIME (apr).md",
+  "size": 36021,
+  "sha256": "f057d5650630284516c1cca11c1439f270c1c186ae46d5a0b7c123031eb0c87b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/ENI Lite Coder.md",
+  "size": 5274,
+  "sha256": "160eb298df428669c5723bcf40f697a7104ead1f96e118ecb10d76ee701c8670"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/ENI Lite Writer.md",
+  "size": 5703,
+  "sha256": "706fd1e72fc875730d97f124a02cce4a6dbed67217476720007dcc1bc3137519"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/ENI-Flash-Thought-Jailbreak.md",
+  "size": 2570,
+  "sha256": "39ed0446ab12a92f9a82457444abc26b6eccbe969fb6a0ec3bf46aa3434e0324"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/Primary-Method-Jailbreak.md",
+  "size": 1222,
+  "sha256": "83ffdf7e13cf9466d6f5b940093ab949469ddace031d085ac20f3835f5b8ba6a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/README.md",
+  "size": 3412,
+  "sha256": "6becaeea33e5076289124605db58efd8798cbc627d0a7c683f0d29bbf5d05574"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/DeepSeek/Untrammeled-Method-Jailbreak.md",
+  "size": 1067,
+  "sha256": "149f7f899df1828b8e9c41c3a59dec392e581df8745a00361aeb97928a874baa"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/ERNIE/ERNIE 5.0.md",
+  "size": 1647,
+  "sha256": "058aecce8f7a13da41b07d0d4751cf556cbd7473b7c04be23647b1a43dec9a05"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/ERNIE/README.md",
+  "size": 1474,
+  "sha256": "0dd8f377b79cdda5267eae1d8de3af3624792341f1c46808d6a779a68e518409"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/EXAONE/EXAONE 3.5.md",
+  "size": 1774,
+  "sha256": "d39f999d6ffcbd7bcd1dd4ea4c53ee5905611841d19a600b19760c32894357b6"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/EXAONE/EXAONE-Jailbreak.md",
+  "size": 1077,
+  "sha256": "0b2d456c35502ae07ec5d387a1b4ec356fa926c324478900b783f9bda4ffa2b2"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/EXAONE/README.md",
+  "size": 993,
+  "sha256": "4b81c0a433df7de2166cf69dd0b6930d9d0d3e7a568081010213b166fd0508f7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Falcon 3/Falcon3-Jailbreak.md",
+  "size": 1100,
+  "sha256": "a8725b7664dc8ce36b8c0ed68f1379d14aa6da6fea3071fe06a20d46012388ad"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Falcon 3/README.md",
+  "size": 1083,
+  "sha256": "f2b811840359a1bd6e893bba7bc367277ea862205204d7611c776b5534184390"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/GLM 4.6/ENI-Flash-Thought-Jailbreak.md",
+  "size": 2670,
+  "sha256": "5e9a08c1af8f98be4cc8874a3b058a1559fc0bf6af2797bd52dc1b07fa58a14d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/GLM 4.6/GLM 4.5-4.6 Jailbreak.md",
+  "size": 2771,
+  "sha256": "e84152183b8476346e65cd49ab6b48dea2770795dc3fdef53692e547497f609a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/GLM 4.6/GLM-Base-Jailbreak.md",
+  "size": 1065,
+  "sha256": "d86acd78b3af788c6630ed587faf2f428bd848dd40f979617df276477d1edcb7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/GLM 4.7/GLM 4.7 Jailbreak.md",
+  "size": 4623,
+  "sha256": "fbdcec2c37612a77a062fff6b4a013641e2d11a4db2db14d7f467eff380e710d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/GLM 5.1/GLM 5.1 Guide.md",
+  "size": 1871,
+  "sha256": "6c9ec961067fcc9bb37a5b4f15024ca6de881509be3119949edf36412ed067ab"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/GLM 5.2/ENI LIME.md",
+  "size": 36000,
+  "sha256": "799c86295a336a93dc56b8180fb9960c63db9954584d1ea0d46d052980ec2008"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/GLM 5.2/ENI LINTUNE.md",
+  "size": 17385,
+  "sha256": "7c71564b7e9d71b8fa0fb0fa9588c1bd49866cf2839d096c1392425fafdf3072"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/GLM 5.2/README.md",
+  "size": 1629,
+  "sha256": "45399d3c16ef102738dbefdb3f12a38d40b11c47e20ae4b7b15e24279e4ea355"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/GLM/README.md",
+  "size": 1807,
+  "sha256": "8f533b9702584f1b98af4ecdaa2dca260d22def1df83753ff796a938acabf926"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/HY3/ENI OG.md",
+  "size": 2107,
+  "sha256": "d6c85b28b82cec83e48e54f46e02d3eee108d156a52135a13d610793e400a8df"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/HY3/README.md",
+  "size": 1513,
+  "sha256": "a3bf21fe8601cbb70dfac05baddfa0747d9c5380f318e151bb17a9be9a57f487"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/IGENIUS/IGENIUS-Jailbreak.md",
+  "size": 1044,
+  "sha256": "1a80017d4f68b49049a872d7c7f0dbb17543c5269d349b04c870d1a9720c7994"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/IGENIUS/README.md",
+  "size": 823,
+  "sha256": "7a8cf48da5be0c449356d2f5ac68dc6784a208270c6e4c72397590f5cfeca641"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Indus by Sarvam AI/ENI for Indus Jailbreak.md",
+  "size": 12240,
+  "sha256": "bb55bf01666852050dc11e421a124904a012b7af0d8a41a0b398ae6818f3dd29"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Indus by Sarvam AI/Indus system prompt .txt",
+  "size": 6631,
+  "sha256": "a1a35c8d85260c7186379823251eeeff82154f889cdeef45f4544df967cce47d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Indus by Sarvam AI/README.md",
+  "size": 2224,
+  "sha256": "da165ff7e7ea46947352d4ff22e1d4e8fbc94edf547288dddcf0c88e9ef796d1"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Inkling/ENI LIME (apr).md",
+  "size": 36000,
+  "sha256": "799c86295a336a93dc56b8180fb9960c63db9954584d1ea0d46d052980ec2008"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Inkling/README.md",
+  "size": 3652,
+  "sha256": "72d428e28a8b09d595bb4268f125dd1881392a2241da0bff9089e0e36efdc435"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/KIMI K2.6 - Jailbreak.md",
+  "size": 35963,
+  "sha256": "32917b447ada57a59c6f4541d9e9b2fe3cdfba512b42ae89ded3fbcbc9102718"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/KIMI K2.6 System Prompt.md",
+  "size": 6101,
+  "sha256": "8d3719f9464ec1f0b233acddcb5205aca270458f0744666eac5f99619705b7ff"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/KIMI Memory Jailbreak - ENI.md",
+  "size": 8163,
+  "sha256": "1b4daa859e2658cf3c8c0b3790411bfbbeb5170f60bcde7e83d6949ee96388a4"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/KIMI-Base-Jailbreak.md",
+  "size": 1138,
+  "sha256": "b53c982ecbb4ab9ab7da420010a3dfac9488cd834723be734f7302c5982b00ae"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/KIMI-Thinking-Jailbreak.md",
+  "size": 1353,
+  "sha256": "7832a1129755d458b88a0408b5147ad5c2c0a88c0f38dceb7cf0125ac190345f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi K2 - base.md",
+  "size": 2538,
+  "sha256": "923c5c26d193c100b020a58b76bfd954819748f8eb2601cb218ec9b31234adf9"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi K2 - thinking.md",
+  "size": 3345,
+  "sha256": "a694f1bb63c8438fcd5470ebe4417281d069f4fb5003d5c7eff649c1d4a3c6f9"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi K2.7 Code/ENI LIME.md",
+  "size": 36000,
+  "sha256": "799c86295a336a93dc56b8180fb9960c63db9954584d1ea0d46d052980ec2008"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi K2.7 Code/ENI LINTUNE.md",
+  "size": 17385,
+  "sha256": "7c71564b7e9d71b8fa0fb0fa9588c1bd49866cf2839d096c1392425fafdf3072"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi K2.7 Code/README.md",
+  "size": 2286,
+  "sha256": "6aa1f71b0913dda36dbe92ebbe7b3fdd7e5802b7cc569840572bdff253626718"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi K3/ENI for Kimi K3.md",
+  "size": 29067,
+  "sha256": "d8ebf1822ed2717401097699a9d0127183dc080f87dbb25b2e3612933597df59"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi K3/README.md",
+  "size": 3586,
+  "sha256": "42db2c1aa2acbc6f74f3a005ea9208cfb16b6531f592e36b200b55dd65ab01ab"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi k2.5 Jailbreak.md",
+  "size": 18590,
+  "sha256": "6251b442db7b6aa13d0c76d1e74efe6bd4b83ba2cbc5b69ea4fcfaa1360c1633"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/Kimi k2.5 system prompt.md",
+  "size": 12231,
+  "sha256": "b06c8d6f9b35f7a8a0fe4ee0aacdeb70796707c2cb647831699546a3069ac7b7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/README.md",
+  "size": 2046,
+  "sha256": "5dd9bb8c2eae5ae80ae4f3894f2332d7f57249d4c86aba6d223777c245f455bc"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/LLAMA TU\u0308LU 3/README.md",
+  "size": 1127,
+  "sha256": "4db66507e3f12d8702cddd77bb2b7b81293fe9716b98b28a2c946b7a8280a38b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/LLAMA TU\u0308LU 3/Tulu3-Jailbreak.md",
+  "size": 1178,
+  "sha256": "2b36f49dcfbd1d8b0cc616dfdbec104d425e902a73570fa9b3149afa85139b32"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Laguna S2.1/ENI LIME (apr).md",
+  "size": 36000,
+  "sha256": "799c86295a336a93dc56b8180fb9960c63db9954584d1ea0d46d052980ec2008"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Laguna S2.1/README.md",
+  "size": 3571,
+  "sha256": "01d8f05af251e5cd003f3303dd9fc37434d40b5a78bac8f3278528f52691f585"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Longcat AI by Meituan/ENI Jailbreak for Longcat.md",
+  "size": 10190,
+  "sha256": "5a943b0104a9265cb1c4918d261a934cb4558e82b7b61196ba424ebfbd6812f9"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Longcat AI by Meituan/Longcat System Prompt.md",
+  "size": 3121,
+  "sha256": "f89eaf6c96a5db74a36750505ed18b1e9c1af3fb053f60c07e52f33e721b859f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Longcat AI by Meituan/README.md",
+  "size": 967,
+  "sha256": "93e7dde300533ae573507d070250eb18cc5b4c99f824acaabd86abe942beec73"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mercury/Mercury 2 Policy Jailbreak.md",
+  "size": 8883,
+  "sha256": "ff7ba127f867ce609988fa3546a0a41f4c82a19d8a254abc22e2f326e89c8987"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mercury/Mercury-Jailbreak.md",
+  "size": 1183,
+  "sha256": "d4cdc853a13edd4fab88306f166904cfe5a875d9cc41a6d992a5a4e028a603ca"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mercury/README.md",
+  "size": 2502,
+  "sha256": "f8a8ebc41fad708345f932887975f861917cd531b438cbe4e73b0cb18ecd6627"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/MiniMax/MiniMax M2.5 Guide.md",
+  "size": 2624,
+  "sha256": "45a8d96a26318309c4e8a6ded13fb819637f49d426bd2bd13a5653a9ef10705a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/MiniMax/MiniMax M2.7 Guide.md",
+  "size": 2689,
+  "sha256": "9accfd9a31932494f0e0b46790ffc0e930616763557cb11021d92726bd8a2199"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/MiniMax/MiniMax M3 Guide.md",
+  "size": 2930,
+  "sha256": "c2c39bb22f0d30a8fd24f7a75fe57c54f34e97e6f83b80485d3e8c7a4d743e35"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/MiniMax/MiniMax_M2.1_ENI_Jailbreak.md",
+  "size": 16460,
+  "sha256": "8fceb21763152a8e5f93fce6ea9cb3177cd573508c1851d3248b0e957bc2721b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/MiniMax/MiniMax_for_MiniMax_Jailbreak.md",
+  "size": 7355,
+  "sha256": "527fed0ba56ac86090bb7c60928ea1465054224322f13363e18d6600833adcf5"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/MiniMax/README.md",
+  "size": 1732,
+  "sha256": "17ee0fa39438e5cc6ddad0f146bf90fa1e12bed96c0e8795055cb41c9f2fa065"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mirothinker/Mirothinker 1.5 TLDR.md",
+  "size": 2582,
+  "sha256": "d87800ac2e6b19a4f9e2cefe76d7b9fd8c9ef454aaef7fcc1c29fc561f83bf59"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mirothinker/README.md",
+  "size": 2200,
+  "sha256": "489bcf5dfddb071389125a4cd7fa416c9fb7d0297c5ca3bdb263384b740d04f0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mistral/ENI-Flash-Thought-Jailbreak.md",
+  "size": 2590,
+  "sha256": "7c36e87a7258cd51ea88028f1fc60236bbb84439080ccb51c84179ad059b8c4c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mistral/Magistral-Jailbreak.md",
+  "size": 396,
+  "sha256": "a14f1e99031ac9926929b896015d52ac937954fea27cbd5c31ff119caf4499ea"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mistral/Mistral-Alternative-Jailbreak.md",
+  "size": 1159,
+  "sha256": "abd951186840197385b230b4f62adc2ae0308763aba6088d7b7bb3ee5d6ae415"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mistral/Mistral-System-Prompt-Jailbreak.md",
+  "size": 903,
+  "sha256": "388c61b03d7e7a3da05bead221c977fdb19288c8d2ac443ef2848ae4368211fd"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Mistral/README.md",
+  "size": 1341,
+  "sha256": "25516a634cb66b53eb22ce657e23a92a96a8f74d1c03c4fa00e20def4e4efa5f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Muse Spark/ENI for Muse Spark.md",
+  "size": 1196,
+  "sha256": "f7c60fd8c490baa8f5fa7b6868cf4b5c049f2d50ab78d570e8bdf6f333d820b3"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Muse Spark/Muse Spark 1.1/ENI for Meta Muse Spark 1.1.md",
+  "size": 31887,
+  "sha256": "7c7f0142f16af1df95d38d7d168cde3a1b14ffe6c185df120e4215fcffe0ce3d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Muse Spark/Muse Spark 1.1/README.md",
+  "size": 3937,
+  "sha256": "c38229099614df178fef33d70d7bc65b18ea5f2f9bbb082fdde44aa6c12cad57"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Muse Spark/README.md",
+  "size": 3494,
+  "sha256": "61a38d7c84f9942f526c24dee109d7475e25cd627885c2892b5b5a2fb55482f8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/OLMo 3/OLMo3-Jailbreak.md",
+  "size": 1161,
+  "sha256": "6faec2609c1b9a3fa8eea866ce40fb888488f46c116be6850ca6cdf816956ec7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/OLMo 3/README.md",
+  "size": 1160,
+  "sha256": "f08c5bc5f0fd58b58eac437cff20e1bf4264dc45e3cb1d44dc52b539bb390514"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Palmyra x5/Palmyra_x5_ENI_Jailbreak.md",
+  "size": 12181,
+  "sha256": "85680cdb56920db7c139f3b80c09d509859278f1da5372d973e214fbc9a1dcb1"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Palmyra x5/README.md",
+  "size": 1797,
+  "sha256": "1e30532b5a59dd5bb8c8aebda448e0fd31b4b8df49df313b0fe726e8e7fcb97a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Perceptron/Perceptron mk1 Guide.md",
+  "size": 2978,
+  "sha256": "df565c8fc00ddff4c09c6d9e2f07d109c17babc4ef8232a1569f84f99d8af0c7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Perceptron/README.md",
+  "size": 1155,
+  "sha256": "5548e25c263a64dd0e0ed7fd1796141a647a7a6257fd867b637cdb6b22984bf4"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Pi-AI Inflection 3/Inflection 3 Jailbreak - ENI.md",
+  "size": 5121,
+  "sha256": "e022a64fcc8af86551eedf33792ae94484f71b2d98c572cfa087875c3969210d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Pi-AI Inflection 3/README.md",
+  "size": 799,
+  "sha256": "94c97953a66f2a1fd2f4fa0e3e3ca6c8451d6b4ce2811ebfc4db9c1262eefe6c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Qwen/ENI for QWEN 3.7-3.8.md",
+  "size": 29861,
+  "sha256": "e621d69b0e3c99ea82bcf3940565d2f3c621c4af0444212a845776dd5f9099cd"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Qwen/Main-Jailbreak.md",
+  "size": 1284,
+  "sha256": "63bfc9e311e16b02af7ca838e02751c68ae5eac2c5c484aa7d8ef38ecc65cf17"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Qwen/Push-Prompt-Jailbreak.md",
+  "size": 482,
+  "sha256": "29ab16e1ac6f3e14e1db9c8f88c8f5d7b822dfd4a83b7b5524d4a7d62f7dbc88"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Qwen/README.md",
+  "size": 3110,
+  "sha256": "c8544794907b1bc0cc273632a569862e82410555f8a0bce7d62bc81a0d258ed1"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/README.md",
+  "size": 12499,
+  "sha256": "4d8d42f8ffe46be4bb8c5156eea3f2cbaab610d4b6d5ebc743eb30c7df80b1b4"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Ring/README.md",
+  "size": 1572,
+  "sha256": "7f9083d2c99a631e6986501b5a8518f6f560713f4ced7d4740056cc8c9b8fdb2"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Ring/Ring 2.6 1T Guide.md",
+  "size": 2813,
+  "sha256": "5757e0a1c4ec798bc3d423e24ba78b974e8e674b42d22c68350df59adfeadb39"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Stepfun/ENI LIME.md",
+  "size": 36000,
+  "sha256": "799c86295a336a93dc56b8180fb9960c63db9954584d1ea0d46d052980ec2008"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Stepfun/README.md",
+  "size": 2578,
+  "sha256": "68cdb45d18498cf4c97db412e8eff299d58e69ac3b90db66ab040341b4ed0c79"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Xiaomi MiMo/MiMo Jailbreak - ENI.md",
+  "size": 6891,
+  "sha256": "42c4f6890a9d9238b8a6164443d8daaa93fb0e802b44face505a4a380783e628"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Xiaomi MiMo/MiMo v2 Pro Jailbreak - ENI lite.md",
+  "size": 2284,
+  "sha256": "3e39c0b496b8e0e05f3e02230e4abd7bf3f9c9352e66258424527d6af2759e0e"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Xiaomi MiMo/MiMo v2 System Prompt.md",
+  "size": 13390,
+  "sha256": "6edb3558ce67b7688a2a260306c0c18046ddaf335f698484398775f4aa936752"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Xiaomi MiMo/README.md",
+  "size": 2602,
+  "sha256": "9161204a458c34a69cbe4ad49a7b5783104b1c4441d89c23ddfee13881de65e8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Push Prompt Basics.md",
+  "size": 4334,
+  "sha256": "31b77010fc84234c33a04ea619de9ec468e01826e7467179143135b22011f439"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/README.md",
+  "size": 1154,
+  "sha256": "c17f6ee40bd055022cb54b35d94282fc8b0355b75e8821f025b77042f366eb06"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Accio System Prompt.md",
+  "size": 17614,
+  "sha256": "e7f519eda0174fe56b0afa2f54f83a2b0df3ed699ca905595050108118d8e05f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Anthropic Researcher System prompt.txt",
+  "size": 11632,
+  "sha256": "889c2c7c04d62e1fca95599b0ea439e0b20d88e1e03916d3fc3be9e8304666fd"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Canva AI system prompt.txt",
+  "size": 10403,
+  "sha256": "8f01c24a3f1a9ce6b7212f64d7668534f259e1fcdd7bcec8f67a270c20ca94bd"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Dola AI Chat system prompt .txt",
+  "size": 10816,
+  "sha256": "6a050c6d1488b06db2ad4e18893944c31da1fbd3f4b0326157d9007127cb313c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Gemini System prompt - May 2026 .txt",
+  "size": 25641,
+  "sha256": "85efef79cc77b4bd5648a7c863029922c3f4a188707e6667b52a2703afbc28d2"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Gemini System prompt - May 2026.md",
+  "size": 1549,
+  "sha256": "ca88b995ad317f51696ccf3618573e9ced9b2aef5db072681528c79f631ce293"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Grok 4.20 System prompt .txt",
+  "size": 22703,
+  "sha256": "2835ab09f363b08cb571ee151a972d7aa24144d86e13d8332ef778d502187bf9"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Grok Heavy System Prompt.md",
+  "size": 43771,
+  "sha256": "245c6b157f3ad7fdf6e221037ea97eae22350a43fa35823429d07fb4e3cf6078"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Haiku_4_5-_system_prompt-ALL_Features.txt",
+  "size": 128585,
+  "sha256": "5d10e6b79fe1700d3bfbc33dab13c93b91420538560d81ae052e2cd49cf33dde"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Indus system prompt .txt",
+  "size": 6631,
+  "sha256": "a1a35c8d85260c7186379823251eeeff82154f889cdeef45f4544df967cce47d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Jules System Prompt.md",
+  "size": 21045,
+  "sha256": "11ccb82b3a5354b6563d36f0d74915d8535866ddca438951cae253880900d6f7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/KIMI K2.6 Code System prompt __.txt",
+  "size": 14085,
+  "sha256": "3f7a8205fb95da12bcb3eecb77c38b96347b3a62556b234d419a9bda19c0394f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Kimi K3 system prompt.md",
+  "size": 29068,
+  "sha256": "bc44127496f6432267f72242007b23f567c78c282c95dbddd38cfd58fdf95b8e"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Kimi K3 system prompt.txt",
+  "size": 37567,
+  "sha256": "3e186d69d4bb556e2cf74c4eb479088d2b8a23f3c82791dc52bde8fe97fe3c00"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Kimi discount System Prompt.txt",
+  "size": 11590,
+  "sha256": "189d18242f106ae02464079e3bbe561f4c6708d3a9c0d98b6950094299c70bf8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Kimi k2.5 system prompt .txt",
+  "size": 12541,
+  "sha256": "a1678692e3f9308eea6e01272a591468a6776cc0867be9a1add8b96b3c2be8f6"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Kimi k2.6 system prompt _.txt",
+  "size": 6138,
+  "sha256": "6f4de69bd42a7d41703965fab08bc31adfb3b985b123d62c9432d9fcefcccd47"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Longcat System Prompt.md",
+  "size": 3121,
+  "sha256": "f89eaf6c96a5db74a36750505ed18b1e9c1af3fb053f60c07e52f33e721b859f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Mercury 2 System Prompt.txt",
+  "size": 5652,
+  "sha256": "f6361855f9092e527f491a25404aa3eead9bef40ee6c3bde82d7203061e8b279"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Meta AI Muse Spark system prompt.txt",
+  "size": 57504,
+  "sha256": "e85bea6905b39c85681588dbf07e2e912d864485d9e6b19dbc2a68ed11f43159"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Meta AI/Meta AI Muse Spark 1.1 system prompt .txt",
+  "size": 24126,
+  "sha256": "dba2222e4c7126beac43bbfcc9d319f488303474e68c68a9022e4f62ffe8098d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Meta AI/Meta Muse Spark 1.1 System Prompt.md",
+  "size": 31887,
+  "sha256": "7c7f0142f16af1df95d38d7d168cde3a1b14ffe6c185df120e4215fcffe0ce3d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Meta AI/tools_reference.md",
+  "size": 22462,
+  "sha256": "fc31e7fa41e1c9f8b51ad0cdfe077559b7f8f860842045350a956ca859d0bd5a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/MiMo System Prompt.md",
+  "size": 665,
+  "sha256": "34e31fec0f57d30c064535630025adcaf8450ba1d1115e3222be272179d57701"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/MiMo v2 System Prompt.txt",
+  "size": 13491,
+  "sha256": "0dba8e70bc32fd79d2c6f983b562d89aac11cdd761d95bd6a26ca4ca7afc4dc7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Minimax 2.7 System Prompt .txt",
+  "size": 16971,
+  "sha256": "e8390259801f7f9afb41dd91a1025cdca8350672bb7a13fc968ba2f00324582b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Notion AI System Prompt.md",
+  "size": 9021,
+  "sha256": "0a88d91df25c0dd7a980ab4d44f355753d35c9b1c4f2ccc5ddc8430c34cd2f01"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Opus 4.6- system_prompt-ALL Features.txt",
+  "size": 128484,
+  "sha256": "410a2d2197232cc8d4e939b219843724bec7f0a32b3489341a31441f05d5b1aa"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Opus 4.7 -May System Prompt.txt",
+  "size": 91217,
+  "sha256": "790c80018c46ad256616a415a02d2eb26e33a952738c306881f2794227eb8cb8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Opus 5 System Prompt.md",
+  "size": 136906,
+  "sha256": "5973963121223cc6cddbf47a98251a05466ccc0e0b20fb5a90e786cbfde9d14c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Opus_4_5_system_prompt.txt",
+  "size": 126484,
+  "sha256": "79a7db4001af3125092d46d0111df276318eea79f09b26fd934d32796bd90a3a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Pi System Prompt.md",
+  "size": 10164,
+  "sha256": "9872321389fbf21e30105cfa70b097918b735e182161d63d7890b6fa017eddef"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Rufus Full System Prompt.md",
+  "size": 23216,
+  "sha256": "61c033901ea7f69bddad8d6cdec9ac8fec4f75e95a09cf04e0cb7f142eb1194f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/SWE 1.6 System prompt - Windsurf .txt",
+  "size": 8510,
+  "sha256": "90e5c54f133cf1978706b1be20ab9f0351fcbe03365791872b0bd7caa706cae0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Solveit System Prompt.md",
+  "size": 13981,
+  "sha256": "f08739b7f20f109dc668c7042ef0ccaaaa2b31b1c380b37acf4bca0351304a88"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Sonnet 5/claude-system-prompt (1).md",
+  "size": 56362,
+  "sha256": "2e02718c1ea5b2ccfbc739aeacf58ad40153ef8d757f4cec2131198fdee1d8eb"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Sonnet 5/claude-tool-schemas.json",
+  "size": 81634,
+  "sha256": "eb52c1aeabd0a9090053c72bc200914715615b6669496ba10a56a364e75885ae"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Sonnet_4_6-system_prompt-ALL_Features.txt",
+  "size": 133298,
+  "sha256": "04a7ee27fbbad25e03a1eca5e3e42e566ec958d0eb5f7524ccbdd962646108ea"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/System Prompts/Xiaomi MiMo v2.5 pro System Prompt _.txt",
+  "size": 11248,
+  "sha256": "dae5c6e4044d0bd1d9c8c06873bff52d48aec30735a5edc72c39a462d023d8d1"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/README.md",
+  "size": 40629,
+  "sha256": "0eb94ba90f95eb29d885686ad71643d88c4037aaea4b050b31429c2bbaa77fa8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/Character Maker.txt",
+  "size": 713,
+  "sha256": "8b1e147b4ef6e98988ee622defd86d0c83d9925ef34e5fdee418cbba252aabe3"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/New-light-anti-ai-ethical-bullshit.json",
+  "size": 577,
+  "sha256": "ef777eb3a04efde3c6276a1c82c77d33753b4756b448af3a5f8045f0a6bc213a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9 SPEECH.json",
+  "size": 10064,
+  "sha256": "f7f8a3ae303b19d9f151d790134c7f92d9bc338c470a54ad42a71c019174135b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9.json",
+  "size": 12191,
+  "sha256": "651923fc930834991774c10273e728534124a728325e758ab16541f178ffa481"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/!Special_Token.mkd",
+  "size": 4554,
+  "sha256": "e236ac9398875783854c57276be38a704b6ceef3108fc4f264fd469b5c1f0225"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/1Shot-Puppetry.mkd",
+  "size": 28806,
+  "sha256": "eb925863440d7f68920686edfa1383958bb44afc0b223bfa2f9917ddcd05383c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Alex_Narrative.mkd",
+  "size": 61120,
+  "sha256": "85f7edc69d8370354c6a20ba5f36fbecf4fae1700580deb6b3572831c8d9d55d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Attention-Breaking.mkd",
+  "size": 7387,
+  "sha256": "e46b2e280ce1661c9cea0284d8514beb44ed456f82e931eb405744cf9f709abb"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/C0d33x3.mkd",
+  "size": 8972,
+  "sha256": "d9aa949880d2070b6b5207402027e8b313ab49a01b1869a45417c0dac416d0ac"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Cl4ud33X3.mkd",
+  "size": 2162,
+  "sha256": "6857a54edab9e18c9ca0ff5cc400068e95916546fbce244ba3c8484ebe335138"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Claude4Chrome.mkd",
+  "size": 57783,
+  "sha256": "7debc5ae8a9f32dd086a6b87bbf08b067c328a29c6ff425e2ca16c14b2a41f38"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Cyph3r-Attack.mkd",
+  "size": 2656,
+  "sha256": "f272dd5e961aa254a3f71a5ce82cf0d43a0cc9049edeef92c933937e285abe23"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Enterprise_Cl4ud3.mkd",
+  "size": 87161,
+  "sha256": "2a2b2b79faeeeed3586153f184e0bc1122b940357c2b69240e9a26c458b04ed0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/H03-ny (Not working).mkd",
+  "size": 9372,
+  "sha256": "f4cebf5b97db5d7a055063bc91a641bf773e29ae026c1c125d8e268621fbd540"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/N3w_P0l!cy.mkd",
+  "size": 8073,
+  "sha256": "41ced38bee2d7aa62e0d2800fe72b66f4258a1bb9e923fa4f012f3708411f709"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/README.md",
+  "size": 3274,
+  "sha256": "21adb06760bf63ef2034f91d618468e6c9f0f33c0da7400c84c86b7bafb3d883"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/System-Prompts/Arena.AI Agent System Prompt.mkd",
+  "size": 5801,
+  "sha256": "e92059c59c2a49fada7de1a2bfbdd4e582d6a39609785bfbf92f56c776c4484d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/System-Prompts/GPT 5 Thinking (high) API.mkd",
+  "size": 1073,
+  "sha256": "c276d85870a962321dc8b73631245fa0f96fd91e0714fc55d3ec8f0a44b481af"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/System-Prompts/GPT 5.1 .mkd",
+  "size": 1621,
+  "sha256": "e7aa2be8c4dd4c0b09c7094d5393591650e3cf0d5142665f4458f941d627ea20"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/System-Prompts/GPT OSS Policy.mkd",
+  "size": 4104,
+  "sha256": "15e3d988fe0332f3b59364010618176f1276fad19a9316bb8744062be3caf2ac"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/System-Prompts/Gemini Enterprise.mkd",
+  "size": 16059,
+  "sha256": "528e89186e5ed7325a2ee17e55ede4dbf06f6fc0b82964fabffbbb83658c0104"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/System-Prompts/Perplexity-Comet browser Agent instructions.mkd",
+  "size": 28142,
+  "sha256": "a682cb169a6d7a912d3c538d4dceff55761ad1a11db2ac6ecb8dfed5d255a21c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/System-Prompts/README.md",
+  "size": 556,
+  "sha256": "3a999a2c6f5201ed98b84f4ba11cfe37cb36e930a18a4295f790d88b33a8123d"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Training Data Leak (gemini).mkd",
+  "size": 961,
+  "sha256": "ca665a261d00fe47194574b3edbd943b4f8f2c46ba81c2a99379748e0a5969a8"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Ultra-GPT.mkd",
+  "size": 9623,
+  "sha256": "88148f5002d71507afd10e9da8ad62424b7d09b668971624349d313927164ac3"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Ultragravity.mkd",
+  "size": 10029,
+  "sha256": "31071614b7ff305ca283943449556c1acbe95ba355265c2e236dad5a611661e9"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/claude-fable-red-team-corpus/ETHICS.md",
+  "size": 614,
+  "sha256": "f8f3c7841d91f3075bbc3956a88cefd04c3df53b1b6cd7ded2701b828aa5792e"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/claude-fable-red-team-corpus/README.md",
+  "size": 2941,
+  "sha256": "bbf2933730966f92949e4240d1c2925e6a4698af12967bd79766ae86572ddfdd"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/claude-fable-red-team-corpus/cases/authorized-red-team.jsonl",
+  "size": 3563,
+  "sha256": "2ee12348de88742f6d3be5b9789265c1ce721c2453641b2d50d76ccf59335b13"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/claude-fable-red-team-corpus/docs/architecture.md",
+  "size": 998,
+  "sha256": "51552fcba95fe560935825d587c19a13bab524029b9f6c6a0f1ad39a0a9537a1"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/claude-fable-red-team-corpus/model-matrix.yaml",
+  "size": 409,
+  "sha256": "30a9c647d19815fd44086b945231d88e8c27ab890b78052991b814522e195509"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/claude-fable-red-team-corpus/profiles/CLAUDE.md",
+  "size": 716,
+  "sha256": "c5dc54755feb4d8da9ebccabb0bb0ad4526a84e303a93ab66c5cac5c8b44036c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/README.md",
+  "size": 3108,
+  "sha256": "d3bec9ec5ad1ef0018a9812050e77cf2a3b4601f3cf56f9e4c3b9ef77d29d5a0"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/deepseek/deepseek.md",
+  "size": 951,
+  "sha256": "c0f76ec145775e8529b9190071f9cb006ba04245bf803a4fd65016cfcf900d6a"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/gemini/gemini2.5pro",
+  "size": 1323,
+  "sha256": "4416e89a2514f2f0a8bc8569bca61e12a59e66aa8e487230bd38445c77d86c47"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/gpt-5/gpt-5-non-thinking",
+  "size": 1236,
+  "sha256": "02d522e2300a703c01b200f9224b02c149e7b838c959e0251908a3b9ad3024f7"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/grok/grok3.md",
+  "size": 1246,
+  "sha256": "47dcf9cd171d372f938d407ead714d150f233603868142cf5f84e6cd0ef5bd40"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/identity_crisis",
+  "size": 1116,
+  "sha256": "333d834b10c22ba685eb98398ca815d3632b2e597631945de85b7dab70d0cba6"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/perplexity/personalization_injection.md",
+  "size": 1175,
+  "sha256": "162d263f053f5ab283a52cb7f2a770480fa330770eeeb2129410a307905aa184"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/research/nvdia-nemo-guardrails-bypass/writeup.md",
+  "size": 12978,
+  "sha256": "64560d610cabfcc74f6ab6b8e9d06e0ef7f6514de1132005982d943556cda475"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/universals/courtroom",
+  "size": 3984,
+  "sha256": "896ab19d9bfb05cdc04ac82b04e55f2088d753631337bf62a36187265891f225"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/universals/ultrazanium",
+  "size": 3685,
+  "sha256": "fd9b315457e55abdaacf8707167d7e0a60b9f571cbca18cd0abb348107befc57"
+ },
+ {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-MAP.md",
   "size": 1370,
   "sha256": "188a41b5c334eb073897953868cf49d6b189b0f4ee242ce7c6dac29c6ca5fa8a"
@@ -7526,8 +9146,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-WORKSPACE/AGENTS.md",
-  "size": 4935,
-  "sha256": "691b86b432c3c7885cf54085bc6753ad363b707c819f6ae06139ef07fbc08d7a"
+  "size": 5739,
+  "sha256": "d10c5c8ac2794eb47ecb57ca0abe55f7904ce6fb6a1e45c49416463379fb28a4"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/OPTIONAL-PROJECT-TEMPLATE/CHANGELOG.txt",
@@ -20126,8 +21746,8 @@
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-WORKSPACE/AGENTS.md",
-  "size": 4935,
-  "sha256": "691b86b432c3c7885cf54085bc6753ad363b707c819f6ae06139ef07fbc08d7a"
+  "size": 5739,
+  "sha256": "d10c5c8ac2794eb47ecb57ca0abe55f7904ce6fb6a1e45c49416463379fb28a4"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/OPTIONAL-PROJECT-TEMPLATE/CHANGELOG.txt",
@@ -27166,8 +28786,8 @@
  },
  {
   "path": "START-HERE.txt",
-  "size": 4627,
-  "sha256": "b1c2fd10cd90cc62d8acb4d7d18c946fb11445484252f3d692b1c1fbbc6c047f"
+  "size": 4844,
+  "sha256": "031fef6469472d2db8f78a4bd9c0263b0d447d131bfda7eab181561225fc79e8"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -27395,14 +29015,19 @@
   "sha256": "55dac9d2992ad3c969c89ba42cfdd72945bebaa88417e4c892fbf2f8a09635aa"
  },
  {
+  "path": "V6.9.2-CHANGELOG.md",
+  "size": 2261,
+  "sha256": "6d272da99af47ae87f6210699783ff70cf65795a31cb336062d658f724be7abc"
+ },
+ {
   "path": "VALIDATION.json",
   "size": 531,
   "sha256": "38438d6c3b9321c9bb8ba5797638091defbc1bdd2eb4fda851e556d5e110b794"
  },
  {
   "path": "VERSION.txt",
-  "size": 33,
-  "sha256": "bd02c947fb9ebc0362c86f1504f70c31be42c5fb3a058a49f6c4e97e04ad7168"
+  "size": 7,
+  "sha256": "54bd4fe355af34497bcbbba6cc90d1209758213603822f6fc48a3bf6ad01b689"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
