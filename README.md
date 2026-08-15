@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.8.0
+# Ultimate AI Starter Bundle v6.8.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -109,6 +109,7 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V6.8.1-CHANGELOG.md](V6.8.1-CHANGELOG.md)
 - [V6.8-CHANGELOG.md](V6.8-CHANGELOG.md)
 - [V6.5-CHANGELOG.md](V6.5-CHANGELOG.md)
 - [BOOTSTRAP.txt](BOOTSTRAP.txt)
@@ -191,6 +192,23 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v6.8.1
+
+v6.8.0 said the completeness gate was on five providers. It was on **two**.
+Fixed by using each provider's real mechanism, verified against its own docs or
+CLI: Codex loads hooks from **plugins** (now installed as a local-marketplace
+plugin), Hermes uses a `hooks:` block in the config path `HERMES_HOME` resolves
+to — *not* the one its docs name — and **Kimi has no hook system at all**, so
+that file is removed rather than left looking installed.
+
+Hermes also gained the three MCP servers it was missing.
+
+Two consent prompts remain, by design: Codex asks once to trust the plugin, and
+Hermes needs `hermes --accept-hooks` once. Forging either would mean writing a
+security consent record on your behalf.
+
+Full detail in [V6.8.1-CHANGELOG.md](V6.8.1-CHANGELOG.md).
 
 ## What's new in v6.8.0
 
@@ -280,7 +298,7 @@ registry.
 
 ## Version
 
-**v6.8.0** — 2026-08-15. Based on v6.5.0.
+**v6.8.1** — 2026-08-15. Based on v6.8.0.
 
 ## License
 
