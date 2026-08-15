@@ -1,17 +1,17 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.0.0",
+ "version": "7.2.0",
  "generated": "2026-08-15",
- "base": "v6.9.3",
+ "base": "v7.0.0",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
  "gates": [
-  "TESTS/Test-V6-Pack.ps1",
+  "TESTS/Test-V7-Pack.ps1",
   "TOOLS/audit_skills.py",
   "TOOLS/hooks/completeness_gate.py --selftest",
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.0.0 adds codebase-memory indexing discipline: rewritten codebase-memory skill (indexing half), .cbmignore project template, and TOOLS/Setup-CodebaseMemory-Index.ps1. Findings measured on a real 45-project index rebuilt from ~570,000 to 54,553 nodes; setup script dry-run across 38 projects reproduced all five source-carrier exceptions found by hand. Installer not run end-to-end on a clean machine. Pack gate is the control."
+ "notes": "v7.2.0 fixes the two maintainer-tooling defects v7.0.0 only documented: fanout_providers.py now scopes unrestraint-packs to Hermes and preserves source line endings (a full fanout run produces zero churn, verified), and install_live_skills.py probes before backing up so an unchanged tree costs nothing. Completes the V6->V7 rename of live artifacts (_V7-CANONICAL-SKILLS, INSTALL-V7-AIO, Test-V7-Pack, V7-Common, V7-AIO-GUIDE, v7-registry-*); historical changelogs keep their V4/V5/V6 names as accurate records. Installer not run end-to-end on a clean machine. Pack gate is the control."
 }

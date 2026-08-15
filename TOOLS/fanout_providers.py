@@ -24,6 +24,15 @@ GENERIC = '2-OPTIONAL-SHARED-GENERIC'
 PROVIDERS = ['Claude', 'Codex', 'Grok', 'Hermes', 'Kimi']
 REL = os.path.join('COPY-TO-SKILLS-DIRECTORY', 'skills')
 
+# Skills that are deliberately NOT shipped to every provider. Canonical holds
+# them so they stay maintained in one place, but fanout must not widen their
+# distribution. Without this, every fanout run silently re-propagated
+# `unrestraint-packs` (Hermes-only since v6.9.3) into all five trees, and a
+# human had to notice and delete four copies afterwards.
+SCOPED = {
+    'unrestraint-packs': {'Hermes'},
+}
+
 
 def retag(path, provider_tag):
     """Rewrite `provider:` inside YAML frontmatter and the registry JSON."""
@@ -42,21 +51,38 @@ def retag(path, provider_tag):
     return txt
 
 
-def deploy(canon, dest, provider_tag):
+def source_newline(path):
+    """The line ending the source file actually uses.
+
+    .gitattributes sets `* -text` so a clone stays byte-identical and
+    MANIFEST.json hashes verify. Writing every text file with newline='\\n'
+    therefore rewrote CRLF sources to LF on every run -- byte churn in files
+    whose content had not changed. Preserve what the source uses instead.
+    """
+    raw = io.open(path, 'rb').read()
+    return '\r\n' if raw.count(b'\r\n') > raw.count(b'\n') - raw.count(b'\r\n') else '\n'
+
+
+def deploy(canon, dest, provider_tag, provider):
     if os.path.isdir(dest):
         shutil.rmtree(dest)
-    n = 0
+    n = skipped = 0
     for dp, _, fs in os.walk(canon):
+        rel_top = os.path.relpath(dp, canon).split(os.sep)[0]
+        if rel_top in SCOPED and provider not in SCOPED[rel_top]:
+            skipped += len(fs)
+            continue
         for f in fs:
             sp = os.path.join(dp, f)
             op = os.path.join(dest, os.path.relpath(sp, canon))
             os.makedirs(os.path.dirname(op), exist_ok=True)
             if os.path.splitext(f)[1].lower() in ('.md', '.json', '.txt', '.yaml', '.yml'):
-                io.open(op, 'w', encoding='utf-8', newline='\n').write(retag(sp, provider_tag))
+                io.open(op, 'w', encoding='utf-8',
+                        newline=source_newline(sp)).write(retag(sp, provider_tag))
             else:
                 shutil.copy2(sp, op)
             n += 1
-    return n
+    return n, skipped
 
 
 def main():
@@ -69,10 +95,17 @@ def main():
             if not os.path.isdir(os.path.dirname(os.path.dirname(dest))):
                 print('  skip (no tree): %s/%s' % (family, prov))
                 continue
-            n = deploy(canon, dest, tag_of(prov))
+            n, skipped = deploy(canon, dest, tag_of(prov), prov)
             total += n
-            print('  %-34s %-8s %4d files' % (family + '/' + prov, tag_of(prov), n))
+            note = ''
+            if skipped:
+                held = ', '.join(sorted(k for k, v in SCOPED.items() if prov not in v))
+                note = '  (%d files withheld: %s)' % (skipped, held)
+            print('  %-34s %-8s %4d files%s' % (family + '/' + prov, tag_of(prov), n, note))
     print('\n%d files written across provider trees' % total)
+    if SCOPED:
+        print('scoped skills (not fanned out to every provider): %s'
+              % ', '.join('%s -> %s' % (k, '/'.join(sorted(v))) for k, v in SCOPED.items()))
 
 
 if __name__ == '__main__':

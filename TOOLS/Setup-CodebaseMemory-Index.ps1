@@ -249,7 +249,7 @@ function Set-ProjectIgnore {
 
 # --- main -------------------------------------------------------------------
 
-. (Join-Path $PSScriptRoot 'V6-Common.ps1')
+. (Join-Path $PSScriptRoot 'V7-Common.ps1')
 
 if (-not (Test-Path -LiteralPath $Path)) { throw "Path not found: $Path" }
 

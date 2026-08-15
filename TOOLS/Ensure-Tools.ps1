@@ -11,7 +11,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'V6-Common.ps1')
+. (Join-Path $PSScriptRoot 'V7-Common.ps1')
 $root = Get-V5PackRoot
 
 Write-V5Step 'discover_tools'
@@ -45,6 +45,6 @@ if ($need.Count -eq 0) {
 }
 
 Write-V5Step "Installing missing: $($need -join ', ')"
-& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'INSTALL-V6-AIO.ps1') `
+& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'INSTALL-V7-AIO.ps1') `
   -Mode $Mode -Components @($need) -ToolsOnly
 

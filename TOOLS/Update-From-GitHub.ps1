@@ -10,7 +10,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'V6-Common.ps1')
+. (Join-Path $PSScriptRoot 'V7-Common.ps1')
 $root = Get-V5PackRoot
 $catalog = Get-V5Catalog
 $cache = Join-Path $root 'BUNDLED-TOOLS\cache'
@@ -61,6 +61,6 @@ $results | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $stateDir 'last-gith
 Write-Host ""
 $results | Format-Table -AutoSize
 if ($InstallAfter) {
-  Write-V5Step "Running INSTALL-V6-AIO.ps1 -Mode BundledFirst (cache preferred via offline update)"
-  & (Join-Path $root 'INSTALL-V6-AIO.ps1') -Mode BundledFirst
+  Write-V5Step "Running INSTALL-V7-AIO.ps1 -Mode BundledFirst (cache preferred via offline update)"
+  & (Join-Path $root 'INSTALL-V7-AIO.ps1') -Mode BundledFirst
 }

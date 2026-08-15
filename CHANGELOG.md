@@ -3,6 +3,17 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.2.0
+
+Makes the tooling enforce what v7.0.0 only documented. `fanout_providers.py` now scopes
+`unrestraint-packs` to Hermes and preserves source line endings — a full fanout run
+leaves `git status` clean, where before it dirtied 12 files and created 8 directories.
+`install_live_skills.py` probes before backing up, so an unchanged tree no longer costs
+~53 MB per provider. Completes the V6→V7 rename of live artifacts (`_V7-CANONICAL-SKILLS`,
+`INSTALL-V7-AIO`, `Test-V7-Pack`, `V7-Common`, `V7-AIO-GUIDE`, `v7-registry-*`);
+historical changelogs keep their V4/V5/V6 names as accurate records.
+See `V7.2.0-CHANGELOG.md`.
+
 ## 7.0.0
 
 Indexing discipline for codebase-memory-mcp. The `codebase-memory` skill now covers

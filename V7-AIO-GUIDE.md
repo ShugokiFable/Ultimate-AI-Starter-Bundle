@@ -13,7 +13,7 @@ One pack that delivers:
 ## New user path
 
 ```text
-INSTALL-V6-AIO.bat  →  restart AI apps  →  ask a load-order question
+INSTALL-V7-AIO.bat  →  restart AI apps  →  ask a load-order question
 ```
 
 ## AI agent path (when something is missing)
@@ -22,7 +22,7 @@ INSTALL-V6-AIO.bat  →  restart AI apps  →  ask a load-order question
 1. Load tool-discovery / ai-tooling-stack
 2. Run TOOLS\discover_tools.ps1  (or Ensure-Tools.ps1 -DiscoverOnly)
 3. If MISSING → run or recommend:
-     INSTALL-V6-AIO.ps1 -ToolsOnly -Components <ids>
+     INSTALL-V7-AIO.ps1 -ToolsOnly -Components <ids>
      or TOOLS\Ensure-Tools.ps1
      or TOOLS\Update-From-GitHub.ps1 -Components <ids> -InstallAfter
 4. For houseCARL instance: TOOLS\Setup-HouseCarl.ps1

@@ -3,7 +3,7 @@
 ## Easiest
 
 ```powershell
-.\INSTALL-V6-AIO.bat
+.\INSTALL-V7-AIO.bat
 ```
 
 ## What you get

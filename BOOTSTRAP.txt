@@ -11,7 +11,7 @@ do not ask me to run anything you can run yourself.
    - https://github.com/ShugokiFable/Ultimate-AI-Starter-Bundle (latest release)
 
 2. From the bundle root, run:
-     powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
    This installs the skills, wires the MCP servers, and installs the tools.
 
 3. Run:
@@ -23,7 +23,7 @@ do not ask me to run anything you can run yourself.
 
 4. Verify, and fix anything that fails rather than reporting it to me:
      python TOOLS\audit_skills.py "%USERPROFILE%\.claude\skills"
-     powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V6-Pack.ps1
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V7-Pack.ps1
 
 5. Read AIO-INSTRUCTION.txt and follow it for the rest of this session.
 

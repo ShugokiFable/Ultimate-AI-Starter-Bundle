@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.0.0
+# Ultimate AI Starter Bundle v7.2.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -45,10 +45,10 @@ Same content is also stored as `AIO Instruction.txt`.
 **Windows**
 
 1. Clone or download this repo (or unzip the release).
-2. Double-click `INSTALL-V6-AIO.bat`, or run:
+2. Double-click `INSTALL-V7-AIO.bat`, or run:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 ```
 
 3. Fully restart your AI app(s).
@@ -56,12 +56,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
 ### Common options
 
 ```powershell
-.\INSTALL-V6-AIO.ps1 -Providers Grok,Claude
-.\INSTALL-V6-AIO.ps1 -Mode OnlineLatest
-.\INSTALL-V6-AIO.ps1 -WithExtras
-.\INSTALL-V6-AIO.ps1 -SkillsOnly
-.\INSTALL-V6-AIO.ps1 -ToolsOnly
-.\INSTALL-V6-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
+.\INSTALL-V7-AIO.ps1 -Providers Grok,Claude
+.\INSTALL-V7-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-V7-AIO.ps1 -WithExtras
+.\INSTALL-V7-AIO.ps1 -SkillsOnly
+.\INSTALL-V7-AIO.ps1 -ToolsOnly
+.\INSTALL-V7-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
 ```
 
 | Mode | Behavior |
@@ -105,16 +105,17 @@ BUNDLED-TOOLS/CATALOG.json         component registry
 COPY-TO-YOUR-WORKSPACE/            workspace files + _PROJECT-TEMPLATE (incl. .cbmignore)
 0-UNRESTRAINT-PACKS/               no-holds prompt library (v6.9.2)
 TOOLS/                             installers and discovery scripts
-TOOLS/Setup-CodebaseMemory-Index.ps1   index scope generator (v7.0.0)
-_V6-CANONICAL-SKILLS/              maintainer master skills
-INSTALL-V6-AIO.ps1 / .bat          master installer
+TOOLS/Setup-CodebaseMemory-Index.ps1   index scope generator (v7.0.0+)
+_V7-CANONICAL-SKILLS/              maintainer master skills
+INSTALL-V7-AIO.ps1 / .bat          master installer
 START-HERE.txt                     short human guide
 ```
 
 ## Docs
 
 - [START-HERE.txt](START-HERE.txt)
-- [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V7-AIO-GUIDE.md](V7-AIO-GUIDE.md)
+- [V7.2.0-CHANGELOG.md](V7.2.0-CHANGELOG.md)
 - [V7.0.0-CHANGELOG.md](V7.0.0-CHANGELOG.md)
 - [V6.9.3-CHANGELOG.md](V6.9.3-CHANGELOG.md)
 - [V6.9.2-CHANGELOG.md](V6.9.2-CHANGELOG.md)
@@ -134,7 +135,7 @@ START-HERE.txt                     short human guide
 
 Skills teach **portable discovery**. Paths are resolved from env vars, `LOCALAPPDATA`, and `PATH` — never hardcoded drive letters or usernames.
 
-If a tool is missing, the AI should recommend `INSTALL-V6-AIO.ps1`, `Ensure-Tools.ps1`, or `Update-From-GitHub.ps1` — not invent paths or fake MCP results.
+If a tool is missing, the AI should recommend `INSTALL-V7-AIO.ps1`, `Ensure-Tools.ps1`, or `Update-From-GitHub.ps1` — not invent paths or fake MCP results.
 
 ## Third-party components
 
@@ -204,6 +205,29 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v7.2.0
+
+v7.0.0 shipped the indexing discipline but left two maintainer-tooling defects as
+*documented workarounds*. A workaround that depends on someone remembering two manual
+steps is a deferred bug — the fanout trap was hit again within the session that
+documented it. v7.2.0 makes the tooling enforce it.
+
+- **`fanout_providers.py` no longer widens scope.** A `SCOPED` map keeps
+  `unrestraint-packs` Hermes-only (493 files for Hermes, 492 elsewhere) and prints what
+  it withheld. Canonical still holds the skill so it stays maintained in one place.
+- **`fanout_providers.py` preserves line endings.** It used to rewrite CRLF sources to
+  LF on every run, which matters because `.gitattributes` sets `* -text` so
+  `MANIFEST.json` hashes verify against a clean clone. A full fanout run now leaves
+  `git status` completely clean; before, it dirtied 12 files and created 8 directories.
+- **`install_live_skills.py` stopped making useless backups.** It backed up *before*
+  knowing whether anything would change, so a no-op run still copied ~53 MB per provider
+  (13 stacked trees / ~692 MB observed). It now probes first and says
+  `backup: skipped (nothing changed)`.
+- **V6→V7 rename completed** for live artifacts: `_V7-CANONICAL-SKILLS/`,
+  `INSTALL-V7-AIO.ps1/.bat`, `V7-AIO-GUIDE.md`, `TESTS/Test-V7-Pack.ps1`,
+  `TOOLS/V7-Common.ps1`, `v7-registry-*.json`. Historical changelogs keep their
+  V4/V5/V6 names — they describe the past accurately.
 
 ## What's new in v7.0.0
 
@@ -368,20 +392,20 @@ v6 is a **correctness release**. Full detail in [V6-CHANGELOG.md](V6-CHANGELOG.m
 - **Grok + Headroom:** MCP only by default. Do **not** wrap subscription Grok
   through Headroom (the v5.0.2 bug: model "unknown" / 401). Repair with
   `.\TOOLS\Ensure-Headroom-Grok.ps1 -Repair`.
-- **Extras:** `.\INSTALL-V6-AIO.ps1 -WithExtras` (claude-mem is Claude Code only
+- **Extras:** `.\INSTALL-V7-AIO.ps1 -WithExtras` (claude-mem is Claude Code only
   and needs Bun).
 
 ## Gates (new in v6)
 
 ```powershell
 python TOOLS\audit_skills.py <skills-dir>
-powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V6-Pack.ps1
-python TOOLS\install_live_skills.py _V6-CANONICAL-SKILLS --check
+powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V7-Pack.ps1
+python TOOLS\install_live_skills.py _V7-CANONICAL-SKILLS --check
 ```
 
 v5.2.5's registry had *already warned* that BOM/encoding drift breaks
 valid-looking files, and v5.2.5 shipped BOMs anyway. A warning in a document is
-not a control; these are. `Test-V6-Pack.ps1` checks every skill tree, parses
+not a control; these are. `Test-V7-Pack.ps1` checks every skill tree, parses
 every shipped `.ps1`, verifies offline-asset hashes, and sanity-checks the
 registry.
 
@@ -394,11 +418,9 @@ registry.
   logic never enters the graph no matter how you configure it. The graph covers
   C/C++/C#/Python/TS/Go/PHP and file structure — SKSE plugins and tooling, not
   Papyrus. Use Grep + the `papyrus-reference` skill there.
-- `TOOLS/fanout_providers.py` treats `_V6-CANONICAL-SKILLS` as truth for every
-  provider, so it re-propagates the Hermes-only `unrestraint-packs` skill and
-  rewrites line endings on each run. Both must be reverted after a fanout (see
-  [V7.0.0-CHANGELOG.md](V7.0.0-CHANGELOG.md)); an exclusion list in the script
-  is the real fix and is not done.
+- `unrestraint-packs` is kept Hermes-only by a hardcoded `SCOPED` map in
+  `TOOLS/fanout_providers.py`. The mechanism works, but nothing validates that the
+  map matches intent — a wrong entry would be as silent as the bug it replaced.
 - Everything here is **tool-validated** — gates pass, scripts parse, hashes
   verify, and the BOM fix is confirmed live in a provider's own skill listing.
   The installer has **not** been run end-to-end on a clean machine as part of
@@ -406,7 +428,7 @@ registry.
 
 ## Version
 
-**v7.0.0** — 2026-08-15. Based on v6.9.3.
+**v7.2.0** — 2026-08-15. Based on v7.0.0.
 
 ## License
 
