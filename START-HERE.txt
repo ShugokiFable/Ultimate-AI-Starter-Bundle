@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.2.2 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.3.0 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -116,6 +116,7 @@ no yes-man. Also on disk as "AIO Instruction.txt" (same content).
 
 READ NEXT
 ---------
+  V7.3.0-CHANGELOG.md  Grok hang forensics; troubleshooting doc; pin-every-npx rule
   V7.2.2-CHANGELOG.md  MCP cold-start fixes; dashboard truth for cbm 0.10.5
   V7.2.1-CHANGELOG.md  Forge venv trap documented with repair recipe
   V7.2.0-CHANGELOG.md  fanout/installer fixes; V6->V7 rename completed

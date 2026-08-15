@@ -3,6 +3,12 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.3.0
+
+Grok hang forensics documented: new `GROK-MCP-TROUBLESHOOTING.md` (turn-phase log
+reading, 5 field-tested rules, diagnosis cheat-sheet); "pin every npx server" rule
+added to MCP examples; cbm skill gains the cold-daemon stall note. See `V7.3.0-CHANGELOG.md`.
+
 ## 7.2.2
 
 MCP cold-start fixes: firecrawl pinned (@3.24.0) in examples + all local provider

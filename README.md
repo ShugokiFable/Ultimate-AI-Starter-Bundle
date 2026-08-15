@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.2.2
+# Ultimate AI Starter Bundle v7.3.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -205,6 +205,15 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v7.3.0
+
+- **`GROK-MCP-TROUBLESHOOTING.md`** — the full Grok-hang forensics: turn-phase log
+  reading, 5 field-tested rules (no MCP sections in grok config.toml, pin every npx
+  server, headroom via launcher, cbm daemon keep-alive, never kill servers mid-session),
+  diagnosis cheat-sheet. Model stalls were tool-prep, not the model.
+- MCP examples: github pin + "pin every npx" rule.
+- `codebase-memory` skill: cold-daemon stall note.
 
 ## What's new in v7.2.2
 
@@ -442,7 +451,7 @@ registry.
 
 ## Version
 
-**v7.2.2** — 2026-08-15. Based on v7.2.1.
+**v7.3.0** — 2026-08-15. Based on v7.2.2.
 
 ## License
 
