@@ -35,6 +35,17 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# Windows PowerShell 5.1's `Set-Content -Encoding utf8` writes a UTF-8 BOM. A BOM
+# in a JSON config is a real hazard: a strict reader rejects the file outright.
+# This pack exists partly because a BOM once made seven skills invisible, so it
+# does not get to reintroduce one. Write BOM-less UTF-8 explicitly.
+function Set-Utf8NoBom {
+  param([string]$Path, [string]$Text)
+  $enc = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($Path, $Text, $enc)
+}
+
+
 if (-not $PackRoot) {
   $here = $PSScriptRoot
   if (-not $here -and $PSCommandPath) { $here = Split-Path -Parent $PSCommandPath }
@@ -126,7 +137,7 @@ if ($Uninstall) {
             }
           }
           if (-not $CheckOnly) {
-            $json | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $target -Encoding utf8
+            Set-Utf8NoBom -Path $target -Text ($json | ConvertTo-Json -Depth 20)
           }
           Write-Host "cleaned: $target"
         }
@@ -171,8 +182,7 @@ foreach ($p in $Providers) {
   New-Item -ItemType Directory -Force -Path $m.Dir | Out-Null
 
   if ($m.Style -eq 'file') {
-    ([ordered]@{ hooks = $block }) | ConvertTo-Json -Depth 20 |
-      Set-Content -LiteralPath $target -Encoding utf8
+    Set-Utf8NoBom -Path $target -Text (([ordered]@{ hooks = $block }) | ConvertTo-Json -Depth 20)
     Write-Host ("{0,-7} wired  {1}" -f $p, $target)
   } else {
     # Merge into existing settings.json without disturbing anything else.
@@ -199,7 +209,7 @@ foreach ($p in $Providers) {
     }
     $backup = "$target.bak-gate-$(Get-Date -Format yyyyMMdd-HHmmss)"
     if (Test-Path -LiteralPath $target) { Copy-Item -LiteralPath $target -Destination $backup -Force }
-    $json | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $target -Encoding utf8
+    Set-Utf8NoBom -Path $target -Text ($json | ConvertTo-Json -Depth 20)
     Write-Host ("{0,-7} merged {1}" -f $p, $target)
   }
 }

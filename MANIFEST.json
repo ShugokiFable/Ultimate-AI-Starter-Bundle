@@ -25086,13 +25086,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 11081,
-  "sha256": "af37c4d81ea20b65c2467419d8a47cd645376434c7fe324e2a858b49bf93c87b"
+  "size": 12426,
+  "sha256": "1c9aed8c3c70eddc929002081873fb9dfb061c101cf552ba8463682c6956eb94"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 994,
-  "sha256": "d3cd2889006502c01463ed88122b8e577be585540497e628e15a6a590efb0428"
+  "size": 1077,
+  "sha256": "dad774ed6393f1e6d1e26372d12bf4d698c1d1e2170b2724a2159c216cd6071b"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -25106,13 +25106,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/offline/codebase-memory-mcp-windows-amd64.zip",
-  "size": 37387929,
-  "sha256": "92f96896f952e539f0d6cb34d7892a25064b677ccbf808b8f8310ad897e86f2c"
+  "size": 39154915,
+  "sha256": "1e5ba3cca69194b9229f89a0cafe4a6538ba9e0040d892d57bf472e992420273"
  },
  {
-  "path": "BUNDLED-TOOLS/offline/headroom_ai-0.33.0-cp310-abi3-win_amd64.whl",
-  "size": 13339743,
-  "sha256": "30669b6109a645efab95819685056ec74efc3096e7b6de4feee46c6a6790cb91"
+  "path": "BUNDLED-TOOLS/offline/headroom_ai-0.35.0-cp310-abi3-win_amd64.whl",
+  "size": 13591679,
+  "sha256": "c80533399c911761fb47f49ac02db35c33ef4eb628c6568c213d7d7f0b594bef"
  },
  {
   "path": "BUNDLED-TOOLS/offline/houseCARL-1.9.0.zip",
@@ -26996,8 +26996,8 @@
  },
  {
   "path": "README.md",
-  "size": 11382,
-  "sha256": "f805609a4a3b281bcf5b95e811b589ecdf5c868b1a5bae84cd29bc294e54e1df"
+  "size": 12217,
+  "sha256": "fe4f3a77e74aeba4147d6225b6e04f6e52ccebceb20e9100aff5ffa7a9ccbf8e"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -27020,6 +27020,11 @@
   "sha256": "709c40b8d0bd70fe1e1108b262f2ead5ea7b1ab39441cf9cf6a1ec1e5d743326"
  },
  {
+  "path": "TOOLS/Add-Reasoning-MCPs.ps1",
+  "size": 6725,
+  "sha256": "ac666d3e2b2db70eef22d97037f1673e7e7d20944c797e5efb03602327a5269d"
+ },
+ {
   "path": "TOOLS/Ensure-Headroom-Grok.ps1",
   "size": 17567,
   "sha256": "1115e244471c1483e43fa4af496e352958499865538199f18d20a14983a32ea3"
@@ -27036,8 +27041,8 @@
  },
  {
   "path": "TOOLS/Install-Completeness-Gate.ps1",
-  "size": 8112,
-  "sha256": "b58a3e5e2db75b414b3db46367acf0ca5f17f590bc7d2600a09a629193dbe682"
+  "size": 8547,
+  "sha256": "3baa14c3167ac2266fcae500b8d6e1c4fdd56eca59e8724d69c0420dedf93b4e"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -27163,6 +27168,11 @@
   "path": "V6.5-CHANGELOG.md",
   "size": 4277,
   "sha256": "d19cd64083edd0169003e741ea630497964b43ddebf8e0529aed3ec500f9a2d6"
+ },
+ {
+  "path": "V6.8-CHANGELOG.md",
+  "size": 3290,
+  "sha256": "61ab80c0bdbab17183cb27606e4f97b949bcceee631585b66e2d987c0ea4984a"
  },
  {
   "path": "VALIDATION.json",

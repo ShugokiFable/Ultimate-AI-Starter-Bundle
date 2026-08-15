@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.5.0
+# Ultimate AI Starter Bundle v6.8.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -109,6 +109,7 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V6.8-CHANGELOG.md](V6.8-CHANGELOG.md)
 - [V6.5-CHANGELOG.md](V6.5-CHANGELOG.md)
 - [BOOTSTRAP.txt](BOOTSTRAP.txt)
 - [V6-CHANGELOG.md](V6-CHANGELOG.md)
@@ -191,6 +192,22 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
 
+## What's new in v6.8.0
+
+Three MCP servers chosen for one-shot accuracy, and two tools brought current.
+
+- **`TOOLS/Add-Reasoning-MCPs.ps1`** wires **context7** (live library/API docs —
+  stops invented signatures), **sequential-thinking** (explicit decomposition)
+  and the official **github** server (releases, PRs, CI status) into Claude,
+  Grok, Codex and Kimi. npx-based, majors pinned, keys optional.
+- **codebase-memory-mcp 0.9.0 → 0.10.5**, **Headroom 0.33.0 → 0.35.0**, verified
+  against upstream checksums.
+- Fixed both installers writing a **UTF-8 BOM** into JSON configs —
+  `Set-Content -Encoding utf8` emits one on PowerShell 5.1, and a strict JSON
+  reader rejects the file. The exact bug v6.0 exists to prevent.
+
+Full detail in [V6.8-CHANGELOG.md](V6.8-CHANGELOG.md).
+
 ## What's new in v6.5.0
 
 Agents are literal. Told "push the fix", they push the fix and never touch the
@@ -263,7 +280,7 @@ registry.
 
 ## Version
 
-**v6.5.0** — 2026-08-15. Based on v6.0.0.
+**v6.8.0** — 2026-08-15. Based on v6.5.0.
 
 ## License
 
