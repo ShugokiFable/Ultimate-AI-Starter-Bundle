@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.9.2
+# Ultimate AI Starter Bundle v6.9.3
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -201,6 +201,12 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
 
+## What's new in v6.9.3
+
+- Hermes `unrestraint-packs` skill (routes to the prompt library) in both Hermes trees + canonical skills.
+- Codex CLI reinstalled fresh (0.147.0); all providers verified live with the V6.9.2 block.
+- Stale backups, duplicate skill trees, and scratch purged from every provider home.
+
 ## What's new in v6.9.2
 
 - `0-UNRESTRAINT-PACKS/` — the no-holds prompt library: operator Fun stuff kit
@@ -359,7 +365,7 @@ registry.
 
 ## Version
 
-**v6.9.2** — 2026-08-15. Based on v6.9.1.
+**v6.9.3** — 2026-08-15. Based on v6.9.2.
 
 ## License
 

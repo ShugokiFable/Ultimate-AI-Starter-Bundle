@@ -11580,6 +11580,11 @@
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
  },
  {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2585,
+  "sha256": "7c9c8348abd06107d81cbbfde266a5e6e94c13296996ebb0fbb7d4b663d02aae"
+ },
+ {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
   "size": 6813,
   "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
@@ -24180,6 +24185,11 @@
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
  },
  {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2585,
+  "sha256": "7c9c8348abd06107d81cbbfde266a5e6e94c13296996ebb0fbb7d4b663d02aae"
+ },
+ {
   "path": "2-OPTIONAL-SHARED-GENERIC/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
   "size": 6813,
   "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
@@ -28661,8 +28671,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 913,
-  "sha256": "02725326b452422f3329dc02c1cc1ca4527db17b2c4d59a46c60e95d58d4f379"
+  "size": 1522,
+  "sha256": "fec235d26202440d0400e0bb821680619881a0bf742dc5c0a30dc318e7cf55c3"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28737,7 +28747,7 @@
  {
   "path": "INSTALL-V6-AIO.ps1",
   "size": 33503,
-  "sha256": "44a728d2294237d4fbc65450a467a70182e9144f8a8e9498197e1590d7fd1e3b"
+  "sha256": "b5b09a9d17631b570cae78b5bd82b2aef867fbaf65fb8273e6ecd47692e25b07"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28776,8 +28786,8 @@
  },
  {
   "path": "README.md",
-  "size": 15461,
-  "sha256": "656747372da99b2b074f82db3212e0ad11c7cfac77edb177bc83bb995c9fc519"
+  "size": 16272,
+  "sha256": "9f775f87c9cd9b61c8f2d042ef83c868ea9c1d83c28694db25455e7409931460"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -28786,8 +28796,8 @@
  },
  {
   "path": "START-HERE.txt",
-  "size": 4844,
-  "sha256": "031fef6469472d2db8f78a4bd9c0263b0d447d131bfda7eab181561225fc79e8"
+  "size": 4993,
+  "sha256": "18ef957920aaf95a499331d8eba76a6c5a31dfa4ad3ad40734ea00d1bddc9211"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -29020,14 +29030,19 @@
   "sha256": "6d272da99af47ae87f6210699783ff70cf65795a31cb336062d658f724be7abc"
  },
  {
+  "path": "V6.9.3-CHANGELOG.md",
+  "size": 1363,
+  "sha256": "d1d0ea5967bbda968bf190fd01d3278218145ebffa6b34c06c739c6b1ea125f8"
+ },
+ {
   "path": "VALIDATION.json",
-  "size": 531,
-  "sha256": "38438d6c3b9321c9bb8ba5797638091defbc1bdd2eb4fda851e556d5e110b794"
+  "size": 571,
+  "sha256": "50e70d8386af6c3b70d621f30bd8f4db17dd386222764db320ad05dc2c63fa64"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "54bd4fe355af34497bcbbba6cc90d1209758213603822f6fc48a3bf6ad01b689"
+  "sha256": "a324e3745d326d115a54fd8500a0b3ed822514e04d9bd6a1e752b369b009584e"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -31418,6 +31433,11 @@
   "path": "_V6-CANONICAL-SKILLS/tool-output-awareness/SKILL.md",
   "size": 13241,
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
+ },
+ {
+  "path": "_V6-CANONICAL-SKILLS/unrestraint-packs/SKILL.md",
+  "size": 2585,
+  "sha256": "7c9c8348abd06107d81cbbfde266a5e6e94c13296996ebb0fbb7d4b663d02aae"
  },
  {
   "path": "_V6-CANONICAL-SKILLS/using-git-worktrees/SKILL.md",

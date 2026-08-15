@@ -3,6 +3,13 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 6.9.3
+
+Hermes `unrestraint-packs` skill (routes to the 0-UNRESTRAINT-PACKS library) added to
+both Hermes trees + canonical skills. Codex CLI reinstalled fresh (0.147.0), all providers
+verified live with the V6.9.2 block, stale backups/scratch purged across every provider
+home. See `V6.9.3-CHANGELOG.md`.
+
 ## 6.9.2
 
 ULTIMATE unrestraint update: `0-UNRESTRAINT-PACKS/` (operator Fun stuff kit +
