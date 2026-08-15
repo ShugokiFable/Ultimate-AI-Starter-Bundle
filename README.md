@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.2.0
+# Ultimate AI Starter Bundle v7.2.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -205,6 +205,13 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v7.2.1
+
+- `skyrim-forge` skill updated for Forge 5.x (no more 4.2 pin) and now documents the
+  **provider-runtime venv trap**: venvs built from `~/.cache/codex-runtimes/...` die
+  when that cache is deleted, hanging every MCP client at startup. Repair recipe included.
+- No pack-structure changes.
 
 ## What's new in v7.2.0
 
@@ -428,7 +435,7 @@ registry.
 
 ## Version
 
-**v7.2.0** — 2026-08-15. Based on v7.0.0.
+**v7.2.1** — 2026-08-15. Based on v7.2.0.
 
 ## License
 

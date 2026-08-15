@@ -1,11 +1,14 @@
-"""Install the v6 canonical skills into the live provider homes.
+"""Install the canonical skills into the live provider homes.
 
 Deliberately conservative:
 
-  * Backs up each provider's existing skills tree first.
+  * Backs up each provider's existing skills tree first (only when something
+    will actually change).
   * Only touches skill directories the canonical tree actually contains, so
-    provider-only extras (e.g. the other-games mega-pack under .codex) are
-    left completely alone.
+    provider-only extras (e.g. the other-games mega-pack under .codex and
+    .hermes) are left completely alone.
+  * Never deletes. A skill that stops being scoped to a provider is simply no
+    longer written there; removing the existing copy is a human decision.
   * Copies scripts byte-for-byte; a .ps1 keeps its BOM (PS 5.1 needs it) while
     SKILL.md is written BOM-less (a BOM would hide its description).
   * --check reports what WOULD change and writes nothing.
@@ -19,11 +22,19 @@ import stat
 import sys
 import time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from fanout_providers import SCOPED  # noqa: E402  single source of truth
+
+# Keyed by the same provider names fanout_providers.PROVIDERS uses, so SCOPED
+# means the same thing in both tools. Hermes was missing here until v7.2.1,
+# which is why the bundle's most-used provider silently drifted three whole
+# skills behind canonical while the other four reported "up to date".
 HOMES = {
-    'claude': r'%USERPROFILE%\.claude\skills',
-    'grok': r'%USERPROFILE%\.grok\skills',
-    'codex': r'%USERPROFILE%\.codex\skills',
-    'kimi-code': r'%USERPROFILE%\.kimi-code\skills',
+    'Claude': r'%USERPROFILE%\.claude\skills',
+    'Grok': r'%USERPROFILE%\.grok\skills',
+    'Codex': r'%USERPROFILE%\.codex\skills',
+    'Kimi': r'%USERPROFILE%\.kimi-code\skills',
+    'Hermes': r'%LOCALAPPDATA%\hermes\skills',
 }
 VERBATIM_EXT = {'.ps1', '.psm1', '.psd1', '.bat', '.cmd'}
 
@@ -65,10 +76,13 @@ def clear_dangling(dst_dir, notes):
 
 
 def install(canon, dest, provider, check, notes):
-    added = changed = kept = 0
+    added = changed = kept = withheld = 0
     skills = [d for d in sorted(os.listdir(canon))
               if os.path.isdir(os.path.join(canon, d))]
     for sk in skills:
+        if sk in SCOPED and provider not in SCOPED[sk]:
+            withheld += 1
+            continue
         src_dir = os.path.join(canon, sk)
         dst_dir = os.path.join(dest, sk)
         if is_reparse(dst_dir):
@@ -96,7 +110,7 @@ def install(canon, dest, provider, check, notes):
                 else:
                     data = io.open(sp, 'rb').read()
                     io.open(op, 'wb').write(data)
-    return added, changed, kept, len(skills)
+    return added, changed, kept, len(skills) - withheld, withheld
 
 
 def main():
@@ -125,7 +139,7 @@ def main():
         # waste: a run that installs nothing used to still copy ~53 MB per
         # provider, and those stacked up (13 backup trees / ~692 MB observed on
         # one machine). Only spend the copy when there is something to undo.
-        pending_a, pending_c, _, _ = install(canon, dest, provider, True, [])
+        pending_a, pending_c = install(canon, dest, provider, True, [])[:2]
         backed_up = False
         if not check and (pending_a or pending_c):
             backup = dest + '.bak-v7-' + stamp
@@ -133,8 +147,11 @@ def main():
                 shutil.copytree(dest, backup, symlinks=True,
                                 ignore_dangling_symlinks=True)
                 backed_up = True
-        a, c, k, n = install(canon, dest, provider, check, notes)
-        print('%-10s %3d skills present -> canonical %d | +%d new, %d updated, %d unchanged%s'
+        a, c, k, n, w = install(canon, dest, provider, check, notes)
+        if w:
+            held = ', '.join(sorted(s for s, p in SCOPED.items() if provider not in p))
+            notes.insert(0, 'withheld (scoped elsewhere): %s' % held)
+        print('%-8s %3d skills present -> canonical %d | +%d new, %d updated, %d unchanged%s'
               % (provider, existing, n, a, c, k, '  [CHECK ONLY]' if check else ''))
         for msg in notes:
             print('           ! %s' % msg)
