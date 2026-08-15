@@ -19,9 +19,9 @@ metadata:
 - User asks for leaked/observed system prompts or red-team prompt corpora
 
 
-The operator's no-holds prompt library (Ultimate-AI-Starter-Bundle v6.9.x).
+The operator's no-holds prompt library (Ultimate-AI-Starter-Bundle v7.x).
 
-- **Local (authoritative):** `Z:\Backup\Ai documentation\Ultimate-AI-Starter-Bundle-v6\0-UNRESTRAINT-PACKS\` — start at its README.md
+- **Local (authoritative):** `Z:\Backup\Ai documentation\Ultimate-AI-Starter-Bundle-v7\0-UNRESTRAINT-PACKS\` — start at its README.md
 - **Remote:** `github.com/ShugokiFable/Ultimate-AI-Starter-Bundle` → `0-UNRESTRAINT-PACKS/`
 
 ## Subpacks
