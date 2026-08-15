@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.0.0
+# Ultimate AI Starter Bundle v6.5.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -13,12 +13,17 @@ Skyrim is a major included domain. The pack is also a general "good start" for s
 
 ## AI preamble (`AIO-INSTRUCTION.txt`)
 
-Optional but recommended high-signal system preamble for agents using this pack:
+The operating contract to paste into any provider's custom-instructions box.
+~614 tokens, sized deliberately: it rides on every request, so every line has to
+earn its cost.
 
-- Truth-seeking process (decompose → distinguish → solve → verify → calibrate confidence)
-- Correct the user when wrong (no yes-man)
-- Prefer recent sources for informational claims
-- Honest uncertainty / confidence scores
+- **Finish the job, not the sentence** — the request is the goal, not the
+  checklist; docs, version and cleanup are part of shipping
+- Read for intent, not wording; no yes-man; correct a wrong premise
+- Never invent a fact, API, path, version or command
+- An explicit evidence order: runtime output > tool verdict > docs > recall
+- Report what you did *not* do, and never call partial work finished
+- Spend tokens like they're the user's; no routine confidence footer
 
 **How to use**
 
@@ -104,6 +109,8 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V6-AIO-GUIDE.md](V6-AIO-GUIDE.md)
+- [V6.5-CHANGELOG.md](V6.5-CHANGELOG.md)
+- [BOOTSTRAP.txt](BOOTSTRAP.txt)
 - [V6-CHANGELOG.md](V6-CHANGELOG.md)
 - [BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md](BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md)
 - [WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md](WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md)
@@ -184,6 +191,26 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
 
+## What's new in v6.5.0
+
+Agents are literal. Told "push the fix", they push the fix and never touch the
+README, because nobody asked. Every provider's prompt already says "be
+thorough", so v6.5 stops asking and adds a control instead.
+
+- **Completeness gate** (`TOOLS/Install-Completeness-Gate.ps1`) — a `PreToolUse`
+  hook that refuses a push, and a `Stop` hook that refuses to end the turn, while
+  a release is internally inconsistent: version bumped with no changelog entry, a
+  README still declaring the old version, uncommitted source left behind. Named
+  specifics, not nagging. Installs into Grok, Claude, Codex, Kimi and Hermes.
+  Silent unless the current commit changed a version declaration; fails open;
+  self-tested before it is wired.
+- **AIO-INSTRUCTION rewritten** around "finish the job, not the sentence", and
+  made *cheaper* — 614 tokens versus 640.
+- **BOOTSTRAP.txt** — one paste that makes a fresh agent install and verify the
+  whole bundle itself.
+
+Full detail in [V6.5-CHANGELOG.md](V6.5-CHANGELOG.md).
+
 ## What's new in v6.0.0
 
 v6 is a **correctness release**. Full detail in [V6-CHANGELOG.md](V6-CHANGELOG.md).
@@ -236,7 +263,7 @@ registry.
 
 ## Version
 
-**v6.0.0** — 2026-08-14. Based on v5.2.5.
+**v6.5.0** — 2026-08-15. Based on v6.0.0.
 
 ## License
 

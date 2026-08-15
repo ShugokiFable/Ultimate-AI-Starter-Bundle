@@ -1,0 +1,35 @@
+{
+  "_comment": [
+    "Ultimate AI Starter Bundle - completeness gate.",
+    "Claude-compatible hook shape. Grok, Codex, Kimi and Hermes read this format too.",
+    "PreToolUse refuses a push/release while the release is inconsistent.",
+    "Stop refuses to end the turn for the same reason, so the agent fixes it itself.",
+    "Both are silent unless the current commit changed a version declaration.",
+    "Replace <PYTHON> and <HOOKS> at install time; INSTALL-V6-AIO.ps1 does this."
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Shell|Terminal|run_command|execute_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "<PYTHON> \"<HOOKS>/completeness_gate.py\" --pre",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "<PYTHON> \"<HOOKS>/completeness_gate.py\" --stop",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
