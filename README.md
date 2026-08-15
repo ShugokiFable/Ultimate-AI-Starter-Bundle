@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.2.1
+# Ultimate AI Starter Bundle v7.2.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -205,6 +205,13 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v7.2.2
+
+- Firecrawl MCP example pinned (`firecrawl-mcp@3.24.0`) — unpinned npx cold-resolves
+  and can exceed Grok's 30s startup timeout; doc + explanation added.
+- `codebase-memory` skill: dashboard tiles can read 0 on v0.10.5 (UI-RPC lockdown,
+  upstream #1663) — documented with the correct verification path.
 
 ## What's new in v7.2.1
 
@@ -435,7 +442,7 @@ registry.
 
 ## Version
 
-**v7.2.1** — 2026-08-15. Based on v7.2.0.
+**v7.2.2** — 2026-08-15. Based on v7.2.1.
 
 ## License
 

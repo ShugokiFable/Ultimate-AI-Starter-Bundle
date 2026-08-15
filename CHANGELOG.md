@@ -3,6 +3,12 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.2.2
+
+MCP cold-start fixes: firecrawl pinned (@3.24.0) in examples + all local provider
+configs; explicit Grok `[mcp_servers]` entries; codebase-memory skill documents the
+v0.10.5 UI-RPC dashboard lockdown (issue #1663). See `V7.2.2-CHANGELOG.md`.
+
 ## 7.2.1
 
 `skyrim-forge` skill: 5.x version refresh + provider-runtime venv trap documented with

@@ -10,6 +10,13 @@
 # startup_timeout_sec = 90
 # tool_timeout_sec = 6000
 
+# [mcp_servers.firecrawl-mcp]
+# command = "npx"
+# args = ["-y", "firecrawl-mcp@3.24.0"]   # PIN IT: unpinned npx cold-resolves the latest
+# enabled = true                            # package; a cold start can exceed the 30s
+# startup_timeout_sec = 120                 # startup timeout and the server reports
+#                                           # "unavailable" having printed nothing.
+
 # [mcp_servers.housecarl]
 # command = "C:/PATH/TO/housecarl-mcp.exe"
 # args = []

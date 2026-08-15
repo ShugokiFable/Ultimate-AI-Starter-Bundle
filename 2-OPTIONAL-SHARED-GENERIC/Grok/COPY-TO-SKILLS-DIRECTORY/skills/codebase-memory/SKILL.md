@@ -176,9 +176,12 @@ Re-indexing is idempotent; run it again after large structural changes.
 
 ## Reading the dashboard honestly
 
-The Projects tab's **NODES / EDGES tiles read 0** even on a healthy index — they bind to
-a selected project rather than aggregating, and nothing is selected on that tab. Only the
-PROJECTS tile is a real total. This is cosmetic; **do not diagnose it as data loss.**
+The Projects tab's **NODES / EDGES tiles read 0** even on a healthy index. As of
+v0.10.5 the HTTP UI RPC allowlist permits only `list_projects`; the SPA's per-project
+`get_graph_schema` calls are rejected with 403 `UI RPC method is not allowed`, so the
+tiles sum zero (upstream issue #1663). MCP-tool access is unaffected — verify via
+`list_projects` below. Only the PROJECTS tile is a real total. This is cosmetic;
+**do not diagnose it as data loss.**
 
 Confirm real totals from the same endpoint the UI calls:
 
