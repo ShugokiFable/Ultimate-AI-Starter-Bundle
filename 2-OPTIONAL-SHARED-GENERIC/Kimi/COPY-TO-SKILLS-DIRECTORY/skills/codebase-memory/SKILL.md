@@ -1,11 +1,16 @@
 ---
 name: codebase-memory
-description: Use the codebase knowledge graph for structural code queries. Triggers on: explore the codebase, understand the architecture, what functions exist, show me the structure, who calls this function, what does X call, trace the call chain, find callers of, show dependencies, impact analysis, dead code, unused functions, high fan-out, refactor candidates, code quality audit, graph query syntax, Cypher query examples, edge types, how to use search_graph.
+description: Use the codebase knowledge graph for structural code queries, and index repositories correctly so the graph stays small and truthful. Triggers on: explore the codebase, understand the architecture, what functions exist, show me the structure, who calls this function, what does X call, trace the call chain, find callers of, show dependencies, impact analysis, dead code, unused functions, high fan-out, refactor candidates, code quality audit, graph query syntax, Cypher query examples, edge types, how to use search_graph, index a repo, index_repository, re-index, cbmignore, index is bloated, index burns tokens, project shows 0 nodes, rebuild the index.
 ---
 
 # Codebase Memory — Knowledge Graph Tools
 
 Graph tools return precise structural results in ~500 tokens vs ~80K for grep.
+
+**Two halves to this skill.** Querying (below) is easy. **Indexing is where it goes
+wrong** — a careless `index_repository` on a Skyrim mod tree produces a 200,000-node
+graph of animation files that costs tokens on every query and answers nothing. Read
+"Indexing discipline" before your first `index_repository` on any repo.
 
 ## Quick Decision Matrix
 
@@ -55,7 +60,7 @@ MATCH (f:Function) WHERE f.name =~ '.*Handler.*' RETURN f.name, f.file_path
 MATCH (a)-[r:CALLS]->(b) WHERE a.name = 'main' RETURN b.name
 ```
 
-## Gotchas
+## Query Gotchas
 1. `search_graph(relationship="HTTP_CALLS")` filters nodes by degree — use `query_graph` with Cypher to see actual edges.
 2. `query_graph` has a 200-row cap — use `search_graph` with degree filters for counting.
 3. `trace_path` needs exact names — use `search_graph(name_pattern=...)` first.
@@ -64,7 +69,146 @@ MATCH (a)-[r:CALLS]->(b) WHERE a.name = 'main' RETURN b.name
 
 ---
 
-## V5 install + multi-provider wiring
+# Indexing discipline
+
+## What this tool cannot parse
+
+**Papyrus (`.psc`) is never indexed.** There is no tree-sitter grammar for it. Worse,
+the indexer also skips directories named `scripts/` via a built-in skip-list — exactly
+where Skyrim keeps `Scripts/Source/*.psc`. Verified on a real project: 309 `.psc` files,
+and `get_architecture(aspects=["languages"])` reported PHP/YAML/JS/Python and no Papyrus.
+
+Consequences you must respect:
+
+- **Never** answer a Papyrus question with `search_graph` / `search_code` / `trace_path`.
+  Use Grep plus the `papyrus-reference` skill.
+- A Papyrus-only mod indexing to 2–50 nodes is **correct, not broken**. Do not "fix" it
+  by loosening ignores; you will only add asset noise.
+- The graph is genuinely useful for C, C++, C#, Python, TypeScript/JS, Go, PHP, Ruby,
+  and for file/document structure. That covers SKSE plugins and your tooling — not
+  Papyrus mod logic.
+
+## `.cbmignore` matching is CASE-SENSITIVE
+
+This is the single easiest way to silently ship a bloated index. `meshes/` does **not**
+match `Meshes/`. Skyrim conventionally capitalizes `Meshes`, `Textures`, `Sound`,
+`Interface`. A lowercase-only ignore list leaks entire asset trees into the graph.
+
+Real case: a mod leaked 236 JSON files from a capitalized `Meshes` directory and carried
+18,067 nodes for 13 source files, until both cases were listed.
+
+**Always write both cases.** Use the shipped template rather than hand-rolling:
+`COPY-TO-YOUR-WORKSPACE/_PROJECT-TEMPLATE/.cbmignore`, or generate and verify with
+`TOOLS/Setup-CodebaseMemory-Index.ps1`.
+
+## The four bloat sources
+
+| Source | What it looks like | Fix |
+|--------|--------------------|-----|
+| Vendored dependencies | 3,471 of a project's 3,964 headers sat in `extern/` (CommonLibSSE) | ignore `extern/ external/ vcpkg_installed/ node_modules/ build/ dist/ obj/` |
+| Version snapshots indexed N times | one project kept 34 full copies of itself, another 23 | keep only the `CURRENT.txt` version; ignore the rest |
+| Binary assets counted as nodes | an anim/mesh tree alone was 235,567 nodes | ignore `Meshes/ Textures/ Sound/ *.nif *.hkx *.dds *.esp *.pex *.bsa` (both cases) |
+| Vendored single-header libs | `SKSEMenuFramework.h` produced ~2,400 of 2,648 "functions", duplicated per patch folder | ignore the header by filename |
+
+Measured effect of applying all four across a 45-project index:
+**~570,000 nodes → 54,553**, while covering *more* projects.
+
+## Versioned workspaces (`skyrim-versioned-workspace`)
+
+A mod project root holds many `Mod Name X.Y.Z/` snapshots. Indexing them all multiplies
+every file by the snapshot count. Resolve the active one from `CURRENT.txt` and ignore
+the others.
+
+**Do not blindly exclude every older snapshot.** Where the active version is a *packaged
+release*, the source often lives only in an older folder. Before excluding, check that
+the version you keep actually contains source; if it has none (or no compiled-language
+source at all) keep the snapshot that does, and record why.
+
+Observed real exceptions — the active version shipped as a package and the source lived
+in an older snapshot:
+
+- active `1.0.8` had zero C++; `1.0.0` held the only 13 source files
+- active `1.5.1` had zero code files; `-1.5.1-source` held them
+- active `0.8.5` had 2 source files; `0.7.0` held 45
+
+`TOOLS/Setup-CodebaseMemory-Index.ps1` implements this check.
+
+## Never index
+
+| Path | Why |
+|------|-----|
+| Mod-manager staging (Vortex/MO2 `mods/`) | thousands of asset folders, ~90,000 nodes, stale after every mod change. `houseCARL` already answers installed-mod and conflict questions from live truth. |
+| Game `Data` as sole authority | the manager deploys it; use the owner project |
+| Tool install trees, `WindowsApps`, `C:\WINDOWS\System32` | noise, never project memory |
+| Agent session dumps under `.claude` / `.grok` | not authority |
+| Bundled reference corpora (large `corpus.json`, `*.jsonl`) | served through skills; one 6.43 MB corpus alone cost ~15,000 nodes |
+| A thin whole-workspace root graph | prefer one graph per owner project |
+
+## Secrets and hostile filenames
+
+- **Exclude `.env` and `.env.*` everywhere.** A graph is queryable; API keys and bot
+  tokens must not enter it. The template does this.
+- **A file literally named `nul` breaks the indexer.** It is a reserved Windows device
+  name; `index_repository` fails with a bare "Pipeline failed" and no useful log. Such
+  files come from a botched `... > nul` redirect. Delete the stray file (verify the
+  content first — it is junk) and the project indexes normally.
+- If an index fails with "Pipeline failed", suspect a reserved name (`nul`, `con`,
+  `aux`, `prn`, `com1`) before you suspect the repo.
+
+## Indexing procedure
+
+```text
+index_repository(repo_path=<owner project root>, mode=moderate, name=<stable-slug>)
+```
+
+1. Write `.cbmignore` at the project root **before** the first index.
+2. Index the **owner project root**, one graph per project, with a stable `name=` slug.
+3. Read the response: `excluded` proves your ignores fired; `not_indexed_files` shows
+   what was dropped and why (`cbmignore`, `gitignore`, `skip-list`, `ignored-suffix`).
+4. **Sanity-check the node count against the file count.** 18,000 nodes from 13 source
+   files means something leaked. Investigate before moving on.
+5. Verify with a real query, not just a node count:
+   `get_architecture(aspects=["languages"])` — if the languages you expect are missing,
+   your ignores are wrong (or the language is unparsed, see Papyrus above).
+
+MCP only — never `Start-Process` the exe, never pass `--ui` in MCP `args`.
+Re-indexing is idempotent; run it again after large structural changes.
+
+## Reading the dashboard honestly
+
+The Projects tab's **NODES / EDGES tiles read 0** even on a healthy index — they bind to
+a selected project rather than aggregating, and nothing is selected on that tab. Only the
+PROJECTS tile is a real total. This is cosmetic; **do not diagnose it as data loss.**
+
+Confirm real totals from the same endpoint the UI calls:
+
+```powershell
+$r = Invoke-RestMethod -Uri http://127.0.0.1:9749/rpc -Method Post -ContentType 'application/json' -Body '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"list_projects","arguments":{}}}'
+$p = ($r.result.content[0].text | ConvertFrom-Json).projects
+"{0} projects, {1} nodes, {2} edges" -f $p.Count, ($p | Measure-Object nodes -Sum).Sum, ($p | Measure-Object edges -Sum).Sum
+```
+
+Per-project health uses **`?name=`**, not `?project=` (the latter returns 400):
+`http://127.0.0.1:9749/api/project-health?name=<Project>`
+
+In PowerShell, `curl` is an alias for `Invoke-WebRequest` and does **not** accept
+`-H` / `-d`. Use `Invoke-RestMethod` as above.
+
+## The index has no backup
+
+Project graphs live under `%USERPROFILE%\.cache\codebase-memory-mcp\`. Deleting a project
+from the dashboard is immediate and unrecoverable — there is no undo and no automatic
+backup. What makes a rebuild cheap is a **written registry** of what was indexed and why.
+
+Keep one (the `skyrim-memory` vault does this at
+`locations/CODEBASE-MEMORY-PROJECTS.md`) recording per project: MCP name, root path,
+node count, and the "not indexed / why" table. Refresh it after bulk index or delete.
+Optionally set `persistence=true` on `index_repository` to write a shareable
+`.codebase-memory/graph.db.zst` artifact into the project.
+
+---
+
+## Install + multi-provider wiring
 
 Upstream: https://github.com/DeusData/codebase-memory-mcp
 
@@ -152,4 +296,5 @@ Pack helper (edit paths first): `TOOLS/Fix-Grok-Codebase-Memory-Direct.ps1`
 
 ### Usage reminder
 
-Prefer graph tools for structural questions (callers, callees, dead code). Index the repo first (`index_repository` / project list) when empty.
+Prefer graph tools for structural questions (callers, callees, dead code). Index the repo
+first when the project list is empty — and write `.cbmignore` before you do.

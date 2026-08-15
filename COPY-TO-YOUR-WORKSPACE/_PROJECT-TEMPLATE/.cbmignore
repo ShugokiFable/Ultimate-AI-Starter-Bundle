@@ -1,0 +1,119 @@
+# .cbmignore — codebase-memory-mcp index scope for this project.
+#
+# Copy to the project root BEFORE the first index_repository call.
+# Regenerate/verify with: TOOLS/Setup-CodebaseMemory-Index.ps1
+#
+# ---------------------------------------------------------------------------
+# MATCHING IS CASE-SENSITIVE.  `meshes/` does NOT match `Meshes/`.
+# Skyrim capitalizes Meshes/Textures/Sound/Interface, so every asset rule below
+# is listed in BOTH cases on purpose. Do not "tidy" the duplicates away.
+# ---------------------------------------------------------------------------
+
+# --- Vendored dependencies and build output (never our source) -------------
+extern/
+external/
+vcpkg_installed/
+node_modules/
+__pycache__/
+.venv/
+venv/
+site-packages/
+build/
+dist/
+out/
+obj/
+release/
+packages/
+.pnpm-store/
+
+# --- Skyrim binary assets: zero code value, enormous node counts -----------
+meshes/
+Meshes/
+MESHES/
+textures/
+Textures/
+TEXTURES/
+sound/
+Sound/
+sounds/
+Sounds/
+music/
+Music/
+grass/
+Grass/
+seq/
+SEQ/
+Seq/
+
+*.nif
+*.NIF
+*.hkx
+*.HKX
+*.dds
+*.DDS
+*.bsa
+*.BSA
+*.ba2
+*.esp
+*.ESP
+*.esm
+*.ESM
+*.esl
+*.ESL
+*.pex
+*.PEX
+*.fuz
+*.wav
+*.xwm
+*.tri
+*.btr
+*.bto
+*.hkt
+*.psa
+*.bik
+*.swf
+
+# NOTE: *.pex (compiled Papyrus) is excluded; .psc source is NOT excluded here.
+# Be aware the indexer cannot parse Papyrus at all and skips `scripts/` via its
+# own built-in skip-list, so .psc content will not be searchable regardless.
+# Use Grep + the papyrus-reference skill for Papyrus.
+
+# --- Archives, binaries, images -------------------------------------------
+*.zip
+*.7z
+*.rar
+*.exe
+*.dll
+*.pdb
+*.lib
+*.png
+*.jpg
+*.jpeg
+*.tga
+
+# --- Secrets: a graph is queryable, keys must never enter it ---------------
+.env
+.env.*
+
+# --- Reserved Windows device names: these BREAK the indexer ----------------
+# A stray file named `nul` makes index_repository fail with a bare
+# "Pipeline failed". Delete the file; this rule is belt-and-braces.
+nul
+
+# --- Bundled reference corpora (served via skills, not graph search) -------
+# Uncomment if this project vendors a large reference blob.
+# corpus.json
+# *.jsonl
+
+# --- Stale version snapshots ----------------------------------------------
+# A versioned workspace holds many "Mod Name X.Y.Z/" folders. Indexing them all
+# multiplies every file by the snapshot count. List every NON-active snapshot
+# here; keep the one named in CURRENT.txt.
+#
+# EXCEPTION: if the active version is a packaged release with no source, also
+# keep the snapshot that actually carries the source, and say so here.
+#
+# Example:
+# Mod Name 1.0.0/
+# Mod Name 1.1.0/
+# Mod Name 1.2.0/

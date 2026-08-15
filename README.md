@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6.9.3
+# Ultimate AI Starter Bundle v7.0.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -201,6 +201,33 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
 
+## What's new in v7.0.0
+
+Indexing discipline for `codebase-memory-mcp`. Previous versions documented how to
+*query* the graph and said nothing about how to *build* one — so agents indexed whole
+mod trees and produced graphs that cost tokens on every call and answered nothing.
+
+- `codebase-memory` skill rewritten with an **Indexing discipline** half: the four
+  bloat sources, what the tool cannot parse, never-index paths, and verification.
+- **`.cbmignore` matching is case-sensitive** — `meshes/` does not match `Meshes/`,
+  and Skyrim capitalizes its asset folders. Every asset rule now ships in both cases.
+- **Papyrus (`.psc`) is never parsed**, and `scripts/` is skipped by a built-in
+  skip-list. A script-only mod indexing to a handful of nodes is correct, not broken.
+  Use Grep + `papyrus-reference` for Papyrus.
+- New `COPY-TO-YOUR-WORKSPACE/_PROJECT-TEMPLATE/.cbmignore` — correct scope from
+  the moment a project is created.
+- New `TOOLS/Setup-CodebaseMemory-Index.ps1` — generates `.cbmignore` per project,
+  resolves the active version from `CURRENT.txt`, and detects the **source-carrier
+  exception** (an active version that ships as a package while the only copy of the
+  source sits in an older snapshot). Dry-run by default.
+- Secrets (`.env`, `.env.*`) excluded from every generated scope; a graph is queryable.
+- Documented two failure modes that produce useless bug reports: a stray file named
+  `nul` makes `index_repository` fail with a bare "Pipeline failed", and the
+  dashboard's NODES/EDGES tiles read **0** on a perfectly healthy index.
+
+Applied to a real 45-project index, these rules took it from ~570,000 nodes to
+**54,553** while covering more projects than before.
+
 ## What's new in v6.9.3
 
 - Hermes `unrestraint-packs` skill (routes to the prompt library) in both Hermes trees + canonical skills.
@@ -365,7 +392,7 @@ registry.
 
 ## Version
 
-**v6.9.3** — 2026-08-15. Based on v6.9.2.
+**v7.0.0** — 2026-08-15. Based on v6.9.3.
 
 ## License
 
