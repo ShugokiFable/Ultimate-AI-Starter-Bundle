@@ -1,0 +1,38 @@
+ONE-SHOT BOOTSTRAP
+Paste this into a fresh session of any agentic AI (Grok, Claude Code, Codex,
+Kimi, Hermes) that can run commands. It sets itself up. You do nothing else.
+
+------------------------------------------------------------------------------
+Set up my AI tooling from the Ultimate AI Starter Bundle. Work autonomously and
+do not ask me to run anything you can run yourself.
+
+1. Get the bundle. Use whichever you find first:
+   - a local copy already on this machine, or
+   - https://github.com/ShugokiFable/Ultimate-AI-Starter-Bundle (latest release)
+
+2. From the bundle root, run:
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
+   This installs the skills, wires the MCP servers, and installs the tools.
+
+3. Run:
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\TOOLS\Install-Completeness-Gate.ps1
+   This installs the hook that stops you shipping half a release.
+
+4. Verify, and fix anything that fails rather than reporting it to me:
+     python TOOLS\audit_skills.py "%USERPROFILE%\.claude\skills"
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V6-Pack.ps1
+
+5. Read AIO-INSTRUCTION.txt and follow it for the rest of this session.
+
+6. Tell me, in under ten lines: what got installed, what did not and why, and
+   what I have to do myself (restarts, API keys, anything needing my hands).
+
+Rules: do not invent paths - discover them. Do not skip a step because it looks
+optional. If a tool is missing, install it. If something cannot be done without
+me, say so explicitly instead of quietly leaving it undone.
+------------------------------------------------------------------------------
+
+WHAT YOU STILL HAVE TO DO YOURSELF
+- Fully restart each AI app afterwards. Skills and hooks load at startup.
+- Paste AIO-INSTRUCTION.txt into each provider's custom-instructions box. That
+  one is a UI field, so no agent can do it for you.

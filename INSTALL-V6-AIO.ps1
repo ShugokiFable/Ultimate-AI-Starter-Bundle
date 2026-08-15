@@ -637,6 +637,23 @@ $state = @{
 $state | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stateDir 'install-state.json') -Encoding UTF8
 $log | Set-Content (Join-Path $stateDir 'install-log.txt') -Encoding UTF8
 
+# Completeness gate: refuses a push, and refuses to end a turn, while a release
+# is internally inconsistent. Every provider's prose already says 'be thorough';
+# this is the layer that can actually refuse.
+if (-not $ToolsOnly) {
+  $gateInstaller = Join-Path $PackRoot 'TOOLS\Install-Completeness-Gate.ps1'
+  if (Test-Path -LiteralPath $gateInstaller) {
+    try {
+      & powershell -NoProfile -ExecutionPolicy Bypass -File $gateInstaller -Providers $Providers
+      L 'completeness gate installed'
+    } catch {
+      Write-V5Warn ('Completeness gate: ' + $_.Exception.Message)
+    }
+  } else {
+    Write-V5Warn 'TOOLS\Install-Completeness-Gate.ps1 missing from pack'
+  }
+}
+
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Green
 Write-Host " INSTALL COMPLETE" -ForegroundColor Green
@@ -649,6 +666,7 @@ Write-Host '  2. Grok: run /mcp and confirm housecarl, codebase-memory-mcp, head
 Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANCE path.'
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
+Write-Host '  7. Paste AIO-INSTRUCTION.txt into each AI custom-instructions box.'
 Write-Host '  6. Optional Forge: set SKYRIM_FORGE_ROOT or skill INSTALLATION.json'
 Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'

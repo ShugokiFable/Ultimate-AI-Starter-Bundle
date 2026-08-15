@@ -25071,13 +25071,18 @@
  },
  {
   "path": "AIO Instruction.txt",
-  "size": 2639,
-  "sha256": "94616a5aed264539c95f33b5a074b8b550319f8fee7e0f585a02db30232d1639"
+  "size": 2463,
+  "sha256": "df2a7f505ea075588f7a41bd21e9b751614b660516098874be808a657e975ae0"
  },
  {
   "path": "AIO-INSTRUCTION.txt",
-  "size": 2639,
-  "sha256": "94616a5aed264539c95f33b5a074b8b550319f8fee7e0f585a02db30232d1639"
+  "size": 2463,
+  "sha256": "df2a7f505ea075588f7a41bd21e9b751614b660516098874be808a657e975ae0"
+ },
+ {
+  "path": "BOOTSTRAP.txt",
+  "size": 1906,
+  "sha256": "2763d13dba0d1eace2bece6d5171ad72741ad85e571e6dedef452aacc54777cd"
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
@@ -26956,8 +26961,8 @@
  },
  {
   "path": "INSTALL-V6-AIO.ps1",
-  "size": 32014,
-  "sha256": "2fb681a790b560cf5f803f9fcca2c140008513e67914c4ecc2f68aaaeada718b"
+  "size": 32790,
+  "sha256": "d86a7858fae41aa5b58dcc66db26cbef24f145e8e310a2dc08dee53e139e6360"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -26991,8 +26996,8 @@
  },
  {
   "path": "README.md",
-  "size": 9938,
-  "sha256": "1f38864fa5a7909fb3b44f3f48b25b84fa1dbb44e6bbc38c96190bd48a6ababd"
+  "size": 11382,
+  "sha256": "f805609a4a3b281bcf5b95e811b589ecdf5c868b1a5bae84cd29bc294e54e1df"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -27028,6 +27033,11 @@
   "path": "TOOLS/Fix-Grok-Codebase-Memory-Direct.ps1",
   "size": 4407,
   "sha256": "64bf980953e6c257d7808c323a5323769e86c39071703992fda1dafe39b525c3"
+ },
+ {
+  "path": "TOOLS/Install-Completeness-Gate.ps1",
+  "size": 8112,
+  "sha256": "b58a3e5e2db75b414b3db46367acf0ca5f17f590bc7d2600a09a629193dbe682"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -27078,6 +27088,16 @@
   "path": "TOOLS/generate_manifest.py",
   "size": 1238,
   "sha256": "b46969c7c22700b8eb59e515bedabc9d6179994ee8d3a31fed70a16c3831f965"
+ },
+ {
+  "path": "TOOLS/hooks/completeness_gate.py",
+  "size": 12490,
+  "sha256": "2620554c8e59e59240202eb6876e534ec4239914249eb0bc4db101ac278b2abb"
+ },
+ {
+  "path": "TOOLS/hooks/ultimate-bundle.json",
+  "size": 1028,
+  "sha256": "c0e74b5b2e3a3725fe824f0b2678dac3240339bd0a5e310c0b812008b10b5fef"
  },
  {
   "path": "TOOLS/housecarl/README.md",
@@ -27138,6 +27158,11 @@
   "path": "V6-CHANGELOG.md",
   "size": 10713,
   "sha256": "bbe207c1c403d0956a335215eaaf116d1e4d369ebb147a4b1b7ad0a3b67b9df2"
+ },
+ {
+  "path": "V6.5-CHANGELOG.md",
+  "size": 4277,
+  "sha256": "d19cd64083edd0169003e741ea630497964b43ddebf8e0529aed3ec500f9a2d6"
  },
  {
   "path": "VALIDATION.json",
