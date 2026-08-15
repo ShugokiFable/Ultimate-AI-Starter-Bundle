@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.0.0 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.2.0 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -12,19 +12,19 @@ NEW USERS - ONE COMMAND
 -----------------------
 Double-click:
 
-    INSTALL-V6-AIO.bat
+    INSTALL-V7-AIO.bat
 
 Or from PowerShell in this folder:
 
-    powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V6-AIO.ps1
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 Then FULLY restart your AI app(s).
 
 Options:
-    .\INSTALL-V6-AIO.ps1 -Providers Grok,Claude
-    .\INSTALL-V6-AIO.ps1 -Mode OnlineLatest
-    .\INSTALL-V6-AIO.ps1 -WithExtras
-    .\INSTALL-V6-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
+    .\INSTALL-V7-AIO.ps1 -Providers Grok,Claude
+    .\INSTALL-V7-AIO.ps1 -Mode OnlineLatest
+    .\INSTALL-V7-AIO.ps1 -WithExtras
+    .\INSTALL-V7-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
 
 
 WHY V6 EXISTS (read this one bit)
@@ -50,7 +50,7 @@ Warnings are context-budget advice, not failures.
 
 Full pack self-test (skills + PowerShell parse + asset hashes + registry):
 
-    powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V6-Pack.ps1
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V7-Pack.ps1
     ... -IncludeLiveInstalls   (also audits your installed provider homes)
 
 
@@ -116,6 +116,7 @@ no yes-man. Also on disk as "AIO Instruction.txt" (same content).
 
 READ NEXT
 ---------
+  V7.2.0-CHANGELOG.md  fanout/installer fixes; V6->V7 rename completed
   V7.0.0-CHANGELOG.md  codebase-memory indexing discipline; .cbmignore + setup tool
   V6.9.3-CHANGELOG.md  Hermes unrestraint skill; all providers verified live
   V6.9.2-CHANGELOG.md  ULTIMATE unrestraint update: 0-UNRESTRAINT-PACKS
@@ -123,7 +124,7 @@ READ NEXT
   V6.9.0-CHANGELOG.md  adult-fiction in scope; no jailbreak layer
   V6.8.2-CHANGELOG.md  stop-assuming: assumption gate + verify-first
   V6-CHANGELOG.md      what changed and why, with the evidence
-  V6-AIO-GUIDE.md      user + AI contract
+  V7-AIO-GUIDE.md      user + AI contract
   README.md            layout
   WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md
 

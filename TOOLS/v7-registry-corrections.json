@@ -1,5 +1,5 @@
 {
-  "_comment": "Corrections applied 2026-08-14 after runtime contradiction. Merged by id, so these REPLACE the entries first written in v6-registry-additions.json. The originals implied a conversion that was later confirmed broken in game.",
+  "_comment": "Corrections applied 2026-08-14 after runtime contradiction. Merged by id, so these REPLACE the entries first written in v7-registry-additions.json. The originals implied a conversion that was later confirmed broken in game.",
   "entries": [
     {
       "id": "ARMA-RACE-001",

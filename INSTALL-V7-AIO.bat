@@ -5,7 +5,7 @@ echo.
 echo  Skyrim AI V5 ? All-In-One Installer
 echo  ==================================
 echo.
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0INSTALL-V6-AIO.ps1" %*
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0INSTALL-V7-AIO.ps1" %*
 echo.
 echo Exit code: %ERRORLEVEL%
 pause

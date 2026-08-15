@@ -1,4 +1,4 @@
-# V6-Common.ps1 - shared helpers for Skyrim AI V5 AIO installer
+# V7-Common.ps1 - shared helpers for Skyrim AI V5 AIO installer
 $script:V5PackRoot = $null
 $script:V5Headers = @{ 'User-Agent' = 'Skyrim-AI-V5-AIO/5.2.2' }
 

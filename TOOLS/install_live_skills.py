@@ -121,17 +121,28 @@ def main():
                 p = os.path.join(dest, d)
                 if is_reparse(p) and not os.path.isdir(p):
                     clear_dangling(p, notes)
-            backup = dest + '.bak-v6-' + stamp
+        # Probe before touching anything. Backing up an unchanged tree is pure
+        # waste: a run that installs nothing used to still copy ~53 MB per
+        # provider, and those stacked up (13 backup trees / ~692 MB observed on
+        # one machine). Only spend the copy when there is something to undo.
+        pending_a, pending_c, _, _ = install(canon, dest, provider, True, [])
+        backed_up = False
+        if not check and (pending_a or pending_c):
+            backup = dest + '.bak-v7-' + stamp
             if not os.path.exists(backup):
                 shutil.copytree(dest, backup, symlinks=True,
                                 ignore_dangling_symlinks=True)
+                backed_up = True
         a, c, k, n = install(canon, dest, provider, check, notes)
         print('%-10s %3d skills present -> canonical %d | +%d new, %d updated, %d unchanged%s'
               % (provider, existing, n, a, c, k, '  [CHECK ONLY]' if check else ''))
         for msg in notes:
             print('           ! %s' % msg)
         if not check:
-            print('           backup: %s' % os.path.basename(dest + '.bak-v6-' + stamp))
+            if backed_up:
+                print('           backup: %s' % os.path.basename(dest + '.bak-v7-' + stamp))
+            else:
+                print('           backup: skipped (nothing changed)')
 
 
 if __name__ == '__main__':

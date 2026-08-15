@@ -36,9 +36,9 @@
   Do not edit Grok config.toml
 
 .EXAMPLE
-  .\INSTALL-V6-AIO.ps1
-  .\INSTALL-V6-AIO.ps1 -Providers Grok,Claude -Mode OnlineLatest
-  .\INSTALL-V6-AIO.ps1 -WorkspaceRoot "D:\Modding\AI-Workspace"
+  .\INSTALL-V7-AIO.ps1
+  .\INSTALL-V7-AIO.ps1 -Providers Grok,Claude -Mode OnlineLatest
+  .\INSTALL-V7-AIO.ps1 -WorkspaceRoot "D:\Modding\AI-Workspace"
 #>
 [CmdletBinding()]
 param(
@@ -69,9 +69,9 @@ if ($WithExtras) {
 $ErrorActionPreference = 'Stop'
 $PackRoot = $PSScriptRoot
 if (-not (Test-Path (Join-Path $PackRoot 'BUNDLED-TOOLS\CATALOG.json'))) {
-  throw "Run INSTALL-V6-AIO.ps1 from the V6 pack root (folder containing BUNDLED-TOOLS)."
+  throw "Run INSTALL-V7-AIO.ps1 from the V6 pack root (folder containing BUNDLED-TOOLS)."
 }
-. (Join-Path $PackRoot 'TOOLS\V6-Common.ps1')
+. (Join-Path $PackRoot 'TOOLS\V7-Common.ps1')
 $script:V5PackRoot = $PackRoot
 $catalog = Get-V5Catalog
 $offline = Join-Path $PackRoot 'BUNDLED-TOOLS\offline'
@@ -82,7 +82,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.0.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.2.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -690,5 +690,5 @@ Write-Host '  7. Paste AIO-INSTRUCTION.txt into each AI custom-instructions box.
 Write-Host '  8. Codex: approve the one-time plugin trust prompt. Hermes: hermes --accept-hooks once.'
 Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'
-Write-Host 'Missing tools: run TOOLS\Ensure-Tools.ps1 or INSTALL-V6-AIO.ps1 - do not invent paths.'
+Write-Host 'Missing tools: run TOOLS\Ensure-Tools.ps1 or INSTALL-V7-AIO.ps1 - do not invent paths.'
 Write-Host ''

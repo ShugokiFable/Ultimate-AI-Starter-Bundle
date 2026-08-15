@@ -10,7 +10,7 @@
   this script is.
 
 .EXAMPLE
-  .\TESTS\Test-V6-Pack.ps1
+  .\TESTS\Test-V7-Pack.ps1
 #>
 [CmdletBinding()]
 param(
@@ -26,8 +26,8 @@ if (-not $PackRoot) {
     if (-not $here) { $here = (Get-Location).Path }
     $PackRoot = Split-Path -Parent $here
 }
-if (-not (Test-Path (Join-Path $PackRoot '_V6-CANONICAL-SKILLS'))) {
-    throw "PackRoot '$PackRoot' does not look like the v6 pack (no _V6-CANONICAL-SKILLS). Pass -PackRoot explicitly."
+if (-not (Test-Path (Join-Path $PackRoot '_V7-CANONICAL-SKILLS'))) {
+    throw "PackRoot '$PackRoot' does not look like the v6 pack (no _V7-CANONICAL-SKILLS). Pass -PackRoot explicitly."
 }
 
 $ErrorActionPreference = 'Stop'
@@ -42,7 +42,7 @@ Section '1. Skill health (all trees)'
 if (-not $py) {
     Bad 'python not found; skill audit skipped'
 } else {
-    $trees = @(Join-Path $PackRoot '_V6-CANONICAL-SKILLS')
+    $trees = @(Join-Path $PackRoot '_V7-CANONICAL-SKILLS')
     foreach ($fam in '1-RECOMMENDED-SEPARATE-TAILORED', '2-OPTIONAL-SHARED-GENERIC') {
         foreach ($prov in 'Claude', 'Codex', 'Grok', 'Hermes', 'Kimi') {
             $p = Join-Path $PackRoot "$fam\$prov\COPY-TO-SKILLS-DIRECTORY\skills"
@@ -107,7 +107,7 @@ if (-not (Test-Path $manPath)) {
 
 Section '5. Evidence registry sanity'
 if ($py) {
-    $reg = Join-Path $PackRoot '_V6-CANONICAL-SKILLS\skyrim-memory\references\ERROR-REGISTRY.json'
+    $reg = Join-Path $PackRoot '_V7-CANONICAL-SKILLS\skyrim-memory\references\ERROR-REGISTRY.json'
     if (Test-Path $reg) {
         # `sources` is required of NEW evidence at merge time (merge_registry.py
         # enforces it). It is deliberately NOT required here: 29 v4.3-era rows
