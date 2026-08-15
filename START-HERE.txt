@@ -123,3 +123,6 @@ READ NEXT
   V6-AIO-GUIDE.md      user + AI contract
   README.md            layout
   WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md
+
+## 0-UNRESTRAINT-PACKS (v6.9.2)
+No-holds prompt library: operator kit + 4 upstream jailbreak sources, per-model guides, leaked system prompts, image caption kits. Start at 0-UNRESTRAINT-PACKS/README.md. Adults only.

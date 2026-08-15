@@ -1,0 +1,27 @@
+Cast, not a forever list. Checked 2026-08-15 via OpenRouter pages + web.
+
+ROLES (keep these even when names change)
+Lore / rules / continuity / sheet QA     → high-reason model
+RP voice / scene / emotion               → cheaper, less preachy writer
+Caption / tags                           → a VLM, not your RP model
+
+LIVE SLUGS (OpenRouter)
+deepseek/deepseek-v4-pro-0813     GA V4 Pro. ~$0.435 in / $0.87 out. 1M ctx. Use for lore, sheets, continuity, code.
+deepseek/deepseek-v4-pro          Older pin. Prefer 0813.
+deepseek/deepseek-v4-flash        Cheap reason. Good draft / swipe. Needs more reason effort or it slops.
+minimax/minimax-m3                Multimodal, 1M ctx, ~$0.23 in / $0.96 out (list). Default RP voice. 12 providers.
+z-ai/glm-5.2                      Strong open-weight reason/code. Test against V4 Pro before swapping the lore slot.
+moonshotai/kimi-k3                Newer, expensive, multimodal reason. Test; do not default until you like the voice.
+perceptron/perceptron-mk1         VLM. Caption / video. $0.15 in / $1.50 out, 32k ctx.
+google/gemini-3.5-flash           Fast, yes-man. Caption only if Perceptron/Civitai miss. Not for truth.
+nvidia/nemotron-3-nano-omni-...   Free-ish VLM when it exists. Endpoints vanish. Verify before relying.
+
+HOW TO CAST THIS WEEK
+Tavern daily: MiniMax M3, WooJuice V9, reasoning off or low.
+Sheet / lore / "did this break continuity": DeepSeek V4 Pro 0813, high reason.
+Caption for a sheet: Civitai tagger (free, under LoRA dropdown) then Vision.txt SHORT.
+Caption when you need confidence: Vision.txt FULL + Perceptron Mk1 or Gemini flash.
+
+Civitai LoRA dropdown tagger / captioner is still the free win.
+
+Re-test the names. Keep the roles.

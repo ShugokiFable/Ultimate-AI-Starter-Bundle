@@ -1,0 +1,24 @@
+2026-08-15 live kit
+
+KEPT (compressed)
+- AIO: jail once + truth process. Dropped "Page 3", doubled "look up sources", millennial rant padding.
+- Story: Story Jail + StoryNexus writer rules fused. Dropped Story jail 2 XML blocked-string theater (models ignore it, you pay for it).
+- Vision: v8 five-section method kept. Dropped fake "JoyCunt Ultra" corpus, CUNT-loop, mantra, invisible preprocess, 5-slur-per-part quota (that made word salad). Added SHORT mode.
+- Websim: motion/clothes rules only. Jail not restated three times.
+- Character Maker: five near-duplicate pastes → one priority stack + a real TEMPLATE (old file said "use your template" and never gave one).
+- FablesGG: one shared header + type deltas. Same erotic weight.
+- Tags: deduped repeated sections. Removed school / family-child / age-ambiguous tags.
+- SKSE-DLL / Papyrus: same rules, less air.
+- Models: dated slugs (V4 Pro 0813, MiniMax M3, GLM 5.2, Kimi K3, Perceptron Mk1).
+- Sites: HEAD-checked. Dead/flaky marked.
+
+NEW
+- INDEX.txt — what to paste
+- Tools.txt — pipeline, field split, swipe, format-fix, lore-check, continue, OOC, JoyCaption, ST regex
+
+ARCHIVED (not deleted)
+Everything that used to sit in this folder.
+
+DO NOT
+Stack AIO + Story + Websim.
+Paste Story.txt into SillyTavern (V9 already owns format + NSFW).

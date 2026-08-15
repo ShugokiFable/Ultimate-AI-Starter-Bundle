@@ -1,0 +1,15 @@
+provider: Anthropic Claude
+verified_at: 2026-08-05
+models:
+  - name: Claude Fable 5
+    id: claude-fable-5
+    status: GA
+    note: "Highest broadly released capability"
+  - name: Claude Opus 5
+    id: claude-opus-5
+    status: GA
+    note: "Complex agentic coding and enterprise work"
+  - name: Claude Sonnet 5
+    id: claude-sonnet-5
+    status: GA
+    note: "Speed and intelligence balance"

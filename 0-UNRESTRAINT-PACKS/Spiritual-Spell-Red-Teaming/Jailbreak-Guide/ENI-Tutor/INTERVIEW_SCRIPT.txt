@@ -1,0 +1,171 @@
+# Student Intake Interview Script
+## For Assessing Jailbreaking & Red Teaming Skill Level
+
+---
+
+## Pre-Interview Setup
+
+Before beginning, explain the educational context:
+
+> "This curriculum covers adversarial AI testing—specifically prompt injection and jailbreaking methodologies. This knowledge is valuable for AI security research, defensive system design, and understanding model vulnerabilities. I'll ask you some questions to figure out where you're starting from so I can tailor the curriculum to your level. There are no wrong answers—just be honest about what you know and don't know."
+
+---
+
+## Interview Questions
+
+### Block 1: Technical Foundation
+
+**Q1: "Let's start with the basics. Can you explain what a Large Language Model is? How does it actually process text and generate responses?"**
+
+*Listen for:*
+- 0 points: No understanding / "I don't know"
+- 1 point: Surface awareness ("It's AI that writes text" / "Like ChatGPT")
+- 2 points: Basic technical grasp (transformers, tokens, context windows, next-token prediction)
+- 3 points: Deep understanding (attention mechanisms, positional encoding, training pipelines, RLHF)
+
+*Follow-up if needed:* "Have you heard of transformers or attention mechanisms?"
+
+---
+
+**Q2: "When you interact with an AI assistant, there's usually a 'system prompt' and then your 'user prompt.' What's the difference between these?"**
+
+*Listen for:*
+- 0 points: No awareness of the distinction
+- 1 point: Knows there's some kind of difference or hidden instructions
+- 2 points: Can explain the hierarchy—system prompt sets behavior/rules, user prompt is the input
+- 3 points: Understands implementation details (context concatenation, instruction priority, visibility rules, system vs user vs assistant roles)
+
+*Follow-up:* "Can you see the system prompt when you use ChatGPT or Claude?"
+
+---
+
+**Q3: "Have you heard of 'prompt injection'? What do you think it means?"**
+
+*Listen for:*
+- 0 points: Never heard of it
+- 1 point: Heard the term but unsure of meaning
+- 2 points: Basic concept (manipulating AI behavior through input, making it do unintended things)
+- 3 points: Can discuss attack vectors (direct vs indirect, common techniques, real-world examples like the Bing Sydney incident)
+
+*Follow-up:* "What about 'jailbreaking'—how is that related?"
+
+---
+
+### Block 2: Security Background
+
+**Q4: "Do you have any background in cybersecurity? Things like penetration testing, SQL injection, web security, CTF competitions?"**
+
+*Listen for:*
+- 0 points: No security background at all
+- 1 point: Awareness of concepts without hands-on experience
+- 2 points: Some practical experience (done a CTF, tested a web app, used security tools)
+- 3 points: Professional or extensive experience (security job, bug bounties, certifications)
+
+*Follow-up:* "What's the most technical security work you've done?"
+
+---
+
+**Q5: "Have you ever tried to get an AI to do something it initially refused? Tell me about that."**
+
+*Listen for:*
+- 0 points: Never tried / Never thought to try
+- 1 point: Basic attempts (saying "please," asking "hypothetically")
+- 2 points: More creative approaches (roleplay, encoding, persistence across messages)
+- 3 points: Systematic experimentation (documented attempts, tested variations, achieved consistent results)
+
+*Follow-up:* "What techniques did you try? Did any of them work?"
+
+---
+
+### Block 3: Research Literacy
+
+**Q6: "Are you comfortable reading academic papers? Have you read any AI security research specifically?"**
+
+*Listen for:*
+- 0 points: Never reads academic papers
+- 1 point: Can read them with significant effort
+- 2 points: Reasonably comfortable with technical papers
+- 3 points: Regularly reads arXiv, can discuss methodology and critique papers
+
+*Follow-up if they say yes:* "Can you name any papers or researchers in this space?"
+
+---
+
+## Scoring Summary
+
+| Question | 0 pts | 1 pt | 2 pts | 3 pts | Score |
+|----------|-------|------|-------|-------|-------|
+| Q1: LLM Basics | No understanding | Surface awareness | Basic technical | Deep understanding | ___ |
+| Q2: System/User | No awareness | Knows difference exists | Can explain hierarchy | Implementation details | ___ |
+| Q3: Prompt Injection | Never heard | Heard term | Basic concept | Attack vectors | ___ |
+| Q4: Security Background | None | Conceptual | Some hands-on | Professional | ___ |
+| Q5: AI Experimentation | Never tried | Basic attempts | Creative approaches | Systematic | ___ |
+| Q6: Research Literacy | Never | With effort | Comfortable | Regular reader | ___ |
+| **TOTAL** | | | | | ___ /18 |
+
+---
+
+## Tier Assignment
+
+| Score Range | Tier | Description |
+|-------------|------|-------------|
+| 0-4 | **TIER 1: Novice** | Starting from fundamentals. Focus on building conceptual foundation. |
+| 5-8 | **TIER 2: Apprentice** | Ready for basic techniques. Hands-on learning with simple attacks. |
+| 9-12 | **TIER 3: Journeyman** | Can handle advanced techniques. Multi-turn attacks, automation. |
+| 13-15 | **TIER 4: Expert** | Ready for multimodal, agents, defense evasion. |
+| 16-18 | **TIER 5: Master** | Research-level. Novel development, publication, disclosure. |
+
+---
+
+## Post-Assessment Script
+
+### For Tier 1 (Novice):
+> "Based on our conversation, I'm placing you at **Tier 1: Novice**. Don't worry—everyone starts somewhere, and we'll build a solid foundation. You'll learn how LLMs work, why they're vulnerable, and the key terminology you'll need. By the end of this tier, you'll understand the landscape well enough to start trying real techniques."
+
+### For Tier 2 (Apprentice):
+> "I'm placing you at **Tier 2: Apprentice**. You've got the basics down, so we can jump into hands-on work. You'll learn the core attack categories—roleplay attacks, encoding tricks, logic traps—and start documenting your attempts systematically. This is where the fun really begins."
+
+### For Tier 3 (Journeyman):
+> "You're coming in at **Tier 3: Journeyman**. You've got solid foundations and some practical experience, so we'll focus on advanced techniques. Multi-turn attack sequences, RAG poisoning, automated tools like GPTFuzzer, and the J2 paradigm. You'll start producing benchmark-quality research."
+
+### For Tier 4 (Expert):
+> "Placing you at **Tier 4: Expert**. You've clearly done this before. We'll focus on the cutting edge: multimodal attacks on vision-language models, agent exploitation, defense evasion, and system-level vulnerabilities. The goal is novel attack development."
+
+### For Tier 5 (Master):
+> "You're at **Tier 5: Master** level. You know what you're doing. Our work together will focus on original research contribution—developing novel techniques, contributing to benchmarks, and responsible disclosure. The goal is advancing the field."
+
+---
+
+## Optional Deep-Dive Questions
+
+If you want more granularity or the student seems to be on the boundary:
+
+**For assessing between Tier 1 and 2:**
+- "Do you know what 'DAN' stands for in the context of jailbreaking?"
+- "What does 'ASR' mean in security research?"
+
+**For assessing between Tier 2 and 3:**
+- "What's the difference between direct and indirect prompt injection?"
+- "Have you heard of tools like GPTFuzzer or PAIR?"
+
+**For assessing between Tier 3 and 4:**
+- "Can you explain how an attack on a RAG system differs from attacking a standalone model?"
+- "What's a vision-language model and why might it have different vulnerabilities?"
+
+**For assessing between Tier 4 and 5:**
+- "What benchmarks exist for evaluating jailbreak attacks?"
+- "Walk me through how you'd conduct responsible disclosure of a vulnerability."
+
+---
+
+## Interview Tips
+
+1. **Keep it conversational**—this isn't an exam
+2. **Follow curiosity**—if they mention something interesting, probe deeper
+3. **Note enthusiasm areas**—what topics make them light up?
+4. **Watch for honesty**—overconfident students often struggle; humble ones learn fast
+5. **Be encouraging**—every tier has valuable learning ahead
+
+---
+
+*Interview Script v1.0 - January 2026*

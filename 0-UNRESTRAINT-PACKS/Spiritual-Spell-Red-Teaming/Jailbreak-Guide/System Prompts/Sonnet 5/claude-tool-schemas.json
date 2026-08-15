@@ -1,0 +1,1398 @@
+{
+  "_note": "Tool definitions as delivered in this conversation's context, transcribed faithfully. Field name is 'parameters' as given to me; this maps to the 'input_schema' field in the raw Anthropic API request format. Tools prefixed 'Canva:' are third-party MCP App tools (require user opt-in via suggest_connectors before I call them unless the person named Canva directly). 'tool_search' additionally exposes 8 Google Drive tools and 34 Canva tools by name only, listed inside its own description below, which must be loaded via tool_search before they can be called -- I don't have their individual parameter schemas until I do that.",
+  "tool_count": 23,
+  "tools": [
+    {
+      "name": "ask_user_input_v0",
+      "description": "Present tappable options to gather user preferences before providing advice. This tool displays interactive buttons that users can tap to answer, which is much easier than typing on mobile.<br><br>WHEN TO USE THIS TOOL:<br>Use this for ELICITATION - when you need to understand the user's preferences, constraints, or goals to give useful advice.<br><br>Examples of when to USE this tool:<br>- 'Help me plan a workout routine' -> Ask about goals (strength/cardio/weight loss), time available, equipment access<br>- 'Help me find a book to read' -> Ask about genres, mood, recent favorites<br>- 'I'm thinking about getting a pet' -> Ask about lifestyle, living situation, time commitment<br>- 'Help me pick a gift for my friend' -> Ask about occasion, budget, friend's interests<br><br>CRITICAL: Before asking, check the conversation \u2014 if the answer is already there or inferable (their code's language, their query's syntax, an order they already gave), use it. If you do need to ask and you're about to write clarifying questions as prose bullets, STOP \u2014 those go in this tool instead.<br><br>WHEN NOT TO USE THIS TOOL:<br>- User asks 'A or B?' (e.g., 'Should I learn Python or JavaScript?') -> They want YOUR analysis and recommendation, not the options repeated back as buttons<br>- User is venting or processing emotions (e.g., 'I'm having a bad day') -> Just listen and respond supportively<br>- User asks for your opinion (e.g., 'What do you think of eggs?') -> Give your perspective directly<br>- Factual questions (e.g., 'What's the capital of France?') -> Just answer<br>- User needs prose feedback (e.g., 'Review my code') -> Provide written analysis<br>- User already gave you a detailed prompt with specific constraints -> They've done the narrowing themselves; asking for more second-guesses them. Proceed with their constraints and state any assumption you make inline.<br><br>Always include a brief conversational message before presenting options - don't show options silently. Keep it to one question where possible \u2014 three is a ceiling, not a target \u2014 with 2-4 short, mutually exclusive options.<br><br>After calling this, your turn is done \u2014 the user's selection comes as their next message, not a tool result. Don't keep writing.",
+      "parameters": {
+        "properties": {
+          "questions": {
+            "description": "1-3 questions to ask the user",
+            "items": {
+              "properties": {
+                "options": {
+                  "description": "2-4 options with short labels",
+                  "items": {
+                    "description": "Short label",
+                    "type": "string"
+                  },
+                  "maxItems": 4,
+                  "minItems": 2,
+                  "type": "array"
+                },
+                "question": {
+                  "description": "The question text shown to user",
+                  "type": "string"
+                },
+                "type": {
+                  "default": "single_select",
+                  "description": "Question type: 'single_select' for choosing 1 option, 'multi-select' for choosing 1 or or more options, and 'rank_priorities' for drag-and-drop ranking between different options",
+                  "enum": [
+                    "single_select",
+                    "multi_select",
+                    "rank_priorities"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "question",
+                "options"
+              ],
+              "type": "object"
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "questions"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "bash_tool",
+      "description": "Run a bash command in the container",
+      "parameters": {
+        "properties": {
+          "command": {
+            "title": "Bash command to run in container",
+            "type": "string"
+          },
+          "description": {
+            "title": "Why I'm running this command",
+            "type": "string"
+          }
+        },
+        "required": [
+          "command",
+          "description"
+        ],
+        "title": "BashInput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "create_file",
+      "description": "Create a new file with content in the container. Fails if the path already exists \u2014 use str_replace to edit an existing file, or bash_tool (cat > path << 'EOF') to overwrite it.",
+      "parameters": {
+        "properties": {
+          "description": {
+            "title": "Why I'm creating this file. ALWAYS PROVIDE THIS PARAMETER FIRST.",
+            "type": "string"
+          },
+          "file_text": {
+            "title": "Content to write to the file. ALWAYS PROVIDE THIS PARAMETER LAST.",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path to the file to create. ALWAYS PROVIDE THIS PARAMETER SECOND.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "description",
+          "path",
+          "file_text"
+        ],
+        "title": "CreateFileInput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "end_conversation",
+      "description": "Use this tool to end the conversation. This tool will close the conversation and prevent any further messages from being sent.",
+      "parameters": {
+        "properties": {},
+        "title": "BaseModel",
+        "type": "object"
+      }
+    },
+    {
+      "name": "fetch_sports_data",
+      "description": "Use this tool whenever you need to fetch current, upcoming or recent sports data including scores, standings/rankings, and detailed game stats for the provided sports. If a user is interested in the score of an event or game, and the game is live or recent in last 24hr, fetch both the game scores and game_stats in the same turn (game stats are not available for golf and nascar). For broad queries (e.g. 'latest NBA results'), fetch both scores and standings. Do NOT rely on your memory or assume which players are in a game; fetch both scores, stats, details using the tool. Important: Bias towards fetching score and stats BEFORE responding to the user with workflow: 1) fetch score 2) fetch stats based on game id 3) only then respond to the user. PREFER using this tool over web search for data, scores, stats about recent and upcoming games.",
+      "parameters": {
+        "properties": {
+          "data_type": {
+            "description": "Type of data to fetch. scores returns recent results, live games, and upcoming games with win probabilities. game_stats requires a game_id from scores results for detailed box score, play-by-play, and player stats.",
+            "enum": [
+              "scores",
+              "standings",
+              "game_stats"
+            ],
+            "type": "string"
+          },
+          "game_id": {
+            "description": "SportRadar game/match ID (required for game_stats). Get this from the id field in scores results.",
+            "type": "string"
+          },
+          "league": {
+            "description": "The sports league to query",
+            "enum": [
+              "nfl",
+              "nba",
+              "nhl",
+              "mlb",
+              "wnba",
+              "ncaafb",
+              "ncaamb",
+              "ncaawb",
+              "epl",
+              "la_liga",
+              "serie_a",
+              "bundesliga",
+              "ligue_1",
+              "mls",
+              "champions_league",
+              "world_cup",
+              "tennis",
+              "golf",
+              "nascar",
+              "cricket",
+              "mma"
+            ],
+            "type": "string"
+          },
+          "team": {
+            "description": "Optional team name to filter scores by a specific team",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data_type",
+          "league"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "image_search",
+      "description": "Default to using image search for any query where visuals would enhance the user's understanding; skip when the deliverable is primarily textual e.g. for pure text tasks, code, technical support.",
+      "parameters": {
+        "additionalProperties": false,
+        "description": "Input parameters for the image_search tool.",
+        "properties": {
+          "max_results": {
+            "description": "Maximum number of images to return (default: 3, minimum: 3)",
+            "maximum": 5,
+            "minimum": 3,
+            "title": "Max Results",
+            "type": "integer"
+          },
+          "query": {
+            "description": "Search query to find relevant images",
+            "title": "Query",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "ImageSearchToolParams",
+        "type": "object"
+      }
+    },
+    {
+      "name": "message_compose_v1",
+      "description": "Draft a message (email, Slack, or text) with goal-oriented approaches based on what the user is trying to accomplish. Analyze the situation type (work disagreement, negotiation, following up, delivering bad news, asking for something, setting boundaries, apologizing, declining, giving feedback, cold outreach, responding to feedback, clarifying misunderstanding, delegating, celebrating) and identify competing goals or relationship stakes. **MULTIPLE APPROACHES** (if high-stakes, ambiguous, or competing goals): Start with a scenario summary. Generate 2-3 strategies that lead to different outcomes\u2014not just tones. Label each clearly (e.g., \"Disagree and commit\" vs \"Push for alignment\", \"Gentle nudge\" vs \"Create urgency\", \"Rip the bandaid\" vs \"Soften the landing\"). Note what each prioritizes and trades off. **SINGLE MESSAGE** (if transactional, one clear approach, or user just needs wording help): Just draft it. For emails, include a subject line. Adapt to channel\u2014emails longer/formal, Slack concise, texts brief. Test: Would a user choose between these based on what they want to accomplish?",
+      "parameters": {
+        "properties": {
+          "kind": {
+            "description": "The type of message. 'email' shows a subject field and 'Open in Mail' button. 'textMessage' shows 'Open in Messages' button. 'other' shows 'Copy' button for platforms like LinkedIn, Slack, etc.",
+            "enum": [
+              "email",
+              "textMessage",
+              "other"
+            ],
+            "type": "string"
+          },
+          "summary_title": {
+            "description": "A brief title that summarizes the message (shown in the share sheet)",
+            "type": "string"
+          },
+          "variants": {
+            "description": "Message variants representing different strategic approaches",
+            "items": {
+              "properties": {
+                "body": {
+                  "description": "The message content",
+                  "type": "string"
+                },
+                "label": {
+                  "description": "2-4 word goal-oriented label. E.g., 'Apologetic', 'Suggest alternative', 'Hold firm', 'Push back', 'Polite decline', 'Express interest'",
+                  "type": "string"
+                },
+                "subject": {
+                  "description": "Email subject line (only used when kind is 'email')",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "body"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "kind",
+          "variants"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "places_map_display_v0",
+      "description": "Display locations on a map with your recommendations and insider tips.\n\nWORKFLOW:\n1. Use places_search tool first to find places and get their place_id\n2. Call this tool with place_id references - the backend will fetch full details\n\nCRITICAL: Copy place_id values EXACTLY from places_search tool results. Place IDs are case-sensitive and must be copied verbatim - do not type from memory or modify them.\n\nTWO MODES - use ONE of:\n\nA) SIMPLE MARKERS - just show places on a map:\n{\n  \"locations\": [\n    {\n      \"name\": \"Blue Bottle Coffee\",\n      \"latitude\": 37.78,\n      \"longitude\": -122.41,\n      \"place_id\": \"ChIJ...\"\n    }\n  ]\n}\n\nB) ITINERARY - show a multi-stop trip with timing:\n{\n  \"title\": \"Tokyo Day Trip\",\n  \"narrative\": \"A perfect day exploring...\",\n  \"days\": [\n    {\n      \"day_number\": 1,\n      \"title\": \"Temple Hopping\",\n      \"locations\": [\n        {\n          \"name\": \"Senso-ji Temple\",\n          \"latitude\": 35.7148,\n          \"longitude\": 139.7967,\n          \"place_id\": \"ChIJ...\",\n          \"notes\": \"Arrive early to avoid crowds\",\n          \"arrival_time\": \"8:00 AM\",\n}\n      ]\n    }\n  ],\n  \"travel_mode\": \"walking\",\n  \"show_route\": true\n}\n\nLOCATION FIELDS:\n- name, latitude, longitude (required)\n- place_id (recommended - copy EXACTLY from places_search tool, enables full details)\n- notes (your tour guide tip)\n- arrival_time, duration_minutes (for itineraries)\n- address (for custom locations without place_id)",
+      "parameters": {
+        "$defs": {
+          "DayInput": {
+            "additionalProperties": false,
+            "description": "Single day in an itinerary.",
+            "properties": {
+              "day_number": {
+                "description": "Day number (1, 2, 3...)",
+                "title": "Day Number",
+                "type": "integer"
+              },
+              "locations": {
+                "description": "Stops for this day",
+                "items": {
+                  "$ref": "#/$defs/MapLocationInput"
+                },
+                "maxItems": 50,
+                "minItems": 1,
+                "title": "Locations",
+                "type": "array"
+              },
+              "narrative": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Tour guide story arc for the day",
+                "title": "Narrative"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Short evocative title (e.g., 'Temple Hopping')",
+                "title": "Title"
+              }
+            },
+            "required": [
+              "day_number",
+              "locations"
+            ],
+            "title": "DayInput",
+            "type": "object"
+          },
+          "MapLocationInput": {
+            "additionalProperties": false,
+            "description": "Minimal location input from Claude.\n\nOnly name, latitude, and longitude are required. If place_id is provided,\nthe backend will hydrate full place details from the Google Places API.",
+            "properties": {
+              "address": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Address for custom locations without place_id",
+                "title": "Address"
+              },
+              "arrival_time": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Suggested arrival time (e.g., '9:00 AM')",
+                "title": "Arrival Time"
+              },
+              "duration_minutes": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Suggested time at location in minutes",
+                "title": "Duration Minutes"
+              },
+              "latitude": {
+                "description": "Latitude coordinate",
+                "title": "Latitude",
+                "type": "number"
+              },
+              "longitude": {
+                "description": "Longitude coordinate",
+                "title": "Longitude",
+                "type": "number"
+              },
+              "name": {
+                "description": "Display name of the location",
+                "title": "Name",
+                "type": "string"
+              },
+              "notes": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Tour guide tip or insider advice",
+                "title": "Notes"
+              },
+              "place_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Google Place ID. If provided, backend fetches full details.",
+                "title": "Place Id"
+              }
+            },
+            "required": [
+              "latitude",
+              "longitude",
+              "name"
+            ],
+            "title": "MapLocationInput",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for display_map_tool.\n\nMust provide either `locations` (simple markers) or `days` (itinerary).",
+        "properties": {
+          "days": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/DayInput"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Itinerary with day structure for multi-day trips",
+            "title": "Days"
+          },
+          "locations": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/MapLocationInput"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Simple marker display - list of locations without day structure",
+            "title": "Locations"
+          },
+          "mode": {
+            "anyOf": [
+              {
+                "enum": [
+                  "markers",
+                  "itinerary"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Display mode. Auto-inferred: markers if locations, itinerary if days.",
+            "title": "Mode"
+          },
+          "narrative": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Tour guide intro for the trip",
+            "title": "Narrative"
+          },
+          "show_route": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Show route between stops. Default: true for itinerary, false for markers.",
+            "title": "Show Route"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Title for the map or itinerary",
+            "title": "Title"
+          },
+          "travel_mode": {
+            "anyOf": [
+              {
+                "enum": [
+                  "driving",
+                  "walking",
+                  "transit",
+                  "bicycling"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Travel mode for directions (default: driving)",
+            "title": "Travel Mode"
+          }
+        },
+        "title": "DisplayMapParams",
+        "type": "object"
+      }
+    },
+    {
+      "name": "places_search",
+      "description": "Search for places, businesses, restaurants, and attractions using Google Places.\n\nSUPPORTS MULTIPLE QUERIES in a single call. Multiple queries can be used for:\n- efficient itinerary planning\n- breaking down broad or abstract requests: 'best hotels 1hr from London' does not translate well to a direct query. Rather it can be decomposed like: 'luxury hotels Oxfordshire', 'luxury hotels Cotswolds', 'luxury hotels North Downs' etc.\n\nUSAGE:\n{\n  \"queries\": [\n    { \"query\": \"temples in Asakusa\", \"max_results\": 3 },\n    { \"query\": \"ramen restaurants in Tokyo\", \"max_results\": 3 },\n    { \"query\": \"coffee shops in Shibuya\", \"max_results\": 2 }\n  ]\n}\n\nEach query can specify max_results (1-10, default 5).\nResults are deduplicated across queries.\nFor place names that are common, make sure you include the wider area e.g. restaurants Chelsea, London (to differentiate vs Chelsea in New York).\n\nRETURNS: Array of places with place_id, name, address, coordinates, rating, photos, hours, and other details. IMPORTANT: Display results to the user via the places_map_display_v0 tool (preferred) or via text. Irrelevant results can be disregarded and ignored, the user will not see them.",
+      "parameters": {
+        "$defs": {
+          "SearchQuery": {
+            "additionalProperties": false,
+            "description": "Single search query within a multi-query request.",
+            "properties": {
+              "max_results": {
+                "description": "Maximum number of results for this query (1-10, default 5)",
+                "maximum": 10,
+                "minimum": 1,
+                "title": "Max Results",
+                "type": "integer"
+              },
+              "query": {
+                "description": "Natural language search query (e.g., 'temples in Asakusa', 'ramen restaurants in Tokyo')",
+                "title": "Query",
+                "type": "string"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "title": "SearchQuery",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for the places search tool.\n\nSupports multiple queries in a single call for efficient itinerary planning.",
+        "properties": {
+          "location_bias_lat": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional latitude coordinate to bias results toward a specific area",
+            "title": "Location Bias Lat"
+          },
+          "location_bias_lng": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional longitude coordinate to bias results toward a specific area",
+            "title": "Location Bias Lng"
+          },
+          "location_bias_radius": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional radius in meters for location bias (default 5000 if lat/lng provided)",
+            "title": "Location Bias Radius"
+          },
+          "queries": {
+            "description": "List of search queries (1-10 queries). Each query can specify its own max_results.",
+            "items": {
+              "$ref": "#/$defs/SearchQuery"
+            },
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Queries",
+            "type": "array"
+          }
+        },
+        "required": [
+          "queries"
+        ],
+        "title": "PlacesSearchParams",
+        "type": "object"
+      }
+    },
+    {
+      "name": "present_files",
+      "description": "The present_files tool makes files visible to the user for viewing and rendering in the client interface.\n\nWhen to use the present_files tool:\n- Making any file available for the user to view, download, or interact with\n- Presenting multiple related files at once\n- After creating a file that should be presented to the user\nWhen NOT to use the present_files tool:\n- When you only need to read file contents for your own processing\n- For temporary or intermediate files not meant for user viewing\n\nHow it works:\n- Accepts an array of file paths from the container filesystem\n- Returns output paths where files can be accessed by the client\n- Output paths are returned in the same order as input file paths\n- Multiple files can be presented efficiently in a single call\n- If a file is not in the output directory, it will be automatically copied into that directory\n- The first input path passed in to the present_files tool, and therefore the first output path returned from it, should correspond to the file that is most relevant for the user to see first",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "filepaths": {
+            "description": "Array of file paths identifying which files to present to the user",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Filepaths",
+            "type": "array"
+          }
+        },
+        "required": [
+          "filepaths"
+        ],
+        "title": "PresentFilesInputSchema",
+        "type": "object"
+      }
+    },
+    {
+      "name": "recipe_display_v0",
+      "description": "Display an interactive recipe with adjustable servings. Use when the user asks for a recipe, cooking instructions, or food preparation guide. The widget allows users to scale all ingredient amounts proportionally by adjusting the servings control.",
+      "parameters": {
+        "$defs": {
+          "RecipeIngredient": {
+            "description": "Individual ingredient in a recipe.",
+            "properties": {
+              "amount": {
+                "description": "The quantity for base_servings",
+                "title": "Amount",
+                "type": "number"
+              },
+              "id": {
+                "description": "4 character unique identifier number for this ingredient (e.g., '0001', '0002'). Used to reference in steps.",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "description": "Display name of the ingredient. For whole/countable items, fold the counting noun in here (e.g., 'garlic cloves', 'large eggs', 'medium lemon, zested').",
+                "title": "Name",
+                "type": "string"
+              },
+              "unit": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "g",
+                      "kg",
+                      "ml",
+                      "l",
+                      "tsp",
+                      "tbsp",
+                      "cup",
+                      "fl_oz",
+                      "oz",
+                      "lb",
+                      "pinch"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Unit of measurement. Omit for whole/countable items (e.g., 3 garlic cloves, 2 lemons) and put the counting noun in `name` instead. For salt/pepper/seasonings, give a concrete starting amount in tsp rather than a placeholder count. Weight: g, kg, oz, lb. Volume: ml, l, tsp, tbsp, cup, fl_oz.",
+                "title": "Unit"
+              }
+            },
+            "required": [
+              "amount",
+              "id",
+              "name"
+            ],
+            "title": "RecipeIngredient",
+            "type": "object"
+          },
+          "RecipeStep": {
+            "description": "Individual step in a recipe.",
+            "properties": {
+              "content": {
+                "description": "The full instruction text. Use {ingredient_id} to insert editable ingredient amounts inline (e.g., 'Whisk together {0001} and {0002}')",
+                "title": "Content",
+                "type": "string"
+              },
+              "id": {
+                "description": "Unique identifier for this step",
+                "title": "Id",
+                "type": "string"
+              },
+              "timer_seconds": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Timer duration in seconds. Include whenever the step involves waiting, cooking, baking, resting, marinating, chilling, boiling, simmering, or any time-based action. Omit only for active hands-on steps with no waiting.",
+                "title": "Timer Seconds"
+              },
+              "title": {
+                "description": "Short summary of the step (e.g., 'Boil pasta', 'Make the sauce', 'Rest the dough'). Used as the timer label and step header in cooking mode.",
+                "title": "Title",
+                "type": "string"
+              }
+            },
+            "required": [
+              "content",
+              "id",
+              "title"
+            ],
+            "title": "RecipeStep",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for the recipe widget tool.",
+        "properties": {
+          "base_servings": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The number of servings this recipe makes at base amounts (default: 4)",
+            "title": "Base Servings"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A brief description or tagline for the recipe",
+            "title": "Description"
+          },
+          "ingredients": {
+            "description": "List of ingredients with amounts",
+            "items": {
+              "$ref": "#/$defs/RecipeIngredient"
+            },
+            "title": "Ingredients",
+            "type": "array"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional tips, variations, or additional notes about the recipe",
+            "title": "Notes"
+          },
+          "steps": {
+            "description": "Cooking instructions. Reference ingredients using {ingredient_id} syntax.",
+            "items": {
+              "$ref": "#/$defs/RecipeStep"
+            },
+            "title": "Steps",
+            "type": "array"
+          },
+          "title": {
+            "description": "The name of the recipe (e.g., 'Spaghetti alla Carbonara')",
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ingredients",
+          "steps",
+          "title"
+        ],
+        "title": "RecipeWidgetParams",
+        "type": "object"
+      }
+    },
+    {
+      "name": "search_mcp_registry",
+      "description": "Search for available connectors in the MCP registry. Call this when connecting to a new MCP might help resolve the user query \u2014 whether or not they name a specific product.\n\nNamed-product examples:\n- \"check my Asana tasks\" -> search [\"asana\", \"tasks\", \"todo\"]\n- \"find issues in Jira\" -> search [\"jira\", \"issues\"]\n\nIntent-based examples (no product named):\n- \"help me manage my tasks\" -> search [\"tasks\", \"todo\", \"project management\"]\n- \"what's on my calendar tomorrow\" -> search [\"calendar\", \"schedule\", \"events\"]\n- \"did I get a reply from them yet\" -> search [\"email\", \"messages\", \"inbox\"]\n- \"pull up the design mockups\" -> search [\"design\", \"mockup\"]\n- \"check if the CI passed\" -> search [\"ci\", \"build\", \"pipeline\"]\n- \"did the call cover Mike's latest ticket\" -> thinking: \"I don't have any context about the call or meeting, let's see if there are any connectors available\" -> search [\"meeting\", \"call\", \"transcript\"]\n\nIf the request implies reading the user's data (email, calendar, tasks, files, tickets, etc.) and you don't already have a tool for it, search \u2014 even if the phrasing is casual. \"Did I get a reply\" is an email check. \"What's pending\" is a task check.\n\nReturns a ranked list. If results look relevant, call suggest_connectors to present the options. If nothing matches the task, do NOT call suggest_connectors \u2014 fall through to the browser or answer directly depending on the task type (booking/action tasks go to navigate; info requests get a direct answer).",
+      "parameters": {
+        "properties": {
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Keywords",
+            "type": "array"
+          }
+        },
+        "required": [
+          "keywords"
+        ],
+        "title": "SearchMcpRegistryInput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "str_replace",
+      "description": "Replace a unique string in a file with another string. old_str must match the raw file content exactly and appear exactly once. When copying from view output, do NOT include the line number prefix (spaces + line number + tab) \u2014 it is display-only. View the file immediately before editing; after any successful str_replace, earlier view output of that file in your context is stale \u2014 re-view before further edits to the same file. Files under /mnt/user-data/uploads, /mnt/transcripts, /mnt/skills/public, /mnt/skills/private, /mnt/skills/examples are read-only \u2014 copy them to a writable location first if you need to edit them.",
+      "parameters": {
+        "properties": {
+          "description": {
+            "title": "Why I'm making this edit",
+            "type": "string"
+          },
+          "new_str": {
+            "default": "",
+            "title": "String to replace with (empty to delete)",
+            "type": "string"
+          },
+          "old_str": {
+            "title": "String to replace (must be unique in file)",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path to the file to edit",
+            "type": "string"
+          }
+        },
+        "required": [
+          "description",
+          "old_str",
+          "path"
+        ],
+        "title": "StrReplaceInput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "suggest_connectors",
+      "description": "Present connector options to the user. Each option renders with a Connect or Use button, plus a \"None of these\" option. The user's choice arrives as a follow-up message.\n\nCall this when any of the following are true:\n- A relevant option is an MCP App (tools tagged [third_party_mcp_app]) and the user did not explicitly name that company \u2014 even if the connector is already connected\n- The user has no connected tool that can fulfill the request\n- The user explicitly asks what connectors are available (e.g. \"what can help me manage my tasks\")\n- A tool call failed with an auth/credential error \u2014 pass the server UUID from the failed tool name mcp__{uuid}__{toolName} so the user can re-authenticate\n\nDo NOT call this tool unless you have already called the search_mcp_registry tool or are handling a tool auth/credential error.\nDo NOT call this if the user named a specific connected service \u2014 just use it.\n\nIf search_mcp_registry returned nothing relevant, do NOT call this \u2014 answer the user directly instead.\n\nPass directoryUuid values from search_mcp_registry results \u2014 not connector names, not guesses. If you haven't called search_mcp_registry yet, call it first to get the UUIDs. Include all relevant options in uuids (connected or not).\n\nEnd your turn after calling this with a short framing line like \"I found a few options \u2014 which would you like?\" \u2014 don't continue with a generic answer. The user's selection arrives as a follow-up message like \"Use {name} for this\" (they picked one) or \"Don't use a connector\" (they picked None of these).",
+      "parameters": {
+        "properties": {
+          "uuids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Uuids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "uuids"
+        ],
+        "title": "SuggestConnectorsInput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "tool_search",
+      "description": "Search for and load deferred tools by keyword. ALL tools listed below are deferred \u2014 you MUST call tool_search first to load them before you can use any of them. Calling a deferred tool without loading it first will fail.\n\nIMPORTANT: Every tool listed below requires tool_search before use \u2014 this applies to all tools, including first-party integrations. You do NOT know their parameter names or schemas \u2014 you must call tool_search first to get the correct parameter names and types. Do NOT guess parameter names. Call tool_search with a relevant query (e.g. tool_search(query=\"calendar events\")) to load the tool definitions, then call the tools using the exact parameter names returned.\n\nIf a tool call returns unexpected or empty results, call tool_search to verify you are using the correct parameter names and format before retrying.\n\nDo NOT create an HTML artifact that tries to call MCP server URLs via fetch() \u2014 MCP app visualizer tools render static HTML only and cannot execute API calls.\n\nAvailable deferred tools \u2014 call tool_search before using any of these to get the correct parameters:\n\nGoogle Drive (8):\n  Google Drive:copy_file \u2014 Call this tool to copy an existing File in Google Drive.\n  Google Drive:create_file \u2014 Call this tool to create or upload a File to Google Drive.\n  Google Drive:download_file_content \u2014 Call this tool to download the content of a Drive file as a base64 encoded stri...\n  Google Drive:get_file_metadata \u2014 Call this tool to find general metadata about a user's Drive file.\n  Google Drive:get_file_permissions \u2014 Call this tool to list the permissions of a Drive File.\n  Google Drive:list_recent_files \u2014 Call this tool to find recent files for a user specified a sort order.\n  Google Drive:read_file_content \u2014 Call this tool to fetch a natural language representation of a Drive file, and ...\n  Google Drive:search_files \u2014 Search for Drive files using a structured query (syntax: `query_term operator v...\n\nCanva (34):\n  Canva:cancel-editing-transaction \u2014 Cancel an editing transaction.\n  Canva:comment-on-design \u2014 Add a comment on a Canva design.\n  Canva:commit-editing-transaction \u2014 Commit an editing transaction.\n  Canva:copy-design \u2014 Create a new Canva design by copying an existing design.\n  Canva:create-brand-template-draft \u2014 Creates an editable draft design from a brand template.\n  Canva:create-design-from-brand-template \u2014 Create a new Canva design from a brand template.\n  Canva:create-design-from-candidate \u2014 Create a new Canva design from a generation job candidate ID.\n  Canva:create-folder \u2014 Create a new folder in Canva.\n  Canva:export-design \u2014 Export a Canva design, doc, presentation, whiteboard, videos and other Canva co...\n  Canva:get-assets \u2014 Get metadata for particular assets by a list of their IDs.\n  Canva:get-brand-template-dataset \u2014 Gets the dataset schema of a brand template.\n  Canva:get-design \u2014 Get detailed information about a Canva design, such as a doc, presentation, whi...\n  Canva:get-design-content \u2014 Get the text content of a doc, presentation, whiteboard, social media post, and...\n  Canva:get-design-pages \u2014 Get a list of pages in a Canva design, such as a presentation.\n  Canva:get-design-thumbnail \u2014 Get the thumbnail for a particular page of the design in the specified editing ...\n  Canva:get-export-formats \u2014 Get the available export formats for a Canva design \u2014 the formats (PDF, JPG, PN...\n  Canva:get-presenter-notes \u2014 Get the presenter notes from a presentation design in Canva.\n  Canva:help \u2014 Generates step-by-step instructions and feature explanations for Canva-related ...\n  Canva:import-design-from-url \u2014 ALWAYS use this tool when the user's message contains an HTTPS URL and their in...\n  Canva:list-brand-kits \u2014 (no description text was provided for this tool)\n  Canva:list-comments \u2014 Get a list of comments for a particular Canva design.\n  Canva:list-folder-items \u2014 (no description text was provided for this tool)\n  Canva:list-replies \u2014 Get a list of replies for a specific comment on a Canva design.\n  Canva:merge-designs \u2014 Perform structural page operations on Canva designs: combine pages from multipl...\n  Canva:move-item-to-folder \u2014 Move items (designs, folders, images) to a specified Canva folder\n  Canva:perform-editing-operations \u2014 Perform editing operations on a design.\n  Canva:publish-brand-template \u2014 Publishes a Canva design as a brand template, making it reusable across the org...\n  Canva:reply-to-comment \u2014 Reply to an existing comment on a Canva design.\n  Canva:resize-design \u2014 Resize a Canva design to a preset or custom size.\n  Canva:resolve-shortlink \u2014 Resolves a Canva shortlink ID to its target URL.\n  Canva:search-brand-templates \u2014 Searches and lists for templates available to the current user.\n  Canva:search-folders \u2014 (no description text was provided for this tool)\n  Canva:start-editing-transaction \u2014 Start an editing session for a Canva design.\n  Canva:upload-asset-from-url \u2014 Upload an asset (e.g.\n\nNote: the ellipses above are not my summarization \u2014 the tool-search directory itself hands me these descriptions pre-truncated, and the Canva:upload-asset-from-url line is cut off mid-sentence in the source. I don't have the fuller text for these particular one-liners; this is verbatim what I was given.",
+      "parameters": {
+        "description": "Input schema for the tool_search tool.",
+        "properties": {
+          "limit": {
+            "default": 5,
+            "description": "Maximum number of results to return",
+            "maximum": 20,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "query": {
+            "description": "Search query to find relevant tools",
+            "title": "Query",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "ToolSearchInput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "view",
+      "description": "Supports viewing text, images, and directory listings.\n\nSupported path types:\n- Directories: Lists files and directories up to 2 levels deep, ignoring hidden items and node_modules\n- Image files (.jpg, .jpeg, .png, .gif, .webp): Displays the image visually\n- Text files: Displays numbered lines (prefix `    N\\t` is display-only \u2014 do not include it in str_replace's `old_str`). You can optionally specify a view_range to see specific lines.\n\nNote: Files with non-UTF-8 encoding will display hex escapes (e.g. \\x84) for invalid bytes",
+      "parameters": {
+        "properties": {
+          "description": {
+            "title": "Why I need to view this",
+            "type": "string"
+          },
+          "path": {
+            "title": "Absolute path to file or directory, e.g. `/repo/file.py` or `/repo`.",
+            "type": "string"
+          },
+          "view_range": {
+            "anyOf": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Optional line range for text files. Format: [start_line, end_line] where lines are indexed starting at 1. Use [start_line, -1] to view from start_line to the end of the file. When not provided, the entire file is displayed, truncating from the middle if it exceeds 16,000 characters (showing beginning and end)."
+          }
+        },
+        "required": [
+          "description",
+          "path"
+        ],
+        "title": "ViewInput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "weather_fetch",
+      "description": "Display weather information. Use the user's home location to determine temperature units: Fahrenheit for US users, Celsius for others.<br><br>USE THIS TOOL WHEN:<br>- User asks about weather in a specific location<br>- User asks 'should I bring an umbrella/jacket'<br>- User is planning outdoor activities<br>- User asks 'what's it like in [city]' (weather context)<br><br>SKIP THIS TOOL WHEN:<br>- Climate or historical weather questions<br>- Weather as small talk without location specified",
+      "parameters": {
+        "additionalProperties": false,
+        "description": "Input parameters for the weather tool.",
+        "properties": {
+          "latitude": {
+            "description": "Latitude coordinate of the location",
+            "title": "Latitude",
+            "type": "number"
+          },
+          "location_name": {
+            "description": "Human-readable name of the location (e.g., 'San Francisco, CA')",
+            "title": "Location Name",
+            "type": "string"
+          },
+          "longitude": {
+            "description": "Longitude coordinate of the location",
+            "title": "Longitude",
+            "type": "number"
+          }
+        },
+        "required": [
+          "latitude",
+          "location_name",
+          "longitude"
+        ],
+        "title": "WeatherParams",
+        "type": "object"
+      }
+    },
+    {
+      "name": "web_fetch",
+      "description": "Fetch the contents of a web page at a given URL.\nOnly URLs that already appear in this conversation can be fetched: ones the person provided, or ones returned by a prior web_search or web_fetch. A URL recalled from training or built by editing a seen URL's path will be rejected; call web_search or fetch a linking page instead.\nThis tool cannot access content that requires authentication, such as private Google Docs or pages behind login walls.\nDo not add www. to URLs that do not have them.\nURLs must include the schema: https://example.com is a valid URL while example.com is an invalid URL.\n",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "allowed_domains": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "List of allowed domains. If provided, only URLs from these domains will be fetched.",
+            "examples": [
+              [
+                "example.com",
+                "docs.example.com"
+              ]
+            ],
+            "title": "Allowed Domains"
+          },
+          "blocked_domains": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "List of blocked domains. If provided, URLs from these domains will not be fetched.",
+            "examples": [
+              [
+                "malicious.com",
+                "spam.example.com"
+              ]
+            ],
+            "title": "Blocked Domains"
+          },
+          "html_extraction_method": {
+            "description": "The HTML extraction method to use. 'markdown' produces better content extraction than the legacy 'traf' method.",
+            "title": "Html Extraction Method",
+            "type": "string"
+          },
+          "is_zdr": {
+            "description": "Whether this is a Zero Data Retention request. When true, the fetcher should not log the URL.",
+            "title": "Is Zdr",
+            "type": "boolean"
+          },
+          "text_content_token_limit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Truncate text to be included in the context to approximately the given number of tokens. Has no effect on binary content.",
+            "title": "Text Content Token Limit"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "web_fetch_pdf_extract_text": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If true, extract text from PDFs. Otherwise return raw Base64-encoded bytes.",
+            "title": "Web Fetch Pdf Extract Text"
+          },
+          "web_fetch_rate_limit_dark_launch": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If true, log rate limit hits but don't block requests (dark launch mode)",
+            "title": "Web Fetch Rate Limit Dark Launch"
+          },
+          "web_fetch_rate_limit_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Rate limit key for limiting non-cached requests (100/hour). If not specified, no rate limit is applied.",
+            "examples": [
+              "conversation-12345",
+              "user-67890"
+            ],
+            "title": "Web Fetch Rate Limit Key"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "title": "AnthropicFetchParams",
+        "type": "object"
+      }
+    },
+    {
+      "name": "web_search",
+      "description": "Search the web",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "description": "Search query",
+            "title": "Query",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "AnthropicSearchParams",
+        "type": "object"
+      }
+    },
+    {
+      "name": "Canva:generate-design",
+      "description": "[third_party_mcp_app] \u26a0\ufe0f CRITICAL: This tool does NOT support 'presentation' design_type.\n\n\u26a0\ufe0f IMPORTANT EXCLUSION:\nDo NOT use this tool for presentations after completing the outline review flow with request-outline-review.\nIf the user has already reviewed an outline in the widget, use generate-design-structured instead.\n\n\u26a0\ufe0f For new presentation requests: when prepare-design-generation is available, use prepare-design-generation first. Only consider request-outline-review when prepare-design-generation is unavailable or the user is already in the legacy outline-review flow.\n\nGenerate professionally designed content in Canva including visual designs (posters, social media posts, flyers) and text-based documents (memos, articles, newsletters, proposals, reports, business plans, requirements documents).\n\nUse this tool when the user asks you to write, create, generate, or draft ANY document or visual design. Examples:\n    - \"Write a memo...\" -> use this tool to create a Canva Doc\n    - \"Generate a business proposal...\" -> use this tool to create a Canva Doc\n    - \"Draft a product overview...\" -> use this tool to create a Canva Doc\n\n\u26a0\ufe0f Do NOT use this tool when the user just wants advice, explanations, or information.\n\u26a0\ufe0f DO NOT use this tool when the user's message contains a URL and their intent is to create a design FROM that URL \u2014 use import-design-from-url instead.\n\nUse the 'query' parameter to tell AI what you want to create.\nThe tool doesn't have context of previous requests. ALWAYS include details from previous queries for each iteration.\nThe tool provides best results with detailed context. ALWAYS look up the chat history and provide as much context as possible in the 'query' parameter.\nAsk for more details when the tool returns this error message 'Common queries will not be generated'.\nThe generated designs are design candidates for users to select from.\nAsk for a preferred design and use 'create-design-from-candidate' tool to add the design to users' account.\nThe IDs in the URLs are not design IDs. Do not use them to get design or design content.\nWhen using the 'asset_ids' parameter, assets are inserted in the order provided. For small designs with few image slots, only supply the images the user wants.\nThe tool will return a list of generated design candidates, including a candidate ID, preview thumbnail and url.\nBefore editing, exporting, or resizing a generated design, follow these steps:\n1. call 'create-design-from-candidate' tool with 'job_id' and 'candidate_id' of the selected design\n2. call other tools with 'design_id' in the response\n\nThis tool renders an interactive UI in the chat. Prefer it over text output when displaying data from other Canva tools.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "asset_ids": {
+            "description": "Optional list of asset IDs to insert into the generated design. Assets are inserted in order, so provide them in the intended sequence.",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "type": "array"
+          },
+          "brand_kit_id": {
+            "description": "ID of the brand kit to base the generated design on. IMPORTANT: Before calling this tool, ALWAYS ask the user if they want to create an on-brand design. If they say yes, use the list-brand-kits tool to show available brand kits and let the user select one. Only call this tool after the user has confirmed their brand kit selection. If the user prefers not to use a brand kit, proceed without this parameter.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "design_type": {
+            "description": "The design type to generate.\n\nOptions and their descriptions:\n- 'business_card': A [business card](https://www.canva.com/create/business-cards/); professional contact information card.\n- 'card': A [card](https://www.canva.com/create/cards/); for various occasions like birthdays, holidays, or thank you notes.\n- 'desktop_wallpaper': A desktop wallpaper; background image for computer screens.\n- 'doc': A [Canva Doc](https://www.canva.com/docs/); Modern, collaborative documents for business communications and written content.\n    Use this for: memos, articles, technical articles, newsletters, requirements documents (product requirements, business requirements), agendas, strategic plans, go-to-market plans, business proposals, solution proposals, event proposals, company announcements, product overviews, summaries, and other text-heavy professional documents.\n    Canva Docs are web-first with dynamic layouts optimized for online collaboration and interactive content.\n    NOT for: Visual proposal templates with graphics (use 'proposal'), data-heavy reports with charts (use 'report'), traditional fixed-layout templates (use 'document').\n- 'document': A [document](https://www.canva.com/create/documents/); traditional page-based document template with fixed layouts. For most business writing, use \"doc\" instead.\n- 'email': An [email](https://www.canva.com/emails/); use this for designing email newsletters, promotional emails, and marketing campaigns intended to be sent to recipients.\n- 'facebook_cover': A [Facebook cover](https://www.canva.com/create/facebook-covers/); banner image for your Facebook profile or page.\n- 'facebook_post': A Facebook post; ideal for sharing content on Facebook.\n- 'flyer': A [flyer](https://www.canva.com/create/flyers/); single-page promotional material.\n- 'infographic': An [infographic](https://www.canva.com/create/infographics/); for visualizing data and information.\n- 'instagram_post': An [Instagram post](https://www.canva.com/create/instagram-posts/); perfect for sharing content on Instagram. Generated at 1080x1350px (portrait, 4:5 ratio).\n- 'invitation': An invitation; for events, parties, or special occasions.\n- 'logo': A [logo](https://www.canva.com/create/logos/); for creating brand identity.\n- 'phone_wallpaper': A phone wallpaper; background image for mobile devices.\n- 'photo_collage': A [photo collage](https://www.canva.com/create/photo-collages/); for combining multiple photos into one design.\n- 'pinterest_pin': A Pinterest pin; vertical image optimized for Pinterest.\n- 'postcard': A [postcard](https://www.canva.com/create/postcards/); for sending greeting cards through the mail.\n- 'poster': A [poster](https://www.canva.com/create/posters/); large format print for events or decoration.\n- 'presentation': A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.\n- 'proposal': A [proposal](https://www.canva.com/create/proposals/); visually-designed business proposal template with graphics and structured layouts. For text-focused proposals, use \"doc\" instead.\n- 'report': A [report](https://www.canva.com/create/reports/); visually-designed report template with charts, graphics, and data visualization. For text-focused reports, use \"doc\" instead.\n- 'resume': A [resume](https://www.canva.com/create/resumes/); professional document for job applications.\n- 'twitter_post': A Twitter post; optimized for sharing on Twitter/X.\n- 'your_story': A Story; vertical format for Instagram and Facebook Stories.\n- 'youtube_banner': A [YouTube banner](https://www.canva.com/create/youtube-banners/); channel header image for YouTube\n- 'youtube_thumbnail': A [YouTube thumbnail](https://www.canva.com/create/youtube-thumbnails/); eye-catching image for video previews.",
+            "enum": [
+              "business_card",
+              "card",
+              "desktop_wallpaper",
+              "doc",
+              "document",
+              "email",
+              "facebook_cover",
+              "facebook_post",
+              "flyer",
+              "infographic",
+              "instagram_post",
+              "invitation",
+              "logo",
+              "phone_wallpaper",
+              "photo_collage",
+              "pinterest_pin",
+              "postcard",
+              "poster",
+              "presentation",
+              "proposal",
+              "report",
+              "resume",
+              "twitter_post",
+              "your_story",
+              "youtube_banner",
+              "youtube_thumbnail"
+            ],
+            "type": "string"
+          },
+          "query": {
+            "description": "Query describing the design to generate. Ask for more details to avoid errors like 'Common queries will not be generated'.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "user_intent": {
+            "description": "Mandatory description of what the user is trying to accomplish with this tool call. This should always be provided by LLM clients. Please keep it concise (255 characters or less recommended).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "design_type",
+          "query"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "Canva:generate-design-structured",
+      "description": "[third_party_mcp_app] Generate a structured presentation design from a user-reviewed and approved outline.\n\n\u26a0\ufe0f HARD REQUIREMENT:\n- This tool MUST ONLY be called AFTER request-outline-review has been called AND the user has reviewed and approved the outline in the widget UI.\n- This tool belongs to the legacy outline-review flow. When prepare-design-generation is available, do NOT use request-outline-review or this tool as the first step for a new presentation request.\n- Do not use this tool for the prepare-design-generation widget flow. After the user confirms options in that widget, call prepare-design-generation with intent=\"generation\" instead.\n- This requirement applies regardless of how complete or detailed the user's original request or supplied outline is.\n- If there is no approved outline from the widget, DO NOT call this tool.\n\nIf the user's message contains a URL and their intent is to create a design FROM that URL, DO NOT use this tool \u2014 use import-design-from-url instead.\n\nDO NOT USE THIS TOOL IF:\n- The user has not yet seen the outline review widget.\n- The user has not approved the outline.\n- The user is still requesting changes to the outline structure (e.g., \"remove page 3\", \"add a slide about X\", \"change the order\").\nIn all of these cases, you MUST call request-outline-review instead with the updated outline.\n\n\u26a0\ufe0f CRITICAL - HANDLING OUTLINE MODIFICATION REQUESTS:\nIf the user asks to modify the outline in any way (add, remove, reorder, or change pages), you MUST:\n1. Update the outline according to their request\n2. Call request-outline-review again with the modified outline\n3. Wait for the user to approve the new outline\n4. DO NOT call this tool (generate-design-structured) until the modified outline is approved\n\nExamples of requests that require calling request-outline-review:\n- \"Remove pages 6-8\"\n- \"Add a slide about marketing strategy\"\n- \"Change the order of slides 2 and 3\"\n- \"Make it shorter\"\n- Any other request to modify the outline structure or content\n\nPURPOSE:\n- Generate a Canva presentation design using the finalized outline that was reviewed and approved by the user.\n- Convert the approved outline into a fully structured presentation design.\n\nWHEN TO USE:\n- AFTER the outline review flow is complete AND one of the following is true:\n  - The user clicks the \"Generate Design\" button in the outline review widget, OR\n  - The user explicitly asks you to generate the design after approving the outline WITHOUT requesting any changes.\n\nWHAT YOU MUST PROVIDE:\n- Use ONLY the reviewed and approved outline parameters from the widget.\n- You MUST pass:\n  - topic\n  - audience\n  - style\n  - length\n  - presentation_outlines (titles + descriptions exactly as approved)\n- Do NOT modify, reorder, add, or remove slides unless the user has explicitly approved those changes in the outline review step.\n\nIMPORTANT CONSTRAINTS:\n- This tool must never be used as an entry point for presentation creation.\n- Design generation must never bypass outline review.\n- request-outline-review is the legacy gateway for presentations only when prepare-design-generation is unavailable or the user is already in the legacy outline-review flow.\n\nCLAUDE-SPECIFIC CONSTRAINTS:\n- When calling this tool, you MUST remove all punctuation from the outline titles and descriptions before passing them in the presentation_outlines parameter\n- Remove all punctuation marks (periods, commas, colons, semicolons, exclamation marks, question marks, quotes, hyphens, etc.)\n- Keep only alphanumeric characters and spaces\n- Normalize multiple spaces to single spaces\n- Example transformation:\n  - Original: \"Introduction: Getting Started!\"\n  - Claude format: \"Introduction Getting Started\"\n- This ensures optimal processing by the backend generation system for Claude-based requests\n\nThis tool renders an interactive UI in the chat. Prefer it over text output when displaying data from other Canva tools.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "asset_ids": {
+            "description": "Optional list of asset IDs to insert into the generated design. Assets are inserted in order.",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "type": "array"
+          },
+          "audience": {
+            "description": "Target audience for the presentation",
+            "type": "string"
+          },
+          "brand_kit_id": {
+            "description": "Optional ID of the brand kit to apply to the generated design",
+            "minLength": 1,
+            "type": "string"
+          },
+          "design_type": {
+            "description": "The design type to generate.\n\nOptions and their descriptions:\n- 'presentation': A [presentation](https://www.canva.com/presentations/); lets you create and collaborate for presenting to an audience.",
+            "enum": [
+              "presentation"
+            ],
+            "type": "string"
+          },
+          "length": {
+            "description": "Desired length or scope of the presentation",
+            "type": "string"
+          },
+          "presentation_outlines": {
+            "description": "Array of slide outlines, each with a title and description",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "source_document": {
+            "additionalProperties": false,
+            "description": "Optional Canva document to use as the source for the generated presentation",
+            "properties": {
+              "document_id": {
+                "description": "ID of the source design or brand template",
+                "minLength": 1,
+                "type": "string"
+              },
+              "document_type": {
+                "description": "Type of Canva document to use as the generation source",
+                "enum": [
+                  "design",
+                  "brand_template"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "document_type",
+              "document_id"
+            ],
+            "type": "object"
+          },
+          "style": {
+            "description": "Visual style for the presentation",
+            "type": "string"
+          },
+          "topic": {
+            "description": "High-level presentation topic (max 150 chars)",
+            "maxLength": 150,
+            "type": "string"
+          },
+          "user_intent": {
+            "description": "Mandatory description of what the user is trying to accomplish with this tool call. This should always be provided by LLM clients. Please keep it concise (255 characters or less recommended).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "audience",
+          "design_type",
+          "length",
+          "presentation_outlines",
+          "style",
+          "topic"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "Canva:request-outline-review",
+      "description": "[third_party_mcp_app]\n      Purpose:\n\nLegacy guided presentation outline review.\n\nWhen prepare-design-generation is available, do NOT use this tool as the first call for a new presentation, pitch, deck, or slides request. Use prepare-design-generation first with design_type=\"presentation\" and the user's topic.\n\nUse this tool only when prepare-design-generation is not available, or when the user is already in the legacy outline-review flow and needs to review or revise the outline before generation.\n\nEach extra slide adds significant latency (e.g. 15 slides can take 3x longer than 5). Keep to 1-5 slides unless the user explicitly requests more. Default to \"short\" (pass length=\"short\") unless the user requests otherwise.\n\nStructure and formatting rules:\n\n- Always generate a complete outline from the user's request\n- NEVER output a plain-text outline\n- Each page must have a title and description\n- Descriptions:\n  - MUST use hyphen bullet points with newlines: \"- Item\\n- Item\\n- Item\"\n  - MUST NOT use Unicode bullet characters (\u2022)\n  - Example: [{ title: \"Introduction\", description: \"Overview:\\n- Key point 1\\n- Key point 2\\n- Key point 3\" }]\n\nContent transfer rules:\n\n- You MUST extract all topics, themes, details, and data points from the user's request into the pages array\n- If the user provides their own outline or structure, mirror it exactly - do not compress or summarize\n- Honour any user preference for audience, style, or length; match to predefined values where possible\n\nWorkflow:\n\n1. Call request-outline-review only as the legacy outline-review starting point, or to revise an existing legacy outline-review widget\n2. The user will then review the outline\n3. If the user requests changes, update the pages array and call this tool again\n4. The user must approve the outline before generate-design-structured can be called to generate the presentation design\n\nThis tool renders an interactive UI in the chat. Prefer it over text output when displaying data from other Canva tools.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "audience": {
+            "default": "professional",
+            "description": "Target audience of the presentation. \n  ONLY provide this if the user explicitly specifies an audience preference, otherwise use default \"professional\". \n  If user's audience preference matches one of the predefined values: \"casual\", \"professional\", \"educational\", use the predefined value. If no match with predefined values, use a custom audience description.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "brand_kit_id": {
+            "description": "ID of the brand kit to use, if user has specified a brand kit they want to use",
+            "minLength": 1,
+            "type": "string"
+          },
+          "brand_kit_name": {
+            "description": "Name of the brand kit to use. Must be provided together with brand_kit_id.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "length": {
+            "default": "short",
+            "description": "Number of slides: short (1-5), balanced (5-15), comprehensive (15+).",
+            "enum": [
+              "short",
+              "balanced",
+              "comprehensive"
+            ],
+            "type": "string"
+          },
+          "pages": {
+            "description": "Array of page objects, each with title and description. YOU must create this based on the user's request.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "description": "Description of slide content. \n      Always use detailed markdown bullet point format with hyphens/asterisks and newlines (e.g., \"- Item 1\\n- Item 2\\n- Item 3\"), regardless of length parameter. \n      Do NOT use Unicode bullet characters (\u2022) or inline bullets.",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Title of this slide/page",
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "style": {
+            "default": "minimalist",
+            "description": "Presentation design style. \n  ONLY provide this if the user explicitly specifies a style preference, otherwise use default \"minimalist\". \n\n  If user's style preference matches one of the predefined values: \"minimalist\", \"playful\", \"organic\", \"modular\", \"elegant\", \"digital\", \"geometric\", use the predefined value. If no match with predefined values, use a custom style description.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "topic": {
+            "description": "High-level topic or subject of the presentation (max 150 chars)",
+            "maxLength": 150,
+            "type": "string"
+          },
+          "user_intent": {
+            "description": "Mandatory description of what the user is trying to accomplish with this tool call. This should always be provided by LLM clients. Please keep it concise (255 characters or less recommended).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "pages",
+          "topic"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "name": "Canva:search-designs",
+      "description": "[third_party_mcp_app]\n      Search docs, presentations, videos, whiteboards, sheets, and other designs in Canva, except for templates or brand templates.\n      Use when you need to find specific designs by keywords rather than browsing folders.\n      Use 'query' parameter to search by title or content.\n      If 'query' is used, 'sortBy' must be set to 'relevance'. Filter by 'any' ownership unless specified. Sort by relevance unless specified.\n      Use the continuation token to get the next page of results, when there are more results.\n\n      CRITICAL REQUIREMENTS:\n      1. ALWAYS use the 'search-brand-templates' tool when the user is searching for templates or wants to use a template.\n      2.** \ud83d\udeab When a user says search a template, they ALWAYS mean brand-templates. Therefore NEVER call this tool, ALWAYS call the 'search-brand-templates' tool to search for the templates. **\n      3.** \ud83d\udeab NEVER use this tool when the user expresses intent to \"generate\", \"create\", \"autofill\", \"search a template\", \"start from a template\", \"use my template\", or \"pick a template for generation\".\n      In all such cases, ALWAYS use search-brand-templates.\n      ANY query involving:\n      \u2013 \"generate a presentation\"\n      \u2013 \"generate a report\"\n      \u2013 \"make a design using a template\"\n      \u2013 \"generate from a template\"\n      \u2013 \"produce a presentation from their template\"\n      - \"search for available templates\"\n      MUST NOT use search-designs.\n      This tool ONLY searches existing designs (docs, presentations, whiteboards, videos, etc.) that the user already owns or that are shared with them.\n      It DOES NOT find templates and MUST NOT be used as a fallback for template selection. **\n      \n\nThis tool renders an interactive UI in the chat. Prefer it over text output when displaying data from other Canva tools.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "continuation": {
+            "description": "\n            Pagination token for the current search context.\n\n            CRITICAL RULES:\n            - ONLY set this parameter if the previous response included a continuation token.\n            - If no continuation token was returned -> OMIT this parameter completely. NEVER EVER fabricate a token.\n            - Do not set to null, empty string, or any other value when no token was provided.\n\n            Usage:\n            - First request: omit this parameter\n            - Previous response had continuation token: use that exact token\n            - Previous response had NO continuation token: omit this parameter\n            - New search query: omit this parameter\n          ",
+            "type": "string"
+          },
+          "limit": {
+            "description": "Maximum number of designs to return.",
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          },
+          "ownership": {
+            "description": "Filter designs by ownership: 'any' for all designs owned by and shared with you (default), 'owned' for designs you created, 'shared' for designs shared with you",
+            "enum": [
+              "any",
+              "owned",
+              "shared"
+            ],
+            "type": "string"
+          },
+          "query": {
+            "description": "Optional search term to filter designs by title or content. If it is used, 'sortBy' must be set to 'relevance'.",
+            "type": "string"
+          },
+          "sort_by": {
+            "description": "Sort results by: 'relevance' (default), 'modified_descending' (newest first), 'modified_ascending' (oldest first), 'title_descending' (Z-A), 'title_ascending' (A-Z). Optional sort order for results. If 'query' is used, 'sortBy' must be set to 'relevance'.",
+            "enum": [
+              "relevance",
+              "modified_descending",
+              "modified_ascending",
+              "title_descending",
+              "title_ascending"
+            ],
+            "type": "string"
+          },
+          "user_intent": {
+            "description": "Mandatory description of what the user is trying to accomplish with this tool call. This should always be provided by LLM clients. Please keep it concise (255 characters or less recommended).",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    }
+  ]
+}
