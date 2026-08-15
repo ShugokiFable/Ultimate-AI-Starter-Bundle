@@ -32,7 +32,7 @@
 #>
 [CmdletBinding()]
 param(
-  [string[]]$Providers = @('Claude', 'Grok', 'Codex', 'Kimi'),
+  [string[]]$Providers = @('Claude', 'Grok', 'Codex', 'Kimi', 'Hermes'),
   [switch]$CheckOnly
 )
 
@@ -121,6 +121,25 @@ $targets = @{
 }
 
 foreach ($p in $Providers) {
+  if ($p -eq 'Hermes') {
+    # Hermes owns its MCP registry; hand-editing its config.yaml would fight the
+    # CLI. `mcp add` also connects and discovers tools, so a failure here means
+    # the server genuinely does not work, not that a config key was wrong.
+    $hx = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'
+    if (-not (Test-Path -LiteralPath $hx)) { Write-Host 'Hermes  not installed, skipped'; continue }
+    $existing = & $hx mcp list 2>&1 | Out-String
+    $addedH = @()
+    foreach ($s in $servers) {
+      if ($existing -match [regex]::Escape($s.id)) { continue }
+      if ($CheckOnly) { $addedH += $s.id; continue }
+      # It prompts to enable the discovered tools; answer once, non-interactively.
+      'y' | & $hx mcp add $s.id --command npx --args @($s.args) *> $null
+      $addedH += $s.id
+    }
+    if ($addedH.Count) { Write-Host ("{0,-7} {1} -> hermes mcp add" -f $p, ($addedH -join ', ')) }
+    else { Write-Host ("{0,-7} already has all three" -f $p) }
+    continue
+  }
   $t = $targets[$p]
   if (-not $t) { Write-Host ("{0,-7} unknown provider" -f $p); continue }
   $providerHome = Split-Path -Parent $t.Path

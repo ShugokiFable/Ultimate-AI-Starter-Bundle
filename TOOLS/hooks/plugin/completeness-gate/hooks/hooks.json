@@ -1,0 +1,28 @@
+{
+  "description": "Completeness gate - refuse a half-finished release.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Shell|Terminal|PowerShell|run_command|execute_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/hooks/completeness_gate.py\" --pre",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/hooks/completeness_gate.py\" --stop",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

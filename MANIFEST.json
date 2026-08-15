@@ -26996,8 +26996,8 @@
  },
  {
   "path": "README.md",
-  "size": 12217,
-  "sha256": "fe4f3a77e74aeba4147d6225b6e04f6e52ccebceb20e9100aff5ffa7a9ccbf8e"
+  "size": 13059,
+  "sha256": "43441409e210e28d540b433195e12c450567eba648d9e319fc10a09e2e9789ab"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -27021,8 +27021,8 @@
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 6725,
-  "sha256": "ac666d3e2b2db70eef22d97037f1673e7e7d20944c797e5efb03602327a5269d"
+  "size": 7760,
+  "sha256": "05e10f04d05a07c9f7d333b2c1a0f34ad5d42b6b8e2106bd9eb46c2ec1401c00"
  },
  {
   "path": "TOOLS/Ensure-Headroom-Grok.ps1",
@@ -27041,8 +27041,8 @@
  },
  {
   "path": "TOOLS/Install-Completeness-Gate.ps1",
-  "size": 8547,
-  "sha256": "3baa14c3167ac2266fcae500b8d6e1c4fdd56eca59e8724d69c0420dedf93b4e"
+  "size": 13212,
+  "sha256": "c3a7738513002cbd75b26b32c004eed4325ffcbedea692375a3b7d187d02763d"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -27098,6 +27098,31 @@
   "path": "TOOLS/hooks/completeness_gate.py",
   "size": 12490,
   "sha256": "2620554c8e59e59240202eb6876e534ec4239914249eb0bc4db101ac278b2abb"
+ },
+ {
+  "path": "TOOLS/hooks/hermes_wire.py",
+  "size": 4153,
+  "sha256": "f5cb1f24edce09eb49348d0c8c605a1b1343d0db1882bc5071e6d35c84287a10"
+ },
+ {
+  "path": "TOOLS/hooks/plugin/.claude-plugin/marketplace.json",
+  "size": 575,
+  "sha256": "d08f4e7f1b3618f4636f6a08e7b51d329057a0a86d26a9d2631361a2f0ca499e"
+ },
+ {
+  "path": "TOOLS/hooks/plugin/completeness-gate/.claude-plugin/plugin.json",
+  "size": 510,
+  "sha256": "77c4755bd6d4abf2e05fe127b99817650a8d6b17201834d1a0b11e28356b0c37"
+ },
+ {
+  "path": "TOOLS/hooks/plugin/completeness-gate/hooks/completeness_gate.py",
+  "size": 12490,
+  "sha256": "2620554c8e59e59240202eb6876e534ec4239914249eb0bc4db101ac278b2abb"
+ },
+ {
+  "path": "TOOLS/hooks/plugin/completeness-gate/hooks/hooks.json",
+  "size": 658,
+  "sha256": "0003269ee7b379c3d5b2660d926d532c7eb15629f36f3e94e4d2260cde568b95"
  },
  {
   "path": "TOOLS/hooks/ultimate-bundle.json",
@@ -27173,6 +27198,11 @@
   "path": "V6.8-CHANGELOG.md",
   "size": 3290,
   "sha256": "61ab80c0bdbab17183cb27606e4f97b949bcceee631585b66e2d987c0ea4984a"
+ },
+ {
+  "path": "V6.8.1-CHANGELOG.md",
+  "size": 3127,
+  "sha256": "200df3988e71344469fe6a70c163a58d314971399bf755eab96595ad1ed63820"
  },
  {
   "path": "VALIDATION.json",

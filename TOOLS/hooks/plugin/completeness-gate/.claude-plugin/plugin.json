@@ -1,0 +1,16 @@
+{
+  "name": "completeness-gate",
+  "version": "6.8.1",
+  "description": "Refuses a push, and refuses to end a turn, while a release is internally inconsistent: a version bumped with no changelog entry, a README still declaring the old version, uncommitted source left behind.",
+  "author": {
+    "name": "Ultimate AI Starter Bundle"
+  },
+  "homepage": "https://github.com/ShugokiFable/Ultimate-AI-Starter-Bundle",
+  "keywords": [
+    "hooks",
+    "release",
+    "quality",
+    "claude-code",
+    "codex"
+  ]
+}
