@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.4.1
+# Ultimate AI Starter Bundle v7.4.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -451,7 +451,7 @@ registry.
 
 ## Version
 
-**v7.4.1** — 2026-08-16. Based on v7.4.0.
+**v7.4.2** — 2026-08-16. Based on v7.4.1.
 
 ## License
 
