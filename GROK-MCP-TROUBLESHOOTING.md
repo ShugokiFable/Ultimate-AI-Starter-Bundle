@@ -5,10 +5,12 @@ Measured 2026-08-15/16 against grok-cli **1.0.4** on Windows 11, using
 
 **Correction history matters here.** v7.3.0/v7.3.1 shipped six rules written
 while the problem was open; two were wrong and one shipped a harmful script.
-v7.4.0/v7.4.1 then claimed Grok "never attaches MCP tools" — **also wrong**, and
-corrected in v7.4.2. All three mistakes came from the same habit: inferring a
-cause from a plausible story or a single counter instead of testing the thing
-itself. The corrections are kept in place rather than quietly edited out.
+v7.4.0/v7.4.1 then claimed Grok "never attaches MCP tools" — **also wrong**,
+corrected in v7.4.2. v7.4.2 then put the server limit at five — **also wrong**,
+corrected in v7.4.3: the limit is seven *running*, and a plugin-provided server
+you never configured is quietly using one. Four mistakes, one habit: inferring
+from something adjacent instead of testing the thing itself. The corrections are
+kept in place rather than quietly edited out.
 
 ---
 
@@ -79,25 +81,48 @@ Now 2.2s worst case with stdin open, unchanged 141–230ms otherwise.
 profile Default*, and `codebase-memory-mcp__list_projects` returning *45
 projects*. Real data from real servers.
 
-The constraint is **how many servers you register**, and it is sharp:
+The constraint is **how many servers end up running**, and it is a hard cliff:
 
-| Servers | `mcp_wait_ms` | Turn | Result |
+| Servers running | `mcp_wait_ms` | Turn | Result |
 |---|---|---|---|
-| 1 | 0 | 2.5s | fine |
-| 3 (local exes) | 0 | 5.2s | fine |
-| 5 (3 local + github + context7) | 0 | 7.6–7.9s | **fine** |
-| 7 | ~34 900 | — | process never exits |
+| 2–7 | 0 | 2.5–8.2s | fine |
 | 8 | ~34 900 | — | process never exits |
 
-**Six or more wedges it.** Not a specific server — dropping headroom from the 8
-did not help, and every server is individually healthy: probed cold outside
-Grok, `housecarl 0.32s/45`, `skyrim-forge 0.16s/52`, `headroom 0.86s/3`,
-`codebase-memory 1.07s/15`, `mcp-search 0.16s/14`, `github 0.96s/26`,
-`firecrawl 1.37s/25`, `context7 1.27s/2`, `sequential-thinking 1.07s/1` — 183
-tools, none slower than 1.4s.
+**Seven running is fine. Eight wedges.** Composition is irrelevant: five
+different 6-configured sets all passed and four different 7-configured sets all
+failed, including sets that swapped every member. Every server is individually
+healthy — probed cold outside Grok: `housecarl 0.32s/45`,
+`skyrim-forge 0.16s/52`, `headroom 0.86s/3`, `codebase-memory 1.07s/15`,
+`mcp-search 0.16s/14`, `github 0.96s/26`, `firecrawl 1.37s/25`,
+`context7 1.27s/2`, `sequential-thinking 1.07s/1` — 183 tools, none over 1.4s.
 
-**Keep Grok at five MCP servers or fewer.** Put the ones you actually use there;
-the rest stay in Claude Code and Hermes, which have no such limit.
+### Count the free-rider: your budget is one less than you think
+
+**`[compat.claude] mcps = false` does not stop plugin-provided MCP servers.**
+Every enabled Claude Code plugin with a `.mcp.json` still loads. On this machine
+that is `mcp-search` from claude-mem, and it silently occupies a slot.
+
+Proof — same 7 configured servers, only difference is whether claude-mem's
+`.mcp.json` is present:
+
+```text
+7 configured + mcp-search  -> 8 running -> WEDGED
+7 configured, mcp-search hidden -> 7 running -> OK, 7.3s
+```
+
+So with claude-mem installed you get **6 configured servers**, not 7. Confirm
+what is actually running by counting grok's direct children during a turn:
+
+```powershell
+Get-CimInstance Win32_Process -Filter "ParentProcessId=<grok pid>"
+```
+
+Each stdio server appears as one child (`cmd.exe` wrapper for npx ones), plus a
+`conhost.exe` that is not a server.
+
+**Keep Grok at six configured MCP servers** while any MCP-providing Claude
+plugin is enabled — seven if you disable them. Everything else stays in Claude
+Code and Hermes, which have no such limit.
 
 ### `tool_count: 26` is normal — do not read anything into it
 
@@ -137,7 +162,15 @@ args = []
 
 `tool_count: 26` is the built-in count by design; MCP is reached through
 `search_tool`/`use_tool`. Verified by actually invoking tools on two different
-servers. The real limit is server count (≥6 wedges startup).
+servers. The real limit is how many servers **run** (8 wedges), and enabled
+Claude plugins add servers that never appear in `config.toml`.
+
+### ~~v7.4.2: "keep Grok at five MCP servers or fewer"~~ — WRONG
+
+Five was never tested against six. Five different 6-configured sets all pass;
+the cliff is at **8 running**, and `mcp-search` from the claude-mem plugin was
+silently occupying a slot the whole time. Budget is 6 configured with an
+MCP-providing plugin enabled, 7 without.
 
 ### ~~Rule 1 — never add `[mcp_servers]` to `~/.grok/config.toml`~~ — WRONG
 
@@ -168,7 +201,7 @@ unavailable; don't force-kill MCP children under a live session.
 | Check | Command / file |
 |---|---|
 | harness or model? | `mcp_wait_ms` vs `model_elapsed_ms` in `unified.jsonl` — round numbers mean timeouts |
-| MCP startup wedged? | `mcp_wait_ms` near 34 900 means you are over the server limit — drop to ≤5 |
+| MCP startup wedged? | `mcp_wait_ms` near 34 900 means 8+ servers are running — drop to 6 configured |
 | is MCP actually working? | `grok --always-approve -p "use search_tool then use_tool to call <tool>"` — **test a real call, never infer from `tool_count`** |
 | what does Grok load? | `grok inspect --json` → `hooks`, `skills`, `mcpServers[].source`, `externalCompat.cells` |
 | single server healthy? | pipe `initialize` + `tools/list` into its command; healthy = reply < 1.5s |

@@ -92,7 +92,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.4.2 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.4.3 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -597,18 +597,22 @@ elseif (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
   Write-V5Warn 'Grok MCP wiring skipped (-SkipGrokMcp).'
 }
 
-# grok-cli 1.0.4 wedges startup at six or more MCP servers (measured: 5 servers
-# = 0ms wait, 7 = ~34900ms and the process never exits). Count what we left.
+# grok-cli 1.0.4 wedges startup at eight RUNNING MCP servers (measured: 7 running
+# = 0ms wait, 8 = ~34900ms and the process never exits). Plugin-provided servers
+# count toward that but never appear in config.toml, so budget 6 configured.
 if (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
   $grokCfg = Join-Path $env:USERPROFILE '.grok\config.toml'
   if (Test-Path -LiteralPath $grokCfg) {
     # [ \t\r]* not [ \t]*: config.toml is CRLF and .NET's multiline $ matches
     # before the \n, so a trailing \r fails the anchor and the count reads 0.
     $srvCount = ([regex]::Matches((Get-Content -LiteralPath $grokCfg -Raw), '(?m)^[ \t]*\[mcp_servers\.[A-Za-z0-9_-]+\][ \t\r]*$')).Count
-    if ($srvCount -ge 6) {
-      Write-V5Warn ("Grok has $srvCount MCP servers configured. Six or more wedges grok-cli 1.0.4 startup - comment some out in ~/.grok/config.toml (see GROK-MCP-TROUBLESHOOTING.md).")
+    # grok-cli 1.0.4 wedges at EIGHT running servers. Enabled Claude plugins with
+    # a .mcp.json still load even with [compat.claude] mcps = false, so each one
+    # eats a slot that never appears in config.toml. Budget 6 configured.
+    if ($srvCount -ge 7) {
+      Write-V5Warn ("Grok has $srvCount MCP servers configured. Eight RUNNING wedges grok-cli 1.0.4, and enabled Claude plugins add servers you cannot see here - comment some out in ~/.grok/config.toml (see GROK-MCP-TROUBLESHOOTING.md).")
     } else {
-      Write-V5Ok ("Grok MCP servers: $srvCount (limit is 5 on grok-cli 1.0.4)")
+      Write-V5Ok ("Grok MCP servers: $srvCount configured (budget 6; plugin-provided servers also count)")
     }
   }
 }
