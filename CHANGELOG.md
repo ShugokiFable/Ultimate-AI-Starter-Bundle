@@ -3,6 +3,22 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.5.1
+
+First end-to-end installer run on a real machine surfaced three bugs, all
+fixed: (1) Set-V5GrokCompatCells' replace pattern ate every [mcp_servers.*]
+block after [compat.claude] on machines that already had the section (re-run
+hazard; Grok config wipe); (2) Headroom pip step died on a PATH python without
+pip and on pip's stderr under strict error handling; (3) gates and reasoning
+MCPs silently no-op'd on multi-provider installs (`-File -Providers $arr`
+unrolls arrays). Grok's MCP budget stays at the proven six. See
+`V7.5.1-CHANGELOG.md`.
+
+## 7.5.0
+
+This file exists so the completeness gate can see the current version on the
+same commit that bumped `VERSION.txt`. Detail lives in the dated files.
+
 ## 7.5.0
 
 SOUL for every agent + install from zero. New `4-PREAMBLES/` (operator's soul

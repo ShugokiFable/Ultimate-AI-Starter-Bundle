@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.5.0",
+ "version": "7.5.1",
  "generated": "2026-08-16",
- "base": "v7.4.3",
+ "base": "v7.5.0",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -12,6 +12,6 @@
   "TOOLS/hooks/completeness_gate.py --selftest",
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
- "runtime_status": "tool-validated",
- "notes": "v7.5.0: 4-PREAMBLES (SOUL.md verbatim minus one copy/paste debris line, SOUL-UNIVERSAL, MANUAL-PASTE for web UIs); installer wires SOUL + AIO operating contract into Claude/Codex/Kimi/Grok instruction files and Hermes SOUL.md (idempotent, .bak first); INSTALL-REMOTE.ps1 one-liner installs the bundle from GitHub on a fresh machine; catalog fix - Hermes home is LOCALAPPDATA\\hermes, not ~/.hermes. Zero skill-tree changes (92 canonical). Preamble logic sandbox-tested; installer not run end-to-end on a clean machine. Pack gate is the control."
+ "runtime_status": "installed-live",
+ "notes": "v7.5.1: first end-to-end installer run on the operator machine surfaced three bugs - (1) Set-V5GrokCompatCells regex ate all mcp_servers blocks after [compat.claude] on re-runs (verified by backup archaeology + Python replay; fixed with line-based section pattern, re-tested 6/6 servers survive); (2) Headroom pip step died on PATH python without pip and on pip stderr under -EA Stop (fixed: probe for pip, strip PYTHONPATH, suspend EAP); (3) -File + unrolled array silently skipped gates/ reasoning MCPs on multi-provider runs (fixed: comma string + Add-Reasoning split). Grok kept at proven 6-server budget. Pack gate PASS; live skill audit PASS."
 }

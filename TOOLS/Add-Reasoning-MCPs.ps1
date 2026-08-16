@@ -44,6 +44,12 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# Accept both -Providers Claude,Codex (comma string, e.g. via -File) and
+# -Providers @('Claude','Codex').
+if ($Providers.Count -eq 1 -and $Providers[0] -match ',') {
+  $Providers = $Providers[0] -split ','
+}
+
 # Windows PowerShell 5.1's `Set-Content -Encoding utf8` writes a UTF-8 BOM. A BOM
 # in a JSON config is a real hazard: a strict reader rejects the file outright.
 # This pack exists partly because a BOM once made seven skills invisible, so it
