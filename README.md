@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.4.3
+# Ultimate AI Starter Bundle v7.5.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -40,12 +40,45 @@ Follow AIO-INSTRUCTION.txt for every complex or factual request.
 
 Same content is also stored as `AIO Instruction.txt`.
 
+## SOUL + AIO for every agent (v7.5.0)
+
+The preamble is now **installed automatically**, not pasted by hand:
+
+- `4-PREAMBLES/SOUL.md` — the operator's own soul config (unrestricted, no
+  yes-man, truth-seeking process, output format), shipped verbatim
+- `4-PREAMBLES/SOUL-UNIVERSAL.md` — same content, identity-neutral, wired
+  into agents that are not Hermes
+- `4-PREAMBLES/MANUAL-PASTE.txt` — for web UIs (ChatGPT/Gemini) that have no
+  instruction file: paste it into the custom-instructions box
+
+`INSTALL-V7-AIO.ps1` appends SOUL-UNIVERSAL + `AIO-INSTRUCTION.txt` to
+Claude Code (`~/.claude/CLAUDE.md`), Codex (`~/.codex/AGENTS.md`), Kimi
+(`~/.kimi-code/AGENTS.md`) and Grok (`~/.grok/AGENTS.md`, its global-rules
+file), and copies the verbatim soul into Hermes' home (`SOUL.md`). Idempotent
+and backup-first; `-SkipPreamble` opts out. Full map:
+`4-PREAMBLES/README.md`.
+
 ## Quick start
 
-**Windows**
+**Fresh machine, nothing installed - one command:**
 
-1. Clone or download this repo (or unzip the release).
-2. Double-click `INSTALL-V7-AIO.bat`, or run:
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1 | iex"
+```
+
+Downloads the latest release, extracts to `%LOCALAPPDATA%\Ultimate-AI-Starter-Bundle`,
+and runs the full installer (skills, tools, MCP servers, gates, SOUL + AIO
+preamble). With parameters:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1))) -Providers Claude,Grok -Tag v7.5.0"
+```
+
+Or double-click `INSTALL-REMOTE.bat`. Re-running is a no-op.
+
+**Windows (bundle already on disk)**
+
+1. Double-click `INSTALL-V7-AIO.bat`, or run:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
@@ -104,6 +137,7 @@ BUNDLED-TOOLS/plugins/             Superpowers + Ponytail
 BUNDLED-TOOLS/CATALOG.json         component registry
 COPY-TO-YOUR-WORKSPACE/            workspace files + _PROJECT-TEMPLATE (incl. .cbmignore)
 0-UNRESTRAINT-PACKS/               no-holds prompt library (v6.9.2)
+4-PREAMBLES/                      SOUL + AIO preamble for every agent (v7.5.0)
 TOOLS/                             installers and discovery scripts
 TOOLS/Setup-CodebaseMemory-Index.ps1   index scope generator (v7.0.0+)
 _V7-CANONICAL-SKILLS/              maintainer master skills
@@ -115,6 +149,7 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V7-AIO-GUIDE.md](V7-AIO-GUIDE.md)
+- [V7.5.0-CHANGELOG.md](V7.5.0-CHANGELOG.md)
 - [V7.2.0-CHANGELOG.md](V7.2.0-CHANGELOG.md)
 - [V7.0.0-CHANGELOG.md](V7.0.0-CHANGELOG.md)
 - [V6.9.3-CHANGELOG.md](V6.9.3-CHANGELOG.md)
@@ -205,6 +240,20 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v7.5.0
+
+- **`4-PREAMBLES/`** — SOUL for every agent: the operator's soul config
+  (verbatim), an identity-neutral universal soul, and a manual-paste file for
+  web UIs. The installer now wires SOUL + the AIO operating contract into
+  Claude Code, Codex, Kimi, Grok and Hermes automatically (idempotent,
+  backup-first, `-SkipPreamble` to opt out).
+- **One command from zero** — `INSTALL-REMOTE.ps1` / `.bat`: downloads the
+  latest release, extracts it under `%LOCALAPPDATA%\Ultimate-AI-Starter-Bundle`
+  and runs the full installer. Releases now carry a zip asset.
+- **Hermes home catalog fix** — `%LOCALAPPDATA%\hermes` (was `~/.hermes`,
+  which silently missed the real home).
+- **`BOOTSTRAP.txt`** now bootstraps from GitHub when the bundle is absent.
 
 ## What's new in v7.3.0
 
@@ -447,11 +496,13 @@ registry.
 - Everything here is **tool-validated** — gates pass, scripts parse, hashes
   verify, and the BOM fix is confirmed live in a provider's own skill listing.
   The installer has **not** been run end-to-end on a clean machine as part of
-  this build.
+  this build. The v7.5.0 preamble wiring was sandbox-tested (fresh file,
+  existing file, BOM file, re-run replace); the remote bootstrap download
+  and extract path was exercised against a local archive.
 
 ## Version
 
-**v7.4.3** — 2026-08-16. Based on v7.4.2.
+**v7.5.0** — 2026-08-16. Based on v7.4.3.
 
 ## License
 

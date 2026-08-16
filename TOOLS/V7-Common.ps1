@@ -314,3 +314,55 @@ function Set-V5GrokCompatCells {
     Write-V5Ok 'Grok: Claude hook + MCP inheritance disabled (turn time 97s -> ~2s)'
   }
 }
+
+# v7.5.0: SOUL + AIO preamble wiring. Appends (or replaces) the marked
+# preamble block in an agent instruction file. Idempotent, backup first.
+# Existing files keep their own encoding; writes are UTF-8 without BOM.
+function Install-V5PreambleBlock {
+  param(
+    [string]$Path,
+    [string]$SoulFile,
+    [string]$AioFile,
+    [switch]$Force
+  )
+  if (-not (Test-Path -LiteralPath $SoulFile)) { throw 'preamble SOUL file missing: ' + $SoulFile }
+  if (-not (Test-Path -LiteralPath $AioFile))  { throw 'preamble AIO file missing: ' + $AioFile }
+  $soul = (Get-Content -LiteralPath $SoulFile -Raw).Trim()
+  $aio  = (Get-Content -LiteralPath $AioFile -Raw).Trim()
+  $nl = "`r`n"
+  $open = '<!-- ULTIMATE-AI-STARTER-BUNDLE SOUL v7.5.0 -->'
+  $mid  = '<!-- ULTIMATE-AI-STARTER-BUNDLE AIO (operating contract) -->'
+  $end  = '<!-- /ULTIMATE-AI-STARTER-BUNDLE SOUL -->'
+  $block = $open + $nl + $soul + $nl + $nl + $mid + $nl + $aio + $nl + $end
+  $dir = Split-Path $Path -Parent
+  if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+  $pre = ''
+    $origBom = $false
+    if (Test-Path -LiteralPath $Path -PathType Leaf) {
+      $pre = [IO.File]::ReadAllText($Path)
+      $pb = [IO.File]::ReadAllBytes($Path)
+      $origBom = ($pb.Length -ge 3 -and $pb[0] -eq 0xEF -and $pb[1] -eq 0xBB -and $pb[2] -eq 0xBF)
+    }
+    $pat = '(?ms)^[ \t]*<!--[ \t]*ULTIMATE-AI-STARTER-BUNDLE SOUL.*?^[ \t]*<!--[ \t]*/ULTIMATE-AI-STARTER-BUNDLE SOUL[ \t]*-->[ \t]*\r?\n?'
+
+    $new = ''
+    if ([regex]::IsMatch($pre, $pat)) {
+      $new = [regex]::Replace($pre, $pat, ($block + $nl))
+    } else {
+      if ($pre) { $new = $pre.TrimEnd("`r", "`n") + $nl + $nl + $block + $nl }
+      else { $new = $block + $nl }
+    }
+    if (-not $Force -and $new -ceq $pre) {
+      Write-V5Ok ('preamble unchanged (already current): ' + $Path)
+      return
+    }
+    $ts = Get-Date -Format 'yyyyMMdd-HHmmssfff'
+    if (Test-Path -LiteralPath $Path -PathType Leaf) {
+      Copy-Item -LiteralPath $Path -Destination ($Path + '.before-soul-' + $ts + '.bak') -Force
+    }
+    # UTF-8. A file that already had a BOM keeps it (ReadAllText strips it, so
+    # write it back); a BOM-less file stays BOM-less. PS 5.1 -Encoding utf8 would
+    # add one and break strict readers.
+    [IO.File]::WriteAllText($Path, $new, (New-Object System.Text.UTF8Encoding $origBom))
+    Write-V5Ok ('preamble wired: ' + $Path)
+}

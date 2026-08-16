@@ -3,6 +3,23 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.5.0
+
+SOUL for every agent + install from zero. New `4-PREAMBLES/` (operator's soul
+config + identity-neutral universal soul + manual-paste file for web UIs);
+the installer wires SOUL + AIO operating contract into Claude Code, Codex,
+Kimi, Grok (global AGENTS.md) and copies SOUL.md into Hermes home - idempotent,
+backup first, `-SkipPreamble` to opt out. New `INSTALL-REMOTE.ps1/.bat` one
+command fresh-machine install (downloads latest release, extracts, runs the
+real installer); releases now carry a zip asset. Catalog fix: Hermes home is
+`%LOCALAPPDATA%\hermes`, not `~/.hermes`. BOOTSTRAP.txt now bootstraps from
+GitHub when the bundle is absent. See `V7.5.0-CHANGELOG.md`.
+
+## 7.4.3
+
+This file exists so the completeness gate can see the current version on the
+same commit that bumped `VERSION.txt`. Detail lives in the dated files.
+
 ## 7.4.3
 
 Corrects v7.4.2's server limit. Five was never tested against six: five

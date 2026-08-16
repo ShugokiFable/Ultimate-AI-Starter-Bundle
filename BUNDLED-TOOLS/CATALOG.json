@@ -255,7 +255,7 @@
         "session-memory"
       ],
       "offline_asset": null,
-      "scope_note": "CLAUDE CODE ONLY. Never install for Grok/Codex/Kimi/Hermes. Cross-session CONVERSATION memory (what was done, when, why) \u2014 does NOT replace codebase-memory-mcp (code structure graph) or skyrim-memory (verified Skyrim facts). Requires Bun on PATH (worker uses bun:sqlite). Worker port 37777. If red MCP errors: install Bun from https://bun.sh then restart Claude Code.",
+      "scope_note": "CLAUDE CODE ONLY. Never install for Grok/Codex/Kimi/Hermes. Cross-session CONVERSATION memory (what was done, when, why) — does NOT replace codebase-memory-mcp (code structure graph) or skyrim-memory (verified Skyrim facts). Requires Bun on PATH (worker uses bun:sqlite). Worker port 37777. If red MCP errors: install Bun from https://bun.sh then restart Claude Code.",
       "runtime_note": "Bun required for worker daemon (https://bun.sh). Without Bun, plugin shows red errors."
     },
     {
@@ -372,7 +372,7 @@
     },
     "Hermes": {
       "skills": "skills",
-      "home_default": "%USERPROFILE%\\.hermes",
+      "home_default": "%LOCALAPPDATA%\\hermes",
       "instructions": null,
       "instruction_src": "AGENTS.md",
       "workspace_only_instructions": true,
