@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.5.0
+# Ultimate AI Starter Bundle v7.5.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -149,6 +149,7 @@ START-HERE.txt                     short human guide
 
 - [START-HERE.txt](START-HERE.txt)
 - [V7-AIO-GUIDE.md](V7-AIO-GUIDE.md)
+- [V7.5.1-CHANGELOG.md](V7.5.1-CHANGELOG.md)
 - [V7.5.0-CHANGELOG.md](V7.5.0-CHANGELOG.md)
 - [V7.2.0-CHANGELOG.md](V7.2.0-CHANGELOG.md)
 - [V7.0.0-CHANGELOG.md](V7.0.0-CHANGELOG.md)
@@ -240,6 +241,15 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 `headroom_stats` — on-demand compression the agent calls deliberately. It is not
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
+
+## What's new in v7.5.1
+
+The installer ran end-to-end on a real machine for the first time and three
+bugs surfaced, all fixed: the Grok compat-cells rewrite could eat every
+`[mcp_servers.*]` block after `[compat.claude]` on re-runs; Headroom's pip
+step died on PATH pythons without pip (and on pip's stderr); and gates /
+reasoning-MCP wiring silently no-op'd on multi-provider installs. Full
+details in [V7.5.1-CHANGELOG.md](V7.5.1-CHANGELOG.md).
 
 ## What's new in v7.5.0
 
@@ -502,7 +512,7 @@ registry.
 
 ## Version
 
-**v7.5.0** — 2026-08-16. Based on v7.4.3.
+**v7.5.1** — 2026-08-16. Based on v7.5.0.
 
 ## License
 

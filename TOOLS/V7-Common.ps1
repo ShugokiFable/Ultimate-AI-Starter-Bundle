@@ -296,10 +296,15 @@ function Set-V5GrokCompatCells {
     ('mcps = ' + $mcps)
   ) -join "`r`n"
 
-  if ($content -match '(?ms)^[ \t]*\[compat\.claude\][ \t]*\r?\n(?:(?![ \t]*\[).*\r?\n?)*') {
+    if ($content -match '(?m)^[ \t]*\[compat\.claude\][^\r\n]*(?:\r?\n(?![ \t]*\[)[^\r\n]*)*') {
+    # WARNING: the old pattern used `(?ms)...(?:(?![ \t]*\[).*\r?\n?)*` - the
+    # singleline `.` swallowed the WHOLE tail after [compat.claude], deleting
+    # every [mcp_servers.*] block on any machine that already had the section.
+    # The correct section body = lines that do NOT start with '[' - matched
+    # line-by-line above (see V7.5.1-CHANGELOG.md).
     $content = [regex]::Replace(
       $content,
-      '(?ms)^[ \t]*\[compat\.claude\][ \t]*\r?\n(?:(?![ \t]*\[).*\r?\n?)*',
+      '(?m)^[ \t]*\[compat\.claude\][^\r\n]*(?:\r?\n(?![ \t]*\[)[^\r\n]*)*',
       ($block + "`r`n`r`n"))
   } else {
     if ($content -and -not $content.EndsWith("`n")) { $content += "`r`n" }

@@ -28691,8 +28691,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 6206,
-  "sha256": "bf20098dfb34f5aeddd3dd9086199278ee6549e0b5eb07520adf275e1c02e9f9"
+  "size": 6921,
+  "sha256": "0e3f55336f3032276ac21bd7150322bfc7d0471839b54ae3ecd85d32e09ffd2a"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28786,8 +28786,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 39119,
-  "sha256": "63376042e930aa6c3775456b1cae2c9a95a2d0a8aea188ebfd3350980d935607"
+  "size": 41060,
+  "sha256": "55274410a6cadf1d9ea953da25514badacdb26e6a5bb5178cdb2b52a5cf48c4f"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28826,8 +28826,8 @@
  },
  {
   "path": "README.md",
-  "size": 24380,
-  "sha256": "bd0be0fc238315aea941abe10aa4883024f33d8a9ffd3d9a0ee9c4b2a1f71104"
+  "size": 24873,
+  "sha256": "5e10141c0a42e7d40fe14b92320205f61acb768623c0041cfd74e2166a23ff8a"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -28837,7 +28837,7 @@
  {
   "path": "START-HERE.txt",
   "size": 6670,
-  "sha256": "a6af3f8d673d2a052d5d2db563d58154aa0fee76da03a699612fa0f6f595230b"
+  "sha256": "348f8700c682b9daf62c6ba98a278260e9c56178a525c2220a72267e113f621d"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -28851,8 +28851,8 @@
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 9183,
-  "sha256": "e8c97a010be64a4367a9c99b05a50435a8385f0877f6fad4618497a72d5e521a"
+  "size": 9393,
+  "sha256": "7ed39a3767ca8259b763ec6a44b08f64662d1d4a4118c5bf6d0c852d849209cb"
  },
  {
   "path": "TOOLS/Build-Toolbelt.ps1",
@@ -28906,8 +28906,8 @@
  },
  {
   "path": "TOOLS/V7-Common.ps1",
-  "size": 15015,
-  "sha256": "80c354fa0af3bb571263aff3b45dc01d59a62850891f1fcaca16cf9daa61a10b"
+  "size": 15387,
+  "sha256": "11faaf44d440725ce4d8f7060bc484851e20fbe0c67e636143e8a2678a0d57bb"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -29135,14 +29135,19 @@
   "sha256": "b069133095ae33b81517293bd5743a88ad08ff132c5bfd246f5d0e1c1d078bfb"
  },
  {
+  "path": "V7.5.1-CHANGELOG.md",
+  "size": 3679,
+  "sha256": "dc17ee127c55f8df6d16a4b9057995e811b55f4fae35aa60ba51179305fe0729"
+ },
+ {
   "path": "VALIDATION.json",
-  "size": 944,
-  "sha256": "568e6077f1af0e650777131c893469b859cf0e06ce74625ebd60186158f0af2b"
+  "size": 1048,
+  "sha256": "2a71b134ff7e944b0ac3c4aadaca8d96ef4b47fcbba64c6bda5b73fd57e32213"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "42018a997a6cb606eaba9a37e7dbffa189077cdf0f7fa468082534fe18b619b5"
+  "sha256": "385b9d1c9cc5b3f76ab3975f85ef09aca5323896bab88bb97065fbbb34ac9bbf"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",

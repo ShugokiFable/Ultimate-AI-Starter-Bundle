@@ -303,24 +303,50 @@ if (-not $SkillsOnly) {
         }
       }
       'pip-or-wheel' {
-        $py = $null
-        foreach ($c in @('python','py')) {
-          if (Get-Command $c -EA SilentlyContinue) { $py = $c; break }
-        }
-        $asset = Get-ComponentAssetPath -Comp $comp
-        $ok = $false
-        if ($asset -and $asset.EndsWith('.whl') -and $py) {
-          Write-Host "  pip install $asset"
-          if ($py -eq 'py') { & py -3 -m pip install --user $asset 2>&1 | Out-Host }
-          else { & python -m pip install --user $asset 2>&1 | Out-Host }
-          $ok = $true
-        }
-        if (-not $ok -and $py) {
-          $spec = $comp.pip_spec
-          if ($py -eq 'py') { & py -3 -m pip install --user $spec 2>&1 | Out-Host }
-          else { & python -m pip install --user $spec 2>&1 | Out-Host }
-          $ok = $true
-        }
+              <#
+              Prefer a python that actually has pip. The Hermes desktop exports its
+              own venv python on PATH first (no pip), which used to kill this step
+              instantly. Try 'python', then 'py -3', then 'python3', and strip
+              PYTHONPATH so pip does not see a venv's site-packages.
+              #>
+              $py = $null
+              foreach ($c in @('python', 'py', 'python3')) {
+                if (Get-Command $c -EA SilentlyContinue) {
+                  $probe = if ($c -eq 'py') { @('-3', '-m', 'pip', '--version') } else { @('-m', 'pip', '--version') }
+                  try { & $c @probe *> $null; $py = $c; break } catch { }
+                }
+              }
+              if (-not $py) {
+                Write-V5Bad 'No python with pip found - install Python 3.12 and re-run'
+                $installed[$id] = @{ status = 'failed' }
+                continue
+              }
+              $asset = Get-ComponentAssetPath -Comp $comp
+              $ok = $false
+              if ($asset -and $asset.EndsWith('.whl') -and $py) {
+                              Write-Host "  pip install $asset"
+                              $env:PYTHONPATH = ''
+                              # pip writes "already satisfied"/warnings to STDERR; with
+                              # $ErrorActionPreference='Stop' that kills the installer
+                              $prevEap = $ErrorActionPreference
+                              $ErrorActionPreference = 'Continue'
+                              try {
+                                if ($py -eq 'py') { & py -3 -m pip install --user $asset 2>&1 | Out-Host }
+                                else { & $py -m pip install --user $asset 2>&1 | Out-Host }
+                              } finally { $ErrorActionPreference = $prevEap }
+                              $ok = ($null -eq $LASTEXITCODE) -or ($LASTEXITCODE -eq 0)
+                            }
+                            if (-not $ok -and $py) {
+                              $spec = $comp.pip_spec
+                              $env:PYTHONPATH = ''
+                              $prevEap = $ErrorActionPreference
+                              $ErrorActionPreference = 'Continue'
+                              try {
+                                if ($py -eq 'py') { & py -3 -m pip install --user $spec 2>&1 | Out-Host }
+                                else { & $py -m pip install --user $spec 2>&1 | Out-Host }
+                              } finally { $ErrorActionPreference = $prevEap }
+                              $ok = ($null -eq $LASTEXITCODE) -or ($LASTEXITCODE -eq 0)
+                            }
         if ($ok) {
           $hr = $null
           try { $hr = (Get-Command headroom -EA SilentlyContinue).Source } catch {}
@@ -745,7 +771,7 @@ if (-not $ToolsOnly) {
   $gateInstaller = Join-Path $PackRoot 'TOOLS\Install-Completeness-Gate.ps1'
   if (Test-Path -LiteralPath $gateInstaller) {
     try {
-      & powershell -NoProfile -ExecutionPolicy Bypass -File $gateInstaller -Providers $Providers
+      & powershell -NoProfile -ExecutionPolicy Bypass -File $gateInstaller -Providers ($Providers -join ',')
       L 'completeness + assumption gates installed'
     } catch {
       Write-V5Warn ('Gates: ' + $_.Exception.Message)
@@ -757,7 +783,7 @@ if (-not $ToolsOnly) {
   $mcpReason = Join-Path $PackRoot 'TOOLS\Add-Reasoning-MCPs.ps1'
   if (Test-Path -LiteralPath $mcpReason) {
     try {
-      & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpReason -Providers $Providers
+      & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpReason -Providers ($Providers -join ',')
       L 'reasoning MCP servers wired'
     } catch {
       Write-V5Warn ('Reasoning MCPs: ' + $_.Exception.Message)
