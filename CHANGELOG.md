@@ -3,6 +3,16 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.4.0
+
+Grok softlock closed with measurements: a 97s turn was 2.0s of model, 60.037s of
+inherited Claude hooks and 65s of MCP startup that attached zero tools
+(`tool_count` was 26 in all 12 turns ever logged). Fix is two `[compat.claude]`
+cells. Also fixes a blocking `sys.stdin.read()` in both hook gates that could
+hang any host, and REMOVES `TOOLS/Clean-Grok-MCP-Orphans.ps1`, which killed other
+applications' MCP servers. Corrects Rules 1 and 6 from 7.3.x.
+See `V7.4.0-CHANGELOG.md`.
+
 ## 7.3.1
 
 Orphan-fleet fix: new `TOOLS/Clean-Grok-MCP-Orphans.ps1` + Rule 6 in the
