@@ -28671,8 +28671,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 3515,
-  "sha256": "ede21e2253e55d418dcbf84e5aa025edbb370ea299c14bbc2713be58c2d20f05"
+  "size": 3731,
+  "sha256": "6088922f1dddb4835bc881316349f01e5a1e659b9417a05d4156cad30ba664e0"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28746,8 +28746,8 @@
  },
  {
   "path": "GROK-MCP-TROUBLESHOOTING.md",
-  "size": 3926,
-  "sha256": "103bc82fcdfffa52638d805d33962c6b249641e02eadf0ea2c78c35fe6d0c6b4"
+  "size": 4557,
+  "sha256": "6cd1e73b8c17c1ee31b88e0ae6e942af0ca4dd98be46e3dfceb2ef93efa8c504"
  },
  {
   "path": "INSTALL-V7-AIO.bat",
@@ -28797,7 +28797,7 @@
  {
   "path": "README.md",
   "size": 21701,
-  "sha256": "82acf192a33fc54c21fa820edfa5a570640a723ef583f9f8b8ae96230ace7e54"
+  "sha256": "c37e6f337a171cbd10f0e2f0cde2005339ce0d6c3d5a31fa2730562c3148fabe"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -28806,8 +28806,8 @@
  },
  {
   "path": "START-HERE.txt",
-  "size": 5377,
-  "sha256": "23bd3766ee546a601564f7ca84fbd5996ce5ccd202e156b94c7be924217d17db"
+  "size": 5466,
+  "sha256": "537fe9f1939ca7fa0843afdbd7c0d428b17d75651f5e97ed5585200e87c58bd3"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -28828,6 +28828,11 @@
   "path": "TOOLS/Build-Toolbelt.ps1",
   "size": 5716,
   "sha256": "52ef8ed0de5565537b32e799457a02c368d09536ebf11ffde1719cdc3bc55279"
+ },
+ {
+  "path": "TOOLS/Clean-Grok-MCP-Orphans.ps1",
+  "size": 1974,
+  "sha256": "df461ad443ba06d8593df4def204ca44d9eea49d6832573b5f211e650cc3dd24"
  },
  {
   "path": "TOOLS/Ensure-Headroom-Grok.ps1",
@@ -29075,14 +29080,19 @@
   "sha256": "2e97c7aa76d3d96ade40dae34e9f9528e2119397edf54e1f7044b7b3489572ec"
  },
  {
+  "path": "V7.3.1-CHANGELOG.md",
+  "size": 934,
+  "sha256": "8f80adbce345541811339ff87dd877440ff783adf6a34c224422028b73f403c8"
+ },
+ {
   "path": "VALIDATION.json",
   "size": 987,
-  "sha256": "f0aefca3d2c67d708a708904923354803070c8f9f8200f9343d4161c48a8ed98"
+  "sha256": "448e60d3c2be1f653750958cbdfdc176e065d886f11a223792910ff815a15bf9"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "6e4276df020d6038d7eb84c9241423e573634da78f4154d0f69594404cdeb417"
+  "sha256": "4917551fa6c131c402e40b659377fca13067d0eaf1a17e5e3e1f6d6430d9f782"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",

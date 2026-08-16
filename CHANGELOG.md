@@ -3,6 +3,12 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.3.1
+
+Orphan-fleet fix: new `TOOLS/Clean-Grok-MCP-Orphans.ps1` + Rule 6 in the
+troubleshooting doc (Grok's MCP children survive shell close and collide with the
+next session's fleet). See `V7.3.1-CHANGELOG.md`.
+
 ## 7.3.0
 
 Grok hang forensics documented: new `GROK-MCP-TROUBLESHOOTING.md` (turn-phase log
