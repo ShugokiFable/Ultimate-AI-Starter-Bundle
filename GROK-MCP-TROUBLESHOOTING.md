@@ -77,6 +77,18 @@ Force-killing a server child (even a stuck one) wedges Grok's pipeline:
 `/mcps` spins on loading, and prompts log `prompt.enqueue` but never reach the
 model. Restart Grok after touching any server process.
 
+## Rule 6 — Grok's server children survive shell close (orphan fleets)
+
+Windows does not kill child processes when the parent dies. Closing a Grok
+shell — especially after a softlock — leaves the whole MCP fleet running.
+The next session spawns a second fleet that collides with the first:
+housecarl waits on its own MO2 lock, codebase-memory on its cohort slot, and
+`tools/list` hangs mid-handler → softlock, `/mcps` stuck on loading.
+
+**Fix:** run `TOOLS\Clean-Grok-MCP-Orphans.ps1` after any crashed/softlocked
+session (it refuses to run while Grok is alive and keeps the daemon on the UI
+port), then start Grok fresh.
+
 ## Diagnosis cheat-sheet
 
 | Check | Command / file |
