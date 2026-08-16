@@ -1,12 +1,13 @@
 <#
 .SYNOPSIS
-  Ultimate AI Starter Bundle V6 - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
+  Ultimate AI Starter Bundle V7 - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
 
 .DESCRIPTION
   New users: run this once from the pack root.
   - Installs provider skills (Claude/Codex/Grok/Kimi/Hermes)
   - Installs bundled offline tools OR fetches GitHub latest
-  - Wires Grok MCP (housecarl, codebase-memory, headroom as MCP only)
+  - Disables Grok's inheritance of Claude Code hooks + MCP (measured pure
+    cost on grok-cli 1.0.4); Grok MCP wiring is opt-in via -WireGrokMcp
   - NEVER wraps Grok inference through Headroom for subscription/OIDC logins
     (that caused model "unknown" / 401). Opt-in wrap only with XAI_API_KEY.
   - Optional -WithExtras: code-review, obsidian-skills, claude-mem, playwright,
@@ -35,6 +36,11 @@
 .PARAMETER SkipMcpWire
   Do not edit Grok config.toml
 
+.PARAMETER WireGrokMcp
+  Wire MCP servers into Grok anyway. Off by default: on grok-cli 1.0.4 this
+  cost 65s on the first turn of every session and attached zero tools
+  (tool_count stayed at 26, the built-in count). See GROK-MCP-TROUBLESHOOTING.md.
+
 .EXAMPLE
   .\INSTALL-V7-AIO.ps1
   .\INSTALL-V7-AIO.ps1 -Providers Grok,Claude -Mode OnlineLatest
@@ -53,6 +59,11 @@ param(
   [switch]$SkipMcpWire,
   [switch]$SkillsOnly,
   [switch]$ToolsOnly,
+  # Grok MCP is OFF by default as of v7.4.1. On grok-cli 1.0.4 it cost 65s on
+  # the first turn of every session and attached zero tools (tool_count stayed
+  # at 26, the built-in count, with 8 servers and with 0). Pass this to wire it
+  # anyway once xAI ships a build where tool_count exceeds 26.
+  [switch]$WireGrokMcp,
   # Opt-in third-party extras (see BUNDLED-TOOLS\CATALOG.json scope_note on each):
   #   code-review-skill  obsidian-skills  claude-mem
   #   playwright-mcp     firecrawl-mcp    perplexity-mcp
@@ -69,7 +80,7 @@ if ($WithExtras) {
 $ErrorActionPreference = 'Stop'
 $PackRoot = $PSScriptRoot
 if (-not (Test-Path (Join-Path $PackRoot 'BUNDLED-TOOLS\CATALOG.json'))) {
-  throw "Run INSTALL-V7-AIO.ps1 from the V6 pack root (folder containing BUNDLED-TOOLS)."
+  throw "Run INSTALL-V7-AIO.ps1 from the V7 pack root (folder containing BUNDLED-TOOLS)."
 }
 . (Join-Path $PackRoot 'TOOLS\V7-Common.ps1')
 $script:V5PackRoot = $PackRoot
@@ -82,7 +93,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.4.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.4.1 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -527,9 +538,21 @@ if (-not $SkillsOnly) {
   }
 }
 
+# ---------- Grok compat cells (always, before any MCP decision) ----------
+# Grok ships Claude-Code compatibility ON: it adopts ~/.claude skills, agents,
+# plugins (with their hooks and .mcp.json), ~/.claude.json and settings.json.
+# The hook and MCP halves of that were measured as pure cost - see
+# GROK-MCP-TROUBLESHOOTING.md. Skills/rules/agents compat stays on.
+if (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
+  Write-V5Step "Grok Claude-compat cells"
+  try {
+    if ($WireGrokMcp) { Set-V5GrokCompatCells -AllowMcp } else { Set-V5GrokCompatCells }
+  } catch { Write-V5Warn ("Grok compat cells: " + $_.Exception.Message) }
+}
+
 # ---------- MCP wire (Grok) ----------
-if (-not $SkipMcpWire -and -not $SkillsOnly -and ($Providers -contains 'Grok')) {
-  Write-V5Step "Wiring Grok MCP servers"
+if ($WireGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Providers -contains 'Grok')) {
+  Write-V5Step "Wiring Grok MCP servers (-WireGrokMcp)"
   $hc = [Environment]::GetEnvironmentVariable('HOUSECARL_MCP','User')
   if (-not $hc) { $hc = $env:HOUSECARL_MCP }
   if ($hc -and (Test-Path $hc)) {
@@ -570,6 +593,9 @@ if (-not $SkipMcpWire -and -not $SkillsOnly -and ($Providers -contains 'Grok')) 
   } else {
     Write-V5Warn "Skyrim Forge not configured (optional). Set SKYRIM_FORGE_ROOT or skill INSTALLATION.json"
   }
+}
+elseif (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
+  Write-V5Warn 'Grok MCP wiring skipped by default (grok-cli 1.0.4 attaches no MCP tools). Re-run with -WireGrokMcp to force it.'
 }
 
 

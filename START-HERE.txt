@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.4.0 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.4.1 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -116,6 +116,7 @@ no yes-man. Also on disk as "AIO Instruction.txt" (same content).
 
 READ NEXT
 ---------
+  V7.4.1-CHANGELOG.md  installer applies the Grok fix; Grok MCP wiring now opt-in
   V7.4.0-CHANGELOG.md  Grok softlock measured: inherited hooks + MCP that never attaches
   V7.3.1-CHANGELOG.md  SUPERSEDED by 7.4.0 (orphan-fleet theory was wrong)
   V7.3.0-CHANGELOG.md  Grok hang forensics; troubleshooting doc; pin-every-npx rule
