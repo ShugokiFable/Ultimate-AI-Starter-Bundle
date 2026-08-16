@@ -28671,8 +28671,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 3731,
-  "sha256": "6088922f1dddb4835bc881316349f01e5a1e659b9417a05d4156cad30ba664e0"
+  "size": 4223,
+  "sha256": "dcd25590768986e0928485f9ab8cbc8fcedfcca1686d5f7e1cbb8f76b98832cd"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28746,8 +28746,8 @@
  },
  {
   "path": "GROK-MCP-TROUBLESHOOTING.md",
-  "size": 4557,
-  "sha256": "6cd1e73b8c17c1ee31b88e0ae6e942af0ca4dd98be46e3dfceb2ef93efa8c504"
+  "size": 8433,
+  "sha256": "358383be18038d30191d73271f62c1bc681eea906ae3e040974a87c3dc7bf6de"
  },
  {
   "path": "INSTALL-V7-AIO.bat",
@@ -28797,7 +28797,7 @@
  {
   "path": "README.md",
   "size": 21701,
-  "sha256": "c37e6f337a171cbd10f0e2f0cde2005339ce0d6c3d5a31fa2730562c3148fabe"
+  "sha256": "495c1131cb3322a366c54edeedf172c51f001bc485f8864b4eb881a735470317"
  },
  {
   "path": "RELEASE-NOTES-v5.2.2.md",
@@ -28806,8 +28806,8 @@
  },
  {
   "path": "START-HERE.txt",
-  "size": 5466,
-  "sha256": "537fe9f1939ca7fa0843afdbd7c0d428b17d75651f5e97ed5585200e87c58bd3"
+  "size": 5541,
+  "sha256": "7efbf24a2eb6a15b536504f0879deb76ed15af54254919311ce73ae7fea400c1"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -28828,11 +28828,6 @@
   "path": "TOOLS/Build-Toolbelt.ps1",
   "size": 5716,
   "sha256": "52ef8ed0de5565537b32e799457a02c368d09536ebf11ffde1719cdc3bc55279"
- },
- {
-  "path": "TOOLS/Clean-Grok-MCP-Orphans.ps1",
-  "size": 1974,
-  "sha256": "df461ad443ba06d8593df4def204ca44d9eea49d6832573b5f211e650cc3dd24"
  },
  {
   "path": "TOOLS/Ensure-Headroom-Grok.ps1",
@@ -28911,13 +28906,13 @@
  },
  {
   "path": "TOOLS/hooks/assumption_gate.py",
-  "size": 16498,
-  "sha256": "bfaad61f42d5b7924a454ab1dd41275f2c83ae57396f04a9b9465395225d379f"
+  "size": 18495,
+  "sha256": "e14c221766517618f5dad1a8271bffb9da3b975769bca241393f2e6383d5a828"
  },
  {
   "path": "TOOLS/hooks/completeness_gate.py",
-  "size": 12546,
-  "sha256": "a163afdf366bae89ed53e0b4d450c781c028e657ee5376780575eb4533c0c336"
+  "size": 14543,
+  "sha256": "6100b128a268ec6a50bb681443a9257b31b1c7cea9fe4132299050900e392be0"
  },
  {
   "path": "TOOLS/hooks/hermes_wire.py",
@@ -28936,13 +28931,13 @@
  },
  {
   "path": "TOOLS/hooks/plugin/completeness-gate/hooks/assumption_gate.py",
-  "size": 16498,
-  "sha256": "bfaad61f42d5b7924a454ab1dd41275f2c83ae57396f04a9b9465395225d379f"
+  "size": 18495,
+  "sha256": "e14c221766517618f5dad1a8271bffb9da3b975769bca241393f2e6383d5a828"
  },
  {
   "path": "TOOLS/hooks/plugin/completeness-gate/hooks/completeness_gate.py",
-  "size": 12546,
-  "sha256": "a163afdf366bae89ed53e0b4d450c781c028e657ee5376780575eb4533c0c336"
+  "size": 14543,
+  "sha256": "6100b128a268ec6a50bb681443a9257b31b1c7cea9fe4132299050900e392be0"
  },
  {
   "path": "TOOLS/hooks/plugin/completeness-gate/hooks/hooks.json",
@@ -29076,23 +29071,28 @@
  },
  {
   "path": "V7.3.0-CHANGELOG.md",
-  "size": 1936,
-  "sha256": "2e97c7aa76d3d96ade40dae34e9f9528e2119397edf54e1f7044b7b3489572ec"
+  "size": 2197,
+  "sha256": "0aac431362339f38ae5ce42b6dcd08af686eeff49145792270e8f90099949cfc"
  },
  {
   "path": "V7.3.1-CHANGELOG.md",
-  "size": 934,
-  "sha256": "8f80adbce345541811339ff87dd877440ff783adf6a34c224422028b73f403c8"
+  "size": 1308,
+  "sha256": "49d5b6c39a150df15ca9c9d6aa12bd4b5557fd8a135148ad5914cf6b6c3b7404"
+ },
+ {
+  "path": "V7.4.0-CHANGELOG.md",
+  "size": 4976,
+  "sha256": "3a6068839be438f27382966ab708423dbef58ce7d2d19cb5a6c67bc76beff374"
  },
  {
   "path": "VALIDATION.json",
   "size": 987,
-  "sha256": "448e60d3c2be1f653750958cbdfdc176e065d886f11a223792910ff815a15bf9"
+  "sha256": "af7853e02521ad90b50d2929d45020bb10c80e386c9c3238dd46aab5fcf4e2e1"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "4917551fa6c131c402e40b659377fca13067d0eaf1a17e5e3e1f6d6430d9f782"
+  "sha256": "06d87754a4d5bd84697d4a68a6493a1bef303e1da7b6aa7386ced0eeb6b2c08c"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",

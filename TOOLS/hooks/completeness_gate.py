@@ -45,6 +45,7 @@ import os
 import re
 import subprocess
 import sys
+import threading
 from pathlib import Path
 
 TIMEOUT = 10
@@ -81,8 +82,12 @@ PUSH_PATTERNS = (
 
 def run(args: list[str], cwd: Path) -> str:
     try:
+        # stdin=DEVNULL, never inherited: read_input's reader thread may still
+        # be parked on fd 0 when the host left the pipe open, and a child that
+        # inherits that handle deadlocks on Windows instead of returning.
         done = subprocess.run(args, cwd=str(cwd), capture_output=True, text=True,
-                              timeout=TIMEOUT, shell=False)
+                              timeout=TIMEOUT, shell=False,
+                              stdin=subprocess.DEVNULL)
     except Exception:
         return ""
     return done.stdout if done.returncode == 0 else ""
@@ -191,9 +196,40 @@ def findings(root: Path) -> list[str]:
     return problems
 
 
-def read_input() -> dict:
+def read_input(timeout: float = 2.0) -> dict:
+    """Read the hook payload from stdin without ever blocking the host.
+
+    `sys.stdin.read()` waits for EOF. A host that spawns the hook but never
+    closes the pipe (Grok CLI 1.0.4 does not) leaves that read hanging until
+    the host's own hook timeout fires -- measured at 60s per turn, two Stop
+    hooks at 30s each. Design rule 3 above is "fail open", and a read that can
+    hang the caller breaks it. Every field below is optional, so time-box the
+    read and continue without the payload rather than hold up a turn.
+    """
+    box: dict = {}
+
+    def slurp() -> None:
+        # os.read on the raw fd, not sys.stdin.read: a thread parked inside
+        # sys.stdin's BufferedReader holds that object's lock, and interpreter
+        # shutdown then blocks trying to finalise it -- which reintroduces the
+        # exact hang this function exists to avoid.
+        chunks = []
+        try:
+            fd = sys.stdin.fileno()
+            while True:
+                part = os.read(fd, 65536)
+                if not part:
+                    break
+                chunks.append(part)
+        except Exception:
+            pass
+        box["raw"] = b"".join(chunks).decode("utf-8", "replace")
+
+    reader = threading.Thread(target=slurp, daemon=True)
+    reader.start()
+    reader.join(timeout)
+    raw = box.get("raw") or ""
     try:
-        raw = sys.stdin.read()
         return json.loads(raw) if raw.strip() else {}
     except Exception:
         return {}
@@ -330,8 +366,16 @@ def main() -> int:
 
 if __name__ == "__main__":
     try:
-        raise SystemExit(main())
-    except SystemExit:
-        raise
+        _code = main()
+    except SystemExit as _exc:
+        _code = _exc.code if isinstance(_exc.code, int) else 0
     except Exception:
-        raise SystemExit(0)
+        _code = 0  # fail open, always
+    try:
+        sys.stdout.flush()
+        sys.stderr.flush()
+    except Exception:
+        pass
+    # os._exit, not SystemExit: read_input's reader thread may still be parked
+    # on a stdin pipe the host never closed, and a normal shutdown waits on it.
+    os._exit(_code if isinstance(_code, int) else 0)
