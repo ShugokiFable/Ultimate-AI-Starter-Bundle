@@ -246,3 +246,71 @@ function Copy-V5RoboSafe([string]$From, [string]$To, [string[]]$CriticalFiles = 
   }
   Copy-V5Robo -From $From -To $To
 }
+
+function Set-V5GrokCompatCells {
+  <#
+    Turn off Grok's inheritance of Claude Code's hooks and MCP servers.
+
+    Grok ships Claude-Code compatibility ON by default: it adopts
+    ~/.claude/skills, ~/.claude/agents, ~/.claude/plugins (with their
+    hooks/hooks.json and .mcp.json), ~/.claude.json and
+    ~/.claude/settings.json. Measured on grok-cli 1.0.4 (2026-08-15):
+
+      - inherited Claude hooks cost 60.037s per turn (two Stop hooks at
+        timeout 30, and Grok never closes a hook's stdin);
+      - MCP startup cost 65s on the first turn of every session and
+        attached ZERO tools - tool_count was 26 (the built-in count) in
+        all 12 turns recorded, with 8 servers configured and with 0.
+
+    Skills, rules and agents compat stay ON: those work and are the reason
+    Grok sees the canonical skill set without a second copy on disk.
+    See GROK-MCP-TROUBLESHOOTING.md.
+  #>
+  param(
+    [string]$ConfigPath = $null,
+    [switch]$AllowMcp
+  )
+  if (-not $ConfigPath) {
+    $grokDir = Join-Path $env:USERPROFILE '.grok'
+    $ConfigPath = Join-Path $grokDir 'config.toml'
+  } else {
+    $grokDir = Split-Path $ConfigPath -Parent
+  }
+  New-Item -ItemType Directory -Force -Path $grokDir | Out-Null
+
+  $content = ''
+  if (Test-Path -LiteralPath $ConfigPath) {
+    $content = Get-Content -LiteralPath $ConfigPath -Raw
+    $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
+    Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.before-compat-' + $ts + '.bak') -Force
+  }
+
+  $mcps = if ($AllowMcp) { 'true' } else { 'false' }
+  $block = @(
+    '[compat.claude]',
+    '# Grok inherits Claude Code config by default. Both cells below were',
+    '# measured as pure cost on grok-cli 1.0.4: hooks cost 60.037s/turn and',
+    '# MCP cost 65s/session while attaching zero tools (tool_count stayed at',
+    '# 26, the built-in count). See GROK-MCP-TROUBLESHOOTING.md.',
+    'hooks = false',
+    ('mcps = ' + $mcps)
+  ) -join "`r`n"
+
+  if ($content -match '(?ms)^[ \t]*\[compat\.claude\][ \t]*\r?\n(?:(?![ \t]*\[).*\r?\n?)*') {
+    $content = [regex]::Replace(
+      $content,
+      '(?ms)^[ \t]*\[compat\.claude\][ \t]*\r?\n(?:(?![ \t]*\[).*\r?\n?)*',
+      ($block + "`r`n`r`n"))
+  } else {
+    if ($content -and -not $content.EndsWith("`n")) { $content += "`r`n" }
+    $content = $content + "`r`n" + $block + "`r`n"
+  }
+  # UTF-8 with NO BOM: PS 5.1's -Encoding utf8 emits a BOM, and a BOM makes the
+  # first line unparseable TOML ("Invalid statement at line 1, column 1").
+  [System.IO.File]::WriteAllText($ConfigPath, $content, (New-Object System.Text.UTF8Encoding $false))
+  if ($AllowMcp) {
+    Write-V5Warn 'Grok: Claude hook inheritance OFF, MCP inheritance left ON by request (expect a ~65s first turn)'
+  } else {
+    Write-V5Ok 'Grok: Claude hook + MCP inheritance disabled (turn time 97s -> ~2s)'
+  }
+}

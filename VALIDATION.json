@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.4.0",
+ "version": "7.4.1",
  "generated": "2026-08-16",
- "base": "v7.3.1",
+ "base": "v7.4.0",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,

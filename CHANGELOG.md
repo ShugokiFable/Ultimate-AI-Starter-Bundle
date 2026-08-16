@@ -3,6 +3,13 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.4.1
+
+The installer now APPLIES the 7.4.0 finding instead of only documenting it: it
+writes `[compat.claude] hooks/mcps = false` for every Grok install, and Grok MCP
+wiring moved behind `-WireGrokMcp` (it was previously wired by default, which
+freshly caused the bug the pack documents). See `V7.4.1-CHANGELOG.md`.
+
 ## 7.4.0
 
 Grok softlock closed with measurements: a 97s turn was 2.0s of model, 60.037s of
