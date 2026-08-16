@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.4.3 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.5.0 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -10,7 +10,14 @@ Providers: Claude, Codex, Grok, Kimi, Hermes.
 
 NEW USERS - ONE COMMAND
 -----------------------
-Double-click:
+Fresh machine, nothing installed - one command (downloads the latest release
+from GitHub, extracts it, runs the full installer):
+
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1 | iex"
+
+Or double-click INSTALL-REMOTE.bat. Re-running is a no-op.
+
+Bundle already on disk - double-click:
 
     INSTALL-V7-AIO.bat
 
@@ -25,6 +32,7 @@ Options:
     .\INSTALL-V7-AIO.ps1 -Mode OnlineLatest
     .\INSTALL-V7-AIO.ps1 -WithExtras
     .\INSTALL-V7-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
+    .\INSTALL-V7-AIO.ps1 -SkipPreamble          (no SOUL/AIO wiring)
 
 
 WHY V6 EXISTS (read this one bit)
@@ -104,14 +112,21 @@ deprecated on a 12-month window. Every MCP server this pack wires is local
 stdio, so NOTHING here needs to change. Skill: mcp-protocol-2026
 
 
-AI PREAMBLE (optional but recommended)
---------------------------------------
-Point your agent at:
+AI PREAMBLE - INSTALLED AUTOMATICALLY (v7.5.0)
+----------------------------------------------
+The installer wires the SOUL + AIO preamble into every agent:
+Claude Code (~/.claude/CLAUDE.md), Codex (~/.codex/AGENTS.md), Kimi
+(~/.kimi-code/AGENTS.md), Grok (~/.grok/AGENTS.md) and Hermes (home SOUL.md).
+Idempotent, backup-first. Opt out with INSTALL-V7-AIO.ps1 -SkipPreamble.
 
-    AIO-INSTRUCTION.txt
+Web UIs (ChatGPT/Gemini) have no instruction file - paste
 
-High-signal reasoning preamble: truth-seeking process, confidence calibration,
-no yes-man. Also on disk as "AIO Instruction.txt" (same content).
+    4-PREAMBLES\MANUAL-PASTE.txt
+
+into the custom-instructions box. See 4-PREAMBLES\README.md for the full map.
+
+The pack-root AIO-INSTRUCTION.txt is the operating contract (truth-seeking
+process, no yes-man, verify-don't-assume); also on disk as "AIO Instruction.txt".
 
 
 READ NEXT

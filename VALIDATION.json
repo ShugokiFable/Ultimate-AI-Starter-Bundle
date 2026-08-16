@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.4.3",
+ "version": "7.5.0",
  "generated": "2026-08-16",
- "base": "v7.4.2",
+ "base": "v7.4.3",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.2.0 fixes the two maintainer-tooling defects v7.0.0 only documented: fanout_providers.py now scopes unrestraint-packs to Hermes and preserves source line endings (a full fanout run produces zero churn, verified), and install_live_skills.py probes before backing up so an unchanged tree costs nothing. Completes the V6->V7 rename of live artifacts (_V7-CANONICAL-SKILLS, INSTALL-V7-AIO, Test-V7-Pack, V7-Common, V7-AIO-GUIDE, v7-registry-*); historical changelogs keep their V4/V5/V6 names as accurate records. Installer not run end-to-end on a clean machine. Pack gate is the control."
+ "notes": "v7.5.0: 4-PREAMBLES (SOUL.md verbatim minus one copy/paste debris line, SOUL-UNIVERSAL, MANUAL-PASTE for web UIs); installer wires SOUL + AIO operating contract into Claude/Codex/Kimi/Grok instruction files and Hermes SOUL.md (idempotent, .bak first); INSTALL-REMOTE.ps1 one-liner installs the bundle from GitHub on a fresh machine; catalog fix - Hermes home is LOCALAPPDATA\\hermes, not ~/.hermes. Zero skill-tree changes (92 canonical). Preamble logic sandbox-tested; installer not run end-to-end on a clean machine. Pack gate is the control."
 }

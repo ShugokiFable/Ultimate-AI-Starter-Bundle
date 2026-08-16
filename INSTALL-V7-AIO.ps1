@@ -13,6 +13,9 @@
   - Optional -WithExtras: code-review, obsidian-skills, claude-mem, playwright,
     firecrawl, perplexity MCP
   - Runs houseCARL MO2/Vortex setup
+  - Wires the SOUL + AIO preamble into every selected provider's
+    instruction file (Claude CLAUDE.md, Codex/Kimi/Grok AGENTS.md, Hermes
+    SOUL.md) - idempotent, backup first, -SkipPreamble to opt out
   - Writes discovery state
 
 .PARAMETER Providers
@@ -66,7 +69,13 @@ param(
   # Opt-in third-party extras (see BUNDLED-TOOLS\CATALOG.json scope_note on each):
   #   code-review-skill  obsidian-skills  claude-mem
   #   playwright-mcp     firecrawl-mcp    perplexity-mcp
-  [switch]$WithExtras
+  [switch]$WithExtras,
+  # SOUL + AIO preamble wiring (v7.5.0). On by default: appends the marked
+  # preamble block (SOUL-UNIVERSAL.md + AIO-INSTRUCTION.txt) to every selected
+  # provider's instruction file and copies 4-PREAMBLES\SOUL.md into Hermes'
+  # home. -SkipPreamble opts out; -ForcePreamble rewrites an identical block.
+  [switch]$SkipPreamble,
+  [switch]$ForcePreamble
 )
 
 if ($WithExtras) {
@@ -92,7 +101,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.4.3 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.5.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -202,6 +211,54 @@ if (-not $ToolsOnly) {
       }
     }
     Write-V5Ok "$prov skills installed"
+  }
+}
+
+# ---------- AI preamble: SOUL + AIO for every agent (v7.5.0) ----------
+# Wires the same preamble into every selected provider so a fresh machine
+# behaves like the operator's own setup. Idempotent: re-running replaces the
+# marked block instead of stacking copies; every write gets a .bak first.
+if (-not $ToolsOnly -and -not $SkipPreamble) {
+  Write-V5Step "SOUL + AIO preamble wiring"
+  $preDir = Join-Path $PackRoot '4-PREAMBLES'
+  $soulU = Join-Path $preDir 'SOUL-UNIVERSAL.md'
+  $soulH = Join-Path $preDir 'SOUL.md'
+  $aioF  = Join-Path $PackRoot 'AIO-INSTRUCTION.txt'
+  foreach ($prov in $Providers) {
+    if ($prov -eq 'Hermes') {
+      # Hermes reads SOUL.md from its home - copy the verbatim soul
+      $hhome = Get-V5ProviderHome -Provider Hermes -Catalog $catalog
+      $hSoul = Join-Path $hhome 'SOUL.md'
+      if (Test-Path -LiteralPath $hSoul) {
+        $same = (Get-FileHash -LiteralPath $hSoul -Algorithm SHA256).Hash -eq
+                (Get-FileHash -LiteralPath $soulH -Algorithm SHA256).Hash
+        if (-not $same) {
+          Copy-Item -LiteralPath $hSoul -Destination ($hSoul + '.before-soul-' + (Get-Date -Format 'yyyyMMdd-HHmmssfff') + '.bak') -Force
+          Copy-Item -LiteralPath $soulH -Destination $hSoul -Force
+          Write-V5Ok ("Hermes soul updated: " + $hSoul)
+        } else {
+          Write-V5Ok ('Hermes soul already current: ' + $hSoul)
+        }
+      } else {
+        New-Item -ItemType Directory -Force -Path $hhome | Out-Null
+        Copy-Item -LiteralPath $soulH -Destination $hSoul -Force
+        Write-V5Ok ("Hermes soul installed: " + $hSoul)
+      }
+      continue
+    }
+    $pmeta = $catalog.providers.$prov
+    $instName = $pmeta.instructions
+    if (-not $instName) { $instName = 'AGENTS.md' }
+    $target = Join-Path (Get-V5ProviderHome -Provider $prov -Catalog $catalog) $instName
+    if (-not (Test-Path -LiteralPath $soulU) -or -not (Test-Path -LiteralPath $aioF)) {
+      Write-V5Warn ("$prov preamble skipped: 4-PREAMBLES or AIO-INSTRUCTION.txt missing")
+      continue
+    }
+    try {
+      Install-V5PreambleBlock -Path $target -SoulFile $soulU -AioFile $aioF -Force:$ForcePreamble
+    } catch {
+      Write-V5Warn ("$prov preamble failed: " + $_.Exception.Message)
+    }
   }
 }
 
@@ -672,7 +729,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '5.0.0'
+  version = '7.5.0'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -731,7 +788,8 @@ Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANC
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
 Write-Host '  6. Optional Forge: set SKYRIM_FORGE_ROOT or skill INSTALLATION.json'
-Write-Host '  7. Paste AIO-INSTRUCTION.txt into each AI custom-instructions box.'
+Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
+Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 4-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Codex: approve the one-time plugin trust prompt. Hermes: hermes --accept-hooks once.'
 Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'

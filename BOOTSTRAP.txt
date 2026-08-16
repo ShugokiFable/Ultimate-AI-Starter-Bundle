@@ -1,18 +1,41 @@
-ONE-SHOT BOOTSTRAP
+ONE-SHOT BOOTSTRAP (v7.5.0)
 Paste this into a fresh session of any agentic AI (Grok, Claude Code, Codex,
-Kimi, Hermes) that can run commands. It sets itself up. You do nothing else.
+Kimi, Hermes) that can run commands. It sets itself up on a machine with
+NOTHING installed. You do nothing else.
 
 ------------------------------------------------------------------------------
 Set up my AI tooling from the Ultimate AI Starter Bundle. Work autonomously and
 do not ask me to run anything you can run yourself.
 
-1. Get the bundle. Use whichever you find first:
-   - a local copy already on this machine, or
-   - https://github.com/ShugokiFable/Ultimate-AI-Starter-Bundle (latest release)
+1. Get the bundle.
+   - First look for a local copy: any folder containing
+     INSTALL-V7-AIO.ps1 and BUNDLED-TOOLS\CATALOG.json.
+   - If none exists, download the latest release to a temp folder:
+
+       $zip = Join-Path $env:TEMP 'uabs.zip'
+       $rel = Invoke-RestMethod 'https://api.github.com/repos/ShugokiFable/Ultimate-AI-Starter-Bundle/releases/latest'
+       $asset = @($rel.assets | Where-Object { $_.name -like '*.zip' }) | Select-Object -First 1
+       if ($asset) { Invoke-WebRequest $asset.browser_download_url -OutFile $zip }
+       else { Invoke-WebRequest "https://codeload.github.com/ShugokiFable/Ultimate-AI-Starter-Bundle/zip/refs/tags/$($rel.tag_name)" -OutFile $zip }
+       $stage = Join-Path $env:TEMP "uabs-$($rel.tag_name)"
+       Expand-Archive $zip $stage -Force
+       $bundle = Get-ChildItem $stage -Directory | Select-Object -First 1
+       if (-not $bundle) { $bundle = Get-Item $stage }
+       $final = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
+       New-Item -ItemType Directory -Force $final | Out-Null
+       $dest = Join-Path $final $rel.tag_name
+       if (Test-Path $dest) { Remove-Item $dest -Recurse -Force }
+       Move-Item $bundle.FullName $dest
+       Remove-Item $stage -Recurse -Force -EA SilentlyContinue
+   - Prefer the local copy if one exists; otherwise use $dest above
+     (a.k.a. the bundle root).
 
 2. From the bundle root, run:
      powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
-   This installs the skills, wires the MCP servers, and installs the tools.
+   This installs the skills, wires the MCP servers, installs the tools, and
+   wires the SOUL + AIO preamble into every agent instruction file
+   (~/.claude/CLAUDE.md, ~/.codex/AGENTS.md, ~/.kimi-code/AGENTS.md,
+   ~/.grok/AGENTS.md, Hermes home SOUL.md). Do not skip it.
 
 3. Run:
      powershell -NoProfile -ExecutionPolicy Bypass -File .\TOOLS\Install-Completeness-Gate.ps1
@@ -25,7 +48,10 @@ do not ask me to run anything you can run yourself.
      python TOOLS\audit_skills.py "%USERPROFILE%\.claude\skills"
      powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V7-Pack.ps1
 
-5. Read AIO-INSTRUCTION.txt and follow it for the rest of this session.
+5. Read AIO-INSTRUCTION.txt and 4-PREAMBLES\README.md and follow the rules
+   for the rest of this session. This machine was just configured with the
+   SOUL + AIO preamble, so the rules are already in effect - behave that way
+   from the start, including this session.
 
 6. Tell me, in under ten lines: what got installed, what did not and why, and
    what I have to do myself (restarts, API keys, anything needing my hands).
@@ -37,5 +63,5 @@ me, say so explicitly instead of quietly leaving it undone.
 
 WHAT YOU STILL HAVE TO DO YOURSELF
 - Fully restart each AI app afterwards. Skills and hooks load at startup.
-- Paste AIO-INSTRUCTION.txt into each provider's custom-instructions box. That
-  one is a UI field, so no agent can do it for you.
+- Web UIs (ChatGPT/Gemini): paste 4-PREAMBLES\MANUAL-PASTE.txt into the
+  custom-instructions box. That one is a UI field, so no agent can do it.
