@@ -3,6 +3,14 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.4.2
+
+Corrects v7.4.0: MCP DOES work in Grok. `tool_count: 26` is the built-in count
+by design - Grok reaches MCP through `search_tool`/`use_tool` and never injects
+MCP tools. Verified by actually calling tools on two servers. The real limit is
+server COUNT: 5 is fine (0ms wait), 6+ wedges startup. Installer wires Grok MCP
+by default again and warns at 6. See `V7.4.2-CHANGELOG.md`.
+
 ## 7.4.1
 
 The installer now APPLIES the 7.4.0 finding instead of only documenting it: it

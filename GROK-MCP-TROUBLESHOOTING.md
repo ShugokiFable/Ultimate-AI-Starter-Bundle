@@ -3,56 +3,43 @@
 Measured 2026-08-15/16 against grok-cli **1.0.4** on Windows 11, using
 `~/.grok/logs/unified.jsonl` and repeated `grok -p` runs.
 
-**Read this first if you are coming from v7.3.0/v7.3.1.** Those releases
-documented six rules written while the problem was still open. Two of them were
-wrong, and one shipped a script that killed other applications' MCP servers.
-They are corrected below and the reasoning is kept, because the *way* they went
-wrong is the useful part: every one of them was inferred from a plausible story
-instead of from a measurement that separated cause from correlation.
+**Correction history matters here.** v7.3.0/v7.3.1 shipped six rules written
+while the problem was open; two were wrong and one shipped a harmful script.
+v7.4.0/v7.4.1 then claimed Grok "never attaches MCP tools" — **also wrong**, and
+corrected in v7.4.2. All three mistakes came from the same habit: inferring a
+cause from a plausible story or a single counter instead of testing the thing
+itself. The corrections are kept in place rather than quietly edited out.
 
 ---
 
 ## Read the turn phases before believing any theory
 
-`%USERPROFILE%\.grok\logs\unified.jsonl` decomposes every turn. One `grok -p
-"Reply with the single word: OK"` gives you the whole picture:
+`%USERPROFILE%\.grok\logs\unified.jsonl` decomposes every turn:
 
 ```text
   0.66s  prompt received
- 10.66s  shell.task_wake.gate_cleared     {"reason":"user_intake"}          +10.003s
+ 10.66s  shell.task_wake.gate_cleared     {"reason":"user_intake"}           +10.003s
  30.66s  shell.task_wake.gate_cleared     {"reason":"queued_user_promotion"} +19.997s
- 30.77s  shell.handle_prompt.start
  65.66s  shell.turn.tool_prep_done        {"tool_count":26,"mcp_wait_ms":34887}
  67.71s  shell.turn.inference_done        {"model_elapsed_ms":2048}
-127.74s  shell.handle_prompt.done                                           +60.037s
+127.74s  shell.handle_prompt.done                                            +60.037s
 ```
 
-97 seconds of turn. **2.0 seconds of model.** Everything else is the harness,
-and the round numbers give it away: stalls that land on 10.003s, 19.997s and
-60.037s are timeouts expiring, not work happening.
-
-Two independent causes, each confirmed by A/B:
-
-| Change | Turn time |
-|---|---|
-| baseline | 97s (and often no reply at all) |
-| `[compat.claude] hooks = false` | 68s — kills the 60.037s post-inference stall |
-| `[compat.claude] mcps = false` | 3.7s — kills the 10s + 20s + 35s pre-inference stall |
-| both | **2.1–4.9s** |
+97 seconds of turn, **2.0 seconds of model**. Stalls landing on 10.003s,
+19.997s and 60.037s are timeouts expiring, not work happening.
 
 ---
 
-## Cause 1 — Grok runs Claude Code's hooks, and they are not built for it
+## Cause 1 — Grok runs Claude Code's hooks (real; fix stands)
 
-Grok's Claude compatibility loads `~/.claude/settings.json` hooks *and* every
-enabled plugin's `hooks/hooks.json`. On this machine that is **14 hook entries
-from 6 sources**. Grok's own docs state hook layers "are read from every layer
-and combined additively: a lower-priority layer can add hooks but never removes
-or replaces another layer's block" — so there is no way to un-inherit them from
-the Grok side except the compat cell.
+Grok's Claude compatibility loads `~/.claude/settings.json` hooks **and** every
+enabled plugin's `hooks/hooks.json` — 14 entries from 6 sources on this machine.
+Grok's docs state hook layers "are read from every layer and combined
+additively: a lower-priority layer can add hooks but never removes or replaces
+another layer's block", so the compat cell is the only lever.
 
-The measured cost was the two `Stop` hooks at `timeout: 30` each: `inference_done`
-→ `handle_prompt.done` took **60.037s**, and dropped to **22ms** with the cell off.
+Measured: the two `Stop` hooks at `timeout: 30` cost **60.037s** per turn.
+`inference_done` → `handle_prompt.done` dropped to **22ms** with the cell off.
 
 ```toml
 # ~/.grok/config.toml
@@ -65,107 +52,114 @@ Claude Code keeps every hook. Only Grok stops running them.
 ### The underlying bug, fixed in `TOOLS/hooks/`
 
 Both gates called `sys.stdin.read()`, which waits for EOF. Grok spawns hooks
-without closing their stdin, so the read never returned and each hook burned its
-full timeout. Both files declare *"fail open: a broken gate must never be able to
-stop work"* as design rule 3 — a blocking read breaks that rule.
+without closing their stdin, so each hook burned its full timeout. Both files
+declare *"fail open: a broken gate must never be able to stop work"* as design
+rule 3 — a blocking read breaks that rule.
 
-Fixing it took three passes, and the first two are worth recording:
+Three passes, and the first two are the instructive part:
 
-1. Moved the read to a daemon thread with a 2s join. **Still hung** — a daemon
-   thread parked inside `sys.stdin`'s `BufferedReader` holds that object's lock,
-   and CPython's shutdown blocks finalising it.
-2. Switched to `os.read()` on the raw fd and exited via `os._exit()`. `--pre` now
-   returned at 2.1s, but `--stop` still hung.
-3. `--pre` returns before touching git; `--stop` shells out to it. A minimal
-   repro isolated the real interaction: **a thread parked on fd 0 plus a child
-   that inherits stdin deadlocks on Windows** — 161ms with no reader, >12s with
-   one, 2158ms once the child got `stdin=DEVNULL`.
+1. Daemon thread + timed join — **still hung**: a daemon thread parked inside
+   `sys.stdin`'s `BufferedReader` holds that object's lock, and CPython's
+   shutdown blocks finalising it.
+2. `os.read()` on the raw fd + `os._exit()` — `--pre` returned at 2.1s, `--stop`
+   still hung.
+3. A minimal repro found the real interaction: **a thread parked on fd 0 plus a
+   child that inherits stdin deadlocks on Windows** — 161ms with no reader, >12s
+   with one, 2158ms once the child got `stdin=DEVNULL`. `--pre` returns before
+   touching git; `--stop` shells out to it.
 
-Result: worst case **2.2s** with stdin open (was an indefinite hang), unchanged
-**141–230ms** for hosts that close stdin properly, both self-tests passing, and
-the block decision still firing. Any host that leaves stdin open is now safe.
+Now 2.2s worst case with stdin open, unchanged 141–230ms otherwise.
 
 ---
 
-## Cause 2 — Grok 1.0.4 never attaches MCP tools at all
+## Cause 2 — too many MCP servers wedges startup (the real MCP limit)
 
-This is the finding that makes the rest moot. Across **every single turn ever
-recorded in the log — 12 of them**, spanning interactive and headless sessions,
-8 servers and 0 servers, `~/.claude.json` and native `[mcp_servers]`:
+**MCP works in Grok.** Verified end to end: Grok called
+`housecarl__housecarl_load_order_status` and returned *2994 active plugins,
+profile Default*, and `codebase-memory-mcp__list_projects` returning *45
+projects*. Real data from real servers.
 
-```text
-tool_count = 26     (unchanged, always)
-```
+The constraint is **how many servers you register**, and it is sharp:
 
-26 is Grok's built-in count: it is identical with zero MCP servers configured.
-**Not one MCP tool ever reached the model**, while `mcp_wait_ms: ~34900` was
-charged to the first turn of every session.
+| Servers | `mcp_wait_ms` | Turn | Result |
+|---|---|---|---|
+| 1 | 0 | 2.5s | fine |
+| 3 (local exes) | 0 | 5.2s | fine |
+| 5 (3 local + github + context7) | 0 | 7.6–7.9s | **fine** |
+| 7 | ~34 900 | — | process never exits |
+| 8 | ~34 900 | — | process never exits |
 
-The servers are not the problem. Probed cold, outside Grok:
+**Six or more wedges it.** Not a specific server — dropping headroom from the 8
+did not help, and every server is individually healthy: probed cold outside
+Grok, `housecarl 0.32s/45`, `skyrim-forge 0.16s/52`, `headroom 0.86s/3`,
+`codebase-memory 1.07s/15`, `mcp-search 0.16s/14`, `github 0.96s/26`,
+`firecrawl 1.37s/25`, `context7 1.27s/2`, `sequential-thinking 1.07s/1` — 183
+tools, none slower than 1.4s.
 
-```text
-housecarl 0.32s/45   skyrim-forge 0.16s/52   headroom 0.86s/3
-codebase-memory 1.07s/15   mcp-search 0.16s/14   github 0.96s/26
-firecrawl 1.37s/25   context7 1.27s/2   sequential-thinking 1.07s/1
-```
+**Keep Grok at five MCP servers or fewer.** Put the ones you actually use there;
+the rest stay in Claude Code and Hermes, which have no such limit.
 
-All 9 healthy, 183 tools, none slower than 1.4s. The stall also scales with
-server *count*, not with any particular server — 1 server gives `mcp_wait_ms: 0`
-and a 2.5s turn; 8 give 35s and a 37–97s turn.
+### `tool_count: 26` is normal — do not read anything into it
 
-So MCP in Grok is currently **pure cost**. Until a build ships where
-`tool_count` exceeds 26:
+This is what v7.4.0 got wrong. From Grok's own README:
+
+| `search_tool` | Discover available integration tools (MCP) |
+| `use_tool` | Call an integration tool discovered via `search_tool` |
+
+**Grok deliberately never injects MCP tools into the tool list.** It ships those
+two built-ins and discovers MCP tools on demand, to save context. So
+`tool_count` stays at 26 (the built-in count) whether you have 8 servers or
+none, and `shell.tool.exec_done {"tool_name":"search_tool"}` is what a working
+MCP call looks like. v7.4.0 read a constant as evidence and concluded MCP was
+dead. It is not.
+
+### `[compat.claude] mcps = false` + native sections
+
+Set the cell off and declare servers natively. This keeps Grok off the
+`~/.claude.json` import path (which drags in every Claude Code plugin's MCP,
+pushing you over the limit) while your chosen servers still work:
 
 ```toml
 [compat.claude]
+hooks = false
 mcps = false
-```
 
-Keep the server definitions commented in `config.toml` so re-enabling is one
-edit. Your MCP tools still work normally in Claude Code and Hermes.
+[mcp_servers.housecarl]
+command = "C:/.../housecarl-mcp.exe"
+args = []
+```
 
 ---
 
-## Corrections to v7.3.0 / v7.3.1
+## Corrections to earlier releases
+
+### ~~v7.4.0: "Grok 1.0.4 never attaches MCP tools"~~ — WRONG
+
+`tool_count: 26` is the built-in count by design; MCP is reached through
+`search_tool`/`use_tool`. Verified by actually invoking tools on two different
+servers. The real limit is server count (≥6 wedges startup).
 
 ### ~~Rule 1 — never add `[mcp_servers]` to `~/.grok/config.toml`~~ — WRONG
 
-Native `[mcp_servers.*]` sections were added, survived repeated `grok` runs and
-`grok inspect` reported them as `source: configToml`. The README documents them
-as first-class. The original observation (sections "gone by 20:16") was real but
-was attributed to the wrong actor — most likely a `grok update --force-reinstall`
-run in the same window, not a routine config rewrite.
+Native sections work and persist; `grok inspect` reports them as
+`source: configToml`. The original "sections disappeared" observation was
+misattributed, most likely to a `grok update --force-reinstall` in the same
+window.
 
 ### ~~Rule 6 — orphan fleets; run `Clean-Grok-MCP-Orphans.ps1`~~ — WRONG AND HARMFUL
 
-The "orphaned Grok MCP fleet" was **Claude Code's own running MCP servers**. The
-processes were children of `claude.exe`, and no Grok process was alive at the
-time. The script matched on process name only — every `housecarl-mcp.exe`,
-`codebase-memory-mcp.exe`, headroom/forge `python.exe` and `_npx` `node.exe` on
-the machine — with no parent check, and its only guard was "no grok.exe running".
-Running it while Claude Code or Hermes was open killed their servers.
-
-**`TOOLS/Clean-Grok-MCP-Orphans.ps1` is removed in v7.4.0.** If you copied it
-anywhere, delete it. Windows genuinely does not kill children when a parent dies,
-but that was never the softlock, and process-name matching is not a safe way to
-find one app's children.
+The "orphaned Grok MCP fleet" was **Claude Code's own running servers** —
+children of `claude.exe`, with no Grok process alive. The script matched on
+process name only, with no parent check, and its sole guard was "no grok.exe
+running", so it killed every houseCARL, codebase-memory, headroom, Forge and
+npx MCP server on the machine. **Removed in v7.4.0. Delete any copy you made.**
 
 ### Rules 2–5 — kept, demoted to hygiene
 
-Still true and still worth doing, but none of them was the softlock:
-
-- **Pin every npx server.** Unpinned `npx -y` re-resolves on each spawn. Good
-  hygiene; verified pins are `firecrawl-mcp@3.24.0`,
-  `@modelcontextprotocol/server-github@2025.4.8`, `@upstash/context7-mcp@4.0.2`,
-  `@modelcontextprotocol/server-sequential-thinking@2026.7.4`.
-- **Headroom needs the PYTHONPATH-stripping launcher.** Real: a host exporting a
-  3.11 `PYTHONPATH` makes the 3.12 `headroom.exe` die importing `click`. Same
-  trap class as the Forge venv issue (v7.2.1).
-- **codebase-memory daemon.** Port 9749 not listening is worth checking when cbm
-  reports unavailable; `version_cohort.claimed_unheld` in its stderr means the
-  daemon died and is re-electing.
-- **Never force-kill MCP children under a live session.** Restart the client
-  instead.
+True and worth doing, but none was the softlock: pin npx servers; run headroom
+through the PYTHONPATH-stripping launcher (a 3.11 `PYTHONPATH` kills the 3.12
+`headroom.exe` on `click`); check port 9749 when codebase-memory reports
+unavailable; don't force-kill MCP children under a live session.
 
 ---
 
@@ -173,13 +167,13 @@ Still true and still worth doing, but none of them was the softlock:
 
 | Check | Command / file |
 |---|---|
-| is the harness or the model slow? | `mcp_wait_ms` and `model_elapsed_ms` in `unified.jsonl` — round numbers mean timeouts |
-| are MCP tools reaching the model? | `tool_count` in `shell.turn.tool_prep_done`; **26 means none are** |
-| what does Grok actually load? | `grok inspect --json` → `hooks`, `skills`, `mcpServers[].source`, `externalCompat.cells` |
-| is a specific server healthy? | pipe `initialize` + `tools/list` into its command directly; healthy = reply < 1.5s |
-| whose child is that process? | `Get-CimInstance Win32_Process` and check `ParentProcessId` — **never match on name alone** |
-| end-to-end timing | `grok -p "Reply with the single word: OK"`, wall-clock it |
+| harness or model? | `mcp_wait_ms` vs `model_elapsed_ms` in `unified.jsonl` — round numbers mean timeouts |
+| MCP startup wedged? | `mcp_wait_ms` near 34 900 means you are over the server limit — drop to ≤5 |
+| is MCP actually working? | `grok --always-approve -p "use search_tool then use_tool to call <tool>"` — **test a real call, never infer from `tool_count`** |
+| what does Grok load? | `grok inspect --json` → `hooks`, `skills`, `mcpServers[].source`, `externalCompat.cells` |
+| single server healthy? | pipe `initialize` + `tools/list` into its command; healthy = reply < 1.5s |
+| whose child is that process? | `Get-CimInstance Win32_Process`, check `ParentProcessId` — **never match on name alone** |
 
-> `grok inspect` lists what was *discovered* on disk, not what is *active*: it
+> `grok inspect` lists what was *discovered on disk*, not what is *active*: it
 > still reports 14 hooks and 9 MCP servers with both compat cells off. Trust the
-> turn timings in the log over the inspect counts.
+> turn log, and trust an actual tool call over any counter.

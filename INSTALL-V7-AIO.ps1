@@ -6,8 +6,8 @@
   New users: run this once from the pack root.
   - Installs provider skills (Claude/Codex/Grok/Kimi/Hermes)
   - Installs bundled offline tools OR fetches GitHub latest
-  - Disables Grok's inheritance of Claude Code hooks + MCP (measured pure
-    cost on grok-cli 1.0.4); Grok MCP wiring is opt-in via -WireGrokMcp
+  - Disables Grok's inheritance of Claude Code hooks (measured 60s/turn) and
+    of the Claude MCP import; wires Grok MCP natively, capped at 5 servers
   - NEVER wraps Grok inference through Headroom for subscription/OIDC logins
     (that caused model "unknown" / 401). Opt-in wrap only with XAI_API_KEY.
   - Optional -WithExtras: code-review, obsidian-skills, claude-mem, playwright,
@@ -36,10 +36,10 @@
 .PARAMETER SkipMcpWire
   Do not edit Grok config.toml
 
-.PARAMETER WireGrokMcp
-  Wire MCP servers into Grok anyway. Off by default: on grok-cli 1.0.4 this
-  cost 65s on the first turn of every session and attached zero tools
-  (tool_count stayed at 26, the built-in count). See GROK-MCP-TROUBLESHOOTING.md.
+.PARAMETER SkipGrokMcp
+  Do not wire MCP servers into Grok. Wiring is on by default and installs four,
+  inside grok-cli 1.0.4's limit of five (six or more wedges startup).
+  See GROK-MCP-TROUBLESHOOTING.md.
 
 .EXAMPLE
   .\INSTALL-V7-AIO.ps1
@@ -59,11 +59,10 @@ param(
   [switch]$SkipMcpWire,
   [switch]$SkillsOnly,
   [switch]$ToolsOnly,
-  # Grok MCP is OFF by default as of v7.4.1. On grok-cli 1.0.4 it cost 65s on
-  # the first turn of every session and attached zero tools (tool_count stayed
-  # at 26, the built-in count, with 8 servers and with 0). Pass this to wire it
-  # anyway once xAI ships a build where tool_count exceeds 26.
-  [switch]$WireGrokMcp,
+  # Grok MCP is wired by default again as of v7.4.2 (v7.4.1 disabled it on a
+  # false premise - see V7.4.2-CHANGELOG.md). grok-cli 1.0.4 wedges at SIX or
+  # more MCP servers; the four wired here are inside the safe range.
+  [switch]$SkipGrokMcp,
   # Opt-in third-party extras (see BUNDLED-TOOLS\CATALOG.json scope_note on each):
   #   code-review-skill  obsidian-skills  claude-mem
   #   playwright-mcp     firecrawl-mcp    perplexity-mcp
@@ -93,7 +92,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.4.1 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.4.2 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -546,13 +545,13 @@ if (-not $SkillsOnly) {
 if (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
   Write-V5Step "Grok Claude-compat cells"
   try {
-    if ($WireGrokMcp) { Set-V5GrokCompatCells -AllowMcp } else { Set-V5GrokCompatCells }
+    Set-V5GrokCompatCells
   } catch { Write-V5Warn ("Grok compat cells: " + $_.Exception.Message) }
 }
 
 # ---------- MCP wire (Grok) ----------
-if ($WireGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Providers -contains 'Grok')) {
-  Write-V5Step "Wiring Grok MCP servers (-WireGrokMcp)"
+if (-not $SkipGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Providers -contains 'Grok')) {
+  Write-V5Step "Wiring Grok MCP servers"
   $hc = [Environment]::GetEnvironmentVariable('HOUSECARL_MCP','User')
   if (-not $hc) { $hc = $env:HOUSECARL_MCP }
   if ($hc -and (Test-Path $hc)) {
@@ -595,7 +594,23 @@ if ($WireGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Providers -
   }
 }
 elseif (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
-  Write-V5Warn 'Grok MCP wiring skipped by default (grok-cli 1.0.4 attaches no MCP tools). Re-run with -WireGrokMcp to force it.'
+  Write-V5Warn 'Grok MCP wiring skipped (-SkipGrokMcp).'
+}
+
+# grok-cli 1.0.4 wedges startup at six or more MCP servers (measured: 5 servers
+# = 0ms wait, 7 = ~34900ms and the process never exits). Count what we left.
+if (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
+  $grokCfg = Join-Path $env:USERPROFILE '.grok\config.toml'
+  if (Test-Path -LiteralPath $grokCfg) {
+    # [ \t\r]* not [ \t]*: config.toml is CRLF and .NET's multiline $ matches
+    # before the \n, so a trailing \r fails the anchor and the count reads 0.
+    $srvCount = ([regex]::Matches((Get-Content -LiteralPath $grokCfg -Raw), '(?m)^[ \t]*\[mcp_servers\.[A-Za-z0-9_-]+\][ \t\r]*$')).Count
+    if ($srvCount -ge 6) {
+      Write-V5Warn ("Grok has $srvCount MCP servers configured. Six or more wedges grok-cli 1.0.4 startup - comment some out in ~/.grok/config.toml (see GROK-MCP-TROUBLESHOOTING.md).")
+    } else {
+      Write-V5Ok ("Grok MCP servers: $srvCount (limit is 5 on grok-cli 1.0.4)")
+    }
+  }
 }
 
 
