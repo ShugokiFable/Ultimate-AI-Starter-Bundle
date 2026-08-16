@@ -3,6 +3,15 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.4.3
+
+Corrects v7.4.2's server limit. Five was never tested against six: five
+different 6-server sets all pass, four different 7-server sets all wedge. And
+`[compat.claude] mcps = false` does NOT stop plugin-provided MCP servers -
+`mcp-search` from claude-mem was silently occupying a slot, so the real cliff is
+**8 running**. Budget 6 configured with an MCP-providing plugin enabled, 7
+without. See `V7.4.3-CHANGELOG.md`.
+
 ## 7.4.2
 
 Corrects v7.4.0: MCP DOES work in Grok. `tool_count: 26` is the built-in count
