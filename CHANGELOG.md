@@ -3,6 +3,42 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.5.2
+
+Repo hygiene and a version-drift fix found by auditing the pack rather than
+running it.
+
+- The installer banner and its internal `version` field still said 7.5.0 on a
+  7.5.1 release, so a correct install reported the wrong version. Both now
+  track the release.
+- `README.md` and `INSTALL-REMOTE.ps1` advertised the one-liner with
+  `-Tag v7.5.0` hard-pinned, so the documented copy-paste install fetched an
+  old release forever instead of the latest. The pin is gone; empty tag means
+  latest.
+- Removed `AIO Instruction.txt`, a byte-identical duplicate of
+  `AIO-INSTRUCTION.txt` left behind by a rename.
+- Moved 26 per-version changelogs and v4/v5-era audits into `docs/history/`.
+  The root drops from 33 markdown files to 7, so a newcomer sees only current
+  docs. Nothing was deleted.
+- Moved the operator's unrestraint preamble into `0-UNRESTRAINT-PACKS/`, where
+  that material already lives, instead of the pack root.
+- Fixed the completeness gate blocking its own release commit. `uncommitted_code()`
+  skipped only untracked files, so *staged* changes counted as "not in this
+  release" - but staged changes are exactly what the pending commit contains.
+  Once HEAD touched a version file, the gate refused every `git commit` that
+  carried a code file, including the commit that would have completed the
+  release. It now judges the worktree column of `git status --porcelain`, so
+  only genuinely unstaged work is reported, and resolves renames to their
+  destination path. Two self-test cases added: staged code must be silent,
+  unstaged code must still be caught.
+- `MANIFEST.json` regenerated; it had drifted (referenced the deleted duplicate).
+
+Not changed: the ~72 MB of byte-identical reference payloads duplicated across
+provider trees. Git stores those as a single blob, and each provider tree is
+deliberately self-contained so it can be copied straight into that provider's
+home. Deduplicating them would save zip size at the cost of the one-command
+install.
+
 ## 7.5.1
 
 First end-to-end installer run on a real machine surfaced three bugs, all
