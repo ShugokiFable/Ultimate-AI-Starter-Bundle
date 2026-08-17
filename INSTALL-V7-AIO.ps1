@@ -7,7 +7,8 @@
   - Installs provider skills (Claude/Codex/Grok/Kimi/Hermes)
   - Installs bundled offline tools OR fetches GitHub latest
   - Disables Grok's inheritance of Claude Code hooks (measured 60s/turn) and
-    of the Claude MCP import; wires Grok MCP natively, capped at 5 servers
+    of the Claude MCP import; wires Grok MCP natively, budgeting six configured
+    servers when a plugin-provided server may also run
   - NEVER wraps Grok inference through Headroom for subscription/OIDC logins
     (that caused model "unknown" / 401). Opt-in wrap only with XAI_API_KEY.
   - Optional -WithExtras: code-review, obsidian-skills, claude-mem, playwright,
@@ -40,8 +41,9 @@
   Do not edit Grok config.toml
 
 .PARAMETER SkipGrokMcp
-  Do not wire MCP servers into Grok. Wiring is on by default and installs four,
-  inside grok-cli 1.0.4's limit of five (six or more wedges startup).
+  Do not wire MCP servers into Grok. Wiring is on by default. Keep Grok at six
+  configured servers when an enabled plugin contributes another server: seven
+  running is fine; eight wedges startup.
   See GROK-MCP-TROUBLESHOOTING.md.
 
 .EXAMPLE
@@ -63,8 +65,9 @@ param(
   [switch]$SkillsOnly,
   [switch]$ToolsOnly,
   # Grok MCP is wired by default again as of v7.4.2 (v7.4.1 disabled it on a
-  # false premise - see docs/history/V7.4.2-CHANGELOG.md). grok-cli 1.0.4 wedges at SIX or
-  # more MCP servers; the four wired here are inside the safe range.
+  # false premise - see docs/history/V7.4.2-CHANGELOG.md). grok-cli 1.0.4
+  # wedges at eight RUNNING MCP servers; reserve one slot for a plugin-provided
+  # server and keep six configured.
   [switch]$SkipGrokMcp,
   # Opt-in third-party extras (see BUNDLED-TOOLS\CATALOG.json scope_note on each):
   #   code-review-skill  obsidian-skills  claude-mem
@@ -101,7 +104,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.5.3 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.5.4 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -755,7 +758,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.5.3'
+  version = '7.5.4'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
