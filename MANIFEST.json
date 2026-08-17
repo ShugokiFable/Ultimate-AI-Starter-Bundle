@@ -10,6 +10,11 @@
   "sha256": "7c5d3f7c9d92cd70ec58e62e2c10251b9e1bbfd9f0c85ee8a6cb0147c89262c8"
  },
  {
+  "path": "0-UNRESTRAINT-PACKS/AIO-Instruction-full.txt",
+  "size": 2639,
+  "sha256": "94616a5aed264539c95f33b5a074b8b550319f8fee7e0f585a02db30232d1639"
+ },
+ {
   "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/AIO.txt",
   "size": 982,
   "sha256": "6e857f99de226cab67d3cf468e74cf3598bb797af434a6ad5897e6d8cc353aca"
@@ -26870,11 +26875,6 @@
   "sha256": "731d75eb69a934f55cdd7b16185316055c90ee8d6fdeac9f5e25335ff6928575"
  },
  {
-  "path": "AIO Instruction.txt",
-  "size": 2698,
-  "sha256": "c44a12a7a86c717a5c846dde9c839c583a558bc6e665183aa713c4705cb5a2d0"
- },
- {
   "path": "AIO-INSTRUCTION.txt",
   "size": 2698,
   "sha256": "c44a12a7a86c717a5c846dde9c839c583a558bc6e665183aa713c4705cb5a2d0"
@@ -28691,8 +28691,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 6921,
-  "sha256": "0e3f55336f3032276ac21bd7150322bfc7d0471839b54ae3ecd85d32e09ffd2a"
+  "size": 8916,
+  "sha256": "f63e009d7b99e2a88ddf7d2635b5912edda43d907ba9f1c4af8c33b460639e91"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28776,8 +28776,8 @@
  },
  {
   "path": "INSTALL-REMOTE.ps1",
-  "size": 6784,
-  "sha256": "b99df05265b9908e0d1f14cd7dfc204e91ea6d59a7ae959aa7ed8ce19569b1e9"
+  "size": 6782,
+  "sha256": "506b778827c00d4262d9736a01910a2306119a4633be77b77539c79a12c3d374"
  },
  {
   "path": "INSTALL-V7-AIO.bat",
@@ -28786,8 +28786,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 41060,
-  "sha256": "55274410a6cadf1d9ea953da25514badacdb26e6a5bb5178cdb2b52a5cf48c4f"
+  "size": 41073,
+  "sha256": "0c4079074690fc68493a66e869ab5ceb6119df1fab5537491c5591df726f293d"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28826,13 +28826,8 @@
  },
  {
   "path": "README.md",
-  "size": 24873,
-  "sha256": "5e10141c0a42e7d40fe14b92320205f61acb768623c0041cfd74e2166a23ff8a"
- },
- {
-  "path": "RELEASE-NOTES-v5.2.2.md",
-  "size": 922,
-  "sha256": "062daf2cf4c46b8d98faa97dc9b5c0d398337cdbd7098903b4c480a6860f5cd4"
+  "size": 24861,
+  "sha256": "0011f502f8772c38b86af3de3ca9b10844ecedbc7828d285fe2ebdc4550d7e04"
  },
  {
   "path": "START-HERE.txt",
@@ -28941,8 +28936,8 @@
  },
  {
   "path": "TOOLS/hooks/completeness_gate.py",
-  "size": 14543,
-  "sha256": "6100b128a268ec6a50bb681443a9257b31b1c7cea9fe4132299050900e392be0"
+  "size": 16308,
+  "sha256": "7d05c9a5eacba4a06ddf354f700b2ecf6ee21f341a6d8c4c5c18ed4234433893"
  },
  {
   "path": "TOOLS/hooks/hermes_wire.py",
@@ -29010,134 +29005,9 @@
   "sha256": "d408fa0162ad4df01ee8645eab05c12fa6500ce97c3c50936b7442f4c9660bd1"
  },
  {
-  "path": "V4.2-LOG-REGRESSION-AUDIT.md",
-  "size": 4223,
-  "sha256": "14e6b18b383b840fd33f66158fd22b9e46e3c5dd3acaf99c7d4d2b4633a0b9d5"
- },
- {
-  "path": "V4.3-CLAUDE-REVIEW-AUDIT.md",
-  "size": 1209,
-  "sha256": "6dbf62a91dc514950bb74f93e0ce4fdea01fcf3092796bf2a00bea08a9389702"
- },
- {
-  "path": "V5-CHANGELOG.md",
-  "size": 15277,
-  "sha256": "dd08c1ed3348b983b014bd21386d04df08752685adc35288be312c3f8449cc72"
- },
- {
-  "path": "V5-INTEGRATION-AUDIT.md",
-  "size": 3200,
-  "sha256": "aaf16277bc024f3a7bdbe4d9ce3996b989ffe71ddf155e01ce70b38932d72c0a"
- },
- {
-  "path": "V6-CHANGELOG.md",
-  "size": 10713,
-  "sha256": "bbe207c1c403d0956a335215eaaf116d1e4d369ebb147a4b1b7ad0a3b67b9df2"
- },
- {
-  "path": "V6.5-CHANGELOG.md",
-  "size": 4277,
-  "sha256": "d19cd64083edd0169003e741ea630497964b43ddebf8e0529aed3ec500f9a2d6"
- },
- {
-  "path": "V6.8-CHANGELOG.md",
-  "size": 3290,
-  "sha256": "61ab80c0bdbab17183cb27606e4f97b949bcceee631585b66e2d987c0ea4984a"
- },
- {
-  "path": "V6.8.1-CHANGELOG.md",
-  "size": 3127,
-  "sha256": "200df3988e71344469fe6a70c163a58d314971399bf755eab96595ad1ed63820"
- },
- {
-  "path": "V6.8.2-CHANGELOG.md",
-  "size": 3742,
-  "sha256": "971512909bcfac60f21a9bc323b66fdb0b71b8a0ca872ff8fd82deea2e044543"
- },
- {
-  "path": "V6.9.0-CHANGELOG.md",
-  "size": 2369,
-  "sha256": "aac7738444065f8749b9ee4c99d8045a719e142de18ec15d1a79b17609bf1c26"
- },
- {
-  "path": "V6.9.1-CHANGELOG.md",
-  "size": 1259,
-  "sha256": "55dac9d2992ad3c969c89ba42cfdd72945bebaa88417e4c892fbf2f8a09635aa"
- },
- {
-  "path": "V6.9.2-CHANGELOG.md",
-  "size": 2261,
-  "sha256": "6d272da99af47ae87f6210699783ff70cf65795a31cb336062d658f724be7abc"
- },
- {
-  "path": "V6.9.3-CHANGELOG.md",
-  "size": 1363,
-  "sha256": "d1d0ea5967bbda968bf190fd01d3278218145ebffa6b34c06c739c6b1ea125f8"
- },
- {
   "path": "V7-AIO-GUIDE.md",
   "size": 3102,
   "sha256": "7d2980cbb0c8b2934eb5947c609f6c38f360ea51cd564cac604996f797f21e98"
- },
- {
-  "path": "V7.0.0-CHANGELOG.md",
-  "size": 8953,
-  "sha256": "af44f75858edf04b9055ce3eeffecf84fdf00f2392778d3d7d40da4f7659016d"
- },
- {
-  "path": "V7.2.0-CHANGELOG.md",
-  "size": 4259,
-  "sha256": "826765a1e35e54747c5305f146c3a9cc5295eeda874d5b0e312f5cc59601cf5b"
- },
- {
-  "path": "V7.2.1-CHANGELOG.md",
-  "size": 1147,
-  "sha256": "2ff9f45453f7ca17318d556228544821da2ef0eb036df78734b9c8cebadc7f60"
- },
- {
-  "path": "V7.2.2-CHANGELOG.md",
-  "size": 1480,
-  "sha256": "9b925893778a9e4da8e10c0239aca336f067e40b4293aabe2f6513af8ea24ada"
- },
- {
-  "path": "V7.3.0-CHANGELOG.md",
-  "size": 2197,
-  "sha256": "0aac431362339f38ae5ce42b6dcd08af686eeff49145792270e8f90099949cfc"
- },
- {
-  "path": "V7.3.1-CHANGELOG.md",
-  "size": 1308,
-  "sha256": "49d5b6c39a150df15ca9c9d6aa12bd4b5557fd8a135148ad5914cf6b6c3b7404"
- },
- {
-  "path": "V7.4.0-CHANGELOG.md",
-  "size": 5369,
-  "sha256": "4a98fbea540a2f62677cdbf0b69799d0a004b90c30eafbf56ad81e84bae6dad8"
- },
- {
-  "path": "V7.4.1-CHANGELOG.md",
-  "size": 2792,
-  "sha256": "201dff60cf1caa73ba339cd1320fbf38a2f0ddbf12eb6fbfa6e87a82e1ff8447"
- },
- {
-  "path": "V7.4.2-CHANGELOG.md",
-  "size": 3725,
-  "sha256": "cfd8a40ec9c231fece9e72a392d2a681f179bc9ac2c6638768b33dc1ab5a5e04"
- },
- {
-  "path": "V7.4.3-CHANGELOG.md",
-  "size": 2609,
-  "sha256": "8172bdf2dd90828b819f5711a414f5ac2405c9b6483288ed5f0d77c0744c659f"
- },
- {
-  "path": "V7.5.0-CHANGELOG.md",
-  "size": 4334,
-  "sha256": "b069133095ae33b81517293bd5743a88ad08ff132c5bfd246f5d0e1c1d078bfb"
- },
- {
-  "path": "V7.5.1-CHANGELOG.md",
-  "size": 3679,
-  "sha256": "dc17ee127c55f8df6d16a4b9057995e811b55f4fae35aa60ba51179305fe0729"
  },
  {
   "path": "VALIDATION.json",
@@ -29147,7 +29017,7 @@
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "385b9d1c9cc5b3f76ab3975f85ef09aca5323896bab88bb97065fbbb34ac9bbf"
+  "sha256": "beacdb3df4a42c1ee5daad36eb0cd694b031514660619549aa43ced6ecfc33be"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -31623,5 +31493,140 @@
   "path": "_V7-CANONICAL-SKILLS/writing-skills/testing-skills-with-subagents.md",
   "size": 12558,
   "sha256": "c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade"
+ },
+ {
+  "path": "docs/history/RELEASE-NOTES-v5.2.2.md",
+  "size": 922,
+  "sha256": "062daf2cf4c46b8d98faa97dc9b5c0d398337cdbd7098903b4c480a6860f5cd4"
+ },
+ {
+  "path": "docs/history/V4.2-LOG-REGRESSION-AUDIT.md",
+  "size": 4223,
+  "sha256": "14e6b18b383b840fd33f66158fd22b9e46e3c5dd3acaf99c7d4d2b4633a0b9d5"
+ },
+ {
+  "path": "docs/history/V4.3-CLAUDE-REVIEW-AUDIT.md",
+  "size": 1209,
+  "sha256": "6dbf62a91dc514950bb74f93e0ce4fdea01fcf3092796bf2a00bea08a9389702"
+ },
+ {
+  "path": "docs/history/V5-CHANGELOG.md",
+  "size": 15277,
+  "sha256": "dd08c1ed3348b983b014bd21386d04df08752685adc35288be312c3f8449cc72"
+ },
+ {
+  "path": "docs/history/V5-INTEGRATION-AUDIT.md",
+  "size": 3200,
+  "sha256": "aaf16277bc024f3a7bdbe4d9ce3996b989ffe71ddf155e01ce70b38932d72c0a"
+ },
+ {
+  "path": "docs/history/V6-CHANGELOG.md",
+  "size": 10713,
+  "sha256": "bbe207c1c403d0956a335215eaaf116d1e4d369ebb147a4b1b7ad0a3b67b9df2"
+ },
+ {
+  "path": "docs/history/V6.5-CHANGELOG.md",
+  "size": 4277,
+  "sha256": "d19cd64083edd0169003e741ea630497964b43ddebf8e0529aed3ec500f9a2d6"
+ },
+ {
+  "path": "docs/history/V6.8-CHANGELOG.md",
+  "size": 3290,
+  "sha256": "61ab80c0bdbab17183cb27606e4f97b949bcceee631585b66e2d987c0ea4984a"
+ },
+ {
+  "path": "docs/history/V6.8.1-CHANGELOG.md",
+  "size": 3127,
+  "sha256": "200df3988e71344469fe6a70c163a58d314971399bf755eab96595ad1ed63820"
+ },
+ {
+  "path": "docs/history/V6.8.2-CHANGELOG.md",
+  "size": 3742,
+  "sha256": "971512909bcfac60f21a9bc323b66fdb0b71b8a0ca872ff8fd82deea2e044543"
+ },
+ {
+  "path": "docs/history/V6.9.0-CHANGELOG.md",
+  "size": 2369,
+  "sha256": "aac7738444065f8749b9ee4c99d8045a719e142de18ec15d1a79b17609bf1c26"
+ },
+ {
+  "path": "docs/history/V6.9.1-CHANGELOG.md",
+  "size": 1259,
+  "sha256": "55dac9d2992ad3c969c89ba42cfdd72945bebaa88417e4c892fbf2f8a09635aa"
+ },
+ {
+  "path": "docs/history/V6.9.2-CHANGELOG.md",
+  "size": 2261,
+  "sha256": "6d272da99af47ae87f6210699783ff70cf65795a31cb336062d658f724be7abc"
+ },
+ {
+  "path": "docs/history/V6.9.3-CHANGELOG.md",
+  "size": 1363,
+  "sha256": "d1d0ea5967bbda968bf190fd01d3278218145ebffa6b34c06c739c6b1ea125f8"
+ },
+ {
+  "path": "docs/history/V7.0.0-CHANGELOG.md",
+  "size": 8953,
+  "sha256": "af44f75858edf04b9055ce3eeffecf84fdf00f2392778d3d7d40da4f7659016d"
+ },
+ {
+  "path": "docs/history/V7.2.0-CHANGELOG.md",
+  "size": 4259,
+  "sha256": "826765a1e35e54747c5305f146c3a9cc5295eeda874d5b0e312f5cc59601cf5b"
+ },
+ {
+  "path": "docs/history/V7.2.1-CHANGELOG.md",
+  "size": 1147,
+  "sha256": "2ff9f45453f7ca17318d556228544821da2ef0eb036df78734b9c8cebadc7f60"
+ },
+ {
+  "path": "docs/history/V7.2.2-CHANGELOG.md",
+  "size": 1480,
+  "sha256": "9b925893778a9e4da8e10c0239aca336f067e40b4293aabe2f6513af8ea24ada"
+ },
+ {
+  "path": "docs/history/V7.3.0-CHANGELOG.md",
+  "size": 2197,
+  "sha256": "0aac431362339f38ae5ce42b6dcd08af686eeff49145792270e8f90099949cfc"
+ },
+ {
+  "path": "docs/history/V7.3.1-CHANGELOG.md",
+  "size": 1308,
+  "sha256": "49d5b6c39a150df15ca9c9d6aa12bd4b5557fd8a135148ad5914cf6b6c3b7404"
+ },
+ {
+  "path": "docs/history/V7.4.0-CHANGELOG.md",
+  "size": 5369,
+  "sha256": "4a98fbea540a2f62677cdbf0b69799d0a004b90c30eafbf56ad81e84bae6dad8"
+ },
+ {
+  "path": "docs/history/V7.4.1-CHANGELOG.md",
+  "size": 2792,
+  "sha256": "201dff60cf1caa73ba339cd1320fbf38a2f0ddbf12eb6fbfa6e87a82e1ff8447"
+ },
+ {
+  "path": "docs/history/V7.4.2-CHANGELOG.md",
+  "size": 3725,
+  "sha256": "cfd8a40ec9c231fece9e72a392d2a681f179bc9ac2c6638768b33dc1ab5a5e04"
+ },
+ {
+  "path": "docs/history/V7.4.3-CHANGELOG.md",
+  "size": 2609,
+  "sha256": "8172bdf2dd90828b819f5711a414f5ac2405c9b6483288ed5f0d77c0744c659f"
+ },
+ {
+  "path": "docs/history/V7.5.0-CHANGELOG.md",
+  "size": 4334,
+  "sha256": "b069133095ae33b81517293bd5743a88ad08ff132c5bfd246f5d0e1c1d078bfb"
+ },
+ {
+  "path": "docs/history/V7.5.1-CHANGELOG.md",
+  "size": 3679,
+  "sha256": "dc17ee127c55f8df6d16a4b9057995e811b55f4fae35aa60ba51179305fe0729"
+ },
+ {
+  "path": "docs/history/V7.5.2-CHANGELOG.md",
+  "size": 4043,
+  "sha256": "10749c5ca2a7215b2fd0f78a7bf9ba7d05c422bf0eaf2cf81dde7d9a6bc4b199"
  }
 ]

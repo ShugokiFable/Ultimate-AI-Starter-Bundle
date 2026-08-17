@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.5.1
+# Ultimate AI Starter Bundle v7.5.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -71,7 +71,7 @@ and runs the full installer (skills, tools, MCP servers, gates, SOUL + AIO
 preamble). With parameters:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1))) -Providers Claude,Grok -Tag v7.5.0"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1))) -Providers Claude,Grok"
 ```
 
 Or double-click `INSTALL-REMOTE.bat`. Re-running is a no-op.

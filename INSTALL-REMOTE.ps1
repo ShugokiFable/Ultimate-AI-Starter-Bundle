@@ -14,13 +14,13 @@
 
   With parameters:
 
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1))) -Providers Claude,Grok -Tag v7.5.0"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1))) -Providers Claude,Grok"
 
   Re-running is a no-op when the bundle is already present. Use -Force to
   re-download anyway.
 
 .PARAMETER Tag
-  Release tag to fetch, e.g. 'v7.5.0'. Empty = latest release.
+  Release tag to fetch, e.g. 'v7.5.2'. Empty (default) = latest release.
 
 .PARAMETER Providers
   Providers to install for (default: installer default = all five).

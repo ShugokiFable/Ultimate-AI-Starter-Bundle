@@ -63,7 +63,7 @@ param(
   [switch]$SkillsOnly,
   [switch]$ToolsOnly,
   # Grok MCP is wired by default again as of v7.4.2 (v7.4.1 disabled it on a
-  # false premise - see V7.4.2-CHANGELOG.md). grok-cli 1.0.4 wedges at SIX or
+  # false premise - see docs/history/V7.4.2-CHANGELOG.md). grok-cli 1.0.4 wedges at SIX or
   # more MCP servers; the four wired here are inside the safe range.
   [switch]$SkipGrokMcp,
   # Opt-in third-party extras (see BUNDLED-TOOLS\CATALOG.json scope_note on each):
@@ -101,7 +101,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.5.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.5.2 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -755,7 +755,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.5.0'
+  version = '7.5.2'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
