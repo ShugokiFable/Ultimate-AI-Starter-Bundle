@@ -3,6 +3,28 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.5.3
+
+Two bugs found by actually running the installer against a real machine.
+
+- `Setup-HouseCarl.ps1` set `SKYRIM_MO2_INSTANCE` and `HouseCarl__Mo2InstanceDir`
+  to the single character `C`. `Find-Mo2Instances` returns a `List[string]`, and
+  a single-element return unrolls to a bare `[string]` on the way out. A string
+  still answers `.Count = 1`, so the MO2 branch was taken, and `$mo2List[0]` then
+  indexed the *string* - yielding the first character of `C:\...`. Anyone with
+  exactly one MO2 instance got a houseCARL pointed at a path that never existed.
+  Fixed by forcing array semantics (`@(Find-Mo2Instances)`), and a guard now
+  refuses to persist an instance directory with no `ModOrganizer.ini` rather
+  than writing a bogus value silently.
+- `BUNDLED-TOOLS/CATALOG.json` still declared `pack_version` 6.8.0 with an
+  updated_utc of 2026-08-02, seven minor versions behind `VERSION.txt`. Anything
+  reading the catalog to decide what the pack is saw the wrong answer.
+
+- Fixed dangling references left by the 7.5.2 cleanup: `START-HERE.txt` still
+  carried a V7.5.1 title, both it and `README.md` pointed at the deleted
+  `AIO Instruction.txt`, and the READ NEXT list used bare changelog filenames
+  that now live under `docs/history/`.
+
 ## 7.5.2
 
 Repo hygiene and a version-drift fix found by auditing the pack rather than

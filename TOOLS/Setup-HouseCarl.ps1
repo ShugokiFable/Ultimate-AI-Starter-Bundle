@@ -546,7 +546,12 @@ if ($Mo2Instance) {
   }
   $mo2List = @((Resolve-Path -LiteralPath $Mo2Instance).Path)
 } else {
-  $mo2List = Find-Mo2Instances
+  # @() is load-bearing. Find-Mo2Instances returns a List[string], and a
+  # single-element return unrolls to a bare [string] on the way out. A string
+  # still answers .Count = 1, so the MO2 branch is taken, and $mo2List[0] then
+  # indexes the STRING - yielding its first character ("C" of "C:\..."). That
+  # is how SKYRIM_MO2_INSTANCE ends up set to "C".
+  $mo2List = @(Find-Mo2Instances)
 }
 
 $staging = $null
@@ -609,6 +614,16 @@ if ($RefreshOnly) {
 
 $script:Report['mode'] = $mode
 $script:Report['instance'] = $instanceDir
+
+# Refuse to persist an instance that is not a real MO2-shaped directory. A
+# malformed value here is silent: houseCARL starts, then every load-order read
+# fails against a path that never existed.
+if (-not (Test-ExistingPath (Join-Path $instanceDir 'ModOrganizer.ini'))) {
+  Write-Bad "Refusing to persist a bogus MO2 instance: '$instanceDir'"
+  Write-Host "  Expected a directory containing ModOrganizer.ini."
+  Write-Host "  Pass -Mo2Instance <path>, or -VortexStaging <path> to build a shim."
+  exit 4
+}
 
 Write-Step "Persisting environment"
 Set-UserEnv -Name 'HOUSECARL_MCP' -Value $mcp

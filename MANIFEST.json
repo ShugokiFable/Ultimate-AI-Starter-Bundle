@@ -26887,7 +26887,7 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 12423,
-  "sha256": "2b449856b0265919c51a1dbf32a45a897be6bee74ac3694fa83f69a8fbea014f"
+  "sha256": "131fae9de0fddcd92db2d5ea9b993d0f0b7981bec0f8b8dfef2e827d70d40ba1"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -28691,8 +28691,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 8916,
-  "sha256": "f63e009d7b99e2a88ddf7d2635b5912edda43d907ba9f1c4af8c33b460639e91"
+  "size": 10175,
+  "sha256": "4b73e9ec23aa27ecf1e125b09660987b92f2806b5a8caa6b0d56f0695ac7f408"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28787,7 +28787,7 @@
  {
   "path": "INSTALL-V7-AIO.ps1",
   "size": 41073,
-  "sha256": "0c4079074690fc68493a66e869ab5ceb6119df1fab5537491c5591df726f293d"
+  "sha256": "1c0d8972aa0d56a93a2972bbb8199d6159b98cffb7cb0534c014518dfd8e79c2"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28826,13 +28826,13 @@
  },
  {
   "path": "README.md",
-  "size": 24861,
-  "sha256": "0011f502f8772c38b86af3de3ca9b10844ecedbc7828d285fe2ebdc4550d7e04"
+  "size": 24807,
+  "sha256": "1bfa944165018f4141751c6b3a27a6de4accfc7d79998c8d5aec843f6274f191"
  },
  {
   "path": "START-HERE.txt",
-  "size": 6670,
-  "sha256": "348f8700c682b9daf62c6ba98a278260e9c56178a525c2220a72267e113f621d"
+  "size": 6839,
+  "sha256": "2b3c39ab3c7bb6ed4809fc2fe2e93fcc419da519daf0ec9486bda6edef7765ec"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -28891,8 +28891,8 @@
  },
  {
   "path": "TOOLS/Setup-HouseCarl.ps1",
-  "size": 26470,
-  "sha256": "6464945c514cf8c916c4e14d0c5e6a384c05483d761a22709a00905d590372d0"
+  "size": 27355,
+  "sha256": "5f5cac79d76a4f4782d73a6afa08fa586a55b420b95dcd9740dba1ccf9a30b79"
  },
  {
   "path": "TOOLS/Update-From-GitHub.ps1",
@@ -29017,7 +29017,7 @@
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "beacdb3df4a42c1ee5daad36eb0cd694b031514660619549aa43ced6ecfc33be"
+  "sha256": "6a41ab5b56bd9152fa0aa0f312fd41d2c46eecc6290c2bfe24550e79af88df78"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -31628,5 +31628,10 @@
   "path": "docs/history/V7.5.2-CHANGELOG.md",
   "size": 4043,
   "sha256": "10749c5ca2a7215b2fd0f78a7bf9ba7d05c422bf0eaf2cf81dde7d9a6bc4b199"
+ },
+ {
+  "path": "docs/history/V7.5.3-CHANGELOG.md",
+  "size": 2644,
+  "sha256": "9fca72e932dd6ccaf5c3be38f9bfd1705f639df7f072b70d69ddbb620c4d35e4"
  }
 ]

@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.5.2
+# Ultimate AI Starter Bundle v7.5.3
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -38,7 +38,6 @@ earn its cost.
 Follow AIO-INSTRUCTION.txt for every complex or factual request.
 ```
 
-Same content is also stored as `AIO Instruction.txt`.
 
 ## SOUL + AIO for every agent (v7.5.0)
 
