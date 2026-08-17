@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.5.1 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.5.3 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -126,27 +126,27 @@ Web UIs (ChatGPT/Gemini) have no instruction file - paste
 into the custom-instructions box. See 4-PREAMBLES\README.md for the full map.
 
 The pack-root AIO-INSTRUCTION.txt is the operating contract (truth-seeking
-process, no yes-man, verify-don't-assume); also on disk as "AIO Instruction.txt".
+process, no yes-man, verify-don't-assume).
 
 
 READ NEXT
 ---------
-  V7.4.3-CHANGELOG.md  limit is 8 RUNNING servers; a Claude plugin eats a slot
-  V7.4.2-CHANGELOG.md  MCP DOES work in Grok (its "5 servers" figure superseded)
-  V7.4.1-CHANGELOG.md  installer applies the Grok fix (MCP-off part superseded)
-  V7.4.0-CHANGELOG.md  Grok softlock measured: inherited hooks + MCP that never attaches
-  V7.3.1-CHANGELOG.md  SUPERSEDED by 7.4.0 (orphan-fleet theory was wrong)
-  V7.3.0-CHANGELOG.md  Grok hang forensics; troubleshooting doc; pin-every-npx rule
-  V7.2.2-CHANGELOG.md  MCP cold-start fixes; dashboard truth for cbm 0.10.5
-  V7.2.1-CHANGELOG.md  Forge venv trap documented with repair recipe
-  V7.2.0-CHANGELOG.md  fanout/installer fixes; V6->V7 rename completed
-  V7.0.0-CHANGELOG.md  codebase-memory indexing discipline; .cbmignore + setup tool
-  V6.9.3-CHANGELOG.md  Hermes unrestraint skill; all providers verified live
-  V6.9.2-CHANGELOG.md  ULTIMATE unrestraint update: 0-UNRESTRAINT-PACKS
-  V6.9.1-CHANGELOG.md  caption + sheet skills; jail kits not imported
-  V6.9.0-CHANGELOG.md  adult-fiction in scope; no jailbreak layer
-  V6.8.2-CHANGELOG.md  stop-assuming: assumption gate + verify-first
-  V6-CHANGELOG.md      what changed and why, with the evidence
+  docs\history\V7.4.3-CHANGELOG.md  limit is 8 RUNNING servers; a Claude plugin eats a slot
+  docs\history\V7.4.2-CHANGELOG.md  MCP DOES work in Grok (its "5 servers" figure superseded)
+  docs\history\V7.4.1-CHANGELOG.md  installer applies the Grok fix (MCP-off part superseded)
+  docs\history\V7.4.0-CHANGELOG.md  Grok softlock measured: inherited hooks + MCP that never attaches
+  docs\history\V7.3.1-CHANGELOG.md  SUPERSEDED by 7.4.0 (orphan-fleet theory was wrong)
+  docs\history\V7.3.0-CHANGELOG.md  Grok hang forensics; troubleshooting doc; pin-every-npx rule
+  docs\history\V7.2.2-CHANGELOG.md  MCP cold-start fixes; dashboard truth for cbm 0.10.5
+  docs\history\V7.2.1-CHANGELOG.md  Forge venv trap documented with repair recipe
+  docs\history\V7.2.0-CHANGELOG.md  fanout/installer fixes; V6->V7 rename completed
+  docs\history\V7.0.0-CHANGELOG.md  codebase-memory indexing discipline; .cbmignore + setup tool
+  docs\history\V6.9.3-CHANGELOG.md  Hermes unrestraint skill; all providers verified live
+  docs\history\V6.9.2-CHANGELOG.md  ULTIMATE unrestraint update: 0-UNRESTRAINT-PACKS
+  docs\history\V6.9.1-CHANGELOG.md  caption + sheet skills; jail kits not imported
+  docs\history\V6.9.0-CHANGELOG.md  adult-fiction in scope; no jailbreak layer
+  docs\history\V6.8.2-CHANGELOG.md  stop-assuming: assumption gate + verify-first
+  docs\history\V6-CHANGELOG.md      what changed and why, with the evidence
   V7-AIO-GUIDE.md      user + AI contract
   README.md            layout
   WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md
