@@ -24,14 +24,10 @@ GENERIC = '2-OPTIONAL-SHARED-GENERIC'
 PROVIDERS = ['Claude', 'Codex', 'Grok', 'Hermes', 'Kimi']
 REL = os.path.join('COPY-TO-SKILLS-DIRECTORY', 'skills')
 
-# Skills that are deliberately NOT shipped to every provider. Canonical holds
-# them so they stay maintained in one place, but fanout must not widen their
-# distribution. Without this, every fanout run silently re-propagated
-# `unrestraint-packs` (Hermes-only since v6.9.3) into all five trees, and a
-# human had to notice and delete four copies afterwards.
-SCOPED = {
-    'unrestraint-packs': {'Hermes'},
-}
+# Canonical skills are distributed to every supported provider. Keep the map so
+# a future, genuinely provider-specific skill has one explicit source of truth;
+# it is intentionally empty for the current all-provider install policy.
+SCOPED = {}
 
 
 def retag(path, provider_tag):

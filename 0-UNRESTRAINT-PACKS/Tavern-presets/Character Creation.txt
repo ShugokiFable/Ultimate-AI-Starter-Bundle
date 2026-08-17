@@ -1,0 +1,3 @@
+Portrait caption is directly above (AI; mostly right). Author tags outrank the caption on conflicts; drop metadata (translation, source). User concept below is MAX priority.
+
+Fill your TEMPLATE as one full third-person sheet. Make them specific, flawed, and alive — not a fact dump. Clear and precise. No emoji. No repeated points. Output only the filled sheet.

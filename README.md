@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.5.3
+# Ultimate AI Starter Bundle v7.5.4
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -499,9 +499,9 @@ registry.
   logic never enters the graph no matter how you configure it. The graph covers
   C/C++/C#/Python/TS/Go/PHP and file structure — SKSE plugins and tooling, not
   Papyrus. Use Grep + the `papyrus-reference` skill there.
-- `unrestraint-packs` is kept Hermes-only by a hardcoded `SCOPED` map in
-  `TOOLS/fanout_providers.py`. The mechanism works, but nothing validates that the
-  map matches intent — a wrong entry would be as silent as the bug it replaced.
+- `unrestraint-packs` is installed for every supported provider by the canonical
+  fanout. The `SCOPED` map remains available for any future, genuinely
+  provider-specific skill, but is intentionally empty in this release.
 - Everything here is **tool-validated** — gates pass, scripts parse, hashes
   verify, and the BOM fix is confirmed live in a provider's own skill listing.
   The installer has **not** been run end-to-end on a clean machine as part of
@@ -511,7 +511,7 @@ registry.
 
 ## Version
 
-**v7.5.1** — 2026-08-16. Based on v7.5.0.
+**v7.5.4** — 2026-08-17. Based on v7.5.3.
 
 ## License
 

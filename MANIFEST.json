@@ -4025,6 +4025,11 @@
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
  },
  {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2583,
+  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+ },
+ {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Claude/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
   "size": 6813,
   "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
@@ -6555,6 +6560,11 @@
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
  },
  {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2583,
+  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+ },
+ {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Codex/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
   "size": 6813,
   "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
@@ -9068,6 +9078,11 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/tool-output-awareness/SKILL.md",
   "size": 13241,
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2583,
+  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
@@ -14110,6 +14125,11 @@
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
  },
  {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2583,
+  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+ },
+ {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
   "size": 6813,
   "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
@@ -16628,6 +16648,11 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/tool-output-awareness/SKILL.md",
   "size": 13241,
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2583,
+  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Claude/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
@@ -19160,6 +19185,11 @@
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
  },
  {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2583,
+  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+ },
+ {
   "path": "2-OPTIONAL-SHARED-GENERIC/Codex/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
   "size": 6813,
   "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
@@ -21673,6 +21703,11 @@
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/tool-output-awareness/SKILL.md",
   "size": 13241,
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
+ },
+ {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2583,
+  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
  },
  {
   "path": "2-OPTIONAL-SHARED-GENERIC/Grok/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
@@ -26715,6 +26750,11 @@
   "sha256": "30f76fdb9e910f1423130bf3007777d32482d7a7958ece8761db3157e33c0a1d"
  },
  {
+  "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
+  "size": 2583,
+  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+ },
+ {
   "path": "2-OPTIONAL-SHARED-GENERIC/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/using-git-worktrees/SKILL.md",
   "size": 6813,
   "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
@@ -28691,8 +28731,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 10175,
-  "sha256": "4b73e9ec23aa27ecf1e125b09660987b92f2806b5a8caa6b0d56f0695ac7f408"
+  "size": 10562,
+  "sha256": "076625d8dd43141d49083a91b80b43f19a54e67f538220ed27a24cb144c7711c"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28786,8 +28826,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 41073,
-  "sha256": "1c0d8972aa0d56a93a2972bbb8199d6159b98cffb7cb0534c014518dfd8e79c2"
+  "size": 41204,
+  "sha256": "49ed2cd1d3bcdb8c05828f75c70e93728024a9d7716b8c6dda2f2c42f185f920"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28826,13 +28866,13 @@
  },
  {
   "path": "README.md",
-  "size": 24807,
-  "sha256": "1bfa944165018f4141751c6b3a27a6de4accfc7d79998c8d5aec843f6274f191"
+  "size": 24792,
+  "sha256": "cbb829feb3d409a0af88b88994ed013151f498e2eacbbc183325c5cf598e1a07"
  },
  {
   "path": "START-HERE.txt",
   "size": 6839,
-  "sha256": "2b3c39ab3c7bb6ed4809fc2fe2e93fcc419da519daf0ec9486bda6edef7765ec"
+  "sha256": "81d938c7ee55b74d370256c3a8bbe4cc3cbdaa2ef6c91300b0c23794435c722d"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -28921,8 +28961,8 @@
  },
  {
   "path": "TOOLS/fanout_providers.py",
-  "size": 4615,
-  "sha256": "f772336549892506b6a85f28fe0b617492917d43a413be995b98fd5ced782185"
+  "size": 4452,
+  "sha256": "e1f50ef0d86511754f2164eca0929bc725365dcf11e42f004cb52a0c6866f062"
  },
  {
   "path": "TOOLS/generate_manifest.py",
@@ -29017,7 +29057,7 @@
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "6a41ab5b56bd9152fa0aa0f312fd41d2c46eecc6290c2bfe24550e79af88df78"
+  "sha256": "5b2f60a2e355a3e323bba4243abeb2d575fbe29fae15d0edceada21a0e0a7629"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -31633,5 +31673,10 @@
   "path": "docs/history/V7.5.3-CHANGELOG.md",
   "size": 2644,
   "sha256": "9fca72e932dd6ccaf5c3be38f9bfd1705f639df7f072b70d69ddbb620c4d35e4"
+ },
+ {
+  "path": "docs/history/V7.5.4-CHANGELOG.md",
+  "size": 619,
+  "sha256": "0323852a166bc4c3e55e44f766499982a61556755f5dc11e7dc9044a0696fc16"
  }
 ]

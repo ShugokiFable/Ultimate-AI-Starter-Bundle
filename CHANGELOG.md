@@ -3,6 +3,14 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.5.4
+
+- `unrestraint-packs` is now part of the common canonical set and fans out to
+  Claude, Codex, Grok, Kimi, and Hermes by explicit operator request.
+- Corrected three obsolete installer statements about Grok's MCP limit. The
+  measured limit is eight running servers; seven are safe. A Grok installation
+  with a plugin-provided server should keep no more than six configured.
+
 ## 7.5.3
 
 Two bugs found by actually running the installer against a real machine.
