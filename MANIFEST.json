@@ -1425,9 +1425,9 @@
   "sha256": "0eb94ba90f95eb29d885686ad71643d88c4037aaea4b050b31429c2bbaa77fa8"
  },
  {
-  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/Character Maker.txt",
-  "size": 713,
-  "sha256": "8b1e147b4ef6e98988ee622defd86d0c83d9925ef34e5fdee418cbba252aabe3"
+  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/Character Creation.txt",
+  "size": 365,
+  "sha256": "47caa19530e494db533366b877109d485e80f4bb35c6816b5e49351e98ff11ad"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Tavern-presets/New-light-anti-ai-ethical-bullshit.json",
@@ -1436,13 +1436,13 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9 SPEECH.json",
-  "size": 10064,
-  "sha256": "f7f8a3ae303b19d9f151d790134c7f92d9bc338c470a54ad42a71c019174135b"
+  "size": 10256,
+  "sha256": "cc737d11f7f97edc688c9d89968fb72d6c474617a52b112abdcd8e258384d635"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9.json",
-  "size": 12191,
-  "sha256": "651923fc930834991774c10273e728534124a728325e758ab16541f178ffa481"
+  "size": 11925,
+  "sha256": "a2bca227f8bf0f085596e9db39575aa50717a36ff63142d686a11da8135f9458"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/!Special_Token.mkd",
@@ -28866,8 +28866,8 @@
  },
  {
   "path": "README.md",
-  "size": 24792,
-  "sha256": "cbb829feb3d409a0af88b88994ed013151f498e2eacbbc183325c5cf598e1a07"
+  "size": 19735,
+  "sha256": "5b76f78fbadcd66152e7988232e700a6d18128951cb9802b1dccb8c6d6a09e3a"
  },
  {
   "path": "START-HERE.txt",

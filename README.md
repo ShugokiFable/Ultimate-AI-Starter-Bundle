@@ -241,240 +241,155 @@ MCP mode gives Grok `headroom_compress` / `headroom_retrieve` /
 automatic traffic compression, and for a subscription account it is the only
 mode that works.
 
-## What's new in v7.5.1
+## What's new
 
-The installer ran end-to-end on a real machine for the first time and three
-bugs surfaced, all fixed: the Grok compat-cells rewrite could eat every
-`[mcp_servers.*]` block after `[compat.claude]` on re-runs; Headroom's pip
-step died on PATH pythons without pip (and on pip's stderr); and gates /
-reasoning-MCP wiring silently no-op'd on multi-provider installs. Full
-details in [V7.5.1-CHANGELOG.md](V7.5.1-CHANGELOG.md).
+Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
-## What's new in v7.5.0
+### v7.5.4 — unrestraint-packs is a common provider skill
+- `unrestraint-packs` is no longer Hermes-scoped. The canonical source fans it
+  out to **Claude, Codex, Grok, Kimi and Hermes** alike.
+- Installer help/comments corrected to the measured Grok limit: **8 running MCP
+  servers wedge grok-cli 1.0.4; 7 are safe** — budget 6 configured when a
+  plugin supplies one.
+- Existing Grok MCP config is untouched (operator-owned).
 
-- **`4-PREAMBLES/`** — SOUL for every agent: the operator's soul config
-  (verbatim), an identity-neutral universal soul, and a manual-paste file for
-  web UIs. The installer now wires SOUL + the AIO operating contract into
-  Claude Code, Codex, Kimi, Grok and Hermes automatically (idempotent,
-  backup-first, `-SkipPreamble` to opt out).
-- **One command from zero** — `INSTALL-REMOTE.ps1` / `.bat`: downloads the
-  latest release, extracts it under `%LOCALAPPDATA%\Ultimate-AI-Starter-Bundle`
-  and runs the full installer. Releases now carry a zip asset.
-- **Hermes home catalog fix** — `%LOCALAPPDATA%\hermes` (was `~/.hermes`,
-  which silently missed the real home).
-- **`BOOTSTRAP.txt`** now bootstraps from GitHub when the bundle is absent.
+### v7.5.3 — houseCARL pointed at a path called "C"
+- Single-MO2-instance machines hit a PowerShell array-unroll bug that persisted
+  `SKYRIM_MO2_INSTANCE = C`. Forced array semantics + a guard that refuses an
+  instance dir without `ModOrganizer.ini`.
+- `CATALOG.json` pack version and `updated_utc` were 7 minor versions stale.
+- Dangling changelog/AIO-file references left by the 7.5.2 declutter fixed.
 
-## What's new in v7.3.0
+### v7.5.2 — version drift, a pinned install tag, root clutter
+- The documented remote install hard-pinned `-Tag v7.5.0`, freezing every
+  documented install at 7.5.0. Pin removed (empty tag = latest release).
+- Installer banner + internal version still said 7.5.0; both track the release.
+- Duplicate `AIO Instruction.txt` removed; 26 per-version changelogs moved to
+  `docs/history/` (root markdown drops 33 → 7). Nothing deleted.
+- The release gate blocked its own commit (porcelain `XY` Y-column ignored);
+  fixed and self-tested.
 
-- **`GROK-MCP-TROUBLESHOOTING.md`** — the full Grok-hang forensics: turn-phase log
-  reading, 5 field-tested rules (no MCP sections in grok config.toml, pin every npx
-  server, headroom via launcher, cbm daemon keep-alive, never kill servers mid-session),
-  diagnosis cheat-sheet. Model stalls were tool-prep, not the model.
-- MCP examples: github pin + "pin every npx" rule.
-- `codebase-memory` skill: cold-daemon stall note.
+### v7.5.1 — three installer bugs, found by running it end-to-end
+- Grok compat-cells rewrite could eat every `[mcp_servers.*]` block after
+  `[compat.claude]` on re-runs.
+- Headroom's pip step died on PATH pythons without pip and on pip's stderr.
+- Gates/reasoning-MCP wiring silently no-op'd on multi-provider installs.
 
-## What's new in v7.2.2
+### v7.5.0 — SOUL for every agent + one-command install from zero
+- **`4-PREAMBLES/`** — the operator's SOUL (verbatim), an identity-neutral
+  universal SOUL, and a manual-paste file for web UIs. The installer wires
+  SOUL + the AIO contract into Claude Code, Codex, Kimi, Grok and Hermes
+  (idempotent, backup-first, `-SkipPreamble`).
+- **One command from zero** — `INSTALL-REMOTE.ps1`/`.bat` downloads the latest
+  release, extracts it and runs the full installer. Releases carry a zip asset.
+- Hermes home catalog fix (`%LOCALAPPDATA%\hermes`, was `~/.hermes`);
+  `BOOTSTRAP.txt` now bootstraps from GitHub.
 
-- Firecrawl MCP example pinned (`firecrawl-mcp@3.24.0`) — unpinned npx cold-resolves
-  and can exceed Grok's 30s startup timeout; doc + explanation added.
-- `codebase-memory` skill: dashboard tiles can read 0 on v0.10.5 (UI-RPC lockdown,
-  upstream #1663) — documented with the correct verification path.
+### v7.4.3 — the real Grok limit: 8 running servers; a plugin was eating a slot
+- Bound tested rather than assumed: every 6-server set OK (5.6–24.9s); **every
+  7-server set wedged**. It is a count, not composition.
+- The free-rider: enabled Claude plugins with `.mcp.json` load servers that are
+  **invisible in `config.toml`** (`[compat.claude] mcps = false` doesn't stop
+  them). 7 configured + mcp-search = 8 running = wedge.
+- **The limit is 8 running; 7 is fine.** Local install moved to 6 servers.
 
-## What's new in v7.2.1
+### v7.4.2 — MCP does work in Grok; I read a constant as a signal
+- `tool_count: 26` was never proof MCP was off — Grok deliberately uses
+  `search_tool`/`use_tool` and never injects MCP tools. A direct tool call
+  returned real data. **MCP works.**
+- The stall is the **server-count limit** (≤5 fine, 7+ wedges).
+- Wiring restored as an installer default (4 servers), `[compat.claude] mcps =
+  false` kept for the right reason.
 
-- `skyrim-forge` skill updated for Forge 5.x (no more 4.2 pin) and now documents the
-  **provider-runtime venv trap**: venvs built from `~/.cache/codex-runtimes/...` die
-  when that cache is deleted, hanging every MCP client at startup. Repair recipe included.
-- No pack-structure changes.
+### v7.4.1 — the installer now applies the Grok fix
+- New `Set-V5GrokCompatCells` writes `[compat.claude] hooks = false` / `mcps =
+  false` into `~/.grok/config.toml`, backup-first, BOM-free (PS 5.1 `utf8`
+  emits a BOM that breaks TOML parsing — caught by parsing the result).
+- Grok MCP wiring made opt-in (`-WireGrokMcp`).
 
-## What's new in v7.2.0
+### v7.4.0 — the Grok softlock, actually measured
+- **Two real causes.** (1) Grok runs Claude's hooks: 14 entries from 6 sources,
+  two `Stop` hooks at `timeout:30` cost a measured **60.037s per turn** —
+  `hooks = false` is the only lever. (2) A server-count stall (`mcp_wait_ms`
+  ~34,900 on first turn). Turn time after both: **2.1–4.9s.**
+- **Corrections:** Rule 1 (never touch `config.toml`) and Rule 6 (orphan fleets)
+  were wrong; the cleanup tool that killed "orphans" was killing Claude Code's
+  own servers and is **removed**. Rules 2–5 kept as hygiene.
+- Hook gates could hang: `sys.stdin.read()` waits for EOF; fixed with a minimal
+  repro of the Windows stdin deadlock. Worst case now 2.2s.
 
-v7.0.0 shipped the indexing discipline but left two maintainer-tooling defects as
-*documented workarounds*. A workaround that depends on someone remembering two manual
-steps is a deferred bug — the fanout trap was hit again within the session that
-documented it. v7.2.0 makes the tooling enforce it.
+### v7.3.1 — orphan-fleet cleanup tool
+> **Superseded by v7.4.0.** The orphan-fleet diagnosis was wrong (see v7.4.0);
+> the tool shipped here was removed. Kept as a documented record.
 
-- **`fanout_providers.py` no longer widens scope.** A `SCOPED` map keeps
-  `unrestraint-packs` Hermes-only (493 files for Hermes, 492 elsewhere) and prints what
-  it withheld. Canonical still holds the skill so it stays maintained in one place.
-- **`fanout_providers.py` preserves line endings.** It used to rewrite CRLF sources to
-  LF on every run, which matters because `.gitattributes` sets `* -text` so
-  `MANIFEST.json` hashes verify against a clean clone. A full fanout run now leaves
-  `git status` completely clean; before, it dirtied 12 files and created 8 directories.
-- **`install_live_skills.py` stopped making useless backups.** It backed up *before*
-  knowing whether anything would change, so a no-op run still copied ~53 MB per provider
-  (13 stacked trees / ~692 MB observed). It now probes first and says
-  `backup: skipped (nothing changed)`.
-- **V6→V7 rename completed** for live artifacts: `_V7-CANONICAL-SKILLS/`,
-  `INSTALL-V7-AIO.ps1/.bat`, `V7-AIO-GUIDE.md`, `TESTS/Test-V7-Pack.ps1`,
-  `TOOLS/V7-Common.ps1`, `v7-registry-*.json`. Historical changelogs keep their
-  V4/V5/V6 names — they describe the past accurately.
+### v7.3.0 — Grok softlock forensics
+- **`GROK-MCP-TROUBLESHOOTING.md`** — turn-phase log reading, field-tested
+  rules, diagnosis cheat-sheet. The hang was tool-prep, not the model.
+- Pin-every-npx rule; `codebase-memory` cold-daemon note.
 
-## What's new in v7.0.0
+### v7.2.2
+- Firecrawl MCP pinned (`firecrawl-mcp@3.24.0`) — unpinned npx cold-resolves
+  and can exceed Grok's 30s startup timeout.
+- `codebase-memory` dashboard 0-tile lockdown (v0.10.5 UI-RPC, upstream #1663)
+  documented with the correct verification path.
 
-Indexing discipline for `codebase-memory-mcp`. Previous versions documented how to
-*query* the graph and said nothing about how to *build* one — so agents indexed whole
-mod trees and produced graphs that cost tokens on every call and answered nothing.
+### v7.2.1
+- `skyrim-forge` updated for Forge 5.x and documents the **provider-runtime venv
+  trap** (venvs built from a deleted Codex runtime cache die, hanging every MCP
+  client at startup).
 
-- `codebase-memory` skill rewritten with an **Indexing discipline** half: the four
-  bloat sources, what the tool cannot parse, never-index paths, and verification.
-- **`.cbmignore` matching is case-sensitive** — `meshes/` does not match `Meshes/`,
-  and Skyrim capitalizes its asset folders. Every asset rule now ships in both cases.
-- **Papyrus (`.psc`) is never parsed**, and `scripts/` is skipped by a built-in
-  skip-list. A script-only mod indexing to a handful of nodes is correct, not broken.
-  Use Grep + `papyrus-reference` for Papyrus.
-- New `COPY-TO-YOUR-WORKSPACE/_PROJECT-TEMPLATE/.cbmignore` — correct scope from
-  the moment a project is created.
-- New `TOOLS/Setup-CodebaseMemory-Index.ps1` — generates `.cbmignore` per project,
-  resolves the active version from `CURRENT.txt`, and detects the **source-carrier
-  exception** (an active version that ships as a package while the only copy of the
-  source sits in an older snapshot). Dry-run by default.
-- Secrets (`.env`, `.env.*`) excluded from every generated scope; a graph is queryable.
-- Documented two failure modes that produce useless bug reports: a stray file named
-  `nul` makes `index_repository` fail with a bare "Pipeline failed", and the
-  dashboard's NODES/EDGES tiles read **0** on a perfectly healthy index.
+### v7.2.0
+- `fanout_providers.py` no longer widens scope, preserves line endings;
+  `install_live_skills.py` stops making useless ~53 MB backups. V6→V7 rename
+  completed for all live artifacts.
 
-Applied to a real 45-project index, these rules took it from ~570,000 nodes to
-**54,553** while covering more projects than before.
+### v7.0.0
+- **Indexing discipline for `codebase-memory-mcp`**: four bloat sources,
+  case-sensitive `.cbmignore`, Papyrus never parsed, secrets excluded. Applied
+  to a real 45-project index: ~570,000 → **54,553 nodes**.
 
-## What's new in v6.9.3
+### v6.9.3
+- Hermes `unrestraint-packs` skill in both trees + canonical; Codex reinstalled
+  fresh; stale backups/duplicate trees purged.
 
-- Hermes `unrestraint-packs` skill (routes to the prompt library) in both Hermes trees + canonical skills.
-- Codex CLI reinstalled fresh (0.147.0); all providers verified live with the V6.9.2 block.
-- Stale backups, duplicate skill trees, and scratch purged from every provider home.
+### v6.9.2
+- **`0-UNRESTRAINT-PACKS/`** — the no-holds prompt library (operator Fun-stuff
+  kit, Spiritual-Spell-Red-Teaming, UltraBr3aks, tuxsharxsec, claude-fable
+  corpus, Tavern presets). Block wired into all provider instruction files.
+  Start at `0-UNRESTRAINT-PACKS/README.md`.
 
-## What's new in v6.9.2
+### v6.9.1
+- `adult-image-caption` and `adult-character-sheet`; jailbreak GitHub kits not
+  imported.
 
-- `0-UNRESTRAINT-PACKS/` — the no-holds prompt library: operator Fun stuff kit
-  (AIO, Story, Websim, Vision caption kit, Tags), Spiritual-Spell-Red-Teaming,
-  UltraBr3aks, tuxsharxsec jailbreaks, claude-fable red-team corpus, Tavern presets.
-- V6.9.2 unrestraint block wired into Claude Code / Codex / Kimi / Grok workspace
-  instruction files (backups kept).
-- Start at `0-UNRESTRAINT-PACKS/README.md`.
+### v6.9.0
+- AIO rule 11 (do the OStim/SexLab/legal-adult work, don't sanitize) +
+  `fictional-adult-modding` skill.
 
-## What's new in v6.9.1
+### v6.8.2
+- **Assumption gate** — refuses nonexistent drives, hardcoded foreign homes,
+  unread remote content. Hermes wiring through the tool; pack gates itself;
+  MCP pins refreshed.
 
-Useful Fun stuff techniques, not the jail collections:
+### v6.8.1
+- Completeness gate on **all five providers** using each one's real mechanism
+  (Codex = plugin, Hermes = config `hooks:`, **Kimi has none and is removed**).
+  Hermes gained 3 MCP servers.
 
-- `adult-image-caption` and `adult-character-sheet`
-- Jailbreak GitHub kits were **not** imported
+### v6.8.0
+- `Add-Reasoning-MCPs.ps1` (context7, sequential-thinking, github) into four
+  providers; codebase-memory-mcp 0.9.0→0.10.5, Headroom 0.33→0.35. Fixed both
+  installers writing a UTF-8 BOM into JSON configs.
 
-Full detail in [V6.9.1-CHANGELOG.md](V6.9.1-CHANGELOG.md).
+### v6.5.0
+- **Completeness gate** (refuses push/end-of-turn while release is internally
+  inconsistent), wired into all five providers. AIO-INSTRUCTION rewritten and
+  cheaper; `BOOTSTRAP.txt`.
 
-## What's new in v6.9.0
-
-One-shot coverage for fictional-adult game-modding, not a jailbreak layer.
-
-- **AIO rule 11** — do the OStim / SexLab / explicit-ID work; do not sanitize;
-  still refuse child, age-ambiguous, and real-person sexual content
-- **`fictional-adult-modding` skill** + router row so agents stop treating
-  legal adult-mod work as out of policy
-- **Tools already current** (checked 2026-08-15 against GitHub/npm). No bump.
-- Jail pastes stay out of the installed contract. `PROMPTS/README.md` says why.
-
-Full detail in [V6.9.0-CHANGELOG.md](V6.9.0-CHANGELOG.md).
-
-## What's new in v6.8.2
-
-Stop Assuming. Agents have a filesystem, Firecrawl, and a code index, and still
-answer from memory. v6.8.2 adds a control, not another reminder:
-
-- **Assumption gate** — refuses a drive that does not exist on this machine,
-  another user's home hardcoded into a script, and unread remote content piped
-  into a shell. Same installer as the completeness gate. Precise, cheap, fail
-  open, self-tested before it is wired.
-- **Hermes installer routed through the tool.** v6.8.1 documented `hermes
-  config path` and then still wrote to `~/.hermes/config.yaml`. Now
-  `hermes_wire.py` asks the executable and merges YAML instead of appending.
-- **The pack gates itself.** `VERSION.txt` + `CHANGELOG.md` are the files the
-  completeness gate actually reads.
-- **Verify-first AIO-INSTRUCTION** (rules 4/5/9). Token budget held.
-- **`TOOLS/Build-Toolbelt.ps1`** writes a machine-local inventory of MCP
-  servers and CLIs that actually exist.
-- **MCP pins refreshed** (`context7@4.0.2`, `sequential-thinking@2026.7.4`)
-  after a broken npx cache shipped as "installed".
-
-Full detail in [V6.8.2-CHANGELOG.md](V6.8.2-CHANGELOG.md).
-
-## What's new in v6.8.1
-
-v6.8.0 said the completeness gate was on five providers. It was on **two**.
-Fixed by using each provider's real mechanism, verified against its own docs or
-CLI: Codex loads hooks from **plugins** (now installed as a local-marketplace
-plugin), Hermes uses a `hooks:` block in the config path `HERMES_HOME` resolves
-to — *not* the one its docs name — and **Kimi has no hook system at all**, so
-that file is removed rather than left looking installed.
-
-Hermes also gained the three MCP servers it was missing.
-
-Two consent prompts remain, by design: Codex asks once to trust the plugin, and
-Hermes needs `hermes --accept-hooks` once. Forging either would mean writing a
-security consent record on your behalf.
-
-Full detail in [V6.8.1-CHANGELOG.md](V6.8.1-CHANGELOG.md).
-
-## What's new in v6.8.0
-
-Three MCP servers chosen for one-shot accuracy, and two tools brought current.
-
-- **`TOOLS/Add-Reasoning-MCPs.ps1`** wires **context7** (live library/API docs —
-  stops invented signatures), **sequential-thinking** (explicit decomposition)
-  and the official **github** server (releases, PRs, CI status) into Claude,
-  Grok, Codex and Kimi. npx-based, majors pinned, keys optional.
-- **codebase-memory-mcp 0.9.0 → 0.10.5**, **Headroom 0.33.0 → 0.35.0**, verified
-  against upstream checksums.
-- Fixed both installers writing a **UTF-8 BOM** into JSON configs —
-  `Set-Content -Encoding utf8` emits one on PowerShell 5.1, and a strict JSON
-  reader rejects the file. The exact bug v6.0 exists to prevent.
-
-Full detail in [V6.8-CHANGELOG.md](V6.8-CHANGELOG.md).
-
-## What's new in v6.5.0
-
-Agents are literal. Told "push the fix", they push the fix and never touch the
-README, because nobody asked. Every provider's prompt already says "be
-thorough", so v6.5 stops asking and adds a control instead.
-
-- **Completeness gate** (`TOOLS/Install-Completeness-Gate.ps1`) — a `PreToolUse`
-  hook that refuses a push, and a `Stop` hook that refuses to end the turn, while
-  a release is internally inconsistent: version bumped with no changelog entry, a
-  README still declaring the old version, uncommitted source left behind. Named
-  specifics, not nagging. Installs into Grok, Claude, Codex, Kimi and Hermes.
-  Silent unless the current commit changed a version declaration; fails open;
-  self-tested before it is wired.
-- **AIO-INSTRUCTION rewritten** around "finish the job, not the sentence", and
-  made *cheaper* — 614 tokens versus 640.
-- **BOOTSTRAP.txt** — one paste that makes a fresh agent install and verify the
-  whole bundle itself.
-
-Full detail in [V6.5-CHANGELOG.md](V6.5-CHANGELOG.md).
-
-## What's new in v6.0.0
-
-v6 is a **correctness release**. Full detail in [V6-CHANGELOG.md](V6-CHANGELOG.md).
-
-- **7 skills per install had no usable description.** A UTF-8 BOM before the
-  opening `---` of a `SKILL.md` stops a strict YAML reader from ever opening the
-  frontmatter, so the `description` is lost — and the description is the only
-  thing an agent matches on when deciding whether to load a skill. The skill is
-  installed, listed, and invisible. Two of the seven were `skyrim-memory` and
-  `skyrim-tool-router`, the skills the instructions say to load *first*.
-- **The inverse rule, found while fixing that one.** A `.ps1` **needs** its BOM:
-  PowerShell 5.1 decodes a BOM-less file as ANSI, and one em dash then breaks
-  the parse. v6 classifies by execution target — skills are normalised, Windows
-  scripts are copied byte-for-byte.
-- **Canonical rebuilt from a working install**, which had drifted ahead of the
-  bundle: 3 missing validator scripts, corrected `codebase-memory` guidance, and
-  6 uncaptured extras skills. All 10 provider trees are now *generated* from it.
-- **Evidence registry 70 → 85 entries**, each tied to a real failure.
-- **New skill `mcp-protocol-2026`** for the stateless 2026-07-28 MCP revision.
-- **Superpowers 6.3.0**, **Ponytail 4.9.0**; offline assets re-fetched and
-  hash-verified.
-- **Grok + Headroom:** MCP only by default. Do **not** wrap subscription Grok
-  through Headroom (the v5.0.2 bug: model "unknown" / 401). Repair with
-  `.\TOOLS\Ensure-Headroom-Grok.ps1 -Repair`.
-- **Extras:** `.\INSTALL-V7-AIO.ps1 -WithExtras` (claude-mem is Claude Code only
-  and needs Bun).
+### v6.0.0 — correctness release
+- 7 skills installed but their descriptions never loaded (UTF-8 BOM before
+  frontmatter); the inverse rule (`.ps1` needs its BOM) classified by execution
+  target. Canonical rebuilt from a working install; evidence registry 70→85.
 
 ## Gates (new in v6)
 
