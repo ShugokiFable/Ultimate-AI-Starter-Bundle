@@ -3,6 +3,23 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.5.6
+
+- New `Invoke-V5Native` helper in `INSTALL-V7-AIO.ps1`: native commands run
+  with a local `$ErrorActionPreference='Continue'` and stringified output, so
+  pip's "already satisfied" / pip-upgrade notice no longer prints as a red
+  `RemoteException / NativeCommandError` block (reported at line 376).
+- Same fix for `npm install -g`, `npx` plugin installs, and `claude mcp add`:
+  under the script-wide `EAP='Stop'`, any stderr write from those tools was a
+  *terminating* NativeCommandError (false npm failure; Claude MCP registration
+  could abort the installer).
+- Measured PS 5.1 gotcha documented: a function parameter named `$Args`
+  silently breaks `$LASTEXITCODE` propagation.
+- `playwright-mcp` no longer forces Google Chrome: set user env
+  `PLAYWRIGHT_MCP_EXECUTABLE_PATH` to any browser exe (Opera GX, Brave, ...)
+  before installing and the wiring appends `--executable-path` automatically.
+  Verified live against Opera GX via CDP.
+
 ## 7.5.5
 
 - Hermes `config.yaml` ships in the tailored tree and the installer wires it

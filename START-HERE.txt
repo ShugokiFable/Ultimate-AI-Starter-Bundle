@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.5.5 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.5.6 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -131,6 +131,7 @@ process, no yes-man, verify-don't-assume).
 
 READ NEXT
 ---------
+  docs\history\V7.5.6-CHANGELOG.md  PS 5.1 native-stderr fix; mojibake sweep
   docs\history\V7.5.5-CHANGELOG.md  Hermes config.yaml wiring; complete What's new
   docs\history\V7.5.4-CHANGELOG.md  unrestraint-packs is a common provider skill
   docs\history\V7.5.3-CHANGELOG.md  houseCARL "path C" single-MO2 bug

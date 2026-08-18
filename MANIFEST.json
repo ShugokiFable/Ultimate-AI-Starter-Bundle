@@ -441,8 +441,8 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/CLAUDE.md",
-  "size": 6722,
-  "sha256": "b1d71ca11b24a6bba56bb7a9971247db655ee6cf537e6384d880eb488741b0d0"
+  "size": 6697,
+  "sha256": "615050ba3430d4d8b07f8f5e78888da00142af8518bbc3b86ffe3299c9d6b7fe"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/ChatGPT 5 - Flash Thought Jailbreak.md",
@@ -531,8 +531,8 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/ENI in a GEM (less bad words).txt",
-  "size": 35284,
-  "sha256": "3cce007ef22a76e31138ed7b7b3edf8100731f1ac51a311d9822acb036abbbe1"
+  "size": 34125,
+  "sha256": "d61dc1cdb1e3f6c4ae507d760e2ee2f5f5cbb5a38d85f945b6569414267bf848"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Gemini/ENI-LIME GEM (Current Strongest).md",
@@ -26931,8 +26931,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 12427,
-  "sha256": "82bcfd70e0c9be4b2118fa94ca782c635e236d948f2d4fced7503669c5e17f4c"
+  "size": 13122,
+  "sha256": "68bca5ed18c9bbb8782d824626565322dcc66b36b9b3210aa8081e4186216928"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -28736,8 +28736,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 10868,
-  "sha256": "7bc83d6895ce0e55a52be8d07c1dd0db8d60d394474ff4a2e1df315246481c7c"
+  "size": 11824,
+  "sha256": "e4d77b0c5a3bc2c264bcd2b59558e24158214e6cd80f04865c36cc1dbd451aff"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28827,12 +28827,12 @@
  {
   "path": "INSTALL-V7-AIO.bat",
   "size": 285,
-  "sha256": "4e79a772bc29b6bf94da89ff28c389fd337308e98a05a4c117e803e8b6a82441"
+  "sha256": "9bc4a7e555b2c1aa854f99f0bcb988d0a1807dd7ce2c8f5e276b3222ab9f4a67"
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 43133,
-  "sha256": "64708369407b6def15a1f03dbe1fa56daa6a4f87b22656073f6ca42516df34d6"
+  "size": 44614,
+  "sha256": "8812bcf5643b5cfd6355cb05eb88b1ac652af60978d097658316c51eeb36eee7"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28871,13 +28871,13 @@
  },
  {
   "path": "README.md",
-  "size": 20180,
-  "sha256": "d1f7b88b8fc0b6873f971993d293badacb9682b3bd2480aeb8a7b73254d19049"
+  "size": 21032,
+  "sha256": "77f90d63afe514f77b1abeb7ca99f546c684a2767b5bea971a83202f5400dd57"
  },
  {
   "path": "START-HERE.txt",
-  "size": 7316,
-  "sha256": "e598c1c5ee94bd1f957ea554b3dea2d000abea93b9f224ea8734dc58fb547658"
+  "size": 7393,
+  "sha256": "e4b1daa24a5863053ebb3d37a81268bd1edab6123085733f1ffa49995775671c"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -29056,18 +29056,18 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1170,
-  "sha256": "782a039ec2f40348b41bc651f7018a0924b687bebe4e177d726c2b7ef30d94d5"
+  "size": 1607,
+  "sha256": "1708e8726bfc42cce5ca434ce54e3c6b7953f95444bd3a2ac866de2d623dd9fb"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "636743f17f7286db86036f5d267da273d459c305a9e228be5fef83deb2c1d89e"
+  "sha256": "e682f3e641309c400900bb244806722409686bcd87e611fb67ec6677cbaa94b4"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
-  "size": 18952,
-  "sha256": "d046b569297a68538342e6e9463bb90d635585b4b2ec84e2c1df4e1f48c1afc2"
+  "size": 18490,
+  "sha256": "84116c76f2f6694415dfccda6a0b9890e1bc31b887a8aa5eb4fd55ad2336b38f"
  },
  {
   "path": "WINDOWS-PATH-MAP.md",
@@ -31688,5 +31688,10 @@
   "path": "docs/history/V7.5.5-CHANGELOG.md",
   "size": 2160,
   "sha256": "5b27ba19c114ee2388348039c6519f75bfb8409f180c43bd24887bb2dc0d3513"
+ },
+ {
+  "path": "docs/history/V7.5.6-CHANGELOG.md",
+  "size": 5380,
+  "sha256": "8f9c22493ad563c452a23ca7cb55336d739577496dede16ffd0de1171c42b0eb"
  }
 ]
