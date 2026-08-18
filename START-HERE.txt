@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.6.0 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.6.1 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -131,6 +131,7 @@ process, no yes-man, verify-don't-assume).
 
 READ NEXT
 ---------
+  docs\history\V7.6.1-CHANGELOG.md  swept 25 ANSI-decoding reads; gate section 7b
   docs\history\V7.6.0-CHANGELOG.md  provider identity in SOUL.md; mojibake at the source
   docs\history\V7.5.6-CHANGELOG.md  PS 5.1 native-stderr fix; mojibake sweep
   docs\history\V7.5.5-CHANGELOG.md  Hermes config.yaml wiring; complete What's new

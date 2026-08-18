@@ -108,7 +108,7 @@ function Write-JsonFile {
 function Add-ToJsonMcp {
   param([string]$Path, [string]$Section)
   $json = if (Test-Path -LiteralPath $Path) {
-    Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json
+    [IO.File]::ReadAllText($Path) | ConvertFrom-Json
   } else { [pscustomobject]@{} }
 
   if ($json.PSObject.Properties.Name -notcontains $Section) {
@@ -173,7 +173,7 @@ foreach ($p in $Providers) {
   } else {
     # TOML: append only the servers that are not already declared. Editing TOML
     # by hand is safer than a round-trip that would reorder the user's config.
-    $text = if (Test-Path -LiteralPath $t.Path) { Get-Content -LiteralPath $t.Path -Raw } else { '' }
+    $text = if (Test-Path -LiteralPath $t.Path) { [IO.File]::ReadAllText($t.Path) } else { '' }
     $append = ''
     $added = @()
     # Grok also reads ~/.claude.json. A second copy of the same server is two
@@ -182,7 +182,7 @@ foreach ($p in $Providers) {
     $claudeHas = @()
     if ($p -eq 'Grok' -and (Test-Path -LiteralPath $claudeJson)) {
       try {
-        $cj = Get-Content -LiteralPath $claudeJson -Raw | ConvertFrom-Json
+        $cj = [IO.File]::ReadAllText($claudeJson) | ConvertFrom-Json
         if ($cj.mcpServers) { $claudeHas = @($cj.mcpServers.PSObject.Properties.Name) }
       } catch { }
     }
@@ -204,7 +204,7 @@ foreach ($p in $Providers) {
     }
     if ($added.Count -and -not $CheckOnly) {
       Copy-Item -LiteralPath $t.Path -Destination "$($t.Path).bak-mcp-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force -ErrorAction SilentlyContinue
-      Set-Utf8NoBom -Path $t.Path -Text ((Get-Content -LiteralPath $t.Path -Raw) + $append)
+      Set-Utf8NoBom -Path $t.Path -Text (([IO.File]::ReadAllText($t.Path)) + $append)
     }
     if ($added.Count) {
       Write-Host ("{0,-7} {1} -> {2}" -f $p, ($added -join ', '), $t.Path)

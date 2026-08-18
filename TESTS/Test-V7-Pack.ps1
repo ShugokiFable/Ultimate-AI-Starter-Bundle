@@ -95,7 +95,7 @@ $manPath = Join-Path $PackRoot 'BUNDLED-TOOLS\OFFLINE-MANIFEST.json'
 if (-not (Test-Path $manPath)) {
     Bad 'OFFLINE-MANIFEST.json missing'
 } else {
-    $man = Get-Content $manPath -Raw | ConvertFrom-Json
+    $man = [IO.File]::ReadAllText($manPath) | ConvertFrom-Json
     foreach ($a in $man.assets) {
         $p = Join-Path $PackRoot "BUNDLED-TOOLS\offline\$($a.file)"
         if (-not (Test-Path $p)) { Bad "missing asset $($a.file)"; continue }
@@ -157,7 +157,7 @@ foreach ($f in @($soulF, $aioF)) {
     else { Good "$name no mojibake" }
     # Get-Content -Raw uses the ANSI codepage on PS 5.1 and silently corrupts
     # non-ASCII. If these two ever disagree, the installer read path is wrong.
-    if ((Get-Content -LiteralPath $f -Raw) -cne $txt) {
+    if ((Get-Content -LiteralPath $f -Raw) -cne $txt) { # ansi-intentional
         Good "$name has non-ASCII (installer must use ReadAllText)"
     }
 }
@@ -168,10 +168,49 @@ if ($soulTxt -match 'Hermes Agent|Nous Research|You are Claude|created by (Anthr
     Bad 'SOUL.md names a specific provider identity; it is installed into all five'
 } else { Good 'SOUL.md is provider-neutral' }
 if ($soulTxt) {
-    $common = Get-Content -LiteralPath (Join-Path $PackRoot 'TOOLS\V7-Common.ps1') -Raw
+    $common = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\V7-Common.ps1'))
     if ($common -match [regex]::Escape('$soul = ([IO.File]::ReadAllText($SoulFile))')) {
         Good 'Install-V5PreambleBlock reads preambles as UTF-8'
     } else { Bad 'Install-V5PreambleBlock no longer uses ReadAllText (mojibake will return)' }
+}
+
+Section '7b. No script reads a file with the ANSI codepage'
+# PS 5.1's Get-Content decodes with the ANSI codepage unless -Encoding is given,
+# so any read of a UTF-8 file that is later written back turns non-ASCII into
+# mojibake. Measured: a ConvertFrom-Json/ConvertTo-Json round-trip of a real
+# ~/.claude.json destroyed all 26 em dashes. v7.6.1 swept 25 call sites to
+# [IO.File]::ReadAllText; this stops them coming back.
+# Pattern is concatenated so this test's own source cannot match it.
+$rxAnsi = 'Get-' + 'Content[^\r\n]*-Raw'
+$scanRoots = @(
+    (Join-Path $PackRoot 'TOOLS'),
+    (Join-Path $PackRoot 'TESTS'),
+    $PackRoot
+)
+$offenders = @()
+foreach ($sr in $scanRoots) {
+    $depth = if ($sr -eq $PackRoot) { 0 } else { 99 }
+    $files = if ($depth -eq 0) {
+        Get-ChildItem -LiteralPath $sr -Filter *.ps1 -File -ErrorAction SilentlyContinue
+    } else {
+        Get-ChildItem -LiteralPath $sr -Filter *.ps1 -File -Recurse -ErrorAction SilentlyContinue
+    }
+    foreach ($file in $files) {
+        $n = 0
+        foreach ($line in [IO.File]::ReadAllLines($file.FullName)) {
+            $n++
+            if ($line -notmatch $rxAnsi) { continue }
+            if ($line -match '-Encoding') { continue }        # explicit, fine
+            if ($line -match 'ansi-intentional') { continue }  # opted out on purpose
+            if ($line -match '^\s*#') { continue }             # a comment about it
+            $offenders += ('{0}:{1}' -f $file.Name, $n)
+        }
+    }
+}
+if ($offenders.Count) {
+    Bad ("ANSI-decoding reads found (use [IO.File]::ReadAllText): " + ($offenders -join ', '))
+} else {
+    Good 'no script decodes a file with the ANSI codepage'
 }
 
 Section '8. Repair-McpPaths resolves a version-stamped path'

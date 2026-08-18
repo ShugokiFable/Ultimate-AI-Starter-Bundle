@@ -135,7 +135,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.6.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.6.1 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -746,9 +746,9 @@ if (-not $SkipGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Provid
   $grokCfgNow = Join-Path $env:USERPROFILE '.grok\config.toml'
   $grokNow = 0
   if (Test-Path -LiteralPath $grokCfgNow) {
-    $grokNow = ([regex]::Matches((Get-Content -LiteralPath $grokCfgNow -Raw), '(?m)^[ 	]*\[mcp_servers\.[A-Za-z0-9_-]+\][ 	]*$')).Count
+    $grokNow = ([regex]::Matches(([IO.File]::ReadAllText($grokCfgNow)), '(?m)^[ 	]*\[mcp_servers\.[A-Za-z0-9_-]+\][ 	]*$')).Count
   }
-  $forgeAlready = $grokNow -gt 0 -and (Get-Content -LiteralPath $grokCfgNow -Raw) -match '(?m)^[ 	]*\[mcp_servers\.skyrim-forge\]'
+  $forgeAlready = $grokNow -gt 0 -and ([IO.File]::ReadAllText($grokCfgNow)) -match '(?m)^[ 	]*\[mcp_servers\.skyrim-forge\]'
   if ((Test-Path $forgeInst) -and -not $forgeAlready -and $grokNow -ge $GrokMcpBudget) {
     Write-V5Warn ("Grok already has $grokNow MCP servers (budget $GrokMcpBudget); skyrim-forge NOT added.")
     Write-V5Warn ('  Eight RUNNING servers wedge grok-cli 1.0.4 and enabled Claude plugins add servers')
@@ -757,7 +757,7 @@ if (-not $SkipGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Provid
   }
   elseif (Test-Path $forgeInst) {
     try {
-      $j = Get-Content $forgeInst -Raw | ConvertFrom-Json
+      $j = [IO.File]::ReadAllText($forgeInst) | ConvertFrom-Json
       if ($j.mcp -and $j.mcp.Count -ge 1) {
         $cmd = $j.mcp[0]
         $args = @()
@@ -781,7 +781,7 @@ if (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
   if (Test-Path -LiteralPath $grokCfg) {
     # [ \t\r]* not [ \t]*: config.toml is CRLF and .NET's multiline $ matches
     # before the \n, so a trailing \r fails the anchor and the count reads 0.
-    $srvCount = ([regex]::Matches((Get-Content -LiteralPath $grokCfg -Raw), '(?m)^[ \t]*\[mcp_servers\.[A-Za-z0-9_-]+\][ \t\r]*$')).Count
+    $srvCount = ([regex]::Matches(([IO.File]::ReadAllText($grokCfg)), '(?m)^[ \t]*\[mcp_servers\.[A-Za-z0-9_-]+\][ \t\r]*$')).Count
     # grok-cli 1.0.4 wedges at EIGHT running servers. Enabled Claude plugins with
     # a .mcp.json still load even with [compat.claude] mcps = false, so each one
     # eats a slot that never appears in config.toml. Budget 6 configured.
@@ -848,7 +848,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.6.0'
+  version = '7.6.1'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers

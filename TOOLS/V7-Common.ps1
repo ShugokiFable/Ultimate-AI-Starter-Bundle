@@ -14,7 +14,7 @@ function Get-V5PackRoot {
 function Get-V5Catalog {
   $root = Get-V5PackRoot
   $path = Join-Path $root 'BUNDLED-TOOLS\CATALOG.json'
-  return (Get-Content -LiteralPath $path -Raw | ConvertFrom-Json)
+  return ([IO.File]::ReadAllText($path) | ConvertFrom-Json)
 }
 
 function Expand-V5EnvPath([string]$p) {
@@ -159,7 +159,7 @@ function Update-V5GrokMcpBlock {
   New-Item -ItemType Directory -Force -Path $grokDir | Out-Null
   $content = ''
   if (Test-Path -LiteralPath $configPath) {
-    $content = Get-Content -LiteralPath $configPath -Raw
+    $content = [IO.File]::ReadAllText($configPath)
   }
 
   $cmdNorm = ($Command -replace '\\', '/').Trim()
@@ -280,7 +280,7 @@ function Set-V5GrokCompatCells {
 
   $content = ''
   if (Test-Path -LiteralPath $ConfigPath) {
-    $content = Get-Content -LiteralPath $ConfigPath -Raw
+    $content = [IO.File]::ReadAllText($ConfigPath)
     $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
     Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.before-compat-' + $ts + '.bak') -Force
   }

@@ -53,7 +53,7 @@ $configPath = Join-Path $grokDir "config.toml"
 New-Item -ItemType Directory -Path $grokDir -Force | Out-Null
 
 if (Test-Path -LiteralPath $configPath) {
-  $content = Get-Content -LiteralPath $configPath -Raw
+  $content = [IO.File]::ReadAllText($configPath)
 } else {
   $content = ""
 }

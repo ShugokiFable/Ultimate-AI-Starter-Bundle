@@ -3,6 +3,22 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.6.1
+
+- Swept the remaining 25 ANSI-decoding `Get-Content -Raw` reads to
+  `[IO.File]::ReadAllText` across 10 files. v7.6.0 fixed the one that was
+  visibly corrupting the preamble; this covers the rest.
+- The dangerous one: `Add-Reasoning-MCPs.ps1` read `~/.claude.json` with the
+  ANSI codepage, round-tripped it through ConvertFrom-Json/ConvertTo-Json and
+  wrote it back. Measured on the real file - all 26 em dashes destroyed. It had
+  not fired only because the script skips writing when all three servers are
+  already present, so it was one new server away from rewriting the file.
+- New pack gate section 7b fails the build if a bare `Get-Content -Raw`
+  returns. Verified to fail, not just to pass. The one deliberate use (section 7
+  compares ANSI vs UTF-8 decoding on purpose) is marked `# ansi-intentional`.
+- Write paths untouched: `Set-Content -Encoding utf8` adds a BOM on PS 5.1, and
+  v6 shipped a BOM that broke skill discovery.
+
 ## 7.6.0
 
 - `4-PREAMBLES/SOUL.md` no longer opens "You are Hermes Agent ... created by

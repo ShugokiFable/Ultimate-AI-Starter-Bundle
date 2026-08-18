@@ -29,13 +29,13 @@ function Test-Has {
 function Read-JsonFile {
   param([string]$Path)
   if (-not (Test-Path -LiteralPath $Path)) { return $null }
-  try { return (Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json) } catch { return $null }
+  try { return ([IO.File]::ReadAllText($Path) | ConvertFrom-Json) } catch { return $null }
 }
 
 function Get-TomlMcpIds {
   param([string]$Path)
   if (-not (Test-Path -LiteralPath $Path)) { return @() }
-  $text = Get-Content -LiteralPath $Path -Raw
+  $text = [IO.File]::ReadAllText($Path)
   $ids = [System.Collections.Generic.List[string]]::new()
   foreach ($m in [regex]::Matches($text, '(?m)^\[mcp_servers\.([^\]]+)\]')) {
     $ids.Add($m.Groups[1].Value)
