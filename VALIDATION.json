@@ -1,6 +1,6 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.5.6",
+ "version": "7.6.0",
  "generated": "2026-08-18",
  "base": "v7.5.5",
  "canonical_skills": 92,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.5.6: PowerShell 5.1 native-command stderr fix. New Invoke-V5Native helper in INSTALL-V7-AIO.ps1 (local EAP=Continue + stringified output) so pip's 'already satisfied'/version notice no longer prints as a red RemoteException/NativeCommandError block (reported at line 376), and npm -g / npx / 'claude mcp add' can no longer be terminated by a stderr write under the script-wide EAP='Stop' (reproduced: NativeCommandError terminates the old pattern). Measured PS 5.1 gotcha: a function parameter named $Args silently breaks $LASTEXITCODE propagation; helper avoids it. playwright-mcp browser choice: catalog extra_args_env/extra_args_template + installer support append --executable-path from user env PLAYWRIGHT_MCP_EXECUTABLE_PATH so it no longer forces Google Chrome (Opera GX verified live via CDP /json/version). Mojibake sweep: INSTALL-V7-AIO.bat banner held a literal '?' where an em dash was destroyed by a wrong-encoding save (now ASCII '-'); WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md (8 spots) and two 0-UNRESTRAINT-PACKS docs repaired from CP1252-double-encoded UTF-8; remaining 'mojibake' strings are deliberate examples in V6-CHANGELOG and audit_skills.py. No skill content changed. PACK GATE: PASS."
+ "notes": "v7.6.0: SOUL.md no longer claims a provider identity. Since v7.5.0 the shared preamble opened 'You are Hermes Agent, an intelligent AI assistant created by Nous Research' and was injected verbatim into Claude CLAUDE.md and Codex/Kimi/Grok AGENTS.md, telling four agents they were a fifth product; now provider-neutral and gated by TESTS section 7. Install-V5PreambleBlock read the preamble with Get-Content -Raw, which on PS 5.1 decodes via the ANSI codepage (Windows-1252), so the three UTF-8 em dashes in AIO-INSTRUCTION.txt were rewritten as mojibake on every install - v7.5.6 swept the data but not this read path; now [IO.File]::ReadAllText, verified against all four installed files. The block's version marker is stamped from VERSION.txt instead of a hardcoded v7.5.0, so a stale block is visible. New TOOLS/Repair-McpPaths.ps1 finds MCP commands pointing at version-stamped folders that no longer exist and repoints them at the installed version (literal string replace, backup first, no format parsing); wired into the installer. Found live: Claude was still on Skyrim-Forge-5.1.0 after the 5.1.3 upgrade and its skyrim-forge MCP was silently dead, while Kimi/Codex/Grok/Hermes had been updated. PACK GATE: PASS (8 sections)."
 }

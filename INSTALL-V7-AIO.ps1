@@ -69,6 +69,11 @@ param(
   # wedges at eight RUNNING MCP servers; reserve one slot for a plugin-provided
   # server and keep six configured.
   [switch]$SkipGrokMcp,
+  # Max MCP servers to leave configured in ~/.grok/config.toml. grok-cli 1.0.4
+  # wedges at EIGHT running; an enabled Claude plugin with a .mcp.json quietly
+  # supplies one, so 6 configured is the safe default. Raise to 7 only if no
+  # enabled plugin contributes a server.
+  [int]$GrokMcpBudget = 6,
   # Opt-in third-party extras (see BUNDLED-TOOLS\CATALOG.json scope_note on each):
   #   code-review-skill  obsidian-skills  claude-mem
   #   playwright-mcp     firecrawl-mcp    perplexity-mcp
@@ -130,7 +135,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.5.6 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.6.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -731,9 +736,26 @@ if (-not $SkipGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Provid
     # might be bare command name
     Update-V5GrokMcpBlock -Name 'headroom' -Command 'headroom' -ArgList @('mcp','serve') -Startup 60 -Tool 600 -SkipIfPresent
   }
-  # Forge if INSTALLATION.json exists in grok skills
+  # Forge if INSTALLATION.json exists in grok skills.
+  # Budget check FIRST. The four servers above use -SkipIfPresent, so they only
+  # ever re-confirm what is already wired; Forge is the one that can add a NEW
+  # server, and adding it blind is how Grok reached 7 configured (8 running with
+  # a plugin-provided server) and wedged. Warning after the fact does not help
+  # anyone: refuse the add and say what to do instead.
   $forgeInst = Join-Path (Get-V5ProviderHome Grok $catalog) 'skills\skyrim-forge\INSTALLATION.json'
-  if (Test-Path $forgeInst) {
+  $grokCfgNow = Join-Path $env:USERPROFILE '.grok\config.toml'
+  $grokNow = 0
+  if (Test-Path -LiteralPath $grokCfgNow) {
+    $grokNow = ([regex]::Matches((Get-Content -LiteralPath $grokCfgNow -Raw), '(?m)^[ 	]*\[mcp_servers\.[A-Za-z0-9_-]+\][ 	]*$')).Count
+  }
+  $forgeAlready = $grokNow -gt 0 -and (Get-Content -LiteralPath $grokCfgNow -Raw) -match '(?m)^[ 	]*\[mcp_servers\.skyrim-forge\]'
+  if ((Test-Path $forgeInst) -and -not $forgeAlready -and $grokNow -ge $GrokMcpBudget) {
+    Write-V5Warn ("Grok already has $grokNow MCP servers (budget $GrokMcpBudget); skyrim-forge NOT added.")
+    Write-V5Warn ('  Eight RUNNING servers wedge grok-cli 1.0.4 and enabled Claude plugins add servers')
+    Write-V5Warn ('  that never appear in config.toml. To take Forge on Grok, comment out a server in')
+    Write-V5Warn ('  ~/.grok/config.toml first, or re-run with -GrokMcpBudget 7 if no plugin adds one.')
+  }
+  elseif (Test-Path $forgeInst) {
     try {
       $j = Get-Content $forgeInst -Raw | ConvertFrom-Json
       if ($j.mcp -and $j.mcp.Count -ge 1) {
@@ -826,7 +848,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.5.6'
+  version = '7.6.0'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -858,6 +880,20 @@ if (-not $ToolsOnly) {
       L 'reasoning MCP servers wired'
     } catch {
       Write-V5Warn ('Reasoning MCPs: ' + $_.Exception.Message)
+    }
+  }
+
+  # After every provider config has been written, repoint any MCP command that
+  # points at a version-stamped folder which no longer exists. An upgraded tool
+  # (Skyrim-Forge-5.1.0 -> 5.1.3) renames its folder, and a provider that was
+  # missed just stops connecting silently.
+  $mcpRepair = Join-Path $PackRoot 'TOOLS\Repair-McpPaths.ps1'
+  if (Test-Path -LiteralPath $mcpRepair) {
+    try {
+      & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpRepair -Apply -Quiet
+      L 'dead MCP command paths repaired'
+    } catch {
+      Write-V5Warn ('MCP path repair: ' + $_.Exception.Message)
     }
   }
 

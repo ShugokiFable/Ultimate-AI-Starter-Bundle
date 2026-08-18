@@ -3,6 +3,29 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.6.0
+
+- `4-PREAMBLES/SOUL.md` no longer opens "You are Hermes Agent ... created by
+  Nous Research". That file is injected verbatim into Claude/Codex/Kimi/Grok
+  instruction files too, so since v7.5.0 four agents were told they were a
+  different vendor's product. Now provider-neutral; pack gate section 7 fails
+  if any provider name returns.
+- `Install-V5PreambleBlock` read the preambles with `Get-Content -Raw`, which on
+  PS 5.1 decodes via the ANSI codepage: the three em dashes in
+  `AIO-INSTRUCTION.txt` were rewritten as mojibake on **every** install. v7.5.6
+  swept the data but not this read path. Now `[IO.File]::ReadAllText`.
+- The preamble marker is stamped from `VERSION.txt` instead of a hardcoded
+  `v7.5.0`, so a stale block is visible on sight.
+- The installer no longer pushes Grok over its MCP budget. `skyrim-forge` was
+  wired with no budget check while the other four servers used `-SkipIfPresent`,
+  so a fresh install took Grok to 7 configured (8 running with a plugin-supplied
+  server) and only warned *after* writing it. It now refuses the add, explains
+  why, and offers `-GrokMcpBudget 7` for machines with no MCP-providing plugin.
+- New `TOOLS/Repair-McpPaths.ps1`: repoints MCP commands whose version-stamped
+  folder no longer exists (found live: Claude still on `Skyrim-Forge-5.1.0`
+  after the 5.1.3 upgrade, its MCP silently dead, while the other four had been
+  updated). Report-only by default; wired into the installer with `-Apply`.
+
 ## 7.5.6
 
 - New `Invoke-V5Native` helper in `INSTALL-V7-AIO.ps1`: native commands run
