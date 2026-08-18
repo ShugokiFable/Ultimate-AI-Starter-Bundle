@@ -3,6 +3,13 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.5.5
+
+- Hermes `config.yaml` ships in the tailored tree and the installer wires it
+  into the Hermes home (backup-first, idempotent, `-SkipHermesConfig`).
+- README "What's new" completed - all 24 releases present (was missing eight).
+- CATALOG.json / VALIDATION.json version metadata brought current.
+
 ## 7.5.4
 
 - `unrestraint-packs` is now part of the common canonical set and fans out to

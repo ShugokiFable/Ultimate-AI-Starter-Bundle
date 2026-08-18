@@ -26931,8 +26931,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 12423,
-  "sha256": "131fae9de0fddcd92db2d5ea9b993d0f0b7981bec0f8b8dfef2e827d70d40ba1"
+  "size": 12427,
+  "sha256": "82bcfd70e0c9be4b2118fa94ca782c635e236d948f2d4fced7503669c5e17f4c"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -28736,8 +28736,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 10562,
-  "sha256": "076625d8dd43141d49083a91b80b43f19a54e67f538220ed27a24cb144c7711c"
+  "size": 10868,
+  "sha256": "7bc83d6895ce0e55a52be8d07c1dd0db8d60d394474ff4a2e1df315246481c7c"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28832,7 +28832,7 @@
  {
   "path": "INSTALL-V7-AIO.ps1",
   "size": 43133,
-  "sha256": "7ca05773946bfb55a4f6acac811ab8e241c8c6b9d26296e93d570cc3e1dcb12c"
+  "sha256": "64708369407b6def15a1f03dbe1fa56daa6a4f87b22656073f6ca42516df34d6"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28871,13 +28871,13 @@
  },
  {
   "path": "README.md",
-  "size": 19735,
-  "sha256": "5b76f78fbadcd66152e7988232e700a6d18128951cb9802b1dccb8c6d6a09e3a"
+  "size": 20180,
+  "sha256": "d1f7b88b8fc0b6873f971993d293badacb9682b3bd2480aeb8a7b73254d19049"
  },
  {
   "path": "START-HERE.txt",
-  "size": 6839,
-  "sha256": "81d938c7ee55b74d370256c3a8bbe4cc3cbdaa2ef6c91300b0c23794435c722d"
+  "size": 7316,
+  "sha256": "e598c1c5ee94bd1f957ea554b3dea2d000abea93b9f224ea8734dc58fb547658"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -29056,13 +29056,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1048,
-  "sha256": "2a71b134ff7e944b0ac3c4aadaca8d96ef4b47fcbba64c6bda5b73fd57e32213"
+  "size": 1170,
+  "sha256": "782a039ec2f40348b41bc651f7018a0924b687bebe4e177d726c2b7ef30d94d5"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "5b2f60a2e355a3e323bba4243abeb2d575fbe29fae15d0edceada21a0e0a7629"
+  "sha256": "636743f17f7286db86036f5d267da273d459c305a9e228be5fef83deb2c1d89e"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -31683,5 +31683,10 @@
   "path": "docs/history/V7.5.4-CHANGELOG.md",
   "size": 619,
   "sha256": "0323852a166bc4c3e55e44f766499982a61556755f5dc11e7dc9044a0696fc16"
+ },
+ {
+  "path": "docs/history/V7.5.5-CHANGELOG.md",
+  "size": 2160,
+  "sha256": "5b27ba19c114ee2388348039c6519f75bfb8409f180c43bd24887bb2dc0d3513"
  }
 ]

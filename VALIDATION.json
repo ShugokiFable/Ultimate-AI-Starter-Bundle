@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.5.1",
- "generated": "2026-08-16",
- "base": "v7.5.0",
+ "version": "7.5.5",
+ "generated": "2026-08-18",
+ "base": "v7.5.4",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "installed-live",
- "notes": "v7.5.1: first end-to-end installer run on the operator machine surfaced three bugs - (1) Set-V5GrokCompatCells regex ate all mcp_servers blocks after [compat.claude] on re-runs (verified by backup archaeology + Python replay; fixed with line-based section pattern, re-tested 6/6 servers survive); (2) Headroom pip step died on PATH python without pip and on pip stderr under -EA Stop (fixed: probe for pip, strip PYTHONPATH, suspend EAP); (3) -File + unrolled array silently skipped gates/ reasoning MCPs on multi-provider runs (fixed: comma string + Add-Reasoning split). Grok kept at proven 6-server budget. Pack gate PASS; live skill audit PASS."
+ "notes": "v7.5.5: Hermes config.yaml ships in the tailored tree and INSTALL-V7-AIO.ps1 wires it into the Hermes home (catalog-resolved %LOCALAPPDATA%\\hermes, HERMES_HOME overrides), backup-first and hash-idempotent with a -SkipHermesConfig opt-out; the Hermes COPY-MAP home default corrected (was stale %USERPROFILE%\\.hermes). README 'What's new' completed: all 24 releases present (eight were missing: 7.5.4/7.5.3/7.5.2/7.4.3/7.4.2/7.4.1/7.4.0/7.3.1), old entries condensed, README 520->435 lines. Stale version metadata fixed: CATALOG.json pack_version 7.5.3->7.5.5 (updated_utc refreshed), VALIDATION.json 7.5.1->7.5.5. BUNDLED-TOOLS/cache gitignored and excluded from generate_manifest.py so MANIFEST (6337 files, 217.1 MB) matches the shipped zip. No skill content changed."
 }
