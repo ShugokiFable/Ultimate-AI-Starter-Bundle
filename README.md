@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.6.2
+# Ultimate AI Starter Bundle v7.6.3
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -43,14 +43,13 @@ Follow AIO-INSTRUCTION.txt for every complex or factual request.
 
 The preamble is now **installed automatically**, not pasted by hand:
 
-- `4-PREAMBLES/SOUL.md` — the operator's own soul config (unrestricted, no
-  yes-man, truth-seeking process, output format), shipped verbatim
-- `4-PREAMBLES/SOUL-UNIVERSAL.md` — same content, identity-neutral, wired
-  into agents that are not Hermes
+- `4-PREAMBLES/SOUL.md` - the operator's own soul config (unrestricted, no
+  yes-man, truth-seeking process, output format), shipped verbatim and
+  identity-neutral: it names no provider, so it is safe in all five
 - `4-PREAMBLES/MANUAL-PASTE.txt` — for web UIs (ChatGPT/Gemini) that have no
   instruction file: paste it into the custom-instructions box
 
-`INSTALL-V7-AIO.ps1` appends SOUL-UNIVERSAL + `AIO-INSTRUCTION.txt` to
+`INSTALL-V7-AIO.ps1` appends `SOUL.md` + `AIO-INSTRUCTION.txt` to
 Claude Code (`~/.claude/CLAUDE.md`), Codex (`~/.codex/AGENTS.md`), Kimi
 (`~/.kimi-code/AGENTS.md`) and Grok (`~/.grok/AGENTS.md`, its global-rules
 file), and copies the verbatim soul into Hermes' home (`SOUL.md`). Idempotent

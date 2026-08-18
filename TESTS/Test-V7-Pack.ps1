@@ -213,6 +213,61 @@ if ($offenders.Count) {
     Good 'no script decodes a file with the ANSI codepage'
 }
 
+# Same trap, but in documentation we ship as copy-paste instructions. Prose that
+# *discusses* the bug is fine, and every changelog does; a ```powershell fence is
+# not prose, it is code the reader will run. 4-PREAMBLES/README.md shipped a
+# manual-install snippet doing exactly this until v7.6.3. docs/history is skipped
+# on purpose: those records quote the broken form as a before/after.
+$docOffenders = @()
+$docFiles = @()
+$docFiles += Get-ChildItem -LiteralPath $PackRoot -Filter *.md -File -ErrorAction SilentlyContinue
+foreach ($sub in @('4-PREAMBLES', 'PROMPTS', 'TOOLS', 'TESTS', 'docs')) {
+    $d = Join-Path $PackRoot $sub
+    if (Test-Path -LiteralPath $d) {
+        $docFiles += Get-ChildItem -LiteralPath $d -Filter *.md -File -ErrorAction SilentlyContinue
+    }
+}
+foreach ($file in $docFiles) {
+    $inPs = $false
+    $n = 0
+    foreach ($line in [IO.File]::ReadAllLines($file.FullName)) {
+        $n++
+        if ($line -match '^\s*```') {
+            if ($inPs) { $inPs = $false }
+            elseif ($line -match '^\s*```\s*(powershell|ps1|pwsh)') { $inPs = $true }
+            continue
+        }
+        if (-not $inPs) { continue }
+        if ($line -notmatch $rxAnsi) { continue }
+        if ($line -match '-Encoding') { continue }
+        if ($line -match 'ansi-intentional') { continue }
+        if ($line -match '^\s*#') { continue }
+        $docOffenders += ('{0}:{1}' -f $file.Name, $n)
+    }
+}
+if ($docOffenders.Count) {
+    Bad ("docs teach an ANSI-decoding read in a powershell fence: " + ($docOffenders -join ', '))
+} else {
+    Good 'no shipped powershell snippet teaches the ANSI trap'
+}
+
+# One soul source, not two. v7.6.0 genericised SOUL.md; SOUL-UNIVERSAL.md then
+# existed only as a byte-identical duplicate whose README still described it as
+# the de-Hermesed copy -- an invitation to put the provider identity back.
+$soulSrc = Join-Path (Join-Path $PackRoot '4-PREAMBLES') 'SOUL.md'
+$soulDup = Join-Path (Join-Path $PackRoot '4-PREAMBLES') 'SOUL-UNIVERSAL.md'
+if (Test-Path -LiteralPath $soulDup) {
+    Bad 'SOUL-UNIVERSAL.md is back; there must be exactly one soul source'
+} else {
+    Good 'exactly one soul source (SOUL.md)'
+}
+$instTxt = [IO.File]::ReadAllText((Join-Path $PackRoot 'INSTALL-V7-AIO.ps1'))
+if ($instTxt -match "Join-Path \`$preDir 'SOUL-UNIVERSAL\.md'") {
+    Bad 'installer wires SOUL-UNIVERSAL.md instead of the single SOUL.md'
+} else {
+    Good 'installer wires the single SOUL.md to every provider'
+}
+
 Section '8. Repair-McpPaths resolves a version-stamped path'
 $repair = Join-Path $PackRoot (Join-Path 'TOOLS' 'Repair-McpPaths.ps1')
 if (-not (Test-Path -LiteralPath $repair)) { Bad 'TOOLS\Repair-McpPaths.ps1 missing' }
