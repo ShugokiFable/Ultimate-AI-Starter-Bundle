@@ -107,9 +107,30 @@ $plugins = Join-Path $PackRoot 'BUNDLED-TOOLS\plugins'
 $log = [System.Collections.Generic.List[string]]::new()
 function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
+function Invoke-V5Native {
+  <#
+  Run a native command without PowerShell 5.1 mangling its stderr.
+  With 2>&1, every stderr line becomes an ErrorRecord: under the script-wide
+  $ErrorActionPreference='Stop' that is a TERMINATING NativeCommandError, and
+  even under 'Continue' each record prints as a red "RemoteException" block
+  (pip's "already satisfied" / pip-version notice did exactly that).
+  Fix: drop EAP to Continue locally and stringify every record before it can
+  reach the host's error formatting. Returns $true when the exit code is 0.
+  NOTE: the parameter must NOT be named $Args - shadowing the automatic
+  variable silently breaks $LASTEXITCODE propagation (measured, PS 5.1).
+  #>
+  param([string]$Exe, [string[]]$ArgList)
+  $prevEap = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    & $Exe @ArgList 2>&1 | ForEach-Object { Write-Host ("  " + $_) }
+  } finally { $ErrorActionPreference = $prevEap }
+  return ($null -eq $LASTEXITCODE) -or ($LASTEXITCODE -eq 0)
+}
+
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.5.5 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.5.6 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -331,9 +352,10 @@ if (-not $SkillsOnly) {
       'npx-or-npm' {
         if (Get-Command npm -EA SilentlyContinue) {
           try {
-            & npm install -g $comp.npm_spec 2>&1 | Out-Host
-            $installed[$id] = @{ status='npm-global'; spec=$comp.npm_spec }
-            Write-V5Ok "npm -g $($comp.npm_spec)"
+            if (Invoke-V5Native 'npm' @('install','-g', $comp.npm_spec)) {
+              $installed[$id] = @{ status='npm-global'; spec=$comp.npm_spec }
+              Write-V5Ok "npm -g $($comp.npm_spec)"
+            } else { throw "npm exited with code $LASTEXITCODE" }
           } catch {
             Write-V5Warn "npm global failed - users can run: npx $($comp.npm_spec)"
             $installed[$id] = @{ status='npx-fallback' }
@@ -365,29 +387,19 @@ if (-not $SkillsOnly) {
               $asset = Get-ComponentAssetPath -Comp $comp
               $ok = $false
               if ($asset -and $asset.EndsWith('.whl') -and $py) {
-                              Write-Host "  pip install $asset"
-                              $env:PYTHONPATH = ''
-                              # pip writes "already satisfied"/warnings to STDERR; with
-                              # $ErrorActionPreference='Stop' that kills the installer
-                              $prevEap = $ErrorActionPreference
-                              $ErrorActionPreference = 'Continue'
-                              try {
-                                if ($py -eq 'py') { & py -3 -m pip install --user $asset 2>&1 | Out-Host }
-                                else { & $py -m pip install --user $asset 2>&1 | Out-Host }
-                              } finally { $ErrorActionPreference = $prevEap }
-                              $ok = ($null -eq $LASTEXITCODE) -or ($LASTEXITCODE -eq 0)
-                            }
-                            if (-not $ok -and $py) {
-                              $spec = $comp.pip_spec
-                              $env:PYTHONPATH = ''
-                              $prevEap = $ErrorActionPreference
-                              $ErrorActionPreference = 'Continue'
-                              try {
-                                if ($py -eq 'py') { & py -3 -m pip install --user $spec 2>&1 | Out-Host }
-                                else { & $py -m pip install --user $spec 2>&1 | Out-Host }
-                              } finally { $ErrorActionPreference = $prevEap }
-                              $ok = ($null -eq $LASTEXITCODE) -or ($LASTEXITCODE -eq 0)
-                            }
+                Write-Host "  pip install $asset"
+                $env:PYTHONPATH = ''
+                # Invoke-V5Native keeps pip's stderr ("already satisfied", the
+                # pip-version notice) from surfacing as a NativeCommandError.
+                if ($py -eq 'py') { $ok = Invoke-V5Native 'py' (@('-3','-m','pip','install','--user',$asset)) }
+                else { $ok = Invoke-V5Native $py @('-m','pip','install','--user',$asset) }
+              }
+              if (-not $ok -and $py) {
+                $spec = $comp.pip_spec
+                $env:PYTHONPATH = ''
+                if ($py -eq 'py') { $ok = Invoke-V5Native 'py' (@('-3','-m','pip','install','--user',$spec)) }
+                else { $ok = Invoke-V5Native $py @('-m','pip','install','--user',$spec) }
+              }
         if ($ok) {
           $hr = $null
           try { $hr = (Get-Command headroom -EA SilentlyContinue).Source } catch {}
@@ -586,7 +598,7 @@ if (-not $SkillsOnly) {
           continue
         }
         try {
-          & npx @($comp.npx_install) 2>&1 | Out-Host
+          if (-not (Invoke-V5Native 'npx' @($comp.npx_install))) { throw "npx exited with code $LASTEXITCODE" }
           $installed[$id] = @{ status='installed'; via='npx' }
           Write-V5Ok "$id installed (restart Claude Code to load the plugin)"
           if ($comp.scope_note) { Write-V5Warn ("scope: " + $comp.scope_note) }
@@ -622,32 +634,50 @@ if (-not $SkillsOnly) {
             continue
           }
         }
+        # Optional extra CLI args from a user env var (v7.5.6). Lets an MCP
+        # component be pointed at a user-chosen binary without a code change;
+        # playwright-mcp uses it for --executable-path so it does not force
+        # Google Chrome on people who run Opera GX / Brave / Vivaldi / etc.
+        $npxArgs = @($comp.npx_args)
+        $extraEnv = $comp.extra_args_env
+        if ($extraEnv) {
+          $extraVal = [Environment]::GetEnvironmentVariable($extraEnv, 'User')
+          if (-not $extraVal) { $extraVal = [Environment]::GetEnvironmentVariable($extraEnv, 'Process') }
+          if ($extraVal) {
+            foreach ($part in @($comp.extra_args_template)) {
+              $npxArgs += ($part -replace [regex]::Escape('{value}'), $extraVal)
+            }
+            Write-V5Ok ("$id extra args from $extraEnv : " + (($npxArgs | Select-Object -Skip $comp.npx_args.Count) -join ' '))
+          } else {
+            Write-V5Warn "${id}: $extraEnv not set - using defaults ($($comp.id) may fall back to Google Chrome; set it to your browser exe to override)"
+          }
+        }
         $regs = @()
         foreach ($prov in $wanted) {
           switch ($prov) {
             'Grok'  {
-              Update-V5GrokMcpBlock -Name $id -Command $comp.npx_command -ArgList @($comp.npx_args) -EnvMap $envMap -Startup 120 -Tool 6000 -SkipIfPresent
+              Update-V5GrokMcpBlock -Name $id -Command $comp.npx_command -ArgList $npxArgs -EnvMap $envMap -Startup 120 -Tool 6000 -SkipIfPresent
               $regs += 'Grok'
             }
             'Codex' {
               $cfg = Join-Path (Get-V5ProviderHome -Provider Codex -Catalog $catalog) 'config.toml'
-              Update-V5GrokMcpBlock -Name $id -Command $comp.npx_command -ArgList @($comp.npx_args) -EnvMap $envMap -Startup 120 -Tool 6000 -SkipIfPresent -ConfigPath $cfg
+              Update-V5GrokMcpBlock -Name $id -Command $comp.npx_command -ArgList $npxArgs -EnvMap $envMap -Startup 120 -Tool 6000 -SkipIfPresent -ConfigPath $cfg
               $regs += 'Codex'
             }
             'Claude' {
               if (Get-Command claude -EA SilentlyContinue) {
                 $addArgs = @('mcp', 'add', '--scope', 'user')
                 if ($envMap) { foreach ($k in $envMap.Keys) { $addArgs += @('--env', ("{0}={1}" -f $k, $envMap[$k])) } }
-                $addArgs += @($id, '--', $comp.npx_command) + @($comp.npx_args)
-                & claude @addArgs 2>&1 | Out-Host
+                $addArgs += @($id, '--', $comp.npx_command) + $npxArgs
+                [void](Invoke-V5Native 'claude' $addArgs)
                 $regs += 'Claude'
               } else {
-                Write-V5Warn "$id for Claude: run  claude mcp add --scope user $id -- $($comp.npx_command) $($comp.npx_args -join ' ')"
+                Write-V5Warn "$id for Claude: run  claude mcp add --scope user $id -- $($comp.npx_command) $($npxArgs -join ' ')"
               }
             }
             default {
               Write-V5Warn ("{0}: add this MCP block to {1} yourself:" -f $id, $prov)
-              Write-Host ("      command = ""{0}""  args = [{1}]" -f $comp.npx_command, (($comp.npx_args | ForEach-Object { '"' + $_ + '"' }) -join ', '))
+              Write-Host ("      command = ""{0}""  args = [{1}]" -f $comp.npx_command, (($npxArgs | ForEach-Object { '"' + $_ + '"' }) -join ', '))
             }
           }
         }
@@ -796,7 +826,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.5.5'
+  version = '7.5.6'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers

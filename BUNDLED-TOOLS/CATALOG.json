@@ -272,6 +272,11 @@
       "npx_args": [
         "@playwright/mcp@latest"
       ],
+      "extra_args_env": "PLAYWRIGHT_MCP_EXECUTABLE_PATH",
+      "extra_args_template": [
+        "--executable-path",
+        "{value}"
+      ],
       "api_key_env": null,
       "providers": [
         "Grok",
@@ -287,7 +292,7 @@
         "browser-automation"
       ],
       "offline_asset": null,
-      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly."
+      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly. BROWSER CHOICE: with no flags, playwright-mcp defaults to the Google Chrome channel and prompts you to install Chrome. To use your own browser (Opera GX, Edge, Brave, Vivaldi, ...), set user env PLAYWRIGHT_MCP_EXECUTABLE_PATH to the browser exe BEFORE running the installer - the wiring appends --executable-path automatically. Example (Opera GX): setx PLAYWRIGHT_MCP_EXECUTABLE_PATH \"%LOCALAPPDATA%\\Programs\\Opera GX\\opera.exe\". To change later, edit the args in your provider's MCP config (Grok/Codex config.toml, Kimi ~/.kimi-code/mcp.json)."
     },
     {
       "id": "firecrawl-mcp",
@@ -359,8 +364,8 @@
       "scope_note": "Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts."
     }
   ],
-  "pack_version": "7.5.5",
-  "updated_utc": "2026-08-18T04:54:52.426743+00:00",
+  "pack_version": "7.5.6",
+  "updated_utc": "2026-08-18T15:25:00.000000+00:00",
   "providers": {
     "Grok": {
       "skills": "skills",

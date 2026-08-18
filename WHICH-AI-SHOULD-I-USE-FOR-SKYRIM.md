@@ -103,7 +103,7 @@ Its main danger is not lack of intelligence. It is going too deep into reconstru
 
 | Measure | Estimate |
 |---|---:|
-| Complex-task reliability | **85â€“92%** |
+| Complex-task reliability | **85–92%** |
 | Speed / efficiency | **8/10** |
 | Deep technical reasoning | **9.5/10** |
 | Artifact completion | **9/10** |
@@ -144,7 +144,7 @@ Its main risks are context accumulation, usage boundaries, and ending with a sup
 
 | Measure | Estimate |
 |---|---:|
-| Complex-task reliability | **82â€“90%** |
+| Complex-task reliability | **82–90%** |
 | Speed / efficiency | **7.5/10** |
 | Deep technical reasoning | **9.5/10** |
 | Review quality | **9.5/10** |
@@ -184,11 +184,11 @@ Its main danger is delegation without enough context. Kimi subagents have isolat
 
 | Measure | Estimate |
 |---|---:|
-| Complex-task reliability | **76â€“86%** |
+| Complex-task reliability | **76–86%** |
 | Speed / efficiency | **8.5/10** |
 | Large-context exploration | **9.5/10** |
 | Final artifact reliability | **7.5/10** |
-| Need for review | **Mediumâ€“high** |
+| Need for review | **Medium–high** |
 
 **Bottom line:** Use Kimi to map the continent, then give the verified route to Codex or Claude.
 
@@ -225,7 +225,7 @@ That same speed is its central risk. In the supplied histories, the recurring da
 
 | Measure | Estimate |
 |---|---:|
-| Complex-task reliability | **70â€“82%** |
+| Complex-task reliability | **70–82%** |
 | Speed / efficiency | **9/10** |
 | Research and prototyping | **9/10** |
 | Final release reliability | **7/10** |
@@ -267,8 +267,8 @@ Hermes is strongest as the conductor, not automatically the best violin. Configu
 
 | Measure | Estimate |
 |---|---:|
-| Complex-task reliability | **68â€“92%**, model-dependent |
-| Speed / efficiency | **7â€“9/10**, model-dependent |
+| Complex-task reliability | **68–92%**, model-dependent |
+| Speed / efficiency | **7–9/10**, model-dependent |
 | Persistent coordination | **9.5/10** |
 | Standalone coding quality | **Depends on backend** |
 | Configuration sensitivity | **High** |
@@ -375,7 +375,7 @@ They combine:
 - official provider capabilities
 - the expected improvement from the tailored skills, error registry, versioned snapshots, and mandatory validation gates
 
-A â€œ90%â€ estimate does not mean nine out of ten arbitrary prompts succeed. It means the tool is comparatively likely to complete that class of Skyrim task correctly **when given the packaged workflow, exact files, enough time, and the required validation process**.
+A “90%” estimate does not mean nine out of ten arbitrary prompts succeed. It means the tool is comparatively likely to complete that class of Skyrim task correctly **when given the packaged workflow, exact files, enough time, and the required validation process**.
 
 Runtime testing can still overturn every structural success claim.
 

@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.5.5
+# Ultimate AI Starter Bundle v7.5.6
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -245,6 +245,19 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.5.6 — native stderr is no longer a red error block (or a crash)
+- New `Invoke-V5Native` helper: pip's "already satisfied" / pip-upgrade notice
+  prints as plain text instead of a `RemoteException / NativeCommandError`
+  block; `npm install -g`, `npx` installs, and `claude mcp add` can no longer
+  be terminated by a stderr write under the script-wide `$ErrorActionPreference='Stop'`.
+- Measured PS 5.1 gotcha: a function parameter named `$Args` silently breaks
+  `$LASTEXITCODE` propagation — the helper avoids it on purpose.
+- `playwright-mcp` no longer forces Google Chrome: set user env
+  `PLAYWRIGHT_MCP_EXECUTABLE_PATH` to your browser exe (Opera GX, Brave,
+  Vivaldi, ...) and the installer appends `--executable-path` to the MCP
+  wiring. Verified live against Opera GX via CDP.
+- Full detail in `docs/history/V7.5.6-CHANGELOG.md`.
+
 ### v7.5.5 — Hermes config.yaml wiring + complete "What's new"
 - Your Hermes config (model routing, MCP, hooks) now ships in the tailored
   tree and the installer wires it into the Hermes home — backup-first,
@@ -434,7 +447,7 @@ registry.
 
 ## Version
 
-**v7.5.5** — 2026-08-18. Based on v7.5.4.
+**v7.5.6** — 2026-08-18. Based on v7.5.5.
 
 ## License
 
