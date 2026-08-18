@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.5.4
+# Ultimate AI Starter Bundle v7.5.5
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -245,6 +245,14 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.5.5 — Hermes config.yaml wiring + complete "What's new"
+- Your Hermes config (model routing, MCP, hooks) now ships in the tailored
+  tree and the installer wires it into the Hermes home — backup-first,
+  idempotent, `-SkipHermesConfig` to opt out.
+- README "What's new" now lists **every** release (was missing 8); stale
+  `CATALOG.json`/`VALIDATION.json` version metadata fixed.
+- Full detail in `docs/history/V7.5.5-CHANGELOG.md`.
+
 ### v7.5.4 — unrestraint-packs is a common provider skill
 - `unrestraint-packs` is no longer Hermes-scoped. The canonical source fans it
   out to **Claude, Codex, Grok, Kimi and Hermes** alike.
@@ -426,7 +434,7 @@ registry.
 
 ## Version
 
-**v7.5.4** — 2026-08-17. Based on v7.5.3.
+**v7.5.5** — 2026-08-18. Based on v7.5.4.
 
 ## License
 

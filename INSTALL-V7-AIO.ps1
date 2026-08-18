@@ -79,7 +79,7 @@ param(
   # home. -SkipPreamble opts out; -ForcePreamble rewrites an identical block.
   [switch]$SkipPreamble,
   [switch]$ForcePreamble,
-  # Hermes config.yaml wiring (v7.5.4). On by default: copies the operator's
+  # Hermes config.yaml wiring (v7.5.5). On by default: copies the operator's
   # tailored Hermes config (model/routing/MCP/hooks) from
   # 1-RECOMMENDED-SEPARATE-TAILORED\Hermes\config.yaml into the Hermes home.
   # Backup-first, idempotent. -SkipHermesConfig opts out.
@@ -109,7 +109,7 @@ function L($m){ [void]$log.Add("$(Get-Date -Format o) $m"); Write-Host $m }
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.5.4 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.5.5 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -270,7 +270,7 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
   }
 }
 
-# ---------- Hermes config.yaml (v7.5.4) ----------
+# ---------- Hermes config.yaml (v7.5.5) ----------
 # Copies the operator's tailored Hermes config (model/routing/MCP/hooks) into
 # the Hermes home. Backup-first, idempotent - same pattern as the SOUL wiring.
 if (-not $ToolsOnly -and -not $SkipHermesConfig -and $Providers -contains 'Hermes') {
@@ -796,7 +796,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.5.4'
+  version = '7.5.5'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
