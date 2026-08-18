@@ -6,8 +6,8 @@
  },
  {
   "path": ".gitignore",
-  "size": 623,
-  "sha256": "7c5d3f7c9d92cd70ec58e62e2c10251b9e1bbfd9f0c85ee8a6cb0147c89262c8"
+  "size": 723,
+  "sha256": "fe5bf6719c41cb692ab173358f0948b3386e7ff21b6820de3df0f662dcd562df"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/AIO-Instruction-full.txt",
@@ -9216,8 +9216,8 @@
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-MAP.md",
-  "size": 1131,
-  "sha256": "ba04bb540aeba1ae8bcf083810bc4dee2007b2e5c3280fae4842e8acb8ec1957"
+  "size": 1382,
+  "sha256": "7a30f1f4e1d34486b87eb5bdc03066ec79fdac6cc04ea0a2a99686cdbf63a358"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -11733,6 +11733,11 @@
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/OPTIONAL-PROJECT-TEMPLATE/VALIDATION.md",
   "size": 14,
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
+ },
+ {
+  "path": "1-RECOMMENDED-SEPARATE-TAILORED/Hermes/config.yaml",
+  "size": 10242,
+  "sha256": "2fcb90da8d6eb55be559ca0df8e466faa1103150a1a4c4e4f96b9f0e190193ba"
  },
  {
   "path": "1-RECOMMENDED-SEPARATE-TAILORED/Kimi/COPY-MAP.md",
@@ -28826,8 +28831,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 41204,
-  "sha256": "49ed2cd1d3bcdb8c05828f75c70e93728024a9d7716b8c6dda2f2c42f185f920"
+  "size": 43133,
+  "sha256": "7ca05773946bfb55a4f6acac811ab8e241c8c6b9d26296e93d570cc3e1dcb12c"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28966,8 +28971,8 @@
  },
  {
   "path": "TOOLS/generate_manifest.py",
-  "size": 1678,
-  "sha256": "1cb52cbbd9706d9ba099db6e76971249baf217b6660077abf488684e71041314"
+  "size": 1687,
+  "sha256": "b2cb2c15ad81f64572eeb951921213238302a060674c4fe04f975312e3cd3741"
  },
  {
   "path": "TOOLS/hooks/assumption_gate.py",
