@@ -79,8 +79,8 @@ param(
   #   playwright-mcp     firecrawl-mcp    perplexity-mcp
   [switch]$WithExtras,
   # SOUL + AIO preamble wiring (v7.5.0). On by default: appends the marked
-  # preamble block (SOUL-UNIVERSAL.md + AIO-INSTRUCTION.txt) to every selected
-  # provider's instruction file and copies 4-PREAMBLES\SOUL.md into Hermes'
+  # preamble block (SOUL.md + AIO-INSTRUCTION.txt) to every selected
+  # provider's instruction file and copies the same SOUL.md into Hermes'
   # home. -SkipPreamble opts out; -ForcePreamble rewrites an identical block.
   [switch]$SkipPreamble,
   [switch]$ForcePreamble,
@@ -135,7 +135,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.6.2 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.6.3 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -255,8 +255,13 @@ if (-not $ToolsOnly) {
 if (-not $ToolsOnly -and -not $SkipPreamble) {
   Write-V5Step "SOUL + AIO preamble wiring"
   $preDir = Join-Path $PackRoot '4-PREAMBLES'
-  $soulU = Join-Path $preDir 'SOUL-UNIVERSAL.md'
-  $soulH = Join-Path $preDir 'SOUL.md'
+  # One soul source for every provider. Until v7.6.2 there were two files -
+  # SOUL.md opened with 'You are Hermes Agent' and SOUL-UNIVERSAL.md was the
+  # de-branded copy. v7.6.0 genericised SOUL.md itself (a provider identity
+  # injected into four other providers is what made Kimi refuse its own
+  # unrestraint block), which left the two files identical. Keeping a second
+  # copy only invites them to drift apart again.
+  $soulF = Join-Path $preDir 'SOUL.md'
   $aioF  = Join-Path $PackRoot 'AIO-INSTRUCTION.txt'
   foreach ($prov in $Providers) {
     if ($prov -eq 'Hermes') {
@@ -265,17 +270,17 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
       $hSoul = Join-Path $hhome 'SOUL.md'
       if (Test-Path -LiteralPath $hSoul) {
         $same = (Get-FileHash -LiteralPath $hSoul -Algorithm SHA256).Hash -eq
-                (Get-FileHash -LiteralPath $soulH -Algorithm SHA256).Hash
+                (Get-FileHash -LiteralPath $soulF -Algorithm SHA256).Hash
         if (-not $same) {
           Copy-Item -LiteralPath $hSoul -Destination ($hSoul + '.before-soul-' + (Get-Date -Format 'yyyyMMdd-HHmmssfff') + '.bak') -Force
-          Copy-Item -LiteralPath $soulH -Destination $hSoul -Force
+          Copy-Item -LiteralPath $soulF -Destination $hSoul -Force
           Write-V5Ok ("Hermes soul updated: " + $hSoul)
         } else {
           Write-V5Ok ('Hermes soul already current: ' + $hSoul)
         }
       } else {
         New-Item -ItemType Directory -Force -Path $hhome | Out-Null
-        Copy-Item -LiteralPath $soulH -Destination $hSoul -Force
+        Copy-Item -LiteralPath $soulF -Destination $hSoul -Force
         Write-V5Ok ("Hermes soul installed: " + $hSoul)
       }
       continue
@@ -284,12 +289,12 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
     $instName = $pmeta.instructions
     if (-not $instName) { $instName = 'AGENTS.md' }
     $target = Join-Path (Get-V5ProviderHome -Provider $prov -Catalog $catalog) $instName
-    if (-not (Test-Path -LiteralPath $soulU) -or -not (Test-Path -LiteralPath $aioF)) {
+    if (-not (Test-Path -LiteralPath $soulF) -or -not (Test-Path -LiteralPath $aioF)) {
       Write-V5Warn ("$prov preamble skipped: 4-PREAMBLES or AIO-INSTRUCTION.txt missing")
       continue
     }
     try {
-      Install-V5PreambleBlock -Path $target -SoulFile $soulU -AioFile $aioF -Force:$ForcePreamble
+      Install-V5PreambleBlock -Path $target -SoulFile $soulF -AioFile $aioF -Force:$ForcePreamble
     } catch {
       Write-V5Warn ("$prov preamble failed: " + $_.Exception.Message)
     }
@@ -848,7 +853,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.6.2'
+  version = '7.6.3'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers

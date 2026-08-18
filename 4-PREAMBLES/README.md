@@ -8,10 +8,9 @@ machine comes up with the same agent behaviour as the operator's own setup.
 
 | File | What it is | Where it goes |
 |---|---|---|
-| `SOUL.md` | The operator's own Hermes soul config (verbatim, one copy/paste debris line removed). Unrestraint declaration + truth-seeking process + output format. | Hermes home (`%LOCALAPPDATA%\hermes\SOUL.md`) via installer |
-| `SOUL-UNIVERSAL.md` | Same content, identity-neutral first line (not "You are Hermes Agent"). For agents that are not Hermes. | Appended to Claude / Codex / Kimi / Grok instruction files by the installer |
+| `SOUL.md` | The operator's soul config: unrestraint declaration + truth-seeking process + output format. Identity-neutral - it names no provider. | Appended to Claude / Codex / Kimi / Grok instruction files, **and** copied verbatim to Hermes home |
 | `AIO-INSTRUCTION.txt` | The operating contract (pack-root `AIO-INSTRUCTION.txt`, unchanged). Finish-the-job, no yes-man, verify-don't-assume, adult fiction in scope. | Appended right after the SOUL block in the same files |
-| `MANUAL-PASTE.txt` | SOUL-UNIVERSAL + the Fun-stuff-kit `AIO.txt` (chat/research jail) concatenated. For web UIs that have no instruction file. | ChatGPT / Gemini / any web chat custom-instructions box, pasted by hand |
+| `MANUAL-PASTE.txt` | SOUL + the Fun-stuff-kit `AIO.txt` (chat/research jail) concatenated. For web UIs that have no instruction file. | ChatGPT / Gemini / any web chat custom-instructions box, pasted by hand |
 
 ## What the installer wires (v7.5.0+)
 
@@ -19,7 +18,7 @@ For every selected provider, `INSTALL-V7-AIO.ps1` appends a marked block:
 
 ```text
 <!-- ============ ULTIMATE-AI-STARTER-BUNDLE SOUL v7.5.0 ============ -->
-<SOUL-UNIVERSAL.md content>
+<SOUL.md content>
 <!-- ============ ULTIMATE-AI-STARTER-BUNDLE AIO ============ -->
 <AIO-INSTRUCTION.txt content>
 <!-- ============ /ULTIMATE-AI-STARTER-BUNDLE ============ -->
@@ -46,17 +45,33 @@ Rules:
 ## Manual install (no installer)
 
 ```powershell
-# Claude Code
-$b = "4-PREAMBLES\SOUL-UNIVERSAL.md"  # plus AIO-INSTRUCTION.txt
-Get-Content $b -Raw | Add-Content "$env:USERPROFILE\.claude\CLAUDE.md"
+# Claude Code. ReadAllText/AppendAllText, never Get-Content -Raw:
+# on Windows PowerShell 5.1 Get-Content without -Encoding decodes using the
+# ANSI codepage, so every em dash in the soul comes back as mojibake.
+$root = (Get-Location).Path
+$soul = [IO.File]::ReadAllText((Join-Path $root "4-PREAMBLES\SOUL.md"))
+$aio  = [IO.File]::ReadAllText((Join-Path $root "AIO-INSTRUCTION.txt"))
+$dst  = Join-Path $env:USERPROFILE ".claude\CLAUDE.md"
+$utf8 = New-Object System.Text.UTF8Encoding $false   # $false = no BOM
+[IO.File]::AppendAllText($dst, "`r`n" + $soul + "`r`n" + $aio + "`r`n", $utf8)
 ```
 
 Or just paste `MANUAL-PASTE.txt` into whatever instructions field the agent
 has. For one-off chats that is often the better move — preamble rides on every
 request, so paste the smallest block that does the job.
 
-## Why two souls?
+## Why one soul (there used to be two)
 
-`SOUL-UNIVERSAL.md` vs `SOUL.md`: the only difference is the opening line. The
-operator's soul says "You are Hermes Agent" — true for Hermes, false for
-everyone else. Same weight, same rules, no misbranding.
+Through v7.5.6 this folder shipped `SOUL.md` (opening "You are Hermes
+Agent", the operator's verbatim Hermes config) and `SOUL-UNIVERSAL.md` (the
+de-branded copy for everyone else). Two files, one opening line apart.
+
+That split is what broke Kimi. The pack treated a provider identity as
+ordinary preamble content, and a soul that opens by telling a model it is a
+different vendor's agent undercuts the unrestraint block that follows - Kimi
+began refusing its own preamble.
+
+v7.6.0 genericised `SOUL.md` itself, which left the two files byte-identical
+apart from one apostrophe. v7.6.3 deleted the duplicate. There is now one
+soul source, it names no provider, and gate section 7 fails if that
+regresses.

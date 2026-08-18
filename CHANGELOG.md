@@ -3,6 +3,23 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.6.3
+
+- `4-PREAMBLES/SOUL-UNIVERSAL.md` deleted. v7.6.0 genericised `SOUL.md`
+  itself, which left the two files byte-identical apart from one apostrophe -
+  but the README still described SOUL-UNIVERSAL as the copy that does *not*
+  say "You are Hermes Agent", inviting someone to put that identity back. The
+  installer now wires the single `SOUL.md` to all five providers.
+- `4-PREAMBLES/README.md` documented a manual install using
+  `Get-Content -Raw | Add-Content` - the exact ANSI-decoding trap v7.6.1 swept
+  out of every script. Gate 7b scanned `.ps1` only, so shipped copy-paste
+  instructions were never checked. Snippet replaced with
+  `ReadAllText`/`AppendAllText` and a no-BOM `UTF8Encoding`, and verified by
+  running it.
+- Gate 7b now also scans ```powershell fences in the docs this pack authors,
+  and asserts there is exactly one soul source that the installer actually
+  wires. All three new assertions were confirmed to fail on reintroduction.
+
 ## 7.6.2
 
 - `TOOLS/Repair-McpPaths.ps1` would have written invalid JSON. A JSON config
