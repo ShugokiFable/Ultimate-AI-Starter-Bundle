@@ -140,17 +140,22 @@ function Get-HermesExe {
 }
 
 function New-HookBlock {
-  param([string]$Py, [string]$Root)
+  param([string]$Py, [string]$Root, [switch]$CallOperator)
+  # Grok executes hook commands through PowerShell, where `"exe" "arg"` is a
+  # parse error ("Unexpected token ... At line:1 char:65") because a quoted
+  # command needs the call operator. cmd.exe (Claude Code's shell) chokes on a
+  # leading `&` instead, so only Grok's block gets the `& ` prefix (v7.6.4).
+  $co = if ($CallOperator) { '& ' } else { '' }
   $pre  = @()
   $stop = @()
   foreach ($g in $gates) {
     $script = Join-Path $Root $g.Name
     $pre  += [ordered]@{
       matcher = $g.Matcher
-      hooks   = @([ordered]@{ type='command'; command=('"{0}" "{1}" --pre'  -f $Py,$script); timeout=15 })
+      hooks   = @([ordered]@{ type='command'; command=('{0}"{1}" "{2}" --pre'  -f $co,$Py,$script); timeout=15 })
     }
     $stop += [ordered]@{
-      hooks = @([ordered]@{ type='command'; command=('"{0}" "{1}" --stop' -f $Py,$script); timeout=30 })
+      hooks = @([ordered]@{ type='command'; command=('{0}"{1}" "{2}" --stop' -f $co,$Py,$script); timeout=30 })
     }
   }
   [ordered]@{ PreToolUse = $pre; Stop = $stop }
@@ -229,8 +234,9 @@ foreach ($p in $Providers) {
       if (-not (Test-Path -LiteralPath (Split-Path -Parent $dir))) { Write-Host 'Grok    not installed'; break }
       if ($CheckOnly) { Write-Host "Grok    would write $dir\ultimate-bundle.json"; break }
       New-Item -ItemType Directory -Force -Path $dir | Out-Null
-      Set-Utf8NoBom -Path (Join-Path $dir 'ultimate-bundle.json') -Text (([ordered]@{ hooks = $block }) | ConvertTo-Json -Depth 20)
-      Write-Host "Grok    wired ~/.grok/hooks/ultimate-bundle.json ($($gates.Count) gates)"
+      $grokBlock = New-HookBlock -Py $python -Root $installRoot -CallOperator
+      Set-Utf8NoBom -Path (Join-Path $dir 'ultimate-bundle.json') -Text (([ordered]@{ hooks = $grokBlock }) | ConvertTo-Json -Depth 20)
+      Write-Host "Grok    wired ~/.grok/hooks/ultimate-bundle.json ($($gates.Count) gates, PowerShell call-operator form)"
     }
 
     'Codex' {

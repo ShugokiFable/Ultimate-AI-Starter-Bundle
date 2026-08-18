@@ -26941,8 +26941,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 13122,
-  "sha256": "dd691f49b929092b4161b42c6479a5730a0121185609277c730233895e1c5a3f"
+  "size": 13115,
+  "sha256": "391d58d576345004dc375d694e701f3e6a8ffaff65b06e8f77aff8870d1f8c67"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -28746,8 +28746,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 16228,
-  "sha256": "4fd1bde5c79f189e599119e3567a557781089a9914e856d21a4f55922fda53e7"
+  "size": 17487,
+  "sha256": "3ff8656e0bbe2a962074cbaf135bc799bc0d031fea086687978d7a0ebebde2a4"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -28821,8 +28821,8 @@
  },
  {
   "path": "GROK-MCP-TROUBLESHOOTING.md",
-  "size": 9294,
-  "sha256": "2954f563be2df583b3956b0bb05156c4d1f8dcec2cfb2a92d936cc171c504c4d"
+  "size": 10086,
+  "sha256": "d91970dd3e26a767e908ed9e6651d19f762ca132d4b096ca51ba697dfb611a77"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -28842,7 +28842,7 @@
  {
   "path": "INSTALL-V7-AIO.ps1",
   "size": 47212,
-  "sha256": "78cf6df9940a00952b44da2eedd9275003962a3b5201bce7f01319aa1582e051"
+  "sha256": "d07bede8affb582e3cf86195ac493a3b733de15a2b75e6c2f27b17ab48df3196"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -28881,13 +28881,13 @@
  },
  {
   "path": "README.md",
-  "size": 23550,
-  "sha256": "87d4f2d1f9a185d79379d15a02531ed26e533ea2bee612bd066b28bbd12dfc89"
+  "size": 24113,
+  "sha256": "cbf9830c577755276153ae012d2ee84b730635cc6f564d3275fc1b7d09b9ed8c"
  },
  {
   "path": "START-HERE.txt",
-  "size": 7645,
-  "sha256": "5cce22688b1f2320f0d2063b237a071a7f5d70d5e183d9fd9266e9124462c6fa"
+  "size": 7742,
+  "sha256": "e741eb6fdf3bd96525ef0611b9d16f89c407a741592011ac16c85d1cc4b0cc41"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -28926,8 +28926,8 @@
  },
  {
   "path": "TOOLS/Install-Completeness-Gate.ps1",
-  "size": 14123,
-  "sha256": "c45c5684c4d3c5460f58886de7d5ec78a4b17742fa6790fe0a473333d0975bf8"
+  "size": 14630,
+  "sha256": "632f0fe1a1bc6195e33722495d02141c4a3c6f2b8ce36bb662975b6ce6442872"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -29071,13 +29071,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1436,
-  "sha256": "5ded994c9319634c962af47a78d194b0d62340ad6b0ac3eb0dbbfc7b9dad02ea"
+  "size": 1359,
+  "sha256": "a42a4f1540c19ff1ec3e185a1fb92de4312ea8a9b868c03147f230f9eae4111e"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "3af1a6a6ec443d8823bcf912d5313d2e04f41046f4bfbf3cfef5c069d8c6b89f"
+  "sha256": "cf8fa55213fcbce30e34ccba94c0c4fbc2414b3f44e5294ca1d99e14ea0f2b76"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -31728,5 +31728,10 @@
   "path": "docs/history/V7.6.3-CHANGELOG.md",
   "size": 3560,
   "sha256": "0757f77746c44de71e49ce013e3228debf848bfaa2caa3d5d6d398da7f6241bd"
+ },
+ {
+  "path": "docs/history/V7.6.4-CHANGELOG.md",
+  "size": 2670,
+  "sha256": "3a7e8470de3a516ef209533da3260f1a9d9df64c114bd84f5b4373ec07a2695b"
  }
 ]
