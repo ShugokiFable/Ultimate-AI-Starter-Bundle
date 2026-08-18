@@ -1,10 +1,12 @@
-﻿# Hermes tailored V5 copy map
+﻿# Hermes tailored copy map
 
-Copy all folders under `COPY-TO-SKILLS-DIRECTORY\skills` into `%HERMES_HOME%\skills`. Default home: `%USERPROFILE%\.hermes`.
+Copy all folders under `COPY-TO-SKILLS-DIRECTORY\skills` into `%HERMES_HOME%\skills`. Default home: `%LOCALAPPDATA%\hermes` (env `HERMES_HOME` overrides).
 
 No provider-home instruction file is installed; use the workspace instruction file.
 
 Copy `COPY-TO-WORKSPACE\AGENTS.md` into the user-selected workspace root. No workspace name is assumed.
+
+Copy `config.yaml` into the Hermes home as `config.yaml` (the operator's tailored model/routing/MCP/hooks config). The installer (`INSTALL-V7-AIO.ps1`) does this automatically, backup-first; `-SkipHermesConfig` opts out.
 
 The registry is already at `%HERMES_HOME%\skills\skyrim-memory\references\ERROR-REGISTRY.json`.
 

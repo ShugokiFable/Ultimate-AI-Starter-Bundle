@@ -78,7 +78,12 @@ param(
   # provider's instruction file and copies 4-PREAMBLES\SOUL.md into Hermes'
   # home. -SkipPreamble opts out; -ForcePreamble rewrites an identical block.
   [switch]$SkipPreamble,
-  [switch]$ForcePreamble
+  [switch]$ForcePreamble,
+  # Hermes config.yaml wiring (v7.5.4). On by default: copies the operator's
+  # tailored Hermes config (model/routing/MCP/hooks) from
+  # 1-RECOMMENDED-SEPARATE-TAILORED\Hermes\config.yaml into the Hermes home.
+  # Backup-first, idempotent. -SkipHermesConfig opts out.
+  [switch]$SkipHermesConfig
 )
 
 if ($WithExtras) {
@@ -261,6 +266,39 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
       Install-V5PreambleBlock -Path $target -SoulFile $soulU -AioFile $aioF -Force:$ForcePreamble
     } catch {
       Write-V5Warn ("$prov preamble failed: " + $_.Exception.Message)
+    }
+  }
+}
+
+# ---------- Hermes config.yaml (v7.5.4) ----------
+# Copies the operator's tailored Hermes config (model/routing/MCP/hooks) into
+# the Hermes home. Backup-first, idempotent - same pattern as the SOUL wiring.
+if (-not $ToolsOnly -and -not $SkipHermesConfig -and $Providers -contains 'Hermes') {
+  Write-V5Step "Hermes config.yaml wiring"
+  $hCfgSrc = Join-Path $PackRoot '1-RECOMMENDED-SEPARATE-TAILORED\Hermes\config.yaml'
+  if (-not (Test-Path -LiteralPath $hCfgSrc)) {
+    Write-V5Warn "Hermes config.yaml skipped: $hCfgSrc missing"
+  } else {
+    $hhome = Get-V5ProviderHome -Provider Hermes -Catalog $catalog
+    $hCfg = Join-Path $hhome 'config.yaml'
+    try {
+      if (Test-Path -LiteralPath $hCfg) {
+        $same = (Get-FileHash -LiteralPath $hCfg -Algorithm SHA256).Hash -eq
+                (Get-FileHash -LiteralPath $hCfgSrc -Algorithm SHA256).Hash
+        if (-not $same) {
+          Copy-Item -LiteralPath $hCfg -Destination ($hCfg + '.before-config-' + (Get-Date -Format 'yyyyMMdd-HHmmssfff') + '.bak') -Force
+          Copy-Item -LiteralPath $hCfgSrc -Destination $hCfg -Force
+          Write-V5Ok ("Hermes config.yaml updated: " + $hCfg)
+        } else {
+          Write-V5Ok ('Hermes config.yaml already current: ' + $hCfg)
+        }
+      } else {
+        New-Item -ItemType Directory -Force -Path $hhome | Out-Null
+        Copy-Item -LiteralPath $hCfgSrc -Destination $hCfg -Force
+        Write-V5Ok ("Hermes config.yaml installed: " + $hCfg)
+      }
+    } catch {
+      Write-V5Warn ("Hermes config.yaml wiring failed: " + $_.Exception.Message)
     }
   }
 }

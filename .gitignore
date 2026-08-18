@@ -14,6 +14,9 @@ id_rsa.pub
 credentials.json
 **/INSTALLATION.json
 
+# Tool download cache (machine-local; the shipped copies live in offline/)
+BUNDLED-TOOLS/cache/
+
 # Python / node local junk if someone runs tools in-tree
 __pycache__/
 *.pyc

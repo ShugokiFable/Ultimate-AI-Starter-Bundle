@@ -10,7 +10,7 @@ import json
 import os
 import sys
 
-SKIP_DIRS = {'.git', '__pycache__', 'node_modules'}
+SKIP_DIRS = {'.git', '__pycache__', 'node_modules', 'cache'}
 SKIP_NAMES = {'MANIFEST.json'}
 
 
