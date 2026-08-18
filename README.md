@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.5.6
+# Ultimate AI Starter Bundle v7.6.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -245,6 +245,24 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.6.0 — the preamble told four agents they were a fifth product
+- `SOUL.md` opened with "You are Hermes Agent ... created by Nous Research", and
+  that file is injected verbatim into Claude's `CLAUDE.md` and Codex/Kimi/Grok
+  `AGENTS.md`. Since v7.5.0 four agents were being told they were a different
+  vendor's product. The opening is now provider-neutral.
+- The installer re-created mojibake on every run: it read the preambles with
+  `Get-Content -Raw`, which on PS 5.1 decodes as Windows-1252, turning the three
+  em dashes in `AIO-INSTRUCTION.txt` into `â€"`. v7.5.6 cleaned the files but
+  not the code that rewrote them. Now `[IO.File]::ReadAllText`.
+- The installer no longer pushes Grok past eight running MCP servers, which
+  wedges `grok-cli` at startup. Adding `skyrim-forge` was unchecked and took a
+  fresh install to 7 configured; it is now refused with the reason, overridable
+  with `-GrokMcpBudget`.
+- New `TOOLS/Repair-McpPaths.ps1` fixes MCP servers pointing at a version folder
+  that no longer exists — found live: Claude was still on `Skyrim-Forge-5.1.0`
+  after the 5.1.3 upgrade and its MCP was silently dead. Runs on every install.
+- Full detail in `docs/history/V7.6.0-CHANGELOG.md`.
+
 ### v7.5.6 — native stderr is no longer a red error block (or a crash)
 - New `Invoke-V5Native` helper: pip's "already satisfied" / pip-upgrade notice
   prints as plain text instead of a `RemoteException / NativeCommandError`
@@ -447,7 +465,7 @@ registry.
 
 ## Version
 
-**v7.5.6** — 2026-08-18. Based on v7.5.5.
+**v7.6.0** — 2026-08-18. Based on v7.5.6.
 
 ## License
 

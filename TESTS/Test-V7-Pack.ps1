@@ -145,6 +145,70 @@ foreach ($g in @('completeness_gate.py', 'assumption_gate.py')) {
 $wire = Join-Path $gateDir 'hermes_wire.py'
 if (Test-Path -LiteralPath $wire) { Good 'hermes_wire.py present' } else { Bad 'hermes_wire.py missing' }
 
+Section '7. Preamble sources are clean UTF-8 and provider-neutral'
+$soulF = Join-Path $PackRoot '4-PREAMBLES\SOUL.md'
+$aioF  = Join-Path $PackRoot 'AIO-INSTRUCTION.txt'
+foreach ($f in @($soulF, $aioF)) {
+    if (-not (Test-Path -LiteralPath $f)) { Bad "missing $(Split-Path $f -Leaf)"; continue }
+    $txt = [IO.File]::ReadAllText($f)
+    $name = Split-Path $f -Leaf
+    # Mojibake signature: a UTF-8 sequence that was decoded as Windows-1252.
+    if ($txt -match ([char]0x00E2 + [char]0x20AC)) { Bad "$name contains mojibake" }
+    else { Good "$name no mojibake" }
+    # Get-Content -Raw uses the ANSI codepage on PS 5.1 and silently corrupts
+    # non-ASCII. If these two ever disagree, the installer read path is wrong.
+    if ((Get-Content -LiteralPath $f -Raw) -cne $txt) {
+        Good "$name has non-ASCII (installer must use ReadAllText)"
+    }
+}
+# The block is injected into all five providers, so it must not claim to be any
+# one of them. v7.6.0 fixed a SOUL.md that told every agent it was Hermes.
+$soulTxt = if (Test-Path -LiteralPath $soulF) { [IO.File]::ReadAllText($soulF) } else { '' }
+if ($soulTxt -match 'Hermes Agent|Nous Research|You are Claude|created by (Anthropic|OpenAI|xAI|Moonshot)') {
+    Bad 'SOUL.md names a specific provider identity; it is installed into all five'
+} else { Good 'SOUL.md is provider-neutral' }
+if ($soulTxt) {
+    $common = Get-Content -LiteralPath (Join-Path $PackRoot 'TOOLS\V7-Common.ps1') -Raw
+    if ($common -match [regex]::Escape('$soul = ([IO.File]::ReadAllText($SoulFile))')) {
+        Good 'Install-V5PreambleBlock reads preambles as UTF-8'
+    } else { Bad 'Install-V5PreambleBlock no longer uses ReadAllText (mojibake will return)' }
+}
+
+Section '8. Repair-McpPaths resolves a version-stamped path'
+$repair = Join-Path $PackRoot (Join-Path 'TOOLS' 'Repair-McpPaths.ps1')
+if (-not (Test-Path -LiteralPath $repair)) { Bad 'TOOLS\Repair-McpPaths.ps1 missing' }
+else {
+    # Sandbox: a dead Widget-1.0.0 and a live Widget-1.2.0, so the resolver has
+    # to pick the highest version whose target file actually exists.
+    $sandbox = Join-Path $env:TEMP ('v7mcprepair-' + [guid]::NewGuid().ToString('N').Substring(0,8))
+    try {
+        $liveDir = Join-Path (Join-Path $sandbox 'Widget-1.2.0') 'bin'
+        New-Item -ItemType Directory -Force -Path $liveDir | Out-Null
+        # A higher version that is missing the target file must be ignored.
+        New-Item -ItemType Directory -Force -Path (Join-Path $sandbox 'Widget-1.3.0') | Out-Null
+        $liveExe = Join-Path $liveDir 'tool.exe'
+        Set-Content -LiteralPath $liveExe -Value 'x'
+        # Dot-source only the two resolver functions, not the whole report.
+        $src = [IO.File]::ReadAllText($repair)
+        $fn1 = [regex]::Match($src, '(?ms)^function Get-NormalPath.*?^\}').Value
+        $fn2 = [regex]::Match($src, '(?ms)^function Resolve-LivePath.*?^\}').Value
+        if (-not $fn1 -or -not $fn2) { Bad 'could not extract resolver functions' }
+        else {
+            . ([scriptblock]::Create($fn1 + "`n" + $fn2))
+            $dead = Join-Path (Join-Path (Join-Path $sandbox 'Widget-1.0.0') 'bin') 'tool.exe'
+            $got = Resolve-LivePath $dead
+            if ($got -eq $liveExe) { Good 'resolver picks highest version that really exists' }
+            else { Bad "resolver returned '$got', expected '$liveExe'" }
+            # No version-stamped folder in the path: it must refuse to guess.
+            $got2 = Resolve-LivePath (Join-Path (Join-Path $sandbox 'nothing') 'here.exe')
+            if ($null -eq $got2) { Good 'resolver refuses to guess unversioned paths' }
+            else { Bad "resolver invented a replacement: $got2" }
+        }
+    } finally {
+        Remove-Item -LiteralPath $sandbox -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
 Write-Host ''
 if ($fail -eq 0) {
     Write-Host "PACK GATE: PASS" -ForegroundColor Green

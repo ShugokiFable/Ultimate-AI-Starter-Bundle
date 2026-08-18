@@ -332,10 +332,23 @@ function Install-V5PreambleBlock {
   )
   if (-not (Test-Path -LiteralPath $SoulFile)) { throw 'preamble SOUL file missing: ' + $SoulFile }
   if (-not (Test-Path -LiteralPath $AioFile))  { throw 'preamble AIO file missing: ' + $AioFile }
-  $soul = (Get-Content -LiteralPath $SoulFile -Raw).Trim()
-  $aio  = (Get-Content -LiteralPath $AioFile -Raw).Trim()
+  # ReadAllText, NOT Get-Content -Raw. On PS 5.1 Get-Content without -Encoding
+  # decodes using the ANSI codepage (Windows-1252 here), so a UTF-8 em dash
+  # (E2 80 94) comes back as three chars and gets written out as mojibake.
+  # v7.5.6 swept the mojibake out of the pack files but left this read path,
+  # so every install re-created it. ReadAllText honours the UTF-8 encoding.
+  $soul = ([IO.File]::ReadAllText($SoulFile)).Trim()
+  $aio  = ([IO.File]::ReadAllText($AioFile)).Trim()
   $nl = "`r`n"
-  $open = '<!-- ULTIMATE-AI-STARTER-BUNDLE SOUL v7.5.0 -->'
+  # Stamp the pack version that wired the block, so a stale block is visible
+  # on sight. The replace pattern keys on the marker prefix, not the version,
+  # so an older stamp is still found and replaced.
+  $ver = 'v7.5.0'
+  try {
+    $vf = Join-Path (Get-V5PackRoot) 'VERSION.txt'
+    if (Test-Path -LiteralPath $vf) { $ver = ([IO.File]::ReadAllText($vf)).Trim() }
+  } catch { }
+  $open = '<!-- ULTIMATE-AI-STARTER-BUNDLE SOUL ' + $ver + ' -->'
   $mid  = '<!-- ULTIMATE-AI-STARTER-BUNDLE AIO (operating contract) -->'
   $end  = '<!-- /ULTIMATE-AI-STARTER-BUNDLE SOUL -->'
   $block = $open + $nl + $soul + $nl + $nl + $mid + $nl + $aio + $nl + $end
