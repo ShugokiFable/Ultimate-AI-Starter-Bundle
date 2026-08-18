@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.6.1
+# Ultimate AI Starter Bundle v7.6.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -245,6 +245,16 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.6.2 — the repair tool would have corrupted a config, and CI now exists
+- `Repair-McpPaths` swapped paths as literal strings, but a JSON config stores
+  every separator doubled — so the replacement came out at the wrong escaping
+  level and would have made `mcp.json` unparseable. Caught by the tool's own
+  dry-run default. Fixed, with three new gate assertions including a round trip.
+- This repo now has CI: the pack gate on `windows-latest` under **Windows
+  PowerShell 5.1** (not pwsh — 5.1's encoding behaviour is what the pack
+  targets), MANIFEST hash verification, and a version-consistency check.
+- Full detail in `docs/history/V7.6.2-CHANGELOG.md`.
+
 ### v7.6.1 — the other 25 places that read a file wrong
 - v7.6.0 fixed one ANSI-decoding read; this sweeps the remaining 25 across 10
   files to `[IO.File]::ReadAllText`.
@@ -476,7 +486,7 @@ registry.
 
 ## Version
 
-**v7.6.1** — 2026-08-18. Based on v7.6.0.
+**v7.6.2** — 2026-08-18. Based on v7.6.1.
 
 ## License
 

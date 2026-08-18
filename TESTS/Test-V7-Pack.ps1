@@ -242,6 +242,34 @@ else {
             $got2 = Resolve-LivePath (Join-Path (Join-Path $sandbox 'nothing') 'here.exe')
             if ($null -eq $got2) { Good 'resolver refuses to guess unversioned paths' }
             else { Bad "resolver invented a replacement: $got2" }
+
+            # Escaping. A JSON config stores every separator doubled; writing a
+            # lone backslash back produces an invalid escape and an unparseable
+            # config. Two earlier attempts got this wrong in opposite directions
+            # (one under-escaped, one produced four), so it is asserted here.
+            $fnEsc = [regex]::Match($src, '(?ms)^function ConvertTo-ConfigLiteral.*?^\}').Value
+            if (-not $fnEsc) { Bad 'ConvertTo-ConfigLiteral not found in Repair-McpPaths.ps1' }
+            else {
+                . ([scriptblock]::Create($fnEsc))
+                $liveP = 'S:' + [char]92 + 'Tools' + [char]92 + 'App-1.2.0' + [char]92 + 'py.exe'
+                $bs = [string][char]92
+                $deadJson = 'S:' + $bs + $bs + 'Tools' + $bs + $bs + 'App-1.1.0' + $bs + $bs + 'py.exe'
+                $deadToml = 'S:' + $bs + 'Tools' + $bs + 'App-1.1.0' + $bs + 'py.exe'
+                $wantJson = 'S:' + $bs + $bs + 'Tools' + $bs + $bs + 'App-1.2.0' + $bs + $bs + 'py.exe'
+                $gotJson = ConvertTo-ConfigLiteral -LivePath $liveP -DeadLiteral $deadJson
+                if ($gotJson -ceq $wantJson) { Good 'JSON config keeps its doubled separators' }
+                else { Bad "escaping wrong: got [$gotJson] want [$wantJson]" }
+                $gotToml = ConvertTo-ConfigLiteral -LivePath $liveP -DeadLiteral $deadToml
+                if ($gotToml -ceq $liveP) { Good 'TOML/YAML config keeps single separators' }
+                else { Bad "escaping wrong: got [$gotToml] want [$liveP]" }
+                # End to end: the rewritten JSON must still parse.
+                $doc = '{"c":"' + $deadJson + '"}'
+                try {
+                    $round = ($doc.Replace($deadJson, $gotJson) | ConvertFrom-Json)
+                    if ($round.c -ceq $liveP) { Good 'repointed JSON still parses to the live path' }
+                    else { Bad "round trip produced $($round.c)" }
+                } catch { Bad "repointed JSON no longer parses: $_" }
+            }
         }
     } finally {
         Remove-Item -LiteralPath $sandbox -Recurse -Force -ErrorAction SilentlyContinue

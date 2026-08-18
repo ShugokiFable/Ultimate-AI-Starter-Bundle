@@ -1,6 +1,6 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.6.1",
+ "version": "7.6.2",
  "generated": "2026-08-18",
  "base": "v7.5.5",
  "canonical_skills": 92,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.6.1: swept the remaining 25 ANSI-decoding reads. On PS 5.1 Get-Content -Raw without -Encoding decodes with the ANSI codepage (Windows-1252), so any UTF-8 file read that way and written back becomes mojibake. v7.6.0 fixed the preamble read; this covers 25 more call sites across 10 files, all replaced with [IO.File]::ReadAllText (every path is Join-Path-built from an absolute root). The dangerous one was Add-Reasoning-MCPs.ps1 Add-ToJsonMcp: it read ~/.claude.json with the ANSI path, round-tripped through ConvertFrom-Json/ConvertTo-Json and wrote it back - measured on a real copy, all 26 em dashes destroyed (fixed path preserves all 26). It had not fired only because the script skips writing when all three servers are already present. Read-then-write sites in V7-Common.ps1, Setup-HouseCarl.ps1 and Install-Completeness-Gate.ps1 fixed too; read-only sites swept so a future write cannot inherit the bug. Writes untouched (Set-Content -Encoding utf8 adds a BOM; v6 shipped one that broke skill discovery). New gate section 7b fails the build if a bare Get-Content -Raw returns, verified by reintroducing the bug at Build-Toolbelt.ps1:38 and confirming PACK GATE: FAIL; the one deliberate use is marked '# ansi-intentional'. Line endings verified per file against HEAD; sweep is exactly 25 insertions / 25 deletions. PACK GATE: PASS (9 sections)."
+ "notes": "v7.6.2: Repair-McpPaths corrupted JSON configs. It matched the path literal as written, and a JSON config stores every separator doubled, so the replacement mixed escaping levels (one attempt produced a lone backslash mid-path, the next four) - which would have made ~/.kimi-code/mcp.json unparseable. Caught only because the tool defaults to report-only. Now normalises the doubled form before touching the filesystem and re-applies the config's own escaping with String.Replace (not -replace, which is regex on both sides). Gate section 8 gained three assertions incl. an end-to-end round trip that the repointed JSON still parses. First CI for this repo: .github/workflows/ci.yml runs the pack gate on windows-latest under Windows PowerShell 5.1 (Desktop edition asserted, since the pack targets 5.1's encoding and BOM behaviour), plus MANIFEST hash verification and a version-consistency check across README, START-HERE, the installer banner and state, CATALOG.json, VALIDATION.json and the changelogs. PACK GATE: PASS (9 sections)."
 }

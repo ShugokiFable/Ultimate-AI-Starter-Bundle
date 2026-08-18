@@ -1,0 +1,77 @@
+name: CI
+
+# The pack targets Windows PowerShell 5.1 specifically: its encoding defaults,
+# its BOM behaviour and its native-stderr handling are the source of most bugs
+# this repo has shipped. Running the gate anywhere else would test a different
+# language, so every job here is windows-latest and uses `shell: powershell`
+# (Windows PowerShell 5.1), never `pwsh` (PowerShell 7+).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pack-gate:
+    name: Pack gate (Windows PowerShell 5.1)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: PowerShell edition in use
+        shell: powershell
+        run: |
+          $PSVersionTable.PSVersion.ToString()
+          if ($PSVersionTable.PSEdition -ne 'Desktop') {
+            throw "Expected Windows PowerShell (Desktop edition); got $($PSVersionTable.PSEdition)."
+          }
+
+      - name: Pack gate
+        shell: powershell
+        run: |
+          .\TESTS\Test-V7-Pack.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+  manifest:
+    name: MANIFEST verifies against the tree
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Byte fidelity is the point of this repo: .gitattributes sets `* -text`
+      # so a clone is identical to the released pack. If checkout ever starts
+      # normalising line endings, every hash here changes and this job says so.
+      - name: Verify every recorded hash
+        shell: powershell
+        run: python .github/scripts/verify_manifest.py
+
+  version-consistency:
+    name: Version strings agree
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check declared versions
+        shell: powershell
+        run: python .github/scripts/check_versions.py

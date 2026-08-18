@@ -47,7 +47,24 @@ $configs = @(
 
 # A path inside a config may be written with \ or /. Compare on a normalized
 # form so "S:/x/y" and "S:\x\y" are recognized as the same file.
-function Get-NormalPath([string]$p) { return ($p -replace '/', '\') }
+# JSON escapes every separator, so the literal in the file reads "S:\\x\\y".
+# Collapse that doubling before touching the filesystem, or Test-Path and the
+# version splitter both see empty path segments.
+function Get-NormalPath([string]$p) { return (($p -replace '/', '\') -replace '\\{2,}', '\') }
+
+# Re-apply whatever escaping the config literal used, so a JSON file keeps its
+# doubled separators and a TOML/YAML one keeps its single ones. Writing a lone
+# backslash into JSON produces an invalid escape and an unparseable config.
+# String.Replace, not -replace: the latter is regex on BOTH sides, and getting
+# the replacement-side backslash count right is a coin flip (one pass produced
+# "S:\.venv\\Scripts", the next "S:\\\\Apps"). Plain string replacement has no
+# escape semantics, so what is written is what is meant.
+function ConvertTo-ConfigLiteral([string]$LivePath, [string]$DeadLiteral) {
+  $single = $LivePath.Replace('/', '\')
+  if ($DeadLiteral -match '/') { return $single.Replace('\', '/') }
+  if ($DeadLiteral.Contains('\\')) { return $single.Replace('\', '\\') }
+  return $single
+}
 
 # Absolute Windows paths that look like a program, in either slash style.
 $rxPath = '(?<p>[A-Za-z]:[\\/](?:[^"''\r\n]*?)\.(?:exe|cmd|bat|ps1|py))'
@@ -119,9 +136,9 @@ foreach ($c in $configs) {
       Write-Host ("          $d") -ForegroundColor Red
       continue
     }
-    # Preserve the slash style the config already used, so the diff is one
-    # version number and not a whole-path restyle.
-    $liveStyled = if ($d -match '/') { $live -replace '\\', '/' } else { $live }
+    # Preserve the slash style AND the escaping the config already used, so the
+    # diff is one version number, not a whole-path restyle or a broken escape.
+    $liveStyled = ConvertTo-ConfigLiteral -LivePath $live -DeadLiteral $d
     Write-Host ("{0,-7} REPOINT" -f $c.Name) -ForegroundColor Yellow
     Write-Host ("          from $d") -ForegroundColor DarkYellow
     Write-Host ("          to   $liveStyled") -ForegroundColor DarkYellow
