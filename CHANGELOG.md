@@ -3,6 +3,26 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.6.4
+
+- Grok failed every hook with `failed with exit code 1: At line:1 char:65`.
+  That is a PowerShell *parse* error, not a gate verdict: Grok executes hook
+  commands through PowerShell, and the gate installer wrote cmd-style commands
+  (`"python" "script.py" --pre`). A quoted command followed by arguments is
+  invalid PowerShell without the call operator; char 65 is where the second
+  quoted string begins. Reproduced exactly before touching anything.
+- `New-HookBlock` in `TOOLS/Install-Completeness-Gate.ps1` gained a
+  `-CallOperator` switch that prefixes commands with `& `. Only the Grok
+  branch sets it - cmd.exe (Claude Code's shell) chokes on a leading `&`, so
+  Claude keeps the unprefixed form. Codex's plugin `hooks.json` uses bare
+  `python "..."`, which parses in both shells, and is untouched.
+- All four wired commands (2 gates x pre/stop) verified to parse and exit 0
+  with the exact `& "py" "script" --flag` form Grok receives.
+- The live `~/.grok/hooks/ultimate-bundle.json` was rewritten the same way,
+  and now points at the stable WindowsApps python instead of the daimon
+  managed venv the resolver had picked (that venv is not the user's python and
+  can disappear). Signature documented in `GROK-MCP-TROUBLESHOOTING.md`.
+
 ## 7.6.3
 
 - `4-PREAMBLES/SOUL-UNIVERSAL.md` deleted. v7.6.0 genericised `SOUL.md`

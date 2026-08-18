@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.6.3
+# Ultimate AI Starter Bundle v7.6.4
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -244,6 +244,15 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.6.4 — Grok hook errors on every tool use
+- Grok runs hook commands through PowerShell, and the gate installer wrote
+  cmd-style `"python" "script.py" --pre` — a parse error without the `&` call
+  operator (`At line:1 char:65`, twice per tool call). The gates never ran.
+- `New-HookBlock` gained a `-CallOperator` switch; only Grok's block gets the
+  `& ` prefix, because cmd.exe (Claude's shell) chokes on it. All four wired
+  commands verified to parse and exit 0 in the exact form Grok receives.
+- Full detail in `docs/history/V7.6.4-CHANGELOG.md`.
+
 ### v7.6.2 — the repair tool would have corrupted a config, and CI now exists
 - `Repair-McpPaths` swapped paths as literal strings, but a JSON config stores
   every separator doubled — so the replacement came out at the wrong escaping
@@ -485,7 +494,7 @@ registry.
 
 ## Version
 
-**v7.6.2** — 2026-08-18. Based on v7.6.1.
+**v7.6.4** — 2026-08-18. Based on v7.6.3.
 
 ## License
 

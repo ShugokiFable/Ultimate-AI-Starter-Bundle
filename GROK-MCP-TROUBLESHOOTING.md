@@ -210,3 +210,18 @@ unavailable; don't force-kill MCP children under a live session.
 > `grok inspect` lists what was *discovered on disk*, not what is *active*: it
 > still reports 14 hooks and 9 MCP servers with both compat cells off. Trust the
 > turn log, and trust an actual tool call over any counter.
+
+## Hook "failed with exit code 1: At line:1 char:65" on every tool use (v7.6.4)
+
+`global/ultimate-bundle:pre_tool_use[N].hooks[0]` failing with
+`At line:1 char:65` is a PowerShell *parse* error, not a gate verdict: Grok
+executes hook commands through PowerShell, and the pre-7.6.4 wiring wrote
+cmd-style commands (`"python" "script.py" --pre`). A quoted command followed
+by arguments is invalid PowerShell without the call operator; char 65 is where
+the second quoted string begins.
+
+Fix shipped in v7.6.4: `TOOLS/Install-Completeness-Gate.ps1` writes Grok's
+`~/.grok/hooks/ultimate-bundle.json` with the `& ` call-operator prefix
+(Claude keeps the cmd form — cmd.exe chokes on a leading `&`). Re-run
+`Install-Completeness-Gate.ps1 -Providers Grok` to rewrite the file, then
+restart Grok.

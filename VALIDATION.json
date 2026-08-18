@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.6.3",
+ "version": "7.6.4",
  "generated": "2026-08-18",
- "base": "v7.5.5",
+ "base": "v7.6.3",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.6.2: Repair-McpPaths corrupted JSON configs. It matched the path literal as written, and a JSON config stores every separator doubled, so the replacement mixed escaping levels (one attempt produced a lone backslash mid-path, the next four) - which would have made ~/.kimi-code/mcp.json unparseable. Caught only because the tool defaults to report-only. Now normalises the doubled form before touching the filesystem and re-applies the config's own escaping with String.Replace (not -replace, which is regex on both sides). Gate section 8 gained three assertions incl. an end-to-end round trip that the repointed JSON still parses. First CI for this repo: .github/workflows/ci.yml runs the pack gate on windows-latest under Windows PowerShell 5.1 (Desktop edition asserted, since the pack targets 5.1's encoding and BOM behaviour), plus MANIFEST hash verification and a version-consistency check across README, START-HERE, the installer banner and state, CATALOG.json, VALIDATION.json and the changelogs. PACK GATE: PASS (9 sections)."
+ "notes": "v7.6.4: Grok failed every hook with 'failed with exit code 1: At line:1 char:65' - a PowerShell parse error, not a gate verdict. Grok executes hook commands through PowerShell, and the gate installer wrote cmd-style commands (\"python\" \"script.py\" --pre); a quoted command followed by arguments is invalid PowerShell without the call operator, and char 65 is where the second quoted string begins. Reproduced exactly before fixing. New-HookBlock gained a -CallOperator switch that prefixes commands with '& '; only the Grok branch sets it, because cmd.exe (Claude Code's shell) chokes on a leading '&'. Codex's plugin hooks.json uses bare python \"...\" which parses in both shells and is untouched. All four wired commands (2 gates x pre/stop) verified to parse and exit 0 in the exact form Grok receives. Live ~/.grok/hooks/ultimate-bundle.json rewritten and repointed at the stable WindowsApps python instead of the daimon managed venv. PACK GATE: PASS."
 }
