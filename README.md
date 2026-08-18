@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.6.0
+# Ultimate AI Starter Bundle v7.6.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -245,6 +245,17 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.6.1 — the other 25 places that read a file wrong
+- v7.6.0 fixed one ANSI-decoding read; this sweeps the remaining 25 across 10
+  files to `[IO.File]::ReadAllText`.
+- One was a config-destroying bug that had not fired yet: `Add-Reasoning-MCPs`
+  read `~/.claude.json`, round-tripped it through JSON and wrote it back —
+  measured on the real file, all 26 em dashes destroyed. It only stayed dormant
+  because the script skips writing when nothing needs adding.
+- New gate section 7b fails the build if a bare `Get-Content -Raw` comes back,
+  and was verified to actually fail rather than merely pass.
+- Full detail in `docs/history/V7.6.1-CHANGELOG.md`.
+
 ### v7.6.0 — the preamble told four agents they were a fifth product
 - `SOUL.md` opened with "You are Hermes Agent ... created by Nous Research", and
   that file is injected verbatim into Claude's `CLAUDE.md` and Codex/Kimi/Grok
@@ -465,7 +476,7 @@ registry.
 
 ## Version
 
-**v7.6.0** — 2026-08-18. Based on v7.5.6.
+**v7.6.1** — 2026-08-18. Based on v7.6.0.
 
 ## License
 

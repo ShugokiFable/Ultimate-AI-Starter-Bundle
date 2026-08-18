@@ -122,7 +122,7 @@ function Remove-DeadDrops {
   foreach ($d in $deadDrops) {
     if (Test-Path -LiteralPath $d) {
       # Only reclaim a config this pack created; never touch a user's own file.
-      if ($d -like '*config.yaml' -and (Get-Content -LiteralPath $d -Raw) -notmatch '_gate\.py') { continue }
+      if ($d -like '*config.yaml' -and ([IO.File]::ReadAllText($d)) -notmatch '_gate\.py') { continue }
       if (-not $CheckOnly) { Remove-Item -LiteralPath $d -Force -ErrorAction SilentlyContinue }
       Write-Host "  removed inert file: $d"
     }
@@ -162,7 +162,7 @@ if ($Uninstall) {
   if (Test-Path -LiteralPath $g) { if (-not $CheckOnly) { Remove-Item -LiteralPath $g -Force }; Write-Host "removed: $g" }
   $s = Join-Path $env:USERPROFILE '.claude\settings.json'
   if (Test-Path -LiteralPath $s) {
-    $json = Get-Content -LiteralPath $s -Raw | ConvertFrom-Json
+    $json = [IO.File]::ReadAllText($s) | ConvertFrom-Json
     if ($json.PSObject.Properties.Name -contains 'hooks') {
       foreach ($evt in @('PreToolUse','Stop')) {
         if ($json.hooks.PSObject.Properties.Name -contains $evt) {
@@ -208,7 +208,7 @@ foreach ($p in $Providers) {
       $target = Join-Path $env:USERPROFILE '.claude\settings.json'
       if (-not (Test-Path -LiteralPath (Split-Path -Parent $target))) { Write-Host 'Claude  not installed'; break }
       if ($CheckOnly) { Write-Host "Claude  would merge $target"; break }
-      $json = if (Test-Path -LiteralPath $target) { Get-Content -LiteralPath $target -Raw | ConvertFrom-Json } else { [pscustomobject]@{} }
+      $json = if (Test-Path -LiteralPath $target) { [IO.File]::ReadAllText($target) | ConvertFrom-Json } else { [pscustomobject]@{} }
       if ($json.PSObject.Properties.Name -notcontains 'hooks') { $json | Add-Member -NotePropertyName hooks -NotePropertyValue ([pscustomobject]@{}) }
       foreach ($evt in @('PreToolUse','Stop')) {
         $existing = @()
@@ -249,7 +249,7 @@ foreach ($p in $Providers) {
       $copied = @(Get-ChildItem -Recurse -File $marketRoot -ErrorAction SilentlyContinue).Count
       if ($copied -lt 4) { Write-Host "Codex   FAILED to materialise the plugin ($copied files)" -ForegroundColor Yellow; break }
 
-      $toml = Get-Content -LiteralPath $cfg -Raw
+      $toml = [IO.File]::ReadAllText($cfg)
       $add = ''
       if ($toml -notmatch '(?m)^\[marketplaces\.ultimate-bundle\]') {
         $add += "`r`n[marketplaces.ultimate-bundle]`r`nsource_type = `"local`"`r`nsource = '$marketRoot'`r`n"

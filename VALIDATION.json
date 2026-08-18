@@ -1,6 +1,6 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.6.0",
+ "version": "7.6.1",
  "generated": "2026-08-18",
  "base": "v7.5.5",
  "canonical_skills": 92,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.6.0: SOUL.md no longer claims a provider identity. Since v7.5.0 the shared preamble opened 'You are Hermes Agent, an intelligent AI assistant created by Nous Research' and was injected verbatim into Claude CLAUDE.md and Codex/Kimi/Grok AGENTS.md, telling four agents they were a fifth product; now provider-neutral and gated by TESTS section 7. Install-V5PreambleBlock read the preamble with Get-Content -Raw, which on PS 5.1 decodes via the ANSI codepage (Windows-1252), so the three UTF-8 em dashes in AIO-INSTRUCTION.txt were rewritten as mojibake on every install - v7.5.6 swept the data but not this read path; now [IO.File]::ReadAllText, verified against all four installed files. The block's version marker is stamped from VERSION.txt instead of a hardcoded v7.5.0, so a stale block is visible. New TOOLS/Repair-McpPaths.ps1 finds MCP commands pointing at version-stamped folders that no longer exist and repoints them at the installed version (literal string replace, backup first, no format parsing); wired into the installer. Found live: Claude was still on Skyrim-Forge-5.1.0 after the 5.1.3 upgrade and its skyrim-forge MCP was silently dead, while Kimi/Codex/Grok/Hermes had been updated. PACK GATE: PASS (8 sections)."
+ "notes": "v7.6.1: swept the remaining 25 ANSI-decoding reads. On PS 5.1 Get-Content -Raw without -Encoding decodes with the ANSI codepage (Windows-1252), so any UTF-8 file read that way and written back becomes mojibake. v7.6.0 fixed the preamble read; this covers 25 more call sites across 10 files, all replaced with [IO.File]::ReadAllText (every path is Join-Path-built from an absolute root). The dangerous one was Add-Reasoning-MCPs.ps1 Add-ToJsonMcp: it read ~/.claude.json with the ANSI path, round-tripped through ConvertFrom-Json/ConvertTo-Json and wrote it back - measured on a real copy, all 26 em dashes destroyed (fixed path preserves all 26). It had not fired only because the script skips writing when all three servers are already present. Read-then-write sites in V7-Common.ps1, Setup-HouseCarl.ps1 and Install-Completeness-Gate.ps1 fixed too; read-only sites swept so a future write cannot inherit the bug. Writes untouched (Set-Content -Encoding utf8 adds a BOM; v6 shipped one that broke skill discovery). New gate section 7b fails the build if a bare Get-Content -Raw returns, verified by reintroducing the bug at Build-Toolbelt.ps1:38 and confirming PACK GATE: FAIL; the one deliberate use is marked '# ansi-intentional'. Line endings verified per file against HEAD; sweep is exactly 25 insertions / 25 deletions. PACK GATE: PASS (9 sections)."
 }

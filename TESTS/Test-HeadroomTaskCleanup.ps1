@@ -95,7 +95,7 @@ try {
     throw 'A Headroom deploy task without its deployment manifest was not detected as orphaned.'
   }
 
-  $source = Get-Content -LiteralPath $scriptPath -Raw
+  $source = [IO.File]::ReadAllText($scriptPath)
   $mainMarker = "Step 'Headroom + Grok (auth aware)'"
   $cleanupMarker = 'Remove-OrphanHeadroomTasks'
   $headroomLookupMarker = '$hr = Find-HeadroomExe'
