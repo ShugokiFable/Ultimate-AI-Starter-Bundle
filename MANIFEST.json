@@ -28901,8 +28901,8 @@
  },
  {
   "path": "TESTS/Test-V7-Pack.ps1",
-  "size": 13874,
-  "sha256": "40fe61df5763982eed2719465fa06dc04bc15ca36268f76bc086768a0f86ac18"
+  "size": 14309,
+  "sha256": "a26c8e38f4f719332cb9441eb65ae8bd1687365cdc0207e80e26543eb9aeb043"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",

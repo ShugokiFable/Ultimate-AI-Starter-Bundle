@@ -223,6 +223,12 @@ else {
     try {
         $liveDir = Join-Path (Join-Path $sandbox 'Widget-1.2.0') 'bin'
         New-Item -ItemType Directory -Force -Path $liveDir | Out-Null
+        # Canonicalise both. On the GitHub runner $env:TEMP is the 8.3 short
+        # form (C:\Users\RUNNER~1\...) while Get-ChildItem's .FullName -- what
+        # the resolver returns -- gives the long form (runneradmin). Same file,
+        # two spellings, and a plain string compare fails on the difference.
+        $sandbox = (Get-Item -LiteralPath $sandbox).FullName
+        $liveDir = (Get-Item -LiteralPath $liveDir).FullName
         # A higher version that is missing the target file must be ignored.
         New-Item -ItemType Directory -Force -Path (Join-Path $sandbox 'Widget-1.3.0') | Out-Null
         $liveExe = Join-Path $liveDir 'tool.exe'
