@@ -3,6 +3,22 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.6.2
+
+- `TOOLS/Repair-McpPaths.ps1` would have written invalid JSON. A JSON config
+  stores every path separator doubled; the tool matched that literal and wrote
+  back a replacement at a different escaping level (one attempt mixed single and
+  double, the next quadrupled), which makes `mcp.json` unparseable. Caught only
+  because the tool defaults to report-only. Fixed by collapsing the doubling
+  before the filesystem check and re-applying the config's own escaping with
+  `String.Replace` instead of the regex-on-both-sides `-replace`.
+- Gate section 8 gained three assertions: JSON keeps doubled separators,
+  TOML/YAML keeps single ones, and the repointed JSON still parses.
+- **First CI for this repo.** `.github/workflows/ci.yml` runs the pack gate on
+  `windows-latest` under Windows PowerShell 5.1 (Desktop edition asserted, since
+  the pack targets 5.1's encoding/BOM behaviour), verifies every MANIFEST hash,
+  and checks the version agrees across all seven places it is declared.
+
 ## 7.6.1
 
 - Swept the remaining 25 ANSI-decoding `Get-Content -Raw` reads to
