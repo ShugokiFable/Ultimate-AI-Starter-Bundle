@@ -16,8 +16,8 @@
  },
  {
   "path": ".github/workflows/ci.yml",
-  "size": 2602,
-  "sha256": "2e8255e9d0258f2065e71ef5c9dcb1e08366c22b626badbd6bf761b733228cd6"
+  "size": 2169,
+  "sha256": "a8771e0d73389465e43418951fc470f421f5d4522fa95e3f8e64f404a8a7589e"
  },
  {
   "path": ".gitignore",
@@ -18731,13 +18731,13 @@
  },
  {
   "path": "dist/Ultimate-AI-Starter-Bundle-v7.7.0-Core.zip",
-  "size": 14642499,
-  "sha256": "ef0bdb1a2ce15d977510664a2a57f10723cc69e22588f06bf7db987fbf20e70a"
+  "size": 14748783,
+  "sha256": "f2e0a0d5cfe2b8cac70a4b18b20aa3dc7f21c5502eeb8fcd135c750e4bbd9fc1"
  },
  {
   "path": "dist/Ultimate-AI-Starter-Bundle-v7.7.0-Full-Offline.zip",
-  "size": 151068100,
-  "sha256": "4e6e1c28ef773dec37b9f1970b67e29c21c0919150b1f580ea157a5b61739a2d"
+  "size": 151174524,
+  "sha256": "1c61ecd894e83beb33e59348788a70190b38a181d4b2cd8c3ad7d5db237b8d5c"
  },
  {
   "path": "docs/history/FINAL-AUDIT-v5.0.0.md",
