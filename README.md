@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.6.6
+# Ultimate AI Starter Bundle v7.6.7
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -43,10 +43,10 @@ Follow AIO-INSTRUCTION.txt for every complex or factual request.
 
 The preamble is now **installed automatically**, not pasted by hand:
 
-- `4-PREAMBLES/SOUL.md` - the operator's own soul config (unrestricted, no
+- `3-PREAMBLES/SOUL.md` - the operator's own soul config (unrestricted, no
   yes-man, truth-seeking process, output format), shipped verbatim and
   identity-neutral: it names no provider, so it is safe in all five
-- `4-PREAMBLES/MANUAL-PASTE.txt` — for web UIs (ChatGPT/Gemini) that have no
+- `3-PREAMBLES/MANUAL-PASTE.txt` — for web UIs (ChatGPT/Gemini) that have no
   instruction file: paste it into the custom-instructions box
 
 `INSTALL-V7-AIO.ps1` appends `SOUL.md` + `AIO-INSTRUCTION.txt` to
@@ -54,7 +54,7 @@ Claude Code (`~/.claude/CLAUDE.md`), Codex (`~/.codex/AGENTS.md`), Kimi
 (`~/.kimi-code/AGENTS.md`) and Grok (`~/.grok/AGENTS.md`, its global-rules
 file), and copies the verbatim soul into Hermes' home (`SOUL.md`). Idempotent
 and backup-first; `-SkipPreamble` opts out. Full map:
-`4-PREAMBLES/README.md`.
+`3-PREAMBLES/README.md`.
 
 ## Quick start
 
@@ -128,13 +128,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 ## Layout
 
 ```text
-1-RECOMMENDED-SEPARATE-TAILORED/   per-AI tailored skill trees
+1-TAILORED-PROVIDER-TREES/   per-AI tailored skill trees
 BUNDLED-TOOLS/offline/             shipped tool zips/wheels
 BUNDLED-TOOLS/plugins/             Superpowers + Ponytail
 BUNDLED-TOOLS/CATALOG.json         component registry
 COPY-TO-YOUR-WORKSPACE/            workspace files + _PROJECT-TEMPLATE (incl. .cbmignore)
 0-UNRESTRAINT-PACKS/               no-holds prompt library (v6.9.2)
-4-PREAMBLES/                      SOUL + AIO preamble for every agent (v7.5.0)
+3-PREAMBLES/                      SOUL + AIO preamble for every agent (v7.5.0)
 TOOLS/                             installers and discovery scripts
 TOOLS/Setup-CodebaseMemory-Index.ps1   index scope generator (v7.0.0+)
 _V7-CANONICAL-SKILLS/              maintainer master skills
@@ -243,9 +243,20 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.6.7 — the root folders are numbered 0, 1, 2, 3 again
+- Deleting `2-OPTIONAL-SHARED-GENERIC` in v7.6.6 left the root numbered
+  0, 1, 3, 4. Renumbered: `2-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK` and
+  `3-PREAMBLES` (was 4-). `1-RECOMMENDED-SEPARATE-TAILORED` became
+  `1-TAILORED-PROVIDER-TREES` — with the generic tree gone, "recommended" was
+  answering a question that no longer exists.
+- Every live reference updated: installer, pack gate, fanout tool, manifest
+  generator, .gitignore, BOOTSTRAP, guide, prompts and layout docs. Historical
+  changelogs keep the names that were true then.
+- Full detail in `docs/history/V7.6.7-CHANGELOG.md`.
+
 ### v7.6.6 — dead trees, dead models, and a live MCP health sweep
 - `2-OPTIONAL-SHARED-GENERIC` is gone. The installer has only ever read
-  `1-RECOMMENDED-SEPARATE-TAILORED`, and the two trees were 97% byte-identical —
+  `1-TAILORED-PROVIDER-TREES`, and the two trees were 97% byte-identical —
   40 MB of duplication that only existed to drift. `fanout_providers.py`, the
   pack gate and the layout docs now treat the tailored tree as the only one.
 - `0-UNRESTRAINT-PACKS` cleaned: retired-generation jails out (Claude 3.7/4,
@@ -376,7 +387,7 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 - Gates/reasoning-MCP wiring silently no-op'd on multi-provider installs.
 
 ### v7.5.0 — SOUL for every agent + one-command install from zero
-- **`4-PREAMBLES/`** — the operator's SOUL (verbatim), an identity-neutral
+- **`3-PREAMBLES/`** — the operator's SOUL (verbatim), an identity-neutral
   universal SOUL, and a manual-paste file for web UIs. The installer wires
   SOUL + the AIO contract into Claude Code, Codex, Kimi, Grok and Hermes
   (idempotent, backup-first, `-SkipPreamble`).
@@ -526,7 +537,7 @@ registry.
 
 ## Version
 
-**v7.6.6** — 2026-08-19. Based on v7.6.5.
+**v7.6.7** — 2026-08-19. Based on v7.6.6.
 
 ## License
 

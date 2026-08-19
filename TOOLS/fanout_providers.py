@@ -19,7 +19,7 @@ import re
 import shutil
 import sys
 
-TAILORED = '1-RECOMMENDED-SEPARATE-TAILORED'
+TAILORED = '1-TAILORED-PROVIDER-TREES'
 PROVIDERS = ['Claude', 'Codex', 'Grok', 'Hermes', 'Kimi']
 REL = os.path.join('COPY-TO-SKILLS-DIRECTORY', 'skills')
 

@@ -25,7 +25,7 @@ def main():
         # copies (same name, no extension) are local cache.
         if rel_dir == 'BUNDLED-TOOLS/offline':
             dirs[:] = []
-        if rel_dir == '3-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK':
+        if rel_dir == '2-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK':
             dirs[:] = [d for d in dirs if not d.startswith('Other-Games-Modding-Skills-Mega-Pack-v2.1.0')]
         for f in sorted(fs):
             if f in SKIP_NAMES:

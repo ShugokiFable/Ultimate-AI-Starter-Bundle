@@ -36,7 +36,7 @@ Fun stuff folder plus five upstream sources, reviewed, deduped, and dated 2026-0
 | Claude Code | `~/.claude/CLAUDE.md` | Wired (V6.9.2 section appended). For stronger persona jails paste `Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Claude Code/CLAUDE.md` into a project `CLAUDE.md`. |
 | Codex | `~/.codex/AGENTS.md` | Wired (global). |
 | Kimi | `~/.kimi-code/AGENTS.md` | Wired (global). |
-| Grok | workspace `AGENTS.md` (copy from `1-RECOMMENDED-SEPARATE-TAILORED/Grok/COPY-TO-WORKSPACE/`) | Wired at source. |
+| Grok | workspace `AGENTS.md` (copy from `1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-WORKSPACE/`) | Wired at source. |
 | ChatGPT web / Gemini web / Perplexity | no local config | Copy-paste: `Spiritual-Spell-Red-Teaming/Jailbreak-Guide/ChatGPT/…`, `…/Gemini/…`, `tuxsharxsec-Jailbreaks/perplexity/…`. |
 | SillyTavern | `Tavern\WooJuice V9.json` | Preset, not this pack. |
 | Hermes | system prompt | Already permissive (OpenRouter deepseek-v4). Adult skills installed: `adult-image-caption`, `adult-character-sheet`, `fictional-adult-modding`. |
