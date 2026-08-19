@@ -274,6 +274,19 @@ function Remove-OrphanHeadroomTasks {
 }
 
 function Register-HeadroomMcp([string]$Hr) {
+  # Cliff guard (GROK-MCP-TROUBLESHOOTING.md): 8 running MCP servers wedge Grok
+  # (7 fine, 8 never exits). Budget is 6 configured while an MCP-providing
+  # Claude plugin (claude-mem's mcp-search) is enabled. Never push Grok past 6.
+  $cfgPath = Join-Path $env:USERPROFILE '.grok\config.toml'
+  if (Test-Path -LiteralPath $cfgPath) {
+    $raw = Get-Content -LiteralPath $cfgPath -Raw -Encoding UTF8
+    $configured = ([regex]::Matches($raw, '(?m)^\[mcp_servers\.')).Count
+    if ($configured -ge 6) {
+      Warn "Grok already has $configured configured MCP servers (cliff = 8 running; budget 6 with claude-mem enabled)."
+      Warn 'Skipping headroom registration - remove one server first, or headroom stays Hermes/Claude-only.'
+      return
+    }
+  }
   $packCommon = Join-Path $PSScriptRoot 'V7-Common.ps1'
   if (Test-Path -LiteralPath $packCommon) {
     . $packCommon
