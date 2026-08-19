@@ -16161,8 +16161,8 @@
  },
  {
   "path": "TOOLS/generate_manifest.py",
-  "size": 1687,
-  "sha256": "a2a1d90341b46820a5192123a486bf3d5969b200d6fea9922a5cb03af4ee1dfd"
+  "size": 1938,
+  "sha256": "7ad876967cbf6046de9c8a62ac98386fd44c8f7ca81ba95c436b9c3b5e0088a2"
  },
  {
   "path": "TOOLS/hooks/assumption_gate.py",
@@ -18728,16 +18728,6 @@
   "path": "_V7-CANONICAL-SKILLS/writing-skills/testing-skills-with-subagents.md",
   "size": 12558,
   "sha256": "c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade"
- },
- {
-  "path": "dist/Ultimate-AI-Starter-Bundle-v7.7.0-Core.zip",
-  "size": 14748783,
-  "sha256": "f2e0a0d5cfe2b8cac70a4b18b20aa3dc7f21c5502eeb8fcd135c750e4bbd9fc1"
- },
- {
-  "path": "dist/Ultimate-AI-Starter-Bundle-v7.7.0-Full-Offline.zip",
-  "size": 151174524,
-  "sha256": "1c61ecd894e83beb33e59348788a70190b38a181d4b2cd8c3ad7d5db237b8d5c"
  },
  {
   "path": "docs/history/FINAL-AUDIT-v5.0.0.md",

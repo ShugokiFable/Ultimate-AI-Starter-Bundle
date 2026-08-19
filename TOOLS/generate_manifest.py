@@ -10,7 +10,10 @@ import json
 import os
 import sys
 
-SKIP_DIRS = {'.git', '__pycache__', 'node_modules', 'cache'}
+# 'dist' holds the release zips TOOLS/Build-Release.ps1 writes. Recording
+# them here makes MANIFEST describe a tree that only exists on the machine
+# that built them, so a fresh clone fails verification with MISSING dist/...
+SKIP_DIRS = {'.git', '__pycache__', 'node_modules', 'cache', 'dist', '.venv', 'venv'}
 SKIP_NAMES = {'MANIFEST.json'}
 
 
