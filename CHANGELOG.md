@@ -3,6 +3,39 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.4
+
+The AIO run that was supposed to finish 7.7.3 aborted starter settings and
+left Grok with two Superpowers plugins.
+
+- **`$HOME` is a PowerShell constant.**
+  `Install-Provider-Starter-Settings.ps1` assigned `$home = Get-V5ProviderHome`.
+  On Windows PowerShell that is `Cannot overwrite variable HOME because it
+  is read-only or constant`, so the entire starter-settings pass died
+  before Claude/Codex/Grok/Kimi/Hermes templates were merged. Renamed to
+  `$provHome`.
+- **Two Grok Superpowers plugins, one skill name.** The official
+  marketplace auto-installs `superpowers`, and the AIO also
+  `grok plugin install`-ed the staged local clone under
+  `%LOCALAPPDATA%\Skyrim-AI-V5\plugins-src\superpowers`. Both own
+  `systematic-debugging`. The TUI reports that as the Superpowers skill
+  error. The installer now keeps the marketplace copy, uninstalls extra
+  local clones, and never installs the local path when any Superpowers is
+  already listed. Duplicate collapse edits `registry.json` rather than
+  `grok plugin uninstall <name>`, which cannot target a repo_key and
+  removed the marketplace copy when both were present.
+- **Grok was still scanning Claude skills.** `[compat.claude] hooks/mcps =
+  false` did not stop `~/.claude/skills` or Claude plugin skill dirs, so
+  Grok loaded claude-mem skills and `mcp-search` could still occupy the
+  8th running MCP slot. `skills = false` is now written. `mcp-search`
+  stays in `disabled_mcp_servers`.
+- **Kimi native Superpowers never deduped** the copied skills, so
+  `systematic-debugging` sat twice. Same dedupe path as the other
+  providers.
+- **Hermes `scan_on_install: false` leaked.** Restore only ran when a
+  plugin was newly installed. Re-runs left the scanner off forever.
+  Restore now always runs after the Hermes plugin pass.
+
 ## 7.7.3
 
 Portable provider starter settings, and Forge lives in the Skyrim tools folder.

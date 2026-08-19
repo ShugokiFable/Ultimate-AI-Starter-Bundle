@@ -6521,8 +6521,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-PROVIDER-HOME/config.toml",
-  "size": 550,
-  "sha256": "a9dff6b253b3581a6bdad60a1d13fce115180a27696627128af94163b99f21d3"
+  "size": 565,
+  "sha256": "a2b446084d69f712017b185a22be14f0824009aba710612e2df6d4ea94ce5d5b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -11572,7 +11572,7 @@
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/README.txt",
   "size": 755,
-  "sha256": "1e5d47d92dc0f8838b49c2bd7d673f2d19aed4a7adfae16453c6a4d31e0eb0bd"
+  "sha256": "32a9d6731de5ad11d638f47a778f8268c90129adc4ab8643c2ba5535d69a51bf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
@@ -14116,8 +14116,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/SETTINGS.md",
-  "size": 1748,
-  "sha256": "793e8707df01101d7f5cdc6fa74628beffdccde7032bc8aa8e8ceee3045f6505"
+  "size": 1831,
+  "sha256": "fa7742a18f84e89fde27c281368ae27a0c0b86f2deaeced2f579fa58233da8f9"
  },
  {
   "path": "2-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK/Other-Games-Modding-Skills-Mega-Pack-v2.1.0-MANUAL.zip",
@@ -14157,7 +14157,7 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 13115,
-  "sha256": "5f136a37fea180b1d0f47e7b730a37c9d2af08d456e9c4eedfee3e4a38b1bb10"
+  "sha256": "ffcbca9c04900b734b3c46626b5b1acc3e0a35c751f7fbcb8a68a5893cebad22"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15961,8 +15961,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 26796,
-  "sha256": "d1fb3349caab94448854bd90556eabd3166228abd68b78f9e675a58d4c33ec16"
+  "size": 28601,
+  "sha256": "a269fc6543a856616ad524995bc25c49cf3c04aaaa2fce3fcf2bd146657fddbb"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -16031,8 +16031,8 @@
  },
  {
   "path": "GROK-MCP-TROUBLESHOOTING.md",
-  "size": 10086,
-  "sha256": "d91970dd3e26a767e908ed9e6651d19f762ca132d4b096ca51ba697dfb611a77"
+  "size": 10645,
+  "sha256": "4ecf782736d914d41e1e6030f70161ddee013c830da477646a988eb61f995e54"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -16051,8 +16051,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 72601,
-  "sha256": "1b9d27d9d6fc87fa191d8d4b67d60f57282fe8085054ad989a76729815937c07"
+  "size": 73510,
+  "sha256": "e07db3fcf07dd459d6149d07ef684995eb0bce7f461527066928c9d08807d235"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -16091,18 +16091,18 @@
  },
  {
   "path": "README.md",
-  "size": 28003,
-  "sha256": "97a8552618a2487e48742d9eb5ec52ea0e02c6b61c8c3072f4d52a09a2749e02"
+  "size": 28529,
+  "sha256": "5eb4ba9800c328c02e7e8cc40d0f98f9f9ccbdb3ade9e2165ff0c02cb3806832"
  },
  {
   "path": "START-HERE.txt",
   "size": 8018,
-  "sha256": "49c370b4f5ceec86c2fb7e44c07626a7c985faf91f7f8772eec3f4626fe2ac2b"
+  "sha256": "bd41388151b71cbf02a3aa1a77f7720d22fc9a9bdf56bb30bb7661b29b74b7e0"
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
-  "size": 13725,
-  "sha256": "01ac04acddb667d07721894637cf2600a065be713dcf04ac87bd402e2494a530"
+  "size": 13915,
+  "sha256": "680bf85b6d6aca28c1c1b93b82770b02d10edc4cb69cc169d7ace200a4c95948"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -16111,8 +16111,8 @@
  },
  {
   "path": "TESTS/Test-V7-Pack.ps1",
-  "size": 18198,
-  "sha256": "1f64278e4b7462c8327bdc9cb0bde590ef403d653448489d59a1741e60ed264d"
+  "size": 19275,
+  "sha256": "8ae01f6efe58de354f8c3e8d6f3c6f3bc6f469f948748ca2268d12c16a059a0e"
  },
  {
   "path": "TESTS/test_hermes_bootstrap.py",
@@ -16156,8 +16156,8 @@
  },
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
-  "size": 6505,
-  "sha256": "7dd479e391abfff100343f345d438de92a5e088952226504d645d8c1a12c67c4"
+  "size": 6735,
+  "sha256": "37cab52c2d91713a41396b5eb76c3bc02cc35a549db3bef6dc052d064561b44c"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -16191,8 +16191,8 @@
  },
  {
   "path": "TOOLS/V7-Common.ps1",
-  "size": 37499,
-  "sha256": "9030f6c640dfc0213fe4877685d5d0c590a37460edd8f1af0432e7916f2418db"
+  "size": 41072,
+  "sha256": "d13dc4ff05cf970549d524b124ad65a040ff28de15341c891b77249e3164e476"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -16301,13 +16301,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 675,
-  "sha256": "cbb3129399efd19acd5dc7d5e32102b89e228bbd2acff99ae4e2b52db2aff407"
+  "size": 612,
+  "sha256": "ee81bfa494dc95f5ef6034d9009a16cbad74f2a9c6bc011933cc02b52053da6f"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "5356b8de53b3674be6985769baf3ce7bbf040d20f3497248a9bbd1a0680bcf6e"
+  "sha256": "f9be9f2cb0a407f1079c9c0825f927641c29efd101352bc8557bb4e77e9ed015"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -19003,5 +19003,10 @@
   "path": "docs/history/V7.7.3-CHANGELOG.md",
   "size": 356,
   "sha256": "243cd0c0cb53ac230f1706d6880014200ebf1d399ab5125a65cb39b87a5c71d8"
+ },
+ {
+  "path": "docs/history/V7.7.4-CHANGELOG.md",
+  "size": 3014,
+  "sha256": "ae6be97dba0e4260defa72e40b74569427bd87cf4f8e9064b12560137c755c9f"
  }
 ]

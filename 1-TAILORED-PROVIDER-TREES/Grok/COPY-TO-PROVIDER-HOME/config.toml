@@ -25,6 +25,7 @@ permission_mode = "always-approve"
 [compat.claude]
 hooks = false
 mcps = false
+skills = false
 
 [plugins]
 enabled = ["superpowers"]

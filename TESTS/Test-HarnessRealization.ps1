@@ -230,18 +230,20 @@ foreach ($prov in $Providers) {
         if (-not $doc) {
           Bad $prov 'native superpowers' 'registry.json does not parse'
         } else {
-          $hit = $null
+          $hits = @()
           foreach ($r in $doc.repos.PSObject.Properties) {
             if ($r.Value.plugins -and (@($r.Value.plugins.PSObject.Properties.Name) -contains 'superpowers')) {
-              $hit = $r.Value; break
+              $hits += $r.Value
             }
           }
-          if (-not $hit) {
+          if ($hits.Count -eq 0) {
             Bad $prov 'native superpowers' 'no repo in the registry provides superpowers'
-          } elseif (-not (Test-Path -LiteralPath $hit.path -PathType Container)) {
-            Bad $prov 'native superpowers' ('registered path does not exist: ' + $hit.path)
-          } elseif (-not (Test-Path -LiteralPath (Join-Path $hit.path 'skills') -PathType Container)) {
-            Bad $prov 'native superpowers' ('registered repo has no skills tree: ' + $hit.path)
+          } elseif ($hits.Count -gt 1) {
+            Bad $prov 'native superpowers' ('duplicate superpowers plugins (' + $hits.Count + ') - systematic-debugging collides')
+          } elseif (-not (Test-Path -LiteralPath $hits[0].path -PathType Container)) {
+            Bad $prov 'native superpowers' ('registered path does not exist: ' + $hits[0].path)
+          } elseif (-not (Test-Path -LiteralPath (Join-Path $hits[0].path 'skills') -PathType Container)) {
+            Bad $prov 'native superpowers' ('registered repo has no skills tree: ' + $hits[0].path)
           } else {
             Ok $prov 'native superpowers'
             if (-not $pstateAll.ContainsKey($prov)) { $pstateAll[$prov] = @{} }

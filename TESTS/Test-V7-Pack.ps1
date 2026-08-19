@@ -362,6 +362,21 @@ else { Bad 'INSTALL-V7-AIO.ps1 does not call Install-Provider-Starter-Settings.p
 if ($aio -match 'Copy-Item -LiteralPath \$hCfgSrc -Destination \$hCfg') {
     Bad 'AIO still wholesale-copies Hermes config.yaml over a live home'
 } else { Good 'AIO no longer overwrites a live Hermes config.yaml' }
+$starterSrc = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\Install-Provider-Starter-Settings.ps1'))
+if ($starterSrc -match '(?mi)\$home\s*=') {
+    Bad 'Install-Provider-Starter-Settings.ps1 assigns $HOME (PowerShell constant; aborts the starter pass)'
+} else { Good 'starter settings do not assign $HOME' }
+$common = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\V7-Common.ps1'))
+if ($common -match "skills = false") {
+    Good 'Set-V5GrokCompatCells writes skills = false'
+} else { Bad 'V7-Common.ps1 does not write [compat.claude] skills = false' }
+if ($aio -match 'Repair-V5GrokDuplicatePlugins') {
+    Good 'AIO collapses duplicate Grok superpowers plugins'
+} else { Bad 'INSTALL-V7-AIO.ps1 does not call Repair-V5GrokDuplicatePlugins' }
+$grokStarter = [IO.File]::ReadAllText((Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\Grok\COPY-TO-PROVIDER-HOME\config.toml'))
+if ($grokStarter -match '(?m)^\s*skills\s*=\s*false\s*$') {
+    Good 'Grok starter config.toml sets compat.claude skills = false'
+} else { Bad 'Grok starter config.toml missing skills = false' }
 
 Write-Host ''
 if ($fail -eq 0) {
