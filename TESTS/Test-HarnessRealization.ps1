@@ -12,7 +12,9 @@
   So this script asserts the things a harness needs in order to LOAD the
   bundle, per provider:
 
-    - the native plugin is registered where that provider's loader reads it,
+    - the native plugin is registered where that provider's loader reads it -
+      Kimi's installed.json, Grok's registry.json, Codex's config.toml plus
+      the marketplace manifest it points at, Claude's plugin cache -
       not merely staged somewhere on disk;
     - Kimi's plugin declares sessionStart.skill, which is what makes
       Superpowers bootstrap itself on every session;
@@ -166,10 +168,91 @@ foreach ($prov in $Providers) {
       }
     }
 
+    'Codex' {
+      # Codex resolves a plugin through three files that must AGREE, and the
+      # interesting failure is when they do not: config.toml enabling
+      # superpowers@ultimate-bundle while the marketplace manifest does not
+      # declare superpowers is a live, silent break. The gate installer
+      # rebuilds that marketplace from the pack on every run, and the pack
+      # manifest ships only completeness-gate.
+      $cfg = Join-Path $phome 'config.toml'
+      if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) {
+        Bad $prov 'native superpowers' 'config.toml missing'
+      } else {
+        $toml = [IO.File]::ReadAllText($cfg)
+        $mkSrc = $null
+        $sec = [regex]::Match($toml, '(?ms)^\[marketplaces\.ultimate-bundle\](.*?)(?=^\[|\z)')
+        if ($sec.Success) {
+          # Strip the surrounding quote in PowerShell rather than in the
+          # pattern - TOML accepts either quote style and a character class
+          # holding both is a good way to break this file.
+          $sm = [regex]::Match($sec.Groups[1].Value, '(?m)^\s*source\s*=\s*(.+?)\s*$')
+          if ($sm.Success) { $mkSrc = $sm.Groups[1].Value.Trim([char]39, [char]34) }
+        }
+        $enabled = Test-V5TomlPluginEnabled -Content $toml -HeaderPrefix 'plugins."superpowers@ultimate-bundle"'
+        if (-not $sec.Success) {
+          Bad $prov 'native superpowers' 'no [marketplaces.ultimate-bundle] in config.toml'
+        } elseif (-not $mkSrc) {
+          Bad $prov 'native superpowers' 'ultimate-bundle marketplace declares no source'
+        } elseif (-not (Test-Path -LiteralPath $mkSrc -PathType Container)) {
+          Bad $prov 'native superpowers' ('marketplace source does not exist: ' + $mkSrc)
+        } elseif (-not $enabled) {
+          Bad $prov 'native superpowers' 'superpowers@ultimate-bundle not enabled in config.toml'
+        } elseif (-not (Test-Path -LiteralPath (Join-Path $mkSrc 'superpowers\skills') -PathType Container)) {
+          Bad $prov 'native superpowers' 'marketplace has no superpowers\skills tree'
+        } else {
+          $mkFile = Join-Path $mkSrc '.claude-plugin\marketplace.json'
+          $declared = @()
+          if (Test-Path -LiteralPath $mkFile -PathType Leaf) {
+            try { $declared = @((([IO.File]::ReadAllText($mkFile)) | ConvertFrom-Json).plugins | ForEach-Object { $_.name }) } catch { }
+          }
+          if ($declared -notcontains 'superpowers') {
+            Bad $prov 'native superpowers' 'config.toml enables it but the marketplace manifest does not declare it'
+          } else {
+            Ok $prov 'native superpowers'
+            if (-not $pstateAll.ContainsKey($prov)) { $pstateAll[$prov] = @{} }
+            $pstateAll[$prov]['superpowers'] = $true
+          }
+        }
+      }
+    }
+
+    'Grok' {
+      # Grok keeps its own registry of installed plugin repos. Reading it is
+      # the same class of evidence as Kimi's installed.json: the loader's own
+      # source of truth, not a directory that happens to sit on disk.
+      $reg = Join-Path $phome 'installed-plugins\registry.json'
+      if (-not (Test-Path -LiteralPath $reg -PathType Leaf)) {
+        Bad $prov 'native superpowers' 'installed-plugins\registry.json missing'
+      } else {
+        $doc = $null
+        try { $doc = ([IO.File]::ReadAllText($reg)) | ConvertFrom-Json } catch { }
+        if (-not $doc) {
+          Bad $prov 'native superpowers' 'registry.json does not parse'
+        } else {
+          $hit = $null
+          foreach ($r in $doc.repos.PSObject.Properties) {
+            if ($r.Value.plugins -and (@($r.Value.plugins.PSObject.Properties.Name) -contains 'superpowers')) {
+              $hit = $r.Value; break
+            }
+          }
+          if (-not $hit) {
+            Bad $prov 'native superpowers' 'no repo in the registry provides superpowers'
+          } elseif (-not (Test-Path -LiteralPath $hit.path -PathType Container)) {
+            Bad $prov 'native superpowers' ('registered path does not exist: ' + $hit.path)
+          } elseif (-not (Test-Path -LiteralPath (Join-Path $hit.path 'skills') -PathType Container)) {
+            Bad $prov 'native superpowers' ('registered repo has no skills tree: ' + $hit.path)
+          } else {
+            Ok $prov 'native superpowers'
+            if (-not $pstateAll.ContainsKey($prov)) { $pstateAll[$prov] = @{} }
+            $pstateAll[$prov]['superpowers'] = $true
+          }
+        }
+      }
+    }
+
     default {
-      # Codex and Grok: a staged plugin dir is not proof, so only report what
-      # can actually be observed rather than inventing a verdict.
-      Nap $prov 'native plugin' 'needs a live harness smoke test'
+      Nap $prov 'native plugin' 'no registration check for this provider'
     }
   }
 

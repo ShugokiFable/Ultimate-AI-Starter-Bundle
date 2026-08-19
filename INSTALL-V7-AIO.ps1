@@ -48,9 +48,10 @@
 
 .PARAMETER SkipNativePlugins
   Do not install the two bundled skills-plugins (superpowers, ponytail) as
-  NATIVE plugins per provider. Native install is on by default where the CLI
-  has a real plugin mechanism (Grok/Hermes/Codex), Claude is detect-only,
-  Kimi has no plugin system; fallback everywhere is the copied skills.
+  NATIVE plugins per provider. Native install is on by default for every
+  provider with a real plugin mechanism - Grok, Hermes, Codex, Kimi, and
+  Claude through its own plugin CLI; fallback everywhere is the copied
+  skills.
   -SkipNativePlugins keeps the plain copied-skills behavior and skips the
   plugin-owned skill dedupe.
 
@@ -148,7 +149,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.7.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.7.1 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -276,8 +277,16 @@ if (-not $ToolsOnly) {
 #           [plugins."superpowers@ultimate-bundle"] enabled = true in
 #           config.toml; ponytail is detected (user's own marketplace
 #           install), never reinstalled.
-#   Claude  DETECT ONLY (plugins\cache\*) - no marketplace installs.
-#   Kimi    no plugin command in kimi-code CLI 0.27.0 - copied skills only.
+#   Claude  installed through Claude's own plugin CLI when it is on PATH, with
+#           the marketplace name read from each plugin's own
+#           .claude-plugin\marketplace.json; success is confirmed by the cache
+#           directory appearing, not by an exit code. Without the CLI this
+#           falls back to detect-only plus the copied skills.
+#   Kimi    native plugin written to plugins\managed\<id> + a thin entry in
+#           plugins\installed.json. There is no `kimi plugin` subcommand -
+#           the plugin system is driven by an in-session /plugins command -
+#           but the registry format is stable because Kimi re-derives every
+#           record from disk on load.
 # Where a plugin is native, its skill name list is computed from the bundled
 # tree (never hardcoded) and the matching copies are deduped from the
 # provider's skills dir - backup-first, and only when the copy's SKILL.md
@@ -1305,7 +1314,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.7.0'
+  version = '7.7.1'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers

@@ -3,6 +3,38 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.1
+
+The v7.7.0 release wired five providers and then shipped an installer that
+would have unwired one of them on its next run.
+
+- **Codex: the gate installer silently undid the Codex plugin.**
+  `Install-Completeness-Gate.ps1` deletes and rebuilds
+  `%LOCALAPPDATA%\Skyrim-AI-V5\codex-marketplace` from the pack on every run.
+  The pack's manifest declares only `completeness-gate`, so the rebuild dropped
+  the `superpowers` entry that the AIO installer had added *earlier in the same
+  run*, while `config.toml` kept `[plugins."superpowers@ultimate-bundle"]
+  enabled = true`. Codex was left enabling a plugin its own marketplace no
+  longer listed. The gate now re-declares superpowers after staging the tree,
+  and only when the tree actually landed, so the entry can never dangle.
+- **Codex and Grok are verified, not skipped.** Both keep a real registry -
+  Grok's `installed-plugins/registry.json`, Codex's `config.toml` plus the
+  marketplace manifest it points at - which is the same class of evidence as
+  Kimi's `installed.json`. `Test-HarnessRealization.ps1` now walks those
+  chains: **18 pass, 0 fail, 0 skip**, up from 16/0/2. The Codex check was
+  confirmed to FAIL against the manifest state described above before being
+  trusted.
+- **The "Kimi has no hook or plugin system" claim is gone.** Both halves were
+  false. v7.7.0 established the plugin system; the shipped binary also carries
+  a hook engine (`PreToolUse`, `PostToolUse`, `Stop`) fed from `config.hooks`
+  plus every enabled plugin's hooks. What is *not* established is the schema
+  those config entries take, so nothing is written: guessing it would corrupt a
+  working `config.toml`. Kimi gets the skills and the native plugin, not the
+  gate, and the docs now say exactly that instead of claiming the capability
+  does not exist.
+- Stale installer docblocks corrected: Claude is no longer described as
+  detect-only, and Kimi is no longer described as copied-skills-only.
+
 ## 7.7.0
 
 Native plugin architecture. Three providers were carrying the bundle on disk
