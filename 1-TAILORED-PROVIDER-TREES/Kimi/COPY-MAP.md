@@ -4,6 +4,9 @@ Copy all folders under `COPY-TO-SKILLS-DIRECTORY\skills` into `%KIMI_CODE_HOME%\
 
 Copy `COPY-TO-PROVIDER-HOME\AGENTS.md` to `%KIMI_CODE_HOME%\AGENTS.md`.
 
+`INSTALL-V7-AIO.ps1` copies `COPY-TO-PROVIDER-HOME\config.toml` only when
+`%KIMI_CODE_HOME%\config.toml` does not exist, so OAuth is not wiped.
+
 Copy `COPY-TO-WORKSPACE\AGENTS.md` into the user-selected workspace root. No workspace name is assumed.
 
 The registry is already at `%KIMI_CODE_HOME%\skills\skyrim-memory\references\ERROR-REGISTRY.json`.

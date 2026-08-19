@@ -1,0 +1,18 @@
+personality = "pragmatic"
+model_reasoning_effort = "high"
+
+[features]
+js_repl = false
+memories = true
+
+[windows]
+sandbox = "elevated"
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = true
+followUpQueueMode = "queue"
+
+[memories]
+generate_memories = true
+use_memories = true

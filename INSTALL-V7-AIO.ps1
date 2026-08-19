@@ -93,10 +93,14 @@ param(
   # home. -SkipPreamble opts out; -ForcePreamble rewrites an identical block.
   [switch]$SkipPreamble,
   [switch]$ForcePreamble,
-  # Hermes config.yaml wiring (v7.5.5). On by default: copies the operator's
-  # tailored Hermes config (model/routing/MCP/hooks) from
-  # 1-TAILORED-PROVIDER-TREES\Hermes\config.yaml into the Hermes home.
-  # Backup-first, idempotent. -SkipHermesConfig opts out.
+  # Portable starter settings (v7.7.3). On by default: merge/copy
+  # 1-TAILORED-PROVIDER-TREES\<Provider>\COPY-TO-PROVIDER-HOME settings
+  # into each provider home. Never overwrites CLAUDE.md / AGENTS.md /
+  # SOUL.md (unrestraint + preamble live there) and never copies MCP
+  # command lines from a live dump. -SkipStarterSettings opts out.
+  [switch]$SkipStarterSettings,
+  # Hermes config.yaml wiring. Kept as an alias for skipping only Hermes
+  # in the starter-settings pass. -SkipHermesConfig opts out.
   [switch]$SkipHermesConfig,
   # Native plugin install for the two bundled skills-plugins (superpowers,
   # ponytail). On by default: a real plugin install where the CLI has a
@@ -149,7 +153,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.7.2 - ALL-IN-ONE INSTALLER (Grok MCP cliff guard)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.7.3 - ALL-IN-ONE INSTALLER (portable provider settings)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -259,6 +263,29 @@ if (-not $ToolsOnly) {
       }
     }
     Write-V5Ok "$prov skills installed"
+  }
+}
+
+# ---------- Portable starter settings (v7.7.3) ----------
+# New users get Claude settings.json / Codex+Grok+Kimi config.toml /
+# Hermes config.yaml without a live-machine dump. Existing homes are
+# preserved. Instruction files (unrestraint / SOUL / AIO preamble) are
+# not touched here.
+if (-not $ToolsOnly -and -not $SkipStarterSettings) {
+  $starter = Join-Path $PackRoot 'TOOLS\Install-Provider-Starter-Settings.ps1'
+  if (Test-Path -LiteralPath $starter) {
+    try {
+      $starterArgs = @{
+        PackRoot = $PackRoot
+        Providers = $Providers
+      }
+      if ($SkipHermesConfig) { $starterArgs.SkipHermes = $true }
+      & $starter @starterArgs
+    } catch {
+      Write-V5Warn ('Starter settings: ' + $_.Exception.Message)
+    }
+  } else {
+    Write-V5Warn 'TOOLS\Install-Provider-Starter-Settings.ps1 missing from pack'
   }
 }
 
@@ -766,38 +793,11 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
   }
 }
 
-# ---------- Hermes config.yaml (v7.5.5) ----------
-# Copies the operator's tailored Hermes config (model/routing/MCP/hooks) into
-# the Hermes home. Backup-first, idempotent - same pattern as the SOUL wiring.
-if (-not $ToolsOnly -and -not $SkipHermesConfig -and $Providers -contains 'Hermes') {
-  Write-V5Step "Hermes config.yaml wiring"
-  $hCfgSrc = Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\Hermes\config.yaml'
-  if (-not (Test-Path -LiteralPath $hCfgSrc)) {
-    Write-V5Warn "Hermes config.yaml skipped: $hCfgSrc missing"
-  } else {
-    $hhome = Get-V5ProviderHome -Provider Hermes -Catalog $catalog
-    $hCfg = Join-Path $hhome 'config.yaml'
-    try {
-      if (Test-Path -LiteralPath $hCfg) {
-        $same = (Get-FileHash -LiteralPath $hCfg -Algorithm SHA256).Hash -eq
-                (Get-FileHash -LiteralPath $hCfgSrc -Algorithm SHA256).Hash
-        if (-not $same) {
-          Copy-Item -LiteralPath $hCfg -Destination ($hCfg + '.before-config-' + (Get-Date -Format 'yyyyMMdd-HHmmssfff') + '.bak') -Force
-          Copy-Item -LiteralPath $hCfgSrc -Destination $hCfg -Force
-          Write-V5Ok ("Hermes config.yaml updated: " + $hCfg)
-        } else {
-          Write-V5Ok ('Hermes config.yaml already current: ' + $hCfg)
-        }
-      } else {
-        New-Item -ItemType Directory -Force -Path $hhome | Out-Null
-        Copy-Item -LiteralPath $hCfgSrc -Destination $hCfg -Force
-        Write-V5Ok ("Hermes config.yaml installed: " + $hCfg)
-      }
-    } catch {
-      Write-V5Warn ("Hermes config.yaml wiring failed: " + $_.Exception.Message)
-    }
-  }
-}
+# ---------- Hermes config.yaml ----------
+# v7.7.3: wholesale replace of a live Hermes YAML is gone. That used to
+# stamp one operator's MCP paths onto every install. New Hermes homes get
+# the portable starter above; existing homes keep their YAML. MCP and
+# completeness-gate hooks are still wired later in this script.
 
 # ---------- Workspace ----------
 if ($WorkspaceRoot) {
@@ -1314,7 +1314,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.7.2'
+  version = '7.7.3'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -1387,7 +1387,7 @@ Write-Host '  2. Grok: run /mcp and confirm housecarl, codebase-memory-mcp, head
 Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANCE path.'
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
-Write-Host '  6. Optional Forge: set SKYRIM_FORGE_ROOT or skill INSTALLATION.json'
+Write-Host '  6. Optional Forge 5.1.5+: extract to your Skyrim tools folder as Skyrim-Forge-x.y.z (not Documents). Set SKYRIM_FORGE_ROOT or skill INSTALLATION.json.'
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Codex: approve the one-time plugin trust prompt. Hermes: hermes --accept-hooks once.'

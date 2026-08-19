@@ -1,0 +1,41 @@
+{
+  "effortLevel": "xhigh",
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/anthropics/claude-plugins-official.git"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/DietrichGebert/ponytail.git"
+      }
+    },
+    "headroom-marketplace": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/headroomlabs-ai/headroom.git"
+      }
+    },
+    "superpowers-dev": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/obra/superpowers.git"
+      }
+    },
+    "thedotmack": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/thedotmack/claude-mem.git"
+      }
+    },
+    "obsidian-skills": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/kepano/obsidian-skills.git"
+      }
+    }
+  }
+}

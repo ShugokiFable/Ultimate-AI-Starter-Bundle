@@ -19,6 +19,14 @@ If the descriptor is unavailable, resolve Forge in this order:
 3. an explicit path supplied by the user.
 
 Never assume a drive letter or reconstruct the application elsewhere.
+Never treat `Documents\SkyrimForge` or `Documents\Skyrim Forge` as the live
+product. The live install is `SKYRIM_FORGE_ROOT`, a versioned
+`Skyrim-Forge-<version>` folder under the user's Skyrim tools directory.
+
+Require Forge 5.1.5+ for Claude Code 2026-07-28 (`tools/call` must include
+`resultType: "complete"`). Do not add Forge as a new Grok MCP server when
+Grok already sits on the 8-running-server cliff (7 configured, or 6 while
+`mcp-search` still loads).
 
 Run `forge doctor` before major Skyrim work.
 

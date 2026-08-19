@@ -36,4 +36,4 @@
 
 ## Manual only
 
-Skyrim Forge — set `SKYRIM_FORGE_ROOT` or skill `INSTALLATION.json`.
+Skyrim Forge 5.1.5+ — extract as `Skyrim-Forge-x.y.z` under your Skyrim tools folder (not Documents). Set `SKYRIM_FORGE_ROOT` or skill `INSTALLATION.json`. Claude Code needs 5.1.5+ (`resultType` on `tools/call`).

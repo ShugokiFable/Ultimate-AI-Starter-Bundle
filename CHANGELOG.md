@@ -3,6 +3,28 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.3
+
+Portable provider starter settings, and Forge lives in the Skyrim tools folder.
+
+- **Starter configs were missing, so a live machine dump got dropped into
+  `1-TAILORED-PROVIDER-TREES`.** Those files contained `C:\Users\[REDACTED]\...`
+  MCP command lines, a Claude Fable model pin, Codex runtime hashes, and
+  would have overwritten every fresh Hermes `config.yaml`. They are replaced
+  with machine-neutral templates under each provider's
+  `COPY-TO-PROVIDER-HOME`. `INSTALL-V7-AIO.ps1` merges/copies them:
+  Claude fills missing `settings.json` keys and never touches `hooks` or
+  `CLAUDE.md`; Codex/Kimi/Hermes copy only when the dest file is absent;
+  Grok copies if missing and always disables `mcp-search`.
+- **Unrestraint is untouched.** `0-UNRESTRAINT-PACKS` still applies through
+  `CLAUDE.md` / `AGENTS.md` / Hermes `SOUL.md` via the existing preamble
+  pass. Settings files carry no jailbreak prose.
+- **Hermes is no longer wholesale-replaced** on every AIO run.
+- **Forge 5.1.5+** is required for Claude Code `resultType`. Live install is
+  `Skyrim-Forge-<version>` under the Skyrim tools folder, not Documents.
+- Pack gate section 8 fails any starter file that contains a user profile
+  path or `S:\Apps`.
+
 ## 7.7.2
 
 The Grok MCP cliff guard. `Ensure-Headroom-Grok.ps1` used to force headroom

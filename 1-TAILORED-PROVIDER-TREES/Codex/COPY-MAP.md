@@ -4,6 +4,10 @@ Copy all folders under `COPY-TO-SKILLS-DIRECTORY\skills` into `%CODEX_HOME%\skil
 
 Copy `COPY-TO-PROVIDER-HOME\AGENTS.md` to `%CODEX_HOME%\AGENTS.md`.
 
+`INSTALL-V7-AIO.ps1` copies `COPY-TO-PROVIDER-HOME\config.toml` only when
+`%CODEX_HOME%\config.toml` does not exist. MCP, projects, and notify paths
+are never taken from the pack. AGENTS.md is the unrestraint/SOUL file.
+
 Copy `COPY-TO-WORKSPACE\AGENTS.md` into the user-selected workspace root. No workspace name is assumed.
 
 The registry is already at `%CODEX_HOME%\skills\skyrim-memory\references\ERROR-REGISTRY.json`.

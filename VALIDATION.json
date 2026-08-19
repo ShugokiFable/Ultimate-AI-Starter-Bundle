@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.7.2",
+ "version": "7.7.3",
  "generated": "2026-08-19",
- "base": "v7.7.1",
+ "base": "v7.7.2",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.7.2: Grok MCP cliff guard in Ensure-Headroom-Grok.ps1 (never push past 7 configured / 6 while claude-mem mcp-search loads); mcp-search disabled for Grok via disabled_mcp_servers."
+ "notes": "v7.7.3: portable provider starter settings via TOOLS/Install-Provider-Starter-Settings.ps1; no live-machine dumps; Hermes config is copy-if-missing; unrestraint stays in 0-UNRESTRAINT-PACKS / instruction files; Forge 5.1.5+ under Skyrim tools, not Documents."
 }
