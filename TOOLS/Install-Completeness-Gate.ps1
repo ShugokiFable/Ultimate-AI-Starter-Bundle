@@ -38,11 +38,24 @@
                                              a directory a working install does
                                              not have. Both are fixed here by
                                              asking the tool instead.
-    Kimi    NOT SUPPORTED                    Kimi Code has no hook or plugin
-                                             system - skills and MCP only, per
-                                             `kimi --help`. Any file placed in
-                                             ~/.kimi-code/hooks is dead weight
-                                             and is removed by this script.
+    Kimi    GATE NOT WIRED                   Both halves of the old claim here
+                                             (`no hook or plugin system`) are
+                                             false. v7.7.0 established the
+                                             plugin system and the AIO installer
+                                             now uses it. The shipped binary also
+                                             carries a hook engine - PreToolUse,
+                                             PostToolUse and Stop - fed from
+                                             `config.hooks` plus every enabled
+                                             plugin's own hooks. What is NOT
+                                             established is the exact config
+                                             schema those entries take, so this
+                                             script does not write one: guessing
+                                             it would corrupt a working
+                                             config.toml. Kimi gets the skills
+                                             and the native plugin, not the gate.
+                                             ~/.kimi-code/hooks is still not a
+                                             path Kimi reads, so files dropped
+                                             there are still removed.
 
 .PARAMETER CheckOnly
   Report what would change and exit.
@@ -78,6 +91,12 @@ if (-not $PackRoot) {
 $hooksSrc  = Join-Path $PackRoot 'TOOLS\hooks'
 $pluginSrc = Join-Path $hooksSrc 'plugin'
 $wireSrc   = Join-Path $hooksSrc 'hermes_wire.py'
+
+# Add-V5MarketplacePluginEntry lives in the installer's shared module. The
+# gate also runs standalone, so this load is optional - without it the
+# marketplace is still built, just with a warning instead of the entry.
+$v7Common = Join-Path $PackRoot 'TOOLS\V7-Common.ps1'
+if (Test-Path -LiteralPath $v7Common) { . $v7Common }
 
 # Every gate the pack ships, with the tools each one needs to see.
 $gates = @(
@@ -255,15 +274,41 @@ foreach ($p in $Providers) {
       $copied = @(Get-ChildItem -Recurse -File $marketRoot -ErrorAction SilentlyContinue).Count
       if ($copied -lt 4) { Write-Host "Codex   FAILED to materialise the plugin ($copied files)" -ForegroundColor Yellow; break }
 
-      # The marketplace manifest also lists superpowers (source ./superpowers),
-      # so the bundled plugin tree travels with it - Codex then enables
-      # superpowers natively instead of loading fourteen loose skill copies.
+      # Codex needs BOTH halves to agree: the superpowers tree beside the
+      # gate, and a manifest that DECLARES it. This marketplace was wiped and
+      # rebuilt from the pack a few lines up, and the pack manifest ships only
+      # completeness-gate - so whatever the AIO installer's Codex branch added
+      # earlier in the same run is gone by now, while config.toml keeps its
+      # [plugins."superpowers@ultimate-bundle"] enabled = true from that run.
+      # Staging the tree without re-declaring it leaves Codex enabling a plugin
+      # its own marketplace does not list.
       $spPluginSrc = Join-Path $PackRoot 'BUNDLED-TOOLS\plugins\superpowers'
+      $spStaged = $false
       if (Test-Path -LiteralPath $spPluginSrc) {
         Copy-Item -Path $spPluginSrc -Destination (Join-Path $marketRoot 'superpowers') -Recurse -Force
+        $spStaged = Test-Path -LiteralPath (Join-Path $marketRoot 'superpowers\skills') -PathType Container
         Write-Host 'Codex   superpowers plugin staged into the marketplace'
       } else {
-        Write-Host 'Codex   BUNDLED-TOOLS\plugins\superpowers missing from pack - manifest entry would dangle' -ForegroundColor Yellow
+        Write-Host 'Codex   BUNDLED-TOOLS\plugins\superpowers missing from pack - not declared in the manifest' -ForegroundColor Yellow
+      }
+      # Declared only when the tree actually landed, so the entry can never
+      # point at a directory that is not there.
+      $mkManifest = Join-Path $marketRoot '.claude-plugin\marketplace.json'
+      if ($spStaged -and (Test-Path -LiteralPath $mkManifest -PathType Leaf)) {
+        if (Get-Command Add-V5MarketplacePluginEntry -ErrorAction SilentlyContinue) {
+          $spDesc = 'Agentic skills framework: brainstorming, TDD, systematic debugging, plans, code review.'
+          if (Add-V5MarketplacePluginEntry -ManifestPath $mkManifest -EntryName 'superpowers' -EntryDescription $spDesc -EntrySource './superpowers' -EntryCategory 'productivity') {
+            Write-Host 'Codex   marketplace manifest declares superpowers'
+          } else {
+            Write-Host 'Codex   could not declare superpowers in the marketplace manifest' -ForegroundColor Yellow
+          }
+          # The helper backs the manifest up in place; this directory is rebuilt
+          # every run, so that copy is pure clutter in a folder Codex scans.
+          Get-ChildItem -LiteralPath (Split-Path $mkManifest -Parent) -Filter 'marketplace.json.bak-*' -File -ErrorAction SilentlyContinue |
+            Remove-Item -Force -ErrorAction SilentlyContinue
+        } else {
+          Write-Host 'Codex   TOOLS\V7-Common.ps1 not loaded - superpowers left undeclared' -ForegroundColor Yellow
+        }
       }
 
       $toml = [IO.File]::ReadAllText($cfg)
@@ -309,6 +354,8 @@ foreach ($p in $Providers) {
 }
 
 Write-Host ''
-Write-Host 'Kimi    NOT SUPPORTED - Kimi Code has no hook or plugin system (skills + MCP only).'
+Write-Host 'Kimi    gate not wired - Kimi has a plugin system (installed by the AIO run) and a'
+Write-Host '        hook engine, but its hook config schema is not established, so nothing is'
+Write-Host '        guessed into config.toml. Skills and the native plugin are installed.'
 Write-Host ''
 Write-Host 'Restart each app. Verify:  hermes hooks doctor  |  Codex: approve the trust prompt once'
