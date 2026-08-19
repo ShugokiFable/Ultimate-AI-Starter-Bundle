@@ -22,7 +22,7 @@ the portable baseline.
 
 | Tool | Discovery |
 |---|---|
-| Skyrim Forge | `SKYRIM_FORGE_ROOT` or `skyrim-forge\INSTALLATION.json` |
+| Skyrim Forge | `SKYRIM_FORGE_ROOT` pointing at a versioned `Skyrim-Forge-x.y.z` folder under your Skyrim tools directory (5.1.5+). Never Documents. Or `skyrim-forge\INSTALLATION.json`. |
 | houseCARL MCP | `HOUSECARL_MCP` / `HOUSECARL_ROOT` / search `housecarl-mcp.exe` |
 | Spooky toolkit | `SPOOKY_AUTOMOD_ROOT` (folder with `SpookysAutomod.sln`) |
 | codebase-memory-mcp | `CODEBASE_MEMORY_MCP` or `%LOCALAPPDATA%\Programs\codebase-memory-mcp\` |

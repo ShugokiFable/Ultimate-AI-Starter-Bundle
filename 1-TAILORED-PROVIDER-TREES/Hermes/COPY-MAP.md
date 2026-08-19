@@ -6,7 +6,10 @@ No provider-home instruction file is installed; use the workspace instruction fi
 
 Copy `COPY-TO-WORKSPACE\AGENTS.md` into the user-selected workspace root. No workspace name is assumed.
 
-Copy `config.yaml` into the Hermes home as `config.yaml` (the operator's tailored model/routing/MCP/hooks config). The installer (`INSTALL-V7-AIO.ps1`) does this automatically, backup-first; `-SkipHermesConfig` opts out.
+`INSTALL-V7-AIO.ps1` copies `COPY-TO-PROVIDER-HOME\config.yaml` only when the
+Hermes home has no `config.yaml`. It never overwrites a live YAML (MCP, API
+keys, hooks). Completeness-gate hooks and MCP are wired separately.
+`-SkipHermesConfig` skips Hermes in that pass. SOUL.md is the unrestraint file.
 
 The registry is already at `%HERMES_HOME%\skills\skyrim-memory\references\ERROR-REGISTRY.json`.
 

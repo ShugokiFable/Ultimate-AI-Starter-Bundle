@@ -1,0 +1,5 @@
+default_model = "kimi-code/k3"
+
+[thinking]
+enabled = true
+effort = "high"

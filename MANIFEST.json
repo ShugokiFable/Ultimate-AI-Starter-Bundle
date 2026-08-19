@@ -101,8 +101,8 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/README.md",
-  "size": 4920,
-  "sha256": "4c26b763d3da01a4127f237aa693d3c3edfa4b023c0a81cd0e87dc1068c97629"
+  "size": 5159,
+  "sha256": "fb752fc3beaf20a1acc66f5d59abefde5f1f4b02506710296c03806fe828da4e"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Amazon's Rufus/ALL Rufus Tools Full JSON.md",
@@ -1436,13 +1436,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-MAP.md",
-  "size": 1370,
-  "sha256": "188a41b5c334eb073897953868cf49d6b189b0f4ee242ce7c6dac29c6ca5fa8a"
+  "size": 1596,
+  "sha256": "247d75f7aafe6fcf956405c9e1d3a5dd0640e251cf17cc6f26fb8a228c14aa3a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-PROVIDER-HOME/CLAUDE.md",
   "size": 5460,
   "sha256": "af5612ebb7194e97941db876245832fb6dd5287bab60138e43e2ca3fdacb62f8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-PROVIDER-HOME/settings.json",
+  "size": 948,
+  "sha256": "5cc3614594c3042c892fbf28b1a954360f0bfd4cbc8ef80b352afd45c2fb373c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -3366,8 +3371,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8138,
-  "sha256": "cacf649808a064a012c11649deb1733cbf7520461618ad67c990e406f6052950"
+  "size": 8600,
+  "sha256": "63a7a46c18fbefb14e7df464fa65fa8f8450a26bea8cf81fb9813a930e17b4b9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -3970,14 +3975,24 @@
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/settings.json",
+  "size": 948,
+  "sha256": "5cc3614594c3042c892fbf28b1a954360f0bfd4cbc8ef80b352afd45c2fb373c"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-MAP.md",
-  "size": 1110,
-  "sha256": "70eb8af3c277450eb28d37649acb807c164f46f16854a8d488223172f916c97d"
+  "size": 1335,
+  "sha256": "f6d0e79b62ba3d6a0537a25c50aaeb0de00aa010d7cb55ecda62287e9c4c31fe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-PROVIDER-HOME/AGENTS.md",
   "size": 5535,
   "sha256": "0a071b12c7c9c0d0245c6516d7b06f9bbbafbb51f03ee4f05fc0b1858c1dfe5f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-PROVIDER-HOME/config.toml",
+  "size": 307,
+  "sha256": "a21344e7abe9f7309a6a113ed73720d6c48d28c2782fbcf59f312f3b55ad765d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -5901,8 +5916,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8138,
-  "sha256": "cacf649808a064a012c11649deb1733cbf7520461618ad67c990e406f6052950"
+  "size": 8600,
+  "sha256": "63a7a46c18fbefb14e7df464fa65fa8f8450a26bea8cf81fb9813a930e17b4b9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -6495,9 +6510,19 @@
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/config.toml",
+  "size": 307,
+  "sha256": "a21344e7abe9f7309a6a113ed73720d6c48d28c2782fbcf59f312f3b55ad765d"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-MAP.md",
-  "size": 1121,
-  "sha256": "f87dc4ee196d3d8323620fb8481a79e296f5b982277e2669332a190bc21e41ab"
+  "size": 1483,
+  "sha256": "9a3a121368d09aca1b3d6af86662b63e65bbe66802bd54ff39932a73937ca31e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-PROVIDER-HOME/config.toml",
+  "size": 550,
+  "sha256": "a9dff6b253b3581a6bdad60a1d13fce115180a27696627128af94163b99f21d3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -8421,8 +8446,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8138,
-  "sha256": "cacf649808a064a012c11649deb1733cbf7520461618ad67c990e406f6052950"
+  "size": 8600,
+  "sha256": "63a7a46c18fbefb14e7df464fa65fa8f8450a26bea8cf81fb9813a930e17b4b9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -9015,9 +9040,19 @@
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/config.toml",
+  "size": 550,
+  "sha256": "a9dff6b253b3581a6bdad60a1d13fce115180a27696627128af94163b99f21d3"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-MAP.md",
-  "size": 1382,
-  "sha256": "7a30f1f4e1d34486b87eb5bdc03066ec79fdac6cc04ea0a2a99686cdbf63a358"
+  "size": 1466,
+  "sha256": "3e3f1161fe656732f1ced70e4e960a1193c66071b2c1c94f162b86b74a213990"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-PROVIDER-HOME/config.yaml",
+  "size": 1733,
+  "sha256": "c958f988ece128ce7d717251d00d093a99938414953340af433595629ced12bc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -10941,8 +10976,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8138,
-  "sha256": "cacf649808a064a012c11649deb1733cbf7520461618ad67c990e406f6052950"
+  "size": 8600,
+  "sha256": "63a7a46c18fbefb14e7df464fa65fa8f8450a26bea8cf81fb9813a930e17b4b9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -11536,23 +11571,28 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/README.txt",
-  "size": 1472,
-  "sha256": "0bd65d6eef9e3c5c941dc7a04c17879dfc016950997dc291d6998877416a7cdd"
+  "size": 755,
+  "sha256": "1e5d47d92dc0f8838b49c2bd7d673f2d19aed4a7adfae16453c6a4d31e0eb0bd"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
-  "size": 10035,
-  "sha256": "a33cf7bd21ce4a7391064bc7510626b26d8219a6d471c73bb705af4912baf095"
+  "size": 1733,
+  "sha256": "c958f988ece128ce7d717251d00d093a99938414953340af433595629ced12bc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-MAP.md",
-  "size": 1129,
-  "sha256": "92833a7b459d39a3a92a53e882daffba389458522504d091764dc0f81db81ebd"
+  "size": 1277,
+  "sha256": "72be6f5ae78d0e33c06d1c5d57ce32183dd1aaa1e9c6fae8da1c29b75f88a10e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-PROVIDER-HOME/AGENTS.md",
   "size": 5404,
   "sha256": "d837a454da0c7e29725fd99936fbf274534ee686df4dcb1ba1cf1d4f4c42b543"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-PROVIDER-HOME/config.toml",
+  "size": 74,
+  "sha256": "dc20a7a87fcb03e74b843813d9a73abc67d9e74e9f4f6a4e77470c0029e66404"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -13476,8 +13516,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8138,
-  "sha256": "cacf649808a064a012c11649deb1733cbf7520461618ad67c990e406f6052950"
+  "size": 8600,
+  "sha256": "63a7a46c18fbefb14e7df464fa65fa8f8450a26bea8cf81fb9813a930e17b4b9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -14070,6 +14110,16 @@
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/config.toml",
+  "size": 74,
+  "sha256": "dc20a7a87fcb03e74b843813d9a73abc67d9e74e9f4f6a4e77470c0029e66404"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/SETTINGS.md",
+  "size": 1748,
+  "sha256": "793e8707df01101d7f5cdc6fa74628beffdccde7032bc8aa8e8ceee3045f6505"
+ },
+ {
   "path": "2-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK/Other-Games-Modding-Skills-Mega-Pack-v2.1.0-MANUAL.zip",
   "size": 137810,
   "sha256": "8f127182fdc75f05d1643e1302f395112b55ebe67abb0f0b6bb4313e7037d2d2"
@@ -14107,7 +14157,7 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 13115,
-  "sha256": "b0f9df8726efadfc6b225f5895559e0a0b55755e5eb5e8d98603665ab1f4ff4a"
+  "sha256": "5f136a37fea180b1d0f47e7b730a37c9d2af08d456e9c4eedfee3e4a38b1bb10"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15911,8 +15961,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 25570,
-  "sha256": "1f5dd966210923362a95fa2870efa4d86ae8ed0b8e692b2ab136819b8056702f"
+  "size": 26796,
+  "sha256": "d1fb3349caab94448854bd90556eabd3166228abd68b78f9e675a58d4c33ec16"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -16001,8 +16051,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 72672,
-  "sha256": "46aed10c6e8d5d43f2562c5f605312afc1b09365f5ed11b6c90f5b9e7b459931"
+  "size": 72601,
+  "sha256": "1b9d27d9d6fc87fa191d8d4b67d60f57282fe8085054ad989a76729815937c07"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -16041,13 +16091,13 @@
  },
  {
   "path": "README.md",
-  "size": 27277,
-  "sha256": "571a0a5ac99637b3fef2eac98bc16ed3f78ccf455d39ee428a3dadb5ba7c6244"
+  "size": 28003,
+  "sha256": "97a8552618a2487e48742d9eb5ec52ea0e02c6b61c8c3072f4d52a09a2749e02"
  },
  {
   "path": "START-HERE.txt",
   "size": 8018,
-  "sha256": "cc3e4cfdd9de184f867ff0cbcef48f74b23cc4999d86aa94b07724230d7a2c1f"
+  "sha256": "49c370b4f5ceec86c2fb7e44c07626a7c985faf91f7f8772eec3f4626fe2ac2b"
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
@@ -16061,8 +16111,8 @@
  },
  {
   "path": "TESTS/Test-V7-Pack.ps1",
-  "size": 16873,
-  "sha256": "4dbdded7c1147bd748439c1e71c2f7e6f9d5d04e0864cdec8af033d17fca2280"
+  "size": 18198,
+  "sha256": "1f64278e4b7462c8327bdc9cb0bde590ef403d653448489d59a1741e60ed264d"
  },
  {
   "path": "TESTS/test_hermes_bootstrap.py",
@@ -16105,14 +16155,19 @@
   "sha256": "7375dc70e45cd5336e72f9795228f6e55dcb2b956f7575c35b1b4c083c7ffc8b"
  },
  {
+  "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
+  "size": 6505,
+  "sha256": "7dd479e391abfff100343f345d438de92a5e088952226504d645d8c1a12c67c4"
+ },
+ {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
   "size": 2832,
   "sha256": "7c25ba5c8b89c79dd1b7cd7a23a069301d6b70beca969938ea6c1b7f63a7d207"
  },
  {
   "path": "TOOLS/RECOMMENDED-INSTALLS.md",
-  "size": 1034,
-  "sha256": "085a33e7dcb57a0999fe319ea24f1a8f9990df7c326d34ae4bd57d7e7fa21c47"
+  "size": 1178,
+  "sha256": "b4350ca385651353895be9bd103f33b69177cf03cbea8bd407dccb9a35f26e14"
  },
  {
   "path": "TOOLS/Repair-McpPaths.ps1",
@@ -16246,13 +16301,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 598,
-  "sha256": "74153dbeaee2243fa98b19f4d13f721ae73ab95c620c864ab99dd6e7dfb5c1c0"
+  "size": 675,
+  "sha256": "cbb3129399efd19acd5dc7d5e32102b89e228bbd2acff99ae4e2b52db2aff407"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "d645ec9034f81669202d53ef9e0709537ca4d0a5483c38853750e7c307d124b4"
+  "sha256": "5356b8de53b3674be6985769baf3ce7bbf040d20f3497248a9bbd1a0680bcf6e"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -16261,8 +16316,8 @@
  },
  {
   "path": "WINDOWS-PATH-MAP.md",
-  "size": 2860,
-  "sha256": "aefbb74ce8a679618abb4bb0a2b86d5b634a101d1bb294cf20da7711bed7f78c"
+  "size": 2974,
+  "sha256": "fb2ed6defb1b7fd913f600edca6e49ac1ff23ee41d5fa5ee154482c1c1e5f363"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/adult-character-sheet/SKILL.md",
@@ -18186,8 +18241,8 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-forge/SKILL.md",
-  "size": 8138,
-  "sha256": "cacf649808a064a012c11649deb1733cbf7520461618ad67c990e406f6052950"
+  "size": 8600,
+  "sha256": "63a7a46c18fbefb14e7df464fa65fa8f8450a26bea8cf81fb9813a930e17b4b9"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-frameworks-index/SKILL.md",
@@ -18943,5 +18998,10 @@
   "path": "docs/history/V7.7.2-CHANGELOG.md",
   "size": 1139,
   "sha256": "46816017fda3cb564a6b07aa6912ca79e96708df14298870f42f9bb360e08099"
+ },
+ {
+  "path": "docs/history/V7.7.3-CHANGELOG.md",
+  "size": 356,
+  "sha256": "243cd0c0cb53ac230f1706d6880014200ebf1d399ab5125a65cb39b87a5c71d8"
  }
 ]

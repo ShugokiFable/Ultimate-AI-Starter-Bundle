@@ -1,0 +1,30 @@
+disabled_mcp_servers = ["mcp-search"]
+
+[cli]
+installer = "internal"
+
+[marketplace]
+default_skills_installs_purged = true
+official_marketplace_auto_installed = true
+
+[[marketplace.sources]]
+name = "xAI Official"
+git = "https://github.com/xai-org/plugin-marketplace.git"
+
+[models]
+default = "grok-4.6"
+default_reasoning_effort = "xhigh"
+
+[ui]
+max_thoughts_width = 120
+fork_secondary_model = "grok-4.6"
+yolo = false
+compact_mode = false
+permission_mode = "always-approve"
+
+[compat.claude]
+hooks = false
+mcps = false
+
+[plugins]
+enabled = ["superpowers"]

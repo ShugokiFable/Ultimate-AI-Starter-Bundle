@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.2
+# Ultimate AI Starter Bundle v7.7.3
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,19 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.7.3 — Portable provider settings + Forge layout
+
+`INSTALL-V7-AIO.ps1` now installs starter `settings.json` / `config.toml` /
+`config.yaml` for Claude, Codex, Grok, Kimi, and Hermes from
+`1-TAILORED-PROVIDER-TREES\<Provider>\COPY-TO-PROVIDER-HOME`. Those templates
+are machine-neutral. A live dump of one PC is refused. Existing homes are
+not overwritten. Unrestraint stays in `0-UNRESTRAINT-PACKS` and in the
+instruction files (`CLAUDE.md` / `AGENTS.md` / `SOUL.md`), not in settings.
+
+Forge 5.1.5+ is required for Claude Code. Extract it as
+`Skyrim-Forge-x.y.z` under your Skyrim tools folder; do not clone it into
+Documents. Grok still wedges at 8 running MCP servers.
 
 ### v7.7.2 — Grok MCP cliff guard
 
@@ -544,6 +557,8 @@ registry.
   and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.7.3** — 2026-08-19. Based on v7.7.2.
 
 **v7.7.2** — 2026-08-19. Based on v7.7.1.
 

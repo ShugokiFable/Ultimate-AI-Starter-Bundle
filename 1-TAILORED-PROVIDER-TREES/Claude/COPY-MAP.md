@@ -4,6 +4,10 @@ Copy all folders under `COPY-TO-SKILLS-DIRECTORY\skills` into `%CLAUDE_CONFIG_DI
 
 Copy `COPY-TO-PROVIDER-HOME\CLAUDE.md` to `%CLAUDE_CONFIG_DIR%\CLAUDE.md`.
 
+`INSTALL-V7-AIO.ps1` merges `COPY-TO-PROVIDER-HOME\settings.json` into
+`%CLAUDE_CONFIG_DIR%\settings.json` (missing keys only). It never replaces
+`hooks` (completeness gate) or `CLAUDE.md` (`0-UNRESTRAINT-PACKS` / SOUL).
+
 Copy `COPY-TO-WORKSPACE\CLAUDE.md` into the user-selected workspace root. No workspace name is assumed.
 
 The registry is already at `%CLAUDE_CONFIG_DIR%\skills\skyrim-memory\references\ERROR-REGISTRY.json`.

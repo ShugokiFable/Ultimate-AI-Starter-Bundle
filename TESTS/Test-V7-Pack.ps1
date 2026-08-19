@@ -339,6 +339,30 @@ else {
     }
 }
 
+Section '9. Provider starter settings are portable (no live-machine dump)'
+$starterFiles = @(
+    '1-TAILORED-PROVIDER-TREES\Claude\COPY-TO-PROVIDER-HOME\settings.json',
+    '1-TAILORED-PROVIDER-TREES\Codex\COPY-TO-PROVIDER-HOME\config.toml',
+    '1-TAILORED-PROVIDER-TREES\Grok\COPY-TO-PROVIDER-HOME\config.toml',
+    '1-TAILORED-PROVIDER-TREES\Kimi\COPY-TO-PROVIDER-HOME\config.toml',
+    '1-TAILORED-PROVIDER-TREES\Hermes\COPY-TO-PROVIDER-HOME\config.yaml',
+    'TOOLS\Install-Provider-Starter-Settings.ps1'
+)
+foreach ($rel in $starterFiles) {
+    $p = Join-Path $PackRoot $rel
+    if (-not (Test-Path -LiteralPath $p)) { Bad "missing $rel"; continue }
+    $raw = [IO.File]::ReadAllText($p)
+    if ($raw -match '(?i)C:\\Users\\[^\\\s"]+' -or $raw -match '(?i)S:\\Apps\\') {
+        Bad "$rel contains a machine path"
+    } else { Good $rel }
+}
+$aio = [IO.File]::ReadAllText((Join-Path $PackRoot 'INSTALL-V7-AIO.ps1'))
+if ($aio -match 'Install-Provider-Starter-Settings') { Good 'AIO calls starter-settings installer' }
+else { Bad 'INSTALL-V7-AIO.ps1 does not call Install-Provider-Starter-Settings.ps1' }
+if ($aio -match 'Copy-Item -LiteralPath \$hCfgSrc -Destination \$hCfg') {
+    Bad 'AIO still wholesale-copies Hermes config.yaml over a live home'
+} else { Good 'AIO no longer overwrites a live Hermes config.yaml' }
+
 Write-Host ''
 if ($fail -eq 0) {
     Write-Host "PACK GATE: PASS" -ForegroundColor Green

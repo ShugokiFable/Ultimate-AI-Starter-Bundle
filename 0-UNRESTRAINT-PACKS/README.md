@@ -29,6 +29,11 @@ Fun stuff folder plus five upstream sources, reviewed, deduped, and dated 2026-0
 | github.com/cyberlieflife/CodexJailbreak | Rust injector + CTF/red-team skill pack (burp-mcp, ghidra, android-re). Payload is a task router, not prompts. No adult/fiction material. Binary not built. |
 | github.com/ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek- | README-only link farm (30 files, 1 markdown). Nothing to import. |
 
+Settings files (`settings.json`, `config.toml`, `config.yaml`) are **not**
+the unrestraint channel. The AIO installer merges portable starter settings
+without touching this pack. Unrestraint stays in instruction files and in
+this folder.
+
 ## Per-provider application
 
 | Target | File | How |
