@@ -249,11 +249,12 @@ function Copy-V5RoboSafe([string]$From, [string]$To, [string[]]$CriticalFiles = 
 
 function Set-V5GrokCompatCells {
   <#
-    Turn off Grok's inheritance of Claude Code's hooks and MCP servers.
+    Turn off Grok's inheritance of Claude Code's hooks, MCP servers, and
+    skills.
 
     Grok ships Claude-Code compatibility ON by default: it adopts
     ~/.claude/skills, ~/.claude/agents, ~/.claude/plugins (with their
-    hooks/hooks.json and .mcp.json), ~/.claude.json and
+    hooks/hooks.json, .mcp.json, and skill dirs), ~/.claude.json and
     ~/.claude/settings.json. Measured on grok-cli 1.0.4 (2026-08-15):
 
       - inherited Claude hooks cost 60.037s per turn (two Stop hooks at
@@ -262,9 +263,12 @@ function Set-V5GrokCompatCells {
         attached ZERO tools - tool_count was 26 (the built-in count) in
         all 12 turns recorded, with 8 servers configured and with 0.
 
-    Skills, rules and agents compat stay ON: those work and are the reason
-    Grok sees the canonical skill set without a second copy on disk.
-    See GROK-MCP-TROUBLESHOOTING.md.
+    Skills compat is also OFF as of v7.7.4. AIO already copies the pack
+    into ~/.grok/skills. Leaving Claude skill scan ON duplicates native
+    superpowers skills (systematic-debugging is the one that errors in
+    the TUI) and surfaces claude-mem / other Claude plugin skills in
+    Grok, which is how mcp-search rides in as an extra running MCP
+    server. See GROK-MCP-TROUBLESHOOTING.md.
   #>
   param(
     [string]$ConfigPath = $null,
@@ -288,12 +292,14 @@ function Set-V5GrokCompatCells {
   $mcps = if ($AllowMcp) { 'true' } else { 'false' }
   $block = @(
     '[compat.claude]',
-    '# Grok inherits Claude Code config by default. Both cells below were',
-    '# measured as pure cost on grok-cli 1.0.4: hooks cost 60.037s/turn and',
-    '# MCP cost 65s/session while attaching zero tools (tool_count stayed at',
-    '# 26, the built-in count). See GROK-MCP-TROUBLESHOOTING.md.',
+    '# Grok inherits Claude Code config by default. hooks/MCP were measured',
+    '# as pure cost on grok-cli 1.0.4. skills is also off: AIO copies the',
+    '# pack into ~/.grok/skills; scanning ~/.claude duplicates superpowers',
+    '# skills (systematic-debugging) and pulls claude-mem into Grok.',
+    '# See GROK-MCP-TROUBLESHOOTING.md.',
     'hooks = false',
-    ('mcps = ' + $mcps)
+    ('mcps = ' + $mcps),
+    'skills = false'
   ) -join "`r`n"
 
     if ($content -match '(?m)^[ \t]*\[compat\.claude\][^\r\n]*(?:\r?\n(?![ \t]*\[)[^\r\n]*)*') {
@@ -314,9 +320,9 @@ function Set-V5GrokCompatCells {
   # first line unparseable TOML ("Invalid statement at line 1, column 1").
   [System.IO.File]::WriteAllText($ConfigPath, $content, (New-Object System.Text.UTF8Encoding $false))
   if ($AllowMcp) {
-    Write-V5Warn 'Grok: Claude hook inheritance OFF, MCP inheritance left ON by request (expect a ~65s first turn)'
+    Write-V5Warn 'Grok: Claude hook + skill inheritance OFF, MCP inheritance left ON by request (expect a ~65s first turn)'
   } else {
-    Write-V5Ok 'Grok: Claude hook + MCP inheritance disabled (turn time 97s -> ~2s)'
+    Write-V5Ok 'Grok: Claude hook + MCP + skill inheritance disabled (turn time 97s -> ~2s; no claude-mem skill leak)'
   }
 }
 
@@ -404,6 +410,74 @@ function Get-V5NativeOutput {
   $prevEap = $ErrorActionPreference
   $ErrorActionPreference = 'Continue'
   try { return (& $Exe @CmdArgs 2>&1 | Out-String) } finally { $ErrorActionPreference = $prevEap }
+}
+
+function Get-V5GrokPluginList {
+  <#
+  Parse `grok plugin list --json`. Returns an array of plugin objects with
+  name / repo_key / source / marketplace / path. Empty array on failure.
+  #>
+  param([string]$GrokExe)
+  if (-not $GrokExe) { return @() }
+  $out = Get-V5NativeOutput -Exe $GrokExe -CmdArgs @('plugin', 'list', '--json')
+  if ([string]::IsNullOrWhiteSpace($out)) { return @() }
+  $start = $out.IndexOf('[')
+  if ($start -lt 0) { $start = $out.IndexOf('{') }
+  if ($start -lt 0) { return @() }
+  try {
+    $parsed = $out.Substring($start) | ConvertFrom-Json
+    return @($parsed)
+  } catch {
+    return @()
+  }
+}
+
+function Repair-V5GrokDuplicatePlugins {
+  <#
+  Grok's official marketplace auto-installs superpowers. The AIO used to
+  also `grok plugin install` the staged local copy under
+  %LOCALAPPDATA%\Skyrim-AI-V5\plugins-src\superpowers. Two plugins with the
+  same name both own systematic-debugging, and the TUI reports that as a
+  skill error. Keep the marketplace/git copy; drop extra local clones.
+
+  Do NOT `grok plugin uninstall <name>` while duplicates exist: the CLI
+  matches on plugin name only, so it removed the marketplace copy and left
+  the local clone (measured). repo_key is not accepted as <NAME>. Edit
+  installed-plugins/registry.json and delete the extra repo folder instead.
+  #>
+  param([string]$GrokExe, [string]$PluginName)
+  $hits = @(Get-V5GrokPluginList -GrokExe $GrokExe | Where-Object { $_.name -eq $PluginName })
+  if ($hits.Count -le 1) { return $hits }
+  $keep = @($hits | Where-Object { $_.marketplace }) | Select-Object -First 1
+  if (-not $keep) {
+    $keep = @($hits | Where-Object { $_.source -match '^https?://' }) | Select-Object -First 1
+  }
+  if (-not $keep) { $keep = $hits[0] }
+  $regPath = Join-Path $env:USERPROFILE '.grok\installed-plugins\registry.json'
+  foreach ($h in $hits) {
+    if ($h.repo_key -eq $keep.repo_key) { continue }
+    Write-V5Warn ("Grok: duplicate {0} ({1}) - dropping registry repo {2}" -f $PluginName, $h.source, $h.repo_key)
+    if (Test-Path -LiteralPath $regPath -PathType Leaf) {
+      $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
+      Copy-Item -LiteralPath $regPath -Destination ($regPath + '.before-dedupe-' + $ts + '.bak') -Force
+      $doc = ([IO.File]::ReadAllText($regPath) | ConvertFrom-Json)
+      if ($doc.repos -and $doc.repos.PSObject.Properties.Name -contains [string]$h.repo_key) {
+        $doc.repos.PSObject.Properties.Remove([string]$h.repo_key)
+        $utf8 = New-Object System.Text.UTF8Encoding $false
+        [IO.File]::WriteAllText($regPath, (($doc | ConvertTo-Json -Depth 20) + [Environment]::NewLine), $utf8)
+      }
+    }
+    if ($h.path -and (Test-Path -LiteralPath $h.path)) {
+      Remove-Item -LiteralPath $h.path -Recurse -Force
+    }
+  }
+  $left = @(Get-V5GrokPluginList -GrokExe $GrokExe | Where-Object { $_.name -eq $PluginName })
+  if ($left.Count -gt 1) {
+    Write-V5Warn ("Grok: still {0} copies of {1} after registry drop - skill names will collide" -f $left.Count, $PluginName)
+  } elseif ($left.Count -eq 1) {
+    Write-V5Ok ("Grok: one {0} plugin remains ({1})" -f $PluginName, $left[0].repo_key)
+  }
+  return $left
 }
 
 function Get-V5PluginOwnedSkillNames {

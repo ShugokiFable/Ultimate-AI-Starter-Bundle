@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.3
+# Ultimate AI Starter Bundle v7.7.4
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,15 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.7.4 — Starter `$HOME` abort, one Grok Superpowers, no Claude skill leak
+
+`Install-Provider-Starter-Settings.ps1` assigned `$home`, which is a
+PowerShell constant, so the whole starter-settings pass died. Renamed to
+`$provHome`. Grok no longer installs a second local Superpowers clone next
+to the official marketplace copy (that collision is the
+`systematic-debugging` TUI error). `[compat.claude] skills = false` so
+Grok does not load claude-mem skills or `mcp-search`.
 
 ### v7.7.3 — Portable provider settings + Forge layout
 
@@ -557,6 +566,8 @@ registry.
   and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.7.4** — 2026-08-19. Based on v7.7.3.
 
 **v7.7.3** — 2026-08-19. Based on v7.7.2.
 

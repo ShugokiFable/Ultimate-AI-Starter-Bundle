@@ -93,7 +93,7 @@ param(
   # home. -SkipPreamble opts out; -ForcePreamble rewrites an identical block.
   [switch]$SkipPreamble,
   [switch]$ForcePreamble,
-  # Portable starter settings (v7.7.3). On by default: merge/copy
+  # Portable starter settings (v7.7.3; $HOME abort fixed in v7.7.4). On by default: merge/copy
   # 1-TAILORED-PROVIDER-TREES\<Provider>\COPY-TO-PROVIDER-HOME settings
   # into each provider home. Never overwrites CLAUDE.md / AGENTS.md /
   # SOUL.md (unrestraint + preamble live there) and never copies MCP
@@ -153,7 +153,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.7.3 - ALL-IN-ONE INSTALLER (portable provider settings)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.7.4 - ALL-IN-ONE INSTALLER (no HOME overwrite, one Grok superpowers)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -293,8 +293,11 @@ if (-not $ToolsOnly -and -not $SkipStarterSettings) {
 # Installs the two bundled skills-plugins NATIVE per provider where the CLI
 # has a real plugin mechanism (all mechanisms verified live on the reference
 # machine):
-#   Grok    grok plugin install <staged path> --trust   (superpowers only -
-#           ponytail ships no Grok manifest and stays as copied skills)
+#   Grok    grok plugin install superpowers --trust from the marketplace
+#           (never a second local clone next to official_marketplace auto-
+#           install - two plugins named superpowers collide on
+#           systematic-debugging). ponytail has no Grok manifest and stays
+#           as copied skills.
 #   Hermes  hermes plugins install file:///<path> --enable from a local git
 #           bridge (Hermes rejects plain paths), with
 #           plugins.scan_on_install: false in config.yaml because the security
@@ -369,19 +372,30 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
         }
         $pluginStage = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\plugins-src\superpowers'
         Copy-V5Robo -From (Join-Path $plugins 'superpowers') -To $pluginStage
-        $listed = Get-V5NativeOutput -Exe $grokExe -CmdArgs @('plugin', 'list')
-        if ($listed -match 'superpowers') {
+        # Collapse marketplace + local-path clones BEFORE treating "already
+        # native" as success. Two plugins named superpowers both own
+        # systematic-debugging and Grok reports that as a skill error.
+        $hits = @(Repair-V5GrokDuplicatePlugins -GrokExe $grokExe -PluginName 'superpowers')
+        if ($hits.Count -ge 1) {
           $spEntry.native = $true
           $spEntry.status = 'already-native'
-          Write-V5Ok 'Grok: superpowers already native'
+          Write-V5Ok ('Grok: superpowers already native (' + $hits[0].repo_key + ')')
         } else {
-          Write-Host ('  grok plugin install "' + $pluginStage + '" --trust')
-          [void](Invoke-V5Native $grokExe @('plugin', 'install', $pluginStage, '--trust'))
-          $listed = Get-V5NativeOutput -Exe $grokExe -CmdArgs @('plugin', 'list')
-          if ($listed -match 'superpowers') {
+          Write-Host '  grok plugin install superpowers --trust'
+          [void](Invoke-V5Native $grokExe @('plugin', 'install', 'superpowers', '--trust'))
+          $hits = @(Get-V5GrokPluginList -GrokExe $grokExe | Where-Object { $_.name -eq 'superpowers' })
+          if ($hits.Count -eq 0) {
+            Write-Host ('  grok plugin install "' + $pluginStage + '" --trust')
+            [void](Invoke-V5Native $grokExe @('plugin', 'install', $pluginStage, '--trust'))
+            $hits = @(Get-V5GrokPluginList -GrokExe $grokExe | Where-Object { $_.name -eq 'superpowers' })
+          }
+          if ($hits.Count -gt 1) {
+            $hits = @(Repair-V5GrokDuplicatePlugins -GrokExe $grokExe -PluginName 'superpowers')
+          }
+          if ($hits.Count -ge 1) {
             $spEntry.native = $true
             $spEntry.status = 'installed'
-            Write-V5Ok 'Grok: superpowers installed native'
+            Write-V5Ok ('Grok: superpowers installed native (' + $hits[0].repo_key + ')')
           } else {
             $spEntry.status = 'fallback-skills'
             $spEntry.reason = 'grok plugin install did not take; copied skills stay'
@@ -481,15 +495,13 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
           } else {
             Write-V5Ok 'Hermes gateway not running - left stopped'
           }
-          # Put the scanner BACK once our plugins are in. Leaving
-          # scan_on_install: false behind would silently weaken every future
-          # third-party plugin the operator installs - Hermes treats plugin
-          # loading as an explicit trust boundary and that call is theirs, not
-          # ours. The override exists only for our own install window.
-          $pstate.scan_on_install_restore = Restore-V5HermesPluginScan `
-            -ConfigPath (Join-Path $providerHome 'config.yaml') `
-            -State $pstate.scan_on_install_fix
         }
+        # Put the scanner BACK even when plugins were already native. A
+        # previous run used to skip restore when newInstalls was 0, so
+        # scan_on_install: false leaked into the live config forever.
+        $pstate.scan_on_install_restore = Restore-V5HermesPluginScan `
+          -ConfigPath (Join-Path $providerHome 'config.yaml') `
+          -State $pstate.scan_on_install_fix
       }
 
       'Codex' {
@@ -729,6 +741,7 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
             $kEntry.native = $true
             $kEntry.root = $kr.root
             Write-V5Ok ('Kimi: native plugin installed - ' + $pluginId + ' (' + $kr.root + ')')
+            Invoke-V5SkillDedupe -Provider 'Kimi' -PluginId $pluginId -SkillsDir $skillsDir -StateEntry $kEntry
           } else {
             $kEntry.status = 'failed'
             $kEntry.reason = $kr.reason
@@ -1314,7 +1327,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.7.3'
+  version = '7.7.4'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers

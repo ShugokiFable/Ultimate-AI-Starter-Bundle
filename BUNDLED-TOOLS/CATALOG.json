@@ -364,7 +364,7 @@
       "scope_note": "Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts."
     }
   ],
-  "pack_version": "7.7.3",
+  "pack_version": "7.7.4",
   "updated_utc": "2026-08-19T04:35:00+00:00",
   "providers": {
     "Grok": {

@@ -131,24 +131,27 @@ function Ensure-V5GrokMcpSearchDisabled {
 Write-V5Step 'Provider starter settings (portable; no live-machine dump)'
 
 foreach ($prov in $Providers) {
-  $home = Get-V5ProviderHome -Provider $prov -Catalog $catalog
+  # NEVER assign the PowerShell HOME automatic variable. It is constant;
+  # writing to it aborts the whole starter-settings pass
+  # ("Cannot overwrite variable HOME because it is read-only or constant").
+  $provHome = Get-V5ProviderHome -Provider $prov -Catalog $catalog
   $srcRoot = Join-Path $tailored "$prov\COPY-TO-PROVIDER-HOME"
   switch ($prov) {
     'Claude' {
       $src = Join-Path $srcRoot 'settings.json'
       if (Test-Path -LiteralPath $src) {
-        Merge-V5ClaudeSettings -Src $src -Dest (Join-Path $home 'settings.json')
+        Merge-V5ClaudeSettings -Src $src -Dest (Join-Path $provHome 'settings.json')
       }
     }
     'Codex' {
       $src = Join-Path $srcRoot 'config.toml'
       if (Test-Path -LiteralPath $src) {
-        Copy-V5StarterIfMissing -Src $src -Dest (Join-Path $home 'config.toml') -Label Codex
+        Copy-V5StarterIfMissing -Src $src -Dest (Join-Path $provHome 'config.toml') -Label Codex
       }
     }
     'Grok' {
       $src = Join-Path $srcRoot 'config.toml'
-      $dest = Join-Path $home 'config.toml'
+      $dest = Join-Path $provHome 'config.toml'
       if (Test-Path -LiteralPath $src) {
         Copy-V5StarterIfMissing -Src $src -Dest $dest -Label Grok
         Ensure-V5GrokMcpSearchDisabled -Dest $dest
@@ -157,14 +160,14 @@ foreach ($prov in $Providers) {
     'Kimi' {
       $src = Join-Path $srcRoot 'config.toml'
       if (Test-Path -LiteralPath $src) {
-        Copy-V5StarterIfMissing -Src $src -Dest (Join-Path $home 'config.toml') -Label Kimi
+        Copy-V5StarterIfMissing -Src $src -Dest (Join-Path $provHome 'config.toml') -Label Kimi
       }
     }
     'Hermes' {
       if ($SkipHermes) { Write-V5Ok 'Hermes starter config skipped'; continue }
       $src = Join-Path $srcRoot 'config.yaml'
       if (Test-Path -LiteralPath $src) {
-        Copy-V5StarterIfMissing -Src $src -Dest (Join-Path $home 'config.yaml') -Label Hermes
+        Copy-V5StarterIfMissing -Src $src -Dest (Join-Path $provHome 'config.yaml') -Label Hermes
       }
     }
   }

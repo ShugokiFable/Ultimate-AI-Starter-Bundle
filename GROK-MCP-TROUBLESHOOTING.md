@@ -47,6 +47,8 @@ Measured: the two `Stop` hooks at `timeout: 30` cost **60.037s** per turn.
 # ~/.grok/config.toml
 [compat.claude]
 hooks = false
+mcps = false
+skills = false
 ```
 
 Claude Code keeps every hook. Only Grok stops running them.
@@ -148,11 +150,22 @@ pushing you over the limit) while your chosen servers still work:
 [compat.claude]
 hooks = false
 mcps = false
+skills = false
 
 [mcp_servers.housecarl]
 command = "C:/.../housecarl-mcp.exe"
 args = []
 ```
+
+`skills = false` is required as of v7.7.4. Grok otherwise scans
+`~/.claude/skills` and Claude plugin skill dirs, duplicates native
+Superpowers skills (`systematic-debugging` is the TUI error), and lets
+claude-mem's `mcp-search` occupy a running slot even with `mcps = false`.
+
+Two installed plugins both named `superpowers` (official marketplace plus
+a local `%LOCALAPPDATA%\Skyrim-AI-V5\plugins-src` clone) also collide on
+that skill. The AIO keeps one and uninstalls extras. Check with
+`grok plugin list --json`.
 
 ---
 

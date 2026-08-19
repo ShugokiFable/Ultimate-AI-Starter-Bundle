@@ -1,4 +1,4 @@
-HERMES PORTABLE STARTER — bundle v7.7.3
+HERMES PORTABLE STARTER — bundle v7.7.4
 
 COPY-TO-PROVIDER-HOME\config.yaml is a machine-neutral starter:
 - DeepSeek V4 Flash at reasoning=high, max_turns=350
