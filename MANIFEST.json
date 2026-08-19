@@ -16076,8 +16076,8 @@
  },
  {
   "path": "TOOLS/Build-Release.ps1",
-  "size": 6425,
-  "sha256": "680ffe68017eefec801be6e4073488b7a8c9682d42dcfa3b65272100d5599bb3"
+  "size": 6765,
+  "sha256": "24f2a8a6d0cf8eea47aed5d7cba29ea72ab0914705e37f4f5ee48c03595cfff3"
  },
  {
   "path": "TOOLS/Build-Toolbelt.ps1",

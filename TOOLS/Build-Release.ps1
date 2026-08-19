@@ -76,12 +76,15 @@ try {
   New-Item -ItemType Directory -Force -Path $staging | Out-Null
 
   Step 'Staging from git archive HEAD'
-  $tar = Join-Path $staging '_archive.tar'
-  & git archive --format=tar -o $tar HEAD
+  # zip, not tar: on Windows the `tar` first on PATH is frequently Git-Bash's,
+  # which reads C:\... as a remote host spec and fails with "Cannot connect to
+  # C: resolve failed". .NET's extractor has no such ambiguity.
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  $arc = Join-Path ([IO.Path]::GetTempPath()) ('uasb-arc-' + [Guid]::NewGuid().ToString('N').Substring(0, 8) + '.zip')
+  & git archive --format=zip -o $arc HEAD
   if ($LASTEXITCODE -ne 0) { Fail 'git archive failed' }
-  & tar -xf $tar -C $staging
-  if ($LASTEXITCODE -ne 0) { Fail 'tar extract failed' }
-  Remove-Item -LiteralPath $tar -Force
+  [System.IO.Compression.ZipFile]::ExtractToDirectory($arc, $staging)
+  Remove-Item -LiteralPath $arc -Force
   $staged = @(Get-ChildItem -LiteralPath $staging -Recurse -File)
   Ok ("staged {0} files" -f $staged.Count)
 
