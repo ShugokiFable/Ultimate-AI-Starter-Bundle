@@ -384,3 +384,470 @@ function Install-V5PreambleBlock {
     [IO.File]::WriteAllText($Path, $new, (New-Object System.Text.UTF8Encoding $origBom))
     Write-V5Ok ('preamble wired: ' + $Path)
 }
+
+# ---------------------------------------------------------------------------
+# Native bundled plugins (superpowers / ponytail) - shared helpers.
+# The per-provider orchestration lives in INSTALL-V7-AIO.ps1; these are the
+# mechanism pieces: native command output capture, plugin-owned skill name
+# discovery, the md5-guarded dedupe, a TOML plugin-section probe, the Hermes
+# scan_on_install config fix, and a style-preserving marketplace.json edit.
+# ---------------------------------------------------------------------------
+
+function Get-V5NativeOutput {
+  <#
+  Run a native command and return its combined output as one string, without
+  PowerShell 5.1 turning stderr lines into terminating ErrorRecords under the
+  script-wide $ErrorActionPreference='Stop'. (Same disease Invoke-V5Native
+  cures; this variant is for DETECTION, where the output itself is needed.)
+  #>
+  param([string]$Exe, [string[]]$CmdArgs)
+  $prevEap = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try { return (& $Exe @CmdArgs 2>&1 | Out-String) } finally { $ErrorActionPreference = $prevEap }
+}
+
+function Get-V5PluginOwnedSkillNames {
+  <#
+  Skill names a bundled plugin owns, computed from the tree at install time -
+  never a hardcoded list, so a plugin version bump that adds/renames a skill
+  is picked up automatically.
+  #>
+  param([string]$PluginRoot)
+  $sk = Join-Path $PluginRoot 'skills'
+  if (-not (Test-Path -LiteralPath $sk -PathType Container)) { return @() }
+  return @(Get-ChildItem -LiteralPath $sk -Directory | Select-Object -ExpandProperty Name)
+}
+
+function Remove-V5PluginOwnedSkillCopies {
+  <#
+  Remove provider-skills copies that a natively installed plugin now owns.
+
+  Safety rules (the destructive step of the native-plugin rework):
+    - skip names with no <SkillsDir>\<name> directory (nothing to do);
+    - NEVER remove a copy whose SKILL.md md5 differs from the pack canonical
+      (<CanonicalRoot>\<name>\SKILL.md) - a difference means the user may have
+      modified the copy, so warn loudly and record it as skipped_modified;
+    - a copy with no SKILL.md, or a name absent from the canonical tree, is
+      unverifiable - keep it and record why;
+    - before any Remove-Item, robocopy the directory to
+      <BackupRoot>\dedupe-<Provider>-<yyyyMMdd-HHmmss>\<name>.
+
+  Returns an ordered dict: removed / skipped_modified / skipped (string lists).
+  #>
+  param(
+    [string]$Provider,
+    [string]$SkillsDir,
+    [string[]]$Names,
+    [string]$CanonicalRoot,
+    [string]$BackupRoot,
+    [System.Collections.Generic.List[string]]$Log
+  )
+  $result = [ordered]@{ removed = @(); skipped_modified = @(); skipped = @() }
+  if (-not (Test-Path -LiteralPath $SkillsDir -PathType Container)) { return $result }
+  $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
+  $bkDir = Join-Path $BackupRoot ('dedupe-' + $Provider + '-' + $ts)
+  foreach ($name in $Names) {
+    $target = Join-Path $SkillsDir $name
+    if (-not (Test-Path -LiteralPath $target -PathType Container)) { continue }
+    $copyMd = Join-Path $target 'SKILL.md'
+    $canonMd = Join-Path (Join-Path $CanonicalRoot $name) 'SKILL.md'
+    if (-not (Test-Path -LiteralPath $copyMd -PathType Leaf)) {
+      $result.skipped += ($name + ' (copy has no SKILL.md - unverifiable, kept)')
+      Write-V5Warn ('dedupe: kept ' + $name + ' - copy has no SKILL.md to verify against canonical')
+      if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: kept ' + $name + ' in ' + $SkillsDir + ' (no SKILL.md)') }
+      continue
+    }
+    if (-not (Test-Path -LiteralPath $canonMd -PathType Leaf)) {
+      # The canonical tree never shipped a skill of this name, so there is
+      # nothing to verify the copy against. Keep it.
+      $result.skipped += ($name + ' (absent from canonical tree - kept)')
+      Write-V5Warn ('dedupe: kept ' + $name + ' - no canonical SKILL.md to verify against')
+      if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: kept ' + $name + ' in ' + $SkillsDir + ' (not in canonical)') }
+      continue
+    }
+    $hCopy = (Get-FileHash -LiteralPath $copyMd -Algorithm MD5).Hash
+    $hCanon = (Get-FileHash -LiteralPath $canonMd -Algorithm MD5).Hash
+    if ($hCopy -ne $hCanon) {
+      $result.skipped_modified += $name
+      Write-V5Warn ('dedupe: REFUSED to remove ' + $target + ' - SKILL.md differs from the pack canonical (user-modified?). Back up your changes and remove it by hand if unwanted.')
+      if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: REFUSED ' + $target + ' (md5 differs from canonical)') }
+      continue
+    }
+    New-Item -ItemType Directory -Force -Path $bkDir | Out-Null
+    Copy-V5Robo -From $target -To (Join-Path $bkDir $name)
+    Remove-Item -LiteralPath $target -Recurse -Force
+    $result.removed += $name
+    Write-V5Ok ('dedupe: removed plugin-owned copy ' + $name + ' (backup: ' + (Join-Path $bkDir $name) + ')')
+    if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: removed ' + $target + ' (backup ' + $bkDir + ')') }
+  }
+  return $result
+}
+
+function Test-V5TomlPluginEnabled {
+  <#
+  True when TOML content has a section whose header starts with
+  [<HeaderPrefix> and whose body contains enabled = true. Line-based on
+  purpose: regex-over-sections is how config.toml readers have been burned
+  before (see the [compat.claude] comment in Set-V5GrokCompatCells).
+  #>
+  param([string]$Content, [string]$HeaderPrefix)
+  if ([string]::IsNullOrEmpty($Content)) { return $false }
+  $inSection = $false
+  foreach ($ln in ($Content -split "\r?\n")) {
+    $t = $ln.Trim()
+    if ($t.StartsWith('[')) {
+      $inSection = $t.StartsWith('[' + $HeaderPrefix)
+      continue
+    }
+    if ($inSection -and $t -match '^enabled\s*=\s*true\s*$') { return $true }
+  }
+  return $false
+}
+
+function Set-V5HermesPluginScanOff {
+  <#
+  Ensure plugins.scan_on_install: false in the Hermes config.yaml.
+
+  Hermes' security scanner refuses both bundled plugins with 214
+  false-positive 'traversal' findings in upstream test scripts, and --force
+  does not override it, so the scanner must be told not to run at install
+  time. This is a TEXT edit, never a YAML re-serialize: any comment the
+  operator added survives untouched.
+
+  Rules: a scan_on_install: line already under plugins: is left exactly as
+  is; otherwise insert '  scan_on_install: false' right after the
+  'disabled: []' line under plugins: (or right after 'plugins:' when there
+  is no disabled key). Backup to config.yaml.bak-<yyyyMMdd-HHmmss> first.
+
+  Returns 'already-present' | 'inserted' | 'appended-section' | 'created' | 'failed'.
+  #>
+  param([string]$ConfigPath)
+  try {
+    if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
+      $dir = Split-Path $ConfigPath -Parent
+      New-Item -ItemType Directory -Force -Path $dir | Out-Null
+      $enc0 = New-Object System.Text.UTF8Encoding($false)
+      [IO.File]::WriteAllText($ConfigPath, ("plugins:`r`n  scan_on_install: false`r`n"), $enc0)
+      Write-V5Warn ('Hermes config.yaml missing - created with plugins.scan_on_install: false (' + $ConfigPath + ')')
+      return 'created'
+    }
+    $text = [IO.File]::ReadAllText($ConfigPath)
+    $nl = "`r`n"
+    if ($text -notmatch "`r`n") { $nl = "`n" }
+    $lines = @($text -split "\r?\n")
+    $pIdx = -1
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+      if ($lines[$i] -match '^plugins\s*:') { $pIdx = $i; break }
+    }
+    if ($pIdx -lt 0) {
+      # No plugins: key at all - append a minimal one.
+      Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
+      $add = $text
+      if (-not $add.EndsWith("`n")) { $add += $nl }
+      $add += $nl + 'plugins:' + $nl + '  scan_on_install: false' + $nl
+      $enc1 = New-Object System.Text.UTF8Encoding($false)
+      [IO.File]::WriteAllText($ConfigPath, $add, $enc1)
+      Write-V5Ok 'Hermes config: appended plugins.scan_on_install: false (no plugins: key existed)'
+      return 'appended-section'
+    }
+    # Section body = the indented/blank lines following 'plugins:'.
+    $secEnd = $lines.Count - 1
+    for ($i = $pIdx + 1; $i -lt $lines.Count; $i++) {
+      if ($lines[$i] -match '^\S') { $secEnd = $i - 1; break }
+    }
+    for ($i = $pIdx + 1; $i -le $secEnd; $i++) {
+      if ($lines[$i] -match '^\s+scan_on_install\s*:') {
+        Write-V5Ok 'Hermes config: plugins.scan_on_install already set - left as-is'
+        return 'already-present'
+      }
+    }
+    $insertAfter = $pIdx
+    for ($i = $pIdx + 1; $i -le $secEnd; $i++) {
+      if ($lines[$i] -match '^\s+disabled\s*:') {
+        $insertAfter = $i
+        # 'disabled:' with an empty value may own a '- item' block sequence;
+        # inserting between the key and its items would break the YAML.
+        if ($lines[$i] -match '^\s+disabled\s*:\s*(#.*)?$') {
+          for ($j = $i + 1; $j -le $secEnd; $j++) {
+            if ($lines[$j] -match '^\s+-\s') { $insertAfter = $j } else { break }
+          }
+        }
+        break
+      }
+    }
+    Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
+    $newLines = @()
+    $newLines += $lines[0..$insertAfter]
+    $newLines += '  scan_on_install: false'
+    if (($insertAfter + 1) -le ($lines.Count - 1)) { $newLines += $lines[($insertAfter + 1)..($lines.Count - 1)] }
+    $enc2 = New-Object System.Text.UTF8Encoding($false)
+    [IO.File]::WriteAllText($ConfigPath, ($newLines -join $nl), $enc2)
+    Write-V5Ok 'Hermes config: plugins.scan_on_install: false (bundled plugins trip the scanner with false-positive traversal findings)'
+    return 'inserted'
+  } catch {
+    Write-V5Warn ('Hermes scan_on_install edit failed: ' + $_.Exception.Message)
+    return 'failed'
+  }
+}
+
+function Get-V5ClaudeMarketplaceName {
+  <#
+  The marketplace name a bundled plugin publishes itself under, read from its
+  own .claude-plugin\marketplace.json.
+
+  Never hardcode this: superpowers publishes as 'superpowers-dev' and ponytail
+  as 'ponytail', and the name is what Claude uses for BOTH the install target
+  (<plugin>@<marketplace>) and the cache directory it lands in
+  (plugins\cache\<marketplace>\<plugin>). A guessed name makes the
+  post-install check look at the wrong path and report a false failure on an
+  install that actually worked.
+
+  Returns the name, or '' when the plugin ships no Claude marketplace.
+  #>
+  param([Parameter(Mandatory)][string]$PluginRoot)
+  try {
+    $mk = Join-Path $PluginRoot '.claude-plugin\marketplace.json'
+    if (-not (Test-Path -LiteralPath $mk -PathType Leaf)) { return '' }
+    $doc = ([IO.File]::ReadAllText($mk)) | ConvertFrom-Json
+    if ($doc -and $doc.name) { return [string]$doc.name }
+    return ''
+  } catch {
+    Write-V5Warn ('could not read marketplace name from ' + $PluginRoot + ': ' + $_.Exception.Message)
+    return ''
+  }
+}
+
+function Install-V5KimiPlugin {
+  <#
+  Install a bundled plugin into Kimi Code natively, without the TUI.
+
+  kimi-code 0.27.0 has no `kimi plugin` SUBCOMMAND, which is what earlier
+  versions of this installer observed - and then wrongly concluded that Kimi
+  has no plugin system at all, so Kimi got copied skills only. It does have
+  one; it is driven by the in-session `/plugins` slash command, and prompt
+  mode cannot stand in for that because it demands a login first.
+
+  Reading the shipped CLI settles the contract:
+    - `/plugins install` copies the source to <home>\plugins\managed\<id>
+    - the registry is <home>\plugins\installed.json, {version:1, plugins:[]}
+    - each persisted entry is thin: id, root, source, enabled, installedAt,
+      updatedAt, originalSource, capabilities, github
+    - on load, materialize(entry) re-runs parseManifest(entry.root), so
+      manifest, skillCount and state are DERIVED from disk every time
+
+  That last point is what makes writing the registry safe rather than
+  brittle: nothing here has to reproduce Kimi's manifest parsing, and a Kimi
+  upgrade that changes the manifest schema cannot leave a stale record behind.
+
+  The manifest itself is read from <root>\plugin.json, else
+  <root>\.kimi-plugin\plugin.json - which is where the bundled Superpowers
+  Kimi adapter (sessionStart.skill + the Kimi tool mapping) already lives.
+
+  Returns @{ ok; status; root; reason }.
+  #>
+  param(
+    [Parameter(Mandatory)][string]$KimiHome,
+    [Parameter(Mandatory)][string]$PluginId,
+    [Parameter(Mandatory)][string]$SourceRoot
+  )
+  $res = [ordered]@{ ok = $false; status = 'failed'; root = ''; reason = '' }
+  try {
+    if (-not (Test-Path -LiteralPath $SourceRoot -PathType Container)) {
+      $res.reason = 'source plugin tree missing: ' + $SourceRoot
+      return $res
+    }
+    # Refuse to install something Kimi will only reject at load time.
+    $mRoot = Join-Path $SourceRoot 'plugin.json'
+    $mDir  = Join-Path $SourceRoot '.kimi-plugin\plugin.json'
+    if (-not (Test-Path -LiteralPath $mRoot -PathType Leaf) -and
+        -not (Test-Path -LiteralPath $mDir -PathType Leaf)) {
+      $res.reason = 'no plugin.json or .kimi-plugin\plugin.json in ' + $SourceRoot
+      return $res
+    }
+
+    $managedDir  = Join-Path (Join-Path $KimiHome 'plugins') 'managed'
+    $managedRoot = Join-Path $managedDir $PluginId
+    New-Item -ItemType Directory -Force -Path $managedDir | Out-Null
+
+    # Stage then swap, the way the CLI does: a half-copied plugin tree left in
+    # place by an interrupted copy would load as a broken plugin.
+    $staging = Join-Path $managedDir ($PluginId + '-staging-' + (Get-Date -Format 'yyyyMMddHHmmssfff'))
+    Copy-Item -LiteralPath $SourceRoot -Destination $staging -Recurse -Force
+    if (Test-Path -LiteralPath $managedRoot) {
+      Remove-Item -LiteralPath $managedRoot -Recurse -Force
+    }
+    Move-Item -LiteralPath $staging -Destination $managedRoot -Force
+    $res.root = $managedRoot
+
+    # Merge into installed.json, preserving every other plugin's entry as-is.
+    $store = Join-Path (Join-Path $KimiHome 'plugins') 'installed.json'
+    $plugins = @()
+    if (Test-Path -LiteralPath $store -PathType Leaf) {
+      $existing = $null
+      try {
+        $existing = ([IO.File]::ReadAllText($store)) | ConvertFrom-Json
+      } catch {
+        Copy-Item -LiteralPath $store -Destination ($store + '.bad-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
+        Write-V5Warn ('Kimi installed.json was unparseable - kept a copy and rebuilt it')
+      }
+      if ($existing -and $existing.plugins) {
+        foreach ($p in @($existing.plugins)) {
+          if ($p.id -eq $PluginId) { continue }   # replaced below
+          $keep = [ordered]@{}
+          foreach ($prop in $p.PSObject.Properties) { $keep[$prop.Name] = $prop.Value }
+          $plugins += ,$keep
+        }
+      }
+    }
+
+    $now = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffZ')
+    $entry = [ordered]@{
+      id          = $PluginId
+      root        = $managedRoot
+      source      = 'local-path'
+      enabled     = $true
+      installedAt = $now
+      updatedAt   = $now
+    }
+    $plugins += ,$entry
+
+    $doc = [ordered]@{ version = 1; plugins = $plugins }
+    $json = $doc | ConvertTo-Json -Depth 12
+    $enc = New-Object System.Text.UTF8Encoding($false)
+    New-Item -ItemType Directory -Force -Path (Split-Path $store -Parent) | Out-Null
+    $tmp = $store + '.tmp'
+    [IO.File]::WriteAllText($tmp, $json, $enc)
+    if (Test-Path -LiteralPath $store) { Remove-Item -LiteralPath $store -Force }
+    Move-Item -LiteralPath $tmp -Destination $store -Force
+
+    $res.ok = $true
+    $res.status = 'installed'
+    return $res
+  } catch {
+    $res.reason = $_.Exception.Message
+    return $res
+  }
+}
+
+function Restore-V5HermesPluginScan {
+  <#
+  Undo the temporary scan_on_install override once the bundled plugins are in.
+
+  Turning Hermes' install-time security scanner off permanently would weaken
+  every FUTURE third-party plugin the operator installs, which is not ours to
+  decide - Hermes treats plugin loading as an explicit trust boundary. So the
+  override is scoped to our own install window and removed here.
+
+  This removes a single line rather than restoring a snapshot of the file: the
+  Hermes gateway re-serializes config.yaml on its own schedule (observed ~13
+  min after start), so a whole-file restore taken before the install would
+  clobber whatever the gateway legitimately wrote in between.
+
+  $State is the string returned by Set-V5HermesPluginScanOff. When it reports
+  'already-present' the operator had their own setting and it is left alone.
+
+  Returns 'removed' | 'kept-user-setting' | 'absent' | 'failed'.
+  #>
+  param([string]$ConfigPath, [string]$State)
+  try {
+    if ($State -eq 'already-present') {
+      Write-V5Ok 'Hermes config: scan_on_install was the operator''s own setting - left as-is'
+      return 'kept-user-setting'
+    }
+    if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) { return 'absent' }
+    $text = [IO.File]::ReadAllText($ConfigPath)
+    $nl = "`r`n"
+    if ($text -notmatch "`r`n") { $nl = "`n" }
+    $lines = @($text -split "?
+")
+    $keep = @()
+    $dropped = 0
+    $inPlugins = $false
+    foreach ($line in $lines) {
+      if ($line -match '^plugins\s*:') { $inPlugins = $true; $keep += $line; continue }
+      if ($inPlugins -and $line -match '^\S') { $inPlugins = $false }
+      if ($inPlugins -and $line -match '^\s+scan_on_install\s*:\s*false\s*$') { $dropped++; continue }
+      $keep += $line
+    }
+    if ($dropped -eq 0) {
+      Write-V5Ok 'Hermes config: no scan_on_install override left to remove'
+      return 'absent'
+    }
+    Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
+    $enc = New-Object System.Text.UTF8Encoding($false)
+    [IO.File]::WriteAllText($ConfigPath, ($keep -join $nl), $enc)
+    Write-V5Ok 'Hermes config: scan_on_install override removed - plugin scanning is back on'
+    return 'removed'
+  } catch {
+    Write-V5Warn ('Hermes scan_on_install restore failed: ' + $_.Exception.Message)
+    return 'failed'
+  }
+}
+
+function Add-V5MarketplacePluginEntry {
+  <#
+  Idempotently add a plugin entry to a marketplace.json, preserving the
+  file's own style: existing newline convention, 2-space indentation (entry
+  object at 4, fields at 6, matching the canonical ultimate-bundle manifest),
+  UTF-8 no BOM. This is a TEXT insertion because PS 5.1's ConvertTo-Json
+  emits CRLF with 4-space indents and would reformat the whole file.
+
+  The edit is validated (re-parse + entry present) BEFORE anything is
+  written; the original is backed up to marketplace.json.bak-<ts>.
+  Returns $true when the entry is present at the end (already or added).
+  #>
+  param(
+    [string]$ManifestPath,
+    [string]$EntryName,
+    [string]$EntryDescription,
+    [string]$EntrySource,
+    [string]$EntryCategory
+  )
+  if (-not (Test-Path -LiteralPath $ManifestPath -PathType Leaf)) { return $false }
+  $text = [IO.File]::ReadAllText($ManifestPath)
+  if ($text -match ('"name"\s*:\s*"' + [regex]::Escape($EntryName) + '"')) { return $true }
+  try { $parsed = $text | ConvertFrom-Json } catch {
+    Write-V5Warn ('marketplace manifest is not valid JSON - left untouched: ' + $ManifestPath)
+    return $false
+  }
+  if (-not $parsed -or -not $parsed.plugins) {
+    Write-V5Warn ('marketplace manifest has no plugins array - left untouched: ' + $ManifestPath)
+    return $false
+  }
+  $nl = "`n"
+  if ($text -match "`r`n") { $nl = "`r`n" }
+  $entry = '    {' + $nl +
+           '      "name": "' + $EntryName + '",' + $nl +
+           '      "description": "' + $EntryDescription + '",' + $nl +
+           '      "source": "' + $EntrySource + '",' + $nl +
+           '      "category": "' + $EntryCategory + '"' + $nl +
+           '    },'
+  $new = $null
+  $m = [regex]::Match($text, '"plugins"\s*:\s*\[\s*\r?\n')
+  if ($m.Success) {
+    # insert as the first element of the non-empty array
+    $idx = $m.Index + $m.Length
+    $new = $text.Substring(0, $idx) + $entry + $nl + $text.Substring($idx)
+  } else {
+    $m2 = [regex]::Match($text, '"plugins"\s*:\s*\[\s*\]')
+    if (-not $m2.Success) {
+      Write-V5Warn ('could not locate the plugins array in ' + $ManifestPath)
+      return $false
+    }
+    $replacement = '"plugins": [' + $nl + $entry.TrimEnd(',') + $nl + '  ]'
+    $new = $text.Substring(0, $m2.Index) + $replacement + $text.Substring($m2.Index + $m2.Length)
+  }
+  try {
+    $check = $new | ConvertFrom-Json
+    $found = $false
+    foreach ($pl in @($check.plugins)) { if ($pl.name -eq $EntryName) { $found = $true } }
+    if (-not $found) { throw 'entry missing after edit' }
+  } catch {
+    Write-V5Warn ('marketplace edit failed validation - file left untouched: ' + $_.Exception.Message)
+    return $false
+  }
+  Copy-Item -LiteralPath $ManifestPath -Destination ($ManifestPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
+  $enc = New-Object System.Text.UTF8Encoding($false)
+  [IO.File]::WriteAllText($ManifestPath, $new, $enc)
+  return $true
+}

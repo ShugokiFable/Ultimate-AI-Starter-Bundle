@@ -16,8 +16,8 @@
  },
  {
   "path": ".github/workflows/ci.yml",
-  "size": 2169,
-  "sha256": "a8771e0d73389465e43418951fc470f421f5d4522fa95e3f8e64f404a8a7589e"
+  "size": 2602,
+  "sha256": "2e8255e9d0258f2065e71ef5c9dcb1e08366c22b626badbd6bf761b733228cd6"
  },
  {
   "path": ".gitignore",
@@ -14107,7 +14107,7 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 13115,
-  "sha256": "79997af3f61a8a3669101dfe9fc3e833ae47719238ed40d74dff12bbdd776b69"
+  "sha256": "4611ddc325cc33ba330cb2c6e75e646c913115491e37f88e6f017217430db3c4"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15006,8 +15006,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/.hermes-plugin/__init__.py",
-  "size": 3937,
-  "sha256": "7fd93899e39371d56ba1e32660548673afa78f3a4a8bd306f93fbb418afa6f3c"
+  "size": 5291,
+  "sha256": "a14f8543a845640138c5d2c65f5931081b74bd85be6cf1d4a674fd7efe738c04"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/.hermes-plugin/plugin.yaml",
@@ -15911,8 +15911,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 21375,
-  "sha256": "8b9c124b708b4fb5c5216fc44b95e6188a89532a9f0cd958fe566ab9ab96554c"
+  "size": 23140,
+  "sha256": "2d99433c38715b0586b14031128dcb8a39a4a6637905335104eb1eea36ebc334"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -15980,11 +15980,6 @@
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
  },
  {
-  "path": "FINAL-AUDIT.md",
-  "size": 390,
-  "sha256": "57a29e0c88b8e24399fb76a5629fb102d1d8cacb7e76dd24699a845631c87648"
- },
- {
   "path": "GROK-MCP-TROUBLESHOOTING.md",
   "size": 10086,
   "sha256": "d91970dd3e26a767e908ed9e6651d19f762ca132d4b096ca51ba697dfb611a77"
@@ -16006,8 +16001,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 46259,
-  "sha256": "fd3c9e216a98f1ca6395e926ce40715327c2aa3c2575f3fce82977e48302a603"
+  "size": 72121,
+  "sha256": "3eb67d5e78ab12f823a789c941a0049dd3160e046bca122f33c7a6312b6477aa"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -16047,12 +16042,17 @@
  {
   "path": "README.md",
   "size": 26867,
-  "sha256": "0f3c76fcdacbde271ef35c2518694f71e36c4bf22fe0915601b77dc8b2a7bf78"
+  "sha256": "2994e96019de2a6d1784d998b3e4de253401641421d73b1b1f59e33268022e35"
  },
  {
   "path": "START-HERE.txt",
   "size": 8018,
-  "sha256": "6097932ecd090f4b779f6d23b99653c9cbaddd65f5ca625a9011bf07c45ee9e4"
+  "sha256": "34abc46800b483a61127d99c11f4ef6665190612ae27aca7a583a621a6446968"
+ },
+ {
+  "path": "TESTS/Test-HarnessRealization.ps1",
+  "size": 9274,
+  "sha256": "86cf84e6b164938cea17f5c182413672fc3c27e2b20ccdfb24df3d1a8f154f03"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -16065,9 +16065,19 @@
   "sha256": "4dbdded7c1147bd748439c1e71c2f7e6f9d5d04e0864cdec8af033d17fca2280"
  },
  {
+  "path": "TESTS/test_hermes_bootstrap.py",
+  "size": 2933,
+  "sha256": "00c4a1984d90be68c18f76ec446b201e2a5e262550c03acd90481c17870d595a"
+ },
+ {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
   "size": 9369,
   "sha256": "4b672416a686c8caf2feb4ef1c84ae07d733db0b70bfc995e7b35cba2cb347b0"
+ },
+ {
+  "path": "TOOLS/Build-Release.ps1",
+  "size": 6425,
+  "sha256": "680ffe68017eefec801be6e4073488b7a8c9682d42dcfa3b65272100d5599bb3"
  },
  {
   "path": "TOOLS/Build-Toolbelt.ps1",
@@ -16091,8 +16101,8 @@
  },
  {
   "path": "TOOLS/Install-Completeness-Gate.ps1",
-  "size": 14630,
-  "sha256": "632f0fe1a1bc6195e33722495d02141c4a3c6f2b8ce36bb662975b6ce6442872"
+  "size": 15711,
+  "sha256": "6e928ddae8b1f6a3677f14af930c068810f6f622ab92174206f51efb786b0f89"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -16126,8 +16136,8 @@
  },
  {
   "path": "TOOLS/V7-Common.ps1",
-  "size": 16140,
-  "sha256": "1591c04678df38efa0f1f6cf6cdb3a1a94aed4797547e228c9c740fdb6a07655"
+  "size": 37499,
+  "sha256": "9030f6c640dfc0213fe4877685d5d0c590a37460edd8f1af0432e7916f2418db"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -16237,12 +16247,12 @@
  {
   "path": "VALIDATION.json",
   "size": 1042,
-  "sha256": "2b8760ad97a0c1aa54e51b01f15c729da9ca82e0e45e7520d71011f8fbc55f3c"
+  "sha256": "1affb5380e1c69de2d9699a36a239c11df7f1a67c4c4548211d832cd5cdecc7c"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "15f91f629661eb08946ae18c9264bf0664c2ec58d987da9dcf8eba85b253fe6a"
+  "sha256": "0e64eeed4fe81459366f13016129a02a91042cf461b427985e0cbf899d419488"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -18720,6 +18730,11 @@
   "sha256": "c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade"
  },
  {
+  "path": "docs/history/FINAL-AUDIT-v5.0.0.md",
+  "size": 390,
+  "sha256": "57a29e0c88b8e24399fb76a5629fb102d1d8cacb7e76dd24699a845631c87648"
+ },
+ {
   "path": "docs/history/RELEASE-NOTES-v5.2.2.md",
   "size": 922,
   "sha256": "062daf2cf4c46b8d98faa97dc9b5c0d398337cdbd7098903b4c480a6860f5cd4"
@@ -18913,5 +18928,10 @@
   "path": "docs/history/V7.6.7-CHANGELOG.md",
   "size": 2085,
   "sha256": "1765951ef660ff59f8fda0e022921a98874509810b230d125a890a822f8d934a"
+ },
+ {
+  "path": "docs/history/V7.7.0-CHANGELOG.md",
+  "size": 9946,
+  "sha256": "1f9fef234323513963d0eb268fbcf3e22f59d7d895449c8fa9a60526b9479e9e"
  }
 ]

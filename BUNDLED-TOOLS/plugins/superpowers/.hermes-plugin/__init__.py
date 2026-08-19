@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from pathlib import Path
@@ -31,6 +32,22 @@ def _skills_dir() -> str:
         "`hermes plugins install obra/superpowers`."
     )
 
+
+def _history_has_marker(history) -> bool:
+    """True when BOOTSTRAP_MARKER is still somewhere in the conversation.
+
+    The history shape is not contractual -- dicts, objects and nested content
+    blocks have all been observed -- so this serialises defensively rather than
+    reaching for a particular key. A false negative costs one re-injection; a
+    crash here would take the whole plugin down.
+    """
+    if not history:
+        return False
+    try:
+        blob = json.dumps(history, default=str)
+    except Exception:
+        blob = str(history)
+    return BOOTSTRAP_MARKER in blob
 
 def _strip_frontmatter(content: str) -> str:
     match = re.match(r"^---\n[\s\S]*?\n---\n([\s\S]*)$", content)
@@ -98,6 +115,18 @@ def register(ctx):
         **kwargs,
     ):
         if is_first_turn:
+            return {"context": bootstrap}
+        # Re-inject after a compaction. Hermes compacts long sessions, and the
+        # bootstrap lives in the first turn's user message -- exactly the part
+        # a compaction summarises away. Without this the plugin injects once,
+        # the context is dropped mid-session, and the model quietly stops
+        # having superpowers for the rest of a long run.
+        if conversation_history is None:
+            # Shape not provided by this hermes build: cannot tell whether the
+            # bootstrap survived, and injecting every turn would burn tokens
+            # on every request. First-turn behaviour only.
+            return None
+        if not _history_has_marker(conversation_history):
             return {"context": bootstrap}
         return None
 
