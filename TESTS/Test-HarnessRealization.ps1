@@ -266,8 +266,12 @@ foreach ($prov in $Providers) {
     # Grok has no native ponytail today - the copies ARE the delivery path,
     # and calling them duplicates would argue for deleting the only working
     # copy of those skills.
+    # Grok Superpowers copies also stay on purpose: the TUI and agent Read
+    # ~/.grok/skills/<name>/SKILL.md. Removing them makes the skill "fail"
+    # with an empty error (verification-before-completion).
     $dupes = @()
     foreach ($id in @('superpowers', 'ponytail')) {
+      if ($prov -eq 'Grok' -and $id -eq 'superpowers') { continue }
       $entry = $null
       if ($pstateAll.ContainsKey($prov)) { $entry = $pstateAll[$prov][$id] }
       if (-not $entry) { continue }

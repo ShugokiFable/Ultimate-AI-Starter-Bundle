@@ -153,7 +153,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.7.4 - ALL-IN-ONE INSTALLER (no HOME overwrite, one Grok superpowers)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.7.5 - ALL-IN-ONE INSTALLER (Grok Superpowers copies stay)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -403,7 +403,11 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
           }
         }
         if ($spEntry.native) {
-          Invoke-V5SkillDedupe -Provider 'Grok' -PluginId 'superpowers' -SkillsDir $skillsDir -StateEntry $spEntry
+          # Keep the copies. Grok chats and slash commands load
+          # ~/.grok/skills/<name>/SKILL.md. Dedupe left that path missing, and
+          # the TUI reports the skill as failed with no reason
+          # (verification-before-completion, systematic-debugging, ...).
+          Write-V5Ok 'Grok: superpowers copies stay under ~/.grok/skills (TUI loads that path; plugin path is opaque)'
         }
       }
 
@@ -1327,7 +1331,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.7.4'
+  version = '7.7.5'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
