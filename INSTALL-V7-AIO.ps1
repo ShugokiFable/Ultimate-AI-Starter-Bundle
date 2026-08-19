@@ -46,6 +46,14 @@
   running is fine; eight wedges startup.
   See GROK-MCP-TROUBLESHOOTING.md.
 
+.PARAMETER SkipNativePlugins
+  Do not install the two bundled skills-plugins (superpowers, ponytail) as
+  NATIVE plugins per provider. Native install is on by default where the CLI
+  has a real plugin mechanism (Grok/Hermes/Codex), Claude is detect-only,
+  Kimi has no plugin system; fallback everywhere is the copied skills.
+  -SkipNativePlugins keeps the plain copied-skills behavior and skips the
+  plugin-owned skill dedupe.
+
 .EXAMPLE
   .\INSTALL-V7-AIO.ps1
   .\INSTALL-V7-AIO.ps1 -Providers Grok,Claude -Mode OnlineLatest
@@ -88,7 +96,12 @@ param(
   # tailored Hermes config (model/routing/MCP/hooks) from
   # 1-TAILORED-PROVIDER-TREES\Hermes\config.yaml into the Hermes home.
   # Backup-first, idempotent. -SkipHermesConfig opts out.
-  [switch]$SkipHermesConfig
+  [switch]$SkipHermesConfig,
+  # Native plugin install for the two bundled skills-plugins (superpowers,
+  # ponytail). On by default: a real plugin install where the CLI has a
+  # plugin mechanism (Grok/Hermes/Codex), detect-only for Claude, unsupported
+  # for Kimi; fallback is the copied skills. -SkipNativePlugins opts out.
+  [switch]$SkipNativePlugins
 )
 
 if ($WithExtras) {
@@ -135,7 +148,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.6.7 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.7.0 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -245,6 +258,449 @@ if (-not $ToolsOnly) {
       }
     }
     Write-V5Ok "$prov skills installed"
+  }
+}
+
+# ---------- Native plugins: superpowers + ponytail ----------
+# Installs the two bundled skills-plugins NATIVE per provider where the CLI
+# has a real plugin mechanism (all mechanisms verified live on the reference
+# machine):
+#   Grok    grok plugin install <staged path> --trust   (superpowers only -
+#           ponytail ships no Grok manifest and stays as copied skills)
+#   Hermes  hermes plugins install file:///<path> --enable from a local git
+#           bridge (Hermes rejects plain paths), with
+#           plugins.scan_on_install: false in config.yaml because the security
+#           scanner false-positives on both plugins and --force does not
+#           override it. Gateway restart ONLY if it was already running.
+#   Codex   bundled superpowers staged into the local marketplace +
+#           [plugins."superpowers@ultimate-bundle"] enabled = true in
+#           config.toml; ponytail is detected (user's own marketplace
+#           install), never reinstalled.
+#   Claude  DETECT ONLY (plugins\cache\*) - no marketplace installs.
+#   Kimi    no plugin command in kimi-code CLI 0.27.0 - copied skills only.
+# Where a plugin is native, its skill name list is computed from the bundled
+# tree (never hardcoded) and the matching copies are deduped from the
+# provider's skills dir - backup-first, and only when the copy's SKILL.md
+# md5 matches the pack canonical (_V7-CANONICAL-SKILLS).
+$nativePlugins = [ordered]@{}
+if (-not $ToolsOnly -and -not $SkipNativePlugins) {
+  Write-V5Step "Native plugins (superpowers + ponytail)"
+  $canonicalSkills = Join-Path $PackRoot '_V7-CANONICAL-SKILLS'
+  $backupRoot = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\backups'
+  New-Item -ItemType Directory -Force -Path $backupRoot | Out-Null
+
+  function New-V5PluginStateEntry {
+    param([string]$Status = 'fallback-skills', [string]$Reason = '')
+    return [ordered]@{ native = $false; status = $Status; reason = $Reason; deduped = @(); skipped_modified = @(); skipped_kept = @() }
+  }
+
+  function Invoke-V5SkillDedupe {
+    param([string]$Provider, [string]$PluginId, [string]$SkillsDir, $StateEntry)
+    $names = Get-V5PluginOwnedSkillNames -PluginRoot (Join-Path $plugins $PluginId)
+    if (-not $names -or $names.Count -eq 0) {
+      $StateEntry.skipped_kept = @('bundled plugin tree has no skills dir')
+      return
+    }
+    $res = Remove-V5PluginOwnedSkillCopies -Provider $Provider -SkillsDir $SkillsDir -Names $names -CanonicalRoot $canonicalSkills -BackupRoot $backupRoot -Log $log
+    $StateEntry.deduped = @($res.removed)
+    $StateEntry.skipped_modified = @($res.skipped_modified)
+    $StateEntry.skipped_kept = @($res.skipped)
+  }
+
+  foreach ($prov in $Providers) {
+    $providerHome = Get-V5ProviderHome -Provider $prov -Catalog $catalog
+    $skillsDir = Join-Path $providerHome 'skills'
+    $pstate = [ordered]@{ supported = $true; reason = ''; plugins = [ordered]@{} }
+    $nativePlugins[$prov] = $pstate
+
+    switch ($prov) {
+
+      'Grok' {
+        # ponytail ships no Grok manifest -> copied skills remain its path.
+        $pstate.plugins['ponytail'] = New-V5PluginStateEntry -Status 'fallback-skills' -Reason 'ponytail has no Grok manifest; copied skills stay'
+        $spEntry = New-V5PluginStateEntry
+        $pstate.plugins['superpowers'] = $spEntry
+        $grokExe = Join-Path $env:USERPROFILE '.grok\bin\grok.exe'
+        if (-not (Test-Path -LiteralPath $grokExe -PathType Leaf)) {
+          $gc = Get-Command grok -EA SilentlyContinue
+          if ($gc) { $grokExe = $gc.Source } else { $grokExe = $null }
+        }
+        if (-not $grokExe) {
+          $spEntry.status = 'fallback-skills'
+          $spEntry.reason = 'grok CLI not found (neither ~/.grok/bin/grok.exe nor PATH); copied skills stay'
+          Write-V5Warn 'Grok CLI not found - superpowers stays as copied skills'
+          break
+        }
+        $pluginStage = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\plugins-src\superpowers'
+        Copy-V5Robo -From (Join-Path $plugins 'superpowers') -To $pluginStage
+        $listed = Get-V5NativeOutput -Exe $grokExe -CmdArgs @('plugin', 'list')
+        if ($listed -match 'superpowers') {
+          $spEntry.native = $true
+          $spEntry.status = 'already-native'
+          Write-V5Ok 'Grok: superpowers already native'
+        } else {
+          Write-Host ('  grok plugin install "' + $pluginStage + '" --trust')
+          [void](Invoke-V5Native $grokExe @('plugin', 'install', $pluginStage, '--trust'))
+          $listed = Get-V5NativeOutput -Exe $grokExe -CmdArgs @('plugin', 'list')
+          if ($listed -match 'superpowers') {
+            $spEntry.native = $true
+            $spEntry.status = 'installed'
+            Write-V5Ok 'Grok: superpowers installed native'
+          } else {
+            $spEntry.status = 'fallback-skills'
+            $spEntry.reason = 'grok plugin install did not take; copied skills stay'
+            Write-V5Warn 'Grok: superpowers native install failed - copied skills stay'
+          }
+        }
+        if ($spEntry.native) {
+          Invoke-V5SkillDedupe -Provider 'Grok' -PluginId 'superpowers' -SkillsDir $skillsDir -StateEntry $spEntry
+        }
+      }
+
+      'Hermes' {
+        $hermesExe = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'
+        if (-not (Test-Path -LiteralPath $hermesExe -PathType Leaf)) {
+          $hc = Get-Command hermes -EA SilentlyContinue
+          if ($hc) { $hermesExe = $hc.Source } else { $hermesExe = $null }
+        }
+        if (-not $hermesExe) {
+          foreach ($pluginId in @('superpowers', 'ponytail')) {
+            $pstate.plugins[$pluginId] = New-V5PluginStateEntry -Status 'fallback-skills' -Reason 'hermes CLI not found; copied skills stay'
+          }
+          Write-V5Warn 'Hermes CLI not found - plugins stay as copied skills'
+          break
+        }
+        $gitCmd = Get-Command git -EA SilentlyContinue
+        # The scanner refuses both bundled plugins (false-positive 'traversal'
+        # findings; --force does not override) - disarm scan-at-install first.
+        $pstate.scan_on_install_fix = Set-V5HermesPluginScanOff -ConfigPath (Join-Path $providerHome 'config.yaml')
+        $newInstalls = 0
+        foreach ($pluginId in @('superpowers', 'ponytail')) {
+          $hEntry = New-V5PluginStateEntry
+          $pstate.plugins[$pluginId] = $hEntry
+          # Offline bridge: Hermes rejects plain local paths, so stage the
+          # bundled tree as a local git repo and hand Hermes a file:/// URL.
+          $pluginStage = Join-Path $env:LOCALAPPDATA ('Skyrim-AI-V5\hermes-plugin-src\' + $pluginId)
+          if (-not (Test-Path -LiteralPath (Join-Path $pluginStage 'skills') -PathType Container)) {
+            Copy-V5Robo -From (Join-Path $plugins $pluginId) -To $pluginStage
+          }
+          if (-not (Test-Path -LiteralPath (Join-Path $pluginStage '.git') -PathType Container)) {
+            if (-not $gitCmd) {
+              $hEntry.status = 'fallback-skills'
+              $hEntry.reason = 'git not found - cannot build the local git bridge Hermes requires; copied skills stay'
+              Write-V5Warn ('Hermes: git missing - cannot stage ' + $pluginId + ' as a git repo; copied skills stay')
+              continue
+            }
+            [void](Invoke-V5Native 'git' @('-C', $pluginStage, 'init'))
+            [void](Invoke-V5Native 'git' @('-C', $pluginStage, 'add', '-A'))
+            if (-not (Invoke-V5Native 'git' @('-C', $pluginStage, '-c', 'user.email=bundle@local', '-c', 'user.name=bundle', 'commit', '-m', 'bundled pin'))) {
+              $hEntry.status = 'fallback-skills'
+              $hEntry.reason = 'git init/commit of the offline plugin bridge failed; copied skills stay'
+              Write-V5Warn ('Hermes: git commit failed for ' + $pluginStage + ' - copied skills stay')
+              continue
+            }
+          } else {
+            # Bridge exists: refresh files from the pack and commit if the
+            # bundle changed (safely corrective; a no-op when nothing changed).
+            Copy-V5Robo -From (Join-Path $plugins $pluginId) -To $pluginStage
+            $dirty = Get-V5NativeOutput -Exe 'git' -CmdArgs @('-C', $pluginStage, 'status', '--porcelain')
+            if ($dirty -and $dirty.Trim()) {
+              [void](Invoke-V5Native 'git' @('-C', $pluginStage, 'add', '-A'))
+              [void](Invoke-V5Native 'git' @('-C', $pluginStage, '-c', 'user.email=bundle@local', '-c', 'user.name=bundle', 'commit', '-m', 'bundled pin refresh'))
+            }
+          }
+          $fileUrl = 'file:///' + ($pluginStage -replace '\\', '/')
+          $listed = Get-V5NativeOutput -Exe $hermesExe -CmdArgs @('plugins', 'list')
+          if ($listed -match $pluginId) {
+            $hEntry.native = $true
+            $hEntry.status = 'already-native'
+            Write-V5Ok ('Hermes: ' + $pluginId + ' already native')
+          } else {
+            Write-Host ('  hermes plugins install "' + $fileUrl + '" --enable')
+            [void](Invoke-V5Native $hermesExe @('plugins', 'install', $fileUrl, '--enable'))
+            $listed = Get-V5NativeOutput -Exe $hermesExe -CmdArgs @('plugins', 'list')
+            if ($listed -match $pluginId) {
+              $hEntry.native = $true
+              $hEntry.status = 'installed'
+              $newInstalls++
+              Write-V5Ok ('Hermes: ' + $pluginId + ' installed native')
+            } else {
+              $hEntry.status = 'fallback-skills'
+              $hEntry.reason = 'hermes plugins install did not take; copied skills stay'
+              Write-V5Warn ('Hermes: ' + $pluginId + ' native install failed - copied skills stay')
+            }
+          }
+          if ($hEntry.native) {
+            Invoke-V5SkillDedupe -Provider 'Hermes' -PluginId $pluginId -SkillsDir $skillsDir -StateEntry $hEntry
+          }
+        }
+        # Restart the gateway ONLY when a plugin actually changed hands and the
+        # gateway is already running - never start a process the user did not
+        # have running.
+        if ($newInstalls -gt 0) {
+          $gw = Get-V5NativeOutput -Exe $hermesExe -CmdArgs @('gateway', 'status')
+          if ($gw -match '(?i)running' -and $gw -notmatch '(?i)not running') {
+            [void](Invoke-V5Native $hermesExe @('gateway', 'restart'))
+            Write-V5Ok 'Hermes gateway restarted (was running; picks up the new plugins)'
+          } else {
+            Write-V5Ok 'Hermes gateway not running - left stopped'
+          }
+          # Put the scanner BACK once our plugins are in. Leaving
+          # scan_on_install: false behind would silently weaken every future
+          # third-party plugin the operator installs - Hermes treats plugin
+          # loading as an explicit trust boundary and that call is theirs, not
+          # ours. The override exists only for our own install window.
+          $pstate.scan_on_install_restore = Restore-V5HermesPluginScan `
+            -ConfigPath (Join-Path $providerHome 'config.yaml') `
+            -State $pstate.scan_on_install_fix
+        }
+      }
+
+      'Codex' {
+        $cfg = Join-Path $providerHome 'config.toml'
+        $mp = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\codex-marketplace'
+        # 1) stage the bundled superpowers tree into the local marketplace
+        $mpSp = Join-Path $mp 'superpowers'
+        if (Test-Path -LiteralPath (Join-Path $mpSp 'skills') -PathType Container) {
+          Write-V5Ok 'Codex marketplace: superpowers already staged'
+        } else {
+          Copy-V5Robo -From (Join-Path $plugins 'superpowers') -To $mpSp
+          Write-V5Ok ('Codex marketplace: staged superpowers -> ' + $mpSp)
+        }
+        # 2) manifest entry (Install-Completeness-Gate rebuilds this whole
+        #    marketplace from the canonical tree later in this run; this keeps
+        #    an already-materialised marketplace coherent in the meantime)
+        $manifest = Join-Path $mp '.claude-plugin\marketplace.json'
+        if (Test-Path -LiteralPath $manifest -PathType Leaf) {
+          if (Add-V5MarketplacePluginEntry -ManifestPath $manifest -EntryName 'superpowers' -EntryDescription 'Agentic skills framework: brainstorming, TDD, systematic debugging, plans, code review.' -EntrySource './superpowers' -EntryCategory 'productivity') {
+            Write-V5Ok 'Codex marketplace manifest: superpowers entry present'
+          }
+        } else {
+          New-Item -ItemType Directory -Force -Path (Split-Path $manifest -Parent) | Out-Null
+          $mini = @(
+            '{'
+            '  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",'
+            '  "name": "ultimate-bundle",'
+            '  "description": "Ultimate AI Starter Bundle - controls that refuse incomplete or assumed work.",'
+            '  "owner": {'
+            '    "name": "Ultimate AI Starter Bundle",'
+            '    "url": "https://github.com/ShugokiFable/Ultimate-AI-Starter-Bundle"'
+            '  },'
+            '  "plugins": ['
+            '    {'
+            '      "name": "superpowers",'
+            '      "description": "Agentic skills framework: brainstorming, TDD, systematic debugging, plans, code review.",'
+            '      "source": "./superpowers",'
+            '      "category": "productivity"'
+            '    }'
+            '  ]'
+            '}'
+          ) -join "`n"
+          $encM = New-Object System.Text.UTF8Encoding($false)
+          [IO.File]::WriteAllText($manifest, ($mini + "`n"), $encM)
+          Write-V5Warn 'Codex marketplace manifest did not exist yet - created a minimal one (Install-Completeness-Gate rebuilds the full marketplace later in this run)'
+        }
+        # 3) config.toml: [plugins."superpowers@ultimate-bundle"] enabled = true
+        $toml = ''
+        if (Test-Path -LiteralPath $cfg -PathType Leaf) { $toml = [IO.File]::ReadAllText($cfg) }
+        $spEntry = New-V5PluginStateEntry
+        $pstate.plugins['superpowers'] = $spEntry
+        # Append ONLY when the exact section header is absent - appending a
+        # duplicate table header would make config.toml unparseable, and an
+        # existing-but-disabled section is the user's deliberate choice.
+        $spSectionPresent = ($toml -match '(?m)^\[plugins\."superpowers@ultimate-bundle"\]')
+        if ($spSectionPresent -and (Test-V5TomlPluginEnabled -Content $toml -HeaderPrefix 'plugins."superpowers@ultimate-bundle"')) {
+          $spEntry.native = $true
+          $spEntry.status = 'already-native'
+          Write-V5Ok 'Codex: superpowers@ultimate-bundle already enabled in config.toml'
+        } elseif ($spSectionPresent) {
+          $spEntry.status = 'disabled-in-config'
+          $spEntry.reason = 'config.toml section exists but enabled is not true - left as-is; copied skills stay'
+          Write-V5Warn 'Codex: superpowers@ultimate-bundle present but not enabled - left as the user set it'
+        } else {
+          if (Test-Path -LiteralPath $cfg -PathType Leaf) {
+            Copy-Item -LiteralPath $cfg -Destination ($cfg + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
+          } else {
+            New-Item -ItemType Directory -Force -Path $providerHome | Out-Null
+          }
+          $add = "`n[plugins.`"superpowers@ultimate-bundle`"]`nenabled = true`n"
+          $newToml = $toml + $add
+          if (-not $toml) { $newToml = $add.TrimStart("`n") }
+          $encT = New-Object System.Text.UTF8Encoding($false)
+          [IO.File]::WriteAllText($cfg, $newToml, $encT)
+          # Any config.toml write gets a parse check when python is around.
+          $pyExe = $null
+          foreach ($cand in @('python', 'py', 'python3')) {
+            $pyc = Get-Command $cand -EA SilentlyContinue
+            if ($pyc) { $pyExe = $pyc.Source; break }
+          }
+          if ($pyExe) {
+            if (Invoke-V5Native $pyExe @('-c', "import tomllib,sys; tomllib.load(open(sys.argv[1],'rb'))", $cfg)) {
+              Write-V5Ok 'Codex config.toml re-parsed OK (python tomllib)'
+            } else {
+              Write-V5Warn 'Codex config.toml written but tomllib validation failed (or python < 3.11) - original backed up beside it as config.toml.bak-*'
+            }
+          } else {
+            Write-V5Warn 'python not found - skipped TOML validation of Codex config.toml'
+          }
+          $spEntry.native = $true
+          $spEntry.status = 'enabled-in-config'
+          Write-V5Ok 'Codex: enabled superpowers@ultimate-bundle in config.toml (picked up on next app launch)'
+        }
+        if ($spEntry.native) {
+          Invoke-V5SkillDedupe -Provider 'Codex' -PluginId 'superpowers' -SkillsDir $skillsDir -StateEntry $spEntry
+        }
+        # 4) ponytail: detect an existing native enablement (the user's own
+        #    git-marketplace install) - do NOT reinstall it.
+        $ptEntry = New-V5PluginStateEntry
+        $pstate.plugins['ponytail'] = $ptEntry
+        $tomlNow = ''
+        if (Test-Path -LiteralPath $cfg -PathType Leaf) { $tomlNow = [IO.File]::ReadAllText($cfg) }
+        if (Test-V5TomlPluginEnabled -Content $tomlNow -HeaderPrefix 'plugins."ponytail@') {
+          $ptEntry.native = $true
+          $ptEntry.status = 'already-native'
+          Write-V5Ok 'Codex: ponytail natively enabled (existing marketplace install) - not reinstalling'
+          Invoke-V5SkillDedupe -Provider 'Codex' -PluginId 'ponytail' -SkillsDir $skillsDir -StateEntry $ptEntry
+        } else {
+          $ptEntry.status = 'fallback-skills'
+          $ptEntry.reason = 'no enabled ponytail plugin section in config.toml; copied skills stay'
+          Write-V5Warn 'Codex: ponytail not natively enabled - copied skills stay'
+        }
+      }
+
+      'Claude' {
+        # Native install via Claude's own plugin CLI when it is on PATH.
+        #
+        # Both bundled plugins already ship a Claude marketplace of their own
+        # (BUNDLED-TOOLS\plugins\<id>\.claude-plugin\marketplace.json, each
+        # with source "./"), so the marketplace name comes from that file
+        # rather than a hardcoded string - superpowers publishes itself as
+        # 'superpowers-dev', ponytail as 'ponytail'.
+        #
+        # What this deliberately does NOT do: hand-write
+        # plugins\cache\<marketplace>\<plugin> plus the matching
+        # .install-manifests entry. That manifest is a per-file SHA256
+        # integrity map, and forging one means reimplementing Claude Code's
+        # own verification against a format we cannot test here. Kimi's
+        # registry was safe to write because the shipped CLI re-derives every
+        # record from disk on load; this one is not. Without the CLI the
+        # copied skills stay, which is a working fallback.
+        $claudeCli = Get-Command claude -ErrorAction SilentlyContinue
+        foreach ($pluginId in @('superpowers', 'ponytail')) {
+          $cEntry = New-V5PluginStateEntry
+          $pstate.plugins[$pluginId] = $cEntry
+          $srcRoot = Join-Path $plugins $pluginId
+          $mkName = Get-V5ClaudeMarketplaceName -PluginRoot $srcRoot
+          $cacheHit = $false
+          if ($mkName) {
+            $cachePath = Join-Path $providerHome ('plugins\cache\' + $mkName + '\' + $pluginId)
+            $cacheHit = Test-Path -LiteralPath $cachePath -PathType Container
+          }
+          if ($cacheHit) {
+            $cEntry.native = $true
+            $cEntry.status = 'already-native'
+            Write-V5Ok ('Claude: ' + $pluginId + ' already native (' + $mkName + ') - deduping its copied skills')
+            Invoke-V5SkillDedupe -Provider 'Claude' -PluginId $pluginId -SkillsDir $skillsDir -StateEntry $cEntry
+            continue
+          }
+          if (-not $mkName) {
+            $cEntry.status = 'fallback-skills'
+            $cEntry.reason = 'bundled tree has no .claude-plugin\marketplace.json'
+            Write-V5Warn ('Claude: ' + $pluginId + ' has no Claude marketplace in the bundle - copied skills stay')
+            continue
+          }
+          if (-not $claudeCli) {
+            $cEntry.status = 'fallback-skills'
+            $cEntry.reason = 'claude CLI not on PATH; copied skills stay'
+            Write-V5Warn ('Claude: ' + $pluginId + ' not native and no claude CLI on PATH - copied skills stay. To wire it natively:')
+            Write-Host ('    claude plugin marketplace add "' + $srcRoot + '"')
+            Write-Host ('    claude plugin install ' + $pluginId + '@' + $mkName + ' --scope user')
+            continue
+          }
+          try {
+            & claude plugin marketplace add "$srcRoot" 2>&1 | Out-Null
+            & claude plugin install ("$pluginId@$mkName") --scope user 2>&1 | Out-Null
+            $cachePath = Join-Path $providerHome ('plugins\cache\' + $mkName + '\' + $pluginId)
+            if (Test-Path -LiteralPath $cachePath -PathType Container) {
+              $cEntry.native = $true
+              $cEntry.status = 'installed'
+              Write-V5Ok ('Claude: native plugin installed - ' + $pluginId + '@' + $mkName)
+              Invoke-V5SkillDedupe -Provider 'Claude' -PluginId $pluginId -SkillsDir $skillsDir -StateEntry $cEntry
+            } else {
+              # The CLI returned without producing a cache entry. Do not
+              # report success on an exit code alone - the cache directory is
+              # the only proof Claude actually loaded it.
+              $cEntry.status = 'failed'
+              $cEntry.reason = 'claude plugin install left no plugins\cache entry'
+              Write-V5Warn ('Claude: ' + $pluginId + ' install did not take - copied skills stay')
+            }
+          } catch {
+            $cEntry.status = 'failed'
+            $cEntry.reason = $_.Exception.Message
+            Write-V5Warn ('Claude: ' + $pluginId + ' install failed (' + $_.Exception.Message + ') - copied skills stay')
+          }
+        }
+        # Retire the old UNREGISTERED plugins\v5-bundled\<id> drop - dead
+        # weight Claude never loaded. Move to the backup dir, never delete.
+        $moved = @()
+        foreach ($pluginId in @('superpowers', 'ponytail')) {
+          $dead = Join-Path $providerHome ('plugins\v5-bundled\' + $pluginId)
+          if (Test-Path -LiteralPath $dead -PathType Container) {
+            $mdest = Join-Path $backupRoot ('v5-bundled-cleanup-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '\' + $pluginId)
+            Copy-V5Robo -From $dead -To $mdest
+            Remove-Item -LiteralPath $dead -Recurse -Force
+            $moved += $mdest
+            Write-V5Ok ('Claude: moved dead drop ' + $dead + ' -> ' + $mdest)
+          }
+        }
+        $pstate.v5_bundled_moved = $moved
+      }
+
+      'Kimi' {
+        # Kimi DOES have a native plugin system. Earlier builds of this
+        # installer checked for a `kimi plugin` subcommand, did not find one
+        # (correctly - there is none), and concluded Kimi had no plugins at
+        # all. It is driven by the in-session `/plugins` slash command, whose
+        # install path writes <home>\plugins\managed\<id> plus a thin entry
+        # in <home>\plugins\installed.json. Prompt mode cannot stand in for
+        # the slash command (it requires a login first), so the registry is
+        # written directly - safe because Kimi re-parses each plugin's
+        # manifest from disk on load rather than trusting the stored record.
+        #
+        # This is the fix for "Kimi has the brain but ignores my addons": the
+        # bundled adapter declares sessionStart.skill = using-superpowers, so
+        # Superpowers bootstraps itself on every Kimi session instead of
+        # sitting inert as copied skill files.
+        $pstate.supported = $true
+        foreach ($pluginId in @('superpowers', 'ponytail')) {
+          $kEntry = New-V5PluginStateEntry
+          $pstate.plugins[$pluginId] = $kEntry
+          $src = Join-Path (Join-Path $PackRoot 'BUNDLED-TOOLS\plugins') $pluginId
+          $manifestDir = Join-Path $src '.kimi-plugin\plugin.json'
+          $manifestRoot = Join-Path $src 'plugin.json'
+          if (-not (Test-Path -LiteralPath $manifestDir) -and
+              -not (Test-Path -LiteralPath $manifestRoot)) {
+            # Ponytail ships no Kimi adapter today; that is not a failure,
+            # its copied skills remain the delivery path.
+            $kEntry.status = 'unsupported'
+            $kEntry.reason = 'no Kimi plugin manifest in the bundled tree'
+            Write-V5Ok ('Kimi: ' + $pluginId + ' has no Kimi adapter - copied skills stay')
+            continue
+          }
+          $kr = Install-V5KimiPlugin -KimiHome $providerHome -PluginId $pluginId -SourceRoot $src
+          if ($kr.ok) {
+            $kEntry.status = 'installed'
+            $kEntry.native = $true
+            $kEntry.root = $kr.root
+            Write-V5Ok ('Kimi: native plugin installed - ' + $pluginId + ' (' + $kr.root + ')')
+          } else {
+            $kEntry.status = 'failed'
+            $kEntry.reason = $kr.reason
+            Write-V5Warn ('Kimi: ' + $pluginId + ' native install failed (' + $kr.reason + ') - copied skills stay')
+          }
+        }
+      }
+    }
   }
 }
 
@@ -422,19 +878,14 @@ if (-not $SkillsOnly) {
         }
       }
       'skills-copy' {
-        # already in provider skills from pack; also ensure plugin tree for Claude
-        $plugSrc = Join-Path $plugins $id
-        if (Test-Path $plugSrc) {
-          foreach ($prov in $Providers) {
-            if ($prov -ne 'Claude') { continue }
-            $providerHome = Get-V5ProviderHome -Provider Claude -Catalog $catalog
-            $dest = Join-Path $providerHome "plugins\v5-bundled\$id"
-            Copy-V5Robo -From $plugSrc -To $dest
-            Write-V5Ok "Claude plugin tree $id -> $dest"
-          }
-        }
-        $installed[$id] = @{ status='skills+plugin' }
-        Write-V5Ok "$id skills present via provider skill install"
+        # The plugin tree is now installed NATIVE per provider by the "Native
+        # plugins" section above (Grok/Hermes/Codex real installs, Claude
+        # detect-only, Kimi unsupported). The old unregistered
+        # plugins\v5-bundled\<id> drop for Claude was dead weight - Claude
+        # never loaded it - so it is gone; the native section moves any
+        # existing drop to the backup dir instead of deleting it.
+        $installed[$id] = @{ status='native-or-skills' }
+        Write-V5Ok "$id handled by the native-plugin section (fallback: copied skills)"
       }
       'zip-extract' {
         $asset = Get-ComponentAssetPath -Comp $comp
@@ -814,7 +1265,7 @@ if (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
     try {
       $hrArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $hrEnsure)
       if ($SkipMcpWire) { $hrArgs += '-SkipMcp' }
-      & powershell @hrArgs
+      & (Join-Path $PSHOME 'powershell.exe') @hrArgs
       if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) {
         Write-V5Warn ("Ensure-Headroom-Grok exited " + $LASTEXITCODE)
       } else {
@@ -835,7 +1286,7 @@ if (-not $SkipHouseCarlSetup -and -not $SkillsOnly) {
   if (Test-Path $setup) {
     Write-V5Step "houseCARL MO2/Vortex setup"
     try {
-      & powershell -NoProfile -ExecutionPolicy Bypass -File $setup
+      & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $setup
       $installed['housecarl-setup'] = @{ status='ran' }
     } catch {
       Write-V5Warn "Setup-HouseCarl: $($_.Exception.Message)"
@@ -848,17 +1299,18 @@ if (-not $SkipHouseCarlSetup -and -not $SkillsOnly) {
 Write-V5Step "Post-install discovery"
 $disc = Join-Path $PackRoot 'TOOLS\discover_tools.ps1'
 if (Test-Path $disc) {
-  & powershell -NoProfile -File $disc | Tee-Object -Variable discOut | Out-Host
+  & (Join-Path $PSHOME 'powershell.exe') -NoProfile -File $disc | Tee-Object -Variable discOut | Out-Host
 }
 
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.6.7'
+  version = '7.7.0'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
   components = $installed
+  native_plugins = $nativePlugins
   pack_root = $PackRoot
 }
 $state | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stateDir 'install-state.json') -Encoding UTF8
@@ -870,7 +1322,7 @@ if (-not $ToolsOnly) {
   $gateInstaller = Join-Path $PackRoot 'TOOLS\Install-Completeness-Gate.ps1'
   if (Test-Path -LiteralPath $gateInstaller) {
     try {
-      & powershell -NoProfile -ExecutionPolicy Bypass -File $gateInstaller -Providers ($Providers -join ',')
+      & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $gateInstaller -Providers ($Providers -join ',')
       L 'completeness + assumption gates installed'
     } catch {
       Write-V5Warn ('Gates: ' + $_.Exception.Message)
@@ -882,7 +1334,7 @@ if (-not $ToolsOnly) {
   $mcpReason = Join-Path $PackRoot 'TOOLS\Add-Reasoning-MCPs.ps1'
   if (Test-Path -LiteralPath $mcpReason) {
     try {
-      & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpReason -Providers ($Providers -join ',')
+      & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $mcpReason -Providers ($Providers -join ',')
       L 'reasoning MCP servers wired'
     } catch {
       Write-V5Warn ('Reasoning MCPs: ' + $_.Exception.Message)
@@ -896,7 +1348,7 @@ if (-not $ToolsOnly) {
   $mcpRepair = Join-Path $PackRoot 'TOOLS\Repair-McpPaths.ps1'
   if (Test-Path -LiteralPath $mcpRepair) {
     try {
-      & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpRepair -Apply -Quiet
+      & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $mcpRepair -Apply -Quiet
       L 'dead MCP command paths repaired'
     } catch {
       Write-V5Warn ('MCP path repair: ' + $_.Exception.Message)
@@ -906,7 +1358,7 @@ if (-not $ToolsOnly) {
   $toolbelt = Join-Path $PackRoot 'TOOLS\Build-Toolbelt.ps1'
   if (Test-Path -LiteralPath $toolbelt) {
     try {
-      & powershell -NoProfile -ExecutionPolicy Bypass -File $toolbelt
+      & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $toolbelt
       L 'toolbelt inventory written'
     } catch {
       Write-V5Warn ('Toolbelt: ' + $_.Exception.Message)

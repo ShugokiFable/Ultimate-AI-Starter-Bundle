@@ -45,6 +45,14 @@ jobs:
           .\TESTS\Test-V7-Pack.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      # The Hermes bootstrap contract is pure python and has no provider
+      # dependency, so it runs here. Test-HarnessRealization.ps1 deliberately
+      # does not: it inspects real provider homes, which a runner has none of,
+      # and a version that "passes" on an empty machine would assert nothing.
+      - name: Hermes post-compaction bootstrap
+        shell: powershell
+        run: python TESTS/test_hermes_bootstrap.py
+
   manifest:
     name: MANIFEST verifies against the tree
     runs-on: windows-latest

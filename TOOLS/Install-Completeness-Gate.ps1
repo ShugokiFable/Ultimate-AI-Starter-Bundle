@@ -255,6 +255,17 @@ foreach ($p in $Providers) {
       $copied = @(Get-ChildItem -Recurse -File $marketRoot -ErrorAction SilentlyContinue).Count
       if ($copied -lt 4) { Write-Host "Codex   FAILED to materialise the plugin ($copied files)" -ForegroundColor Yellow; break }
 
+      # The marketplace manifest also lists superpowers (source ./superpowers),
+      # so the bundled plugin tree travels with it - Codex then enables
+      # superpowers natively instead of loading fourteen loose skill copies.
+      $spPluginSrc = Join-Path $PackRoot 'BUNDLED-TOOLS\plugins\superpowers'
+      if (Test-Path -LiteralPath $spPluginSrc) {
+        Copy-Item -Path $spPluginSrc -Destination (Join-Path $marketRoot 'superpowers') -Recurse -Force
+        Write-Host 'Codex   superpowers plugin staged into the marketplace'
+      } else {
+        Write-Host 'Codex   BUNDLED-TOOLS\plugins\superpowers missing from pack - manifest entry would dangle' -ForegroundColor Yellow
+      }
+
       $toml = [IO.File]::ReadAllText($cfg)
       $add = ''
       if ($toml -notmatch '(?m)^\[marketplaces\.ultimate-bundle\]') {
@@ -262,6 +273,11 @@ foreach ($p in $Providers) {
       }
       if ($toml -notmatch '(?m)^\[plugins\."completeness-gate@ultimate-bundle"\]') {
         $add += "`r`n[plugins.`"completeness-gate@ultimate-bundle`"]`r`nenabled = true`r`n"
+      }
+      # Same for superpowers - only when the staged tree is actually in place,
+      # so the manifest entry never dangles.
+      if (($toml -notmatch '(?m)^\[plugins\."superpowers@ultimate-bundle"\]') -and (Test-Path -LiteralPath (Join-Path $marketRoot 'superpowers') -PathType Container)) {
+        $add += "`r`n[plugins.`"superpowers@ultimate-bundle`"]`r`nenabled = true`r`n"
       }
       if ($add) {
         Copy-Item -LiteralPath $cfg -Destination "$cfg.bak-gate-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force

@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.6.7
+# Ultimate AI Starter Bundle v7.7.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -103,7 +103,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ## What gets installed
 
-- **Provider skills** — 88 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree
+- **Provider skills** — 87 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees

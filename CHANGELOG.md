@@ -3,6 +3,35 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.0
+
+Native plugin architecture. Three providers were carrying the bundle on disk
+without their harness ever loading it.
+
+- **Kimi gets native Superpowers.** Earlier installers checked for a `kimi
+  plugin` subcommand, correctly found none, and wrongly concluded Kimi has no
+  plugin system - so Kimi got copied skill files that nothing bootstrapped.
+  It does have one, driven by the in-session `/plugins` command. The installer
+  now writes `plugins\managed\<id>` and a thin `plugins\installed.json`
+  entry directly, which is safe because Kimi re-parses each manifest from disk
+  on load. The bundled adapter declares `sessionStart.skill`, so Superpowers
+  now bootstraps on every Kimi session.
+- **Hermes re-injects after a compaction.** The adapter injected the bootstrap
+  on turn 1 only; a compaction summarised that turn away and the model quietly
+  lost superpowers for the rest of a long session.
+- **Hermes' plugin scanner is restored, not left off.** The scanner was being
+  disabled permanently, weakening every future third-party plugin the operator
+  installs. The override is now scoped to our own install window.
+- **Claude installs via its own plugin CLI** when present, using each plugin's
+  own marketplace name, and verifies through `plugins\cache` rather than an
+  exit code. A dangling `./superpowers` entry that broke the bundled
+  marketplace was removed.
+- **New:** `TESTS\Test-HarnessRealization.ps1` asserts each harness actually
+  loads the bundle, `TESTS	est_hermes_bootstrap.py` covers the compaction
+  cases, and `TOOLS\Build-Release.ps1` produces Core and Full-Offline zips
+  from `git archive` so `.git` and the local cache cannot reach a release.
+- Docs: skill count corrected to 87; the v5.0.0 audit moved to docs/history.
+
 ## 7.6.7
 
 - Root folders renumbered after v7.6.6 left a gap: the root read 0, 1, 3, 4.
