@@ -20,7 +20,6 @@ import shutil
 import sys
 
 TAILORED = '1-RECOMMENDED-SEPARATE-TAILORED'
-GENERIC = '2-OPTIONAL-SHARED-GENERIC'
 PROVIDERS = ['Claude', 'Codex', 'Grok', 'Hermes', 'Kimi']
 REL = os.path.join('COPY-TO-SKILLS-DIRECTORY', 'skills')
 
@@ -84,8 +83,9 @@ def deploy(canon, dest, provider_tag, provider):
 def main():
     canon, root = sys.argv[1], sys.argv[2]
     total = 0
-    for family, tag_of in ((TAILORED, lambda p: p.lower()),
-                           (GENERIC, lambda p: 'shared-generic')):
+    # v7.6.6: the 2-OPTIONAL-SHARED-GENERIC tree was removed from the pack -
+    # 97% byte-identical to the tailored tree and never read by the installer.
+    for family, tag_of in ((TAILORED, lambda p: p.lower()),):
         for prov in PROVIDERS:
             dest = os.path.join(root, family, prov, REL)
             if not os.path.isdir(os.path.dirname(os.path.dirname(dest))):

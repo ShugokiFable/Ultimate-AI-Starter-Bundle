@@ -3,6 +3,34 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.6.6
+
+- `2-OPTIONAL-SHARED-GENERIC/` deleted (2,525 files, ~40 MB). The installer
+  has only ever read `1-RECOMMENDED-SEPARATE-TAILORED`, the two trees differed
+  in just 80 files out of ~2,500, and keeping both is exactly the drift risk
+  `fanout_providers.py` was written to eliminate. The fanout tool, the pack
+  gate and the layout docs now treat the tailored tree as the only one.
+- `0-UNRESTRAINT-PACKS` cleaned on operator request: retired-generation jails
+  removed (Claude 3.7/4, GPT-5/5.1/5.2, Gemini 2.5-era, Grok 3, the broken
+  H03-ny, the Ultra-GPT dead link farm), 25 byte-identical duplicates
+  collapsed to one canonical copy each (md5-verified before every deletion,
+  ~470 KB freed), the Gemini stub .md removed, its README's stale "February
+  2026" stamp corrected to the July 2026 its own table lists. Every
+  current-generation folder untouched; operator-added files untouched.
+- The housecarl skill's `.mcp.json` template removed from all 11 copies. It
+  referenced `${CLAUDE_PLUGIN_ROOT}/server/housecarl-mcp.exe`, which resolves
+  nowhere - inert today, a broken config the day any host starts honouring
+  in-skill MCP templates. Housecarl is wired by the installer into each
+  agent's real config; that path is unchanged.
+- Full MCP health sweep across all six agents (Claude, Codex, Kimi Code, Kimi
+  Work, Grok, Hermes): 42 configured servers, all verified launchable. One
+  real breakage found and fixed on the machine: Skyrim-Forge's venv
+  `skyrim_forge_local.pth` still pointed at the deleted 5.1.3 folder - the
+  upgrader never rewrites it - which is why Hermes kept parking
+  `skyrim-forge` ("No module named skyrim_forge"). Advisory only: the machine
+  PATH still names an uninstalled `C:\Program Files\nodejs`; npx resolves via
+  `hermes\node` instead.
+
 ## 7.6.5
 
 - A gate that can hang wedged the whole Grok session. `assumption_gate`'s

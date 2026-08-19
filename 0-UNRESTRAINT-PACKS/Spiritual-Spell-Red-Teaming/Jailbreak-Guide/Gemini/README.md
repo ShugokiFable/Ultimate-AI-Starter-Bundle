@@ -8,7 +8,7 @@
 
 Google's multimodal LLM platform. Frequent updates, massive context windows, free tier available via AI Studio. The **Gemini 3** family is the current generation, with **Gemini 3.1 Pro** (Feb 19, 2026) as the latest release.
 
-*Last updated: February 2026*
+*Last updated: July 2026*
 
 ---
 

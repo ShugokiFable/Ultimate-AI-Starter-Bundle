@@ -43,7 +43,9 @@ if (-not $py) {
     Bad 'python not found; skill audit skipped'
 } else {
     $trees = @(Join-Path $PackRoot '_V7-CANONICAL-SKILLS')
-    foreach ($fam in '1-RECOMMENDED-SEPARATE-TAILORED', '2-OPTIONAL-SHARED-GENERIC') {
+    # v7.6.6: only the tailored family remains; 2-OPTIONAL-SHARED-GENERIC was
+    # a 97%-identical duplicate the installer never read.
+    foreach ($fam in '1-RECOMMENDED-SEPARATE-TAILORED') {
         foreach ($prov in 'Claude', 'Codex', 'Grok', 'Hermes', 'Kimi') {
             $p = Join-Path $PackRoot "$fam\$prov\COPY-TO-SKILLS-DIRECTORY\skills"
             if (Test-Path $p) { $trees += $p }
