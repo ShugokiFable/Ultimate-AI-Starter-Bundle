@@ -21,8 +21,8 @@
  },
  {
   "path": ".gitignore",
-  "size": 686,
-  "sha256": "b786d46b96b0b6e8d4f38bf46c2b1e1592d4b8110f0cfe8c4d95c27d83c1a004"
+  "size": 742,
+  "sha256": "40dfefb925e7caa9044ec675ad9b9ad5fba6f85c28db69e78c04eff71ea215a8"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/AIO-Instruction-full.txt",
@@ -16076,8 +16076,8 @@
  },
  {
   "path": "TOOLS/Build-Release.ps1",
-  "size": 6765,
-  "sha256": "24f2a8a6d0cf8eea47aed5d7cba29ea72ab0914705e37f4f5ee48c03595cfff3"
+  "size": 7214,
+  "sha256": "139eb0a314ea2c88854e3da842681295d14216d2a155bac97205eae1ed825f8a"
  },
  {
   "path": "TOOLS/Build-Toolbelt.ps1",
@@ -18728,6 +18728,16 @@
   "path": "_V7-CANONICAL-SKILLS/writing-skills/testing-skills-with-subagents.md",
   "size": 12558,
   "sha256": "c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade"
+ },
+ {
+  "path": "dist/Ultimate-AI-Starter-Bundle-v7.7.0-Core.zip",
+  "size": 14642499,
+  "sha256": "ef0bdb1a2ce15d977510664a2a57f10723cc69e22588f06bf7db987fbf20e70a"
+ },
+ {
+  "path": "dist/Ultimate-AI-Starter-Bundle-v7.7.0-Full-Offline.zip",
+  "size": 151068100,
+  "sha256": "4e6e1c28ef773dec37b9f1970b67e29c21c0919150b1f580ea157a5b61739a2d"
  },
  {
   "path": "docs/history/FINAL-AUDIT-v5.0.0.md",
