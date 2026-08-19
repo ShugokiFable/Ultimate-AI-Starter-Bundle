@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.7.1",
- "generated": "2026-08-18",
- "base": "v7.6.6",
+ "version": "7.7.2",
+ "generated": "2026-08-19",
+ "base": "v7.7.1",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.6.7: Root folders renumbered after v7.6.6 left the root reading 0, 1, 3, 4. Now 0-UNRESTRAINT-PACKS, 1-TAILORED-PROVIDER-TREES (was 1-RECOMMENDED-SEPARATE-TAILORED - the 'recommended' half described a choice that no longer exists once the generic tree was deleted), 2-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK (was 3-), 3-PREAMBLES (was 4-). Every live reference updated in the same commit: installer, pack gate, fanout, manifest generator, .gitignore, BOOTSTRAP, guide, prompts, layout docs, the preambles' own README. Grep-verified zero live references to old names; historical changelogs keep the names that were true then. PACK GATE: PASS."
+ "notes": "v7.7.2: Grok MCP cliff guard in Ensure-Headroom-Grok.ps1 (never push past 7 configured / 6 while claude-mem mcp-search loads); mcp-search disabled for Grok via disabled_mcp_servers."
 }

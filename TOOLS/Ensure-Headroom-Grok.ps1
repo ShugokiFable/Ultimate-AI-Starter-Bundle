@@ -275,15 +275,17 @@ function Remove-OrphanHeadroomTasks {
 
 function Register-HeadroomMcp([string]$Hr) {
   # Cliff guard (GROK-MCP-TROUBLESHOOTING.md): 8 running MCP servers wedge Grok
-  # (7 fine, 8 never exits). Budget is 6 configured while an MCP-providing
-  # Claude plugin (claude-mem's mcp-search) is enabled. Never push Grok past 6.
+  # (7 fine, 8 never exits). Budget is 7 configured once claude-mem's mcp-search
+  # plugin server is disabled for Grok (`grok mcp disable mcp-search` -> the
+  # disabled_mcp_servers list in ~/.grok/config.toml), else 6 while it loads.
   $cfgPath = Join-Path $env:USERPROFILE '.grok\config.toml'
   if (Test-Path -LiteralPath $cfgPath) {
     $raw = Get-Content -LiteralPath $cfgPath -Raw -Encoding UTF8
     $configured = ([regex]::Matches($raw, '(?m)^\[mcp_servers\.')).Count
-    if ($configured -ge 6) {
-      Warn "Grok already has $configured configured MCP servers (cliff = 8 running; budget 6 with claude-mem enabled)."
-      Warn 'Skipping headroom registration - remove one server first, or headroom stays Hermes/Claude-only.'
+    $pluginActive = -not ($raw -match '(?m)^disabled_mcp_servers\s*=.*mcp-search')
+    if ($configured -ge 7 -or ($configured -ge 6 -and $pluginActive)) {
+      Warn "Grok already has $configured configured MCP servers; mcp-search plugin $((if($pluginActive){'ACTIVE'}else{'disabled'}))."
+      Warn 'Skipping headroom registration - headroom stays Hermes/Claude-only, or disable mcp-search with: grok mcp disable mcp-search'
       return
     }
   }

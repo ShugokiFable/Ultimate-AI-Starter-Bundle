@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.1
+# Ultimate AI Starter Bundle v7.7.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,14 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.7.2 — Grok MCP cliff guard
+
+`Ensure-Headroom-Grok.ps1` used to force headroom into `~/.grok/config.toml`;
+with 7 servers already configured plus claude-mem's `mcp-search` plugin
+server, Grok hit the documented 8-running-server wedge and stopped replying.
+The script now refuses to register past the cliff, and Grok users disable the
+plugin server with `grok mcp disable mcp-search` to free the slot.
 
 ### v7.6.7 — the root folders are numbered 0, 1, 2, 3 again
 - Deleting `2-OPTIONAL-SHARED-GENERIC` in v7.6.6 left the root numbered
@@ -537,7 +545,7 @@ registry.
 
 ## Version
 
-**v7.6.7** — 2026-08-19. Based on v7.6.6.
+**v7.7.2** — 2026-08-19. Based on v7.7.1.
 
 ## License
 
