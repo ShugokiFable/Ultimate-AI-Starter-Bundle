@@ -3,6 +3,16 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.5
+
+Grok Superpowers copies stay in `~/.grok/skills`.
+
+- **`verification-before-completion` "failed" with no reason.** Native-plugin
+  dedupe deleted `~/.grok/skills/verification-before-completion`. Grok chats
+  and slash commands load that path; the TUI reports a blank failure when it
+  is missing. Same for `systematic-debugging` and the rest of Superpowers.
+  Grok no longer runs that dedupe. Copies restored on the live machine.
+
 ## 7.7.4
 
 The AIO run that was supposed to finish 7.7.3 aborted starter settings and

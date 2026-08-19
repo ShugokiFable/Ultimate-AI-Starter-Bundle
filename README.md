@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.4
+# Ultimate AI Starter Bundle v7.7.5
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,12 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.7.5 — Grok Superpowers copies stay
+
+Native-plugin dedupe deleted `~/.grok/skills/verification-before-completion`.
+Grok loads that path; the TUI then shows the skill as failed with no
+reason. Copies stay. One Superpowers *plugin* is still required.
 
 ### v7.7.4 — Starter `$HOME` abort, one Grok Superpowers, no Claude skill leak
 
@@ -566,6 +572,8 @@ registry.
   and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.7.5** — 2026-08-19. Based on v7.7.4.
 
 **v7.7.4** — 2026-08-19. Based on v7.7.3.
 
