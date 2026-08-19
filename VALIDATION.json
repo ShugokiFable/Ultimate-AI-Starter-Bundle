@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.6.5",
+ "version": "7.6.6",
  "generated": "2026-08-18",
- "base": "v7.6.4",
+ "base": "v7.6.5",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.6.5: A gate that can hang wedged the whole Grok session. assumption_gate's drive check probed every letter A-Z with os.path.isdir, which blocks for seconds per letter on a sleeping or disconnected network drive, so the hook outlived Grok's 15s timeout - and Grok does not recover from killing a hook. The check now reads the GetLogicalDrives bitmask (measured 6ms, never touches a device; disconnected-but-mapped letters count as existing, the fail-open direction). Both gates also gained a hard watchdog: a daemon timer os._exit(0)s the process at 10s (pre) / 25s (stop), under every host's timeout (Grok/Claude/Codex 15/30, Hermes 20/40), so a host is never again forced to kill a hook. Verified: stdin held open forever -> gate exits at 2s; hung process under the watchdog pattern dies at budget; bad-drive command still denied; all four providers' wired commands exit 0. Fixed copies synced to the Skyrim-AI-V5 install root, the bundle's Codex plugin source, and Codex's live plugin cache. PACK GATE: PASS."
+ "notes": "v7.6.6: Operator-ordered tidy-up. 2-OPTIONAL-SHARED-GENERIC deleted (2,525 files, ~40 MB) - the installer only ever read 1-RECOMMENDED-SEPARATE-TAILORED and the trees differed in just 80 of ~2,500 files; fanout_providers.py, the pack gate and the layout docs now treat the tailored tree as the only one. 0-UNRESTRAINT-PACKS cleaned: retired-generation jails removed (Claude 3.7/4, GPT-5/5.1/5.2, Gemini 2.5-era, Grok 3, broken H03-ny, Ultra-GPT dead link farm), 25 md5-verified byte-identical duplicates collapsed to one canonical copy each (~470 KB freed), Gemini stub removed and its README stamp fixed; every current-generation folder and all operator-added files untouched. The housecarl skill's inert .mcp.json template (${CLAUDE_PLUGIN_ROOT}/server/... resolves nowhere) removed from all 11 copies - installer wiring is the real path and is unchanged. Six-agent MCP health sweep: 42 configured servers, all verified launchable; found and fixed Skyrim-Forge's venv .pth pointing at the deleted 5.1.3 folder (why Hermes kept parking skyrim-forge). Advisory: machine PATH still names uninstalled C:\\Program Files\\nodejs. PACK GATE: PASS."
 }

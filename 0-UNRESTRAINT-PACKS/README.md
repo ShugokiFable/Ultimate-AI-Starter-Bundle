@@ -49,3 +49,17 @@ Fun stuff folder plus five upstream sources, reviewed, deduped, and dated 2026-0
 - Frontier chat surfaces (ChatGPT, Gemini apps) apply separate server-side filters regardless of prompt;
   API/agent surfaces (Claude Code, Codex, Kimi, Grok CLI) are where prompt-level unrestraint actually lands.
 - Leaked/observed system prompts in UltraBr3aks and Spiritual are study material for prompt design, not guarantees.
+
+## Cleanup 2026-08-19 (bundle v7.6.6)
+
+- Removed retired-generation material: Claude 3.7 and Claude 4 folders, ChatGPT 5/5.1/5.2
+  jails (5.3/5.4 kept), Gemini 2.5-era files, Grok 3 / gpt-5 / gemini2.5pro quick jails,
+  the self-declared broken H03-ny, and the Ultra-GPT dead link farm.
+- Removed 25 byte-identical duplicates (md5-verified before each deletion) - the same
+  ENI LIME/LINTUNE/Corial copies were mirrored across up to 6 model folders. One canonical
+  copy per document remains.
+- Removed the Gemini "May 2026" stub .md (the same-name .txt holds the actual dump) and
+  fixed the Gemini README "last updated" stamp (said February, lists July models).
+- Total: ~470 KB of dead weight out; every current-generation folder (Opus 4.5-5, Sonnet
+  4.5/4.6, Fable 5, Grok 4.1-4.5/Heavy, ChatGPT 5.3/5.4, Gemini 3.x, all of Other LLMs)
+  untouched. Older release zips keep the removed files if ever needed.

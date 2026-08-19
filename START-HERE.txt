@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.6.5 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.6.6 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -131,6 +131,7 @@ process, no yes-man, verify-don't-assume).
 
 READ NEXT
 ---------
+  docs\history\V7.6.6-CHANGELOG.md  dead skill tree removed; unrestraint cleanup; MCP sweep
   docs\history\V7.6.5-CHANGELOG.md  hook hang stunlocked Grok: drive probe + hard watchdog
   docs\history\V7.6.4-CHANGELOG.md  Grok hooks parse error: PowerShell needs the & call operator
   docs\history\V7.6.2-CHANGELOG.md  repair-tool JSON escaping; first CI workflow

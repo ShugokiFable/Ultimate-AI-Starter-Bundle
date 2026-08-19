@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.6.5
+# Ultimate AI Starter Bundle v7.6.6
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -129,7 +129,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ```text
 1-RECOMMENDED-SEPARATE-TAILORED/   per-AI tailored skill trees
-2-OPTIONAL-SHARED-GENERIC/         shared generic trees
 BUNDLED-TOOLS/offline/             shipped tool zips/wheels
 BUNDLED-TOOLS/plugins/             Superpowers + Ponytail
 BUNDLED-TOOLS/CATALOG.json         component registry
@@ -243,6 +242,24 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.6.6 — dead trees, dead models, and a live MCP health sweep
+- `2-OPTIONAL-SHARED-GENERIC` is gone. The installer has only ever read
+  `1-RECOMMENDED-SEPARATE-TAILORED`, and the two trees were 97% byte-identical —
+  40 MB of duplication that only existed to drift. `fanout_providers.py`, the
+  pack gate and the layout docs now treat the tailored tree as the only one.
+- `0-UNRESTRAINT-PACKS` cleaned: retired-generation jails out (Claude 3.7/4,
+  GPT-5/5.1/5.2, Gemini 2.5-era, Grok 3), 25 md5-verified byte-identical
+  duplicates collapsed to one canonical copy each (~470 KB), stale "current
+  strongest" labels and a wrong "last updated" stamp fixed.
+- The housecarl skill's inert `.mcp.json` template (a `${CLAUDE_PLUGIN_ROOT}`
+  path that resolves nowhere) removed from all copies — the installer wires
+  housecarl into each agent's real config; the template was a trap.
+- Full MCP health sweep across all six agents: all 42 configured servers
+  verified launchable. Found and fixed on the machine: Skyrim-Forge's venv
+  `.pth` still pointed at the deleted 5.1.3 folder (its upgrader never updates
+  it), which is why Hermes kept parking `skyrim-forge`.
+- Full detail in `docs/history/V7.6.6-CHANGELOG.md`.
 
 ### v7.6.5 — a hook that can hang wedged the whole Grok session
 - `assumption_gate`'s drive check probed every letter A-Z with `os.path.isdir`.
@@ -509,7 +526,7 @@ registry.
 
 ## Version
 
-**v7.6.5** — 2026-08-18. Based on v7.6.4.
+**v7.6.6** — 2026-08-19. Based on v7.6.5.
 
 ## License
 
