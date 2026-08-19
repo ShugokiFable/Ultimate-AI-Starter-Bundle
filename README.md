@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.6.4
+# Ultimate AI Starter Bundle v7.6.5
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -243,6 +243,21 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.6.5 — a hook that can hang wedged the whole Grok session
+- `assumption_gate`'s drive check probed every letter A-Z with `os.path.isdir`.
+  A sleeping or disconnected network drive blocks that probe for *seconds per
+  letter* — so the hook outlived Grok's 15s timeout, and Grok wedges when it
+  has to kill a hook. Now reads the `GetLogicalDrives` bitmask (6ms, never
+  touches a device; disconnected-but-mapped letters count as existing, the
+  fail-open direction).
+- Both gates gained a hard watchdog: armed before anything else runs, the
+  process `os._exit(0)`s at 10s (pre) / 25s (stop) — under every host's
+  timeout (Grok/Claude/Codex 15/30, Hermes 20/40). Whatever hangs, the host
+  is never forced to kill the hook.
+- Verified: stdin held open forever -> gate exits at 2s; bad drive still
+  denied; all four providers' wired commands exit 0 with the fixed scripts.
+- Full detail in `docs/history/V7.6.5-CHANGELOG.md`.
 
 ### v7.6.4 — Grok hook errors on every tool use
 - Grok runs hook commands through PowerShell, and the gate installer wrote
@@ -494,7 +509,7 @@ registry.
 
 ## Version
 
-**v7.6.4** — 2026-08-18. Based on v7.6.3.
+**v7.6.5** — 2026-08-18. Based on v7.6.4.
 
 ## License
 

@@ -3,6 +3,28 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.6.5
+
+- A gate that can hang wedged the whole Grok session. `assumption_gate`'s
+  drive check probed every letter A-Z with `os.path.isdir`; a sleeping or
+  disconnected network drive blocks that probe for seconds per letter, so the
+  hook outlived Grok's 15s timeout - and Grok stays stuck when it has to kill
+  a hook. The check now reads the `GetLogicalDrives` bitmask: 6ms, never
+  touches a device, and disconnected-but-mapped letters count as existing,
+  which is the fail-open direction.
+- Both gates gained a hard watchdog: armed before anything else runs, a daemon
+  timer `os._exit(0)`s the process at 10s (`--pre`) / 25s (`--stop`) - under
+  every host's timeout (Grok/Claude/Codex 15/30, Hermes 20/40). Whatever else
+  hangs - a stalled git, a network drive, a pipe the host never closed - the
+  host is never again forced to kill the hook.
+- Verified, not assumed: stdin held open forever -> gate exits at 2s on its
+  own; a hung process under the same watchdog pattern dies at its budget; a
+  bad-drive command is still denied; all four providers' wired commands
+  (Grok's `&`-form, Claude's cmd form, Codex's bare python, Hermes's venv)
+  exit 0 with the fixed scripts. Fixed copies synced to the Skyrim-AI-V5
+  install root, the bundle's Codex plugin source, and Codex's live plugin
+  cache.
+
 ## 7.6.4
 
 - Grok failed every hook with `failed with exit code 1: At line:1 char:65`.
