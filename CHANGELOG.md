@@ -3,6 +3,16 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.2
+
+The Grok MCP cliff guard. `Ensure-Headroom-Grok.ps1` used to force headroom
+into `~/.grok/config.toml`; with 7 servers already configured plus
+claude-mem's `mcp-search` plugin server, Grok hit the documented
+8-running-server wedge and stopped replying. The script now refuses to
+register past the cliff (7 configured, or 6 while the plugin server loads),
+and the plugin server is disabled for Grok with `grok mcp disable mcp-search`
+so the slot stays free.
+
 ## 7.7.1
 
 The v7.7.0 release wired five providers and then shipped an installer that
