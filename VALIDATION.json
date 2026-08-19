@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.6.4",
+ "version": "7.6.5",
  "generated": "2026-08-18",
- "base": "v7.6.3",
+ "base": "v7.6.4",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.6.4: Grok failed every hook with 'failed with exit code 1: At line:1 char:65' - a PowerShell parse error, not a gate verdict. Grok executes hook commands through PowerShell, and the gate installer wrote cmd-style commands (\"python\" \"script.py\" --pre); a quoted command followed by arguments is invalid PowerShell without the call operator, and char 65 is where the second quoted string begins. Reproduced exactly before fixing. New-HookBlock gained a -CallOperator switch that prefixes commands with '& '; only the Grok branch sets it, because cmd.exe (Claude Code's shell) chokes on a leading '&'. Codex's plugin hooks.json uses bare python \"...\" which parses in both shells and is untouched. All four wired commands (2 gates x pre/stop) verified to parse and exit 0 in the exact form Grok receives. Live ~/.grok/hooks/ultimate-bundle.json rewritten and repointed at the stable WindowsApps python instead of the daimon managed venv. PACK GATE: PASS."
+ "notes": "v7.6.5: A gate that can hang wedged the whole Grok session. assumption_gate's drive check probed every letter A-Z with os.path.isdir, which blocks for seconds per letter on a sleeping or disconnected network drive, so the hook outlived Grok's 15s timeout - and Grok does not recover from killing a hook. The check now reads the GetLogicalDrives bitmask (measured 6ms, never touches a device; disconnected-but-mapped letters count as existing, the fail-open direction). Both gates also gained a hard watchdog: a daemon timer os._exit(0)s the process at 10s (pre) / 25s (stop), under every host's timeout (Grok/Claude/Codex 15/30, Hermes 20/40), so a host is never again forced to kill a hook. Verified: stdin held open forever -> gate exits at 2s; hung process under the watchdog pattern dies at budget; bad-drive command still denied; all four providers' wired commands exit 0. Fixed copies synced to the Skyrim-AI-V5 install root, the bundle's Codex plugin source, and Codex's live plugin cache. PACK GATE: PASS."
 }

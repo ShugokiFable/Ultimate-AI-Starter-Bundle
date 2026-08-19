@@ -143,6 +143,14 @@ def mentions_version(path: Path, version: str) -> bool:
 
 
 def uncommitted_code(root: Path) -> list[str]:
+    """Code changes that will NOT be in the commit being made.
+
+    Porcelain status is two columns, XY: X is index-vs-HEAD, Y is
+    worktree-vs-index. A staged file with a clean worktree (Y == ' ') is going
+    into the very next commit, so it is not missing from the release -- and
+    flagging it blocks the commit that completes the release. Only unstaged
+    work (Y != ' ') is genuinely being left behind.
+    """
     out = run(["git", "status", "--porcelain"], root)
     dirty = []
     for line in out.splitlines():
@@ -151,6 +159,11 @@ def uncommitted_code(root: Path) -> list[str]:
         status, name = line[:2], line[3:].strip().strip('"')
         if status == "??":
             continue
+        if status[1] == " ":
+            continue
+        # Renames render as "old -> new"; judge the destination path.
+        if " -> " in name:
+            name = name.split(" -> ", 1)[1]
         if Path(name).suffix.lower() in CODE_SUFFIXES:
             dirty.append(name)
     return dirty
@@ -330,6 +343,25 @@ def selftest() -> int:
         if findings(tmp):
             print("FAIL: ordinary work must never trigger the gate"); ok = False
 
+        # Arm the gate again, then stage a code change. Staged work IS the
+        # commit being made, so the gate must stay silent -- otherwise it
+        # blocks the very commit that completes the release.
+        (tmp / "VERSION.txt").write_text("Thing 1.2.0\n", encoding="utf-8")
+        (tmp / "CHANGELOG.md").write_text(
+            "# Changelog\n\n## 1.2.0\n- y\n\n## 1.1.0\n- x\n\n## 1.0.0\n- first\n", encoding="utf-8")
+        (tmp / "README.md").write_text("# Thing 1.2.0\n", encoding="utf-8")
+        run(["git", "add", "-A"], tmp)
+        run(["git", "commit", "-qm", "bump 1.2.0"], tmp)
+        (tmp / "app.py").write_text("x = 3\n", encoding="utf-8")
+        run(["git", "add", "app.py"], tmp)
+        if any("uncommitted source" in p for p in findings(tmp)):
+            print("FAIL: staged code is in the commit being made, not missing from it"); ok = False
+
+        # Genuinely unstaged work must still be caught.
+        (tmp / "app.py").write_text("x = 4\n", encoding="utf-8")
+        if not any("uncommitted source" in p for p in findings(tmp)):
+            print("FAIL: unstaged code change must still be reported"); ok = False
+
         # Not a repo at all.
         plain = Path(tempfile.mkdtemp(prefix="gate-plain-"))
         try:
@@ -365,6 +397,16 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    # Hard watchdog, armed before anything else runs. Some hosts (Grok) wedge
+    # the whole session when they have to kill a hook at the host timeout, so
+    # this process must never be alive to be killed: whatever hangs - a stalled
+    # git, a network drive, a pipe the host never closed - the process exits
+    # quietly first. Budgets sit under every host's timeout (Grok/Claude/Codex
+    # allow 15s pre / 30s stop, Hermes 20/40).
+    _budget = 120 if "--selftest" in sys.argv else (25 if "--stop" in sys.argv else 10)
+    _watchdog = threading.Timer(_budget, os._exit, args=(0,))
+    _watchdog.daemon = True
+    _watchdog.start()
     try:
         _code = main()
     except SystemExit as _exc:

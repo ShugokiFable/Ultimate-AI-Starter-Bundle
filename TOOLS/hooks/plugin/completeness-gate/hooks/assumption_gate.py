@@ -101,15 +101,24 @@ def is_template(name: str) -> bool:
 
 
 def existing_drives() -> set[str]:
-    """Drive letters that actually exist. Empty set disables the check."""
+    """Drive letters that actually exist. Empty set disables the check.
+
+    GetLogicalDrives reads a bitmask the session already holds - it never
+    touches a device. The old code probed every letter with os.path.isdir,
+    which blocks for seconds per letter on a sleeping or disconnected network
+    drive (a mapped backup NAS is the common case). That is exactly how a
+    hook outlives the host's timeout, and Grok wedges the session when it has
+    to kill a hook. Disconnected-but-mapped letters still appear in the
+    bitmask, which is the fail-open direction: treat them as existing.
+    """
     if os.name != "nt":
         return set()
-    found = set()
-    for code in range(ord("A"), ord("Z") + 1):
-        letter = chr(code)
-        if os.path.isdir(letter + ":\\"):
-            found.add(letter)
-    return found
+    try:
+        import ctypes
+        mask = ctypes.windll.kernel32.GetLogicalDrives()
+    except Exception:
+        return set()
+    return {chr(ord("A") + i) for i in range(26) if mask & (1 << i)}
 
 
 def local_users() -> set[str]:
@@ -440,6 +449,16 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    # Hard watchdog, armed before anything else runs. Some hosts (Grok) wedge
+    # the whole session when they have to kill a hook at the host timeout, so
+    # this process must never be alive to be killed: whatever hangs - a stalled
+    # git, a network drive, a pipe the host never closed - the process exits
+    # quietly first. Budgets sit under every host's timeout (Grok/Claude/Codex
+    # allow 15s pre / 30s stop, Hermes 20/40).
+    _budget = 120 if "--selftest" in sys.argv else (25 if "--stop" in sys.argv else 10)
+    _watchdog = threading.Timer(_budget, os._exit, args=(0,))
+    _watchdog.daemon = True
+    _watchdog.start()
     try:
         _code = main()
     except SystemExit as _exc:

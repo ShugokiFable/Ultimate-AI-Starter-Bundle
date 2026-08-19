@@ -135,7 +135,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.6.4 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.6.5 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -751,7 +751,8 @@ if (-not $SkipGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Provid
   $grokCfgNow = Join-Path $env:USERPROFILE '.grok\config.toml'
   $grokNow = 0
   if (Test-Path -LiteralPath $grokCfgNow) {
-    $grokNow = ([regex]::Matches(([IO.File]::ReadAllText($grokCfgNow)), '(?m)^[ 	]*\[mcp_servers\.[A-Za-z0-9_-]+\][ 	]*$')).Count
+    $grokNow = ([regex]::Matches(([IO.File]::ReadAllText($grokCfgNow)), '(?m)^[ 	]*\[mcp_servers\.[A-Za-z0-9_-]+\][ 	
+]*$')).Count
   }
   $forgeAlready = $grokNow -gt 0 -and ([IO.File]::ReadAllText($grokCfgNow)) -match '(?m)^[ 	]*\[mcp_servers\.skyrim-forge\]'
   if ((Test-Path $forgeInst) -and -not $forgeAlready -and $grokNow -ge $GrokMcpBudget) {
@@ -853,7 +854,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.6.4'
+  version = '7.6.5'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers

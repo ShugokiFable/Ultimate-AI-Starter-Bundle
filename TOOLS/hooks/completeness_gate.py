@@ -397,6 +397,16 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    # Hard watchdog, armed before anything else runs. Some hosts (Grok) wedge
+    # the whole session when they have to kill a hook at the host timeout, so
+    # this process must never be alive to be killed: whatever hangs - a stalled
+    # git, a network drive, a pipe the host never closed - the process exits
+    # quietly first. Budgets sit under every host's timeout (Grok/Claude/Codex
+    # allow 15s pre / 30s stop, Hermes 20/40).
+    _budget = 120 if "--selftest" in sys.argv else (25 if "--stop" in sys.argv else 10)
+    _watchdog = threading.Timer(_budget, os._exit, args=(0,))
+    _watchdog.daemon = True
+    _watchdog.start()
     try:
         _code = main()
     except SystemExit as _exc:
