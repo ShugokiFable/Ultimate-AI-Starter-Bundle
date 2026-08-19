@@ -3,6 +3,21 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.6.7
+
+- Root folders renumbered after v7.6.6 left a gap: the root read 0, 1, 3, 4.
+  Now `0-UNRESTRAINT-PACKS`, `1-TAILORED-PROVIDER-TREES`,
+  `2-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK`, `3-PREAMBLES`.
+- `1-RECOMMENDED-SEPARATE-TAILORED` renamed to `1-TAILORED-PROVIDER-TREES`:
+  with the generic tree deleted, the "recommended" half of the name described
+  a choice that no longer exists.
+- Every live reference updated in the same commit - installer (3 sites), pack
+  gate (5), fanout tool, manifest generator, .gitignore, BOOTSTRAP.txt,
+  V7-AIO-GUIDE.md, PROMPTS/README.md, START-HERE.txt, README layout, the
+  preambles' own README. Verified by grep: zero live references to any old
+  name outside historical changelogs, which keep the names that were true
+  when written.
+
 ## 7.6.6
 
 - `2-OPTIONAL-SHARED-GENERIC/` deleted (2,525 files, ~40 MB). The installer

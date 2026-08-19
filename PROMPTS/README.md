@@ -17,6 +17,6 @@ lists, and performer aliases were not copied.
 SillyTavern presets stay in the operator's own prompt folder. Do not merge
 those jails into Claude, Grok, Codex, Kimi, or Hermes system instructions.
 
-`4-PREAMBLES/` (v7.5.0) holds the operator's SOUL config and the web-UI
+`3-PREAMBLES/` (v7.5.0) holds the operator's SOUL config and the web-UI
 manual-paste file; the installer wires `SOUL.md` + the root operating
-contract into every provider instruction file. See `4-PREAMBLES/README.md`.
+contract into every provider instruction file. See `3-PREAMBLES/README.md`.

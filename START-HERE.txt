@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.6.6 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.6.7 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -121,9 +121,9 @@ Idempotent, backup-first. Opt out with INSTALL-V7-AIO.ps1 -SkipPreamble.
 
 Web UIs (ChatGPT/Gemini) have no instruction file - paste
 
-    4-PREAMBLES\MANUAL-PASTE.txt
+    3-PREAMBLES\MANUAL-PASTE.txt
 
-into the custom-instructions box. See 4-PREAMBLES\README.md for the full map.
+into the custom-instructions box. See 3-PREAMBLES\README.md for the full map.
 
 The pack-root AIO-INSTRUCTION.txt is the operating contract (truth-seeking
 process, no yes-man, verify-don't-assume).
@@ -131,6 +131,7 @@ process, no yes-man, verify-don't-assume).
 
 READ NEXT
 ---------
+  docs\history\V7.6.7-CHANGELOG.md  root folders renumbered 0-1-2-3; names say what they are
   docs\history\V7.6.6-CHANGELOG.md  dead skill tree removed; unrestraint cleanup; MCP sweep
   docs\history\V7.6.5-CHANGELOG.md  hook hang stunlocked Grok: drive probe + hard watchdog
   docs\history\V7.6.4-CHANGELOG.md  Grok hooks parse error: PowerShell needs the & call operator

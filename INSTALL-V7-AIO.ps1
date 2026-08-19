@@ -86,7 +86,7 @@ param(
   [switch]$ForcePreamble,
   # Hermes config.yaml wiring (v7.5.5). On by default: copies the operator's
   # tailored Hermes config (model/routing/MCP/hooks) from
-  # 1-RECOMMENDED-SEPARATE-TAILORED\Hermes\config.yaml into the Hermes home.
+  # 1-TAILORED-PROVIDER-TREES\Hermes\config.yaml into the Hermes home.
   # Backup-first, idempotent. -SkipHermesConfig opts out.
   [switch]$SkipHermesConfig
 )
@@ -135,7 +135,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.6.6 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.6.7 - ALL-IN-ONE INSTALLER (Headroom MCP-only for Grok)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -219,7 +219,7 @@ function Get-ComponentAssetPath {
 # ---------- Skills ----------
 if (-not $ToolsOnly) {
   Write-V5Step "Installing provider skills"
-  $tailored = Join-Path $PackRoot '1-RECOMMENDED-SEPARATE-TAILORED'
+  $tailored = Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES'
   foreach ($prov in $Providers) {
     $srcSkills = Join-Path $tailored "$prov\COPY-TO-SKILLS-DIRECTORY\skills"
     if (-not (Test-Path $srcSkills)) { Write-V5Bad "Missing $srcSkills"; continue }
@@ -254,7 +254,7 @@ if (-not $ToolsOnly) {
 # marked block instead of stacking copies; every write gets a .bak first.
 if (-not $ToolsOnly -and -not $SkipPreamble) {
   Write-V5Step "SOUL + AIO preamble wiring"
-  $preDir = Join-Path $PackRoot '4-PREAMBLES'
+  $preDir = Join-Path $PackRoot '3-PREAMBLES'
   # One soul source for every provider. Until v7.6.2 there were two files -
   # SOUL.md opened with 'You are Hermes Agent' and SOUL-UNIVERSAL.md was the
   # de-branded copy. v7.6.0 genericised SOUL.md itself (a provider identity
@@ -290,7 +290,7 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
     if (-not $instName) { $instName = 'AGENTS.md' }
     $target = Join-Path (Get-V5ProviderHome -Provider $prov -Catalog $catalog) $instName
     if (-not (Test-Path -LiteralPath $soulF) -or -not (Test-Path -LiteralPath $aioF)) {
-      Write-V5Warn ("$prov preamble skipped: 4-PREAMBLES or AIO-INSTRUCTION.txt missing")
+      Write-V5Warn ("$prov preamble skipped: 3-PREAMBLES or AIO-INSTRUCTION.txt missing")
       continue
     }
     try {
@@ -306,7 +306,7 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
 # the Hermes home. Backup-first, idempotent - same pattern as the SOUL wiring.
 if (-not $ToolsOnly -and -not $SkipHermesConfig -and $Providers -contains 'Hermes') {
   Write-V5Step "Hermes config.yaml wiring"
-  $hCfgSrc = Join-Path $PackRoot '1-RECOMMENDED-SEPARATE-TAILORED\Hermes\config.yaml'
+  $hCfgSrc = Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\Hermes\config.yaml'
   if (-not (Test-Path -LiteralPath $hCfgSrc)) {
     Write-V5Warn "Hermes config.yaml skipped: $hCfgSrc missing"
   } else {
@@ -854,7 +854,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.6.6'
+  version = '7.6.7'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -928,7 +928,7 @@ Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -Refre
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
 Write-Host '  6. Optional Forge: set SKYRIM_FORGE_ROOT or skill INSTALLATION.json'
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
-Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 4-PREAMBLES\MANUAL-PASTE.txt.'
+Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Codex: approve the one-time plugin trust prompt. Hermes: hermes --accept-hooks once.'
 Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'

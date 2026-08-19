@@ -48,7 +48,7 @@ do not ask me to run anything you can run yourself.
      python TOOLS\audit_skills.py "%USERPROFILE%\.claude\skills"
      powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V7-Pack.ps1
 
-5. Read AIO-INSTRUCTION.txt and 4-PREAMBLES\README.md and follow the rules
+5. Read AIO-INSTRUCTION.txt and 3-PREAMBLES\README.md and follow the rules
    for the rest of this session. This machine was just configured with the
    SOUL + AIO preamble, so the rules are already in effect - behave that way
    from the start, including this session.
@@ -63,5 +63,5 @@ me, say so explicitly instead of quietly leaving it undone.
 
 WHAT YOU STILL HAVE TO DO YOURSELF
 - Fully restart each AI app afterwards. Skills and hooks load at startup.
-- Web UIs (ChatGPT/Gemini): paste 4-PREAMBLES\MANUAL-PASTE.txt into the
+- Web UIs (ChatGPT/Gemini): paste 3-PREAMBLES\MANUAL-PASTE.txt into the
   custom-instructions box. That one is a UI field, so no agent can do it.

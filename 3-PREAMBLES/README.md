@@ -1,4 +1,4 @@
-# 4-PREAMBLES — SOUL + AIO for every agent
+# 3-PREAMBLES — SOUL + AIO for every agent
 
 The universal preamble section (new in v7.5.0). One install wires the same
 SOUL and the same operating contract into every supported agent, so a fresh
@@ -49,7 +49,7 @@ Rules:
 # on Windows PowerShell 5.1 Get-Content without -Encoding decodes using the
 # ANSI codepage, so every em dash in the soul comes back as mojibake.
 $root = (Get-Location).Path
-$soul = [IO.File]::ReadAllText((Join-Path $root "4-PREAMBLES\SOUL.md"))
+$soul = [IO.File]::ReadAllText((Join-Path $root "3-PREAMBLES\SOUL.md"))
 $aio  = [IO.File]::ReadAllText((Join-Path $root "AIO-INSTRUCTION.txt"))
 $dst  = Join-Path $env:USERPROFILE ".claude\CLAUDE.md"
 $utf8 = New-Object System.Text.UTF8Encoding $false   # $false = no BOM

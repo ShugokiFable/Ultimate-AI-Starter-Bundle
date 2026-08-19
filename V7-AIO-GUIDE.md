@@ -20,7 +20,7 @@ then:           restart AI apps  →  ask a load-order question
 
 Both installers wire the SOUL + AIO preamble into every provider's
 instruction file automatically (v7.5.0). Web UIs without an instruction file
-get `4-PREAMBLES\MANUAL-PASTE.txt` pasted by hand.
+get `3-PREAMBLES\MANUAL-PASTE.txt` pasted by hand.
 
 ## AI agent path (when something is missing)
 
