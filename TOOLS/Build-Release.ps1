@@ -50,6 +50,8 @@ $Forbidden = @(
   'node_modules', '__pycache__', '.venv', 'venv',
   'INSTALLATION.json'
 )
+# Bare .env only. `.env.example` is an upstream template that ships on
+# purpose (ponytail has one) and carries no secrets.
 $ForbiddenLeaf = @('.env', '.env.local', 'INSTALLATION.json')
 
 function Fail([string]$m) { Write-Host "  FAIL  $m" -ForegroundColor Red; exit 1 }
@@ -72,7 +74,12 @@ try {
   }
   Ok 'working tree clean'
 
-  $staging = Join-Path ([IO.Path]::GetTempPath()) ('uasb-stage-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+  # The staging directory's NAME becomes the zip's single top-level folder
+  # (CreateFromDirectory with includeBaseDirectory). Name it what the operator
+  # should see after extracting - a random temp name would ship as
+  # 'uasb-stage-c7a366c0/'.
+  $stageParent = Join-Path ([IO.Path]::GetTempPath()) ('uasb-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+  $staging = Join-Path $stageParent "Ultimate-AI-Starter-Bundle-$version"
   New-Item -ItemType Directory -Force -Path $staging | Out-Null
 
   Step 'Staging from git archive HEAD'
@@ -152,7 +159,7 @@ the same tree with this folder populated.
     Ok ("{0}  ({1:N1} MB)" -f (Split-Path $z -Leaf), ($n / 1MB))
   }
 
-  Remove-Item -LiteralPath $staging -Recurse -Force
+  Remove-Item -LiteralPath $stageParent -Recurse -Force
   Step 'Done'
   Get-ChildItem -LiteralPath $OutDir -Filter '*.zip' | ForEach-Object {
     Write-Host ("  {0,-52} {1,8:N1} MB" -f $_.Name, ($_.Length / 1MB))
