@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skyrim Forge Coordinate-Free UI Automation Job",
+  "type": "object",
+  "required": ["schema", "job_id", "application", "expected_process", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "skyrim-forge-ui/1"},
+    "job_id": {"type": "string"},
+    "application": {"type": "string"},
+    "expected_process": {"type": "string"},
+    "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 3600},
+    "steps": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["action"],
+        "additionalProperties": false,
+        "properties": {
+          "action": {"enum": ["wait_window", "invoke", "select", "set_value", "read_text", "screenshot", "close_window"]},
+          "window_title": {"type": "string"},
+          "automation_id": {"type": "string"},
+          "name": {"type": "string"},
+          "value": {"type": "string"},
+          "expected": {"type": "string"},
+          "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 600}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skyrim Forge External Worker Job",
+  "type": "object",
+  "required": [
+    "schema",
+    "job_id",
+    "worker_type",
+    "operation"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "skyrim-forge-external-worker/1"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "worker_type": {
+      "enum": [
+        "loot",
+        "wrye_bash",
+        "creation_kit",
+        "asset",
+        "animation",
+        "bodyslide",
+        "lod",
+        "grass_cache",
+        "synthesis",
+        "audio"
+      ]
+    },
+    "operation": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "options": {
+      "type": "object"
+    },
+    "output_dir": {
+      "type": "string"
+    }
+  }
+}

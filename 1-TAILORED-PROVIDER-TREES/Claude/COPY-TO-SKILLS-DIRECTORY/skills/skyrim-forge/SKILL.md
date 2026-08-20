@@ -3,7 +3,7 @@ name: skyrim-forge
 description: Use when Skyrim mod development or validation can benefit from the bundle-managed Skyrim Forge typed automation broker.
 ---
 
-# Skyrim Forge 5.x
+# Skyrim Forge 6.0
 
 ## Resolve this installation
 
@@ -20,14 +20,18 @@ If the descriptor is unavailable, resolve Forge in this order:
 
 Never assume a drive letter or reconstruct the application elsewhere.
 Never treat `Documents\SkyrimForge` or `Documents\Skyrim Forge` as the live
-product. The live install is `SKYRIM_FORGE_ROOT`, a versioned
-`Skyrim-Forge-<version>` folder under the user's Skyrim tools directory.
+product. The bundle-managed live install is the versionless `Skyrim-Forge`
+directory named by `SKYRIM_FORGE_ROOT`; upgrades replace the application source
+in place while preserving the managed workspace/runtime state. Do not reconstruct
+a version-stamped install path.
 
-For bundle v7.8.x, require the Forge 5.2.x bundle contract to report compatible before work (`python -m skyrim_forge bundle-contract --bundle-version 7.8.0`). Claude Code 2026-07-28 still requires `tools/call` to include `resultType: "complete"`. Do not add Forge as a new Grok MCP server when
+Forge 6 ships in the same repository as this bundle, so there is no cross-product
+version handshake. Run `forge doctor` (or the exact descriptor CLI argv plus
+`doctor`) and require `result: PASS` and `read_only_ready: true` before major
+work. Claude Code 2026-07-28 still requires `tools/call` to include
+`resultType: "complete"`. Do not add Forge as a new Grok MCP server when
 Grok already sits on the 8-running-server cliff (7 configured, or 6 while
 `mcp-search` still loads).
-
-Run `forge doctor` before major Skyrim work.
 
 ## Venv health (Windows) — the provider-runtime trap
 
@@ -127,7 +131,7 @@ Never call a mod Nexus-compliant merely because its files compile or lint. The r
 
 ---
 
-## V5 portable discovery
+## Portable discovery
 
 1. Read `INSTALLATION.json` beside this skill when present (per-machine; do not ship secrets).
 2. Else `$env:SKYRIM_FORGE_ROOT`.
@@ -135,4 +139,4 @@ Never call a mod Nexus-compliant merely because its files compile or lint. The r
 4. Else user path.
 5. Else, when working from the bundle, run `TOOLS/Install-SkyrimForge.ps1`; do not invent a manual extraction path.
 
-After a v7.8.x AIO install, missing/incompatible Forge is a failed installation state, not a successful optional skip. Outside the bundle, report Forge as unavailable rather than inventing paths.
+After a bundle-managed install, missing or unhealthy Forge is a failed installation state, not a successful optional skip. Outside the bundle, report Forge as unavailable rather than inventing paths.

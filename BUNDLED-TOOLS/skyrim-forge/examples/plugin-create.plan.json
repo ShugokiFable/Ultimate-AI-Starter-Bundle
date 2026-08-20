@@ -1,0 +1,32 @@
+{
+  "schema": "skyrim-forge-plugin-plan/1",
+  "output": "Forge Example Patch.esp",
+  "plugin_type": "espfe",
+  "masters": [
+    "Skyrim.esm"
+  ],
+  "author": "Skyrim Forge",
+  "description": "Typed example containing new records only.",
+  "operations": [
+    {
+      "record": "KYWD",
+      "editor_id": "ForgeExampleKeyword"
+    },
+    {
+      "record": "GLOB",
+      "editor_id": "ForgeExampleGlobal",
+      "type": "f",
+      "value": 1.0
+    },
+    {
+      "record": "FLST",
+      "editor_id": "ForgeExampleFormList",
+      "forms": []
+    },
+    {
+      "record": "OTFT",
+      "editor_id": "ForgeExampleOutfit",
+      "forms": []
+    }
+  ]
+}

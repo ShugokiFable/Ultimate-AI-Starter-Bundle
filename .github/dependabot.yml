@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: {interval: weekly}
+    # codeql-action/init and codeql-action/analyze must run the SAME release.
+    # Ungrouped, Dependabot raises one PR per action, so each PR bumps half the
+    # pair and CodeQL fails with "Loaded a configuration file for version X, but
+    # running version Y". Grouping makes the pair move in a single commit.
+    groups:
+      codeql-action:
+        patterns: ["github/codeql-action*"]
+      actions:
+        patterns: ["actions/*"]
+  - package-ecosystem: gomod
+    directory: /BUNDLED-TOOLS/skyrim-forge/writer/native-go
+    schedule: {interval: monthly}

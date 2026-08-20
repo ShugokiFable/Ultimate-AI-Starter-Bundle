@@ -7,7 +7,7 @@ Each ZIP is CRC-tested, extracted under a path containing spaces + Unicode, and
 hashed with SHA256 before success is reported.
 """
 from __future__ import annotations
-import argparse, hashlib, json, os, shutil, tempfile, zipfile
+import argparse, hashlib, json, os, re, shutil, tempfile, zipfile
 from pathlib import Path, PurePosixPath
 
 FIXED_TIME=(2026,8,20,0,0,0)
@@ -20,13 +20,15 @@ def _prefix(root:Path)->str:
 EXCLUDE_PARTS={'.git','.worktrees','.venv','venv','__pycache__','node_modules','.pytest_cache','.mypy_cache','.ruff_cache','.tox','.nox','htmlcov','cache','dist','artifacts'}
 EXCLUDE_SUFFIXES={'.pyc','.pyo','.log'}
 EXCLUDE_NAMES={'INSTALLATION.json','.DS_Store','.coverage','coverage.xml'}
-# Derived, never restated: whichever Skyrim-Forge-x.y.z.zip is in the tree is
-# the required payload. 7.8.0 named it in four separate literals, so bumping
-# Forge meant remembering all four.
-def _required_forge(root:Path)->str:
-    hits=sorted((root/'BUNDLED-TOOLS'/'offline').glob('Skyrim-Forge-*.zip'))
-    if not hits: raise SystemExit('BUNDLED-TOOLS/offline/Skyrim-Forge-*.zip is missing; Core and Full both require it')
-    return hits[-1].name
+# Forge is not an offline payload any more. Its source lives in the tree at
+# BUNDLED-TOOLS/skyrim-forge, so BOTH variants carry it without a special case,
+# and there is no archive whose version could disagree with the installer.
+FORGE_SOURCE=PurePosixPath('BUNDLED-TOOLS/skyrim-forge')
+def _forge_version(root:Path)->str:
+    text=(root/FORGE_SOURCE/'VERSION.txt').read_text(encoding='utf-8-sig')
+    match=re.search(r'(?m)^Skyrim Forge\s+(\d+\.\d+\.\d+)\s*$',text)
+    if not match: raise SystemExit(f'{FORGE_SOURCE}/VERSION.txt declares no version')
+    return match.group(1)
 
 def excluded(rel:Path)->bool:
     if any(part in EXCLUDE_PARTS for part in rel.parts): return True
@@ -36,10 +38,13 @@ def excluded(rel:Path)->bool:
     return False
 
 CORE_NOTE=(
-    'Core release: most vendored offline tool payloads are omitted.\n'
-    'The required Forge compatibility payload is retained; other components\n'
-    'are downloaded automatically when absent. For network-free installation, use\n'
-    'the Full-Offline archive.\n'
+    'Core release: the vendored third-party offline payloads are omitted and\n'
+    'downloaded by the installer when absent. For network-free installation,\n'
+    'use the Full-Offline archive.\n'
+    '\n'
+    'Skyrim Forge is NOT one of those payloads and is present in full: its\n'
+    'source ships in BUNDLED-TOOLS/skyrim-forge and is built here, not\n'
+    'downloaded.\n'
 ).encode('utf-8')
 
 def files(root:Path, core:bool):
@@ -47,12 +52,11 @@ def files(root:Path, core:bool):
         if not p.is_file(): continue
         rel=p.relative_to(root)
         if excluded(rel): continue
+        # Core drops every vendored third-party payload; the installer's
+        # BundledFirst online fallback fetches them. Forge is unaffected --
+        # it is source in the tree, not an archive in offline/.
         if core and len(rel.parts)>=2 and rel.parts[0]=='BUNDLED-TOOLS' and rel.parts[1]=='offline':
-            # The required Forge payload is bundle-managed and not reconstructible
-            # from the older public upstream release. Core keeps it; other payloads
-            # can be fetched by the installer's BundledFirst online fallback.
-            if rel.name != _required_forge(root):
-                continue
+            continue
         yield p,rel
 
 def _row(rel:Path,data:bytes)->dict[str,object]:
@@ -65,12 +69,12 @@ def _core_offline_manifest_bytes(root:Path)->bytes:
     # contract run FROM the extracted Core failed on exactly that, while the
     # same suite passed on Full. Rewrite it to describe Core.
     m=json.loads((root/'BUNDLED-TOOLS'/'OFFLINE-MANIFEST.json').read_text(encoding='utf-8-sig'))
-    keep=_required_forge(root)
-    m['assets']=[a for a in m.get('assets',[]) if a.get('file')==keep]
+    m['assets']=[]
     m['variant']='Core'
-    m['note']=('Core ships only the required Forge payload. Every other component is '
-               'downloaded by the installer when absent; the Full-Offline archive '
-               'carries them all for network-free installation.')
+    m['note']=('Core ships no vendored payloads; the installer downloads each component '
+               'when absent, and the Full-Offline archive carries them all for '
+               'network-free installation. Skyrim Forge is not listed here in either '
+               'variant: it is source in BUNDLED-TOOLS/skyrim-forge, not a payload.')
     return (json.dumps(m,indent=2)+'\n').encode('utf-8')
 
 def _core_overrides(root:Path)->dict[str,bytes]:
@@ -91,10 +95,20 @@ def _core_manifest_bytes(root:Path)->bytes:
     rows.sort(key=lambda r:str(r['path']))
     return (json.dumps(rows,indent=1)+'\n').encode('utf-8')
 
+def _archive_mode(rel:Path)->int:
+    # ZIPs created on Windows do not preserve POSIX execute bits. The merged
+    # Forge tree carries a published Linux helper that repository validation
+    # executes after extraction, so encode that portable contract explicitly.
+    posix=rel.as_posix()
+    if posix.endswith('/writer/published/linux-x64/SkyrimForge.Native'):
+        return 0o100755
+    return 0o100644
+
 def _write(z:zipfile.ZipFile,prefix:str,rel:Path,data:bytes)->None:
     zi=zipfile.ZipInfo(str(PurePosixPath(prefix)/PurePosixPath(rel.as_posix())),FIXED_TIME)
     zi.compress_type=zipfile.ZIP_DEFLATED; zi.flag_bits |= 0x800
-    zi.external_attr=(0o100644 & 0xFFFF)<<16
+    zi.create_system=3
+    zi.external_attr=(_archive_mode(rel) & 0xFFFF)<<16
     z.writestr(zi,data,compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
 
 def build(root:Path,out:Path,core:bool)->None:
@@ -124,10 +138,15 @@ def verify(path:Path,root:Path)->None:
             top=Path(td)/_prefix(root)
             for rel in ('START-HERE.bat','INSTALL-V7-AIO.ps1','BUNDLED-TOOLS/CATALOG.json','VERSION.txt'):
                 if not (top/rel).is_file(): raise RuntimeError(f'extracted required file missing: {rel}')
-            # Both variants must carry a Forge payload. Check the EXTRACTED tree,
-            # not the source: that is the copy the user actually receives.
-            if not sorted((top/'BUNDLED-TOOLS'/'offline').glob('Skyrim-Forge-*.zip')):
-                raise RuntimeError('extracted archive has no BUNDLED-TOOLS/offline/Skyrim-Forge-*.zip')
+            # Both variants must carry buildable Forge source. Check the EXTRACTED
+            # tree, not the source: that is the copy the user actually receives.
+            forge=top/FORGE_SOURCE
+            for rel in ('VERSION.txt','Install-or-Update.ps1','skyrim_forge/__init__.py'):
+                if not (forge/rel).is_file():
+                    raise RuntimeError(f'extracted archive has no {FORGE_SOURCE}/{rel}')
+            extracted=re.search(r'(?m)^Skyrim Forge\s+(\d+\.\d+\.\d+)\s*$',(forge/'VERSION.txt').read_text(encoding='utf-8-sig'))
+            if not extracted or extracted.group(1)!=_forge_version(root):
+                raise RuntimeError('extracted Forge source is not the version this tree ships')
             if (top/'VERSION.txt').read_text(encoding='utf-8-sig').strip().lstrip('vV')!=_pack_version(root):
                 raise RuntimeError('extracted VERSION.txt does not match the archive name')
             manifest=top/'MANIFEST.json'

@@ -1,0 +1,449 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/skyrim-forge/fomod-plan.schema.json",
+  "title": "Skyrim Forge FOMOD Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "module"
+  ],
+  "properties": {
+    "schema": {
+      "const": "skyrim-forge-fomod-plan/1"
+    },
+    "strict_coverage": {
+      "type": "boolean",
+      "default": true
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "author": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "machine_version": {
+          "type": "string",
+          "pattern": "^[0-9]+(?:\\.[0-9]+)*$"
+        },
+        "description": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "id": {
+          "type": "string"
+        },
+        "category_id": {
+          "type": "string"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "name_position": {
+          "enum": [
+            "Left",
+            "Right",
+            "RightOfImage"
+          ]
+        },
+        "name_colour": {
+          "type": "string",
+          "pattern": "^#?[0-9A-Fa-f]{6}$"
+        },
+        "image_show": {
+          "type": "boolean"
+        },
+        "image_fade": {
+          "type": "boolean"
+        },
+        "image_height": {
+          "type": "integer",
+          "minimum": -1
+        }
+      }
+    },
+    "module_dependencies": {
+      "$ref": "#/$defs/dependency"
+    },
+    "required_files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mapping"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "groups"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "visible": {
+            "$ref": "#/$defs/dependency"
+          },
+          "groups_order": {
+            "$ref": "#/$defs/order"
+          },
+          "groups": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "type",
+                "plugins"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "enum": [
+                    "SelectExactlyOne",
+                    "SelectAtMostOne",
+                    "SelectAtLeastOne",
+                    "SelectAll",
+                    "SelectAny"
+                  ]
+                },
+                "plugins_order": {
+                  "$ref": "#/$defs/order"
+                },
+                "plugins": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "image": {
+                        "$ref": "#/$defs/relativePath"
+                      },
+                      "files": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/$defs/mapping"
+                        }
+                      },
+                      "flags": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "type": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/$defs/pluginType"
+                          },
+                          {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "default",
+                              "patterns"
+                            ],
+                            "properties": {
+                              "default": {
+                                "$ref": "#/$defs/pluginType"
+                              },
+                              "patterns": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "object",
+                                  "additionalProperties": false,
+                                  "required": [
+                                    "dependencies",
+                                    "type"
+                                  ],
+                                  "properties": {
+                                    "dependencies": {
+                                      "$ref": "#/$defs/dependency"
+                                    },
+                                    "type": {
+                                      "$ref": "#/$defs/pluginType"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "anyOf": [
+                      {
+                        "required": [
+                          "files"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "flags"
+                        ],
+                        "properties": {
+                          "flags": {
+                            "minProperties": 1
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "conditional_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dependencies",
+          "files"
+        ],
+        "properties": {
+          "dependencies": {
+            "$ref": "#/$defs/dependency"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/mapping"
+            },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "steps_order": {
+      "$ref": "#/$defs/order"
+    },
+    "xml_encoding": {
+      "enum": [
+        "utf-8",
+        "utf-16"
+      ]
+    }
+  },
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "order": {
+      "enum": [
+        "Ascending",
+        "Descending",
+        "Explicit"
+      ]
+    },
+    "pluginType": {
+      "enum": [
+        "Required",
+        "Optional",
+        "Recommended",
+        "NotUsable",
+        "CouldBeUsable"
+      ]
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "file",
+            "folder"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "integer"
+        },
+        "always_install": {
+          "type": "boolean"
+        },
+        "install_if_usable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "dependency": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "all"
+          ],
+          "properties": {
+            "all": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/dependency"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "any"
+          ],
+          "properties": {
+            "any": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/dependency"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "file"
+          ],
+          "properties": {
+            "file": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "state"
+              ],
+              "properties": {
+                "path": {
+                  "$ref": "#/$defs/relativePath"
+                },
+                "state": {
+                  "enum": [
+                    "Active",
+                    "Inactive",
+                    "Missing"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "flag"
+          ],
+          "properties": {
+            "flag": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "value"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "game_version"
+          ],
+          "properties": {
+            "game_version": {
+              "type": "string",
+              "pattern": "^[0-9]+(?:\\.[0-9]+)*$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fomm_version"
+          ],
+          "properties": {
+            "fomm_version": {
+              "type": "string",
+              "pattern": "^[0-9]+(?:\\.[0-9]+)*$"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

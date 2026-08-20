@@ -1,0 +1,28 @@
+[build-system]
+requires = []
+build-backend = "forge_build_backend"
+backend-path = ["."]
+
+[project]
+name = "skyrim-forge"
+version = "6.0.0"
+description = "Safety-first Skyrim mod engineering, automation fabric, and Nexus publication gate"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Skyrim Forge contributors"}]
+dependencies = []
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Operating System :: Microsoft :: Windows",
+  "Topic :: Software Development :: Build Tools"
+]
+
+[project.scripts]
+forge = "skyrim_forge.cli:main"
+skyrim-forge-mcp = "skyrim_forge.mcp_server:serve"
+skyrim-forge-gui = "skyrim_forge.gui:run_gui"

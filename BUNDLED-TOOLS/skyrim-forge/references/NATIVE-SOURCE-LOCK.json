@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "reviewed": "2026-07-24",
+  "policy": "Pinned upstream sources define generated native project contracts. Update only after source review and regression testing.",
+  "commonlibsse_ng": {
+    "repository": "CharmedBaryon/CommonLibSSE-NG",
+    "vcpkg_package": "commonlibsse-ng",
+    "registry": "https://gitlab.com/colorglass/vcpkg-colorglass",
+    "registry_baseline": "6fb127f7d425ae3cf3fab0f79005d907c885c0d8",
+    "default_registry": "https://github.com/microsoft/vcpkg.git",
+    "default_registry_baseline": "cc288af760054fa489574bd8e22d05aa8fa01e5c",
+    "locked_claims": [
+      "add_commonlibsse_plugin creates the shared library and injects SKSE plugin declarations.",
+      "Address Library/signature scanning cannot be combined with explicit compatible runtimes.",
+      "Explicit runtime lists support at most 16 versions.",
+      "STRUCT_DEPENDENT changes the plugin declaration and must be opted into only when evidence requires it.",
+      "SKSEPluginLoad must initialize SKSE before accessing interfaces.",
+      "Data-dependent registration is delayed until kDataLoaded."
+    ]
+  },
+  "evidence_limits": [
+    "A successful build is not evidence of SKSE loadability.",
+    "A PE audit is not evidence of runtime compatibility or hook coexistence.",
+    "Every release DLL requires an actual target-runtime launch and log/crash review."
+  ]
+}

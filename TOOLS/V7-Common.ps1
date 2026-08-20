@@ -248,6 +248,124 @@ function Copy-V5Robo([string]$From, [string]$To) {
   }
 }
 
+function Sync-V5ProviderSkills([string]$From, [string]$To) {
+  <#
+    Bundle-owned provider skills are content-authoritative.
+
+    Deterministic release archives normalize timestamps, so metadata cannot
+    prove that an installed skill has the current bytes. Each bundle-owned
+    skill is therefore copied into a fresh sibling staging directory, verified
+    by SHA-256, swapped into place, and verified again. Only the named
+    bundle-owned skill directory is replaced; unrelated user-created sibling
+    skills are never mirrored or deleted.
+  #>
+  if (-not (Test-Path -LiteralPath $From -PathType Container)) {
+    throw ('provider skill source missing: ' + $From)
+  }
+  New-Item -ItemType Directory -Force -Path $To | Out-Null
+
+  foreach ($skillDir in @(Get-ChildItem -LiteralPath $From -Directory -Force -ErrorAction Stop)) {
+    $sourceSkillMd = Join-Path $skillDir.FullName 'SKILL.md'
+    if (-not (Test-Path -LiteralPath $sourceSkillMd -PathType Leaf)) { continue }
+    if (($skillDir.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
+      throw ('provider skill source is a reparse point: ' + $skillDir.FullName)
+    }
+    foreach ($sourceItem in @(Get-ChildItem -LiteralPath $skillDir.FullName -Recurse -Force -ErrorAction Stop)) {
+      if (($sourceItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
+        throw ('provider skill source contains a reparse point: ' + $sourceItem.FullName)
+      }
+    }
+
+    $destSkill = Join-Path $To $skillDir.Name
+    $nonce = [Guid]::NewGuid().ToString('N')
+    $stage = Join-Path $To ('.uabs-skill-stage-' + $skillDir.Name + '-' + $nonce)
+    $backup = Join-Path $To ('.uabs-skill-backup-' + $skillDir.Name + '-' + $nonce)
+    $movedExisting = $false
+
+    try {
+      New-Item -ItemType Directory -Force -Path $stage | Out-Null
+      $sourceRoot = $skillDir.FullName.TrimEnd('\') + '\'
+      $expected = @{}
+
+      foreach ($sourceDir in @(Get-ChildItem -LiteralPath $skillDir.FullName -Recurse -Directory -Force -ErrorAction Stop)) {
+        $relDir = $sourceDir.FullName.Substring($sourceRoot.Length)
+        if ($relDir) { New-Item -ItemType Directory -Force -Path (Join-Path $stage $relDir) | Out-Null }
+      }
+
+      foreach ($srcFile in @(Get-ChildItem -LiteralPath $skillDir.FullName -Recurse -File -Force -ErrorAction Stop)) {
+        $rel = $srcFile.FullName.Substring($sourceRoot.Length)
+        $expected[$rel] = (Get-FileHash -LiteralPath $srcFile.FullName -Algorithm SHA256).Hash
+        $stageFile = Join-Path $stage $rel
+        $stageParent = Split-Path -Parent $stageFile
+        if ($stageParent) { New-Item -ItemType Directory -Force -Path $stageParent | Out-Null }
+        Copy-Item -LiteralPath $srcFile.FullName -Destination $stageFile -Force
+        $stageHash = (Get-FileHash -LiteralPath $stageFile -Algorithm SHA256).Hash
+        if ($stageHash -cne $expected[$rel]) {
+          throw ('provider skill staging hash mismatch: ' + $skillDir.Name + '\' + $rel +
+            ' expected=' + $expected[$rel] + ' actual=' + $stageHash)
+        }
+      }
+
+      if (-not (Test-Path -LiteralPath (Join-Path $stage 'SKILL.md') -PathType Leaf)) {
+        throw ('provider skill staging missing SKILL.md: ' + $skillDir.Name)
+      }
+
+      if (Test-Path -LiteralPath $destSkill) {
+        $destItem = Get-Item -LiteralPath $destSkill -Force
+        if (($destItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
+          throw ('refusing provider skill target that is a reparse point: ' + $destSkill)
+        }
+        Move-Item -LiteralPath $destSkill -Destination $backup
+        $movedExisting = $true
+      }
+
+      Move-Item -LiteralPath $stage -Destination $destSkill
+
+      foreach ($rel in @($expected.Keys)) {
+        $dstFile = Join-Path $destSkill $rel
+        if (-not (Test-Path -LiteralPath $dstFile -PathType Leaf)) {
+          throw ('provider skill sync missing file after swap: ' + $skillDir.Name + '\' + $rel)
+        }
+        $actualHash = (Get-FileHash -LiteralPath $dstFile -Algorithm SHA256).Hash
+        if ($actualHash -cne $expected[$rel]) {
+          throw ('provider skill sync hash mismatch after swap: ' + $skillDir.Name + '\' + $rel +
+            ' expected=' + $expected[$rel] + ' actual=' + $actualHash)
+        }
+      }
+      $destRoot = $destSkill.TrimEnd('\') + '\'
+      foreach ($dstFile in @(Get-ChildItem -LiteralPath $destSkill -Recurse -File -Force -ErrorAction Stop)) {
+        $rel = $dstFile.FullName.Substring($destRoot.Length)
+        if (-not $expected.ContainsKey($rel)) {
+          throw ('provider skill sync left unexpected file after swap: ' + $skillDir.Name + '\' + $rel)
+        }
+      }
+
+      if ($movedExisting -and (Test-Path -LiteralPath $backup)) {
+        Remove-Item -LiteralPath $backup -Recurse -Force
+        $movedExisting = $false
+      }
+    }
+    catch {
+      if ($movedExisting -and (Test-Path -LiteralPath $backup)) {
+        if (Test-Path -LiteralPath $destSkill) {
+          Remove-Item -LiteralPath $destSkill -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        if (-not (Test-Path -LiteralPath $destSkill)) {
+          Move-Item -LiteralPath $backup -Destination $destSkill -ErrorAction SilentlyContinue
+          $movedExisting = $false
+        }
+      }
+      throw
+    }
+    finally {
+      Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
+      if (-not $movedExisting) {
+        Remove-Item -LiteralPath $backup -Recurse -Force -ErrorAction SilentlyContinue
+      }
+    }
+  }
+}
+
 function Copy-V5RoboSafe([string]$From, [string]$To, [string[]]$CriticalFiles = @()) {
   foreach ($rel in $CriticalFiles) {
     $destFile = Join-Path $To $rel
@@ -649,6 +767,174 @@ function Set-V5HermesPluginScanOff {
     $nl = "`r`n"
     if ($text -notmatch "`r`n") { $nl = "`n" }
     $lines = @($text -split '\r?\n')
+    $keep = @()
+    $dropped = 0
+    $inPlugins = $false
+    foreach ($line in $lines) {
+      if ($line -match '^plugins\s*:') { $inPlugins = $true; $keep += $line; continue }
+      if ($inPlugins -and $line -match '^\S') { $inPlugins = $false }
+      if ($inPlugins -and $line -match '^\s+scan_on_install\s*:\s*false\s*$') { $dropped++; continue }
+      $keep += $line
+    }
+    if ($dropped -eq 0) {
+      Write-V5Ok 'Hermes config: no scan_on_install override left to remove'
+      return 'absent'
+    }
+    Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
+    $enc = New-Object System.Text.UTF8Encoding($false)
+    [IO.File]::WriteAllText($ConfigPath, ($keep -join $nl), $enc)
+    Write-V5Ok 'Hermes config: scan_on_install override removed - plugin scanning is back on'
+    return 'removed'
+  } catch {
+    Write-V5Warn ('Hermes scan_on_install restore failed: ' + $_.Exception.Message)
+    return 'failed'
+  }
+}
+
+function Install-V5KimiPlugin {
+  <#
+  Install a bundled plugin into Kimi Code natively, without the TUI.
+
+  kimi-code 0.27.0 has no `kimi plugin` SUBCOMMAND, which is what earlier
+  versions of this installer observed - and then wrongly concluded that Kimi
+  has no plugin system at all, so Kimi got copied skills only. It does have
+  one; it is driven by the in-session `/plugins` slash command, and prompt
+  mode cannot stand in for that because it demands a login first.
+
+  Reading the shipped CLI settles the contract:
+    - `/plugins install` copies the source to <home>\plugins\managed\<id>
+    - the registry is <home>\plugins\installed.json, {version:1, plugins:[]}
+    - each persisted entry is thin: id, root, source, enabled, installedAt,
+      updatedAt, originalSource, capabilities, github
+    - on load, materialize(entry) re-runs parseManifest(entry.root), so
+      manifest, skillCount and state are DERIVED from disk every time
+
+  That last point is what makes writing the registry safe rather than
+  brittle: nothing here has to reproduce Kimi's manifest parsing, and a Kimi
+  upgrade that changes the manifest schema cannot leave a stale record behind.
+
+  The manifest itself is read from <root>\plugin.json, else
+  <root>\.kimi-plugin\plugin.json - which is where the bundled Superpowers
+  Kimi adapter (sessionStart.skill + the Kimi tool mapping) already lives.
+
+  Returns @{ ok; status; root; reason }.
+  #>
+  param(
+    [Parameter(Mandatory)][string]$KimiHome,
+    [Parameter(Mandatory)][string]$PluginId,
+    [Parameter(Mandatory)][string]$SourceRoot
+  )
+  $res = [ordered]@{ ok = $false; status = 'failed'; root = ''; reason = '' }
+  try {
+    if (-not (Test-Path -LiteralPath $SourceRoot -PathType Container)) {
+      $res.reason = 'source plugin tree missing: ' + $SourceRoot
+      return $res
+    }
+    # Refuse to install something Kimi will only reject at load time.
+    $mRoot = Join-Path $SourceRoot 'plugin.json'
+    $mDir  = Join-Path $SourceRoot '.kimi-plugin\plugin.json'
+    if (-not (Test-Path -LiteralPath $mRoot -PathType Leaf) -and
+        -not (Test-Path -LiteralPath $mDir -PathType Leaf)) {
+      $res.reason = 'no plugin.json or .kimi-plugin\plugin.json in ' + $SourceRoot
+      return $res
+    }
+
+    $managedDir  = Join-Path (Join-Path $KimiHome 'plugins') 'managed'
+    $managedRoot = Join-Path $managedDir $PluginId
+    New-Item -ItemType Directory -Force -Path $managedDir | Out-Null
+
+    # Stage then swap, the way the CLI does: a half-copied plugin tree left in
+    # place by an interrupted copy would load as a broken plugin.
+    $staging = Join-Path $managedDir ($PluginId + '-staging-' + (Get-Date -Format 'yyyyMMddHHmmssfff'))
+    Copy-Item -LiteralPath $SourceRoot -Destination $staging -Recurse -Force
+    if (Test-Path -LiteralPath $managedRoot) {
+      Remove-Item -LiteralPath $managedRoot -Recurse -Force
+    }
+    Move-Item -LiteralPath $staging -Destination $managedRoot -Force
+    $res.root = $managedRoot
+
+    # Merge into installed.json, preserving every other plugin's entry as-is.
+    $store = Join-Path (Join-Path $KimiHome 'plugins') 'installed.json'
+    $plugins = @()
+    if (Test-Path -LiteralPath $store -PathType Leaf) {
+      $existing = $null
+      try {
+        $existing = ([IO.File]::ReadAllText($store)) | ConvertFrom-Json
+      } catch {
+        Copy-Item -LiteralPath $store -Destination ($store + '.bad-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
+        Write-V5Warn ('Kimi installed.json was unparseable - kept a copy and rebuilt it')
+      }
+      if ($existing -and $existing.plugins) {
+        foreach ($p in @($existing.plugins)) {
+          if ($p.id -eq $PluginId) { continue }   # replaced below
+          $keep = [ordered]@{}
+          foreach ($prop in $p.PSObject.Properties) { $keep[$prop.Name] = $prop.Value }
+          $plugins += ,$keep
+        }
+      }
+    }
+
+    $now = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffZ')
+    $entry = [ordered]@{
+      id          = $PluginId
+      root        = $managedRoot
+      source      = 'local-path'
+      enabled     = $true
+      installedAt = $now
+      updatedAt   = $now
+    }
+    $plugins += ,$entry
+
+    $doc = [ordered]@{ version = 1; plugins = $plugins }
+    $json = $doc | ConvertTo-Json -Depth 12
+    $enc = New-Object System.Text.UTF8Encoding($false)
+    New-Item -ItemType Directory -Force -Path (Split-Path $store -Parent) | Out-Null
+    $tmp = $store + '.tmp'
+    [IO.File]::WriteAllText($tmp, $json, $enc)
+    if (Test-Path -LiteralPath $store) { Remove-Item -LiteralPath $store -Force }
+    Move-Item -LiteralPath $tmp -Destination $store -Force
+
+    $res.ok = $true
+    $res.status = 'installed'
+    return $res
+  } catch {
+    $res.reason = $_.Exception.Message
+    return $res
+  }
+}
+
+function Restore-V5HermesPluginScan {
+  <#
+  Undo the temporary scan_on_install override once the bundled plugins are in.
+
+  Turning Hermes' install-time security scanner off permanently would weaken
+  every FUTURE third-party plugin the operator installs, which is not ours to
+  decide - Hermes treats plugin loading as an explicit trust boundary. So the
+  override is scoped to our own install window and removed here.
+
+  This removes a single line rather than restoring a snapshot of the file: the
+  Hermes gateway re-serializes config.yaml on its own schedule (observed ~13
+  min after start), so a whole-file restore taken before the install would
+  clobber whatever the gateway legitimately wrote in between.
+
+  $State is the string returned by Set-V5HermesPluginScanOff. When it reports
+  'already-present' the operator had their own setting and it is left alone.
+
+  Returns 'removed' | 'kept-user-setting' | 'absent' | 'failed'.
+  #>
+  param([string]$ConfigPath, [string]$State)
+  try {
+    if ($State -eq 'already-present') {
+      Write-V5Ok 'Hermes config: scan_on_install was the operator''s own setting - left as-is'
+      return 'kept-user-setting'
+    }
+    if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) { return 'absent' }
+    $text = [IO.File]::ReadAllText($ConfigPath)
+    $nl = "`r`n"
+    if ($text -notmatch "`r`n") { $nl = "`n" }
+    $lines = @($text -split "
+?
+")
     $keep = @()
     $dropped = 0
     $inPlugins = $false

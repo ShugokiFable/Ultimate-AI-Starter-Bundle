@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.9.0 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.9.1 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -17,9 +17,9 @@ from GitHub, extracts it, runs the full installer):
 
 Or double-click INSTALL-REMOTE.bat. Re-running is a no-op.
 
-Bundle already on disk - double-click:
+Bundle already on disk - double-click the one canonical launcher:
 
-    INSTALL-V7-AIO.bat
+    START-HERE.bat
 
 Or from PowerShell in this folder:
 

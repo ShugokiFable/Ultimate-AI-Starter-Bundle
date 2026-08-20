@@ -1,0 +1,2370 @@
+[
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PROC-001",
+    "prevention": [
+      "Use the evidence ladder.",
+      "Never promote assistant-claimed completion.",
+      "Mark structural-only results as tool-validated.",
+      "Search later messages and tester feedback before finalizing memory."
+    ],
+    "required_validation": [
+      "Review subsequent user messages",
+      "Link final runtime/test evidence"
+    ],
+    "root_cause": "Memory generation trusted the assistant's final summary or structural checks instead of independent evidence.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "User reported the Ohellno build completely crashed.",
+        "provider": "codex",
+        "session_id": "019f6812-d8a7-7aa3-9b62-e4b63b7ee289"
+      },
+      {
+        "note": "User reported a For Honor BFCO rebuild caused a game-load crash.",
+        "provider": "codex",
+        "session_id": "019f683a-0569-7b23-abb8-dcc783cb2868"
+      }
+    ],
+    "symptom": "A task is recorded as successful even though later user feedback reports crashes, unresolved errors, missing options, or stale packages.",
+    "tags": [
+      "memory",
+      "validation",
+      "all-models"
+    ],
+    "title": "Assistant completion claim promoted as success"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "WSP-001",
+    "prevention": [
+      "One mod, one owner root.",
+      "Locate all copies before editing.",
+      "Use CURRENT, changelog, version, hashes, and semantic diff to select authority.",
+      "Write an ownership note when a project moves."
+    ],
+    "required_validation": [
+      "Workspace inventory",
+      "Semantic diff",
+      "Ownership note"
+    ],
+    "root_cause": "Authority was inferred from folder name or timestamp without provenance and semantic comparison.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Build a Follower lineages became confused after moves between agent roots.",
+        "provider": "grok",
+        "session_id": "019f6c52-cc96-74a0-ac14-42054369b692"
+      },
+      {
+        "note": "User explicitly requested no duplication between Claude and Grok roots.",
+        "provider": "grok",
+        "session_id": "019f6d30-0f71-7702-b072-d5cf082769de"
+      }
+    ],
+    "symptom": "Several copies of the same mod exist under Claude, GPT, Grok, Downloads, or deployed folders, and an agent edits or packages the wrong lineage.",
+    "tags": [
+      "workspace",
+      "ownership",
+      "all-models"
+    ],
+    "title": "Cross-agent project duplication and stale-authority confusion"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "WSP-002",
+    "prevention": [
+      "Author only in versioned work roots",
+      "Treat game Data and Vortex staging as read-only"
+    ],
+    "required_validation": [
+      "Check deployed Data for unexpected changed files"
+    ],
+    "root_cause": "Agent treated deployed Data as a writable workspace.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "User asked why two ESPs were put in the Skyrim folder.",
+        "provider": "grok",
+        "session_id": "019f6317-e07a-7452-b5ef-dcd8dfbce413"
+      }
+    ],
+    "symptom": "Test or duplicate ESPs appear in the game folder.",
+    "tags": [
+      "workspace",
+      "deployment",
+      "plugin"
+    ],
+    "title": "Files written into deployed Skyrim locations"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "SCOPE-001",
+    "prevention": [
+      "When the user owns the mod, repair the actual mod unless a patch is requested"
+    ],
+    "required_validation": [
+      "Confirm output classification before editing"
+    ],
+    "root_cause": "Agent prioritized minimal touch over the requested replacement release.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "User required the final Ohellno mod, not another patch.",
+        "provider": "codex",
+        "session_id": "019f6812-d8a7-7aa3-9b62-e4b63b7ee289"
+      },
+      {
+        "note": "User required Oitsin itself to be fixed and ready to share.",
+        "provider": "codex",
+        "session_id": "019f6813-4b25-7b41-a3b9-9d99ff447448"
+      }
+    ],
+    "symptom": "The user asks to repair their mod, but the agent creates a separate patch.",
+    "tags": [
+      "scope",
+      "release"
+    ],
+    "title": "Fix became an unwanted patch or overlay"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "SCOPE-002",
+    "prevention": [
+      "Create a feature/options preservation manifest.",
+      "Explain every removal.",
+      "Offer cleaned and content-preserving variants when both are useful."
+    ],
+    "required_validation": [
+      "Previous-vs-final feature diff",
+      "FOMOD branch comparison"
+    ],
+    "root_cause": "The agent equated fewer overrides with deleting features.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "User objected to a modernization that may have nuked NPCs and tents.",
+        "provider": "grok",
+        "session_id": "019f6da5-c721-7950-afab-6fb2c05d506d"
+      },
+      {
+        "note": "For Honor rebuild lost its FOMOD and dynamic NPC intent.",
+        "provider": "codex",
+        "session_id": "019f683a-0569-7b23-abb8-dcc783cb2868"
+      }
+    ],
+    "symptom": "NPCs, locations, dialogue, variants, FOMOD choices, or dynamic distribution behavior disappear during cleanup.",
+    "tags": [
+      "scope",
+      "modernization",
+      "fomod"
+    ],
+    "title": "Modernization removed intended content or installer choices"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PKG-001",
+    "prevention": [
+      "Validate against the actual schema",
+      "Test with the intended installer",
+      "Inspect every branch"
+    ],
+    "required_validation": [
+      "XML parse",
+      "FOMOD schema validation",
+      "Vortex/MO2 branch test"
+    ],
+    "root_cause": "XML was well-formed text but violated the FOMOD schema or element ordering.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Amazoness and Nymph Girls packages produced schema errors at line 4.",
+        "provider": "grok",
+        "session_id": "019f62f9-ff21-7872-949d-e23897905b6d"
+      }
+    ],
+    "symptom": "Installer throws Sch_InvalidElementContentExpecting near the beginning of ModuleConfig.xml.",
+    "tags": [
+      "fomod",
+      "xml",
+      "packaging"
+    ],
+    "title": "Invalid FOMOD XML"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PKG-002",
+    "prevention": [
+      "Build archive last",
+      "Compare hashes between workspace and ZIP",
+      "Inspect archive inventory"
+    ],
+    "required_validation": [
+      "Hash final payload",
+      "Open ZIP and verify exact files"
+    ],
+    "root_cause": "Packaging used the wrong staging root or occurred before the final changes.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "User suspected Oitsin FormID fix was not rezipped.",
+        "provider": "grok",
+        "session_id": "019f6363-898b-7273-a5b8-2d164cde4194"
+      }
+    ],
+    "symptom": "The final archive still contains the old ESP/config or omits recent changes.",
+    "tags": [
+      "zip",
+      "packaging",
+      "release"
+    ],
+    "title": "Working folder fixed but final ZIP stale"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PKG-003",
+    "prevention": [
+      "Inventory prior release",
+      "Preserve branch matrix",
+      "Diff archive trees"
+    ],
+    "required_validation": [
+      "Branch matrix",
+      "Archive-tree diff"
+    ],
+    "root_cause": "Agent rebuilt from a partial tree or treated optional branches as disposable.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "User reported the For Honor FOMOD was gone.",
+        "provider": "codex",
+        "session_id": "019f683a-0569-7b23-abb8-dcc783cb2868"
+      }
+    ],
+    "symptom": "The rebuilt version lacks installer variants or required payload.",
+    "tags": [
+      "fomod",
+      "release",
+      "scope"
+    ],
+    "title": "FOMOD options or full payload disappear during rebuild"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PLUG-001",
+    "prevention": [
+      "Resolve every changed reference",
+      "Validate masters",
+      "Never invent replacement FormIDs"
+    ],
+    "required_validation": [
+      "Full unresolved-reference scan",
+      "Master audit"
+    ],
+    "root_cause": "Invalid local FormID, missing master, removed target record, or stale reference after rebuild.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Amazoness/Nymph races retained unresolved keyword references.",
+        "provider": "grok",
+        "session_id": "019f62f9-ff21-7872-949d-e23897905b6d"
+      },
+      {
+        "note": "For Honor MGEF associated item remained unresolved.",
+        "provider": "codex",
+        "session_id": "019f683a-0569-7b23-abb8-dcc783cb2868"
+      }
+    ],
+    "symptom": "xEdit reports Could not be resolved for keywords, associated items, or other references.",
+    "tags": [
+      "plugin",
+      "formid",
+      "masters",
+      "xedit"
+    ],
+    "title": "Unresolved references remain in plugin"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PLUG-002",
+    "prevention": [
+      "Use typed VMAD tooling",
+      "Preserve known-good bindings",
+      "Validate every property type",
+      "Verify VMAD string encoding, object format, property data order, and master/local FormID ownership against the exact plugin format.",
+      "Reload and inspect every script/property, not only VMAD byte length."
+    ],
+    "required_validation": [
+      "Deep VMAD parse",
+      "Property-to-script comparison"
+    ],
+    "root_cause": "Hand-built or incorrectly copied VMAD structures did not match the actual binary format.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Amazoness quests had malformed VMAD byte counts.",
+        "provider": "grok",
+        "session_id": "019f62f9-ff21-7872-949d-e23897905b6d"
+      },
+      {
+        "note": "Oitsin retained unrecognized VMAD value type errors.",
+        "provider": "grok",
+        "session_id": "019f6d30-0f71-7702-b072-d5cf082769de"
+      },
+      {
+        "note": "Ohellno/Oitsin failures involved extra nulls, zstring/wstring confusion, format/order errors, and wrong master-index ownership.",
+        "provider": "claude",
+        "session_id": "4abb3fd0-2df3-4d76-b80c-46256f9eaf32"
+      },
+      {
+        "note": "A later run still produced malformed VMAD after a claimed correction.",
+        "provider": "grok",
+        "session_id": "019f6c14-71fd-7951-bca9-e9745b7053f0"
+      }
+    ],
+    "symptom": "xEdit reports expected byte counts, value type 255, or malformed script/property data.",
+    "tags": [
+      "plugin",
+      "vmad",
+      "papyrus"
+    ],
+    "title": "Malformed VMAD or unsupported property encoding"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PLUG-003",
+    "prevention": [
+      "Typed record writer",
+      "Compare against known-good records",
+      "Deep-load changed record families"
+    ],
+    "required_validation": [
+      "Full parser load",
+      "Changed-record semantic comparison"
+    ],
+    "root_cause": "Binary writer emitted subrecords from an incomplete or incorrect schema.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Amazoness patch NPC_ records contained out-of-order VTYP.",
+        "provider": "codex",
+        "session_id": "019f6b25-fd26-7503-b339-f8df918f5aa5"
+      }
+    ],
+    "symptom": "Plugin loader reports an unexpected or out-of-order subrecord such as VTYP in NPC_.",
+    "tags": [
+      "plugin",
+      "record-order",
+      "binary"
+    ],
+    "title": "Invalid record/subrecord order"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PLUG-004",
+    "prevention": [
+      "Recompute metadata through typed tooling",
+      "Count records from final plugin"
+    ],
+    "required_validation": [
+      "Header-to-record count comparison"
+    ],
+    "root_cause": "Writer updated records without recomputing header metadata.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Nymph Girls was reported with a header/record mismatch.",
+        "provider": "grok",
+        "session_id": "019f62f9-ff21-7872-949d-e23897905b6d"
+      }
+    ],
+    "symptom": "Creation Kit or plugin tools crash or reject a plugin because the header count does not match actual records.",
+    "tags": [
+      "plugin",
+      "header",
+      "record-count"
+    ],
+    "title": "Header or record-count mismatch"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PLUG-005",
+    "prevention": [
+      "Check eligibility and final packaged flags",
+      "Do not assume working copy equals ZIP"
+    ],
+    "required_validation": [
+      "Final archive plugin flag audit"
+    ],
+    "root_cause": "Flagging was omitted or the packaged plugin was stale.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Two Banter Conversation Fixes plugins repeatedly lacked the expected ESL flag.",
+        "provider": "grok",
+        "session_id": "019f6317-e07a-7452-b5ef-dcd8dfbce413"
+      }
+    ],
+    "symptom": "A small compatibility patch remains full ESP despite intended light status.",
+    "tags": [
+      "plugin",
+      "esl",
+      "packaging"
+    ],
+    "title": "Eligible plugin shipped without intended ESL flag"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PLUG-006",
+    "prevention": [
+      "Stop and revert to last known-good.",
+      "Binary/semantic diff the smallest changed set.",
+      "Do not stack further changes before isolating the crash."
+    ],
+    "required_validation": [
+      "Known-good A/B test",
+      "Runtime load test"
+    ],
+    "root_cause": "Structurally plausible plugin changes were runtime-invalid.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Ohellno build crashed.",
+        "provider": "codex",
+        "session_id": "019f6812-d8a7-7aa3-9b62-e4b63b7ee289"
+      },
+      {
+        "note": "For Honor build crashed on game load.",
+        "provider": "codex",
+        "session_id": "019f683a-0569-7b23-abb8-dcc783cb2868"
+      },
+      {
+        "note": "Build a Follower update was followed by a crash report.",
+        "provider": "grok",
+        "session_id": "019f6c52-cc96-74a0-ac14-42054369b692"
+      }
+    ],
+    "symptom": "Game crashes immediately on load, sometimes without a crash log, after an AI rebuild.",
+    "tags": [
+      "plugin",
+      "crash",
+      "rollback"
+    ],
+    "title": "Game-load crash after plugin rebuild"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "CFG-001",
+    "prevention": [
+      "Validate exact installed MCM Helper schema",
+      "Test page rendering and bindings"
+    ],
+    "required_validation": [
+      "JSON schema check",
+      "In-game MCM render test"
+    ],
+    "root_cause": "Unsupported option type or incomplete page/binding structure.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Ohellno/Oitsin tester feedback reported invalid button and missing page.",
+        "provider": "grok",
+        "session_id": "019f6363-898b-7273-a5b8-2d164cde4194"
+      }
+    ],
+    "symptom": "MCM displays no config, invalid button, or an empty main page.",
+    "tags": [
+      "mcm-helper",
+      "json",
+      "ui"
+    ],
+    "title": "MCM Helper JSON passes casual inspection but UI is invalid"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-reported-pattern",
+    "id": "CFG-002",
+    "prevention": [
+      "Generate deterministic chunks.",
+      "Parse every row.",
+      "Resolve every plugin/FormID.",
+      "Audit duplicates, contradictions, and expanded targets."
+    ],
+    "required_validation": [
+      "Parser pass",
+      "Duplicate audit",
+      "Representative target expansion"
+    ],
+    "root_cause": "One-shot generation without parser, stable ordering, target expansion, or chunk review.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "User reports Grok rushes and creates weirdly formatted large SPID mods.",
+        "provider": "conversation",
+        "session_id": "current"
+      }
+    ],
+    "symptom": "Thousands of lines are inconsistently formatted, duplicated, contradictory, or affect unintended NPCs.",
+    "tags": [
+      "spid",
+      "skypatcher",
+      "kid",
+      "bulk-generation"
+    ],
+    "title": "Large runtime-distribution output becomes malformed or semantically broad"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "API-001",
+    "prevention": [
+      "Compile against actual installed parents",
+      "Verify runtime DLL/API contract",
+      "Do not ship stubs"
+    ],
+    "required_validation": [
+      "Compile log",
+      "Runtime dependency/version check"
+    ],
+    "root_cause": "Compile-only stubs or remembered framework APIs replaced the real installed parent sources.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Oitsin required correction of OStim API/version integration.",
+        "provider": "codex",
+        "session_id": "019f6813-4b25-7b41-a3b9-9d99ff447448"
+      },
+      {
+        "note": "Ohellno displayed an incorrect OStim update requirement before later crash work.",
+        "provider": "codex",
+        "session_id": "019f6812-d8a7-7aa3-9b62-e4b63b7ee289"
+      },
+      {
+        "note": "CommonLib expressions compiled at source level but failed to link because the pinned library lacked the required template instantiations.",
+        "provider": "claude",
+        "session_id": "023edd51-3d45-423e-a3b5-6f006b008327"
+      }
+    ],
+    "symptom": "Scripts compile but report dependency version errors or fail at runtime.",
+    "tags": [
+      "papyrus",
+      "api",
+      "stubs",
+      "runtime"
+    ],
+    "title": "Compiled against stale or fake dependency API"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "APP-001",
+    "prevention": [
+      "Do not guess one universal cause.",
+      "Test apply-before-summon and summon-before-apply.",
+      "Wait for actor 3D when the API requires it.",
+      "Verify head/tint, body, tattoos, sex, race, and voice together."
+    ],
+    "required_validation": [
+      "Appearance test matrix",
+      "Save/reload",
+      "3D unload/reload"
+    ],
+    "root_cause": "The full cause is project-specific; observed risk areas include applying before actor 3D is ready, incomplete head/tint export, and interactions with body/normal-map systems.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "StampFollowers tester reported blue face and wrong preset ordering behavior.",
+        "provider": "codex",
+        "session_id": "019f6814-3256-7fb2-916b-7c71f636c4a2"
+      },
+      {
+        "note": "Build a Follower feedback described repeatable tint mismatch and tattoo issues.",
+        "provider": "grok",
+        "session_id": "019f6c52-cc96-74a0-ac14-42054369b692"
+      }
+    ],
+    "symptom": "A newly created follower has a blue/purple head, mismatched skin tone, wrong appearance, or tattoos missing.",
+    "tags": [
+      "racemenu",
+      "facegen",
+      "followers",
+      "appearance"
+    ],
+    "title": "Preset application produces blue head or head/body mismatch"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "APP-002",
+    "prevention": [
+      "Assert the target actor",
+      "Test player location before/after every reset path"
+    ],
+    "required_validation": [
+      "Reset/dismiss runtime test"
+    ],
+    "root_cause": "Actor reference or MoveTo target was applied to the wrong participant.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "User reported reset/dismiss could trap the player in a temp cell.",
+        "provider": "grok",
+        "session_id": "019f6c52-cc96-74a0-ac14-42054369b692"
+      }
+    ],
+    "symptom": "Reset or dismiss teleports the player into a temporary cell.",
+    "tags": [
+      "followers",
+      "papyrus",
+      "reset"
+    ],
+    "title": "Reset/dismiss logic affects the player instead of follower"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user/tester-confirmed-runtime",
+    "id": "OSTIM-001",
+    "prevention": [
+      "Use documented lifecycle/API",
+      "Delegate timing to OStim where possible",
+      "Test against built-in Auto Mode"
+    ],
+    "required_validation": [
+      "Scene lifecycle test",
+      "Timing/foreplay settings test",
+      "Transition test"
+    ],
+    "root_cause": "Addon manually drives animation/pace/orgasm state without respecting installed OStim configuration and lifecycle.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Tester reports described ignored duration/foreplay and immediate climax/glitching.",
+        "provider": "grok",
+        "session_id": "019f6363-898b-7273-a5b8-2d164cde4194"
+      }
+    ],
+    "symptom": "Scenes skip foreplay, transition too quickly, glitch, or climax immediately while built-in Auto Mode works.",
+    "tags": [
+      "ostim",
+      "adult-mod",
+      "scene-control"
+    ],
+    "title": "Custom scene control bypasses OStim timing and transitions"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "PROC-004",
+    "prevention": [
+      "Create a handoff manifest with exact paths, hashes, active version, attachments, and missing inputs.",
+      "Verify every referenced file exists before analysis or implementation.",
+      "Label summaries as narrative context, not proof of file contents or validation."
+    ],
+    "required_validation": [
+      "Handoff manifest",
+      "Attachment/path existence check",
+      "Hash or inventory receipt"
+    ],
+    "root_cause": "Conversation context was treated as a transferable filesystem and evidence bundle.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Referenced ChatGPT attachments were not present in the Codex workspace.",
+        "provider": "codex",
+        "session_id": "019f73c2-63d7-70f0-aff1-a49b25e0494e"
+      },
+      {
+        "note": "Expected workspace/path context did not resolve as assumed.",
+        "provider": "codex",
+        "session_id": "019f73c2-c611-7983-93de-059ca401908a"
+      }
+    ],
+    "symptom": "A receiving agent has a conversation summary but not the referenced archives, attachments, deployed state, or exact final snapshot.",
+    "tags": [
+      "handoff",
+      "attachments",
+      "workspace",
+      "all-models"
+    ],
+    "title": "Cross-application handoff omits attachments or filesystem reality"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "WSP-003",
+    "prevention": [
+      "Inventory owner roots, archives, and the active installed/deployed build before selecting authority.",
+      "Use the installed build as read-only evidence when it is newer, then recover its provenance into a new owner snapshot.",
+      "Record why one lineage was selected and what differs from the others."
+    ],
+    "required_validation": [
+      "Authority matrix",
+      "Version and semantic diff",
+      "Ownership decision"
+    ],
+    "root_cause": "Authority was chosen from an agent folder or archive instead of comparing CURRENT, deployed inventory, version files, and semantic content.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Installed Oitsin 1.7 was newer than the available workspace and archive versions.",
+        "provider": "codex",
+        "session_id": "019f73de-388b-79d0-bb20-93608d8292db"
+      }
+    ],
+    "symptom": "An agent audits or rebuilds an older workspace/archive while the actually installed mod contains a newer or materially different version.",
+    "tags": [
+      "workspace",
+      "authority",
+      "installed-truth",
+      "versioning"
+    ],
+    "title": "Active installed build is newer or different than the workspace lineage"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "WSP-004",
+    "prevention": [
+      "Treat build directories and tool caches as disposable generated output.",
+      "Reconfigure from a clean build directory after a move or version copy.",
+      "Search logs and cache files for paths outside the active snapshot."
+    ],
+    "required_validation": [
+      "Clean configure",
+      "Absolute-path scan",
+      "Build log confirms active source root"
+    ],
+    "root_cause": "Generated caches and absolute paths were copied with the source snapshot and trusted without reconfiguration.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Native project build state retained stale path assumptions.",
+        "provider": "claude",
+        "session_id": "0ebad62c-d474-421e-853b-311db8353a22"
+      },
+      {
+        "note": "CMake cache paths required clean regeneration after workspace changes.",
+        "provider": "claude",
+        "session_id": "d562e5d0-0799-42b8-bfc9-c5d77dd5563a"
+      }
+    ],
+    "symptom": "Configure or build commands point to an old owner root, stale source tree, or deleted location after a project move or version snapshot.",
+    "tags": [
+      "workspace",
+      "cmake",
+      "build-cache",
+      "paths"
+    ],
+    "title": "Moved workspace keeps stale absolute build caches and paths"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "BUILD-001",
+    "prevention": [
+      "A reviewer that proposes code must either compile it or label it UNBUILT.",
+      "Build against the project\u2019s exact dependency checkout and lock files.",
+      "Do not assume a template instantiation or API is available because a header permits the expression."
+    ],
+    "required_validation": [
+      "Clean exact-dependency build",
+      "Link step",
+      "Build command and exit code recorded"
+    ],
+    "root_cause": "Review stopped at source reasoning and did not run the exact project build.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "An audit reintroduced CommonLib linker failures for unavailable template instantiations until the exact project was compiled.",
+        "provider": "claude",
+        "session_id": "023edd51-3d45-423e-a3b5-6f006b008327"
+      }
+    ],
+    "symptom": "A code review appears correct, but the changed tree fails to compile or link against the project\u2019s pinned CommonLib, parent sources, or SDK.",
+    "tags": [
+      "build",
+      "review",
+      "commonlib",
+      "linker"
+    ],
+    "title": "Review or audit changes were never compiled against the exact local dependencies"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "BUILD-002",
+    "prevention": [
+      "Build a runtime-shaped harness with a fake game root and the real relative plugin path.",
+      "Test dependency resolution from the same directories used by the game.",
+      "Inspect imports and load failures in the packaged layout."
+    ],
+    "required_validation": [
+      "Runtime-shaped harness",
+      "Dependency load trace",
+      "Final package layout test"
+    ],
+    "root_cause": "The test environment did not mirror the real executable root, plugin path, and dependency search behavior.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "A same-directory DirectStorage harness hid that dstoragecore.dll was searched from the game root.",
+        "provider": "claude",
+        "session_id": "0ebad62c-d474-421e-853b-311db8353a22"
+      }
+    ],
+    "symptom": "A DLL works in a same-directory harness but fails in the game because dependencies resolve from a different root or loader layout.",
+    "tags": [
+      "build",
+      "test-harness",
+      "dll",
+      "packaging"
+    ],
+    "title": "Test harness layout masks runtime dependency and search-path behavior"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "BUILD-003",
+    "prevention": [
+      "Compile the smallest complete target surface with real parent sources.",
+      "Separate dependency health from target-mod validation.",
+      "Record which files were compiled and which were excluded."
+    ],
+    "required_validation": [
+      "Target source manifest",
+      "Isolated compile command",
+      "Expected output artifact"
+    ],
+    "root_cause": "The validation surface was not isolated to the mod\u2019s real sources and exact parents.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Compiling an entire OStim tree produced unrelated errors and did not validate Ohellno until the target surface was isolated.",
+        "provider": "codex",
+        "session_id": "019f73cc-59a8-74d3-9333-1a0cfdc4ea07"
+      }
+    ],
+    "symptom": "A broad compile produces unrelated dependency errors or passes without actually compiling the target scripts and bindings.",
+    "tags": [
+      "build",
+      "papyrus",
+      "dependency-surface",
+      "validation"
+    ],
+    "title": "Building the entire dependency tree does not validate the target mod"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "runtime-evidenced",
+    "id": "NATIVE-001",
+    "prevention": [
+      "Keep DllMain minimal and defer work to the loader/framework initialization callback.",
+      "Avoid MessageBox, SetupAPI, filesystem, logging setup, and dynamic loading under loader lock.",
+      "Test clean process startup and failure paths."
+    ],
+    "required_validation": [
+      "DllMain audit",
+      "Deferred initialization trace",
+      "Clean startup test"
+    ],
+    "root_cause": "Initialization work that can allocate, load libraries, lock, invoke COM/UI, or touch the filesystem was run under the Windows loader lock.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "NextGen Disk Cache moved heavy initialization out of DllMain after identifying unsafe loader-lock operations.",
+        "provider": "claude",
+        "session_id": "d562e5d0-0799-42b8-bfc9-c5d77dd5563a"
+      }
+    ],
+    "symptom": "The plugin performs settings I/O, logging, API resolution, hook installation, UI, or device enumeration during DLL_PROCESS_ATTACH and crashes or deadlocks unpredictably.",
+    "tags": [
+      "native",
+      "dllmain",
+      "loader-lock",
+      "skse"
+    ],
+    "title": "Unsafe loader-lock work performed inside DllMain"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "NATIVE-002",
+    "prevention": [
+      "Gate hooks to the exact intended objects and operations.",
+      "Snapshot stable handles or IDs before side effects and revalidate before use.",
+      "Avoid APIs whose internal world/cell pointers can dangle during transitions.",
+      "Test transitions, dialogue, loading, and competing systems."
+    ],
+    "required_validation": [
+      "Scope audit",
+      "Lifetime/thread model",
+      "Transition stress test"
+    ],
+    "root_cause": "The implementation did not prove ownership, lifetime, thread context, or target scope before using the value later.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "NPC pathing crashed through an unsafe range traversal during world/cell transitions and showed replay side effects on invalid contexts.",
+        "provider": "claude",
+        "session_id": "023edd51-3d45-423e-a3b5-6f006b008327"
+      },
+      {
+        "note": "Broad DirectStorage hook scope was narrowed to intended handles.",
+        "provider": "claude",
+        "session_id": "0ebad62c-d474-421e-853b-311db8353a22"
+      }
+    ],
+    "symptom": "A broad hook captures unintended handles or a stored game reference becomes invalid during cell/world transitions, causing crashes or erratic behavior.",
+    "tags": [
+      "native",
+      "hooks",
+      "lifetime",
+      "threading",
+      "skse"
+    ],
+    "title": "Hook scope, stored references, or side effects outlive their valid context"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "SEM-001",
+    "prevention": [
+      "Define observable acceptance tests before implementation.",
+      "Test representative towns, wilderness, interiors, weather, schedules, and edge cases.",
+      "Do not call a bootstrap, flat approximation, or technically loaded record a complete feature."
+    ],
+    "required_validation": [
+      "Player-visible acceptance test",
+      "Representative environment matrix",
+      "Before/after evidence"
+    ],
+    "root_cause": "Validation checked structure and loadability without measuring player-visible outcomes in the intended environments.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Vivid Routines was structurally valid while wilderness behavior remained visually inert.",
+        "provider": "claude",
+        "session_id": "aaa95e70-04a7-48ca-b52e-65d4fb8c3638"
+      },
+      {
+        "note": "A flat RMAOS bootstrap was initially described more broadly than the actual PBR result.",
+        "provider": "grok",
+        "session_id": "019f6c3c-3b63-7782-9170-767834ef9f16"
+      }
+    ],
+    "symptom": "Files, records, and scripts validate, but the intended behavior is too weak, unreachable, or invisible in representative gameplay.",
+    "tags": [
+      "semantic-validation",
+      "gameplay",
+      "visibility",
+      "packages"
+    ],
+    "title": "Structurally valid feature is player-invisible or semantically ineffective"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "SEM-002",
+    "prevention": [
+      "Add explicit quest/scene/follower/creature exclusions supported by the exact framework.",
+      "Remember that creature actors can still be NPC_ records.",
+      "Test package priority against stage-conditioned and framework-owned packages."
+    ],
+    "required_validation": [
+      "Expanded target audit",
+      "Quest/scene/follower test",
+      "Creature exclusion test"
+    ],
+    "root_cause": "Selector breadth and package priority were inferred from record type or faction membership without explicit exclusions and lifecycle tests.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Vivid Routines packages displaced quest/scene actors, interrupted followers, and faction-only SPID lines leaked to creatures.",
+        "provider": "claude",
+        "session_id": "aaa95e70-04a7-48ca-b52e-65d4fb8c3638"
+      }
+    ],
+    "symptom": "A generic routine, teleport, distribution, or behavior package displaces scene actors, interrupts followers, or applies human-only behavior to creatures.",
+    "tags": [
+      "selectors",
+      "packages",
+      "spid",
+      "skypatcher",
+      "quests"
+    ],
+    "title": "Broad actor, package, faction, or record selectors hit quests, scenes, followers, or creatures"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "SEM-003",
+    "prevention": [
+      "Validate every field type and token against the installed framework parser or source.",
+      "Test one minimal known-good line before bulk generation.",
+      "Do not infer presence checks from functions that actually read keyword data or another property."
+    ],
+    "required_validation": [
+      "Minimal parser test",
+      "Strict type validation",
+      "Known-positive and known-negative targets"
+    ],
+    "root_cause": "A plausible-looking condition, quoted token, numeric expression, or helper function was used without verifying the exact version\u2019s grammar and meaning.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "GetKeywordDataForCurrentLocation was initially treated as a keyword-presence test although it reads keyword DATA.",
+        "provider": "claude",
+        "session_id": "aaa95e70-04a7-48ca-b52e-65d4fb8c3638"
+      },
+      {
+        "note": "SkyPatcher baseCost=*1.75 reached integer conversion logic and failed with invalid_argument/stoi.",
+        "provider": "grok",
+        "session_id": "019f63a6-9b16-73c3-82a4-30d9502af2e4"
+      },
+      {
+        "note": "Quoted KID plugin text was interpreted literally and broke the rule.",
+        "provider": "grok",
+        "session_id": "019f62f9-ff21-7872-949d-e23897905b6d"
+      }
+    ],
+    "symptom": "A configuration parses incorrectly, throws conversion errors, silently matches nothing, or tests the wrong semantic property.",
+    "tags": [
+      "conditions",
+      "grammar",
+      "types",
+      "runtime-patching"
+    ],
+    "title": "Framework condition, field grammar, or value type was guessed"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "SEM-004",
+    "prevention": [
+      "Use reference types intended as behavior anchors.",
+      "Filter by worldspace/cell and maximum distance.",
+      "Validate the anchor remains loaded and appropriate before replay or teleport."
+    ],
+    "required_validation": [
+      "Anchor type audit",
+      "Worldspace/cell filter test",
+      "Distance-boundary test"
+    ],
+    "root_cause": "The implementation used load doors or unrestricted nearest-reference searches instead of validated XMarkers, worldspace filters, and distance gates.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Vivid Routines used load-door anchors and a nearest search that crossed to Japhet\u2019s Folly.",
+        "provider": "claude",
+        "session_id": "aaa95e70-04a7-48ca-b52e-65d4fb8c3638"
+      }
+    ],
+    "symptom": "Actors stand at doors, travel to a distant or wrong-worldspace reference, or replay movement from an invalid distance.",
+    "tags": [
+      "spatial",
+      "worldspace",
+      "anchors",
+      "packages"
+    ],
+    "title": "Spatial anchor or nearest-reference search crosses invalid boundaries"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "ASSET-001",
+    "prevention": [
+      "Match exact plugin filenames and normalized dependency IDs.",
+      "Inspect BSA/BA2 archives and mod-manager virtual/deployed state.",
+      "Choose the active profile from its enabled plugin set, not arbitrary timestamps.",
+      "Verify asset slot semantics with the exact record/mesh format."
+    ],
+    "required_validation": [
+      "Exact plugin-set match",
+      "Archive-aware asset inventory",
+      "Active-profile proof"
+    ],
+    "root_cause": "Detection used filename substrings, loose-file existence, timestamp-selected profiles, or assumed texture slots instead of exact plugin sets and archive-aware resolution.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Follower Forge exposed substring false matches, BSA-hidden voice assets, profile selection errors, hardlink deployment behavior, and a nonzero face-tint texture slot.",
+        "provider": "claude",
+        "session_id": "58408c4e-35ab-4d71-98d4-605cdbd388a9"
+      }
+    ],
+    "symptom": "The wrong compatibility mode is selected, an unrelated plugin name triggers a match, or required voice/face assets are reported missing despite being archived.",
+    "tags": [
+      "assets",
+      "dependencies",
+      "bsa",
+      "vortex",
+      "profiles"
+    ],
+    "title": "Dependency or asset detection uses substrings, loose-file checks, or arbitrary profile selection"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "ENC-001",
+    "prevention": [
+      "Detect and preserve original encoding, BOM, and newline style unless migration is verified.",
+      "Validate translation/config encodings with the actual consumer.",
+      "Resolve the filename from the installed framework version, not an old guide."
+    ],
+    "required_validation": [
+      "Byte-level encoding check",
+      "Consumer load test",
+      "Installed-version filename check"
+    ],
+    "root_cause": "A rewrite normalized bytes or reused an older filename without preserving the exact consumer contract.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Grass cache configuration required UTF-8 BOM and CRLF, and the active filename differed from older guidance.",
+        "provider": "claude",
+        "session_id": "4d128212-5466-4a24-ace7-0b56019e891b"
+      },
+      {
+        "note": "Nemesis Combat AI output included incorrect translation encoding.",
+        "provider": "claude",
+        "session_id": "91b89568-e415-4754-a061-77f1b11b7880"
+      }
+    ],
+    "symptom": "The file looks readable but the game/framework ignores it, misparses it, or fails because its encoding, line endings, or filename contract changed.",
+    "tags": [
+      "encoding",
+      "bom",
+      "newlines",
+      "config",
+      "translations"
+    ],
+    "title": "Encoding, BOM, newline, or version-specific filename drift breaks a valid-looking file"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PLUG-007",
+    "prevention": [
+      "Treat SEQ as a binary artifact.",
+      "Compare bytes and record ordering against known-good output.",
+      "Never invent a SEQS header or write FormIDs as text."
+    ],
+    "required_validation": [
+      "Binary parser/hex audit",
+      "Known-good comparison",
+      "Quest startup test"
+    ],
+    "root_cause": "The format was guessed from a name or fabricated header instead of verified against a known-good binary or official tool output.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Nemesis Combat AI generated an ASCII .seq instead of the expected binary payload.",
+        "provider": "claude",
+        "session_id": "91b89568-e415-4754-a061-77f1b11b7880"
+      },
+      {
+        "note": "For Honor work identified an invented SEQS header; the canonical test artifact was raw binary u32 data.",
+        "provider": "claude",
+        "session_id": "1574c11b-0743-4d71-bc10-5e3c54b2057f"
+      }
+    ],
+    "symptom": "Start-enabled quest behavior does not initialize because the SEQ payload is not the canonical binary format expected by the game/toolchain.",
+    "tags": [
+      "plugin",
+      "seq",
+      "binary",
+      "quests"
+    ],
+    "title": "SEQ file emitted as text, ASCII, or an invented header"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "PLUG-008",
+    "prevention": [
+      "Record original known defects before editing.",
+      "Diff original, parent, active, and final artifacts separately.",
+      "Label each defect inherited, fixed, newly introduced, or unverified."
+    ],
+    "required_validation": [
+      "Four-way artifact diff",
+      "Defect provenance matrix",
+      "Runtime reproduction per defect"
+    ],
+    "root_cause": "No immutable known-good/original baseline and per-version defect matrix was maintained.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "For Honor analysis required separating original defects from AI-introduced OAR/SEQ regressions.",
+        "provider": "claude",
+        "session_id": "1574c11b-0743-4d71-bc10-5e3c54b2057f"
+      }
+    ],
+    "symptom": "A rebuild is blamed for every defect, or an original defect is preserved and later reported as newly fixed without evidence.",
+    "tags": [
+      "plugin",
+      "diagnostics",
+      "regression",
+      "baseline"
+    ],
+    "title": "Inherited defects and AI-introduced regressions are conflated"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "PKG-004",
+    "prevention": [
+      "Maintain a single version source where practical.",
+      "Audit every public version string before packaging.",
+      "Use an explicit release allowlist and separate symbol/developer archives."
+    ],
+    "required_validation": [
+      "Version-string scan",
+      "Release inventory allowlist",
+      "Final archive hash"
+    ],
+    "root_cause": "Version declarations and release inventory were scattered and not generated or audited together.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "NextGen Disk Cache carried version text across many files and required synchronized release metadata.",
+        "provider": "claude",
+        "session_id": "d562e5d0-0799-42b8-bfc9-c5d77dd5563a"
+      }
+    ],
+    "symptom": "The DLL, manifest, README, installer, archive name, logs, or changelog report different versions, or release ZIPs contain PDBs/caches not intended for users.",
+    "tags": [
+      "packaging",
+      "versioning",
+      "pdb",
+      "metadata"
+    ],
+    "title": "Release metadata, version strings, or development artifacts drift across the package"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "CLAIM-001",
+    "prevention": [
+      "Trace every public claim to code, data, configuration, and a validation result.",
+      "Remove or label planned and experimental behavior.",
+      "Generate release notes from the final diff and feature matrix."
+    ],
+    "required_validation": [
+      "Claim-to-artifact matrix",
+      "Final diff review",
+      "Player-visible validation"
+    ],
+    "root_cause": "Release copy was derived from intent or previous prose rather than an inventory of implemented and validated behavior.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "For Honor descriptions and MCM text referred to hero/threshold behavior that was not implemented.",
+        "provider": "claude",
+        "session_id": "1574c11b-0743-4d71-bc10-5e3c54b2057f"
+      },
+      {
+        "note": "PBR output scope was initially overstated relative to the flat bootstrap result.",
+        "provider": "grok",
+        "session_id": "019f6c3c-3b63-7782-9170-767834ef9f16"
+      }
+    ],
+    "symptom": "Descriptions promise thresholds, heroes, systems, compatibility, or visual quality absent from the shipped code and data.",
+    "tags": [
+      "claims",
+      "documentation",
+      "mcm",
+      "release"
+    ],
+    "title": "Documentation or MCM claims a feature that the implementation does not contain"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "APP-003",
+    "prevention": [
+      "Identify every system that owns body, skin, normals, tint, and preset application.",
+      "Apply or synchronize at the correct actor-3D and framework lifecycle point.",
+      "Test summon order, save reload, reset, outfit change, and framework reapplication."
+    ],
+    "required_validation": [
+      "Lifecycle matrix",
+      "Dynamic framework absent/present test",
+      "Persistent visual comparison"
+    ],
+    "root_cause": "The fix targeted the base actor once while a dynamic appearance system retained ownership and re-applied later.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "Follower Forge debugging showed asset-slot and deployment complexity requiring runtime-aware appearance ownership checks.",
+        "provider": "claude",
+        "session_id": "58408c4e-35ab-4d71-98d4-605cdbd388a9"
+      }
+    ],
+    "symptom": "Head/body normals, tint, skin, or body shape briefly match and then change again after 3D load, framework update, save reload, or outfit/body distribution.",
+    "tags": [
+      "followers",
+      "appearance",
+      "obody",
+      "normals",
+      "runtime"
+    ],
+    "title": "A dynamic appearance system re-applies after a transient follower fix"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "PLUG-EXT-001",
+    "prevention": [
+      "Use HEDR 1.71 for extended local IDs 0x001-0xFFF",
+      "List Skyrim.esm as first master whenever the extended range is actually used",
+      "Run the V4 plugin header audit"
+    ],
+    "required_validation": [
+      "HEDR audit",
+      "Master-order audit",
+      "New-local-ID audit"
+    ],
+    "root_cause": "Extended 1.71 allocation was treated as only a header/range change.",
+    "scope": "shared-cross-provider",
+    "symptom": "An ESL-flagged module uses a new local FormID below 0x800 without Skyrim.esm as first master.",
+    "tags": [
+      "plugin",
+      "formid",
+      "masters",
+      "all-models"
+    ],
+    "title": "Extended FormID range without Game Master first"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "PLUG-HEDR-002",
+    "prevention": [
+      "Inspect master headers",
+      "Promote dependent output to 1.71 when required",
+      "Declare runtime/backport requirements"
+    ],
+    "required_validation": [
+      "Master header inventory",
+      "Dependency compatibility report"
+    ],
+    "root_cause": "Only the child plugin header was checked.",
+    "scope": "shared-cross-provider",
+    "symptom": "A dependent plugin uses HEDR 1.70 while relying on a 1.71 master or its extended records.",
+    "tags": [
+      "plugin",
+      "hedr",
+      "masters",
+      "all-models"
+    ],
+    "title": "Dependent module incompatible with 1.71 master"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "PLUG-MAST-002",
+    "prevention": [
+      "Preserve complete up-chain masters",
+      "Validate master order against each master header",
+      "Do not remove masters by superficial scan"
+    ],
+    "required_validation": [
+      "Transitive master audit"
+    ],
+    "root_cause": "Master cleaning or generation considered only direct record references.",
+    "scope": "shared-cross-provider",
+    "symptom": "A direct master requires an earlier master that is absent or appears after it.",
+    "tags": [
+      "plugin",
+      "masters",
+      "load-order",
+      "all-models"
+    ],
+    "title": "Incomplete or misordered transitive master chain"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-source-verified",
+    "id": "FRAME-KID-002",
+    "prevention": [
+      "Use skyrim-kid-distribution as sole syntax owner",
+      "Run framework linter",
+      "Verify installed KID docs"
+    ],
+    "required_validation": [
+      "KID field/type lint"
+    ],
+    "root_cause": "An outdated integration note overrode current official KID documentation.",
+    "scope": "shared-cross-provider",
+    "symptom": "Generated KID uses WEAP/ARMO/MGEF as the type field instead of current human-readable KID type labels.",
+    "tags": [
+      "kid",
+      "syntax",
+      "silent-no-op",
+      "all-models"
+    ],
+    "title": "Current KID type labels replaced with record signatures"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-source-verified",
+    "id": "FRAME-SPID-002",
+    "prevention": [
+      "Split and validate the fifth SPID value field only",
+      "Use `/` between trait tokens such as `F/-T` or `-C/-D`",
+      "Do not flag commas in documented StringFilters, FormFilters, or LevelFilters",
+      "Pin parser commit e5ef32b99ecb277778644f4deae0ac04851ca614"
+    ],
+    "required_validation": [
+      "Parser-source check",
+      "Slash-trait positive fixture",
+      "Comma-trait negative fixture",
+      "Field-aware scan"
+    ],
+    "root_cause": "Historical prose or whole-line delimiter counting overrode the SPID 7.3.x field-specific parser.",
+    "scope": "shared-cross-provider",
+    "symptom": "SPID TraitFilters are rewritten from slash-delimited tokens to comma-delimited text, silently dropping intended trait checks.",
+    "tags": [
+      "spid",
+      "traits",
+      "filters",
+      "all-models"
+    ],
+    "title": "Current SPID trait grammar rewritten incorrectly"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "FRAME-SKYP-002",
+    "prevention": [
+      "Use a supported category directory",
+      "Verify each key against installed docs/source",
+      "Run framework linter"
+    ],
+    "required_validation": [
+      "Path audit",
+      "Operation evidence",
+      "Runtime log"
+    ],
+    "root_cause": "Directory placement and installed-version operations were guessed.",
+    "scope": "shared-cross-provider",
+    "symptom": "Configuration is in the root rather than a category, or uses an invented operation such as itemsRemove.",
+    "tags": [
+      "skypatcher",
+      "path",
+      "syntax",
+      "all-models"
+    ],
+    "title": "SkyPatcher file or operation silently ignored"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "FRAME-BOS-002",
+    "prevention": [
+      "Use skyrim-base-object-swapper as sole syntax owner",
+      "Verify installed BOS version",
+      "Run framework linter"
+    ],
+    "required_validation": [
+      "BOS section/pipe lint"
+    ],
+    "root_cause": "Historical examples were merged without version resolution.",
+    "scope": "shared-cross-provider",
+    "symptom": "The active library presents both sectioned pipe syntax and Base = Swap as equivalent.",
+    "tags": [
+      "bos",
+      "syntax",
+      "all-models"
+    ],
+    "title": "Competing BOS dialects shipped"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "tool-validated",
+    "id": "MCM-002",
+    "prevention": [
+      "Default new work to MCM Helper",
+      "Keep SKI_ConfigBase for legacy maintenance",
+      "Plan migration before changing existing menus"
+    ],
+    "required_validation": [
+      "MCM architecture decision",
+      "Config JSON/schema validation"
+    ],
+    "root_cause": "Legacy examples were treated as the default.",
+    "scope": "shared-cross-provider",
+    "symptom": "A new mod receives boilerplate legacy MCM code instead of current MCM Helper architecture.",
+    "tags": [
+      "mcm",
+      "papyrus",
+      "all-models"
+    ],
+    "title": "Legacy SKI_ConfigBase selected for a new menu without reason"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-source-verified",
+    "id": "FRAME-FIELDCOUNT-001",
+    "prevention": [
+      "SPID: accept 1-7 value sections and pad omitted trailing positions for analysis",
+      "KID: accept 2-5 value sections and pad omitted trailing positions for analysis",
+      "Require pipes only for skipped interior positions"
+    ],
+    "required_validation": [
+      "Parser-source check",
+      "Short-form positive fixtures",
+      "Overlong negative fixtures"
+    ],
+    "root_cause": "A validator confused the maximum number of field positions with an exact required count.",
+    "scope": "shared-cross-provider",
+    "symptom": "A valid short SPID or KID entry is rejected merely because trailing optional fields were omitted.",
+    "tags": [
+      "spid",
+      "kid",
+      "parser",
+      "field-count",
+      "validator"
+    ],
+    "title": "Optional trailing SPID or KID fields rejected as malformed"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-documentation-verified",
+    "id": "FRAME-BOS-003",
+    "prevention": [
+      "Allow current Forms, References, Transforms, and Properties section families",
+      "Validate field count according to section family",
+      "Version-gate property/transform tokens"
+    ],
+    "required_validation": [
+      "BOS 3.4.1 documentation check",
+      "Positive fixtures for all four section families"
+    ],
+    "root_cause": "The linter knew only `[Forms]` and `[References]` and treated current direct-override sections as unknown.",
+    "scope": "shared-cross-provider",
+    "symptom": "A current `_SWAP.ini` using `[Transforms]` or `[Properties]` is flagged as invalid.",
+    "tags": [
+      "bos",
+      "transforms",
+      "properties",
+      "validator"
+    ],
+    "title": "Valid BOS Transforms or Properties section rejected"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-source-verified",
+    "id": "FRAME-AUTH-001",
+    "prevention": [
+      "Exact installed parser and matching upstream source outrank skills",
+      "Pin source version and commit in FRAMEWORK-SOURCE-LOCK.json",
+      "Run framework truth-lock self-tests before release"
+    ],
+    "required_validation": [
+      "Source-lock JSON parses",
+      "Dedicated skill agrees with source lock",
+      "Stale contradictory phrase scan passes"
+    ],
+    "root_cause": "The authority order placed a bundled skill or historical plan above the exact installed parser/source.",
+    "scope": "shared-cross-provider",
+    "symptom": "Working syntax is rewritten to satisfy stale prose, producing silent no-ops.",
+    "tags": [
+      "frameworks",
+      "authority",
+      "source-lock",
+      "silent-failure"
+    ],
+    "title": "Guide or skill outranks the actual framework parser"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-source-and-runtime-log-verified",
+    "id": "FRAME-SPID-KEY-001",
+    "prevention": [
+      "Validate every distribution key against the exact SPID parser whitelist",
+      "Use `Item` or intentional generic `Form` for weapons and staves",
+      "Require one representative form from every source plugin to resolve before bulk output"
+    ],
+    "required_validation": [
+      "Framework linter rejects `Weapon =`",
+      "Parser accepted/rejected counts reconciled",
+      "Known-positive staff appears on an intended NPC"
+    ],
+    "root_cause": "The generator mapped the WEAP record signature or plain-language object class to a nonexistent `Weapon` SPID key.",
+    "scope": "shared-cross-provider",
+    "symptom": "SPID logs thousands of `Unsupported form type Weapon` messages and accepts none of the intended weapon/staff rows.",
+    "tags": [
+      "spid",
+      "distribution-key",
+      "weapon",
+      "staff",
+      "silent-failure"
+    ],
+    "title": "Unsupported SPID distribution key discards an entire generated feature family"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-source-and-runtime-log-verified",
+    "id": "FRAME-SPID-LEVEL-001",
+    "prevention": [
+      "Parse the row into seven field positions before diagnosing",
+      "Require both endpoints of actor-level ranges",
+      "Keep TraitFilters slash-delimited and Chance numeric with optional `!`"
+    ],
+    "required_validation": [
+      "`65/` negative fixture fails",
+      "`65`, `65/100`, `-C/-D`, and `18!` positive fixtures pass",
+      "Runtime log no longer reports numeric parse failure"
+    ],
+    "root_cause": "The LevelFilters field contains an empty maximum endpoint. `-D` and deterministic `18!` are valid in their own fields.",
+    "scope": "shared-cross-provider",
+    "symptom": "A row with `65/|-C/-D||18!` fails with numeric conversion error.",
+    "tags": [
+      "spid",
+      "level-filter",
+      "stoul",
+      "traits",
+      "deterministic-chance"
+    ],
+    "title": "Malformed SPID LevelFilters range blamed on valid traits or chance"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "runtime-log-and-parser-verified",
+    "id": "FRAME-SPID-MULTI-001",
+    "prevention": [
+      "Continue field-aware validation after the first error",
+      "Use `/` inside TraitFilters",
+      "Treat filename/feature labels such as MaleOnly versus `F` as an intent conflict requiring confirmation"
+    ],
+    "required_validation": [
+      "At most seven sections",
+      "Every trait token valid",
+      "Sex/child exclusions match declared feature",
+      "Positive and excluded NPC tests"
+    ],
+    "root_cause": "The repair addressed only the parser's first reported failure and did not re-map all fields or compare the row to filename/feature intent.",
+    "scope": "shared-cross-provider",
+    "symptom": "An eight-section row is fixed by deleting one pipe but remains semantically or syntactically wrong.",
+    "tags": [
+      "spid",
+      "field-count",
+      "trait-filter",
+      "semantic-intent"
+    ],
+    "title": "One SPID row contains both field-count and trait/intent defects"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "runtime-log-verified-control",
+    "id": "NATIVE-HOOK-001",
+    "prevention": [
+      "Resolve candidate pointer to owning module",
+      "Log runtime, relocation/vtable index, section bounds, permissions, and bytes",
+      "Test feature toggles and exact dependency layout before blaming another plugin"
+    ],
+    "required_validation": [
+      "Unsafe hook remains uninstalled",
+      "Owner module identified or cause left unresolved",
+      "Feature status documented separately from whole-plugin status"
+    ],
+    "root_cause": "A valid safety check was converted into an unsupported causal conclusion.",
+    "scope": "shared-cross-provider",
+    "symptom": "A feature aborts because its candidate target is outside `SkyrimSE.exe` `.text`, and another DLL is named as culprit without address-ownership proof.",
+    "tags": [
+      "skse",
+      "hook",
+      "vtable",
+      "rva",
+      "module-ownership",
+      "safe-abort"
+    ],
+    "title": "Hook target outside expected executable section is over-attributed"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-source-and-runtime-log-verified",
+    "id": "CS-FEATURE-001",
+    "prevention": [
+      "Inspect `Data\\Shaders\\Features\\<ShortName>.ini` for the exact release",
+      "Check feature/core status and deployed winner",
+      "Verify preset requirements and loaded-feature log"
+    ],
+    "required_validation": [
+      "Feature logs as successfully loaded",
+      "Preset override applies after load",
+      "No duplicate/stale feature descriptor wins"
+    ],
+    "root_cause": "The feature descriptor is absent, mismatched, or losing deployment; the override was mistaken for successful feature activation.",
+    "scope": "shared-cross-provider",
+    "symptom": "The log says a feature INI failed to load and was disabled, while a preset later reports applying an override for that feature.",
+    "tags": [
+      "community-shaders",
+      "feature-ini",
+      "preset",
+      "disabled-feature",
+      "deployment"
+    ],
+    "title": "Community Shaders preset overrides a feature whose descriptor did not load"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "runtime-log-and-framework-documentation-verified",
+    "id": "ANIM-MISSING-001",
+    "prevention": [
+      "Resolve each path to owning graph/mod/archive",
+      "Check loose and archive inventories",
+      "Regenerate only when the chosen generator owns the missing output",
+      "Never claim APoseFix creates missing animations"
+    ],
+    "required_validation": [
+      "Every referenced HKX resolves or stale reference is removed",
+      "Custom creature movement set tested",
+      "Archive coverage disclosed"
+    ],
+    "root_cause": "Missing source assets, stale graph references, and generated behavior output were not classified separately.",
+    "scope": "shared-cross-provider",
+    "symptom": "A custom creature or character graph references animations that are absent and the only recommendation is to rerun a generator.",
+    "tags": [
+      "animation",
+      "hkx",
+      "apose",
+      "creature",
+      "nemesis",
+      "pandora",
+      "asset-ownership"
+    ],
+    "title": "Missing HKX is treated as generic behavior-generator output"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-documentation-and-runtime-log-verified",
+    "id": "BOS-CONFLICT-001",
+    "prevention": [
+      "Resolve reference, cell/worldspace, qualifiers, and mod combination",
+      "Audit duplicate source identities across all `_SWAP.ini` files",
+      "Create a combined/narrow patch when both inputs are relevant"
+    ],
+    "required_validation": [
+      "Conflict log understood",
+      "Intended transform tested on actual reference",
+      "No unrelated worldspace/reference changed"
+    ],
+    "root_cause": "Mechanical conflict resolution was treated as compatibility reasoning.",
+    "scope": "shared-cross-provider",
+    "symptom": "A logged winner is accepted or reversed by filename alone without checking the affected reference and conditions.",
+    "tags": [
+      "bos",
+      "conflict",
+      "alphabetical-priority",
+      "worldspace",
+      "transform"
+    ],
+    "title": "Alphabetical BOS winner is mistaken for semantically correct patch"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "runtime-log-and-documentation-verified",
+    "id": "BOS-TRANSFORM-001",
+    "prevention": [
+      "Emit contiguous transform functions",
+      "Run balanced-parenthesis and field-aware BOS linter",
+      "Generate transforms rather than hand-formatting bulk rows"
+    ],
+    "required_validation": [
+      "`rotR(x,y,z)` fixture passes",
+      "spaced argument fixture fails",
+      "BOS log has no failed numeric fragments"
+    ],
+    "root_cause": "Spaces inside a function's argument list caused the locked parser grammar to tokenize the invocation incorrectly.",
+    "scope": "shared-cross-provider",
+    "symptom": "BOS fails to process later numeric fragments from `rotR(x, y, z)`.",
+    "tags": [
+      "bos",
+      "transform",
+      "rotation",
+      "tokenization",
+      "whitespace"
+    ],
+    "title": "Whitespace splits a BOS transform invocation"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "upstream-source-and-runtime-log-verified",
+    "id": "CDF-FORM-001",
+    "prevention": [
+      "Generate exact EditorID or FormID~Plugin entries from a typed manifest",
+      "Do not import FLM `*FormList` syntax into CDF JSON",
+      "Fail when any required add element is unresolved"
+    ],
+    "required_validation": [
+      "CDF JSON linter passes",
+      "Every add form resolves in deployed manifest",
+      "Merchant positive test succeeds"
+    ],
+    "root_cause": "FLM-like or conceptual wildcard syntax was used where CDF resolves each add string as one exact form.",
+    "scope": "shared-cross-provider",
+    "symptom": "Rules report invalid add data for strings such as `*Claw` or `*Katana`, leaving merchant additions inactive.",
+    "tags": [
+      "cdf",
+      "container",
+      "json",
+      "wildcard",
+      "missing-form",
+      "merchant"
+    ],
+    "title": "CDF wildcard-like add strings do not resolve and skip the change"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "runtime-log-verified-control",
+    "id": "PKG-MANAGER-001",
+    "prevention": [
+      "Exclude manager markers and sidecars from source/release trees",
+      "Fix the owning staging package and redeploy",
+      "Do not patch the live Data directory as the permanent solution"
+    ],
+    "required_validation": [
+      "Release-tree validator passes",
+      "Runtime scanner no longer sees marker",
+      "Vortex and MO2 deployment checked"
+    ],
+    "root_cause": "Deployment bookkeeping leaked into a directory scanned as runtime configuration.",
+    "scope": "shared-cross-provider",
+    "symptom": "JContainers, TNG, or another plugin attempts to parse `__folder_managed_by_vortex` or manager sidecars.",
+    "tags": [
+      "vortex",
+      "mo2",
+      "packaging",
+      "json",
+      "marker-file"
+    ],
+    "title": "Mod-manager bookkeeping file reaches a runtime configuration scanner"
+  },
+  {
+    "applies_to": [
+      "Codex",
+      "Claude",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "runtime-log-verified-control",
+    "id": "DEP-STALE-001",
+    "prevention": [
+      "Map each config to its owner and feature",
+      "Declare hard/conditional/optional requirements",
+      "Retain correctly guarded optional integrations",
+      "Remove or repair dead rows in owning source"
+    ],
+    "required_validation": [
+      "Missing target inventory classified",
+      "Required features have nonzero resolved targets",
+      "Optional skips documented",
+      "No unproven performance claim"
+    ],
+    "root_cause": "Hard, conditional, optional, stale, and typo/mismatch cases were collapsed into one category.",
+    "scope": "shared-cross-provider",
+    "symptom": "Hundreds of missing plugins, keywords, FormIDs, or EditorIDs are either called harmless wholesale or deleted wholesale.",
+    "tags": [
+      "dependencies",
+      "optional-integration",
+      "stale-config",
+      "formid",
+      "editorid",
+      "flm",
+      "skypatcher",
+      "ied"
+    ],
+    "title": "Unresolved runtime target is not classified by dependency scope"
+  },
+  {
+    "applies_to": [
+      "Claude",
+      "Codex",
+      "Grok",
+      "Kimi",
+      "Hermes"
+    ],
+    "evidence_status": "user-confirmed-runtime",
+    "id": "SPID-003",
+    "prevention": [
+      "Parse actor-level and skill expressions as separate grammar tokens.",
+      "Accept skill indexes 0 through 17 with min/max ranges.",
+      "Do not rewrite a working distribution solely because a static linter disagrees with a clean runtime parse log.",
+      "Treat runtime distribution evidence as stronger than a narrower static model."
+    ],
+    "required_validation": [
+      "Regression fixture for 25/255,0(55/255)",
+      "Negative fixture for 10/24,0(25)",
+      "Compare against SPID runtime parse/distribution logs"
+    ],
+    "root_cause": "The linter parsed every slash expression as an actor-level range and did not model skillType(min/max) tokens.",
+    "scope": "shared-cross-provider",
+    "sources": [
+      {
+        "note": "SPID 7.3.1.16 distributed the For Honor perk using 25/255,0(55/255), while 0(25) produced invalid stoul argument.",
+        "provider": "claude"
+      }
+    ],
+    "symptom": "Forge reports Malformed SPID level range for a working filter such as 25/255,0(55/255).",
+    "tags": [
+      "spid",
+      "linter",
+      "false-positive",
+      "runtime-evidence"
+    ],
+    "title": "Static linter misclassified SPID skill range as actor-level range"
+  },
+  {
+    "component": "PowerShell release scripts",
+    "fixed_in": "4.2.1",
+    "id": "FORGE-PS-INTERPOLATION-COLON-001",
+    "regression": "tests/test_powershell_release.py plus PowerShell-Parse-Gate.ps1 and the Windows all-provider skill-install job.",
+    "root_cause": "PowerShell treats the colon as part of a scoped variable reference. Use ${Name}, $($Name), or the format operator.",
+    "severity": "release-blocking",
+    "symptom": "ParserError: Variable reference is not valid when a simple variable is immediately followed by a colon inside an expandable string."
+  },
+  {
+    "component": "Windows batch launchers",
+    "fixed_in": "4.2.2",
+    "id": "FORGE-BAT-DP0-QUOTE-001",
+    "prevention": [
+      "Do not pass standalone -Root \"%~dp0\" to PowerShell when the script can use $PSScriptRoot.",
+      "Reject standalone quoted %~dp0 arguments during repository validation.",
+      "Exercise START-HERE.bat --validate-only under Windows CI."
+    ],
+    "regression": "tests/test_powershell_release.py and the Windows exact START-HERE startup-gate job.",
+    "root_cause": "A quoted %~dp0 token was passed as a standalone argument to an external executable. The expanded value ends with a backslash, which can escape the closing quote in Windows command-line serialization.",
+    "severity": "release-blocking",
+    "symptom": "Resolve-Path reports Illegal characters in path and shows a Forge root ending in a literal double quote."
+  },
+  {
+    "cause": "The test recursively scanned every .ps1 below the repository instead of the same Forge-owned source set used by the parser gate.",
+    "fix": "Audit only top-level Forge scripts and workers/*.ps1; exclude runtime-generated environments.",
+    "fixed_in": "4.2.3",
+    "id": "FORGE-TEST-SOURCE-BOUNDARY-001",
+    "symptoms": [
+      "Valid .venv Activate.ps1 reported as ambiguous PowerShell interpolation",
+      "Run Tests.bat fails after installation but clean repository tests pass"
+    ],
+    "title": "Regression test scans runtime virtualenv PowerShell scripts"
+  },
+  {
+    "cause": "Example.psc and example.PSC were created in one case-insensitive directory, so the second write replaced the first.",
+    "fix": "Place case-equivalent filenames in separate source roots while retaining the same case-insensitive ScriptName identities.",
+    "fixed_in": "4.2.3",
+    "id": "FORGE-WINDOWS-CASE-FIXTURE-001",
+    "symptoms": [
+      "PAPYRUS-LOOP-IN-UPDATE warning disappears only on Windows",
+      "Duplicate ScriptName test sees only the second file content"
+    ],
+    "title": "Case-collision Papyrus fixture overwrites itself on Windows"
+  },
+  {
+    "applies_to": [
+      "Release CI",
+      "Native helper packaging"
+    ],
+    "evidence_status": "reproduced",
+    "id": "CI-NATIVE-VCS-METADATA",
+    "prevention": [
+      "Use -buildvcs=false for every release native build",
+      "Pin Go 1.23.2",
+      "Keep -trimpath and empty buildid",
+      "Compare rebuilt hashes to both published and packaged helper copies"
+    ],
+    "required_validation": [
+      "Build from a temporary Git checkout",
+      "Build from an extracted tree",
+      "Require identical SHA-256 hashes"
+    ],
+    "root_cause": "Go automatically embeds vcs.revision, vcs.time, and vcs.modified when source is inside a Git checkout unless -buildvcs=false is specified.",
+    "scope": "release-ci",
+    "symptom": "Fresh GitHub Actions native builds are deterministic with each other but do not match binaries built from an extracted source tree.",
+    "tags": [
+      "go",
+      "github-actions",
+      "reproducibility",
+      "vcs"
+    ],
+    "title": "Git checkout embeds VCS metadata and breaks native binary reproducibility"
+  }
+]

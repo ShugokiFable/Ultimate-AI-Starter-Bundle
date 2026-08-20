@@ -15,6 +15,7 @@ import json
 import re
 import sys
 import zipfile
+import ast
 import hashlib
 import importlib.util
 import tempfile
@@ -24,15 +25,47 @@ ROOT = Path(__file__).resolve().parent.parent
 CANON = ROOT / "_V7-CANONICAL-SKILLS"
 PROVIDERS = ("Claude", "Codex", "Grok", "Hermes", "Kimi")
 
-VERSION = (ROOT / "VERSION.txt").read_text(encoding="utf-8-sig").strip()   # v7.9.0
+VERSION = (ROOT / "VERSION.txt").read_text(encoding="utf-8-sig").strip()   # current bundle version
 BARE = VERSION.lstrip("vV")                                               # 7.9.0
 
 
-def forge_asset() -> Path:
-    """The one bundled Forge payload. Its version is data, not a literal."""
-    hits = sorted((ROOT / "BUNDLED-TOOLS" / "offline").glob("Skyrim-Forge-*.zip"))
-    assert len(hits) == 1, f"expected exactly one bundled Forge payload, found {[p.name for p in hits]}"
-    return hits[0]
+FORGE_SOURCE = ROOT / "BUNDLED-TOOLS" / "skyrim-forge"
+
+
+def ps_code(path: Path) -> str:
+    """A PowerShell file with its comments removed.
+
+    A gate that asserts some token is GONE cannot tell code from the comment
+    explaining why it is gone, and the explanation is the part that stops
+    someone putting it back. Strip `<# ... #>` blocks and whole-line `#`
+    comments, then assert against what actually executes.
+    """
+    text = re.sub(r"(?s)<#.*?#>", "", read(path))
+    return "\n".join(l for l in text.split("\n") if not l.strip().startswith("#"))
+
+
+def forge_version() -> str:
+    """Forge's version, read from the one file that declares it.
+
+    Forge used to arrive here as a released ZIP whose filename carried the
+    version. It is source in this repository now, so the version is whatever
+    this commit says -- there is no archive that can disagree with it.
+    """
+    text = read(FORGE_SOURCE / "VERSION.txt")
+    found = re.search(r"(?m)^Skyrim Forge\s+(\d+\.\d+\.\d+)\s*$", text)
+    assert found, "BUNDLED-TOOLS/skyrim-forge/VERSION.txt declares no version"
+    return found.group(1)
+
+
+def doctor_fields() -> set[str]:
+    """Exactly the keys `forge doctor` returns, parsed from its source."""
+    tree = ast.parse(read(FORGE_SOURCE / "skyrim_forge" / "environment.py"))
+    for node in tree.body:
+        if isinstance(node, ast.FunctionDef) and node.name == "doctor":
+            for statement in ast.walk(node):
+                if isinstance(statement, ast.Return) and isinstance(statement.value, ast.Dict):
+                    return {k.value for k in statement.value.keys if isinstance(k, ast.Constant)}
+    raise AssertionError("no doctor() returning a dict literal in skyrim_forge/environment.py")
 
 # Generic reliability/cognition coverage deliberately missing from 7.7.15.
 SKILLS = {
@@ -182,9 +215,9 @@ def test_bootstrap() -> None:
     assert "exit /b %exitcode%" in txt
 
     compat = read(ROOT / "INSTALL-V7-AIO.bat").lower()
-    assert VERSION.lower() in compat
-    assert "set \"exitcode=%errorlevel%\"" in compat
-    assert "exit /b %exitcode%" in compat
+    assert 'call "%~dp0start-here.bat" %*' in compat
+    assert "install-v7-aio.ps1" not in compat
+    assert "exit /b %errorlevel%" in compat
     assert "skyrim ai v5" not in compat
 
     ps = read(ROOT / "INSTALL-V7-AIO.ps1")
@@ -193,7 +226,10 @@ def test_bootstrap() -> None:
     assert doctor in ps, "final install-state doctor is not invoked"
     assert ps.index(doctor) < ps.index('INSTALL COMPLETE'), "doctor must run before success banner"
     assert "Optional Forge" not in ps, "Forge still presented as manual optional next step"
-    assert "Skyrim-Forge-*.zip" in ps, "installer no longer discovers the Forge payload"
+    assert "BUNDLED-TOOLS\\skyrim-forge\\VERSION.txt" in ps, "AIO no longer reads the in-tree Forge version"
+    assert "-BundleVersion" not in ps_code(ROOT / "INSTALL-V7-AIO.ps1"), (
+        "AIO still negotiates a bundle version with its own subtree"
+    )
     assert "Microsoft.DotNet.SDK.8" in ps, ".NET 8 SDK is required for default Spooky component"
 
 
@@ -311,25 +347,46 @@ def test_hermes_cost_contract() -> None:
     # reasoning to reduce repair turns, while keeping the summarizer non-thinking.
     assert parent.read_bytes() == installed.read_bytes(), "Hermes reference config and actual installer source drifted"
 
-def test_forge_payload() -> None:
-    zpath = forge_asset()
-    stem = zpath.stem                       # Skyrim-Forge-x.y.z
-    forge_version = stem[len("Skyrim-Forge-"):]
-    with zipfile.ZipFile(zpath) as z:
-        assert z.testzip() is None, "Forge ZIP CRC failure"
-        names = set(z.namelist())
-        assert f"{stem}/skyrim_forge/bundle_contract.py" in names, "Forge archive root does not match its filename"
-        contract = z.read(f"{stem}/skyrim_forge/bundle_contract.py").decode("utf-8")
-        # Forge must actually accept THIS bundle, not some remembered range.
-        low = re.search(r"MIN_BUNDLE = \((\d+), (\d+), (\d+)\)", contract)
-        high = re.search(r"MAX_BUNDLE_EXCLUSIVE = \((\d+), (\d+), (\d+)\)", contract)
-        assert low and high, "Forge bundle contract no longer declares a supported range"
-        mine = tuple(int(x) for x in BARE.split("."))
-        assert tuple(int(x) for x in low.groups()) <= mine < tuple(int(x) for x in high.groups()), (
-            f"bundled Forge {forge_version} does not accept bundle {BARE}"
-        )
-        version_txt = z.read(f"{stem}/VERSION.txt").decode("utf-8")
-        assert f"Skyrim Forge {forge_version}" in version_txt, "Forge archive name and VERSION.txt disagree"
+def test_forge_source_is_complete_and_buildable() -> None:
+    """Forge ships as source in this repository, not as a released archive.
+
+    The two-repo split is what let 7.8.0 ship an installer that called a
+    contract field Forge never emitted: two files that had to agree, in two
+    repositories, with no single commit that could test both.
+    """
+    assert FORGE_SOURCE.is_dir(), "BUNDLED-TOOLS/skyrim-forge is missing"
+    for rel in ("VERSION.txt", "Install-or-Update.ps1", "Install-Forge-Skill.ps1",
+                "Register-MCP.ps1", "START-HERE.bat", "pyproject.toml",
+                "skyrim_forge/__init__.py", "skyrim_forge/version.py",
+                "skyrim_forge/environment.py", "scripts/validate_repository.py",
+                "integrations/skyrim-forge/SKILL.md",
+                "writer/published/win-x64/SkyrimForge.Native.exe",
+                "writer/published/linux-x64/SkyrimForge.Native"):
+        assert (FORGE_SOURCE / rel).is_file(), f"Forge source is missing {rel}"
+
+    version = forge_version()
+    assert f'VERSION = "{version}"' in read(FORGE_SOURCE / "skyrim_forge" / "version.py"), (
+        "Forge VERSION.txt and skyrim_forge/version.py disagree"
+    )
+    assert f'const version = "{version}"' in read(FORGE_SOURCE / "writer" / "native-go" / "main.go"), (
+        "Forge VERSION.txt and the Go native constant disagree"
+    )
+
+    # GitHub reads .github/workflows only from a repository root, so workflows
+    # here would look live and never run. Forge's jobs are in the root CI.
+    assert not (FORGE_SOURCE / ".github").exists(), (
+        "Forge subtree carries a .github directory GitHub will never read"
+    )
+    root_ci = read(ROOT / ".github" / "workflows" / "ci.yml")
+    for job in ("forge-python", "forge-native", "forge-repository-validation",
+                "forge-windows-installer", "forge-bundle-install"):
+        assert f"  {job}:" in root_ci, f"root CI does not run the Forge job {job}"
+
+    # And no separately released Forge archive may come back: an archive is a
+    # second source of truth for a version, which is the whole defect.
+    assert not sorted((ROOT / "BUNDLED-TOOLS" / "offline").glob("Skyrim-Forge-*.zip")), (
+        "a Forge ZIP payload is back in BUNDLED-TOOLS/offline alongside the source"
+    )
 
 
 
@@ -339,7 +396,9 @@ def test_offline_manifest_complete() -> None:
     declared = {a["file"] for a in m.get("assets", [])}
     actual = {p.name for p in (ROOT / "BUNDLED-TOOLS" / "offline").iterdir() if p.is_file()}
     assert declared == actual, f"offline manifest coverage mismatch declared-only={sorted(declared-actual)} actual-only={sorted(actual-declared)}"
-    assert forge_asset().name in declared
+    assert not [f for f in declared if f.startswith("Skyrim-Forge-")], (
+        "offline inventory still declares a Forge payload; Forge is source now"
+    )
     # A declared size/hash that does not match the bytes on disk is worse than
     # no manifest: the installer trusts it.
     for a in m.get("assets", []):
@@ -368,13 +427,14 @@ def test_release_builder_contract() -> None:
         "testzip", "unicode", "sha256",
     ):
         assert token.lower() in text.lower(), f"release builder missing {token} gate"
-    assert "_required_forge" in text, "Core builder no longer pins a required Forge payload"
-    assert "required Forge" in text or "required forge" in text.lower(), "Core artifact does not explain retained Forge payload"
+    assert "FORGE_SOURCE" in text, "Core builder no longer knows where the Forge source is"
+    assert "_forge_version" in text, "release builder does not verify the extracted Forge version"
 
     # A Core archive intentionally omits most BUNDLED-TOOLS/offline payloads,
     # so it cannot ship the Full tree's MANIFEST.json unchanged. Prove the
     # builder rewrites the Core manifest to describe only what it actually
-    # ships while retaining the mandatory Forge payload.
+    # ships, and that it carries the Forge SOURCE even though it drops every
+    # vendored payload.
     spec = importlib.util.spec_from_file_location("uabs_build_release", b)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
@@ -393,7 +453,6 @@ def test_release_builder_contract() -> None:
         offline_inventory = {
             "pack_version": BARE,
             "assets": [
-                {"file": forge_asset().name, "size": 5, "sha256": hashlib.sha256(b"forge").hexdigest()},
                 {"file": "optional-tool.zip", "size": 8, "sha256": hashlib.sha256(b"optional").hexdigest()},
             ],
         }
@@ -403,8 +462,11 @@ def test_release_builder_contract() -> None:
             "BUNDLED-TOOLS/CATALOG.json": b"{}\n",
             "BUNDLED-TOOLS/OFFLINE-MANIFEST.json": (json.dumps(offline_inventory, indent=2) + "\n").encode("utf-8"),
             "VERSION.txt": VERSION.encode("utf-8") + b"\n",
-            f"BUNDLED-TOOLS/offline/{forge_asset().name}": b"forge",
             "BUNDLED-TOOLS/offline/optional-tool.zip": b"optional",
+            # Source, not a payload: Core must carry it in full.
+            "BUNDLED-TOOLS/skyrim-forge/VERSION.txt": b"Skyrim Forge 9.9.9\n",
+            "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/__init__.py": b"\n",
+            "BUNDLED-TOOLS/skyrim-forge/writer/published/linux-x64/SkyrimForge.Native": b"binary",
         }
         rows = []
         for rel, data in required.items():
@@ -419,13 +481,17 @@ def test_release_builder_contract() -> None:
             prefix = f"Ultimate-AI-Starter-Bundle-{VERSION}/"
             core_manifest = json.loads(z.read(prefix + "MANIFEST.json"))
             core_paths = {row["path"] for row in core_manifest}
-            assert f"BUNDLED-TOOLS/offline/{forge_asset().name}" in core_paths
+            assert "BUNDLED-TOOLS/skyrim-forge/VERSION.txt" in core_paths, "Core dropped the Forge source"
+            assert prefix + "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/__init__.py" in z.namelist()
+            native_info = z.getinfo(prefix + "BUNDLED-TOOLS/skyrim-forge/writer/published/linux-x64/SkyrimForge.Native")
+            native_mode = (native_info.external_attr >> 16) & 0o777
+            assert native_mode & 0o111, "release ZIP strips executable mode from the Linux Forge native helper"
             assert "BUNDLED-TOOLS/offline/optional-tool.zip" not in core_paths, "Core ships a Full-only manifest row"
             assert prefix + "BUNDLED-TOOLS/offline/optional-tool.zip" not in z.namelist()
 
             core_offline = json.loads(z.read(prefix + "BUNDLED-TOOLS/OFFLINE-MANIFEST.json"))
             declared = {a["file"] for a in core_offline["assets"]}
-            assert declared == {forge_asset().name}, f"Core offline inventory describes files it does not ship: {declared}"
+            assert declared == set(), f"Core offline inventory describes files it does not ship: {declared}"
             assert core_offline.get("variant") == "Core", "Core offline inventory is not labelled as the Core variant"
             # And the rewritten bytes -- not the source tree's -- must be what
             # the Core MANIFEST.json records, or Core fails its own verifier.
@@ -454,10 +520,17 @@ def test_current_forge_docs_contract() -> None:
         assert "extract it as" not in text.lower(), f"{p}: still tells fresh users to install Forge manually"
         assert "5.1.5+" not in text, f"{p}: stale pre-bundle Forge floor"
     readme = read(ROOT / "README.md").lower()
-    shipped = forge_asset().stem[len("Skyrim-Forge-"):]
+    shipped = forge_version()
     assert shipped in readme and "bundle" in readme, f"README does not describe bundle-managed Forge {shipped}"
     for stale in ("skyrim forge** is not redistributed", "install it yourself", "### not bundled"):
         assert stale not in readme, f"README contradicts bundle-managed Forge with stale instruction: {stale}"
+    current_launch_docs = [
+        read(ROOT / "TOOLS" / "RECOMMENDED-INSTALLS.md"),
+        read(ROOT / "BUNDLED-TOOLS" / "skyrim-forge" / "README.md"),
+    ]
+    for doc in current_launch_docs:
+        assert ".\\INSTALL-V7-AIO.bat" not in doc, "current docs still recommend the legacy V7 BAT instead of START-HERE"
+        assert "Run the bundle's `INSTALL-V7-AIO.bat`" not in doc, "embedded Forge README points at the legacy launcher"
 
 
 
@@ -505,10 +578,43 @@ def test_windows_ci_and_ps51_static_contract() -> None:
     assert "COPY-TO-SKILLS-DIRECTORY\\skills" in doctor, "doctor still checks only a handpicked skill subset"
     assert "Get-FileHash" in doctor and "SHA256" in doctor, "doctor does not prove installed skills match provider-tailored bytes"
     assert "$critical=@(" not in doctor.replace(" ", ""), "partial critical-skill doctor can still pass an incomplete install"
+    assert not re.search(r"(?mi)^\s*\$home\s*=", doctor), "doctor assigns PowerShell read-only $HOME (case-insensitive variable names)"
+    assert re.search(r"(?mi)^\s*\$providerHome\s*=", doctor), "doctor provider-home assignment is missing or accidentally commented out"
+    assert "\\n    $providerHome" not in doctor, "doctor contains literal \\n edit debris that comments out provider-home setup"
+    assert "bundle-contract" not in doctor, "final doctor still calls Forge 5.x bundle-contract removed in Forge 6.0.0"
+    assert "-m skyrim_forge doctor" in doctor, "final doctor does not use the merged Forge 6 health check"
+    aio = read(ROOT / "INSTALL-V7-AIO.ps1")
+    assert "$doctorOutput" in aio and "2>&1" in aio and "Select-Object -Last" in aio, "AIO does not persist/replay final-doctor diagnostics before throwing"
 
     provider = read(ROOT / "TOOLS" / "Ensure-Provider-CLIs.ps1")
     assert "System.Text.UTF8Encoding" in provider, "provider bootstrap should use an explicit System.Text encoder type"
 
+
+
+def test_release_contains_no_accidental_next_major_version_surface() -> None:
+    """The bundle release is 7.9.1; the accidentally chosen next-major label must not ship."""
+    forbidden = "8.0" + ".0"
+    text_exts = {".md", ".txt", ".ps1", ".psm1", ".py", ".json", ".yaml", ".yml", ".toml", ".bat", ".cmd"}
+    offenders = []
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or path.suffix.lower() not in text_exts or path.name == "MANIFEST.json":
+            continue
+        body = path.read_text(encoding="utf-8", errors="replace")
+        if forbidden in body.lower():
+            offenders.append(path.relative_to(ROOT).as_posix())
+    for path in ROOT.rglob("*"):
+        if forbidden in path.name.lower():
+            offenders.append(path.relative_to(ROOT).as_posix())
+    assert not offenders, f"next-major version contamination remains in v7.9.1 release: {offenders}"
+
+
+def test_hermes_mcp_registration_is_noninteractive_and_bounded() -> None:
+    register = read(FORGE_SOURCE / "Register-MCP.ps1")
+    assert "'Y' | & $Executable mcp add" not in register, "Forge Hermes registration still hides an interactive mcp-add prompt"
+    assert "hard limit 45s" in register and "Start-Process" in register, "Hermes Forge verification is not visibly time-bounded"
+    assert "connect_timeout" in register, "Hermes Forge MCP config lacks a bounded connection timeout"
+    reasoning = read(ROOT / "TOOLS" / "Add-Reasoning-MCPs.ps1")
+    assert "'y' | & $hx mcp add" not in reasoning, "reasoning-MCP wiring still hides Hermes interactive prompts"
 
 def test_version_sources() -> None:
     assert VERSION.startswith("v") and BARE.count(".") == 2, f"VERSION.txt is not vX.Y.Z: {VERSION!r}"
@@ -522,8 +628,14 @@ def test_version_sources() -> None:
     assert cat["pack_version"] in (BARE, VERSION)
     assert cat.get("catalog_version") == BARE, "catalog schema/release version drift"
     forge = next(c for c in cat["components"] if c["id"] == "skyrim-forge")
-    assert forge.get("offline_asset") == forge_asset().name
-    assert forge.get("install") != "manual-user-product"
+    assert forge.get("offline_asset") is None, "catalog still points Forge at a released payload"
+    assert forge.get("source_dir") == "BUNDLED-TOOLS/skyrim-forge"
+    assert forge.get("version") == forge_version(), "catalog Forge version drifted from the source tree"
+    readme = read(ROOT / "README.md")
+    assert f"Skyrim Forge {forge_version()}" in readme, "README Forge version drifted from embedded source"
+    assert "bundle-managed and contract-checked" not in readme, "README still documents the removed cross-repo Forge contract"
+    assert f"## Version\n\n**{VERSION}**" in readme, "README Version section does not lead with the current release"
+    assert forge.get("install") not in ("manual-user-product", None)
 
 
 def test_forge_install_directory_is_never_version_stamped() -> None:
@@ -537,32 +649,68 @@ def test_forge_install_directory_is_never_version_stamped() -> None:
     and disk held Skyrim-Forge-5.2.0 with no venv.
     """
     text = read(ROOT / "TOOLS" / "Install-SkyrimForge.ps1")
-    code = re.sub(r"(?s)<#.*?#>", "", text)
-    code = "\n".join(l for l in code.split("\n") if not l.strip().startswith("#"))
+    code = ps_code(ROOT / "TOOLS" / "Install-SkyrimForge.ps1")
     assert not re.search(r"Skyrim-Forge-\d+\.\d+", code), "installer code restates a Forge version"
     assert "Refusing a version-stamped Forge install directory" in code, "installer does not refuse a stamped root"
     assert "-ResolveOnly" in text, "install root resolution is not independently testable"
     assert (ROOT / "TESTS" / "Test-ForgeRootResolution.ps1").is_file(), "root resolution gate is missing"
 
 
-def test_forge_contract_check_reads_a_field_forge_emits() -> None:
-    """7.8.0 tested `$contract.compatible`, which Forge has never emitted.
+def test_same_version_forge_hotfix_refreshes_shipped_content() -> None:
+    """A Forge hotfix must deploy even when VERSION.txt stays at 6.0.0.
 
-    `-not $null` is always true, so the installer threw
-    'Forge reports incompatible bundle contract' on every run and the AIO
-    aborted the whole install on the non-zero exit. A fresh Windows install of
-    7.8.0 could not complete. Nothing caught it because no test read the two
-    files together.
+    The live failure this protects against: bundle v7.9.1 shipped a corrected
+    Register-MCP.ps1 several times while embedded Forge intentionally remained
+    6.0.0. The installer compared only VERSION.txt, skipped the source refresh,
+    and then executed the stale live Register-MCP.ps1 from the existing Forge
+    root. The user therefore kept seeing the old Hermes stdin prompt even though
+    the archive contained the fix. Content integrity, not semantic version alone,
+    must decide whether shipped Forge files are refreshed.
+    """
+    code = ps_code(ROOT / "TOOLS" / "Install-SkyrimForge.ps1")
+    assert "Test-ForgeShippedContentCurrent" in code, "Forge refresh still has no content-integrity decision"
+    assert "MANIFEST.json" in code, "Forge refresh does not anchor itself to the shipped Forge manifest"
+    assert "Get-FileHash" in code, "Forge refresh does not verify installed shipped-file content"
+    assert re.search(r"\$refreshRequired\s*=\s*-not\s*\(Test-ForgeShippedContentCurrent", code), (
+        "same-version refresh is not driven by shipped-content integrity"
+    )
+    assert not re.search(r"if\s*\(\$installedVersion\s+-ne\s+\$forgeVersion\)\s*\{", code), (
+        "Forge staging is still gated only by VERSION.txt; same-version hotfixes will remain stale"
+    )
+
+
+def test_forge_health_check_reads_fields_forge_emits() -> None:
+    """The gate that would have caught the bug that shipped.
+
+    7.8.0 ended the installer with `if (-not $contract.compatible)`. Forge has
+    never emitted a `compatible` field, `-not $null` is always true, so it threw
+    on every run and the AIO aborted the whole install on the non-zero exit. A
+    fresh Windows install of 7.8.0 could not complete. Nothing caught it because
+    no test read the installer and the responding source together.
+
+    The handshake is gone -- one repository cannot usefully negotiate a version
+    with itself -- so the installer asks `forge doctor`, which can still fail
+    for a real reason. This reads every field the installer inspects and proves
+    doctor() actually returns it.
     """
     installer = read(ROOT / "TOOLS" / "Install-SkyrimForge.ps1")
-    checked = set(re.findall(r"\$contract\.([A-Za-z_][A-Za-z0-9_]*)", installer))
-    assert checked, "installer no longer inspects the bundle contract at all"
-    with zipfile.ZipFile(forge_asset()) as z:
-        stem = forge_asset().stem
-        contract_src = z.read(f"{stem}/skyrim_forge/bundle_contract.py").decode("utf-8")
-    emitted = set(re.findall(r'^\s+"([a-z_]+)":', contract_src, re.M))
+    code = ps_code(ROOT / "TOOLS" / "Install-SkyrimForge.ps1")
+    assert "$contract" not in code, "installer still speaks the retired bundle contract"
+    assert "bundle-contract" not in code, "installer still calls the removed bundle-contract command"
+    checked = set(re.findall(r"\$doctor\.([A-Za-z_][A-Za-z0-9_]*)", code))
+    assert checked, "installer no longer inspects the doctor report at all"
+    emitted = doctor_fields()
     unknown = sorted(f for f in checked if f not in emitted)
-    assert not unknown, f"installer reads contract field(s) Forge never emits: {unknown} (emitted: {sorted(emitted)})"
+    assert not unknown, f"installer reads doctor field(s) Forge never emits: {unknown} (emitted: {sorted(emitted)})"
+
+    # And the command it is gone from must really be gone, or a stale install
+    # could keep answering an interface nothing maintains.
+    assert not (FORGE_SOURCE / "skyrim_forge" / "bundle_contract.py").exists(), (
+        "bundle_contract.py is back; the handshake it implements cannot fail for a real reason"
+    )
+    assert "bundle-contract" not in read(FORGE_SOURCE / "skyrim_forge" / "cli.py"), (
+        "forge CLI still exposes bundle-contract"
+    )
 
 
 def test_no_skill_documents_an_unshipped_product() -> None:
@@ -573,6 +721,10 @@ def test_no_skill_documents_an_unshipped_product() -> None:
     A skill that contradicts the tool actually installed is worse than no
     skill: the agent believes it.
     """
+    forge_skill = read(CANON / "skyrim-forge" / "SKILL.md")
+    assert "bundle-contract" not in forge_skill, "current Forge skill still instructs the removed 5.x handshake"
+    assert "# Skyrim Forge 6.0" in forge_skill, "current Forge skill still presents the merged 6.0.0 product as an older series"
+    assert "Skyrim-Forge-<version>" not in forge_skill, "current Forge skill still teaches the removed version-stamped install layout"
     assert not (CANON / "skyrim-forge-bridge").exists(), "skyrim-forge-bridge is back"
     dead = ("SKYRIM_FORGE_BRIDGE_ROOT", "skyrim-forge-bridge", "Forge Bridge")
     offenders = []
@@ -621,19 +773,150 @@ def test_every_v5_helper_called_actually_exists() -> None:
     call = re.compile(r"(?<![\w\"'`-])((?:" + verbs + r")-V5[A-Za-z0-9]*)(?![\w\"'-])")
 
     missing = []
+    callers = list(sorted(ROOT.glob("*.ps1")))
     for folder in ("TOOLS", "TESTS"):
-        for p in sorted((ROOT / folder).glob("*.ps1")):
-            text = read(p)
-            if "V7-Common.ps1" not in text:
-                continue
-            code = re.sub(r"(?s)<#.*?#>", "", text)          # <# block comments #>
-            code = "\n".join(re.sub(r"#.*$", "", line) for line in code.split("\n"))
-            local = set(re.findall(r"^\s*function\s+([A-Za-z][A-Za-z0-9-]*)", text, re.M))
-            for name in sorted(set(call.findall(code))):
-                if name not in defined and name not in local:
-                    missing.append(f"{p.relative_to(ROOT).as_posix()} calls {name}")
+        callers.extend(sorted((ROOT / folder).glob("*.ps1")))
+    for p in callers:
+        text = read(p)
+        if "V7-Common.ps1" not in text:
+            continue
+        code = re.sub(r"(?s)<#.*?#>", "", text)          # <# block comments #>
+        code = "\n".join(re.sub(r"#.*$", "", line) for line in code.split("\n"))
+        local = set(re.findall(r"^\s*function\s+([A-Za-z][A-Za-z0-9-]*)", text, re.M))
+        for name in sorted(set(call.findall(code))):
+            if name not in defined and name not in local:
+                missing.append(f"{p.relative_to(ROOT).as_posix()} calls {name}")
     assert not missing, "undefined V7-Common helper(s): " + "; ".join(sorted(missing))
 
+
+def test_local_launcher_failure_is_persistent_and_diagnosable() -> None:
+    start = read(ROOT / "START-HERE.bat").lower()
+    compat = read(ROOT / "INSTALL-V7-AIO.bat").lower()
+    ps = read(ROOT / "INSTALL-V7-AIO.ps1")
+
+    # START-HERE is the one canonical local launcher. The legacy V7 BAT is an alias.
+    assert 'install-v7-aio.ps1' in start
+    assert 'call "%~dp0start-here.bat" %*' in compat
+    assert 'install-v7-aio.ps1' not in compat
+
+    # A double-click failure must remain visible, while CI/automation can opt out.
+    assert 'pause' in start
+    assert 'uabs_no_pause' in start
+    assert 'if not "%exitcode%"=="0"' in start
+    assert 'exit /b %exitcode%' in start
+
+    # The PowerShell layer keeps durable evidence even when the console vanishes.
+    for needle in (
+        "Start-Transcript",
+        "INSTALL-FAILED.txt",
+        "INSTALL-LAST.log",
+        "trap {",
+        "Stop-Transcript",
+    ):
+        assert needle in ps, f"installer missing durable failure evidence: {needle}"
+    assert "$installLogRoot = Join-Path $env:LOCALAPPDATA" not in ps, "logging path dereferences LOCALAPPDATA before fallback"
+    assert "$installLogBase = $env:LOCALAPPDATA" in ps and "$installLogBase = $env:TEMP" in ps, (
+        "installer diagnostics need a safe LOCALAPPDATA -> TEMP fallback"
+    )
+
+
+def test_provider_skill_sync_is_content_authoritative() -> None:
+    common = read(ROOT / "TOOLS" / "V7-Common.ps1")
+    installer = read(ROOT / "INSTALL-V7-AIO.ps1")
+
+    assert "function Sync-V5ProviderSkills" in common, (
+        "provider skill installation still has no content-authoritative sync primitive"
+    )
+    sync_body = common.split("function Sync-V5ProviderSkills", 1)[1].split("function Copy-V5RoboSafe", 1)[0]
+    assert "robocopy" not in sync_body.lower(), (
+        "provider skill sync still depends on Robocopy metadata classification instead of content-authoritative replacement"
+    )
+    for needle in ("Get-FileHash", "Move-Item", ".uabs-skill-stage-", ".uabs-skill-backup-"):
+        assert needle in sync_body, f"provider skill sync missing {needle} stage/verify/swap contract"
+    assert "Sync-V5ProviderSkills -From $srcSkills -To $destSkills" in installer, (
+        "AIO does not use content-authoritative provider skill sync"
+    )
+    assert "Copy-V5Robo -From $srcSkills -To $destSkills" not in installer, (
+        "AIO still uses metadata-only whole-tree Robocopy for provider skills"
+    )
+
+
+def test_bundle_forge_install_has_single_skill_writer() -> None:
+    wrapper = read(ROOT / "TOOLS" / "Install-SkyrimForge.ps1")
+    installer = read(ROOT / "INSTALL-V7-AIO.ps1")
+    assert "[switch]$BundleOwnsProviderSkills" in wrapper, (
+        "bundle Forge wrapper has no mode that prevents Forge from replacing bundle-owned provider skills"
+    )
+    assert "-BundleOwnsProviderSkills" in installer, (
+        "AIO does not tell the Forge wrapper that provider skills are already bundle-owned"
+    )
+    assert "INSTALLATION.json" in wrapper and "bundle-owned Forge skill" in wrapper, (
+        "bundle-owned Forge path must add only the per-machine descriptor without replacing SKILL.md"
+    )
+
+
+def test_forge_skill_has_one_canonical_source() -> None:
+    canonical = ROOT / "_V7-CANONICAL-SKILLS" / "skyrim-forge" / "SKILL.md"
+    embedded = ROOT / "BUNDLED-TOOLS" / "skyrim-forge" / "integrations" / "skyrim-forge" / "SKILL.md"
+    assert canonical.read_bytes() == embedded.read_bytes(), (
+        "Forge's provider installer overwrites the bundle canonical skyrim-forge skill with divergent content"
+    )
+
+
+def test_forge_install_checked_commands_are_quiet_but_diagnostic() -> None:
+    ps = read(ROOT / "BUNDLED-TOOLS" / "skyrim-forge" / "Install-or-Update.ps1")
+    head = ps.split("function Find-Python", 1)[0]
+    assert "2>&1 | Out-String" in head, (
+        "Forge Install-or-Update still streams huge JSON command output directly to the installer console"
+    )
+    assert "if ($ExitCode -ne 0)" in head and "$Output" in head, (
+        "Forge checked-command wrapper must retain child output for failure diagnostics"
+    )
+    assert "Write-Host" in head and "$Label" in head, (
+        "Forge checked-command wrapper must emit a concise progress/result marker"
+    )
+    assert "[Diagnostics.Stopwatch]::StartNew()" in head and "elapsed" in head.lower(), (
+        "Forge checked-command wrapper must show elapsed-time progress instead of appearing to hang"
+    )
+    assert "..  " in head, "Forge checked-command wrapper must print a start marker before long-running checks"
+
+
+def test_hermes_forge_probe_bypasses_cli_startup_and_hook_prompts() -> None:
+    register = read(FORGE_SOURCE / "Register-MCP.ps1")
+    hermes = register.split("'Hermes' {", 1)[1].split("\n            }", 1)[0]
+    assert "_probe_single_server" in hermes, (
+        "Hermes Forge verification must use the direct MCP probe instead of starting the full Hermes CLI"
+    )
+    assert "& $Executable" not in hermes and "Start-Process -FilePath $Executable" not in hermes, (
+        "Hermes Forge registration still starts hermes.exe, which can trigger first-use shell-hook consent prompts"
+    )
+    assert "mcp list" not in hermes.lower() and "mcp','test" not in hermes.lower(), (
+        "Hermes Forge registration still routes through interactive-capable CLI MCP commands"
+    )
+    assert ".WaitForExit(" in hermes and "$HermesProcess.WaitForExit()" in hermes, (
+        "Hermes probe process must explicitly finalize the child before reading ExitCode/output on Windows PowerShell 5.1"
+    )
+    assert ".HasExited" not in hermes, (
+        "Hermes probe still polls HasExited; PS5.1 can expose an unfinalized/blank ExitCode with redirected streams"
+    )
+
+
+def test_double_click_launcher_keeps_success_visible() -> None:
+    start = read(ROOT / "START-HERE.bat").lower()
+    assert "installation complete" in start, "START-HERE does not print an explicit success conclusion"
+    assert 'if /i not "%uabs_no_pause%"=="1" pause' in start, (
+        "successful double-click installs still close immediately instead of keeping the conclusion visible"
+    )
+    assert start.count('if /i not "%uabs_no_pause%"=="1" pause') >= 2, (
+        "pause contract must cover both failure and success paths"
+    )
+
+
+def test_grok_forge_wiring_does_not_warn_before_bundled_forge_install() -> None:
+    installer = read(ROOT / "INSTALL-V7-AIO.ps1")
+    assert "Skyrim Forge MCP deferred to bundled Forge installer" in installer, (
+        "Grok wiring still emits a false 'Skyrim Forge not configured' warning before the bundled Forge component runs"
+    )
 
 def main() -> int:
     tests = [
@@ -645,19 +928,29 @@ def main() -> int:
         test_provider_bootstrap_contract,
         test_gate_and_remote_fail_closed,
         test_hermes_cost_contract,
-        test_forge_payload,
+        test_forge_source_is_complete_and_buildable,
         test_offline_manifest_complete,
         test_manifest_generator_excludes_developer_state,
         test_release_builder_contract,
         test_current_forge_docs_contract,
         test_ps51_utf8_reads_are_explicit,
         test_windows_ci_and_ps51_static_contract,
+        test_release_contains_no_accidental_next_major_version_surface,
+        test_hermes_mcp_registration_is_noninteractive_and_bounded,
         test_version_sources,
         test_forge_install_directory_is_never_version_stamped,
-        test_forge_contract_check_reads_a_field_forge_emits,
+        test_forge_health_check_reads_fields_forge_emits,
         test_no_skill_documents_an_unshipped_product,
         test_no_skill_script_hardcodes_a_machine_path,
         test_every_v5_helper_called_actually_exists,
+        test_provider_skill_sync_is_content_authoritative,
+        test_bundle_forge_install_has_single_skill_writer,
+        test_forge_skill_has_one_canonical_source,
+        test_forge_install_checked_commands_are_quiet_but_diagnostic,
+        test_local_launcher_failure_is_persistent_and_diagnosable,
+        test_hermes_forge_probe_bypasses_cli_startup_and_hook_prompts,
+        test_double_click_launcher_keeps_success_visible,
+        test_grok_forge_wiring_does_not_warn_before_bundled_forge_install,
     ]
     failed = []
     for fn in tests:

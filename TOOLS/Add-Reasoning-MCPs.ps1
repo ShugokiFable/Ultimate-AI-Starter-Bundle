@@ -155,21 +155,47 @@ $targets = @{
 
 foreach ($p in $Providers) {
   if ($p -eq 'Hermes') {
-    # Hermes owns its MCP registry; hand-editing its config.yaml would fight the
-    # CLI. `mcp add` also connects and discovers tools, so a failure here means
-    # the server genuinely does not work, not that a config key was wrong.
+    # Hermes' `mcp add` is interactive after discovery. Hidden stdin piping can
+    # block on Windows PowerShell 5.1, so use Hermes' own config API instead.
     $hx = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'
     if (-not (Test-Path -LiteralPath $hx)) { Write-Host 'Hermes  not installed, skipped'; continue }
+    $hpy = Join-Path (Split-Path -Parent $hx) 'python.exe'
+    if (-not (Test-Path -LiteralPath $hpy -PathType Leaf)) { Write-Host 'Hermes  Python runtime missing, skipped'; continue }
     $existing = & $hx mcp list 2>&1 | Out-String
     $addedH = @()
     foreach ($s in $servers) {
       if ($existing -match [regex]::Escape($s.id)) { continue }
       if ($CheckOnly) { $addedH += $s.id; continue }
-      # It prompts to enable the discovered tools; answer once, non-interactively.
-      'y' | & $hx mcp add $s.id --command npx --args @($s.args) *> $null
-      $addedH += $s.id
+      $tmp = Join-Path ([IO.Path]::GetTempPath()) ('uabs-hermes-reasoning-' + [guid]::NewGuid().ToString('N') + '.py')
+      $oldId = $env:UABS_HERMES_MCP_ID; $oldArgs = $env:UABS_HERMES_MCP_ARGS_JSON
+      try {
+        $env:UABS_HERMES_MCP_ID = $s.id
+        $env:UABS_HERMES_MCP_ARGS_JSON = ($s.args | ConvertTo-Json -Compress)
+        $helper = @'
+import json, os
+from hermes_cli.config import load_config, save_config
+cfg = load_config()
+servers = cfg.setdefault("mcp_servers", {})
+servers[os.environ["UABS_HERMES_MCP_ID"]] = {
+    "command": "npx",
+    "args": json.loads(os.environ["UABS_HERMES_MCP_ARGS_JSON"]),
+    "enabled": True,
+    "connect_timeout": 30,
+}
+save_config(cfg)
+'@
+        $enc = New-Object System.Text.UTF8Encoding($false)
+        [IO.File]::WriteAllText($tmp, $helper, $enc)
+        & $hpy $tmp
+        if ($LASTEXITCODE -ne 0) { throw "Hermes MCP config update failed for $($s.id) with exit code $LASTEXITCODE" }
+        $addedH += $s.id
+      } finally {
+        if ($null -eq $oldId) { Remove-Item Env:UABS_HERMES_MCP_ID -ErrorAction SilentlyContinue } else { $env:UABS_HERMES_MCP_ID = $oldId }
+        if ($null -eq $oldArgs) { Remove-Item Env:UABS_HERMES_MCP_ARGS_JSON -ErrorAction SilentlyContinue } else { $env:UABS_HERMES_MCP_ARGS_JSON = $oldArgs }
+        Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+      }
     }
-    if ($addedH.Count) { Write-Host ("{0,-7} {1} -> hermes mcp add" -f $p, ($addedH -join ', ')) }
+    if ($addedH.Count) { Write-Host ("{0,-7} {1} -> Hermes config (noninteractive)" -f $p, ($addedH -join ', ')) }
     else { Write-Host ("{0,-7} already has all three" -f $p) }
     continue
   }

@@ -1,0 +1,9 @@
+{
+  "schema": "skyrim-forge-external-worker/1",
+  "job_id": "wrye-example",
+  "worker_type": "wrye_bash",
+  "operation": "build_bashed_patch",
+  "inputs": {"profile": "<Profile>", "configuration": "<Workspace>/BashedPatchConfig.json"},
+  "options": {"game": "Skyrim Special Edition"},
+  "output_dir": "<Workspace>/BashedPatch"
+}

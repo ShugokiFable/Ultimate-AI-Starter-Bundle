@@ -68,6 +68,13 @@ param(
   [string]$Mode = 'BundledFirst',
   [string[]]$Components = @('housecarl','spooky','codebase-memory','headroom','superpowers','ponytail','codeburn'),
   [string]$WorkspaceRoot = '',
+  # The directory Skyrim Forge is installed INTO, not the folder that
+  # contains it: -ForgeRoot 'S:\Apps\Skyrim Tools\Skyrim-Forge' keeps Forge
+  # next to xEdit and friends. Defaults to
+  # %LOCALAPPDATA%\Skyrim-Tools\Skyrim-Forge, which needs no admin rights and
+  # assumes no drive letter. An existing install or a set
+  # SKYRIM_FORGE_ROOT is honoured without this. Never version-stamped.
+  [string]$ForgeRoot = '',
   [switch]$SkipRuntimes,
   [switch]$SkipHouseCarlSetup,
   [switch]$SkipMcpWire,
@@ -120,6 +127,58 @@ if ($WithExtras) {
 
 $ErrorActionPreference = 'Stop'
 $PackRoot = $PSScriptRoot
+
+# Durable installer diagnostics. A double-clicked .bat used to vanish on the
+# first terminating error, leaving only a one-frame red message. Keep one
+# timestamped transcript plus stable LAST/FAILED files under LOCALAPPDATA so a
+# rerun is self-diagnosing even when the console is gone.
+$installLogBase = $env:LOCALAPPDATA
+if (-not $installLogBase) { $installLogBase = $env:TEMP }
+if (-not $installLogBase) { $installLogBase = $PackRoot }
+$installLogRoot = Join-Path $installLogBase 'Ultimate-AI-Starter-Bundle\logs'
+New-Item -ItemType Directory -Force -Path $installLogRoot | Out-Null
+$installLogPath = Join-Path $installLogRoot ('install-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '.log')
+$installLastPath = Join-Path $installLogRoot 'INSTALL-LAST.log'
+$installFailedPath = Join-Path $installLogRoot 'INSTALL-FAILED.txt'
+$script:UabsTranscriptStarted = $false
+try {
+  Start-Transcript -LiteralPath $installLogPath -Force | Out-Null
+  $script:UabsTranscriptStarted = $true
+} catch {
+  # Logging must never become the reason installation fails.
+}
+
+trap {
+  $failure = $_
+  Write-Host ''
+  Write-Host '=====================================================' -ForegroundColor Red
+  Write-Host ' INSTALL FAILED' -ForegroundColor Red
+  Write-Host (' ' + $failure.Exception.Message) -ForegroundColor Red
+  Write-Host (' Diagnostics: ' + $installFailedPath) -ForegroundColor Yellow
+  Write-Host (' Transcript:  ' + $installLogPath) -ForegroundColor Yellow
+  Write-Host '=====================================================' -ForegroundColor Red
+  $summary = @(
+    'Ultimate AI Starter Bundle installation failed.'
+    ('UTC: ' + [DateTime]::UtcNow.ToString('o'))
+    ('Pack: ' + $PackRoot)
+    ('Error: ' + $failure.Exception.Message)
+    ('Category: ' + $failure.CategoryInfo)
+    ('Target: ' + $failure.TargetObject)
+    ('ScriptStackTrace: ' + $failure.ScriptStackTrace)
+    ('Transcript: ' + $installLogPath)
+  ) -join [Environment]::NewLine
+  try {
+    $enc = New-Object System.Text.UTF8Encoding($false)
+    [IO.File]::WriteAllText($installFailedPath, $summary, $enc)
+  } catch {}
+  if ($script:UabsTranscriptStarted) {
+    try { Stop-Transcript | Out-Null } catch {}
+    $script:UabsTranscriptStarted = $false
+  }
+  try { Copy-Item -LiteralPath $installLogPath -Destination $installLastPath -Force } catch {}
+  exit 1
+}
+
 if (-not (Test-Path (Join-Path $PackRoot 'BUNDLED-TOOLS\CATALOG.json'))) {
   throw "Run INSTALL-V7-AIO.ps1 from the V7 pack root (folder containing BUNDLED-TOOLS)."
 }
@@ -155,7 +214,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.9.0 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.9.1 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -254,7 +313,7 @@ if (-not $ToolsOnly) {
     $providerHome = Get-V5ProviderHome -Provider $prov -Catalog $catalog
     $destSkills = Join-Path $providerHome 'skills'
     Write-Host "  $prov -> $destSkills"
-    Copy-V5Robo -From $srcSkills -To $destSkills
+    Sync-V5ProviderSkills -From $srcSkills -To $destSkills
     # provider home instructions
     $pmeta = $catalog.providers.$prov
     if ($pmeta.instructions) {
@@ -1285,6 +1344,8 @@ if (-not $SkipGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Provid
         Update-V5GrokMcpBlock -Name 'skyrim-forge' -Command $cmd -ArgList $args -Startup 120 -Tool 6000
       }
     } catch { Write-V5Warn "Forge MCP wire skipped: $_" }
+  } elseif (Test-Path -LiteralPath (Join-Path $PackRoot 'BUNDLED-TOOLS\skyrim-forge\VERSION.txt') -PathType Leaf) {
+    Write-V5Ok 'Skyrim Forge MCP deferred to bundled Forge installer'
   } else {
     Write-V5Warn "Skyrim Forge not configured (optional). Set SKYRIM_FORGE_ROOT or skill INSTALLATION.json"
   }
@@ -1359,18 +1420,26 @@ if (-not $SkipHouseCarlSetup -and -not $SkillsOnly) {
 }
 
 # ---------- Bundled Skyrim Forge ----------
-# The payload version lives in BUNDLED-TOOLS\offline and nowhere else; the
-# installer derives it from the filename. It resolves ONE versionless install
+# Forge's source lives in this repository at BUNDLED-TOOLS\skyrim-forge, so
+# what installs is whatever this commit contains -- there is no separately
+# released archive to drift. The installer resolves ONE versionless install
 # root (migrating a version-stamped install onto it), wires selected providers,
-# then requires the compatibility contract.
+# and then proves the result runs with `forge doctor`.
+#
+# No -BundleVersion is passed any more. 7.8.0 negotiated a compatibility range
+# with a separately released Forge and read a field back that Forge has never
+# emitted, so this step threw on every run and aborted the whole install here.
 if (-not $ToolsOnly -and -not $SkillsOnly) {
   $forgeInstaller = Join-Path $PackRoot 'TOOLS\Install-SkyrimForge.ps1'
   if (-not (Test-Path -LiteralPath $forgeInstaller -PathType Leaf)) { throw 'TOOLS\Install-SkyrimForge.ps1 missing from pack.' }
-  $forgePayload = Get-ChildItem -LiteralPath (Join-Path $PackRoot 'BUNDLED-TOOLS\offline') -Filter 'Skyrim-Forge-*.zip' -File -ErrorAction SilentlyContinue | Select-Object -First 1
-  $forgePayloadVersion = if ($forgePayload) { $forgePayload.BaseName -replace '^Skyrim-Forge-', '' } else { 'unknown' }
-  & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $forgeInstaller -PackRoot $PackRoot -Providers ($Providers -join ',') -BundleVersion '7.9.0'
-  if ($LASTEXITCODE -ne 0) { throw "Skyrim Forge installation/contract failed with exit code $LASTEXITCODE." }
-  $installed['skyrim-forge'] = @{ status='installed'; version=$forgePayloadVersion; root=$env:SKYRIM_FORGE_ROOT }
+  $forgeVersionFile = Join-Path $PackRoot 'BUNDLED-TOOLS\skyrim-forge\VERSION.txt'
+  if (-not (Test-Path -LiteralPath $forgeVersionFile -PathType Leaf)) { throw 'BUNDLED-TOOLS\skyrim-forge is missing from pack.' }
+  $forgeSourceVersion = if ([IO.File]::ReadAllText($forgeVersionFile) -match '(?m)^Skyrim Forge\s+(?<ver>\d+\.\d+\.\d+)\s*$') { $Matches['ver'] } else { 'unknown' }
+  $forgeArgs = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$forgeInstaller,'-PackRoot',$PackRoot,'-Providers',($Providers -join ','),'-BundleOwnsProviderSkills')
+  if ($ForgeRoot) { $forgeArgs += @('-ForgeRoot', $ForgeRoot) }
+  & (Join-Path $PSHOME 'powershell.exe') @forgeArgs
+  if ($LASTEXITCODE -ne 0) { throw "Skyrim Forge installation failed with exit code $LASTEXITCODE." }
+  $installed['skyrim-forge'] = @{ status='installed'; version=$forgeSourceVersion; root=$env:SKYRIM_FORGE_ROOT }
 }
 
 # ---------- Discover + state ----------
@@ -1383,7 +1452,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.9.0'
+  version = '7.9.1'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -1451,8 +1520,17 @@ if (-not (Test-Path -LiteralPath $doctorScript -PathType Leaf)) { throw 'Final i
 $doctorArgs = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$doctorScript,'-PackRoot',$PackRoot,'-Providers',($Providers -join ','))
 if ($ToolsOnly) { $doctorArgs += @('-SkipSkills','-SkipForge') }
 elseif ($SkillsOnly) { $doctorArgs += '-SkipForge' }
-& (Join-Path $PSHOME 'powershell.exe') @doctorArgs
-if ($LASTEXITCODE -ne 0) { throw "Final installed-state doctor failed with exit code $LASTEXITCODE." }
+# Capture the child doctor's streams, then replay them in this process. Windows
+# Start-Transcript does not reliably capture output written directly by a child
+# powershell.exe process, which previously left INSTALL-LAST.log with only the
+# generic exit code and hid the actual failing doctor check.
+$doctorOutput = @(& (Join-Path $PSHOME 'powershell.exe') @doctorArgs 2>&1)
+$doctorExitCode = $LASTEXITCODE
+foreach ($doctorLine in $doctorOutput) { Write-Host ([string]$doctorLine) }
+if ($doctorExitCode -ne 0) {
+  $doctorTail = (@($doctorOutput | Select-Object -Last 12 | ForEach-Object { [string]$_ }) -join ' | ')
+  throw "Final installed-state doctor failed with exit code $doctorExitCode. Doctor tail: $doctorTail"
+}
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Green
@@ -1473,3 +1551,12 @@ Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'
 Write-Host 'Missing tools: run TOOLS\Ensure-Tools.ps1 or INSTALL-V7-AIO.ps1 - do not invent paths.'
 Write-Host ''
+
+# Close the durable transcript only after the success banner/next steps have
+# been written, then update the stable LAST log and clear any stale failure note.
+if ($script:UabsTranscriptStarted) {
+  try { Stop-Transcript | Out-Null } catch {}
+  $script:UabsTranscriptStarted = $false
+}
+try { Copy-Item -LiteralPath $installLogPath -Destination $installLastPath -Force } catch {}
+try { Remove-Item -LiteralPath $installFailedPath -Force -ErrorAction SilentlyContinue } catch {}

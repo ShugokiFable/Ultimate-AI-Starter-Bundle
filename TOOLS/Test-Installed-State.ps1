@@ -56,8 +56,11 @@ if(-not $SkipSkills){
     & $exe --version *> $null
     if($LASTEXITCODE -ne 0){Err "$provider executable failed --version."}
 
-    $home=Get-V5ProviderHome -Provider $provider -Catalog $catalog
-    $destSkills=Join-Path $home 'skills'
+    # PowerShell variable names are case-insensitive; $HOME is a read-only
+    # automatic variable on Windows PowerShell 5.1. Never use $home as a local.
+    $providerHome=Get-V5ProviderHome -Provider $provider -Catalog $catalog
+    if (-not $providerHome) { Err "$provider provider home could not be resolved."; continue }
+    $destSkills=Join-Path $providerHome 'skills'
     $sourceSkills=Join-Path $PackRoot ("1-TAILORED-PROVIDER-TREES\$provider\COPY-TO-SKILLS-DIRECTORY\skills")
     if(-not(Test-Path -LiteralPath $sourceSkills -PathType Container)){
       Err "$provider bundled skill source is missing: $sourceSkills"
@@ -117,8 +120,23 @@ if(-not $SkipForge){
     $py=Join-Path $forge '.venv\Scripts\python.exe'
     if(-not(Test-Path -LiteralPath $py -PathType Leaf)){Err 'Forge venv Python missing.'}
     else{
-      & $py -m skyrim_forge bundle-contract --bundle-version $packBare *> $null
-      if($LASTEXITCODE -ne 0){Err "Forge rejected the bundle $packBare compatibility contract."}
+      # Forge 6 is developed in this repository and intentionally removed the
+      # old cross-repository version-handshake command. Prove the installed copy
+      # is runnable and read-only ready with the same health contract used by
+      # Install-SkyrimForge.ps1.
+      $forgeDoctorRaw = (& $py -m skyrim_forge doctor 2>&1 | Out-String)
+      $forgeDoctorExit = $LASTEXITCODE
+      if($forgeDoctorExit -ne 0){
+        Err "Forge doctor failed with exit code $forgeDoctorExit. $($forgeDoctorRaw.Trim())"
+      } else {
+        try {
+          $forgeDoctor = $forgeDoctorRaw | ConvertFrom-Json
+          if($forgeDoctor.result -ne 'PASS'){Err "Forge doctor result=$($forgeDoctor.result), expected PASS."}
+          if(-not $forgeDoctor.read_only_ready){Err 'Forge doctor reports read_only_ready=false.'}
+        } catch {
+          Err ('Forge doctor output is unreadable JSON: '+$_.Exception.Message)
+        }
+      }
     }
   }
 }

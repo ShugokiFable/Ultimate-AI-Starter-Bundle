@@ -1,0 +1,15 @@
+{
+  "schema": "skyrim-forge-native-plugin-plan/1",
+  "project": "ExampleSksePlugin",
+  "display_name": "Example SKSE Plugin",
+  "version": "1.0.0",
+  "author": "Your Name",
+  "email": "",
+  "description": "A bounded CommonLibSSE-NG plugin scaffold.",
+  "minimum_skse_version": "0.0.0",
+  "runtime_strategy": "address_library",
+  "compatible_runtimes": [],
+  "struct_dependent": false,
+  "log_name": "ExampleSksePlugin",
+  "namespace": "ExampleSksePlugin"
+}

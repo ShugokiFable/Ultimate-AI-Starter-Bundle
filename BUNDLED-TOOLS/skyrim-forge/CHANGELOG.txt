@@ -1,0 +1,153 @@
+Skyrim Forge 6.0.0
+
+- Developed inside the Ultimate AI Starter Bundle repository at BUNDLED-TOOLS/skyrim-forge; no separate release.
+- Removed `forge bundle-contract`: a version handshake between two halves of one repository can only go stale, never usefully fail. The bundle installer runs `forge doctor` instead.
+- The version gate finds CI at the checkout root instead of opening a workflow path this subtree no longer has.
+- Native helpers rebuilt reproducibly as 6.0.0 with pinned Go 1.23.2.
+
+Skyrim Forge 5.2.1
+
+- forge --help, the GUI title and the Go self-test fixture announced the 4.2 series from a 5.2.0 install; all three now interpolate VERSION.
+- The version gate sweeps every shipped .py/.ps1/.bat/.go file for a stale product-name literal instead of trusting an enumerated file list.
+- Documented install directory is Skyrim-Forge with no version suffix, so an upgrade cannot rename itself out from under five provider MCP configs.
+- Native helpers rebuilt reproducibly as 5.2.1 with pinned Go 1.23.2.
+
+Skyrim Forge 5.2.0
+
+- Adds `bundle-contract --bundle-version` for a machine-readable 7.8.x compatibility handshake.
+- Keeps Claude Desktop + Claude Code MCP registration from 5.1.7.
+- Native helpers rebuilt reproducibly as 5.2.0 with pinned Go 1.23.2.
+- Designed for unattended install/doctor/registration by Ultimate AI Starter Bundle 7.8.0.
+
+Skyrim Forge 5.1.7
+
+- Claude Desktop app support via claude_desktop_config.json, including Store installs.
+- Manifest hashes git-normalized bytes so clean checkout CI verifies reliably.
+
+Skyrim Forge 5.1.6
+
+- Default workspace is SKYRIM_FORGE_ROOT\Workspaces, not Documents\Skyrim Forge.
+  Empty leftover Documents workspaces migrate. Installer sets SKYRIM_FORGE_ROOT
+  before config-show and warns when run from Documents.
+- Register-MCP.ps1 skips adding Forge to Grok when that would hit 8 running
+  MCP servers. Replacing an existing Forge entry is allowed.
+- Docs: one live versioned folder under the Skyrim tools directory.
+
+Skyrim Forge 5.1.5
+
+- tools/call, prompts/get and ping now carry resultType: complete. Claude Code
+  2026-07-28 rejected every Forge tool call because list/read had the field
+  and tools/call did not.
+- initialize that negotiates 2026-07-28 also names its result. Handshake-era
+  2025 initialize responses stay unchanged.
+
+Skyrim Forge 5.1.4
+
+- Provider configs are read as UTF-8 instead of the Windows ANSI codepage.
+  Register-MCP.ps1 read Kimi's mcp.json with Get-Content -Raw and wrote it
+  straight back, which would have replaced every non-ASCII character in that
+  file with mojibake. Four call sites moved to [IO.File]::ReadAllText.
+- The Hermes registration test asserted an unquoted command line, so it only
+  passed when the install path had no spaces. The code was correct; the
+  assertion now strips quotes before comparing.
+- The shipped native helpers no longer reproduced from source under the
+  -buildvcs=false release profile. Rebuilt deterministically; checksums,
+  manifest and SBOM regenerated.
+
+Skyrim Forge 5.1.3
+
+- Release automation now refreshes existing tag assets instead of failing when
+  a release was created before the tag workflow reached its publish step.
+- A present-but-broken `.venv` is now detected and safely rebuilt.
+- The validated install uses the exact 5.1.3 folder and active user pointer.
+
+Skyrim Forge 5.1.2
+
+- Hermes MCP setup now confirms tool enablement and rejects false-success
+  connection tests.
+
+Skyrim Forge 5.1.1
+
+- Fixed the advertised Papyrus compiler MCP tool so calls reach Forge.
+- Kimi now receives a preserving MCP configuration merge and doctor check;
+  failed checks restore the original configuration bytes.
+- Hermes now receives a real MCP registration plus connection test, with
+  byte-exact rollback if replacement fails.
+- Hermes skills now install to the actual LocalAppData home by default.
+- Added cross-provider Windows regression coverage for every corrected path.
+
+Skyrim Forge 5.1.0
+
+Framework linting was checked against a real mod corpus for the first time.
+
+Against 1,195 SPID/KID/FLM/SkyPatcher configs from a live 3,000-mod load order,
+the linter reported 13,554 errors and 11,762 warnings. Checked against the
+frameworks' own runtime logs, almost all of it was wrong. It now reports 11
+errors and 71 warnings on the same corpus, and those 11 are real mod defects.
+
+- SkyPatcher values may be comma-separated form lists. Every form after the first
+  used to be flagged. That alone was 11,730 warnings.
+- A single-value SPID skill filter like 14(20) is no longer an error. 13,427 of
+  them are installed and the SPID log shows no parse failures; one was traced to
+  a successful distribution.
+- Repeated advisories are summarised once per file instead of once per line.
+- SkyPatcher outfit, ingestible, misc, ingredient and projectile categories are
+  recognised.
+- KID keys are case-insensitive, and a two-field KID line is valid.
+- Stacked and mid-file byte-order marks no longer invent findings.
+
+Skyrim Forge 5.0.2
+
+- The installed AI skill said "Skyrim Forge 4.2" inside a 5.0 install. That line
+  is what an AI reads when deciding whether to use Forge, and it was wrong in
+  every provider home. Fixed, and now checked before release.
+
+Skyrim Forge 5.0.1
+
+FOMOD validation false positives are fixed. Forge is meant to be the last check a
+mod passes before it ships, so a wrong rejection is worse than a missed nicety.
+Each of these refused an installer that is valid per the official ModuleConfig 5.0
+schema and that Vortex and MO2 install without complaint.
+
+- An option with a screenshot is no longer rejected. The optional <image> element
+  is allowed exactly where the schema puts it. This affected most real installers.
+- The xsi:noNamespaceSchemaLocation attribute is no longer mandatory. It is an
+  optional hint that no mod manager reads. Omitting it, or using https, previously
+  failed the entire installer. It is now a warning.
+- foseDependency, nvseDependency, and skseDependency are recorded as unverified
+  instead of rejected. The schema Forge itself asks for is the one that defines
+  them.
+- The unreferenced-payload error now names the files instead of only counting
+  them. Coverage checking is still strict.
+
+C# scripted installers are still refused. They permit arbitrary code execution.
+
+Skyrim Forge 5.0.0
+
+- Forge speaks the current MCP revision, 2026-07-28, which replaced the
+  initialize handshake with per-request metadata.
+- Forge serves both eras at once. Existing Codex, Claude, and Grok registrations
+  keep working exactly as before and need no change.
+- server/discover reports the supported versions, capabilities, and server
+  identity in a single request.
+- An unsupported protocol version is refused with the list of versions Forge
+  does support, instead of being silently downgraded.
+- The shipped MANIFEST.json now verifies against a git clone. Five installer and
+  startup scripts previously failed that check because of line-ending rules.
+- Files declared as CRLF are now required to be CRLF, and every manifest entry is
+  re-hashed by the regression suite.
+- CodeQL scans pass again. The init and analyze actions were running mismatched
+  releases, which blocked four dependency updates.
+- The product version now has one source of truth, and every other copy of it is
+  checked against that source before release.
+- actions/checkout 7.0.1, actions/setup-python 7.0.0, and codeql-action 4.37.6.
+- Windows and Linux native helpers were rebuilt reproducibly with pinned Go
+  1.23.2.
+
+Safety boundaries are unchanged. Forge still never launches a GUI, never runs
+arbitrary shell commands, never writes to live Skyrim Data, keeps external
+process execution disabled by default, and hash-pins third-party tools instead
+of bundling them.
+
+Skyrim gameplay, save behavior, and third-party GUI results remain untested
+runtime gates.

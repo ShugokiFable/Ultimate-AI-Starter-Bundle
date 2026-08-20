@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://skyrim-forge.local/schemas/automation-job.schema.json",
+  "title": "Skyrim Forge Automation Job",
+  "type": "object",
+  "required": [
+    "schema",
+    "job_id",
+    "operation"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "skyrim-forge-automation/1"
+    },
+    "job_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]{1,80}$"
+    },
+    "operation": {
+      "enum": [
+        "framework_lint",
+        "release_validate",
+        "release_build",
+        "plugin_build",
+        "xedit_install_scripts",
+        "xedit_check_errors",
+        "xedit_run_approved_script",
+        "mo2_snapshot",
+        "vortex_snapshot",
+        "loot_analyze",
+        "loot_compare",
+        "loot_apply",
+        "wrye_build_bashed_patch",
+        "creation_kit_worker",
+        "ui_automation",
+        "papyrus_compile",
+        "papyrus_analyze",
+        "framework_build",
+        "native_scaffold",
+        "native_audit",
+        "native_build",
+        "nexus_audit",
+        "nexus_build",
+        "external_worker",
+        "verify_release"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "options": {
+      "type": "object"
+    },
+    "outputs": {
+      "type": "object"
+    }
+  }
+}

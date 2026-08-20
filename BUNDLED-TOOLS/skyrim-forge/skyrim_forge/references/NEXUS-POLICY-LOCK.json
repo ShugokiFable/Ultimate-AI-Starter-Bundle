@@ -1,0 +1,73 @@
+{
+  "schema": "skyrim-forge-policy-source-lock/1",
+  "target": "Nexus Mods",
+  "reviewed_at": "2026-07-24",
+  "maximum_age_days": 90,
+  "sources": [
+    {
+      "id": "terms",
+      "title": "Terms of Service",
+      "url": "https://help.nexusmods.com/article/18-terms-of-service",
+      "last_verified": "2026-07-24",
+      "rules": [
+        "Uploader must own or have all necessary rights, consents and permissions",
+        "Uploads must comply with the original game's terms",
+        "Uploader grants Nexus and its partners the upload licences described in section 24",
+        "Automated scraping/text-data mining of Nexus content is prohibited without exemption"
+      ]
+    },
+    {
+      "id": "file_submission",
+      "title": "File Submission Guidelines",
+      "url": "https://help.nexusmods.com/article/28-file-submission-guidelines",
+      "last_verified": "2026-07-24",
+      "rules": [
+        "Credit is not a substitute for permission",
+        "Compilations must add functionality beyond repackaging",
+        "Public files must be functional, accurately described, correctly categorised and truthfully claimed",
+        "Permission conversations should be documented"
+      ]
+    },
+    {
+      "id": "adult_content",
+      "title": "Adult Content Guidelines",
+      "url": "https://help.nexusmods.com/article/19-adult-content-guidelines",
+      "last_verified": "2026-07-24",
+      "rules": [
+        "Adult and extreme content must be classified and tagged accurately",
+        "Uploader remains responsible for classification"
+      ]
+    },
+    {
+      "id": "donation_points",
+      "title": "Donation Points System Rules",
+      "url": "https://help.nexusmods.com/article/68-donation-points-system-terms-of-service",
+      "last_verified": "2026-07-24",
+      "rules": [
+        "Donation Points require original work or each included asset to be cleared for that use"
+      ]
+    },
+    {
+      "id": "best_practices",
+      "title": "Best Practices for Mod Authors",
+      "url": "https://help.nexusmods.com/article/136-best-practices-for-mod-authors",
+      "last_verified": "2026-07-24",
+      "rules": [
+        "Provide requirements, installation instructions, versioning and mod-manager-friendly packaging"
+      ]
+    },
+    {
+      "id": "nexus_25_event",
+      "title": "Nexus Mods 25th Anniversary Mod Drive Guidelines",
+      "url": "https://help.nexusmods.com/article/175-nexus-mods-25th-anniversary-mod-drive-guidelines",
+      "last_verified": "2026-07-24",
+      "conditional": true,
+      "rules": [
+        "Event submissions prohibit generative AI for assets, code or dialogue",
+        "Event submissions must meet its date, violence, branding and rights rules"
+      ]
+    }
+  ],
+  "automation_boundary": "Forge must not scrape Nexus Mods. Permission and policy evidence is user supplied or obtained through an authorized API workflow.",
+  "legal_boundary": "Machine checks cannot authenticate ownership, consent, trademark clearance, privacy rights or jurisdiction-specific legality. The uploader remains responsible."
+}

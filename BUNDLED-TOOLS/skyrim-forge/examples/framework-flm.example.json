@@ -1,0 +1,14 @@
+{
+  "schema": "skyrim-forge-framework-plan/1",
+  "profile": "flm-1.8.1",
+  "output_file": "Example_FLM.ini",
+  "entries": [
+    {
+      "key": "FormList",
+      "fields": [
+        "0x1~A.esp",
+        "0x2~B.esp"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "skyrim-forge-framework-plan/1",
+  "profile": "bos-3.4.1",
+  "output_file": "Example_SWAP.ini",
+  "entries": [
+    {
+      "section": "Forms",
+      "originals": [
+        "0x1~A.esp"
+      ],
+      "replacements": [
+        "0x2~B.esp"
+      ]
+    }
+  ]
+}

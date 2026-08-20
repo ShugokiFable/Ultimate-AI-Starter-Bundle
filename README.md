@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.0
+# Ultimate AI Starter Bundle v7.9.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -76,7 +76,7 @@ Or double-click `INSTALL-REMOTE.bat`. Re-running is a no-op.
 
 **Windows (bundle already on disk)**
 
-1. Double-click `INSTALL-V7-AIO.bat`, or run:
+1. Double-click **`START-HERE.bat`**. (`INSTALL-V7-AIO.bat` remains only as a legacy compatibility alias.) Or run:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
@@ -103,7 +103,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ## What gets installed
 
-- **Provider skills** — 142 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removes `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
+- **Provider skills** — 142 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
@@ -114,7 +114,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ### Skyrim Forge
 
-**Skyrim Forge 5.2.1 is bundle-managed in v7.9.0.** Both release variants retain the required Forge payload. The AIO installs or repairs it into ONE versionless install root, migrating any version-stamped install onto it, wires supported selected-provider integrations, sets `SKYRIM_FORGE_ROOT`, and proves Forge's machine-readable compatibility contract before the final success banner.
+**Skyrim Forge 6.0.0 is developed in this repository**, at `BUNDLED-TOOLS/skyrim-forge`. It is source, not a downloaded payload, so both release variants carry it in full and there is no separately released archive that can drift out of step with the installer that reads it -- which is exactly how v7.8.0 shipped an installer calling a contract field Forge never emitted. The AIO installs or repairs it into ONE versionless install root, migrating any version-stamped install onto it and preserving `Workspaces` and the virtualenv, wires supported selected-provider integrations, sets `SKYRIM_FORGE_ROOT`, and proves the result runs with `forge doctor` before the final success banner. Choose where it lands with `-ForgeRoot`; the default is `%LOCALAPPDATA%\Skyrim-Tools\Skyrim-Forge`.
 
 ## Update tools later
 
@@ -243,11 +243,25 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.9.1 — One repository + real Windows closure
+
+- Skyrim Forge 6.0.0 is developed and shipped directly under `BUNDLED-TOOLS/skyrim-forge`; no separate Forge payload/release can drift from the bundle installer.
+- `START-HERE.bat` is the canonical launcher and failures persist to `INSTALL-LAST.log` / `INSTALL-FAILED.txt`.
+- Real Windows runs restored the missing Kimi/Hermes plugin helpers and exposed the final doctor's PowerShell 5.1 `$HOME` collision; both are release-regression tested.
+- The final installed-state doctor uses `forge doctor` (`result: PASS`, `read_only_ready: true`) instead of the removed Forge 5.x bundle handshake, and its child-process diagnostics are replayed into the durable transcript.
+- The `skyrim-forge` skill and all five provider copies now describe Forge 6.x and the versionless `SKYRIM_FORGE_ROOT` install.
+
+### v7.9.0 — Forge install/layout repair
+
+- Migrated Forge to one versionless live root and added `-ForgeRoot`.
+- Removed the obsolete bridge skill and reduced the canonical set to 142 skills.
+- Made the release contracts/version surfaces release-agnostic instead of hardcoding 7.8.0.
+
 ### v7.8.0 — One-shot reliability + fresh-Windows hardening
 
-- 57 new focused generic reliability/reasoning skills (v7.8.0); 142 total per provider after v7.9.0 removed a skill describing an unshipped product.
+- 57 new focused generic reliability/reasoning skills (v7.8.0); 142 total per provider since v7.9.0 removed a skill describing an unshipped product.
 - Fresh-Windows provider bootstrap, final installed-state doctor, deterministic UTF-8-safe release packaging, and fail-closed install/runtime gates.
-- Skyrim Forge 5.2.1 is bundle-managed and contract-checked.
+- At v7.8.0, Skyrim Forge was still a separately versioned 5.2.x payload; v7.9.1 supersedes that design with the in-repository Forge 6.0.0 source tree.
 - Hermes defaults are tuned for DeepSeek V4 Flash 0731: maximum main reasoning (`max`), explicit execution/completion/verification guards, 120k compaction threshold, 30% recent-tail preservation, cache-friendly pruning, 1-hour prompt-cache TTL, and reasoning-free mechanical compression.
 
 ### v7.7.9 — Installer respects existing installs; compression tuned
@@ -307,7 +321,7 @@ are machine-neutral. A live dump of one PC is refused. Existing homes are
 not overwritten. Unrestraint stays in `0-UNRESTRAINT-PACKS` and in the
 instruction files (`CLAUDE.md` / `AGENTS.md` / `SOUL.md`), not in settings.
 
-Skyrim Forge 5.2.1 is installed and repaired by the v7.9.0 bundle under the
+Skyrim Forge 6.0.0 is installed and repaired by the v7.9.1 bundle under the
 Skyrim tools layout. Do not create a second manual copy in Documents. Grok's
 MCP registration still respects its running-server safety budget.
 
@@ -606,12 +620,22 @@ registry.
   provider-specific skill, but is intentionally empty in this release.
 - Everything here is **tool-validated** — gates pass, scripts parse, hashes
   verify, and the BOM fix is confirmed live in a provider's own skill listing.
-  The installer has **not** been run end-to-end on a clean machine as part of
-  this build. The v7.5.0 preamble wiring was sandbox-tested (fresh file,
-  existing file, BOM file, re-run replace); the remote bootstrap download
-  and extract path was exercised against a local archive.
+  A real Windows PowerShell 5.1 run on an existing installation reached every
+  provider and Forge 6.0.0, then exposed two final-doctor defects that are fixed
+  and regression-tested in v7.9.1. A completely clean Windows machine remains
+  the authoritative GitHub Actions gate after push. The v7.5.0 preamble wiring
+  was sandbox-tested (fresh file, existing file, BOM file, re-run replace); the
+  remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.1** — 2026-08-20. Based on v7.9.0; merged Forge 6.0.0 and Windows installer/doctor closure.
+
+**v7.9.0** — 2026-08-20. Based on v7.8.0.
+
+**v7.8.0** — 2026-08-20. Based on v7.7.15.
+
+**v7.7.15** — 2026-08-20. Based on v7.7.14.
 
 **v7.7.9** — 2026-08-19. Based on v7.7.8.
 

@@ -1,0 +1,204 @@
+[paths]
+workspace_root = "D:\\Skyrim Forge Workspaces"
+audit_log = "C:\\Users\\YOU\\.skyrim-forge\\audit.jsonl"
+skyrim_data = "D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\Data"
+plugins_file = "C:\\Users\\YOU\\AppData\\Local\\Skyrim Special Edition\\plugins.txt"
+loadorder_file = "C:\\Users\\YOU\\AppData\\Local\\Skyrim Special Edition\\loadorder.txt"
+mo2_profiles_root = "D:\\Modding\\MO2\\profiles"
+mo2_instance = ""
+vortex_staging = "D:\\Vortex Mods\\skyrimse"
+vortex_downloads = "D:\\Vortex Downloads\\skyrimse"
+tools_root = "D:\\Skyrim Tools"
+seven_zip = "C:\\Program Files\\7-Zip\\7z.exe"
+extra_read_roots = []
+
+[papyrus]
+flags = "D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\Data\\Scripts\\Source\\TESV_Papyrus_Flags.flg"
+imports = [
+  "D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\Data\\Scripts\\Source"
+]
+
+[safety]
+allow_external_processes = false
+require_approval_for_writes = true
+allow_ui_automation = false
+
+[limits]
+max_scan_files = 250000
+max_output_bytes = 2000000000
+
+[tools.xedit]
+executable = "D:\\Skyrim Tools\\SSEEdit\\SSEEdit64.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.mo2]
+executable = "D:\\Modding\\MO2\\ModOrganizer.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.loot]
+executable = "D:\\Skyrim Tools\\LOOT\\LOOT.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.wrye_bash]
+executable = "D:\\Skyrim Tools\\Wrye Bash\\Wrye Bash.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.creation_kit]
+executable = "D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\CreationKit.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.ckpe_loader]
+executable = "D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\ckpe_loader.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.papyrus_compiler]
+executable = "D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\Papyrus Compiler\\PapyrusCompiler.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.archive]
+executable = "C:\\Program Files\\7-Zip\\7z.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.cmake]
+executable = "C:\\Program Files\\CMake\\bin\\cmake.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.vcpkg]
+executable = "D:\\Skyrim Tools\\vcpkg\\vcpkg.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.ninja]
+executable = "D:\\Skyrim Tools\\ninja\\ninja.exe"
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.ui_worker]
+executable = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+worker = "workers\\SkyrimForge.UIWorker.ps1"
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.loot_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.wrye_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.ck_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.asset_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.animation_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.bodyslide_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.lod_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.grass_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.synthesis_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800
+
+[tools.audio_worker]
+executable = ""
+worker = ""
+sha256 = ""
+version = ""
+worker_sha256 = ""
+timeout_seconds = 1800

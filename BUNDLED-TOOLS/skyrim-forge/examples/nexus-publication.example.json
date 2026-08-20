@@ -1,0 +1,216 @@
+{
+  "schema": "skyrim-forge-nexus-publication-plan/1",
+  "intent": "nexus_public",
+  "policy_review": {
+    "reviewed_at": "2026-07-24",
+    "reviewer": "Author and publishing assistant",
+    "sources": [
+      {
+        "id": "terms",
+        "title": "Terms",
+        "url": "https://help.nexusmods.com/article/18-terms-of-service",
+        "reviewed": true
+      },
+      {
+        "id": "file_submission",
+        "title": "File Submission",
+        "url": "https://help.nexusmods.com/article/28-file-submission-guidelines",
+        "reviewed": true
+      },
+      {
+        "id": "adult_content",
+        "title": "Adult Content",
+        "url": "https://help.nexusmods.com/article/19-adult-content-guidelines",
+        "reviewed": true
+      },
+      {
+        "id": "donation_points",
+        "title": "Donation Points",
+        "url": "https://help.nexusmods.com/article/68-donation-points-system-terms-of-service",
+        "reviewed": true
+      },
+      {
+        "id": "best_practices",
+        "title": "Best Practices",
+        "url": "https://help.nexusmods.com/article/136-best-practices-for-mod-authors",
+        "reviewed": true
+      }
+    ]
+  },
+  "mod": {
+    "name": "Example Skyrim Mod",
+    "version": "1.0.0",
+    "game": "Skyrim Special Edition / Anniversary Edition",
+    "game_terms_url": "https://example.com/replace-with-official-game-terms",
+    "uploader": "ExampleAuthor",
+    "summary": "A concise and accurate summary.",
+    "category": "Utilities",
+    "tags": [
+      "utility"
+    ],
+    "donation_points": false,
+    "event": "",
+    "release_type": "original_mod",
+    "value_added_description": ""
+  },
+  "page": {
+    "description": "Describe exactly what the mod changes and what it does not change.",
+    "requirements": [
+      "Skyrim Special Edition or Anniversary Edition"
+    ],
+    "installation": [
+      "Install the archive with a supported mod manager."
+    ],
+    "uninstallation": [
+      "Disable and remove the mod. Follow any save-specific instructions documented here."
+    ],
+    "compatibility": [
+      "List verified compatibility and known conflicts."
+    ],
+    "known_issues": [
+      "List remaining limitations honestly."
+    ],
+    "support": "Report reproducible issues on the Nexus Mods page with logs and load-order context.",
+    "claims": [],
+    "changelog": [
+      "1.0.0: Initial release."
+    ],
+    "external_links": []
+  },
+  "ownership": {
+    "original_work": true,
+    "project_license": {
+      "id": "CUSTOM",
+      "name": "Custom Nexus permissions",
+      "url": "",
+      "text_path": "LICENSE.md",
+      "permissions_statement": "Example only. Replace with explicit uploader permissions.",
+      "notice_path": "",
+      "source_code_url": "",
+      "obligations_acknowledged": true
+    },
+    "collaborators": [],
+    "assets": [
+      {
+        "id": "plugin-and-config",
+        "paths": [
+          "ExampleMod.esp",
+          "SKSE/**",
+          "scripts/**",
+          "interface/**"
+        ],
+        "kind": "plugin",
+        "provenance": "original",
+        "author": "ExampleAuthor",
+        "source_url": "",
+        "source_name": "",
+        "license": null,
+        "permission_basis": "owned",
+        "redistribution": "allowed",
+        "modification": "not_allowed",
+        "commercial_use": "not_allowed",
+        "donation_points": "not_applicable",
+        "credit": "ExampleAuthor",
+        "credit_required": true,
+        "bundled": true,
+        "evidence": [],
+        "notes": "Split mixed asset types into separate records in a real release."
+      },
+      {
+        "id": "documentation",
+        "paths": [
+          "README.md",
+          "LICENSE.md",
+          "CHANGELOG.md"
+        ],
+        "kind": "documentation",
+        "provenance": "original",
+        "author": "ExampleAuthor",
+        "source_url": "",
+        "source_name": "",
+        "license": null,
+        "permission_basis": "owned",
+        "redistribution": "allowed",
+        "modification": "not_allowed",
+        "commercial_use": "not_allowed",
+        "donation_points": "not_applicable",
+        "credit": "ExampleAuthor",
+        "credit_required": true,
+        "bundled": true,
+        "evidence": [],
+        "notes": ""
+      }
+    ],
+    "dependencies": []
+  },
+  "declarations": {
+    "claims_verified": true,
+    "content_classification_complete": true,
+    "credits_complete": true,
+    "game_terms_reviewed": true,
+    "no_malware_or_harmful_payload": true,
+    "no_password_or_placeholder_files": true,
+    "no_pirated_or_original_game_files": true,
+    "no_prohibited_external_links": true,
+    "privacy_review_complete": true,
+    "public_functional_release": true,
+    "rights_and_permissions_complete": true
+  },
+  "software": {
+    "contains_executables": false,
+    "internet_access": false,
+    "internet_access_crucial": false,
+    "source_code_url": "",
+    "nexus_staff_contact_evidence": "",
+    "network_disclosure": ""
+  },
+  "ai": {
+    "used": true,
+    "areas": [
+      "code",
+      "documentation"
+    ],
+    "human_verified": true,
+    "disclosure": "AI assisted development and documentation. The uploader reviewed and tested the final release and is responsible for all claims and permissions."
+  },
+  "content": {
+    "adult": {
+      "body_stigma": false,
+      "extreme_violence": false,
+      "nudity": false,
+      "other_adult": false,
+      "pornographic": false,
+      "self_harm": false,
+      "sexualised": false,
+      "substance_use": false,
+      "swearing": false
+    },
+    "political_references": false,
+    "msf_branding": false,
+    "violence": "none",
+    "tags": []
+  },
+  "permissions": {
+    "redistribution": "No redistribution without permission.",
+    "modification": "Ask first.",
+    "asset_use": "Ask first.",
+    "conversion": "Ask first.",
+    "translation": "Translations are allowed with credit and a dependency on the original mod.",
+    "commercial_use": "Not allowed.",
+    "donation_points": "Not applicable.",
+    "nexus_settings": {
+      "upload_elsewhere": "permission_required",
+      "modification": "permission_required",
+      "asset_use": "permission_required",
+      "conversion": "permission_required",
+      "translation": "allowed_with_credit",
+      "commercial_use": "not_allowed",
+      "donation_points": "not_applicable"
+    }
+  },
+  "attestation": {
+    "signed_by": "ExampleAuthor",
+    "signed_at": "2026-07-24",
+    "responsibility_accepted": true
+  }
+}

@@ -3,7 +3,7 @@
 ## Easiest
 
 ```powershell
-.\INSTALL-V7-AIO.bat
+.\START-HERE.bat
 ```
 
 ## What you get
@@ -18,7 +18,7 @@
 | Superpowers | yes zip + plugins/ | obra/superpowers |
 | Ponytail | yes zip + plugins/ | DietrichGebert/ponytail |
 | CodeBurn | npx/npm | getagentseal/codeburn |
-| Skyrim Forge 5.2.1 | **required payload bundled** | installed/repaired automatically by v7.9.0 |
+| Skyrim Forge 6.0.0 | **source in this repo** | installed/repaired automatically by v7.9.1 |
 
 ## Later updates
 
@@ -36,4 +36,4 @@
 
 ## Bundle-managed
 
-Skyrim Forge 5.2.1 ships with v7.9.0 and is installed, compatibility-checked, skill-wired, and MCP-registered by the AIO installer. `SKYRIM_FORGE_ROOT` and the per-provider skill descriptor are generated automatically; no manual extraction is part of a fresh install. The install directory never carries a version suffix, so an upgrade cannot disconnect a provider whose MCP command is an absolute path.
+Skyrim Forge 6.0.0 is developed in this repository at `BUNDLED-TOOLS/skyrim-forge` and is installed, health-checked with `forge doctor`, skill-wired, and MCP-registered by the AIO installer. `SKYRIM_FORGE_ROOT` and the per-provider skill descriptor are generated automatically; no manual extraction is part of a fresh install. The install directory never carries a version suffix, so an upgrade cannot disconnect a provider whose MCP command is an absolute path.
