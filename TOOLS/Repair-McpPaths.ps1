@@ -45,6 +45,14 @@ $configs = @(
   @{ Name = 'Hermes'; Path = (Join-Path $env:LOCALAPPDATA 'hermes\config.yaml') }
 )
 
+# Claude Desktop (Store app) keeps its own MCP config and does NOT read
+# ~/.claude.json for its servers. The package folder is hash-suffixed, so
+# glob for the config file instead of hardcoding the package name.
+$desktopCfg = Get-ChildItem -LiteralPath (Join-Path $env:LOCALAPPDATA 'Packages') -Filter 'claude_desktop_config.json' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($desktopCfg) {
+  $configs += @{ Name = 'Claude Desktop'; Path = $desktopCfg.FullName }
+}
+
 # A path inside a config may be written with \ or /. Compare on a normalized
 # form so "S:/x/y" and "S:\x\y" are recognized as the same file.
 # JSON escapes every separator, so the literal in the file reads "S:\\x\\y".
@@ -100,6 +108,14 @@ function Resolve-LivePath([string]$dead) {
     }
     if ($cands.Count) {
       return (($cands | Sort-Object Version -Descending)[0]).Full
+    }
+    # No version-stamped sibling found. The user may have renamed the folder
+    # to drop the version suffix (Skyrim-Forge-5.1.6 -> Skyrim-Forge), which
+    # the regex above cannot match. Fall back to the bare stem as a sibling.
+    $bare = Join-Path $parent $stem
+    if (Test-Path -LiteralPath $bare) {
+      $full = if ($tail) { Join-Path $bare $tail } else { $bare }
+      if (Test-Path -LiteralPath $full) { return $full }
     }
   }
   # The bundle registers houseCARL via the HOUSECARL_MCP user env. It is the

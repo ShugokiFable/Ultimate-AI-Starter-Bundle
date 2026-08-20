@@ -386,7 +386,7 @@ def mode_stop(payload: dict, cwd: Path) -> int:
 def selftest() -> int:
     ok = True
     drives = {"C"}
-    users = {"karlo"} | PLACEHOLDER_USERS
+    users = {"tester"} | PLACEHOLDER_USERS
 
     def expect(text, want, label, **kw):
         nonlocal ok
@@ -395,7 +395,7 @@ def selftest() -> int:
             print(f"FAIL: {label} (expected {'a finding' if want else 'silence'})")
             ok = False
 
-    expect(r'$p = "C:\Users\karlo\thing"', False, "own home is fine")
+    expect(r'$p = "C:\Users\tester\thing"', False, "own home is fine")
     expect(r'$p = "C:\Users\bob\thing"', True, "another user's home")  # assumption-gate: ok
     expect(r'$p = "$env:USERPROFILE\thing"', False, "env var is the fix")
     expect(r'$p = "C:\Users\$env:USERNAME\thing"', False, "interpolated user")

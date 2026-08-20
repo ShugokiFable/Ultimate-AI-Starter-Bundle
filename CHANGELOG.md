@@ -3,6 +3,22 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.13
+
+Bundle == live-machine reconciliation after a local folder rename:
+
+- **Hermes starter `config.yaml` rebuilt portable** — now carries the
+  reference machine's touches (model aliases, OpenRouter extras, plugins:
+  disk-cleanup/ponytail/superpowers, aux models, github MCP via npx) while
+  keeping the no-personal-info contract. `COPY-TO-PROVIDER-HOME` mirrors the
+  parent (matches the Codex/Claude convention).
+- **`Repair-McpPaths.ps1` scans the Claude Desktop app config** and falls
+  back to the unversioned folder stem when no `Skyrim-Forge-*` sibling
+  exists (folder renames that drop the version suffix no longer report a
+  dead end).
+- **`assumption_gate.py` selftest sanitized** — reference user is now
+  `tester` (was the author's username); no personal info ships in the pack.
+
 ## 7.7.12
 
 Claude Desktop app support. Add-Reasoning-MCPs.ps1 now also writes the MCP

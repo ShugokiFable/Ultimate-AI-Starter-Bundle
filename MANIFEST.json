@@ -8946,8 +8946,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-PROVIDER-HOME/config.yaml",
-  "size": 1733,
-  "sha256": "c958f988ece128ce7d717251d00d093a99938414953340af433595629ced12bc"
+  "size": 6649,
+  "sha256": "66841f87221afdd7ee1851166201c334bdf2770263aa1aa6f7a9ae6f65caba2a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -11436,8 +11436,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
-  "size": 2005,
-  "sha256": "3edb16ce14ede78e951ea78a9fc6d95b55688c58a61ce10ab03c2f0c3e80cf0d"
+  "size": 6649,
+  "sha256": "66841f87221afdd7ee1851166201c334bdf2770263aa1aa6f7a9ae6f65caba2a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-MAP.md",
@@ -13981,8 +13981,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 13561,
-  "sha256": "02de5aab53ec33aa340b88a72b892daa455d6d134ecc36fb68cbdce222e796c7"
+  "size": 13116,
+  "sha256": "80ee2ca80861ba97896dda50b63626e6ea5332f5f8af8c86eb1ba02812f753d5"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15786,8 +15786,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 36112,
-  "sha256": "69345c26e670e5519049c0cf46e68fcccfefbc81551649d5354047b02491853b"
+  "size": 36933,
+  "sha256": "4471ddf38d70e8a1316a6e0d99ccded4b6cdf35731f134bb313053b2b28aae18"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -15876,8 +15876,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 77019,
-  "sha256": "a04b6cf0934280293e77c5a956d14e7d9aeb0f8c033fca0c82582d48d7d5e360"
+  "size": 75578,
+  "sha256": "e18d855c2838c4aeb742c34bb644628114236743b59a36d5193d5c9917cbed16"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -15916,13 +15916,13 @@
  },
  {
   "path": "README.md",
-  "size": 31264,
-  "sha256": "da1341339633f2d554ee08ff1656c1a63f35b6e9ad7dac35572c7213780af99a"
+  "size": 30635,
+  "sha256": "af4bc3e86b09150cd2bc1d50dc92c1e20c52ba1e11b14ec573c582b9fd928616"
  },
  {
   "path": "START-HERE.txt",
-  "size": 8641,
-  "sha256": "0898276675ac4d9700bc7689dcaf7def347406c00b0a3415b1c95424d1f05c0e"
+  "size": 8468,
+  "sha256": "3e58e6882656595e8aef4a35b8a9dbc719af355e5222c27f56b5512e459a5cf5"
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
@@ -15996,8 +15996,8 @@
  },
  {
   "path": "TOOLS/Repair-McpPaths.ps1",
-  "size": 7899,
-  "sha256": "9927a996d9de80b8fee697a875411f5869b8b2ef5e0d65bd879002fc06eed378"
+  "size": 8834,
+  "sha256": "0fa37b4751a1ef0134bf60ffd31e0be0d7b59c1f27c73c37fdf7d44fe580177b"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
@@ -16046,8 +16046,8 @@
  },
  {
   "path": "TOOLS/hooks/assumption_gate.py",
-  "size": 19681,
-  "sha256": "4d7d846db0d5aba4a7627269a9e622cd337ec309ec37c58ac7bfd60f908370a9"
+  "size": 19683,
+  "sha256": "02bbc7a7b7dcec5c10ba4370e11eb7cade3d55d4c172bbeab8050c477fe8f8b1"
  },
  {
   "path": "TOOLS/hooks/completeness_gate.py",
@@ -16071,8 +16071,8 @@
  },
  {
   "path": "TOOLS/hooks/plugin/completeness-gate/hooks/assumption_gate.py",
-  "size": 19681,
-  "sha256": "4d7d846db0d5aba4a7627269a9e622cd337ec309ec37c58ac7bfd60f908370a9"
+  "size": 19683,
+  "sha256": "02bbc7a7b7dcec5c10ba4370e11eb7cade3d55d4c172bbeab8050c477fe8f8b1"
  },
  {
   "path": "TOOLS/hooks/plugin/completeness-gate/hooks/completeness_gate.py",
@@ -16126,13 +16126,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 922,
-  "sha256": "d42e9fcffd0e4173dbb1500a998dcd92794e4751a64826070eda3690dee092bd"
+  "size": 906,
+  "sha256": "d61b1e908280f8b620eafbde44ef6489557670b566b03dcaa112aa847df8cf63"
  },
  {
   "path": "VERSION.txt",
-  "size": 9,
-  "sha256": "557d0c78fbecd6215711416835fc106d9f078c91fd4f6a628d7acad10f8dda8b"
+  "size": 8,
+  "sha256": "77b81d7d59377b1739e01316864c42d1326621517bc2e89eb0b7b68771dd38f7"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
