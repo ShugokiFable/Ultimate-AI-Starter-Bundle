@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.8
+# Ultimate AI Starter Bundle v7.7.9
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,14 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.7.9 — Installer respects existing installs; compression tuned
+
+- The AIO keeps existing houseCARL/Spooky installs (`kept-existing`) instead
+  of overwriting them when `HOUSECARL_MCP` / `SPOOKY_AUTOMOD_ROOT` point at
+  valid roots — curated tool copies survive re-runs.
+- Hermes starter config compacts earlier (threshold 0.14, leaner tail) with
+  `in_place` + idle compaction enabled.
 
 ### v7.7.8 — Skill tree dedupe
 
@@ -597,6 +605,8 @@ registry.
   and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.7.9** — 2026-08-19. Based on v7.7.8.
 
 **v7.7.8** — 2026-08-19. Based on v7.7.7.
 

@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.7.8",
+ "version": "7.7.9",
  "generated": "2026-08-19",
- "base": "v7.7.7",
+ "base": "v7.7.8",
  "canonical_skills": 85,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.7.8: skill tree dedupe - 5 dead lowercase-skill.md modules pruned; KID/SPID distribution twins merged into kid-authoring/spid-authoring (scripts + authority refs kept); installer skips dirs without SKILL.md."
+ "notes": "v7.7.9: AIO keeps existing houseCARL/Spooky installs (HOUSECARL_MCP / SPOOKY_AUTOMOD_ROOT respected); Hermes template compression tuned (threshold 0.14, protect_last_n 6, in_place, idle compact)."
 }
