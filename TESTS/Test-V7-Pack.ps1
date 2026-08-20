@@ -384,6 +384,37 @@ if ($grokStarter -match '(?m)^\s*skills\s*=\s*false\s*$') {
     Good 'Grok starter config.toml sets compat.claude skills = false'
 } else { Bad 'Grok starter config.toml missing skills = false' }
 
+Section '10. Framework truth lock runs (SPID/KID grammar anti-drift)'
+# This script pins the exact SPID/KID parser facts the pack refuses to let an
+# agent invent. Until now NO gate ran it, so when v7.7.8 consolidated
+# skyrim-spid-distribution / skyrim-kid-distribution into spid-authoring /
+# kid-authoring, it sat there raising FileNotFoundError on every invocation
+# and nothing noticed for a whole release. An unrun gate is not a gate.
+$truthLock = Join-Path $PackRoot '_V7-CANONICAL-SKILLS\skyrim-distr-kid-validation\scripts\verify_framework_truth.py'
+if (-not (Test-Path -LiteralPath $truthLock)) {
+    Bad 'verify_framework_truth.py missing from the canonical tree'
+} elseif (-not $py) {
+    Bad 'python not found; framework truth lock skipped'
+} else {
+    $out = & $py.Source $truthLock 2>&1 | Out-String
+    if ($out -match 'FRAMEWORK TRUTH LOCK: PASS') {
+        Good 'framework truth lock PASS'
+    } else {
+        Bad ('framework truth lock failed: ' + ($out.Trim() -split "`n" | Select-Object -First 6 | Out-String))
+    }
+}
+# The five provider trees ship their own copy; a stale one there is the same
+# rot, just delivered to the user instead of caught here.
+$canonBytes = [IO.File]::ReadAllBytes($truthLock)
+foreach ($tree in (Get-ChildItem (Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES') -Directory)) {
+    $copy = Join-Path $tree.FullName 'COPY-TO-SKILLS-DIRECTORY\skills\skyrim-distr-kid-validation\scripts\verify_framework_truth.py'
+    if (-not (Test-Path -LiteralPath $copy)) { continue }
+    $a = [IO.File]::ReadAllText($copy) -replace "`r`n", "`n"
+    $b = [Text.Encoding]::UTF8.GetString($canonBytes) -replace "`r`n", "`n"
+    if ($a -eq $b) { Good ($tree.Name + ' truth lock copy matches canonical') }
+    else { Bad ($tree.Name + ' truth lock copy differs from canonical') }
+}
+
 Write-Host ''
 if ($fail -eq 0) {
     Write-Host "PACK GATE: PASS" -ForegroundColor Green

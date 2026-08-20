@@ -104,7 +104,11 @@ foreach ($prov in $Providers) {
         $mk = Get-V5ClaudeMarketplaceName -PluginRoot (Join-Path $pluginsRoot $id)
         if (-not $mk) { Nap $prov ("native " + $id) 'no Claude marketplace in bundle'; continue }
         $cache = Join-Path $phome ('plugins\cache\' + $mk + '\' + $id)
-        if (Test-Path -LiteralPath $cache -PathType Container) { Ok $prov ("native " + $id) }
+        if (Test-Path -LiteralPath $cache -PathType Container) {
+          Ok $prov ("native " + $id)
+          if (-not $pstateAll.ContainsKey($prov)) { $pstateAll[$prov] = @{} }
+          $pstateAll[$prov][$id] = $true
+        }
         else { Bad $prov ("native " + $id) ('no plugins\cache\' + $mk + '\' + $id) }
       }
     }
@@ -258,31 +262,62 @@ foreach ($prov in $Providers) {
     }
   }
 
-  # ---- plugin-owned skills must not ALSO exist as copies ---------------
+  # ---- skill delivery matches this provider's policy -------------------
+  # Two policies, both deliberate, and the check has to know which applies:
+  #
+  #   dedupe      Claude, Codex, Kimi - the harness loads skills from the
+  #               plugin itself, so a copy in the skills dir is a stale
+  #               duplicate that shadows the plugin's own version.
+  #   keep-copies Grok, Hermes - the harness reads the SKILLS DIR, not the
+  #               plugin registration. Grok's TUI Reads
+  #               ~/.grok/skills/<name>/SKILL.md (v7.7.5); Hermes derives
+  #               /slash commands and desktop autofill by scanning the same
+  #               path (v7.7.7). Here a MISSING copy is the defect.
+  #
+  # The previous version of this check asserted neither. It only looked at
+  # $pstateAll, which was written for 'superpowers' in three branches and
+  # never for 'ponytail' or for Claude at all - so eight of ten
+  # provider/plugin pairs reported PASS while testing nothing, and it kept
+  # reporting 'no duplicate skills' for the two providers that now REQUIRE
+  # those copies. Silence that reads as PASS is what this script exists to
+  # catch.
+  $keepCopies = @('Grok', 'Hermes')
   $skillsDir = Join-Path $phome 'skills'
   if (Test-Path -LiteralPath $skillsDir -PathType Container) {
-    # A copy is only a DUPLICATE when the native plugin for it is actually
-    # installed for this provider. Where the native install did not happen -
-    # Grok has no native ponytail today - the copies ARE the delivery path,
-    # and calling them duplicates would argue for deleting the only working
-    # copy of those skills.
-    # Grok Superpowers copies also stay on purpose: the TUI and agent Read
-    # ~/.grok/skills/<name>/SKILL.md. Removing them makes the skill "fail"
-    # with an empty error (verification-before-completion).
-    $dupes = @()
-    foreach ($id in @('superpowers', 'ponytail')) {
-      if ($prov -eq 'Grok' -and $id -eq 'superpowers') { continue }
-      $entry = $null
-      if ($pstateAll.ContainsKey($prov)) { $entry = $pstateAll[$prov][$id] }
-      if (-not $entry) { continue }
-      foreach ($n in (Get-V5PluginOwnedSkillNames -PluginRoot (Join-Path $pluginsRoot $id))) {
-        if (Test-Path -LiteralPath (Join-Path $skillsDir $n) -PathType Container) { $dupes += $n }
+    if ($keepCopies -contains $prov) {
+      $absent = @()
+      foreach ($id in @('superpowers', 'ponytail')) {
+        foreach ($n in (Get-V5PluginOwnedSkillNames -PluginRoot (Join-Path $pluginsRoot $id))) {
+          if (-not (Test-Path -LiteralPath (Join-Path $skillsDir $n) -PathType Container)) { $absent += $n }
+        }
       }
-    }
-    if ($dupes.Count -gt 0) {
-      Bad $prov 'no duplicate skills' (($dupes.Count.ToString()) + ' plugin-owned copies: ' + (($dupes | Select-Object -First 4) -join ', '))
+      if ($absent.Count -gt 0) {
+        Bad $prov 'plugin skill copies present' (($absent.Count.ToString()) + ' missing (slash commands/TUI read this path): ' + (($absent | Select-Object -First 4) -join ', '))
+      } else {
+        Ok $prov 'plugin skill copies present'
+      }
     } else {
-      Ok $prov 'no duplicate skills'
+      $dupes = @()
+      $unknown = @()
+      foreach ($id in @('superpowers', 'ponytail')) {
+        $native = $null
+        if ($pstateAll.ContainsKey($prov)) { $native = $pstateAll[$prov][$id] }
+        if (-not $native) { $unknown += $id; continue }
+        foreach ($n in (Get-V5PluginOwnedSkillNames -PluginRoot (Join-Path $pluginsRoot $id))) {
+          if (Test-Path -LiteralPath (Join-Path $skillsDir $n) -PathType Container) { $dupes += $n }
+        }
+      }
+      if ($dupes.Count -gt 0) {
+        Bad $prov 'no duplicate skills' (($dupes.Count.ToString()) + ' plugin-owned copies shadow the plugin: ' + (($dupes | Select-Object -First 4) -join ', '))
+      } elseif ($unknown.Count -eq 2) {
+        # Nothing was confirmed native, so there is nothing to call a
+        # duplicate. Say so instead of printing a PASS that tested nothing.
+        Nap $prov 'no duplicate skills' ('no native plugin confirmed: ' + ($unknown -join ', '))
+      } elseif ($unknown.Count -gt 0) {
+        Ok $prov ('no duplicate skills (' + ($unknown -join ', ') + ' not checked)')
+      } else {
+        Ok $prov 'no duplicate skills'
+      }
     }
   }
 }
