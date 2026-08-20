@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.6
+# Ultimate AI Starter Bundle v7.7.7
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,14 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.7.7 — Hermes keeps plugin skill copies
+
+Hermes derives `/skill-name` slash commands and desktop autofill from the
+skills dir, not from plugin registrations. The native-plugin dedupe
+deleted the Superpowers/Ponytail copies there, so `/using-superpowers`
+stopped autocompleting (`Unknown command`) after a restart. Hermes no
+longer runs that dedupe, mirroring the Grok exemption from v7.7.5.
 
 ### v7.7.6 — Ensure-Headroom-Grok MCP cliff guard parses
 
@@ -580,6 +588,8 @@ registry.
   and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.7.7** — 2026-08-19. Based on v7.7.6.
 
 **v7.7.6** — 2026-08-19. Based on v7.7.5.
 

@@ -3,6 +3,18 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.7
+
+Hermes keeps plugin skill copies (slash commands + autofill).
+
+- **`/using-superpowers` stopped working after an install.** Hermes derives
+  `/skill-name` slash commands and desktop autofill from the skills dir
+  (`scan_skill_commands` scans `SKILLS_DIR`, not plugin registrations). The
+  native-plugin dedupe deleted the Superpowers/Ponytail copies from that
+  path, so the commands vanished (`Unknown command`) after a restart.
+  Hermes no longer runs that dedupe, mirroring the Grok exemption from
+  v7.7.5. Claude/Codex/Kimi still dedupe.
+
 ## 7.7.6
 
 Ensure-Headroom-Grok MCP cliff guard parses on Windows PowerShell.
