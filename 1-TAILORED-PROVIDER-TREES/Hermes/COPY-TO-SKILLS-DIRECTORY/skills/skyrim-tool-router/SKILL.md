@@ -32,10 +32,10 @@ Optional process overlays (not Skyrim-specific): `using-superpowers`, `systemati
 | New mod or large new feature | `skyrim-mod-development` | plugin, Papyrus, runtime, DLL, assets, animation, packaging; prefer houseCARL/Spooky/Forge per tooling stack |
 | Repair or modernize an existing mod | `skyrim-mod-reworking` | same specialists as evidence demands |
 | Live load order, conflict tree, MO2 patch ESP | `housecarl` | `mutagen-reference`, `tool-output-awareness`, bulk/facegen helpers |
-| ESP/ESL/ESM records without live LO | `skyrim-plugin-authoring` or Spooky `skyrim-esp` | `skyrim-esp-vmad-renaming` for string renames only; Forge when typed jobs fit |
-| Papyrus, quests, MCM, aliases, script events | `skyrim-papyrus-modding` | Spooky `skyrim-papyrus` / `skyrim-mcm`; `papyrus-reference`; `papyrus-optimization` |
-| SPID exact syntax | `spid-authoring` or `skyrim-spid-distribution` | prefer bundled grammar reference; never invent tokens |
-| KID exact syntax | `kid-authoring` or `skyrim-kid-distribution` | type-label grammar only |
+| ESP/ESL/ESM records without live LO | `skyrim-plugin-authoring` | Spooky CLI `esp` module; `skyrim-esp-vmad-renaming` for string renames only; Forge when typed jobs fit |
+| Papyrus, quests, MCM, aliases, script events | `skyrim-papyrus-modding` | `papyrus-reference`; `papyrus-optimization` |
+| SPID exact syntax | `spid-authoring` | prefer bundled grammar reference; never invent tokens |
+| KID exact syntax | `kid-authoring` | type-label grammar only |
 | SkyPatcher exact ops | `skypatcher-authoring` or `skyrim-skypatcher` | category placement rules |
 | BOS exact syntax | `skyrim-base-object-swapper` | |
 | OAR conditions | `oar-authoring` | animation behaviors |
@@ -44,11 +44,11 @@ Optional process overlays (not Skyrim-specific): `using-superpowers`, `systemati
 | Framework lint / cross-check | `skyrim-distr-kid-validation` | |
 | Conceptual framework pick only | `skyrim-frameworks-index` | then one exact syntax owner |
 | SKSE/framework logs without a crash | `skyrim-runtime-log-forensics` | exact framework or native specialist |
-| SKSE or CommonLib DLL | `skyrim-skse-commonlib` or `skse-plugin-authoring` | Spooky `skyrim-skse`; crash diagnostics |
+| SKSE or CommonLib DLL | `skyrim-skse-commonlib` or `skse-plugin-authoring` | crash diagnostics |
 | Crash log or startup failure | `skyrim-crash-diagnostics` | SKSE, animation, assets, or reworking after diagnosis |
 | Read-only code/config review | `skyrim-code-review` | domain specialist; optional `ponytail-review` for bloat |
 | DDS, NIF, parallax, PBR | `skyrim-assets-pbr` | Spooky `skyrim-nif`; houseCARL mesh tools when MCP up |
-| BSA/BA2 archive work | Spooky `skyrim-archive` | Forge tool-resolve when configured |
+| BSA/BA2 archive work | Forge `bsarch` tools | Spooky CLI `archive` module; `skyrim-fomod-packaging` for installers |
 | Audio FUZ/XWM/WAV | Spooky `skyrim-audio` | `skyrim-voiced-dialogue` |
 | OAR, BFCO, Nemesis, Pandora, behavior | `skyrim-animation-behaviors` | crash diagnostics or DLL work |
 | Follower from RaceMenu preset | `skyrim-racemenu-followers` | plugin, Papyrus, assets; facegen diagnostics |
@@ -91,8 +91,8 @@ Before routing a task inherited from another app or conversation, verify the att
 
 ## V5 framework routing
 
-- KID exact syntax: `kid-authoring` / `skyrim-kid-distribution`
-- SPID exact syntax: `spid-authoring` / `skyrim-spid-distribution`
+- KID exact syntax: `kid-authoring`
+- SPID exact syntax: `spid-authoring`
 - SkyPatcher exact operations/placement: `skypatcher-authoring` / `skyrim-skypatcher`
 - BOS exact syntax: `skyrim-base-object-swapper`
 - Bulk validation: `skyrim-distr-kid-validation`

@@ -30,8 +30,8 @@ A dedicated skill never outranks the actual parser. When evidence proves a skill
 
 | Goal | Primary mechanism | Syntax owner |
 |---|---|---|
-| Add keywords to records | KID | `skyrim-kid-distribution` |
-| Distribute forms to NPCs | SPID | `skyrim-spid-distribution` |
+| Add keywords to records | KID | `kid-authoring` |
+| Distribute forms to NPCs | SPID | `spid-authoring` |
 | Patch supported record fields at runtime | SkyPatcher | `skyrim-skypatcher` |
 | Swap base objects/references or supported properties | BOS | `skyrim-base-object-swapper` |
 | Generate/audit large distributions | deterministic generator | `skyrim-distribution-pipeline` + `skyrim-distr-kid-validation` |

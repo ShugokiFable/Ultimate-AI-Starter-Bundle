@@ -78,7 +78,8 @@ def clear_dangling(dst_dir, notes):
 def install(canon, dest, provider, check, notes):
     added = changed = kept = withheld = 0
     skills = [d for d in sorted(os.listdir(canon))
-              if os.path.isdir(os.path.join(canon, d))]
+              if os.path.isdir(os.path.join(canon, d))
+              and os.path.exists(os.path.join(canon, d, 'SKILL.md'))]
     for sk in skills:
         if sk in SCOPED and provider not in SCOPED[sk]:
             withheld += 1

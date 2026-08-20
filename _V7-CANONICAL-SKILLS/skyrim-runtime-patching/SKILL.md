@@ -16,8 +16,8 @@ metadata:
 
 Load `skyrim-frameworks-index`, then the dedicated syntax owner:
 
-- `skyrim-kid-distribution`
-- `skyrim-spid-distribution`
+- `kid-authoring`
+- `spid-authoring`
 - `skyrim-skypatcher`
 - `skyrim-base-object-swapper`
 - `skyrim-distr-kid-validation` for generated output

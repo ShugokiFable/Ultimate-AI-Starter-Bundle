@@ -3,6 +3,21 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.8
+
+Skill tree dedupe: dead modules pruned; KID/SPID grammar owners consolidated.
+
+- **Five invisible skills were being copied into every provider home.**
+  `skyrim-archive`, `skyrim-esp`, `skyrim-mcm`, `skyrim-papyrus`, and
+  `skyrim-skse` shipped with a lowercase `skill.md` only - no agent loader
+  reads that, so they were dead weight that still installed everywhere.
+- **Two skills claimed one job.** `skyrim-kid-distribution` /
+  `skyrim-spid-distribution` duplicated the grammar owned by
+  `kid-authoring` / `spid-authoring`. The twins are gone; their validate
+  scripts and pinned authority references moved into the owners.
+- Installer guard: `install_live_skills.py` now skips dirs without a
+  `SKILL.md`, so a dead skill can never propagate again.
+
 ## 7.7.7
 
 Hermes keeps plugin skill copies (slash commands + autofill).

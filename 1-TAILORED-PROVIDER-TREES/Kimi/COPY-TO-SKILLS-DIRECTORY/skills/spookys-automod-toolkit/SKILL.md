@@ -1,6 +1,6 @@
 ---
 name: spookys-automod-toolkit
-description: Drive Spooky's AutoMod Toolkit CLI for Skyrim ESP, Papyrus, MCM, NIF, BSA/BA2, audio, and SKSE project workflows. Resolve toolkit root portably; recommend install when missing. Use with module skills skyrim-esp, skyrim-papyrus, skyrim-mcm, skyrim-nif, skyrim-archive, skyrim-audio, skyrim-skse.
+description: Drive Spooky's AutoMod Toolkit CLI for Skyrim ESP, Papyrus, MCM, NIF, BSA/BA2, audio, and SKSE project workflows. Resolve toolkit root portably; recommend install when missing. Use with module skills skyrim-nif and skyrim-audio.
 metadata:
   version: 5.0.0
   toolkit_version_pinned: 1.11.2
@@ -48,13 +48,13 @@ Modules (load matching skill for details):
 
 | Module | Skill |
 |---|---|
-| esp | `skyrim-esp` |
-| papyrus | `skyrim-papyrus` |
-| mcm | `skyrim-mcm` |
+| esp | `skyrim-plugin-authoring` |
+| papyrus | `skyrim-papyrus-modding` |
+| mcm | (no dedicated skill; flags via `--help` / references) |
 | nif | `skyrim-nif` |
-| archive | `skyrim-archive` |
+| archive | Forge `bsarch` tools |
 | audio | `skyrim-audio` |
-| skse | `skyrim-skse` |
+| skse | `skyrim-skse-commonlib` / `skse-plugin-authoring` |
 
 ## Safety (mandatory)
 
