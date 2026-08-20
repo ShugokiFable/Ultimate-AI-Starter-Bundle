@@ -1,6 +1,6 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.7.14",
+ "version": "7.7.15",
  "generated": "2026-08-20",
  "base": "v7.7.11",
  "canonical_skills": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.7.14: Claude Desktop app MCP support. Add-Reasoning-MCPs.ps1 wrote only ~/.claude.json (the Claude Code CLI surface); the Claude Desktop app reads its own claude_desktop_config.json (normal %APPDATA%\\Claude or Microsoft Store LocalCache\\Roaming\\Claude) and showed zero servers. The script now detects the desktop config for both install types and merges context7 / sequential-thinking / github there, reusing the existing backup-and-merge writer. ~/.claude.json behaviour unchanged. PACK GATE: PASS."
+ "notes": "v7.7.15: Claude Desktop app MCP support. Add-Reasoning-MCPs.ps1 wrote only ~/.claude.json (the Claude Code CLI surface); the Claude Desktop app reads its own claude_desktop_config.json (normal %APPDATA%\\Claude or Microsoft Store LocalCache\\Roaming\\Claude) and showed zero servers. The script now detects the desktop config for both install types and merges context7 / sequential-thinking / github there, reusing the existing backup-and-merge writer. ~/.claude.json behaviour unchanged. PACK GATE: PASS."
 }
