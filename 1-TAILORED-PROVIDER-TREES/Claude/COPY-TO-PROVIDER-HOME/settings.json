@@ -1,5 +1,13 @@
 {
   "effortLevel": "xhigh",
+  "enabledPlugins": {
+    "claude-code-setup@claude-plugins-official": true,
+    "claude-mem@thedotmack": true,
+    "headroom@headroom-marketplace": true,
+    "obsidian@obsidian-skills": true,
+    "ponytail@ponytail": true,
+    "superpowers@superpowers-dev": true
+  },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {

@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.13
+# Ultimate AI Starter Bundle v7.7.14
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 

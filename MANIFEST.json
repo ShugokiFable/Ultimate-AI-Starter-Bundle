@@ -1446,8 +1446,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-PROVIDER-HOME/settings.json",
-  "size": 948,
-  "sha256": "5cc3614594c3042c892fbf28b1a954360f0bfd4cbc8ef80b352afd45c2fb373c"
+  "size": 1217,
+  "sha256": "e6f2f1a1b6f07b5844e97f9647bbe9eac0d59df250f49be5c055a8b33f6b0e93"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -3956,8 +3956,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-PROVIDER-HOME/config.toml",
-  "size": 307,
-  "sha256": "a21344e7abe9f7309a6a113ed73720d6c48d28c2782fbcf59f312f3b55ad765d"
+  "size": 329,
+  "sha256": "4fc473e48b13aaa98e2fe719a376420e323205b40609882b1c2f4e8cfa32b6cb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -6441,8 +6441,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/config.toml",
-  "size": 307,
-  "sha256": "a21344e7abe9f7309a6a113ed73720d6c48d28c2782fbcf59f312f3b55ad765d"
+  "size": 329,
+  "sha256": "4fc473e48b13aaa98e2fe719a376420e323205b40609882b1c2f4e8cfa32b6cb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-MAP.md",
@@ -13982,7 +13982,7 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 13116,
-  "sha256": "80ee2ca80861ba97896dda50b63626e6ea5332f5f8af8c86eb1ba02812f753d5"
+  "sha256": "56cbb464a99f76c6709e943151a66cde703d96ef1c3be369a8ed0d03ec36513e"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15786,8 +15786,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 36933,
-  "sha256": "4471ddf38d70e8a1316a6e0d99ccded4b6cdf35731f134bb313053b2b28aae18"
+  "size": 37317,
+  "sha256": "78a7e040b1fc34a5b0852bf5b2cb7ac7d65e64b29c4209a2ab652158752f4f50"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -15877,7 +15877,7 @@
  {
   "path": "INSTALL-V7-AIO.ps1",
   "size": 75578,
-  "sha256": "e18d855c2838c4aeb742c34bb644628114236743b59a36d5193d5c9917cbed16"
+  "sha256": "3b8dab76fb88741d6af2fbe75d0b30326fc1d88a19386a836d9cf6ce502a4932"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -15917,12 +15917,12 @@
  {
   "path": "README.md",
   "size": 30635,
-  "sha256": "af4bc3e86b09150cd2bc1d50dc92c1e20c52ba1e11b14ec573c582b9fd928616"
+  "sha256": "e1197382c3f253eeeb4cd684c55b5a65720f15c2b9dfbc0bcc149056c5ddacbb"
  },
  {
   "path": "START-HERE.txt",
   "size": 8468,
-  "sha256": "3e58e6882656595e8aef4a35b8a9dbc719af355e5222c27f56b5512e459a5cf5"
+  "sha256": "e2cbbadd309853db1dcb78d0dcdff43f53d43fd6fefacf60d081c5b61b8b05f8"
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
@@ -16127,12 +16127,12 @@
  {
   "path": "VALIDATION.json",
   "size": 906,
-  "sha256": "d61b1e908280f8b620eafbde44ef6489557670b566b03dcaa112aa847df8cf63"
+  "sha256": "3c20c791f0d5a2f3f34d2143693f850fcbe37bf0a63ebb3e015d1b245a198eb9"
  },
  {
   "path": "VERSION.txt",
   "size": 8,
-  "sha256": "77b81d7d59377b1739e01316864c42d1326621517bc2e89eb0b7b68771dd38f7"
+  "sha256": "1d50c51d997267e4140e672be1cbea4e8f34af67510c8e4e4ab155c0a9d0bac1"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
