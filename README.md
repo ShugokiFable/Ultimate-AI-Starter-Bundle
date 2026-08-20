@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.5
+# Ultimate AI Starter Bundle v7.7.6
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,14 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.7.6 — Ensure-Headroom-Grok MCP cliff guard parses
+
+`Ensure-Headroom-Grok.ps1` interpolated
+`$((if($pluginActive){...}))` — the extra paren made Windows PowerShell
+parse `(if ...)` as a command call, so the 7-server MCP cliff guard threw
+(`if` not recognized) instead of printing its warning. Removed the
+redundant paren; the guard reports `mcp-search plugin disabled.` cleanly.
 
 ### v7.7.5 — Grok Superpowers copies stay
 
@@ -572,6 +580,8 @@ registry.
   and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.7.6** — 2026-08-19. Based on v7.7.5.
 
 **v7.7.5** — 2026-08-19. Based on v7.7.4.
 

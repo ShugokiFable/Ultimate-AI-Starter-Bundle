@@ -153,7 +153,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.7.5 - ALL-IN-ONE INSTALLER (Grok Superpowers copies stay)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.7.6 - ALL-IN-ONE INSTALLER (Grok MCP cliff guard parse fix)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
