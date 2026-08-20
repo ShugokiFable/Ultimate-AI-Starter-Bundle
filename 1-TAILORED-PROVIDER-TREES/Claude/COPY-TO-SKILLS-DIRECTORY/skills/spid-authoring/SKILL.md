@@ -134,3 +134,9 @@ SPID documentation.
   (SkyPatcher).
 - **Comment syntax** is standard INI `;` (SPID reads configs via the CSimpleIniA library); the
   `references/` corpus flags this as a library-default rather than a SPID-specific guarantee.
+
+## Validation
+
+- `scripts/validate_spid.py` — offline SPID `_DISTR.ini` validation against pinned grammar (merged from the former skyrim-spid-distribution skill).
+- `references/SPID-7.3.1-AUTHORITY.md`, `references/SPID-7.3.1-PARSER-AUTHORITY.md` — pinned SPID 7.3.1 grammar/parser authorities.
+- Cross-framework lint + runtime log checks: `skyrim-distr-kid-validation`.

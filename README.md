@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.7
+# Ultimate AI Starter Bundle v7.7.8
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,15 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.7.8 — Skill tree dedupe
+
+Five dead module docs (lowercase `skill.md`, never loaded by any agent) and
+two KID/SPID distribution twins that duplicated `kid-authoring` /
+`spid-authoring` were pruned from the skill tree. The twins' validate
+scripts and pinned authority references moved into the grammar owners;
+`install_live_skills.py` now skips dirs without a `SKILL.md` so dead skills
+can't propagate to provider homes again.
 
 ### v7.7.7 — Hermes keeps plugin skill copies
 
@@ -588,6 +597,8 @@ registry.
   and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.7.8** — 2026-08-19. Based on v7.7.7.
 
 **v7.7.7** — 2026-08-19. Based on v7.7.6.
 

@@ -23,7 +23,7 @@ This skill is the **cross-tool index**. Exact syntax lives in specialist skills.
 |---|---|---|---|
 | **Skyrim Forge** | Typed automation broker: doctor, capabilities, Papyrus compile pipeline, FOMOD, release/nexus gates, tool-resolve | `skyrim-forge`, `skyrim-forge-bridge` | Recommend Forge install; continue with narrower tools |
 | **houseCARL** | Live MO2 load-order MCP: true winners, conflict trees, reviewable patch ESPs, Nexus keyless lookup, VFS assets | `housecarl` + mutagen/spid/kid/skypatcher authoring helpers | Recommend houseCARL-Setup + .NET 9 pair + MCP register |
-| **Spooky's AutoMod Toolkit** | CLI for ESP/Papyrus/MCM/NIF/BSA/audio/SKSE project workflows with `--json` | `spookys-automod-toolkit` + `skyrim-esp`… | Recommend toolkit release + .NET 8 SDK |
+| **Spooky's AutoMod Toolkit** | CLI for ESP/Papyrus/MCM/NIF/BSA/audio/SKSE project workflows with `--json` | `spookys-automod-toolkit` + `skyrim-plugin-authoring` | Recommend toolkit release + .NET 8 SDK |
 | **codebase-memory-mcp** | Knowledge-graph code navigation (call graphs, impact) | `codebase-memory` | Recommend DeusData install + MCP wire |
 | **Headroom** | Context compression / retrieve / session stats MCP | `headroom` | Optional; recommend pip install when context thrash is real |
 | **Superpowers** | Process discipline (debug, TDD, plans, verification) | `using-superpowers` + family | Bundled skill text works; plugin optional |

@@ -1461,8 +1461,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4887,
-  "sha256": "2725233c1346c1baa76c61ab536c5d9db03d1b8aa0b8ac771c679667b1a954fb"
+  "size": 4897,
+  "sha256": "efd95a7d5eca33d2aea0c3e159119754245ef1201ab2b58a5bb5ba46362d152f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
@@ -1926,8 +1926,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/SKILL.md",
-  "size": 9846,
-  "sha256": "c9be4fbcd20c749274bead56358b60d029a27e6992fe7498539917f0a63a8bbf"
+  "size": 10204,
+  "sha256": "48ad1960584ac986ee812a8005157121adc73e945ff9a9766f8fee9da4836c32"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/KID-4.0.6-AUTHORITY.md",
+  "size": 689,
+  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/filters.md",
@@ -1958,6 +1963,11 @@
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/value-tables.md",
   "size": 5573,
   "sha256": "500673a0034d7cc97a1f0a6737bebcbae788529e419a91ff269f7f95d727ff78"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/scripts/validate_kid.py",
+  "size": 1745,
+  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -3245,11 +3255,6 @@
   "sha256": "0d713d5b725646d7de8ce582357a21ca11b1abd755e024a8a9f18e99b6664ec6"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-archive/skill.md",
-  "size": 14607,
-  "sha256": "9eadd461a8dd47c6bfc9d1a9b588a7528b53141ae4dcdd52451885d6d167c17d"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-assets-pbr/SKILL.md",
   "size": 3699,
   "sha256": "84f35edb477b55b091deeeb24d18cfeffe1a811cdde312c3ccc29878324ead26"
@@ -3340,11 +3345,6 @@
   "sha256": "251110443bbddc0ded3483651469c3105d1256afdbe2534db7211edc48881991"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-esp/skill.md",
-  "size": 21163,
-  "sha256": "a29211d2958796ddcb4c74833d1334d2e1e5202d3a2c824c63dc82cb7aa51120"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-fomod-packaging/SKILL.md",
   "size": 3589,
   "sha256": "65e128bfe6a4ed73232a7e56a167e58d939d16ff94eeeb5b86bc2de5360140f7"
@@ -3376,33 +3376,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
-  "size": 3697,
-  "sha256": "7a9135f3cff5a2fc795d0d7dd091709fa9a32a700002f7c14048328783ad1b5e"
+  "size": 3677,
+  "sha256": "b4127c7d47e44f57cc714cb77d311a09790186e9c7381527770f8bc0d81282cf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/references/FRAMEWORK-SOURCE-LOCK.json",
   "size": 4257,
   "sha256": "a538868ea6446a4e34f71bd4175e4db8d9d218305cdbc409f3ca90dc1314a6c6"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/SKILL.md",
-  "size": 2003,
-  "sha256": "d34bbec94762381f452c96969fdfe5b34d7749b9342bc1b17cc6d9c6893b12d5"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/references/KID-4.0.6-AUTHORITY.md",
-  "size": 689,
-  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/scripts/validate_kid.py",
-  "size": 1745,
-  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-mcm/skill.md",
-  "size": 11059,
-  "sha256": "4016153533ab400da404d4e59036b2ff4fb628159e046a30092ad72f9e076cd2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-memory/SKILL.md",
@@ -3515,11 +3495,6 @@
   "sha256": "06fa091d56c641fcd92b8719d786ba8841063058b9ec12bffa3ea03ed654468d"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-papyrus/skill.md",
-  "size": 11501,
-  "sha256": "4ba9b182541e774c3113f5b8122184293e87567021a670604d8b5045960a44c1"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-plugin-authoring/SKILL.md",
   "size": 3774,
   "sha256": "9a334daf3fe004d135835895c9c4b3e455e788d59e2c2f341fa34faeae16b5a1"
@@ -3566,8 +3541,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/SKILL.md",
-  "size": 1491,
-  "sha256": "133e8b47cb428dc18707c9021630dc2b97a3f352a0988b2024cf6c1aac6bf246"
+  "size": 1471,
+  "sha256": "a820bb38f449efb02724bdc8412364cb022dfe80f2ad30d92c6c371cad0ec1fa"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/references/frameworks-guide-2026.md",
@@ -3610,11 +3585,6 @@
   "sha256": "ee526790801fe787f2640370c6b628fdeea6394d6f8f1775244be087d3edfdc0"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skse/skill.md",
-  "size": 10399,
-  "sha256": "a228c48907bc834fb9eb2d9f584f0c165ac4ffa5583fbd77f40ad4c78369608b"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skypatcher/SKILL.md",
   "size": 2231,
   "sha256": "9fab4d3be488da26cfec54be30531cbd009e91c30c436197284e8f3fe84ca57c"
@@ -3625,29 +3595,9 @@
   "sha256": "7672796c795edf065c5fa9a84907e7154c38f1f7ea8728bff004b3b680392109"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/SKILL.md",
-  "size": 3271,
-  "sha256": "a6cdf4abd022984b69053f15a43194e803c166e23fd2fb367679932ed21ac71d"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-PARSER-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/scripts/validate_spid.py",
-  "size": 2275,
-  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6874,
-  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
+  "size": 6729,
+  "sha256": "e43f3f41d9de071b8e56081bfc5e4ffd8eef5cf004d8ceee1fb2832b66896fbe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -3666,8 +3616,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/SKILL.md",
-  "size": 10003,
-  "sha256": "fd3cc165d1b2fa90f3467d8ce2f4fe42fefac9b1129d2de791602be78ac698dc"
+  "size": 10379,
+  "sha256": "941081dc2a1ac684d53205d2183db5a44d00d8dd46b93df5c1b5733e51a7a887"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-PARSER-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/filters.md",
@@ -3695,9 +3655,14 @@
   "sha256": "fd35087ecacd633418da493064026df2e3150a1a9c6dd9d055594d7e75e2511e"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/scripts/validate_spid.py",
+  "size": 2275,
+  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/SKILL.md",
-  "size": 2987,
-  "sha256": "f43873432b0fa12612fecdeda887c644063e3144d5ebd0b5fa21f238ddae6c60"
+  "size": 3023,
+  "sha256": "852b409255cf686aafd3f8b388038886a8ac1d5e059616655492ce9708cf4669"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/references/README.md",
@@ -4006,8 +3971,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4887,
-  "sha256": "2725233c1346c1baa76c61ab536c5d9db03d1b8aa0b8ac771c679667b1a954fb"
+  "size": 4897,
+  "sha256": "efd95a7d5eca33d2aea0c3e159119754245ef1201ab2b58a5bb5ba46362d152f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
@@ -4471,8 +4436,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/SKILL.md",
-  "size": 9846,
-  "sha256": "c9be4fbcd20c749274bead56358b60d029a27e6992fe7498539917f0a63a8bbf"
+  "size": 10204,
+  "sha256": "48ad1960584ac986ee812a8005157121adc73e945ff9a9766f8fee9da4836c32"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/KID-4.0.6-AUTHORITY.md",
+  "size": 689,
+  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/filters.md",
@@ -4503,6 +4473,11 @@
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/value-tables.md",
   "size": 5573,
   "sha256": "500673a0034d7cc97a1f0a6737bebcbae788529e419a91ff269f7f95d727ff78"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/scripts/validate_kid.py",
+  "size": 1745,
+  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -5790,11 +5765,6 @@
   "sha256": "0d713d5b725646d7de8ce582357a21ca11b1abd755e024a8a9f18e99b6664ec6"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-archive/skill.md",
-  "size": 14607,
-  "sha256": "9eadd461a8dd47c6bfc9d1a9b588a7528b53141ae4dcdd52451885d6d167c17d"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-assets-pbr/SKILL.md",
   "size": 3699,
   "sha256": "84f35edb477b55b091deeeb24d18cfeffe1a811cdde312c3ccc29878324ead26"
@@ -5885,11 +5855,6 @@
   "sha256": "68a4eb2d5d8a73c44f8edf0ab31d6a3fde28fd183e88a59bad26d4b394877dac"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-esp/skill.md",
-  "size": 21163,
-  "sha256": "a29211d2958796ddcb4c74833d1334d2e1e5202d3a2c824c63dc82cb7aa51120"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-fomod-packaging/SKILL.md",
   "size": 3588,
   "sha256": "3ec69a8e58672dbb06388426f3db6a42717e9c439abe19a5b068fa5a541c5d56"
@@ -5921,33 +5886,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
-  "size": 3697,
-  "sha256": "7a9135f3cff5a2fc795d0d7dd091709fa9a32a700002f7c14048328783ad1b5e"
+  "size": 3677,
+  "sha256": "b4127c7d47e44f57cc714cb77d311a09790186e9c7381527770f8bc0d81282cf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/references/FRAMEWORK-SOURCE-LOCK.json",
   "size": 4257,
   "sha256": "a538868ea6446a4e34f71bd4175e4db8d9d218305cdbc409f3ca90dc1314a6c6"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/SKILL.md",
-  "size": 2003,
-  "sha256": "d34bbec94762381f452c96969fdfe5b34d7749b9342bc1b17cc6d9c6893b12d5"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/references/KID-4.0.6-AUTHORITY.md",
-  "size": 689,
-  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/scripts/validate_kid.py",
-  "size": 1745,
-  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-mcm/skill.md",
-  "size": 11059,
-  "sha256": "4016153533ab400da404d4e59036b2ff4fb628159e046a30092ad72f9e076cd2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-memory/SKILL.md",
@@ -6060,11 +6005,6 @@
   "sha256": "06fa091d56c641fcd92b8719d786ba8841063058b9ec12bffa3ea03ed654468d"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-papyrus/skill.md",
-  "size": 11501,
-  "sha256": "4ba9b182541e774c3113f5b8122184293e87567021a670604d8b5045960a44c1"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-plugin-authoring/SKILL.md",
   "size": 3774,
   "sha256": "9a334daf3fe004d135835895c9c4b3e455e788d59e2c2f341fa34faeae16b5a1"
@@ -6111,8 +6051,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/SKILL.md",
-  "size": 1491,
-  "sha256": "133e8b47cb428dc18707c9021630dc2b97a3f352a0988b2024cf6c1aac6bf246"
+  "size": 1471,
+  "sha256": "a820bb38f449efb02724bdc8412364cb022dfe80f2ad30d92c6c371cad0ec1fa"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/references/frameworks-guide-2026.md",
@@ -6155,11 +6095,6 @@
   "sha256": "ee526790801fe787f2640370c6b628fdeea6394d6f8f1775244be087d3edfdc0"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skse/skill.md",
-  "size": 10399,
-  "sha256": "a228c48907bc834fb9eb2d9f584f0c165ac4ffa5583fbd77f40ad4c78369608b"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skypatcher/SKILL.md",
   "size": 2231,
   "sha256": "9fab4d3be488da26cfec54be30531cbd009e91c30c436197284e8f3fe84ca57c"
@@ -6170,29 +6105,9 @@
   "sha256": "7672796c795edf065c5fa9a84907e7154c38f1f7ea8728bff004b3b680392109"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/SKILL.md",
-  "size": 3271,
-  "sha256": "a6cdf4abd022984b69053f15a43194e803c166e23fd2fb367679932ed21ac71d"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-PARSER-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/scripts/validate_spid.py",
-  "size": 2275,
-  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6874,
-  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
+  "size": 6729,
+  "sha256": "e43f3f41d9de071b8e56081bfc5e4ffd8eef5cf004d8ceee1fb2832b66896fbe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -6211,8 +6126,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/SKILL.md",
-  "size": 10003,
-  "sha256": "fd3cc165d1b2fa90f3467d8ce2f4fe42fefac9b1129d2de791602be78ac698dc"
+  "size": 10379,
+  "sha256": "941081dc2a1ac684d53205d2183db5a44d00d8dd46b93df5c1b5733e51a7a887"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-PARSER-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/filters.md",
@@ -6240,9 +6165,14 @@
   "sha256": "fd35087ecacd633418da493064026df2e3150a1a9c6dd9d055594d7e75e2511e"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/scripts/validate_spid.py",
+  "size": 2275,
+  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/SKILL.md",
-  "size": 2987,
-  "sha256": "f43873432b0fa12612fecdeda887c644063e3144d5ebd0b5fa21f238ddae6c60"
+  "size": 3023,
+  "sha256": "852b409255cf686aafd3f8b388038886a8ac1d5e059616655492ce9708cf4669"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/references/README.md",
@@ -6536,8 +6466,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4887,
-  "sha256": "2725233c1346c1baa76c61ab536c5d9db03d1b8aa0b8ac771c679667b1a954fb"
+  "size": 4897,
+  "sha256": "efd95a7d5eca33d2aea0c3e159119754245ef1201ab2b58a5bb5ba46362d152f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
@@ -7001,8 +6931,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/SKILL.md",
-  "size": 9846,
-  "sha256": "c9be4fbcd20c749274bead56358b60d029a27e6992fe7498539917f0a63a8bbf"
+  "size": 10204,
+  "sha256": "48ad1960584ac986ee812a8005157121adc73e945ff9a9766f8fee9da4836c32"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/KID-4.0.6-AUTHORITY.md",
+  "size": 689,
+  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/filters.md",
@@ -7033,6 +6968,11 @@
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/value-tables.md",
   "size": 5573,
   "sha256": "500673a0034d7cc97a1f0a6737bebcbae788529e419a91ff269f7f95d727ff78"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/scripts/validate_kid.py",
+  "size": 1745,
+  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -8320,11 +8260,6 @@
   "sha256": "0d713d5b725646d7de8ce582357a21ca11b1abd755e024a8a9f18e99b6664ec6"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-archive/skill.md",
-  "size": 14607,
-  "sha256": "9eadd461a8dd47c6bfc9d1a9b588a7528b53141ae4dcdd52451885d6d167c17d"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-assets-pbr/SKILL.md",
   "size": 3699,
   "sha256": "84f35edb477b55b091deeeb24d18cfeffe1a811cdde312c3ccc29878324ead26"
@@ -8415,11 +8350,6 @@
   "sha256": "8d10a961bfdd16a4318e238d49490e8c3587c23ff6c1378431a11b41febdb282"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-esp/skill.md",
-  "size": 21163,
-  "sha256": "a29211d2958796ddcb4c74833d1334d2e1e5202d3a2c824c63dc82cb7aa51120"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-fomod-packaging/SKILL.md",
   "size": 3587,
   "sha256": "06266a41b159dabece9c7ab0ba35f416486e08d4e2f022d5174d11a18997c7e0"
@@ -8451,33 +8381,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
-  "size": 3697,
-  "sha256": "7a9135f3cff5a2fc795d0d7dd091709fa9a32a700002f7c14048328783ad1b5e"
+  "size": 3677,
+  "sha256": "b4127c7d47e44f57cc714cb77d311a09790186e9c7381527770f8bc0d81282cf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/references/FRAMEWORK-SOURCE-LOCK.json",
   "size": 4257,
   "sha256": "a538868ea6446a4e34f71bd4175e4db8d9d218305cdbc409f3ca90dc1314a6c6"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/SKILL.md",
-  "size": 2003,
-  "sha256": "d34bbec94762381f452c96969fdfe5b34d7749b9342bc1b17cc6d9c6893b12d5"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/references/KID-4.0.6-AUTHORITY.md",
-  "size": 689,
-  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/scripts/validate_kid.py",
-  "size": 1745,
-  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-mcm/skill.md",
-  "size": 11059,
-  "sha256": "4016153533ab400da404d4e59036b2ff4fb628159e046a30092ad72f9e076cd2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-memory/SKILL.md",
@@ -8590,11 +8500,6 @@
   "sha256": "06fa091d56c641fcd92b8719d786ba8841063058b9ec12bffa3ea03ed654468d"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-papyrus/skill.md",
-  "size": 11501,
-  "sha256": "4ba9b182541e774c3113f5b8122184293e87567021a670604d8b5045960a44c1"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-plugin-authoring/SKILL.md",
   "size": 3774,
   "sha256": "9a334daf3fe004d135835895c9c4b3e455e788d59e2c2f341fa34faeae16b5a1"
@@ -8641,8 +8546,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/SKILL.md",
-  "size": 1491,
-  "sha256": "133e8b47cb428dc18707c9021630dc2b97a3f352a0988b2024cf6c1aac6bf246"
+  "size": 1471,
+  "sha256": "a820bb38f449efb02724bdc8412364cb022dfe80f2ad30d92c6c371cad0ec1fa"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/references/frameworks-guide-2026.md",
@@ -8685,11 +8590,6 @@
   "sha256": "ee526790801fe787f2640370c6b628fdeea6394d6f8f1775244be087d3edfdc0"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skse/skill.md",
-  "size": 10399,
-  "sha256": "a228c48907bc834fb9eb2d9f584f0c165ac4ffa5583fbd77f40ad4c78369608b"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skypatcher/SKILL.md",
   "size": 2231,
   "sha256": "9fab4d3be488da26cfec54be30531cbd009e91c30c436197284e8f3fe84ca57c"
@@ -8700,29 +8600,9 @@
   "sha256": "7672796c795edf065c5fa9a84907e7154c38f1f7ea8728bff004b3b680392109"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/SKILL.md",
-  "size": 3271,
-  "sha256": "a6cdf4abd022984b69053f15a43194e803c166e23fd2fb367679932ed21ac71d"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-PARSER-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/scripts/validate_spid.py",
-  "size": 2275,
-  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6874,
-  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
+  "size": 6729,
+  "sha256": "e43f3f41d9de071b8e56081bfc5e4ffd8eef5cf004d8ceee1fb2832b66896fbe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -8741,8 +8621,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/SKILL.md",
-  "size": 10003,
-  "sha256": "fd3cc165d1b2fa90f3467d8ce2f4fe42fefac9b1129d2de791602be78ac698dc"
+  "size": 10379,
+  "sha256": "941081dc2a1ac684d53205d2183db5a44d00d8dd46b93df5c1b5733e51a7a887"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-PARSER-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/filters.md",
@@ -8770,9 +8660,14 @@
   "sha256": "fd35087ecacd633418da493064026df2e3150a1a9c6dd9d055594d7e75e2511e"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/scripts/validate_spid.py",
+  "size": 2275,
+  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/SKILL.md",
-  "size": 2987,
-  "sha256": "f43873432b0fa12612fecdeda887c644063e3144d5ebd0b5fa21f238ddae6c60"
+  "size": 3023,
+  "sha256": "852b409255cf686aafd3f8b388038886a8ac1d5e059616655492ce9708cf4669"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/references/README.md",
@@ -9066,8 +8961,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4887,
-  "sha256": "2725233c1346c1baa76c61ab536c5d9db03d1b8aa0b8ac771c679667b1a954fb"
+  "size": 4897,
+  "sha256": "efd95a7d5eca33d2aea0c3e159119754245ef1201ab2b58a5bb5ba46362d152f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
@@ -9531,8 +9426,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/SKILL.md",
-  "size": 9846,
-  "sha256": "c9be4fbcd20c749274bead56358b60d029a27e6992fe7498539917f0a63a8bbf"
+  "size": 10204,
+  "sha256": "48ad1960584ac986ee812a8005157121adc73e945ff9a9766f8fee9da4836c32"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/KID-4.0.6-AUTHORITY.md",
+  "size": 689,
+  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/filters.md",
@@ -9563,6 +9463,11 @@
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/value-tables.md",
   "size": 5573,
   "sha256": "500673a0034d7cc97a1f0a6737bebcbae788529e419a91ff269f7f95d727ff78"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/scripts/validate_kid.py",
+  "size": 1745,
+  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -10850,11 +10755,6 @@
   "sha256": "0d713d5b725646d7de8ce582357a21ca11b1abd755e024a8a9f18e99b6664ec6"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-archive/skill.md",
-  "size": 14607,
-  "sha256": "9eadd461a8dd47c6bfc9d1a9b588a7528b53141ae4dcdd52451885d6d167c17d"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-assets-pbr/SKILL.md",
   "size": 3699,
   "sha256": "84f35edb477b55b091deeeb24d18cfeffe1a811cdde312c3ccc29878324ead26"
@@ -10945,11 +10845,6 @@
   "sha256": "2854e2b8d600090f8f5364df0ac103ac51b1b21f6581df758b7e84037f91b311"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-esp/skill.md",
-  "size": 21163,
-  "sha256": "a29211d2958796ddcb4c74833d1334d2e1e5202d3a2c824c63dc82cb7aa51120"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-fomod-packaging/SKILL.md",
   "size": 3589,
   "sha256": "38cbf325d8e02310ff2c91f01fcf2bcb945befe8287c922187f19cd3e8ef8f98"
@@ -10981,33 +10876,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
-  "size": 3697,
-  "sha256": "7a9135f3cff5a2fc795d0d7dd091709fa9a32a700002f7c14048328783ad1b5e"
+  "size": 3677,
+  "sha256": "b4127c7d47e44f57cc714cb77d311a09790186e9c7381527770f8bc0d81282cf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/references/FRAMEWORK-SOURCE-LOCK.json",
   "size": 4257,
   "sha256": "a538868ea6446a4e34f71bd4175e4db8d9d218305cdbc409f3ca90dc1314a6c6"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/SKILL.md",
-  "size": 2003,
-  "sha256": "d34bbec94762381f452c96969fdfe5b34d7749b9342bc1b17cc6d9c6893b12d5"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/references/KID-4.0.6-AUTHORITY.md",
-  "size": 689,
-  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/scripts/validate_kid.py",
-  "size": 1745,
-  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-mcm/skill.md",
-  "size": 11059,
-  "sha256": "4016153533ab400da404d4e59036b2ff4fb628159e046a30092ad72f9e076cd2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-memory/SKILL.md",
@@ -11120,11 +10995,6 @@
   "sha256": "06fa091d56c641fcd92b8719d786ba8841063058b9ec12bffa3ea03ed654468d"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-papyrus/skill.md",
-  "size": 11501,
-  "sha256": "4ba9b182541e774c3113f5b8122184293e87567021a670604d8b5045960a44c1"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-plugin-authoring/SKILL.md",
   "size": 3774,
   "sha256": "9a334daf3fe004d135835895c9c4b3e455e788d59e2c2f341fa34faeae16b5a1"
@@ -11171,8 +11041,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/SKILL.md",
-  "size": 1491,
-  "sha256": "133e8b47cb428dc18707c9021630dc2b97a3f352a0988b2024cf6c1aac6bf246"
+  "size": 1471,
+  "sha256": "a820bb38f449efb02724bdc8412364cb022dfe80f2ad30d92c6c371cad0ec1fa"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/references/frameworks-guide-2026.md",
@@ -11215,11 +11085,6 @@
   "sha256": "ee526790801fe787f2640370c6b628fdeea6394d6f8f1775244be087d3edfdc0"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skse/skill.md",
-  "size": 10399,
-  "sha256": "a228c48907bc834fb9eb2d9f584f0c165ac4ffa5583fbd77f40ad4c78369608b"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skypatcher/SKILL.md",
   "size": 2231,
   "sha256": "9fab4d3be488da26cfec54be30531cbd009e91c30c436197284e8f3fe84ca57c"
@@ -11230,29 +11095,9 @@
   "sha256": "7672796c795edf065c5fa9a84907e7154c38f1f7ea8728bff004b3b680392109"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/SKILL.md",
-  "size": 3271,
-  "sha256": "a6cdf4abd022984b69053f15a43194e803c166e23fd2fb367679932ed21ac71d"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-PARSER-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/scripts/validate_spid.py",
-  "size": 2275,
-  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6874,
-  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
+  "size": 6729,
+  "sha256": "e43f3f41d9de071b8e56081bfc5e4ffd8eef5cf004d8ceee1fb2832b66896fbe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -11271,8 +11116,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/SKILL.md",
-  "size": 10003,
-  "sha256": "fd3cc165d1b2fa90f3467d8ce2f4fe42fefac9b1129d2de791602be78ac698dc"
+  "size": 10379,
+  "sha256": "941081dc2a1ac684d53205d2183db5a44d00d8dd46b93df5c1b5733e51a7a887"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-PARSER-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/filters.md",
@@ -11300,9 +11155,14 @@
   "sha256": "fd35087ecacd633418da493064026df2e3150a1a9c6dd9d055594d7e75e2511e"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/scripts/validate_spid.py",
+  "size": 2275,
+  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/SKILL.md",
-  "size": 2987,
-  "sha256": "f43873432b0fa12612fecdeda887c644063e3144d5ebd0b5fa21f238ddae6c60"
+  "size": 3023,
+  "sha256": "852b409255cf686aafd3f8b388038886a8ac1d5e059616655492ce9708cf4669"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/references/README.md",
@@ -11606,8 +11466,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4887,
-  "sha256": "2725233c1346c1baa76c61ab536c5d9db03d1b8aa0b8ac771c679667b1a954fb"
+  "size": 4897,
+  "sha256": "efd95a7d5eca33d2aea0c3e159119754245ef1201ab2b58a5bb5ba46362d152f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
@@ -12071,8 +11931,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/SKILL.md",
-  "size": 9846,
-  "sha256": "c9be4fbcd20c749274bead56358b60d029a27e6992fe7498539917f0a63a8bbf"
+  "size": 10204,
+  "sha256": "48ad1960584ac986ee812a8005157121adc73e945ff9a9766f8fee9da4836c32"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/KID-4.0.6-AUTHORITY.md",
+  "size": 689,
+  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/filters.md",
@@ -12103,6 +11968,11 @@
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/references/value-tables.md",
   "size": 5573,
   "sha256": "500673a0034d7cc97a1f0a6737bebcbae788529e419a91ff269f7f95d727ff78"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/kid-authoring/scripts/validate_kid.py",
+  "size": 1745,
+  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -13390,11 +13260,6 @@
   "sha256": "0d713d5b725646d7de8ce582357a21ca11b1abd755e024a8a9f18e99b6664ec6"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-archive/skill.md",
-  "size": 14607,
-  "sha256": "9eadd461a8dd47c6bfc9d1a9b588a7528b53141ae4dcdd52451885d6d167c17d"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-assets-pbr/SKILL.md",
   "size": 3699,
   "sha256": "84f35edb477b55b091deeeb24d18cfeffe1a811cdde312c3ccc29878324ead26"
@@ -13485,11 +13350,6 @@
   "sha256": "6e1d1204522fbfbc938e1dacadff33a11bd9767499dcdadc43c2204b5de278fd"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-esp/skill.md",
-  "size": 21163,
-  "sha256": "a29211d2958796ddcb4c74833d1334d2e1e5202d3a2c824c63dc82cb7aa51120"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-fomod-packaging/SKILL.md",
   "size": 3587,
   "sha256": "e4085fe1d1b1b3242b7df5a0691ea9487f3a3bfa9fa0eb1bd39afbf4607f8ecf"
@@ -13521,33 +13381,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
-  "size": 3697,
-  "sha256": "7a9135f3cff5a2fc795d0d7dd091709fa9a32a700002f7c14048328783ad1b5e"
+  "size": 3677,
+  "sha256": "b4127c7d47e44f57cc714cb77d311a09790186e9c7381527770f8bc0d81282cf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/references/FRAMEWORK-SOURCE-LOCK.json",
   "size": 4257,
   "sha256": "a538868ea6446a4e34f71bd4175e4db8d9d218305cdbc409f3ca90dc1314a6c6"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/SKILL.md",
-  "size": 2003,
-  "sha256": "d34bbec94762381f452c96969fdfe5b34d7749b9342bc1b17cc6d9c6893b12d5"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/references/KID-4.0.6-AUTHORITY.md",
-  "size": 689,
-  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-kid-distribution/scripts/validate_kid.py",
-  "size": 1745,
-  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-mcm/skill.md",
-  "size": 11059,
-  "sha256": "4016153533ab400da404d4e59036b2ff4fb628159e046a30092ad72f9e076cd2"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-memory/SKILL.md",
@@ -13660,11 +13500,6 @@
   "sha256": "06fa091d56c641fcd92b8719d786ba8841063058b9ec12bffa3ea03ed654468d"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-papyrus/skill.md",
-  "size": 11501,
-  "sha256": "4ba9b182541e774c3113f5b8122184293e87567021a670604d8b5045960a44c1"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-plugin-authoring/SKILL.md",
   "size": 3774,
   "sha256": "9a334daf3fe004d135835895c9c4b3e455e788d59e2c2f341fa34faeae16b5a1"
@@ -13711,8 +13546,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/SKILL.md",
-  "size": 1491,
-  "sha256": "133e8b47cb428dc18707c9021630dc2b97a3f352a0988b2024cf6c1aac6bf246"
+  "size": 1471,
+  "sha256": "a820bb38f449efb02724bdc8412364cb022dfe80f2ad30d92c6c371cad0ec1fa"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-runtime-patching/references/frameworks-guide-2026.md",
@@ -13755,11 +13590,6 @@
   "sha256": "ee526790801fe787f2640370c6b628fdeea6394d6f8f1775244be087d3edfdc0"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skse/skill.md",
-  "size": 10399,
-  "sha256": "a228c48907bc834fb9eb2d9f584f0c165ac4ffa5583fbd77f40ad4c78369608b"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-skypatcher/SKILL.md",
   "size": 2231,
   "sha256": "9fab4d3be488da26cfec54be30531cbd009e91c30c436197284e8f3fe84ca57c"
@@ -13770,29 +13600,9 @@
   "sha256": "7672796c795edf065c5fa9a84907e7154c38f1f7ea8728bff004b3b680392109"
  },
  {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/SKILL.md",
-  "size": 3271,
-  "sha256": "a6cdf4abd022984b69053f15a43194e803c166e23fd2fb367679932ed21ac71d"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/references/SPID-7.3.1-PARSER-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-spid-distribution/scripts/validate_spid.py",
-  "size": 2275,
-  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
- },
- {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 6874,
-  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
+  "size": 6729,
+  "sha256": "e43f3f41d9de071b8e56081bfc5e4ffd8eef5cf004d8ceee1fb2832b66896fbe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -13811,8 +13621,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/SKILL.md",
-  "size": 10003,
-  "sha256": "fd3cc165d1b2fa90f3467d8ce2f4fe42fefac9b1129d2de791602be78ac698dc"
+  "size": 10379,
+  "sha256": "941081dc2a1ac684d53205d2183db5a44d00d8dd46b93df5c1b5733e51a7a887"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/SPID-7.3.1-PARSER-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/references/filters.md",
@@ -13840,9 +13660,14 @@
   "sha256": "fd35087ecacd633418da493064026df2e3150a1a9c6dd9d055594d7e75e2511e"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/spid-authoring/scripts/validate_spid.py",
+  "size": 2275,
+  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/SKILL.md",
-  "size": 2987,
-  "sha256": "f43873432b0fa12612fecdeda887c644063e3144d5ebd0b5fa21f238ddae6c60"
+  "size": 3023,
+  "sha256": "852b409255cf686aafd3f8b388038886a8ac1d5e059616655492ce9708cf4669"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/spookys-automod-toolkit/references/README.md",
@@ -14157,7 +13982,7 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 13115,
-  "sha256": "d021be793f8e1e28976b7b9d5ec36076643154113c0e8136e46d352bd7c79176"
+  "sha256": "8f00cf2fd84178995908bfac63a9c18fd8ad02b0429f103ec6a0dd4220492159"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15961,8 +15786,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 30210,
-  "sha256": "554d19a46fcd2b53cec01d9137c9c83ecba4eebb0e35dbe62aa438594fa33c8e"
+  "size": 30976,
+  "sha256": "47551011e848b084420a51bdc1fbcd35cb1f3d154d45a1e33e37046fb00a800f"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -16051,8 +15876,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 74171,
-  "sha256": "7bd0d3f28f62cb763ce629bcf238349eaed0e11d920427500a8c02b9a947acf8"
+  "size": 74164,
+  "sha256": "edb9e0b59055d2889b3342cdb2afab2f21d63a64db736b8732863c051cb8451d"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -16091,13 +15916,13 @@
  },
  {
   "path": "README.md",
-  "size": 29712,
-  "sha256": "90ad613e07040b71a1aae1e39d0c12bafe234a91d2e2c61f7711ddba43793b23"
+  "size": 30192,
+  "sha256": "ca1765ceead9835db7a223cf4e84334cdce5ecf2453f3913f926a7b2d0c1087c"
  },
  {
   "path": "START-HERE.txt",
-  "size": 8267,
-  "sha256": "04c578401bb218db7a22fff5bd22d02267f4294341c0e1e919a8d95cf16ec0c5"
+  "size": 8372,
+  "sha256": "6e00626bed8e5122f31821952bca8efc914776d88a4fde4209c3d53e150d504b"
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
@@ -16276,8 +16101,8 @@
  },
  {
   "path": "TOOLS/install_live_skills.py",
-  "size": 6824,
-  "sha256": "192425508859efa669695c2cfae923504c33713d95686894fac092426529cda0"
+  "size": 6893,
+  "sha256": "44972a4243b7f6332c3e86740dfc3143240bced74384f6e123b62384c0d39ae9"
  },
  {
   "path": "TOOLS/merge_registry.py",
@@ -16301,13 +16126,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 553,
-  "sha256": "408d5f080f94bcf70199053c1aade5d6578ba37cb736aa227c9d2d4f4cc888d6"
+  "size": 627,
+  "sha256": "e5190ce3f82e6b134ad849bcdb2d2535fe7f03557c40354ca621fb76f04f7950"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "ada2da5e8a7268b74745d18c511d8fad8a91f634556f8e48b8eb7b0d8eb291a9"
+  "sha256": "97fe7f1b5ace0740cee673382881bddc7489e8dcc57ca52e1830b27a7c1805a5"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -16331,8 +16156,8 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/ai-tooling-stack/SKILL.md",
-  "size": 4887,
-  "sha256": "2725233c1346c1baa76c61ab536c5d9db03d1b8aa0b8ac771c679667b1a954fb"
+  "size": 4897,
+  "sha256": "efd95a7d5eca33d2aea0c3e159119754245ef1201ab2b58a5bb5ba46362d152f"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/biped-slot-reference/SKILL.md",
@@ -16796,8 +16621,13 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/kid-authoring/SKILL.md",
-  "size": 9846,
-  "sha256": "c9be4fbcd20c749274bead56358b60d029a27e6992fe7498539917f0a63a8bbf"
+  "size": 10204,
+  "sha256": "48ad1960584ac986ee812a8005157121adc73e945ff9a9766f8fee9da4836c32"
+ },
+ {
+  "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/KID-4.0.6-AUTHORITY.md",
+  "size": 689,
+  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/filters.md",
@@ -16828,6 +16658,11 @@
   "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/value-tables.md",
   "size": 5573,
   "sha256": "500673a0034d7cc97a1f0a6737bebcbae788529e419a91ff269f7f95d727ff78"
+ },
+ {
+  "path": "_V7-CANONICAL-SKILLS/kid-authoring/scripts/validate_kid.py",
+  "size": 1745,
+  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/mantella-config/SKILL.md",
@@ -18115,11 +17950,6 @@
   "sha256": "0d713d5b725646d7de8ce582357a21ca11b1abd755e024a8a9f18e99b6664ec6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-archive/skill.md",
-  "size": 14607,
-  "sha256": "9eadd461a8dd47c6bfc9d1a9b588a7528b53141ae4dcdd52451885d6d167c17d"
- },
- {
   "path": "_V7-CANONICAL-SKILLS/skyrim-assets-pbr/SKILL.md",
   "size": 3699,
   "sha256": "84f35edb477b55b091deeeb24d18cfeffe1a811cdde312c3ccc29878324ead26"
@@ -18210,11 +18040,6 @@
   "sha256": "251110443bbddc0ded3483651469c3105d1256afdbe2534db7211edc48881991"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-esp/skill.md",
-  "size": 21163,
-  "sha256": "a29211d2958796ddcb4c74833d1334d2e1e5202d3a2c824c63dc82cb7aa51120"
- },
- {
   "path": "_V7-CANONICAL-SKILLS/skyrim-fomod-packaging/SKILL.md",
   "size": 3589,
   "sha256": "65e128bfe6a4ed73232a7e56a167e58d939d16ff94eeeb5b86bc2de5360140f7"
@@ -18246,33 +18071,13 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-frameworks-index/SKILL.md",
-  "size": 3697,
-  "sha256": "7a9135f3cff5a2fc795d0d7dd091709fa9a32a700002f7c14048328783ad1b5e"
+  "size": 3677,
+  "sha256": "b4127c7d47e44f57cc714cb77d311a09790186e9c7381527770f8bc0d81282cf"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-frameworks-index/references/FRAMEWORK-SOURCE-LOCK.json",
   "size": 4257,
   "sha256": "a538868ea6446a4e34f71bd4175e4db8d9d218305cdbc409f3ca90dc1314a6c6"
- },
- {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-kid-distribution/SKILL.md",
-  "size": 2003,
-  "sha256": "d34bbec94762381f452c96969fdfe5b34d7749b9342bc1b17cc6d9c6893b12d5"
- },
- {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-kid-distribution/references/KID-4.0.6-AUTHORITY.md",
-  "size": 689,
-  "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
- },
- {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-kid-distribution/scripts/validate_kid.py",
-  "size": 1745,
-  "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
- },
- {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-mcm/skill.md",
-  "size": 11059,
-  "sha256": "4016153533ab400da404d4e59036b2ff4fb628159e046a30092ad72f9e076cd2"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-memory/SKILL.md",
@@ -18385,11 +18190,6 @@
   "sha256": "06fa091d56c641fcd92b8719d786ba8841063058b9ec12bffa3ea03ed654468d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-papyrus/skill.md",
-  "size": 11501,
-  "sha256": "4ba9b182541e774c3113f5b8122184293e87567021a670604d8b5045960a44c1"
- },
- {
   "path": "_V7-CANONICAL-SKILLS/skyrim-plugin-authoring/SKILL.md",
   "size": 3774,
   "sha256": "9a334daf3fe004d135835895c9c4b3e455e788d59e2c2f341fa34faeae16b5a1"
@@ -18436,8 +18236,8 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-runtime-patching/SKILL.md",
-  "size": 1491,
-  "sha256": "133e8b47cb428dc18707c9021630dc2b97a3f352a0988b2024cf6c1aac6bf246"
+  "size": 1471,
+  "sha256": "a820bb38f449efb02724bdc8412364cb022dfe80f2ad30d92c6c371cad0ec1fa"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-runtime-patching/references/frameworks-guide-2026.md",
@@ -18480,11 +18280,6 @@
   "sha256": "ee526790801fe787f2640370c6b628fdeea6394d6f8f1775244be087d3edfdc0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-skse/skill.md",
-  "size": 10399,
-  "sha256": "a228c48907bc834fb9eb2d9f584f0c165ac4ffa5583fbd77f40ad4c78369608b"
- },
- {
   "path": "_V7-CANONICAL-SKILLS/skyrim-skypatcher/SKILL.md",
   "size": 2231,
   "sha256": "9fab4d3be488da26cfec54be30531cbd009e91c30c436197284e8f3fe84ca57c"
@@ -18495,29 +18290,9 @@
   "sha256": "7672796c795edf065c5fa9a84907e7154c38f1f7ea8728bff004b3b680392109"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-spid-distribution/SKILL.md",
-  "size": 3271,
-  "sha256": "a6cdf4abd022984b69053f15a43194e803c166e23fd2fb367679932ed21ac71d"
- },
- {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-spid-distribution/references/SPID-7.3.1-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-spid-distribution/references/SPID-7.3.1-PARSER-AUTHORITY.md",
-  "size": 1066,
-  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
- },
- {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-spid-distribution/scripts/validate_spid.py",
-  "size": 2275,
-  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
- },
- {
   "path": "_V7-CANONICAL-SKILLS/skyrim-tool-router/SKILL.md",
-  "size": 6874,
-  "sha256": "e1bbd97b08b2d83173599f80f838a3f5e78c82ad4618a93a84eb10ebeff6bee7"
+  "size": 6729,
+  "sha256": "e43f3f41d9de071b8e56081bfc5e4ffd8eef5cf004d8ceee1fb2832b66896fbe"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-versioned-workspace/SKILL.md",
@@ -18536,8 +18311,18 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/spid-authoring/SKILL.md",
-  "size": 10003,
-  "sha256": "fd3cc165d1b2fa90f3467d8ce2f4fe42fefac9b1129d2de791602be78ac698dc"
+  "size": 10379,
+  "sha256": "941081dc2a1ac684d53205d2183db5a44d00d8dd46b93df5c1b5733e51a7a887"
+ },
+ {
+  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/SPID-7.3.1-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
+ },
+ {
+  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/SPID-7.3.1-PARSER-AUTHORITY.md",
+  "size": 1066,
+  "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/filters.md",
@@ -18565,9 +18350,14 @@
   "sha256": "fd35087ecacd633418da493064026df2e3150a1a9c6dd9d055594d7e75e2511e"
  },
  {
+  "path": "_V7-CANONICAL-SKILLS/spid-authoring/scripts/validate_spid.py",
+  "size": 2275,
+  "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
+ },
+ {
   "path": "_V7-CANONICAL-SKILLS/spookys-automod-toolkit/SKILL.md",
-  "size": 2987,
-  "sha256": "f43873432b0fa12612fecdeda887c644063e3144d5ebd0b5fa21f238ddae6c60"
+  "size": 3023,
+  "sha256": "852b409255cf686aafd3f8b388038886a8ac1d5e059616655492ce9708cf4669"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/spookys-automod-toolkit/references/README.md",
@@ -19023,5 +18813,10 @@
   "path": "docs/history/V7.7.7-CHANGELOG.md",
   "size": 785,
   "sha256": "da665527fe6b04d68518e94c2e2dee15452348f677f1fa3964d98bfcaba82ff6"
+ },
+ {
+  "path": "docs/history/V7.7.8-CHANGELOG.md",
+  "size": 1437,
+  "sha256": "393ce7227dfff62b20dbed678e3b89a7c50b0aa0f5bce6e9aee2bbf72ce65df0"
  }
 ]
