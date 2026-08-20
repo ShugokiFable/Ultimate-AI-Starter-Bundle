@@ -1,14 +1,13 @@
 ---
 name: release-checklist
-description: Mandatory pre-release gate for any GitHub repo this agent publishes (bundle, tools, mods). Use before bumping a
-  version, tagging, or creating a release — CI failures, red tags, and broken release zips mean this checklist was skipped.
+description: Use when preparing to version, tag, publish, or recover a GitHub release whose CI and shipped artifacts must be proven.
 compatibility: Windows 10/11; PowerShell 5.1 and Python 3; gh CLI authenticated.
 metadata:
   version: 1.0.0
   updated: '2026-08-20'
   library: overseer-skyrim-agent-skills
   error_registry_revision: 4.3.0
-  final_pack_version: 7.7.14
+  final_pack_version: 7.9.0
 ---
 
 # Release checklist
@@ -57,19 +56,32 @@ verifier — a manifest that "looks fine" but was never verified is not proof.
 
 A local PASS is necessary but NOT sufficient — see step 5.
 
-## 5. Push, then WAIT for CI green. Do not tag on local PASS.
+## 5. Push, then converge CI for the exact pushed commit
 
-    gh run list --branch main --limit 1 --json status,conclusion
+**REQUIRED SUB-SKILL:** Use `ci-convergence`.
 
-Poll until conclusion is `success`. A red commit must never wear a tag.
-If CI fails: fix, commit, push, and re-poll — do not release from the old
-commit.
+Record the exact pushed SHA and keep it as the release identity:
+
+    SHA=$(git rev-parse HEAD)
+    git push origin HEAD
+
+Do not use "latest on main" as a proxy. Query workflow/check state for that
+**exact pushed SHA**. GitHub CLI examples:
+
+    gh run list --commit "$SHA" --json databaseId,headSha,status,conclusion,workflowName
+    gh run watch <run-id> --exit-status
+    gh api repos/{owner}/{repo}/commits/$SHA/check-runs
+
+Wait through queued/in-progress states. Every required check must reach a
+terminal successful/skipped state according to branch policy. If any required
+check fails, inspect its job/log, fix the root cause, commit and push a NEW SHA,
+and restart this section from that new SHA. Never tag, build a release, or end
+the release task while the chosen SHA is pending or red.
 
 ## 6. Tag and build artifacts from the GREEN commit
 
-    git tag -a vX.Y.Z -m '<summary>'       # force-move (-f) if the tag already
-                                           # pointed at a red commit
-    git push origin vX.Y.Z --force         # only if moved
+    git tag -a vX.Y.Z -m '<summary>'
+    git push origin vX.Y.Z
     powershell -NoProfile -ExecutionPolicy Bypass -File TOOLS/Build-Release.ps1
 
 Build zips AFTER the fix. Artifacts built from a red commit stay broken even
@@ -80,9 +92,7 @@ if the tag is later moved.
     gh release create vX.Y.Z --title '...' --notes '...' <zip>... 
     gh release view vX.Y.Z --json tagName,targetCommitish,assets
 
-Confirm the tag, the commit it points at, and EVERY asset name. Then re-check
-CI for the tag. A release is not done until the page shows the right assets
-on a green commit.
+Confirm the tag resolves to the exact green SHA from step 5 and EVERY asset name is present. Re-check the required checks for that SHA. A release is not done until the shipped assets and exact commit are both proven.
 
 ## 8. If a release already shipped red (recovery)
 

@@ -1,11 +1,9 @@
 @echo off
-title Skyrim AI V5 AIO Installer
+setlocal
 cd /d "%~dp0"
+title Ultimate AI Starter Bundle v7.9.0
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0INSTALL-V7-AIO.ps1" %*
+set "EXITCODE=%ERRORLEVEL%"
 echo.
-echo  Skyrim AI V5 - All-In-One Installer
-echo  ==================================
-echo.
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0INSTALL-V7-AIO.ps1" %*
-echo.
-echo Exit code: %ERRORLEVEL%
-pause
+if not "%EXITCODE%"=="0" echo Installation failed with exit code %EXITCODE%.
+exit /b %EXITCODE%

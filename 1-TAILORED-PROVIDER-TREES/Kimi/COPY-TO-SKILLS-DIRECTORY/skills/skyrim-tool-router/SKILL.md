@@ -75,7 +75,7 @@ Optional process overlays (not Skyrim-specific): `using-superpowers`, `systemati
 - Load `skyrim-versioned-workspace` before the first write.
 - Load `skyrim-modding-facts` whenever a framework token, record field, FormID, API, hook, path, or version is uncertain.
 - Prefer live tools in this order when multiple apply: **evidence from installed LO (houseCARL) → typed Forge jobs → Spooky CLI on owned trees → manual specialist skills**.
-- Try `skyrim-forge-bridge` / Forge for supported inspection when Forge is installed.
+- Try `skyrim-forge` for supported inspection; the bundle installs Forge, so it is normally present.
 - Never load every Skyrim skill into one session.
 - If a tool is missing, load `tool-discovery` and **recommend install** — do not fake results.
 

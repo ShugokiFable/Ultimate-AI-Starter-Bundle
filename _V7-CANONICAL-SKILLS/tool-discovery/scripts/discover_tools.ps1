@@ -52,7 +52,7 @@ if (-not $forgeRoot) {
   )) {
     if (Test-Path -LiteralPath $p) {
       try {
-        $j = Get-Content -LiteralPath $p -Raw | ConvertFrom-Json
+        $j = [IO.File]::ReadAllText($p) | ConvertFrom-Json
         if ($j.root -and (Test-Path -LiteralPath [string]$j.root)) { $forgeRoot = [string]$j.root; break }
       } catch {}
     }

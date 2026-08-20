@@ -1,6 +1,6 @@
 ---
 name: skyrim-forge
-description: Use Skyrim Forge (5.x) as the primary typed automation broker for Skyrim mod development and validation.
+description: Use when Skyrim mod development or validation can benefit from the bundle-managed Skyrim Forge typed automation broker.
 ---
 
 # Skyrim Forge 5.x
@@ -23,8 +23,7 @@ Never treat `Documents\SkyrimForge` or `Documents\Skyrim Forge` as the live
 product. The live install is `SKYRIM_FORGE_ROOT`, a versioned
 `Skyrim-Forge-<version>` folder under the user's Skyrim tools directory.
 
-Require Forge 5.1.5+ for Claude Code 2026-07-28 (`tools/call` must include
-`resultType: "complete"`). Do not add Forge as a new Grok MCP server when
+For bundle v7.8.x, require the Forge 5.2.x bundle contract to report compatible before work (`python -m skyrim_forge bundle-contract --bundle-version 7.8.0`). Claude Code 2026-07-28 still requires `tools/call` to include `resultType: "complete"`. Do not add Forge as a new Grok MCP server when
 Grok already sits on the 8-running-server cliff (7 configured, or 6 while
 `mcp-search` still loads).
 
@@ -134,6 +133,6 @@ Never call a mod Nexus-compliant merely because its files compile or lint. The r
 2. Else `$env:SKYRIM_FORGE_ROOT`.
 3. Else `forge` on PATH.
 4. Else user path.
-5. Else recommend installing Skyrim Forge and creating `INSTALLATION.json` with `root`, `python`, `cli`, `mcp` arrays.
+5. Else, when working from the bundle, run `TOOLS/Install-SkyrimForge.ps1`; do not invent a manual extraction path.
 
-Missing Forge is not fatal: use houseCARL / Spooky / specialist skills, and state which Forge gates were skipped.
+After a v7.8.x AIO install, missing/incompatible Forge is a failed installation state, not a successful optional skip. Outside the bundle, report Forge as unavailable rather than inventing paths.

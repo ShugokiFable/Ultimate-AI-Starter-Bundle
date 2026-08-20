@@ -97,7 +97,11 @@ if (-not $Force -and (Test-Path -LiteralPath $catalog)) {
   $zip = Join-Path $env:TEMP ("Ultimate-AI-Starter-Bundle-" + $tag + '.zip')
   try {
     $rel = Invoke-RestMethod -Uri "$Api/releases/tags/$tag" -Headers $H -TimeoutSec 60
-    $asset = @($rel.assets | Where-Object { $_.name -like '*.zip' }) | Select-Object -First 1
+    # Prefer the self-contained release deterministically. GitHub asset order is
+    # not an API contract; selecting the first ZIP could silently choose Core.
+    $asset = @($rel.assets | Where-Object { $_.name -like '*-Full-Offline.zip' }) | Select-Object -First 1
+    if (-not $asset) { $asset = @($rel.assets | Where-Object { $_.name -like '*-Core.zip' }) | Select-Object -First 1 }
+    if (-not $asset) { $asset = @($rel.assets | Where-Object { $_.name -like '*.zip' }) | Select-Object -First 1 }
     if ($asset) {
       Ok ("release asset: " + $asset.name)
       Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zip -Headers $H -TimeoutSec 1800
@@ -144,7 +148,7 @@ if ($SkipPreamble) { $args += '-SkipPreamble' }
 if ($SkipHouseCarlSetup) { $args += '-SkipHouseCarlSetup' }
 Step "Running installer from $dest"
 & powershell @args
-if ($LASTEXITCODE -ne 0) { Warn ('installer exit code: ' + $LASTEXITCODE) }
+if ($LASTEXITCODE -ne 0) { Fail ('installer exit code: ' + $LASTEXITCODE) }
 
 Write-Host ''
 Write-Host '=====================================================' -ForegroundColor Green

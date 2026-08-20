@@ -1,6 +1,6 @@
 ---
 name: housecarl
-description: Work with Skyrim Special Edition load-order records through the houseCARL MCP server — set or switch the MO2 instance, inspect active plugins and conflict trees, read records, query across plugins, author reviewable patch ESPs, create or remove records, and edit leveled lists or composed structs. Also the routing skill for the bundled Skyrim helpers (mutagen-reference, papyrus-reference, skypatcher-authoring, spid-authoring, kid-authoring). Use whenever the user mentions houseCARL, an MO2 modlist, plugins, load order, conflicts, ESP patches, overrides, a record type (ARMO/WEAP/NPC_/LVLI/MGEF/…), leveled lists, keywords, or a no-ESP runtime distribution — even when the task looks like a single edit, load this first to pick the right tool and read before you write.
+description: Use when reading or editing Skyrim load-order records through houseCARL, inspecting conflicts, querying plugins, authoring patches, or routing to record/distribution skills.
 ---
 
 # houseCARL

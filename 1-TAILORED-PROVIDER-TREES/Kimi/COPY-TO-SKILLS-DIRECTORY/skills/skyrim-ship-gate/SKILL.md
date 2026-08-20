@@ -18,7 +18,7 @@ metadata:
 
 1. **Version gate:** active version, changelog, and ownership are correct.
 2. **Diff gate:** no unrelated or deployed files were modified.
-3. **Plugin gate:** run Forge Bridge and `skyrim-plugin-authoring/scripts/audit_plugin_headers.py` for every plugin. Header success is structural only.
+3. **Plugin gate:** run `forge plugin-info` and `skyrim-plugin-authoring/scripts/audit_plugin_headers.py` for every plugin. Header success is structural only.
 4. **Papyrus gate:** changed scripts compile and packaged PEX files match the current build.
 5. **Runtime-config gate:** structural and semantic audits pass; installed framework versions are recorded.
 6. **Native gate:** every supported DLL target builds and its dependencies are inspected.

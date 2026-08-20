@@ -45,6 +45,20 @@ jobs:
           .\TESTS\Test-V7-Pack.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Release contracts
+        shell: powershell
+        run: |
+          python TESTS/test_release_contract.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python TESTS/test_hermes_bootstrap.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Deterministic Core artifact smoke test
+        shell: powershell
+        run: |
+          python TOOLS/build_release.py --root . --outdir artifacts --core-only
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
   manifest:
     name: MANIFEST verifies against the tree
     runs-on: windows-latest

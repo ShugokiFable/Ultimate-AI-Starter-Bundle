@@ -37,7 +37,7 @@ Read `references/plugin-invariants.md`. Legacy light plugins use HEDR 1.70 and n
 
 ## Workflow
 
-1. Run Forge Bridge header/scan where useful.
+1. Run `forge plugin-info <plugin>` for the header/master summary where useful.
 2. Generate a machine-readable record plan.
 3. Implement with a typed writer in an isolated project.
 4. Reload the produced plugin with the same library and compare intended records.
