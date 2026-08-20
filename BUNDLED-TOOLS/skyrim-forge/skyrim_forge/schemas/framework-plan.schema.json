@@ -1,0 +1,433 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ShugokiFable/skyrim-forge/blob/main/schemas/framework-plan.schema.json",
+  "title": "Skyrim Forge Framework Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "profile",
+    "output_file",
+    "entries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "skyrim-forge-framework-plan/1"
+    },
+    "profile": {
+      "enum": [
+        "spid-7.3",
+        "kid-4.0.6",
+        "bos-3.4.1",
+        "skypatcher-6.4.2",
+        "flm-1.8.1"
+      ]
+    },
+    "output_file": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^/\\\\]+$"
+    },
+    "category": {
+      "type": "string"
+    },
+    "header": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "spid-7.3"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "output_file": {
+            "pattern": "_DISTR\\.ini$"
+          },
+          "entries": {
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "form"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "form": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "string_filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "form_filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "level_filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "traits": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "count": {
+                  "type": "string"
+                },
+                "chance": {
+                  "type": "string"
+                },
+                "linked_path": {
+                  "type": "string"
+                },
+                "exclusive_group": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "kid-4.0.6"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "output_file": {
+            "pattern": "_KID\\.ini$"
+          },
+          "entries": {
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "keyword"
+              ],
+              "properties": {
+                "keyword": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "record_type": {
+                  "type": "string"
+                },
+                "filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "traits": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "chance": {
+                  "type": "string"
+                },
+                "exclusive_group": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "bos-3.4.1"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "output_file": {
+            "pattern": "_SWAP\\.ini$"
+          },
+          "entries": {
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "section",
+                "originals"
+              ],
+              "properties": {
+                "section": {
+                  "enum": [
+                    "Forms",
+                    "References",
+                    "Transforms",
+                    "Properties"
+                  ]
+                },
+                "conditions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "originals": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "replacements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "properties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "default": []
+                },
+                "chance": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "skypatcher-6.4.2"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "required": [
+          "category"
+        ],
+        "properties": {
+          "category": {
+            "enum": [
+              "npc",
+              "weapon",
+              "armor",
+              "ammo",
+              "race",
+              "spell",
+              "scroll",
+              "alchemy",
+              "book",
+              "cell",
+              "constructibleobject",
+              "container",
+              "enchantment",
+              "formlist",
+              "leveledlist",
+              "location",
+              "magiceffect",
+              "other"
+            ]
+          },
+          "output_file": {
+            "pattern": "\\.ini$"
+          },
+          "entries": {
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "filters",
+                "patches"
+              ],
+              "properties": {
+                "filters": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "key",
+                      "value"
+                    ],
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                "patches": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "key",
+                      "value"
+                    ],
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile": {
+            "const": "flm-1.8.1"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "then": {
+        "properties": {
+          "output_file": {
+            "pattern": "_FLM\\.ini$"
+          },
+          "entries": {
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "key",
+                "fields"
+              ],
+              "properties": {
+                "key": {
+                  "enum": [
+                    "Alias",
+                    "Group",
+                    "Collection",
+                    "Filter",
+                    "ModEvent",
+                    "ModEventRemove",
+                    "FormList",
+                    "Remove",
+                    "Plant",
+                    "BToys",
+                    "GToys",
+                    "HairColors",
+                    "AtronachForge",
+                    "AtronachForgeSigil",
+                    "DragonbornSpiderCrafting"
+                  ]
+                },
+                "fields": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

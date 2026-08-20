@@ -158,23 +158,19 @@
       "npm_spec": "codeburn"
     },
     {
-      "install": "bundle-managed",
+      "install": "bundle-source",
       "id": "skyrim-forge",
       "kind": "bundled-product",
       "mcp": true,
-      "github": {
-        "owner": "ShugokiFable",
-        "repo": "SkyrimForge"
-      },
       "name": "Skyrim Forge",
       "env": "SKYRIM_FORGE_ROOT",
-      "offline_asset": "Skyrim-Forge-5.2.1.zip",
       "required_for": [
         "typed-automation",
         "release-gates"
       ],
-      "note": "Bundled 5.2.1; the installer resolves ONE versionless install root, migrates a version-stamped install onto it, wires selected providers, and requires the 7.8.x-7.9.x compatibility contract.",
-      "version": "5.2.1"
+      "note": "Developed in this repository at BUNDLED-TOOLS/skyrim-forge; there is no separate SkyrimForge release. The installer resolves ONE versionless install root, migrates a version-stamped install onto it, preserves Workspaces and the virtualenv, wires selected providers, then proves the result runs with `forge doctor`.",
+      "version": "6.0.0",
+      "source_dir": "BUNDLED-TOOLS/skyrim-forge"
     },
     {
       "id": "code-review-skill",
@@ -368,7 +364,7 @@
       "scope_note": "Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts."
     }
   ],
-  "pack_version": "7.9.0",
+  "pack_version": "7.9.1",
   "updated_utc": "2026-08-20T01:50:00+00:00",
   "providers": {
     "Grok": {
@@ -444,7 +440,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "7.9.0",
+  "catalog_version": "7.9.1",
   "updated": "2026-08-20",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. See skill mcp-protocol-2026."
 }

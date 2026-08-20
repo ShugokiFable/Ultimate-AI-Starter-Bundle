@@ -5,6 +5,11 @@
   "sha256": "3d6ca1e92ab8f2d7dfb32bd50698c2851b5d4a6a07b99b958ff8c72440d5e36a"
  },
  {
+  "path": ".github/dependabot.yml",
+  "size": 669,
+  "sha256": "33c720f837b79fdb49ce1a272ed2e4fbfc0e6ab6f8cd24bdb059902d1004ff75"
+ },
+ {
   "path": ".github/scripts/check_versions.py",
   "size": 4087,
   "sha256": "99a59fdca549e7a89795f1cc76dc33529be54e233e6a66a5ea0cc6c374b9f0ee"
@@ -16,8 +21,13 @@
  },
  {
   "path": ".github/workflows/ci.yml",
-  "size": 2688,
-  "sha256": "3c73fdd8a474d86f448d1c15f8c0e4890b831a59ec281a93003906bfa97794a7"
+  "size": 15775,
+  "sha256": "4a4a50cf60530371a39498a82dc0279be70d62b93e922a367272a356aa0b1e6f"
+ },
+ {
+  "path": ".github/workflows/codeql.yml",
+  "size": 749,
+  "sha256": "c01010b86db095d66b7c4b90cc5bd2eb771cd368f4945e63517d3b91bf938828"
  },
  {
   "path": ".gitignore",
@@ -3222,7 +3232,7 @@
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
   "size": 4608,
-  "sha256": "82961da46fc80ddf4e9a00d4b3991279f461cb5d867f95d81b3c0b3d1df11cd3"
+  "sha256": "cc05dc43ed38cb5b8ef9531a61ed2adef6a61d3122eb663fc79fde967bbbb8cb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -3616,8 +3626,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8839,
-  "sha256": "c93f977f077d52bb83cd0a11950f2e8ffb92144675084607b6f3d6cf8cdc123c"
+  "size": 9012,
+  "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -6017,7 +6027,7 @@
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
   "size": 4608,
-  "sha256": "82961da46fc80ddf4e9a00d4b3991279f461cb5d867f95d81b3c0b3d1df11cd3"
+  "sha256": "cc05dc43ed38cb5b8ef9531a61ed2adef6a61d3122eb663fc79fde967bbbb8cb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -6411,8 +6421,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8839,
-  "sha256": "c93f977f077d52bb83cd0a11950f2e8ffb92144675084607b6f3d6cf8cdc123c"
+  "size": 9012,
+  "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -8797,7 +8807,7 @@
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
   "size": 4608,
-  "sha256": "82961da46fc80ddf4e9a00d4b3991279f461cb5d867f95d81b3c0b3d1df11cd3"
+  "sha256": "cc05dc43ed38cb5b8ef9531a61ed2adef6a61d3122eb663fc79fde967bbbb8cb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -9191,8 +9201,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8839,
-  "sha256": "c93f977f077d52bb83cd0a11950f2e8ffb92144675084607b6f3d6cf8cdc123c"
+  "size": 9012,
+  "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -11577,7 +11587,7 @@
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
   "size": 4608,
-  "sha256": "82961da46fc80ddf4e9a00d4b3991279f461cb5d867f95d81b3c0b3d1df11cd3"
+  "sha256": "cc05dc43ed38cb5b8ef9531a61ed2adef6a61d3122eb663fc79fde967bbbb8cb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -11971,8 +11981,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8839,
-  "sha256": "c93f977f077d52bb83cd0a11950f2e8ffb92144675084607b6f3d6cf8cdc123c"
+  "size": 9012,
+  "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -14367,7 +14377,7 @@
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
   "size": 4608,
-  "sha256": "82961da46fc80ddf4e9a00d4b3991279f461cb5d867f95d81b3c0b3d1df11cd3"
+  "sha256": "cc05dc43ed38cb5b8ef9531a61ed2adef6a61d3122eb663fc79fde967bbbb8cb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -14761,8 +14771,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-forge/SKILL.md",
-  "size": 8839,
-  "sha256": "c93f977f077d52bb83cd0a11950f2e8ffb92144675084607b6f3d6cf8cdc123c"
+  "size": 9012,
+  "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-frameworks-index/SKILL.md",
@@ -15406,13 +15416,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 13281,
-  "sha256": "a11299b9dfd9c124b1b3caa07c51c921a743061104eee7798039b961d34f90cd"
+  "size": 13315,
+  "sha256": "bfe7dc948f8269a256ed6f8c6dbf04ca5093be77889e47eac7dcdf080756186e"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 1236,
-  "sha256": "d4008374127ae6dc6ea8f34798d563516fc9fcbdcb10dedc3193bf61dca603f6"
+  "size": 1312,
+  "sha256": "c45ae1913b25f3411cf029c4f0bc99db170e3558af90a88f934c5c7d36b7a7bd"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -15423,11 +15433,6 @@
   "path": "BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md",
   "size": 997,
   "sha256": "38203fc36a6d40d3fc55848a555289dcd1836c65afcccc0202f1827be51a658b"
- },
- {
-  "path": "BUNDLED-TOOLS/offline/Skyrim-Forge-5.2.1.zip",
-  "size": 3732675,
-  "sha256": "6397693ae905a0d65b454baeb81f80fc0c08977d07c43ca334e73e42ffa773c7"
  },
  {
   "path": "BUNDLED-TOOLS/offline/codebase-memory-mcp-windows-amd64.zip",
@@ -17215,9 +17220,1069 @@
   "sha256": "c977fb34ec6614400673cc3d73e9979eb5428d35e1413c50ab4b1cef47eb7b3b"
  },
  {
+  "path": "BUNDLED-TOOLS/skyrim-forge/.editorconfig",
+  "size": 186,
+  "sha256": "193235a0ec192f33403e7da1127c69c95ed968510fdcf90bbffc19d0a592d51e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/.gitignore",
+  "size": 168,
+  "sha256": "8d1fbc52fb1ea66c69cbbd7ae68e28f256bad4d2b3529b1a58065692ba9b2a09"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/BUILD-RECEIPT.json",
+  "size": 7244,
+  "sha256": "a6680e5b791442913057a108e636bd5838c9327dc733d2325d8ca4c9ed1999cc"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/CHANGELOG.md",
+  "size": 28803,
+  "sha256": "813bebbe733d1be02aef8ce4aa3c88ea406541c8264de3b79b8548b82d2dc1b1"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/CHANGELOG.txt",
+  "size": 7848,
+  "sha256": "56ebf74e51a612a6dc0eb3d79e10dc227ed81f384765aefe37266a0f260727f3"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/CHECKSUMS-SHA256.txt",
+  "size": 228,
+  "sha256": "f8777c917a5006b6635226593b09f6e742a62172894049f66f7e69272067ba39"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/CODE_OF_CONDUCT.md",
+  "size": 199,
+  "sha256": "37f3e8b0dc670e92e5e1be37da5427c751720f89d80f334e145ad908712d3585"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/CONTRIBUTING.md",
+  "size": 581,
+  "sha256": "6961fe579f4b5bf6a1b69ca4e4525bda3f6a991d7d73ceab1d1a522c35fcb4b8"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/CURRENT.txt",
+  "size": 6,
+  "sha256": "54ef76332b31df830699e9d4138396885ab72bae260a034a81ff02bf32d8e90a"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Configure-Automation.ps1",
+  "size": 2747,
+  "sha256": "2aab033f12f70ef3de76ca764ae1f40c792600ba5063be1e4389323defc708b2"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Configure-Forge.ps1",
+  "size": 1093,
+  "sha256": "bbc07940e6dafdb76d73021ce101fa16e8ea76accad7a56d3f9bdc5f901cdd23"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Configure-Toolchain.ps1",
+  "size": 1638,
+  "sha256": "e609f700f59e4950f3df799e7f51736200487cf902f17f2f6ee8c65d7b95c44c"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/DECISIONS.md",
+  "size": 3792,
+  "sha256": "650f9e420377515cfd9b93e2a1ed35299fe3d41de9936cf52e105d787e04ff5a"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Forge Doctor.bat",
+  "size": 55,
+  "sha256": "98414bf0e1aba55d59fce603ffa7f5bdbdf2d832dc2e484d1fbaf4e699e321e8"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Install-AI-Bridge.ps1",
+  "size": 1264,
+  "sha256": "234117ff55b4f89135cca4314788727ee1daae4d1a9ce1e5edfaae467335f01d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Install-Forge-Skill.ps1",
+  "size": 5183,
+  "sha256": "84f34f622820226ee63b8aa425286a2eb829b57dd711584892de8af3c930dcdf"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Install-or-Update.ps1",
+  "size": 12987,
+  "sha256": "bf3395ada5db3129c3327f4b28fb92b43f97a6bd1c1b101e793d22efe616216d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/LICENSE",
+  "size": 1082,
+  "sha256": "dd44257b40c2df676262141661cf60deef52ded0504fa48f410cb62760da0fec"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/NOTICE.md",
+  "size": 386,
+  "sha256": "22ee6c4ee49bfc6e93d6ee56630339d1a21085e7515ca8d8c64c6b39af2f1172"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/PLAN.md",
+  "size": 821,
+  "sha256": "3a88ea3a91becdebd716165862e94a318400360e4fea8fffc4847abb05cec48b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/PUBLISH-TO-GITHUB.md",
+  "size": 794,
+  "sha256": "674f4b568001d5c480c10743446f399fea7e487ef9b888dc911443eb8e026e8b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/PowerShell-Parse-Gate.ps1",
+  "size": 1538,
+  "sha256": "bed144eccb0c0c89e12e1591fbed63c5dce4b5ba1cd31b98d938e62583186a52"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/README.md",
+  "size": 14102,
+  "sha256": "7e031145406900db0585e7d0b2732aacc988dbb2fe168a23708752e6a60d44c0"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/RELEASING.md",
+  "size": 1725,
+  "sha256": "09299e1055844577cfd7388ba07dfc4986ffb57c73d9d621622b3ca68ac24776"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Register-MCP.ps1",
+  "size": 22153,
+  "sha256": "4ecd48d6381d56623d7e4ab26c4acf30aa1b1c3229b626d195f6767c6da916fd"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Run Tests.bat",
+  "size": 629,
+  "sha256": "df8ffd988e5b7f4f128a10d4b4240a062693ff80c21b67292dbd78e10a4760a5"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/SBOM.spdx.json",
+  "size": 96091,
+  "sha256": "1c90a8bee73b25c3f7cc282d31105b2cb4d11f72597ea893b30d0922df492653"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/SECURITY.md",
+  "size": 417,
+  "sha256": "3cd5cfff4c0ecdcb7a41fbe12b522f9d1e1240efd7968d0065385c72ec57f7fa"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/START-HERE.bat",
+  "size": 2288,
+  "sha256": "1c8afc714d2b428700daee67cbefbc6f9f5752e8bafb39aec8ac91194ee15012"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/STATE.md",
+  "size": 2310,
+  "sha256": "4e3e90cd06988e160d0cad527726b03d58da1ae3532c8a2badb5fcb7dac33167"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Skyrim Forge GUI.bat",
+  "size": 45,
+  "sha256": "23c896d85819bcb26176d9d65df9ccd3cdada73986a840fbd1a4af1013abaf43"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Skyrim Forge MCP.bat",
+  "size": 45,
+  "sha256": "dfad2b04ae42f55649181600f0df0e0433f9d3fd34d7f057f96fa4ad1e26ed60"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/Skyrim Forge.bat",
+  "size": 171,
+  "sha256": "283e54dbc7d81697459112b25706aa8b43d11ee8121449211842f2b90c606bcb"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/VALIDATION.json",
+  "size": 49448,
+  "sha256": "ada2ca8b65ecf9b3bd376411b2effe90537e46f3391722efb82b4a1147859a6a"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/VALIDATION.md",
+  "size": 7944,
+  "sha256": "b61518a7d65f35776ec835c35aa865e89848e6b39a35153744dc4852478e3b76"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/VERSION.txt",
+  "size": 72,
+  "sha256": "73c1dcc6342beea4431cb0296846c8ca7bc0e573afd17e7825c6e74e5ebd6dd6"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/WORKSPACE_OWNERSHIP.md",
+  "size": 725,
+  "sha256": "e38f928c8b66b1ba52093e3805a15b84b1792321bf3285e9981f1ac907ae18e9"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/config.example.toml",
+  "size": 4191,
+  "sha256": "b1405a6d5e044caa20ca85aa59b354e582e6b2c83ee36c7fa4e9f05ef2153367"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/AI-INTEGRATION.md",
+  "size": 1680,
+  "sha256": "06e6bf90cae5c50d6af78808be12ff484f98b5e00cf197d310e8091ac7e9c634"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/AUTOMATION-FABRIC.md",
+  "size": 1519,
+  "sha256": "2a6d2268387780d299020da4199057378626515d62b24c70d4806aeecbf76322"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/CAPABILITY-MATRIX.md",
+  "size": 1983,
+  "sha256": "776631435c2c12e9f16e53faba35b1038c10fc53fbef861b34643cc2fe28d8a8"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/CI.md",
+  "size": 1322,
+  "sha256": "d3071ab9101377a257c8f7b1fa9f49d74f49bf8b1727341a7fd8f09c7be347c9"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/CONFIGURATION.md",
+  "size": 1189,
+  "sha256": "fe37472e6c0bd89e36f2a682dd62972c3045621691a60addf3e349e75fbd7beb"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/CREATION-KIT-AUTOMATION.md",
+  "size": 649,
+  "sha256": "7f89d31f50d9bb9e34062b8efc168059b7f0eb736c4a178a75b8f497936dc027"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/EXTERNAL-WORKER-PROTOCOL.md",
+  "size": 503,
+  "sha256": "59b751aa283d9e05caca304ecc76a313b042198887a55467e8a3aeddb2fdfe30"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/FOMOD-ENGINEERING.md",
+  "size": 5303,
+  "sha256": "bb94e1f57af9d02cfa3cdf72d3486a54f301a4c46385ab3dffd322e6dc137777"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/FRAMEWORK-ENGINEERING.md",
+  "size": 549,
+  "sha256": "a251881a7400231acb571cafc92e91ab868953ff87cd927ea754741ea75c74ef"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/GITHUB-RELEASE.md",
+  "size": 327,
+  "sha256": "db3f00fc8bf04dd5a94796e042e9f054fe4b00e3860341d0f8416b8f2e2a6283"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/INSTALLATION.md",
+  "size": 2346,
+  "sha256": "f9e95e6ae428aa17c59127bd179ac14b06b93b961691df5c9ae825ff8b76bf8c"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/LIMITATIONS.md",
+  "size": 535,
+  "sha256": "a354f2c407a2c1df9fa08d4bb8428749a37752db9f01b0c9270dd28f4e6a5946"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/LOOT-AUTOMATION.md",
+  "size": 577,
+  "sha256": "a559e259ac84b2b0b719aac1cd9b7adeb8842b9755dc8c2e2111292368fce8d8"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/MCP.md",
+  "size": 3013,
+  "sha256": "9395e26a414eafb70e45f7068057c1606d809bed1deb0ee30312c80a529f31fc"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/MO2-AUTOMATION.md",
+  "size": 493,
+  "sha256": "7aad96ef0bed5006e6bec6270817a6ecd277c22eaae777c669142b16519f26c1"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/NATIVE-PLUGIN-ENGINEERING.md",
+  "size": 855,
+  "sha256": "3e740e415cd8836e3a619a55887186737455110bd86bd7fab7ddcc7eb432efa6"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/NATIVE-SOURCE-LOCK.md",
+  "size": 619,
+  "sha256": "1d770a6cf125c3a174bcf96d6b96cb22f58a9f11dfd2975e5c47c7da30a5de8b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/NEXUS-PUBLICATION.md",
+  "size": 2596,
+  "sha256": "fc232ec1b254cce197b034e3696698d1146beb146183fb6e2b469fa49a8c54c2"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/PAPYRUS-ENGINEERING.md",
+  "size": 872,
+  "sha256": "0fa29b6e26accf1a2c802528afd85b5a7ca59ccb2d9a032f7a8dd0b29f778d27"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/PUBLICATION-COMPLIANCE.md",
+  "size": 1331,
+  "sha256": "ea1a28c2821ad871cbd31ad1d5774c2a0579960ae83fbcdeca1ee7d9a1847adb"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/SAFETY.md",
+  "size": 417,
+  "sha256": "af7e9b5bafccb6c5387bb88beca421b3582c3594cc3d25a36c429ef3ffe64672"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/THREAT-MODEL.md",
+  "size": 514,
+  "sha256": "c85390bdc3b11f367e408b18bf06ac2fa353b51133a13ff2dbfb1b74b7c7160e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/TOOLCHAIN-BROKER.md",
+  "size": 2065,
+  "sha256": "867f65fa7e911902991041520ce6ef57c2f9809a505783f3c15cce5435b41140"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/UI-AUTOMATION.md",
+  "size": 501,
+  "sha256": "8688257921fe0b79cdce376aa57874290c96a4f13aa983813bf07d25776505f3"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/WINDOWS-TEST-FIXTURES.md",
+  "size": 678,
+  "sha256": "4e1394f5f108267c4c0927c647b076415711fa17df6e7ea1902a1656d01a9436"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/WRYE-BASH-AUTOMATION.md",
+  "size": 467,
+  "sha256": "5217a793ebd907ef8b6ac08c89a26d7cde56db5c5a2ca17459d60ca7b2c4e16d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/docs/XEDIT-AUTOMATION.md",
+  "size": 847,
+  "sha256": "882a0ac24cddc26da8f0f18c8e42154aeccab0689c5c0e8af7e9a538fde0ac47"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/automation-install-xedit-scripts.job.json",
+  "size": 152,
+  "sha256": "dc33005352244421334dd2d9706982c85188db6e6df45e0a646b95154db42e54"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/automation-verify-release.job.json",
+  "size": 377,
+  "sha256": "aea2e6ffc4c9d063948c396f1bdf923b8e34476adaec0fd663fefbc5c92c6223"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/automation-xedit-check.job.json",
+  "size": 241,
+  "sha256": "c6775a559c0da44b08f22c5d46a07b1f84d440e0423ecc39c9337cce0457ae70"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/creation-kit-facegen.worker-job.json",
+  "size": 334,
+  "sha256": "4bc70dadefd64c9197dfd337b53e535e7f933db7ae02d67703f133cc85404269"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/creation-kit-ui.job.json",
+  "size": 390,
+  "sha256": "3058e708903f1b283fbc05bc909329b9f8c42b5f89cf9ba2bd2040ae6d713611"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/fomod-complete.plan.json",
+  "size": 3775,
+  "sha256": "277d8cced375e5d00c5101f6cc7e06747bcd70a1083a5ed2fdbee1746e068432"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/fomod-selections.example.json",
+  "size": 83,
+  "sha256": "f628babe5cbd48246d3144d7b909005f168e2572ecee3f4e63f2f0d11ce7c487"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/fomod-state.example.json",
+  "size": 106,
+  "sha256": "96e3e138c9457c0eac1b2decc91d914a43f3c3ef59a8cebe531c15469d6babd0"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/framework-bos.example.json",
+  "size": 271,
+  "sha256": "052acb6756eb1c378e8b7781a3c2873c21bd66ec9201c74c28aa66471b0df4cf"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/framework-flm.example.json",
+  "size": 234,
+  "sha256": "f0af08d117850f989e4f60790141b45edde609eaf6c1e27b3ae87a473c1e6dd5"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/framework-kid.example.json",
+  "size": 278,
+  "sha256": "01f2ef13d4065f9cc6e7f26957468b27d96760eaad6997f05f4916ed7b675d6d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/framework-skypatcher.example.json",
+  "size": 396,
+  "sha256": "0031e858b360cc7dd8d6cb7b32ca39546496db6ac5f2ae89197e0082147eaeab"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/framework-spid.example.json",
+  "size": 388,
+  "sha256": "f59d2723977e1ab136aa6ccc677557063c2ce447a3efc23882eb93a3fbf4faf1"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/loot-worker.job.json",
+  "size": 304,
+  "sha256": "1cd44ab2ac3840ca2212d4b74bf195f64cf6f7bdfb6ece87c9fae76c65258b88"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/native-plugin.example.json",
+  "size": 457,
+  "sha256": "3d10da18261ac2783c2c661a83da58bc9809835160463171c797b4b2bae39dc3"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/nexus-publication.example.json",
+  "size": 6450,
+  "sha256": "b6067f7c38c95913bd94515d70692b6d093fe82faf199162a80f4a2b3e9fbb46"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/plugin-create.plan.json",
+  "size": 648,
+  "sha256": "03b973fbbe574713f152fff945a2b9b15d52cf1fe894092ee93cf9706570ae37"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/examples/wrye-bashed-patch.worker-job.json",
+  "size": 329,
+  "sha256": "f7c1fe2447e41288aae6fa82d63078e354e3765afd8f233381fe2cbe405c70ff"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/forge_build_backend.py",
+  "size": 5295,
+  "sha256": "40235b2a276ae4b4d29a03b81af5b09197e3a197df765483b2b5eb794b16277b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/integrations/skyrim-forge/AGENTS-SNIPPET.md",
+  "size": 2255,
+  "sha256": "a972ad06e237bca778293a810719875c74922d657b7b59638fc9b8b544cbbe74"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/integrations/skyrim-forge/SKILL.md",
+  "size": 9012,
+  "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/pyproject.toml",
+  "size": 856,
+  "sha256": "9eb166626d01b53053dfac12d6037b0c8c67f558b5c457cec6bb005f955bb798"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/AUTOMATION-SOURCE-LOCK.json",
+  "size": 1056,
+  "sha256": "8294e66899ed9244a818655533018bc989f1afccffe82bf4439aaa98eb23eebe"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/ERROR-REGISTRY.json",
+  "size": 78485,
+  "sha256": "0c07a72ae6e07c4db3ef40eeb6d34a86e5ad5fce748f98a7d3d3b551f81ac59f"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/FOMOD-SOURCE-LOCK.json",
+  "size": 1853,
+  "sha256": "edd5e649e6cdbab003aa2bd32d8f8d584c5d0a2d0847359c2968977c3355acc1"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/FRAMEWORK-SOURCE-LOCK.json",
+  "size": 3944,
+  "sha256": "f8d26170836d7bb2781671b8d9e8f43591649c47e2c341fa94135673c771ea57"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/NATIVE-SOURCE-LOCK.json",
+  "size": 1391,
+  "sha256": "7fff634b66abbe4f8bc7e803344dbf9645ad6e043795eb3ef9bf3b1c01fdb03e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/NEXUS-POLICY-LOCK.json",
+  "size": 3070,
+  "sha256": "20340f76d9e579d9ac22aba6f0a78b9e573f621d71ab54d2fe3e3b7dc269159b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/PLUGIN-INVARIANTS.md",
+  "size": 445,
+  "sha256": "92019a7c5b7c1688ea0183499454d38dfbe6e496d763731cb6b73c67e5cece3e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/TOOL-CATALOG.json",
+  "size": 17614,
+  "sha256": "cdf1e0ed762331eca6298de87fb47275a9e70c362b0b25c78469aa54c14341bd"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/references/TOOLCHAIN-SOURCE-LOCK.json",
+  "size": 1032,
+  "sha256": "3bb57618cff52ffc3c986bfed0de46309f46f921e4357dbc19eef6362c9a3b24"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/resources/xedit/SkyrimForgeCheckErrors.pas",
+  "size": 957,
+  "sha256": "279ff93b1247743352ba788488b6dd3477c0dfaf98e75f60762eb7571e7c8640"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/resources/xedit/SkyrimForgeReportRecords.pas",
+  "size": 498,
+  "sha256": "6e44c2bf109ad0fb385d81cd155056620dad5e61d3c04bc23f70a29b08f99c6f"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/schemas/automation-job.schema.json",
+  "size": 1385,
+  "sha256": "c86035dfac22049bd41ade1b6c79967508358283203c00dee90b6bcd16801dc9"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/schemas/external-worker-job.schema.json",
+  "size": 826,
+  "sha256": "29c3625ad51d5a74996b5c059cc9770030fd7ed936b5372eb194d1e77e3ea166"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/schemas/fomod-plan.schema.json",
+  "size": 11342,
+  "sha256": "215f75b0295b4ee4928083f6b0849f5d77025012a93e0fe1be8acebf8ab3455d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/schemas/framework-plan.schema.json",
+  "size": 10830,
+  "sha256": "db6f4ca4f4cce819949d5c0d580a62f04e19c59904568225045dc540c333ed4b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/schemas/native-plugin-plan.schema.json",
+  "size": 2549,
+  "sha256": "f73fdbfcb0291cd42ec7936df3cb52766924f375cd3308539c1cf98fa7a9b376"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/schemas/nexus-publication-plan.schema.json",
+  "size": 27473,
+  "sha256": "413a63f0b2ec7faf4b393697dfd92518b4ac965d2d7b34eb8245269d4e736f97"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/schemas/plugin-plan.schema.json",
+  "size": 1664,
+  "sha256": "a98f342309dc486a604c88f3bf7a13a08c6e4bd03c84503ad451ce11a7968f5e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/schemas/ui-job.schema.json",
+  "size": 1148,
+  "sha256": "6e8303079a9f68033a8d9adc3b4fd7dfe71c1cbf831c8c2767682ebc97cb5d80"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/scripts/build_release_archive.py",
+  "size": 1873,
+  "sha256": "6644e142a419810aba50fd926d1f44823329682cab4f581cbde3dba0f74110c7"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/scripts/rebuild_native_helpers.py",
+  "size": 3248,
+  "sha256": "68e06fa6c05ffcdccacffa37fc6d1769c944a21cbd327157447916235e8126ac"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/scripts/validate_repository.py",
+  "size": 38435,
+  "sha256": "560586fee6639517495bb30d32ff5784af370c76b2505d7061c420368fc0f53c"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/__init__.py",
+  "size": 52,
+  "sha256": "d8892b1c48378f470ce66d1bff635205bc261344a297d6739e6afd8ed717f63c"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/__main__.py",
+  "size": 48,
+  "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/archive.py",
+  "size": 7731,
+  "sha256": "9bd26ec45cc3622a6bec18c083cf51734a6f23f680a12b2af0b0b4c5c783d8c4"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/audit.py",
+  "size": 651,
+  "sha256": "1a7f83a923cd8636f040503d7a50f1ff8a986b0e4bdb5c7140c278cd106196e1"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/automation-job.schema.json",
+  "size": 1385,
+  "sha256": "c86035dfac22049bd41ade1b6c79967508358283203c00dee90b6bcd16801dc9"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/automation.py",
+  "size": 12114,
+  "sha256": "b5920d334144b74423fce8f299f659ec7a281f1ade9671690554100bcd72bcd3"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/bin/linux-x64/SkyrimForge.Native",
+  "size": 1839239,
+  "sha256": "3c573e52b15b926f3dd54418f4a48eeddc4e0b6c05d893e4471b87dcc53ffa73"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/bin/win-x64/SkyrimForge.Native.exe",
+  "size": 1955328,
+  "sha256": "a210e332016837167022f0900e1e2bbfca0bc46be2625c48ae0ab637f248d842"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/capabilities.py",
+  "size": 9492,
+  "sha256": "287de538db7e4cc5081cf1e4cfedaa27d16f99d791c6a1f7d0c11c64740e1aee"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/cli.py",
+  "size": 14074,
+  "sha256": "ca5d0c73076c54798466364453bed580f7626582aeac9fd03fb77a0c7ac1851e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/config.py",
+  "size": 15800,
+  "sha256": "211534ab0a9b82b8c7745b8edefa1a0c84faa6151118335249118efa1237efd8"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/creation_kit.py",
+  "size": 963,
+  "sha256": "26dc736f69699ca2a4741cab5c31f7023bafd652a22e71f7a8b4701d16d73d87"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/AUTOMATION-FABRIC.md",
+  "size": 1519,
+  "sha256": "2a6d2268387780d299020da4199057378626515d62b24c70d4806aeecbf76322"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/CAPABILITY-MATRIX.md",
+  "size": 1983,
+  "sha256": "776631435c2c12e9f16e53faba35b1038c10fc53fbef861b34643cc2fe28d8a8"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/FOMOD-ENGINEERING.md",
+  "size": 5303,
+  "sha256": "bb94e1f57af9d02cfa3cdf72d3486a54f301a4c46385ab3dffd322e6dc137777"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/FRAMEWORK-ENGINEERING.md",
+  "size": 549,
+  "sha256": "a251881a7400231acb571cafc92e91ab868953ff87cd927ea754741ea75c74ef"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/NATIVE-PLUGIN-ENGINEERING.md",
+  "size": 855,
+  "sha256": "3e740e415cd8836e3a619a55887186737455110bd86bd7fab7ddcc7eb432efa6"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/NATIVE-SOURCE-LOCK.md",
+  "size": 619,
+  "sha256": "1d770a6cf125c3a174bcf96d6b96cb22f58a9f11dfd2975e5c47c7da30a5de8b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/NEXUS-PUBLICATION.md",
+  "size": 2596,
+  "sha256": "fc232ec1b254cce197b034e3696698d1146beb146183fb6e2b469fa49a8c54c2"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/PAPYRUS-ENGINEERING.md",
+  "size": 872,
+  "sha256": "0fa29b6e26accf1a2c802528afd85b5a7ca59ccb2d9a032f7a8dd0b29f778d27"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/PUBLICATION-COMPLIANCE.md",
+  "size": 1331,
+  "sha256": "ea1a28c2821ad871cbd31ad1d5774c2a0579960ae83fbcdeca1ee7d9a1847adb"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/docs/TOOLCHAIN-BROKER.md",
+  "size": 2065,
+  "sha256": "867f65fa7e911902991041520ce6ef57c2f9809a505783f3c15cce5435b41140"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/environment.py",
+  "size": 2914,
+  "sha256": "882ef532db7677a0336475d2d9469571eee199179efd5bb7c3f2bb02ebcd5db6"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/errors.py",
+  "size": 282,
+  "sha256": "f18c38be03967cf48ebb17698e3de3af8f5961d3f9eaae22652d996a2113edda"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/external-worker-job.schema.json",
+  "size": 826,
+  "sha256": "29c3625ad51d5a74996b5c059cc9770030fd7ed936b5372eb194d1e77e3ea166"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/external_worker.py",
+  "size": 4857,
+  "sha256": "e6caa8e476eed557857fd5ac55349a370cf3556aa4170239e5487b9b0105641d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/fomod-plan.schema.json",
+  "size": 11342,
+  "sha256": "215f75b0295b4ee4928083f6b0849f5d77025012a93e0fe1be8acebf8ab3455d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/fomod.py",
+  "size": 85830,
+  "sha256": "b8fe5fa54d592cdc115a516ddb47a7c3bc5e401a08a8ee3f2575a7c4be49f288"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/framework_builder.py",
+  "size": 17396,
+  "sha256": "c72984c4404d43a4bd6c9fc46c5965da3b59cd54b0916753326761514b032fc4"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/frameworks.py",
+  "size": 21520,
+  "sha256": "35491d7bc0fe9e26ba36b659159ef97c742e52e7c7a40f5f99d82dafcadf5d38"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/gui.py",
+  "size": 6971,
+  "sha256": "235a6e225c1704db8cdd2c4e5f05498c98cc676ed8f230f4141fe5292916af23"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/loadorder.py",
+  "size": 760,
+  "sha256": "96123865db98c33680b505898a32e83e7a0ab60e56652ca478aed626e6ba6ed4"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/loot.py",
+  "size": 4457,
+  "sha256": "e01e8ce61c3adc2f4ffc82e51473f684b62fb0d50aa59f1e3858dc2d1db51418"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/mcp_server.py",
+  "size": 36637,
+  "sha256": "0279a110ac59555c11a2219658bf4156e94e27bf849b11eb19d578f7ba53babc"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/mo2.py",
+  "size": 1618,
+  "sha256": "5e893807bdb4386363c48ab555cc52bd8d778bd28a74444af5aaef198bb50ea3"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/modtree.py",
+  "size": 2681,
+  "sha256": "fa774a456a14b85a7157e9f6b18930382b59691171b902aec5b58c987e5e4e5a"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/native.py",
+  "size": 17787,
+  "sha256": "b2d052a972c8db7af3cd1fb16c46cf02acc029be7b352ba121f2a6fe92c58d62"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/nexus.py",
+  "size": 60118,
+  "sha256": "7c4ccb266936812565bfea4af7cfbe59bf1ce0c9a84aa2e73411d2269e534fc0"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/papyrus.py",
+  "size": 10850,
+  "sha256": "ed7478b734b99762e0430766c6d17e5026af012e52111cfeeca0ddb2d3d01735"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/plugin-plan.schema.json",
+  "size": 1664,
+  "sha256": "a98f342309dc486a604c88f3bf7a13a08c6e4bd03c84503ad451ce11a7968f5e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/plugin_header.py",
+  "size": 3059,
+  "sha256": "aede31b8a2ea988be509cf8da7f725b9d4d86b599b477c1556d5134a65e1a183"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/plugin_writer.py",
+  "size": 9933,
+  "sha256": "2941b3ae29d14886cae80a203c761f1381842646b1d36197a5810a6cc6ae1e8f"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/profiles.py",
+  "size": 2694,
+  "sha256": "8ec63b0173c94f607996dc4f143c123e64bb9c2fdb5bf36641edcdda4af63cc6"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/records.py",
+  "size": 7077,
+  "sha256": "6c7c8b873903527972e989e6fc8c9da706a393d198f36cac975be71da6a23f85"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/AUTOMATION-SOURCE-LOCK.json",
+  "size": 1056,
+  "sha256": "8294e66899ed9244a818655533018bc989f1afccffe82bf4439aaa98eb23eebe"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/ERROR-REGISTRY.json",
+  "size": 78485,
+  "sha256": "0c07a72ae6e07c4db3ef40eeb6d34a86e5ad5fce748f98a7d3d3b551f81ac59f"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/FOMOD-SOURCE-LOCK.json",
+  "size": 1853,
+  "sha256": "edd5e649e6cdbab003aa2bd32d8f8d584c5d0a2d0847359c2968977c3355acc1"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/FRAMEWORK-SOURCE-LOCK.json",
+  "size": 3944,
+  "sha256": "f8d26170836d7bb2781671b8d9e8f43591649c47e2c341fa94135673c771ea57"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/NATIVE-SOURCE-LOCK.json",
+  "size": 1391,
+  "sha256": "7fff634b66abbe4f8bc7e803344dbf9645ad6e043795eb3ef9bf3b1c01fdb03e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/NEXUS-POLICY-LOCK.json",
+  "size": 3070,
+  "sha256": "20340f76d9e579d9ac22aba6f0a78b9e573f621d71ab54d2fe3e3b7dc269159b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/PLUGIN-INVARIANTS.md",
+  "size": 445,
+  "sha256": "92019a7c5b7c1688ea0183499454d38dfbe6e496d763731cb6b73c67e5cece3e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/TOOL-CATALOG.json",
+  "size": 17614,
+  "sha256": "cdf1e0ed762331eca6298de87fb47275a9e70c362b0b25c78469aa54c14341bd"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/references/TOOLCHAIN-SOURCE-LOCK.json",
+  "size": 1032,
+  "sha256": "3bb57618cff52ffc3c986bfed0de46309f46f921e4357dbc19eef6362c9a3b24"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/release.py",
+  "size": 4983,
+  "sha256": "22fe80d3dfc7398be1605de115a4e832f4144ea6539b7651603804a774b5567e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/resources/xedit/SkyrimForgeCheckErrors.pas",
+  "size": 957,
+  "sha256": "279ff93b1247743352ba788488b6dd3477c0dfaf98e75f60762eb7571e7c8640"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/resources/xedit/SkyrimForgeReportRecords.pas",
+  "size": 498,
+  "sha256": "6e44c2bf109ad0fb385d81cd155056620dad5e61d3c04bc23f70a29b08f99c6f"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/safety.py",
+  "size": 3331,
+  "sha256": "270ee6f0ed5a6a380bdcbcb07ce5b2ab99f087d5e13db1c6a283b63cfc6c3b35"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/schemas/automation-job.schema.json",
+  "size": 1385,
+  "sha256": "c86035dfac22049bd41ade1b6c79967508358283203c00dee90b6bcd16801dc9"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/schemas/external-worker-job.schema.json",
+  "size": 826,
+  "sha256": "29c3625ad51d5a74996b5c059cc9770030fd7ed936b5372eb194d1e77e3ea166"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/schemas/fomod-plan.schema.json",
+  "size": 11342,
+  "sha256": "215f75b0295b4ee4928083f6b0849f5d77025012a93e0fe1be8acebf8ab3455d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/schemas/framework-plan.schema.json",
+  "size": 10830,
+  "sha256": "db6f4ca4f4cce819949d5c0d580a62f04e19c59904568225045dc540c333ed4b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/schemas/native-plugin-plan.schema.json",
+  "size": 2549,
+  "sha256": "f73fdbfcb0291cd42ec7936df3cb52766924f375cd3308539c1cf98fa7a9b376"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/schemas/nexus-publication-plan.schema.json",
+  "size": 27473,
+  "sha256": "413a63f0b2ec7faf4b393697dfd92518b4ac965d2d7b34eb8245269d4e736f97"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/schemas/plugin-plan.schema.json",
+  "size": 1664,
+  "sha256": "a98f342309dc486a604c88f3bf7a13a08c6e4bd03c84503ad451ce11a7968f5e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/schemas/ui-job.schema.json",
+  "size": 1148,
+  "sha256": "6e8303079a9f68033a8d9adc3b4fd7dfe71c1cbf831c8c2767682ebc97cb5d80"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/selftest.py",
+  "size": 1534,
+  "sha256": "bd21111fb6ac1d9785e5a614dd1e097653291a6a9e4624da210893e7acb99247"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/service.py",
+  "size": 15494,
+  "sha256": "0da5039715f77543da31c511c67c198eef63a3b64355ad4500085036b846a53c"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/strictjson.py",
+  "size": 1086,
+  "sha256": "c530ebbad1029c749b0044f577c4c323def875f291cf24eacf799502dc5b0db6"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/tool_adapters.py",
+  "size": 8218,
+  "sha256": "dcf1b436590bda88c7bea909614258dad65e15686fa440bf61ed03a69c01d8be"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/toolchain.py",
+  "size": 21600,
+  "sha256": "b40ad78c490c16c2398f3227cc47668927920ab7372f4859e9a5c66f4c71ba23"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/tools.py",
+  "size": 7110,
+  "sha256": "bd3eb0a759f19f991853faa3aadb26ade98a66fb93368ed31d1c31736db96f4b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/transaction.py",
+  "size": 2326,
+  "sha256": "d2801a707ca2558e07f25189bc0cad6c03427c1276a58bf389a7435a8ace748a"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/ui-job.schema.json",
+  "size": 1148,
+  "sha256": "6e8303079a9f68033a8d9adc3b4fd7dfe71c1cbf831c8c2767682ebc97cb5d80"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/ui_automation.py",
+  "size": 3568,
+  "sha256": "13a1425f06bd8228cebb93ce93eea9fbdec765219852270e1165023295b037d0"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/util.py",
+  "size": 2466,
+  "sha256": "a2b4965e41276e646de51f726e62ec1bc77900e3d9624b3c934b66af869be397"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/version.py",
+  "size": 18,
+  "sha256": "d4773dd6e1e1bf71fe85fb4adf2764f26afd8a29d60349549e257bd8e71d945e"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/vortex.py",
+  "size": 1321,
+  "sha256": "76ac64adc455241e48c82d10d7d93c83575da1d04a39d693ebbd43e455a0fd54"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/wrye.py",
+  "size": 657,
+  "sha256": "887a2f12ed5b77c68079be558ad4717a75c40205489ff6f3e65357d61d92e09f"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/xedit.py",
+  "size": 7569,
+  "sha256": "94f67ad57ad55cb69fa568f1e30bcbc312b9801c24a3f99e32e767021ce85ad4"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/_workflows.py",
+  "size": 1002,
+  "sha256": "d8a6e9615587653e393165cb4167579f67d011ba65ae443d79938b479a68dedc"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_automation.py",
+  "size": 8570,
+  "sha256": "7c9ea76103e9fa8ad42f85f790dd394472af74fd2921837aaa11dbc31a0398e5"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_ci_validation.py",
+  "size": 4375,
+  "sha256": "2a52432ca8a4f4ae8435e790af72d710bb07e080928ffb9263e3f655a078509d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_core.py",
+  "size": 12517,
+  "sha256": "211be3c2830b3d015c4a00b6ea210095db41809337d7c7722c67fb5e79e268e3"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_fomod.py",
+  "size": 25260,
+  "sha256": "d600e2c1d28fc1b0eed3106de84ee0e4b704b339cb2a7aa311dcaff5abdeb58c"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_frameworks_spid.py",
+  "size": 7745,
+  "sha256": "aa2725daebddbe93ec3148a59bf55eee6d998bd95e5ffef248fbdf844c4d9615"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_mcp.py",
+  "size": 11587,
+  "sha256": "737bfe025c3c246e9bee1af98eea109cc16a5f6e158312d0bc9b17301f985457"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_native_release_integrity.py",
+  "size": 956,
+  "sha256": "559c8cf1ac63fb1e827e53874ae30c9d9591d326ee392e63cc4dd138d439578a"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_native_vcs_reproducibility.py",
+  "size": 2408,
+  "sha256": "39cd2698264b5223ee5b8c534f136f6ff8a294b3ce9149f0231ab182ee3ee793"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_nexus_publication.py",
+  "size": 18002,
+  "sha256": "3de4b28a8ec09aadb020ef3a7e956370f1e62acf5c8748046011bf5964323a25"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_packaging.py",
+  "size": 3763,
+  "sha256": "2c10af7f21a639b1005ef96556ea03c12e1138446f0f0723974fefd5f21f42ba"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_powershell_release.py",
+  "size": 8682,
+  "sha256": "a1760c1f5e2ceacc1394d8a10d7827a8dc5fce47c205c64e69ea15a459f1e084"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_process_launch.py",
+  "size": 1426,
+  "sha256": "c5a39df2a2335c7c11d6160a03dbef5679e4cdc2b881a4e1ce4faa6230434c9d"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_toolchain_v42.py",
+  "size": 6345,
+  "sha256": "1d20f1d189928e36d11557d2f37e57eae887db5786fe01247700342377bec47f"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_v41_completion.py",
+  "size": 3829,
+  "sha256": "896546089fa1d29a6b9c569d5fe85eece2012835fc8871fcbb3cbfd5f44dd6b1"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_v41_engineering.py",
+  "size": 8564,
+  "sha256": "83a04bd79bb2561c714e2c9bd2ebeb438ef5b5a1c534f976e23707a11f939114"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_windows_provider_bridge.py",
+  "size": 7885,
+  "sha256": "c601c4accf46c8706b248cc291f26d17534f3ee8216c28dc1cc56d22baae8eff"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/workers/README.md",
+  "size": 881,
+  "sha256": "459280a83715be80692c0c0354d0cf29a5bd0cdbd24a63f4b66c90477e3a44da"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/workers/SkyrimForge.UIWorker.ps1",
+  "size": 6612,
+  "sha256": "8032c8b81c1cf83a026d0d40bcc84da36aa1bcf89677d23ce7e01a99fe304f83"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/writer/native-go/go.mod",
+  "size": 37,
+  "sha256": "3734d1f8ed952e9458c3fd6e01c7fba9bf54b80199f98951f0f4a872cb952fb4"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/writer/native-go/main.go",
+  "size": 3641,
+  "sha256": "95fe7d4659b0ca17d40426fb2d0ff44492b16059996b86d8644d1c0594a12309"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/writer/native-go/main_test.go",
+  "size": 571,
+  "sha256": "2e0e4e69e5196ac34f085fcc3fdd2fa389bdf51d539b880d115104a55bfdfa79"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/writer/published/linux-x64/SkyrimForge.Native",
+  "size": 1839239,
+  "sha256": "3c573e52b15b926f3dd54418f4a48eeddc4e0b6c05d893e4471b87dcc53ffa73"
+ },
+ {
+  "path": "BUNDLED-TOOLS/skyrim-forge/writer/published/win-x64/SkyrimForge.Native.exe",
+  "size": 1955328,
+  "sha256": "a210e332016837167022f0900e1e2bbfca0bc46be2625c48ae0ab637f248d842"
+ },
+ {
   "path": "CHANGELOG.md",
-  "size": 40932,
-  "sha256": "5ee677079862618dcedbe1a6e9a0503a12c85e2829d9ec4c356d2f252c3c2afe"
+  "size": 48480,
+  "sha256": "e3005a1728c3f4ebadd4f33618264d09b03f8f5e88438486fc615edc54606e1a"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -17301,13 +18366,13 @@
  },
  {
   "path": "INSTALL-V7-AIO.bat",
-  "size": 297,
-  "sha256": "0e98d99d6044b399651f5764e6a5ae499ec5c5ede5b1b67d2127aa3e176d52f7"
+  "size": 130,
+  "sha256": "2c3c3a9fb91b597d2d7bf7104c15a2d467caf6e2a9e3bc1aa6f621aa8fb4a6c5"
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 78525,
-  "sha256": "572991c5f796e09a2b219cda38b657013e5b77cfe5b0e7a3125a1b2cbbea7338"
+  "size": 83013,
+  "sha256": "e155efef7bbf88119f6d0356ecde3a13d40b3e737d662826193d32fb0d94af6e"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -17346,23 +18411,23 @@
  },
  {
   "path": "README.md",
-  "size": 31848,
-  "sha256": "3abd616effc4b61565201a4e6cb5ac94b073ff6366e52e8556024e9317b032cf"
+  "size": 33982,
+  "sha256": "b12d62ac0f90c6ac082e7473946a4589f1c4d8af300b46e429f537adbaeb0253"
  },
  {
   "path": "START-HERE.bat",
-  "size": 285,
-  "sha256": "26b6df557019e2ce76df5cc0e4522773274417ed1c18f6106a9cc4c8c5180a97"
+  "size": 712,
+  "sha256": "e76bca3c6e32441efa5ae23021199bbe8c0c67c1ab74c3fe71df735f8e8e8296"
  },
  {
   "path": "START-HERE.txt",
-  "size": 8467,
-  "sha256": "4a5a5d757a118e079dbe8220f054030857f4b296cc5aae82b7360bfc1623b4ed"
+  "size": 8490,
+  "sha256": "41433cc89b26a98b5171d5aa943abe7c28639c85a3ab9ab56502fbb20901b273"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
-  "size": 5478,
-  "sha256": "bfe1ae58e031a34468370523eb9a90fa60ebd77d9c4e55843e6fade521ce52dd"
+  "size": 8643,
+  "sha256": "1a6cf12c270522c478336e3c101e797ead219fd88b300bea5d3272e208d622d3"
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
@@ -17375,9 +18440,14 @@
   "sha256": "f9410696e02008008f931c4aa9d436fbc294cc4d2fc5bd7378f3b2604aa1c4f6"
  },
  {
+  "path": "TESTS/Test-ProviderSkillSync.ps1",
+  "size": 3567,
+  "sha256": "14cb8ea85a69b66a9976252dd8892352757c3e7b37dcb67303481bfc8615fddc"
+ },
+ {
   "path": "TESTS/Test-V7-Pack.ps1",
-  "size": 23687,
-  "sha256": "6653209c7f7f60b3aa3d3a7432b378e67e179177f2e495f2697d48b2c371a6dc"
+  "size": 24995,
+  "sha256": "98a7ce86eeb0dc7a7f6c44c68dad4389cb36bea2903e274829a0f498379f7c62"
  },
  {
   "path": "TESTS/test_hermes_bootstrap.py",
@@ -17386,13 +18456,13 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 37044,
-  "sha256": "0a726b10e03d9e28e3981a2fecd043c77d6bba21eb716133ae372db3d759523c"
+  "size": 53767,
+  "sha256": "e4393653fe8f87f22b4af82314792254abca4729156cae2549104f19144f4315"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 10859,
-  "sha256": "d990cfe8e0275ae158b4cfd61d543eebdcab38d762229aa9d8ddac70e961c0d7"
+  "size": 12170,
+  "sha256": "185f48325f1929cf8c045cf75a72be76550b123988c405ff0a1ede34e0a1908b"
  },
  {
   "path": "TOOLS/Build-Release.ps1",
@@ -17436,8 +18506,8 @@
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",
-  "size": 8678,
-  "sha256": "63dff9f20d115cd8c17db12daef71e8ca8e53aa5a07dc32f42040f1b5e8bb3ae"
+  "size": 15594,
+  "sha256": "a8dfed6bf11897b2133c544b47037638e73d09bf4d6338b9d28e7783c62880a4"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -17446,8 +18516,8 @@
  },
  {
   "path": "TOOLS/RECOMMENDED-INSTALLS.md",
-  "size": 1411,
-  "sha256": "99031072fca77db0d4480d0a8b5fadc9f7fac4937c287c715033312fc4ebd8c2"
+  "size": 1461,
+  "sha256": "702f283b99af710c1dd6d2fbf317f1740834b5c499556259c1d224ed80e633f5"
  },
  {
   "path": "TOOLS/Repair-McpPaths.ps1",
@@ -17466,8 +18536,8 @@
  },
  {
   "path": "TOOLS/Test-Installed-State.ps1",
-  "size": 6657,
-  "sha256": "6817433516ad24152057494060447de2e74eb69e489ac83514877dd255306e51"
+  "size": 7670,
+  "sha256": "820504d97e344194bf2158c0e77ee9b81d462133c5a2d107f2d5d7e3ed205a20"
  },
  {
   "path": "TOOLS/Update-From-GitHub.ps1",
@@ -17476,8 +18546,8 @@
  },
  {
   "path": "TOOLS/V7-Common.ps1",
-  "size": 32729,
-  "sha256": "081d8ad78007d8161b7252d1bc73a0a1764014e4ebdd1f632dc0d55b46bc3f6f"
+  "size": 44665,
+  "sha256": "75dc838266cba30427a982cbdceea65576ecf1e4e7d06b03de15017d693c8cc7"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -17491,8 +18561,8 @@
  },
  {
   "path": "TOOLS/build_release.py",
-  "size": 9199,
-  "sha256": "dd33cc0cd9043031ec49e6a6912b9ad323313daae658461a257a9015ec0c2a21"
+  "size": 10200,
+  "sha256": "82a8b5257fe9835d4512e5eb9852ca9d447af4a516b7f9c4e64a2d6f867e2087"
  },
  {
   "path": "TOOLS/discover_tools.ps1",
@@ -17586,18 +18656,18 @@
  },
  {
   "path": "V7-AIO-GUIDE.md",
-  "size": 3102,
-  "sha256": "9fe47651ad2dae93df0b6e97725a521f9a6ca0db18c01384c0f85c9cab4755af"
+  "size": 3098,
+  "sha256": "ffb6072e8ace077898cbd69bee47b65ce0855bac900f308adead4ffbcb067838"
  },
  {
   "path": "VALIDATION.json",
-  "size": 1550,
-  "sha256": "d52424490b3d3bd74dedb6300dabac529cb72c9541c8f00ae216c0281cda4590"
+  "size": 4006,
+  "sha256": "21fa86603cf8a961098bee1220eb347a4520b1f78f4acec70ce7726716ecf6dc"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "7237dc977a78baca8ac6c00b3bf40538788c9e625bd77cc65c65a9228cad18b0"
+  "sha256": "28eed4cdcb9104c214fb9b80bff57300164b2e3bec94fdff9ba89eb655fd3e11"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -19382,7 +20452,7 @@
  {
   "path": "_V7-CANONICAL-SKILLS/release-checklist/SKILL.md",
   "size": 4608,
-  "sha256": "73373a5cf3f0168dee402101741b5b833bbb2a62db6f1f5d375bba2a05aaf1aa"
+  "sha256": "cc05dc43ed38cb5b8ef9531a61ed2adef6a61d3122eb663fc79fde967bbbb8cb"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/reproducible-builds/SKILL.md",
@@ -19776,8 +20846,8 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-forge/SKILL.md",
-  "size": 8839,
-  "sha256": "c93f977f077d52bb83cd0a11950f2e8ffb92144675084607b6f3d6cf8cdc123c"
+  "size": 9012,
+  "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-frameworks-index/SKILL.md",
@@ -20601,12 +21671,17 @@
  },
  {
   "path": "docs/history/V7.8.0-CHANGELOG.md",
-  "size": 2747,
-  "sha256": "2baf5331590acff2cc5d114a6a3ac6ef3648facf18092376996747e2aefa57f6"
+  "size": 2742,
+  "sha256": "c7f078657b7171dc174b1863fec6a5ce0570845d861f6349ca9f1ded8d66674f"
  },
  {
   "path": "docs/history/V7.9.0-CHANGELOG.md",
-  "size": 9086,
-  "sha256": "739ab532c81de018a3c7789bf53154285fa2357c3c91f6c8417af7b11da2c4c5"
+  "size": 9107,
+  "sha256": "6efb90ac3bff6e2ee67c6a0b11d8c8ac6247a921cec72d50d0ed7ce7df96da2e"
+ },
+ {
+  "path": "docs/history/V7.9.1-CHANGELOG.md",
+  "size": 12800,
+  "sha256": "a51e6f0a3ca87ac69147c3fac1f211692263590d37afa553ce0daf2c8467d6de"
  }
 ]

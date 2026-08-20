@@ -380,6 +380,14 @@ $starterSrc = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\Install-Provide
 if ($starterSrc -match '(?mi)\$home\s*=') {
     Bad 'Install-Provider-Starter-Settings.ps1 assigns $HOME (PowerShell constant; aborts the starter pass)'
 } else { Good 'starter settings do not assign $HOME' }
+$doctorSrc = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\Test-Installed-State.ps1'))
+if ($doctorSrc -match '(?mi)^\s*\$home\s*=') {
+    Bad 'Test-Installed-State.ps1 assigns $HOME (PowerShell constant; aborts the final doctor)'
+} else { Good 'installed-state doctor does not assign $HOME' }
+if ($doctorSrc -match 'bundle-contract') {
+    Bad 'installed-state doctor still calls removed Forge 5.x bundle-contract'
+} elseif ($doctorSrc -match '-m\s+skyrim_forge\s+doctor') { Good 'installed-state doctor uses Forge 6 health contract' }
+else { Bad 'installed-state doctor does not run Forge doctor' }
 $common = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\V7-Common.ps1'))
 if ($common -match "skills = false") {
     Good 'Set-V5GrokCompatCells writes skills = false'
@@ -445,6 +453,20 @@ if (-not (Test-Path -LiteralPath $forgeRootGate -PathType Leaf)) {
         Good 'Forge install root resolution PASS'
     } else {
         Bad ('Forge install root resolution failed:' + [Environment]::NewLine + ($rootOut.Trim()))
+    }
+}
+
+
+Section '12. Provider skill sync is content-authoritative on Windows'
+$providerSyncGate = Join-Path $PackRoot 'TESTS\Test-ProviderSkillSync.ps1'
+if (-not (Test-Path -LiteralPath $providerSyncGate -PathType Leaf)) {
+    Bad 'TESTS\Test-ProviderSkillSync.ps1 missing from the pack'
+} else {
+    $syncOut = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $providerSyncGate -PackRoot $PackRoot 2>&1 | Out-String
+    if ($syncOut -match 'PROVIDER SKILL SYNC: PASS') {
+        Good 'Provider skill same-metadata overwrite + user-skill preservation PASS'
+    } else {
+        Bad ('Provider skill sync regression failed:' + [Environment]::NewLine + ($syncOut.Trim()))
     }
 }
 

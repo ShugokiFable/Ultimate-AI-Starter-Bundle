@@ -14,7 +14,7 @@ One pack that delivers:
 
 ```text
 Fresh machine:  powershell ... -Command "irm <INSTALL-REMOTE.ps1> | iex"
-or locally:     INSTALL-V7-AIO.bat
+or locally:     START-HERE.bat
 then:           restart AI apps  →  ask a load-order question
 ```
 

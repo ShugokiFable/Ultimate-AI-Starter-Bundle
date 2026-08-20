@@ -1,0 +1,15 @@
+{
+  "schema": "skyrim-forge-framework-plan/1",
+  "profile": "kid-4.0.6",
+  "output_file": "Example_KID.ini",
+  "entries": [
+    {
+      "keyword": "ExampleKeyword",
+      "record_type": "Weapon",
+      "filters": [
+        "IronSword"
+      ],
+      "chance": "100"
+    }
+  ]
+}

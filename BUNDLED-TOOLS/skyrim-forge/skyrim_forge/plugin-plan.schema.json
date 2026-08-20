@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skyrim Forge Typed Plugin Plan",
+  "type": "object",
+  "required": [
+    "schema",
+    "output",
+    "operations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "skyrim-forge-plugin-plan/1"
+    },
+    "output": {
+      "type": "string",
+      "pattern": "^[^<>:\"/\\\\|?*]+\\.(esp|esm|esl)$"
+    },
+    "plugin_type": {
+      "enum": [
+        "esp",
+        "esl",
+        "espfe"
+      ]
+    },
+    "masters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "author": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "record",
+          "editor_id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "record": {
+            "enum": [
+              "KYWD",
+              "GLOB",
+              "FLST",
+              "OTFT"
+            ]
+          },
+          "editor_id": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "type": {
+            "enum": [
+              "f",
+              "s",
+              "l"
+            ]
+          },
+          "forms": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(?:@[A-Za-z_][A-Za-z0-9_]*|0x[0-9A-Fa-f]{1,6}~[^<>:\"/\\\\|?*]+\\.(?:esm|esp|esl))$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

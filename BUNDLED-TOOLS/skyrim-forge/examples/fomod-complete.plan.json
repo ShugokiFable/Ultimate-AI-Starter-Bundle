@@ -1,0 +1,154 @@
+{
+  "schema": "skyrim-forge-fomod-plan/1",
+  "module": {
+    "name": "Example Forge Mod",
+    "author": "Example Author",
+    "version": "1.0.0",
+    "machine_version": "1.0.0",
+    "description": "Typed FOMOD example covering required files, choices, flags, and conditional patches.",
+    "website": "https://example.invalid",
+    "image": "fomod/images/banner.png",
+    "name_position": "RightOfImage",
+    "name_colour": "E7D7B5",
+    "image_show": true,
+    "image_fade": true,
+    "image_height": 180,
+    "groups": [
+      "Skyrim Special Edition"
+    ]
+  },
+  "required_files": [
+    {
+      "kind": "folder",
+      "source": "00 Core",
+      "destination": "",
+      "always_install": true
+    }
+  ],
+  "steps": [
+    {
+      "name": "Texture Options",
+      "groups_order": "Explicit",
+      "groups": [
+        {
+          "name": "Resolution",
+          "type": "SelectExactlyOne",
+          "plugins_order": "Explicit",
+          "plugins": [
+            {
+              "name": "2K",
+              "description": "Balanced texture option.",
+              "image": "fomod/images/2k.png",
+              "files": [
+                {
+                  "kind": "folder",
+                  "source": "10 Textures 2K",
+                  "destination": "",
+                  "priority": 10
+                }
+              ],
+              "flags": {
+                "TextureResolution": "2K"
+              },
+              "type": "Recommended"
+            },
+            {
+              "name": "4K",
+              "description": "High-resolution texture option.",
+              "image": "fomod/images/4k.png",
+              "files": [
+                {
+                  "kind": "folder",
+                  "source": "20 Textures 4K",
+                  "destination": "",
+                  "priority": 10
+                }
+              ],
+              "flags": {
+                "TextureResolution": "4K"
+              },
+              "type": "Optional"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Compatibility",
+      "visible": {
+        "file": {
+          "path": "Lux.esp",
+          "state": "Active"
+        }
+      },
+      "groups": [
+        {
+          "name": "Patches",
+          "type": "SelectAny",
+          "plugins": [
+            {
+              "name": "Lux Patch",
+              "description": "Install when Lux is active.",
+              "files": [
+                {
+                  "kind": "folder",
+                  "source": "30 Lux Patch",
+                  "destination": "",
+                  "priority": 20
+                }
+              ],
+              "flags": {
+                "LuxPatch": "Installed"
+              },
+              "type": {
+                "default": "NotUsable",
+                "patterns": [
+                  {
+                    "dependencies": {
+                      "file": {
+                        "path": "Lux.esp",
+                        "state": "Active"
+                      }
+                    },
+                    "type": "Recommended"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conditional_files": [
+    {
+      "dependencies": {
+        "all": [
+          {
+            "flag": {
+              "name": "TextureResolution",
+              "value": "4K"
+            }
+          },
+          {
+            "flag": {
+              "name": "LuxPatch",
+              "value": "Installed"
+            }
+          }
+        ]
+      },
+      "files": [
+        {
+          "kind": "folder",
+          "source": "40 Lux 4K Addon",
+          "destination": "",
+          "priority": 30
+        }
+      ]
+    }
+  ],
+  "strict_coverage": true,
+  "steps_order": "Explicit",
+  "xml_encoding": "utf-8"
+}

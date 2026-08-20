@@ -1,0 +1,669 @@
+{
+  "observed_builds": [
+    {
+      "sha256": "d19e7e11780a6675a597a2e1c8a81c2013b7fb9525a3039af474ceb680769b05",
+      "source_label": "Skyrim Tools.zip/ESLifier/bsarch/BSArch.exe",
+      "tool": "bsarch"
+    },
+    {
+      "sha256": "5e095a06e0b376b89f17eac0adcc3d40d4321901a486837e7fe1ae8b7b1f73d1",
+      "source_label": "Skyrim Tools.zip/DeadMesh/dmscan.exe",
+      "tool": "deadmesh_cli"
+    },
+    {
+      "sha256": "f6ee34716239187834d5b50f495904958dd5dc72ea04b964864eebd70d435fca",
+      "source_label": "Skyrim Tools.zip/ESLifier/ESLifier.exe",
+      "tool": "eslifier"
+    },
+    {
+      "sha256": "64b218cf2d59d2611a4a303b2b470d7bd4e38d6976a40a37f291050225f5b985",
+      "source_label": "Skyrim Tools.zip/NIF Optimizer/SSE NIF Optimizer.exe",
+      "tool": "nif_optimizer"
+    },
+    {
+      "sha256": "488f42b4f4584a21a4b39cc3b4166c2a77028def39fc24447b1d64070131f246",
+      "source_label": "Skyrim Tools.zip/NIFAnalyzer/NIFAnalyzer.exe",
+      "tool": "nif_analyzer"
+    },
+    {
+      "sha256": "7a719dcaa5f9cb2f68c5cc52bc4988a71c968f6b4fcd33ad7ca3ff3ef5c004f9",
+      "source_label": "Skyrim Tools.zip/Resaver/ReSaver.exe",
+      "tool": "resaver"
+    },
+    {
+      "sha256": "a0fca221aedd6107dde26267672bcbc4a0dc1a4576f503013078680cca111e21",
+      "source_label": "Skyrim Tools.zip/Sniff/Sniff.exe",
+      "tool": "sniff"
+    },
+    {
+      "sha256": "5c10f39d2c0cd0b696dcfa80a9e39e3486920c3c37b371801a430a1c399e1d0f",
+      "source_label": "Synthesis.zip/Synthesis/Synthesis.exe",
+      "tool": "synthesis_gui"
+    },
+    {
+      "sha256": "b87e72c58a265683a84eb60e267d0633d13316416d0ee3ab90d086be4a2d922b",
+      "source_label": "Skyrim Tools.zip/DeadMesh/DeadMesh.exe",
+      "tool": "deadmesh_gui"
+    }
+  ],
+  "policy": {
+    "public_binary_bundling": "disabled",
+    "reason": "Forge public releases do not redistribute third-party executables. Users may import or configure legally obtained local copies; Forge stores hashes, provenance, and receipts in the local tool vault.",
+    "selection_rule": "Prefer a configured, existing, SHA-256-pinned direct CLI tool whose catalog capability exactly matches the requested operation. Never infer capability from a generic filename alone."
+  },
+  "schema": "skyrim-forge-tool-catalog/1",
+  "tools": [
+    {
+      "automation": "direct",
+      "capabilities": [
+        "archive.bsa.inspect",
+        "archive.bsa.unpack",
+        "archive.bsa.pack.sse"
+      ],
+      "config_key": "bsarch",
+      "id": "bsarch",
+      "import_mode": "single",
+      "license": "MPL-2.0",
+      "names": [
+        "BSArch.exe"
+      ],
+      "notes": "Use -sse for Skyrim SE/AE archives. x86 builds are valid Windows tools.",
+      "path_hints": [
+        "bsarch"
+      ],
+      "priority": 100,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/TES5Edit/TES5Edit/blob/dev/BSArch.dpr"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "papyrus.compile.official"
+      ],
+      "config_key": "papyrus_compiler",
+      "id": "papyrus_compiler",
+      "import_mode": "configure_only",
+      "license": "Bethesda proprietary",
+      "names": [
+        "PapyrusCompiler.exe"
+      ],
+      "notes": "Never redistribute. Configure the compiler from the user's legal Creation Kit installation.",
+      "path_hints": [
+        "papyrus compiler",
+        "creation kit"
+      ],
+      "priority": 100,
+      "public_bundle_allowed": false,
+      "source": "Creation Kit installation"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "papyrus.decompile"
+      ],
+      "config_key": "champollion",
+      "id": "champollion",
+      "import_mode": "single",
+      "license": "LGPL-3.0",
+      "names": [
+        "Champollion.exe"
+      ],
+      "notes": "Decompiled output is evidence/recovery material, not proof of ownership or permission.",
+      "path_hints": [
+        "champollion"
+      ],
+      "priority": 100,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/Orvid/Champollion"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "synthesis.pipeline.run"
+      ],
+      "config_key": "synthesis_cli",
+      "exclude": [
+        ".git/**",
+        "Data/**",
+        "Logs/**",
+        "*.log",
+        "GuiSettings.json",
+        "PipelineSettings.json",
+        "*.synth",
+        "*.rar"
+      ],
+      "id": "synthesis_cli",
+      "import_mode": "directory_runtime",
+      "license": "GPL-3.0",
+      "names": [
+        "Synthesis.Bethesda.CLI.exe",
+        "Synthesis.Bethesda.CLI"
+      ],
+      "notes": "Direct automation requires the dedicated CLI executable, not the GUI executable.",
+      "path_hints": [
+        "synthesis"
+      ],
+      "priority": 100,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/Mutagen-Modding/Synthesis"
+    },
+    {
+      "automation": "human_gate",
+      "capabilities": [
+        "synthesis.gui"
+      ],
+      "config_key": "synthesis_gui",
+      "exclude": [
+        ".git/**",
+        "Data/**",
+        "Logs/**",
+        "*.log",
+        "GuiSettings.json",
+        "PipelineSettings.json",
+        "*.synth",
+        "*.rar"
+      ],
+      "id": "synthesis_gui",
+      "import_mode": "directory_runtime",
+      "license": "GPL-3.0",
+      "names": [
+        "Synthesis.exe"
+      ],
+      "notes": "The GUI is never silently substituted for Synthesis.Bethesda.CLI.",
+      "path_hints": [
+        "synthesis"
+      ],
+      "priority": 20,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/Mutagen-Modding/Synthesis"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "mesh.collision.scan"
+      ],
+      "config_key": "deadmesh_cli",
+      "id": "deadmesh_cli",
+      "import_mode": "sidecar",
+      "license": "Proprietary / bundled notices",
+      "names": [
+        "dmscan.exe"
+      ],
+      "notes": "Local import only. Preserve required sidecars and included notices.",
+      "path_hints": [
+        "deadmesh"
+      ],
+      "priority": 90,
+      "public_bundle_allowed": false,
+      "sidecars": [
+        "lz4.dll",
+        "zlib1.dll",
+        "msvcp140*.dll",
+        "vcruntime140*.dll",
+        "concrt140.dll",
+        "LICENSE",
+        "THIRD-PARTY-LICENSES.md",
+        "licenses/**"
+      ],
+      "source": "User-provided installation"
+    },
+    {
+      "automation": "human_gate",
+      "capabilities": [
+        "mesh.collision.inspect.gui"
+      ],
+      "config_key": "deadmesh_gui",
+      "exclude": [
+        "*.log"
+      ],
+      "id": "deadmesh_gui",
+      "import_mode": "directory_runtime",
+      "license": "Proprietary / bundled notices",
+      "names": [
+        "DeadMesh.exe"
+      ],
+      "notes": "GUI companion. Forge direct scans use dmscan.exe instead.",
+      "path_hints": [
+        "deadmesh"
+      ],
+      "priority": 20,
+      "public_bundle_allowed": false,
+      "source": "User-provided installation"
+    },
+    {
+      "automation": "human_gate",
+      "capabilities": [
+        "plugin.esl.gui"
+      ],
+      "config_key": "eslifier",
+      "exclude": [
+        "*.log"
+      ],
+      "id": "eslifier",
+      "import_mode": "directory_runtime",
+      "license": "Unknown; verify locally",
+      "names": [
+        "ESLifier.exe"
+      ],
+      "path_hints": [
+        "eslifier"
+      ],
+      "priority": 20,
+      "public_bundle_allowed": false,
+      "source": "User-provided installation"
+    },
+    {
+      "automation": "human_gate",
+      "capabilities": [
+        "mesh.nif.optimize.gui"
+      ],
+      "config_key": "nif_optimizer",
+      "id": "nif_optimizer",
+      "import_mode": "directory_runtime",
+      "license": "GPL-3.0 source; distribution permissions may differ",
+      "names": [
+        "SSE NIF Optimizer.exe"
+      ],
+      "path_hints": [
+        "nif optimizer"
+      ],
+      "priority": 20,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/ousnius/Skyrim-NIF-Optimizer"
+    },
+    {
+      "automation": "human_gate",
+      "capabilities": [
+        "mesh.nif.analyze.gui"
+      ],
+      "config_key": "nif_analyzer",
+      "id": "nif_analyzer",
+      "import_mode": "directory_runtime",
+      "license": "Unknown; verify locally",
+      "names": [
+        "NIFAnalyzer.exe"
+      ],
+      "path_hints": [
+        "nifanalyzer"
+      ],
+      "priority": 20,
+      "public_bundle_allowed": false,
+      "source": "User-provided installation"
+    },
+    {
+      "automation": "human_gate",
+      "capabilities": [
+        "save.inspect.gui"
+      ],
+      "config_key": "resaver",
+      "exclude": [
+        "*.log"
+      ],
+      "id": "resaver",
+      "import_mode": "directory_runtime",
+      "license": "See bundled LICENSE.TXT",
+      "names": [
+        "ReSaver.exe"
+      ],
+      "path_hints": [
+        "resaver",
+        "fallrim"
+      ],
+      "priority": 20,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/MarkFairchild/Resaver"
+    },
+    {
+      "automation": "human_gate",
+      "capabilities": [
+        "asset.batch.gui"
+      ],
+      "config_key": "sniff",
+      "id": "sniff",
+      "import_mode": "directory_runtime",
+      "license": "Unknown; verify locally",
+      "names": [
+        "Sniff.exe"
+      ],
+      "path_hints": [
+        "sniff"
+      ],
+      "priority": 20,
+      "public_bundle_allowed": false,
+      "source": "User-provided installation"
+    },
+    {
+      "automation": "profiled",
+      "capabilities": [
+        "asset.optimize.profiled",
+        "archive.bsa.optimize.profiled"
+      ],
+      "config_key": "cathedral_assets_optimizer",
+      "id": "cathedral_assets_optimizer",
+      "import_mode": "directory_runtime",
+      "license": "MPL-2.0",
+      "names": [
+        "Cathedral_Assets_Optimizer.exe",
+        "Cathedral Assets Optimizer.exe"
+      ],
+      "path_hints": [
+        "cathedral",
+        "cao"
+      ],
+      "priority": 80,
+      "public_bundle_allowed": false,
+      "source": "https://gitlab.com/G_ka/Cathedral_Assets_Optimizer"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "plugin.xedit.verify",
+        "plugin.xedit.script"
+      ],
+      "config_key": "xedit",
+      "exclude": [
+        "Edit Scripts/SkyrimForge*.pas"
+      ],
+      "id": "xedit",
+      "import_mode": "directory_runtime",
+      "license": "See xEdit distribution",
+      "names": [
+        "SSEEdit64.exe",
+        "SSEEdit.exe"
+      ],
+      "path_hints": [
+        "xedit",
+        "sseedit"
+      ],
+      "priority": 100,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/TES5Edit/TES5Edit"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "manager.mo2.launch",
+        "manager.mo2.profile"
+      ],
+      "config_key": "mo2",
+      "id": "mo2",
+      "import_mode": "configure_only",
+      "license": "GPL-3.0",
+      "names": [
+        "ModOrganizer.exe"
+      ],
+      "path_hints": [
+        "mod organizer",
+        "mo2"
+      ],
+      "priority": 100,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/ModOrganizer2/modorganizer"
+    },
+    {
+      "automation": "adapter",
+      "capabilities": [
+        "loadorder.loot"
+      ],
+      "config_key": "loot",
+      "id": "loot",
+      "import_mode": "directory_runtime",
+      "license": "GPL-3.0",
+      "names": [
+        "LOOT.exe",
+        "lootcli.exe"
+      ],
+      "path_hints": [
+        "loot"
+      ],
+      "priority": 90,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/loot/loot"
+    },
+    {
+      "automation": "worker_contract",
+      "capabilities": [
+        "bashed_patch.gui"
+      ],
+      "config_key": "wrye_bash",
+      "id": "wrye_bash",
+      "import_mode": "configure_only",
+      "license": "GPL-3.0",
+      "names": [
+        "Wrye Bash.exe",
+        "WryeBash.exe"
+      ],
+      "path_hints": [
+        "wrye",
+        "mopy"
+      ],
+      "priority": 70,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/wrye-bash/wrye-bash"
+    },
+    {
+      "automation": "worker_contract",
+      "capabilities": [
+        "creation_kit.gui"
+      ],
+      "config_key": "creation_kit",
+      "id": "creation_kit",
+      "import_mode": "configure_only",
+      "license": "Bethesda proprietary",
+      "names": [
+        "CreationKit.exe"
+      ],
+      "path_hints": [
+        "creation kit"
+      ],
+      "priority": 70,
+      "public_bundle_allowed": false,
+      "source": "Creation Kit installation"
+    },
+    {
+      "automation": "worker_contract",
+      "capabilities": [
+        "creation_kit.ckpe"
+      ],
+      "config_key": "ckpe_loader",
+      "id": "ckpe_loader",
+      "import_mode": "directory_runtime",
+      "license": "See CKPE distribution",
+      "names": [
+        "ckpe_loader.exe"
+      ],
+      "path_hints": [
+        "ckpe",
+        "creation kit platform extended"
+      ],
+      "priority": 80,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/Perchik71/Creation-Kit-Platform-Extended"
+    },
+    {
+      "automation": "human_gate",
+      "capabilities": [
+        "mesh.nif.inspect.gui"
+      ],
+      "config_key": "nifskope",
+      "id": "nifskope",
+      "import_mode": "directory_runtime",
+      "license": "BSD-3-Clause",
+      "names": [
+        "NifSkope.exe"
+      ],
+      "path_hints": [
+        "nifskope"
+      ],
+      "priority": 20,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/niftools/nifskope"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "texture.dds.convert"
+      ],
+      "config_key": "texconv",
+      "id": "texconv",
+      "import_mode": "single",
+      "license": "MIT",
+      "names": [
+        "texconv.exe"
+      ],
+      "path_hints": [
+        "directxtex",
+        "texconv"
+      ],
+      "priority": 90,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/microsoft/DirectXTex"
+    },
+    {
+      "automation": "profiled",
+      "capabilities": [
+        "bodyslide.batch"
+      ],
+      "config_key": "bodyslide",
+      "id": "bodyslide",
+      "import_mode": "configure_only",
+      "license": "See BodySlide distribution",
+      "names": [
+        "BodySlide x64.exe",
+        "BodySlide.exe"
+      ],
+      "path_hints": [
+        "bodyslide"
+      ],
+      "priority": 70,
+      "public_bundle_allowed": false,
+      "source": "https://github.com/ousnius/BodySlide-and-Outfit-Studio"
+    },
+    {
+      "automation": "profiled",
+      "capabilities": [
+        "animation.behavior.generate"
+      ],
+      "config_key": "pandora",
+      "id": "pandora",
+      "import_mode": "configure_only",
+      "license": "See Pandora distribution",
+      "names": [
+        "Pandora Behaviour Engine+.exe",
+        "Pandora Behaviour Engine.exe"
+      ],
+      "path_hints": [
+        "pandora"
+      ],
+      "priority": 80,
+      "public_bundle_allowed": false,
+      "source": "User installation"
+    },
+    {
+      "automation": "profiled",
+      "capabilities": [
+        "animation.behavior.generate"
+      ],
+      "config_key": "nemesis",
+      "id": "nemesis",
+      "import_mode": "configure_only",
+      "license": "See Nemesis distribution",
+      "names": [
+        "Nemesis Unlimited Behavior Engine.exe"
+      ],
+      "path_hints": [
+        "nemesis"
+      ],
+      "priority": 60,
+      "public_bundle_allowed": false,
+      "source": "User installation"
+    },
+    {
+      "automation": "profiled",
+      "capabilities": [
+        "lod.terrain.generate"
+      ],
+      "config_key": "xlodgen",
+      "id": "xlodgen",
+      "import_mode": "configure_only",
+      "license": "See xLODGen distribution",
+      "names": [
+        "xLODGenx64.exe",
+        "SSELODGenx64.exe"
+      ],
+      "path_hints": [
+        "xlodgen"
+      ],
+      "priority": 80,
+      "public_bundle_allowed": false,
+      "source": "https://stepmodifications.org/forum/topic/13451-xlodgen-terrain-lod-beta-129-for-fnv-fo3-fo4-fo4vr-tes5-sse-tes5vr-enderal-enderalse/"
+    },
+    {
+      "automation": "profiled",
+      "capabilities": [
+        "lod.object.generate"
+      ],
+      "config_key": "dyndolod",
+      "id": "dyndolod",
+      "import_mode": "configure_only",
+      "license": "See DynDOLOD distribution",
+      "names": [
+        "DynDOLODx64.exe",
+        "TexGenx64.exe"
+      ],
+      "path_hints": [
+        "dyndolod",
+        "texgen"
+      ],
+      "priority": 80,
+      "public_bundle_allowed": false,
+      "source": "https://dyndolod.info/"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "archive.general.inspect",
+        "archive.general.extract"
+      ],
+      "config_key": "archive",
+      "id": "seven_zip",
+      "import_mode": "sidecar",
+      "license": "LGPL-2.1-or-later / BSD components",
+      "names": [
+        "7z.exe",
+        "7zz.exe"
+      ],
+      "path_hints": [
+        "7-zip",
+        "7zip"
+      ],
+      "priority": 70,
+      "public_bundle_allowed": false,
+      "sidecars": [
+        "7z.dll",
+        "License.txt",
+        "readme.txt"
+      ],
+      "source": "https://www.7-zip.org/"
+    },
+    {
+      "automation": "direct",
+      "capabilities": [
+        "archive.bsa.pack.official"
+      ],
+      "config_key": "archive",
+      "id": "archive_exe",
+      "import_mode": "configure_only",
+      "license": "Bethesda proprietary",
+      "names": [
+        "Archive.exe"
+      ],
+      "path_hints": [
+        "creation kit"
+      ],
+      "priority": 80,
+      "public_bundle_allowed": false,
+      "source": "Creation Kit installation"
+    }
+  ]
+}

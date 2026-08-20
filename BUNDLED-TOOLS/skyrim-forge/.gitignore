@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.go-cache/
+INSTALLATION.json
+REPORTS/
+venv/
+build/
+dist/
+*.egg-info/
+.coverage
+htmlcov/
+*.tmp
+*.bak
+artifacts/
+config.toml

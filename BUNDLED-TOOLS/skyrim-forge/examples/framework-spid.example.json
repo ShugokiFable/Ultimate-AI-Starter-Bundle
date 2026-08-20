@@ -1,0 +1,18 @@
+{
+  "schema": "skyrim-forge-framework-plan/1",
+  "profile": "spid-7.3",
+  "output_file": "Example_DISTR.ini",
+  "header": "Typed SPID example",
+  "entries": [
+    {
+      "type": "Perk",
+      "form": "0x123~Example.esp",
+      "level_filters": [
+        "25/255",
+        "0(55/255)"
+      ],
+      "chance": "100",
+      "comment": "Actor level plus One-Handed skill range"
+    }
+  ]
+}

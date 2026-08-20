@@ -3,6 +3,84 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.1
+
+One repository. Skyrim Forge is developed here now, at
+`BUNDLED-TOOLS/skyrim-forge`, and is no longer released separately. 142
+canonical skills, mirrored across all five provider trees.
+
+- **Windows PowerShell 5.1 final-doctor repair.** A hotfix accidentally wrote literal `\n` edit debris into `Test-Installed-State.ps1`, which commented out the `$providerHome` assignment and made `Join-Path` receive `$null`. The doctor now uses real lines, validates the resolved provider home before joining it, and the release contract proves the assignment is executable rather than commented out.
+- **Same-version Forge hotfixes now actually deploy.** The merged bundle may fix Forge scripts without changing the embedded product version from 6.0.0. The wrapper used to refresh the live Forge tree only when `VERSION.txt` changed, so a corrected archive could still execute an older `S:\Apps\Skyrim Tools\Skyrim-Forge\Register-MCP.ps1`. The wrapper now compares the live tree against the bundled Forge `MANIFEST.json` and verifies every shipped file SHA-256; any drift forces a staged refresh while preserving `.venv`, `Workspaces`, `REPORTS`, and local `config.toml`.
+- **Hermes Forge registration is noninteractive and bounded.** The old path hid Hermes' interactive post-discovery prompt behind `Out-Null` and attempted to feed it through a PS5.1 pipeline, which could look frozen until a key was pressed. Forge now writes the entry through Hermes' own config API, shows progress, and bounds the connection test to 45 seconds. Optional reasoning-MCP wiring uses the same noninteractive config path.
+- **7.9.1 version lock.** Release contracts reject the accidentally chosen next-major label anywhere in shipped text or filenames. Historical notes were rewritten so the archive has no such version contamination.
+
+- **Provider skill updates are content-authoritative, not timestamp-authoritative.** The deterministic release builder deliberately normalizes ZIP timestamps. The earlier v8 and corrected v7.9.1 `release-checklist/SKILL.md` had the same 4,608-byte size and the same fixed timestamp while containing different version metadata, so metadata-based copy logic could classify the changed file as unchanged. The production sync no longer delegates bundle-owned skills to Robocopy at all: each named skill is copied into a sibling staging directory, SHA-256 verified, swapped into place, and SHA-256 verified again. A stale extra file inside a bundle-owned skill is removed by replacement, while unrelated user-created sibling skills are untouched.
+- **`skyrim-forge` has one active skill writer in the AIO path.** Forge's provider installer used to overwrite the bundle copy with a divergent `BUNDLED-TOOLS/skyrim-forge/integrations/skyrim-forge/SKILL.md`, guaranteeing five final-doctor mismatches after an otherwise successful Forge install. The AIO now marks provider skills as bundle-owned, so the Forge wrapper refreshes only the machine-local `INSTALLATION.json` descriptor and MCP registration; it does not rewrite `SKILL.md`. The embedded integration file remains byte-identical for standalone Forge installs.
+- **Forge install output is concise and visibly progressing.** The embedded installer no longer streams multi-page `self-test`, `config-show`, and `doctor` JSON directly into the parent console. Every checked child command prints a start marker, suppresses success JSON, then prints PASS with elapsed seconds; full child output is retained in the thrown error on failure.
+- **The exact stale-skill failure has a Windows runtime regression.** `TESTS/Test-ProviderSkillSync.ps1` creates old/new `SKILL.md` files with identical byte length and timestamp but different bytes, runs the production sync under Windows PowerShell 5.1, verifies the new hash wins, verifies stale files inside a bundle-owned skill are removed, and verifies an unrelated user skill survives. The root Windows pack gate runs it on every CI build.
+
+- **The two-repo split is what let 7.8.0 ship an installer that could not
+  install.** `$contract.compatible` is a field Forge has never emitted, so the
+  Forge step threw on every run and the AIO aborted the whole install. 7.9.0
+  fixed the field. This fixes the reason no test could have caught it: the
+  installer and the code answering it were in two repositories, released on two
+  schedules, with no commit that could test both. The new `forge-bundle-install`
+  CI job runs the real installer against the real subtree end to end.
+- **Forge is source, not a payload.** `BUNDLED-TOOLS/offline/Skyrim-Forge-*.zip`
+  is gone; the installer copies the in-tree tree. No archive to build, no
+  archive version that can disagree with the installer reading it. Both release
+  variants carry it in full.
+- **An upgrade no longer deletes your mod work.** Job staging defaults to
+  `<install root>\Workspaces`, and the old installer replaced the install
+  directory wholesale -- so every version change deleted it. `Workspaces`,
+  `.venv`, `REPORTS` and a local `config.toml` now survive the swap.
+- **`-ForgeRoot`.** `INSTALL-V7-AIO.ps1 -ForgeRoot 'S:\Apps\Skyrim Tools'` puts
+  Forge next to xEdit instead of under `%LOCALAPPDATA%`. The LOCALAPPDATA
+  default stays: no admin rights, no drive-letter assumption.
+- **Skyrim Forge 6.0.0 removes `forge bundle-contract`.** One repository cannot
+  usefully negotiate a version range with itself; a stale range can only start
+  rejecting the pack it ships inside, and it carried a hard next-major ceiling. The
+  installer runs `forge doctor`, which can still fail for a real reason, and
+  `test_forge_health_check_reads_fields_forge_emits` parses `doctor()` with
+  `ast` and fails if the installer reads a field it does not return.
+- **Root CI gained five Forge jobs**, unfiltered by path, plus CodeQL and
+  Dependabot. Forge's own `.github/` is deleted: GitHub reads workflows only
+  from a repository root, so those files would look live and never run.
+- **One local launcher.** `START-HERE.bat` is the canonical double-click entry;
+  `INSTALL-V7-AIO.bat` is only a compatibility alias. Installer failures now
+  stay visible and also write `INSTALL-FAILED.txt` plus `INSTALL-LAST.log` under
+  the local app-data log directory.
+- **Provider helper integrity is now a release gate.** A real Windows run exposed
+  `Install-V5KimiPlugin` as missing from `TOOLS/V7-Common.ps1`; the same merge
+  had also dropped `Restore-V5HermesPluginScan`, which would have failed later
+  in the same install. Both helpers are restored, and the static helper gate now
+  scans root installer scripts as well as `TOOLS`/`TESTS`, so an undefined
+  `*-V5*` helper cannot hide outside those folders again.
+- **The final Windows doctor now actually runs on PowerShell 5.1.** It assigned
+  `$home`, which is the case-insensitive read-only `$HOME` automatic variable,
+  so the doctor aborted before checking anything. It now uses `$providerHome`,
+  and the pack gate rejects direct `$HOME` assignment in the doctor.
+- **The doctor follows Forge 6, not the removed 5.x handshake.** The `$HOME`
+  crash was masking a second guaranteed failure: `Test-Installed-State.ps1`
+  still called the removed `bundle-contract` command. It now parses `forge
+  doctor` and requires `result=PASS` plus `read_only_ready=true`.
+- **Doctor failures are durable.** Child-PowerShell output is captured and
+  replayed through the parent before failure, so `INSTALL-LAST.log` and
+  `INSTALL-FAILED.txt` include the actual failing doctor check instead of only
+  `exit code 1`.
+- **The `skyrim-forge` skill is synchronized to Forge 6.0.0.** It no longer
+  teaches the removed 5.2 bundle handshake or a version-stamped live install;
+  all five provider copies now describe the versionless `SKYRIM_FORGE_ROOT`
+  install and the real `forge doctor` health gate.
+- **Embedded Forge validation is repository-aware.** Forge's validator/native
+  rebuild helper resolves the pinned Go toolchain from the enclosing repository
+  workflow instead of assuming a dead subtree `.github` exists.
+- **Linux Forge native helper keeps its execute bit.** The deterministic ZIP
+  builder records the published Linux helper as POSIX `0755`; an archive made
+  on Windows can no longer extract a correct binary that Linux cannot execute.
+
+See `docs/history/V7.9.1-CHANGELOG.md`.
+
 ## 7.9.0
 
 A fresh Windows install of 7.8.0 could not complete, and every gate was green.

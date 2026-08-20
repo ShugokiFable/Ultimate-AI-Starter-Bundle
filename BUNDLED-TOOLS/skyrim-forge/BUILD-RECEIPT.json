@@ -1,0 +1,190 @@
+{
+  "go": {
+    "builds": {
+      "linux": {
+        "buildvcs": false,
+        "bundled": "3c573e52b15b926f3dd54418f4a48eeddc4e0b6c05d893e4471b87dcc53ffa73",
+        "bundled_metadata": {
+          "command": [
+            "C:\\Program Files\\Go\\bin\\go.EXE",
+            "version",
+            "-m",
+            "<REPOSITORY_ROOT>\\writer\\published\\linux-x64\\SkyrimForge.Native"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "<REPOSITORY_ROOT>\\writer\\published\\linux-x64\\SkyrimForge.Native: go1.23.2\n\tpath\tskyrimforge/native\n\tmod\tskyrimforge/native\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=amd64\n\tbuild\tGOOS=linux\n\tbuild\tGOAMD64=v1\n"
+        },
+        "first": "3c573e52b15b926f3dd54418f4a48eeddc4e0b6c05d893e4471b87dcc53ffa73",
+        "first_metadata": {
+          "command": [
+            "C:\\Program Files\\Go\\bin\\go.EXE",
+            "version",
+            "-m",
+            "<HOME>\\AppData\\Local\\Temp\\tmp151rkrbl\\linux-a"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "<HOME>\\AppData\\Local\\Temp\\tmp151rkrbl\\linux-a: go1.23.2\n\tpath\tskyrimforge/native\n\tmod\tskyrimforge/native\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=amd64\n\tbuild\tGOOS=linux\n\tbuild\tGOAMD64=v1\n"
+        },
+        "result": "PASS",
+        "second": "3c573e52b15b926f3dd54418f4a48eeddc4e0b6c05d893e4471b87dcc53ffa73"
+      },
+      "windows": {
+        "buildvcs": false,
+        "bundled": "a210e332016837167022f0900e1e2bbfca0bc46be2625c48ae0ab637f248d842",
+        "bundled_metadata": {
+          "command": [
+            "C:\\Program Files\\Go\\bin\\go.EXE",
+            "version",
+            "-m",
+            "<REPOSITORY_ROOT>\\writer\\published\\win-x64\\SkyrimForge.Native.exe"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "<REPOSITORY_ROOT>\\writer\\published\\win-x64\\SkyrimForge.Native.exe: go1.23.2\n\tpath\tskyrimforge/native\n\tmod\tskyrimforge/native\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=amd64\n\tbuild\tGOOS=windows\n\tbuild\tGOAMD64=v1\n"
+        },
+        "first": "a210e332016837167022f0900e1e2bbfca0bc46be2625c48ae0ab637f248d842",
+        "first_metadata": {
+          "command": [
+            "C:\\Program Files\\Go\\bin\\go.EXE",
+            "version",
+            "-m",
+            "<HOME>\\AppData\\Local\\Temp\\tmp151rkrbl\\windows-a.exe"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "<HOME>\\AppData\\Local\\Temp\\tmp151rkrbl\\windows-a.exe: go1.23.2\n\tpath\tskyrimforge/native\n\tmod\tskyrimforge/native\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=amd64\n\tbuild\tGOOS=windows\n\tbuild\tGOAMD64=v1\n"
+        },
+        "result": "PASS",
+        "second": "a210e332016837167022f0900e1e2bbfca0bc46be2625c48ae0ab637f248d842"
+      }
+    },
+    "format": {
+      "command": [
+        "C:\\Program Files\\Go\\bin\\gofmt.exe",
+        "-l",
+        "."
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "race": {
+      "command": [
+        "C:\\Program Files\\Go\\bin\\go.EXE",
+        "test",
+        "-race",
+        "./..."
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "ok  \tskyrimforge/native\t(cached)\n"
+    },
+    "result": "PASS",
+    "tests": {
+      "command": [
+        "C:\\Program Files\\Go\\bin\\go.EXE",
+        "test",
+        "./..."
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "ok  \tskyrimforge/native\t(cached)\n"
+    },
+    "vet": {
+      "command": [
+        "C:\\Program Files\\Go\\bin\\go.EXE",
+        "vet",
+        "./..."
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    }
+  },
+  "limitations": [
+    "Windows native helper and PowerShell installers require Windows execution; GitHub CI performs that gate.",
+    "Third-party modding tools are not bundled. Their legal local installations may be discovered, imported into the private tool vault when allowed, SHA-256 pinned, and selected only for exact catalog capabilities.",
+    "No Skyrim runtime, save, visual, navmesh, animation, or gameplay validation was performed in this environment.",
+    "Nexus publication checks validate declared evidence and machine-checkable policy gates; they do not authenticate legal ownership or replace the uploader's responsibility."
+  ],
+  "mcp": {
+    "dual_era": true,
+    "prompts": [
+      "build_compatibility_patch",
+      "build_fomod_installer",
+      "build_framework_config",
+      "build_native_plugin",
+      "configure_verified_toolchain",
+      "prepare_nexus_release",
+      "verify_mod_release"
+    ],
+    "protocols": [
+      "2026-07-28",
+      "2025-11-25",
+      "2025-06-18",
+      "2024-11-05"
+    ],
+    "resources": [
+      "forge://capabilities",
+      "forge://config",
+      "forge://docs/automation-fabric",
+      "forge://docs/capability-matrix",
+      "forge://docs/fomod",
+      "forge://docs/framework-engineering",
+      "forge://docs/native-plugin-engineering",
+      "forge://docs/nexus-publication",
+      "forge://docs/papyrus-engineering",
+      "forge://docs/toolchain-broker",
+      "forge://references/framework-source-lock",
+      "forge://references/native-source-lock",
+      "forge://references/nexus-policy-lock",
+      "forge://references/tool-catalog",
+      "forge://schemas/automation-job",
+      "forge://schemas/fomod-plan",
+      "forge://schemas/framework-plan",
+      "forge://schemas/native-plugin-plan",
+      "forge://schemas/nexus-publication-plan"
+    ],
+    "result": "PASS",
+    "stderr": "",
+    "tools": 52
+  },
+  "native": {
+    "executed_platform": "windows",
+    "hashes": {
+      "linux": "3c573e52b15b926f3dd54418f4a48eeddc4e0b6c05d893e4471b87dcc53ffa73",
+      "windows": "a210e332016837167022f0900e1e2bbfca0bc46be2625c48ae0ab637f248d842"
+    },
+    "linux_elf": true,
+    "package_copies_match": true,
+    "package_copy_hashes": {
+      "linux": "3c573e52b15b926f3dd54418f4a48eeddc4e0b6c05d893e4471b87dcc53ffa73",
+      "windows": "a210e332016837167022f0900e1e2bbfca0bc46be2625c48ae0ab637f248d842"
+    },
+    "result": "PASS",
+    "self_test": {
+      "command": [
+        "<REPOSITORY_ROOT>\\writer\\published\\win-x64\\SkyrimForge.Native.exe",
+        "self-test"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "SKYRIM FORGE NATIVE SELF-TEST: PASS\n"
+    },
+    "version": {
+      "command": [
+        "<REPOSITORY_ROOT>\\writer\\published\\win-x64\\SkyrimForge.Native.exe",
+        "version"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "SkyrimForge.Native 6.0.0 go\n"
+    },
+    "windows_pe": true
+  },
+  "product": "Skyrim Forge",
+  "result": "PASS",
+  "version": "6.0.0"
+}

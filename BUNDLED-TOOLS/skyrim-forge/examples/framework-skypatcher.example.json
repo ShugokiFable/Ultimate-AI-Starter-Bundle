@@ -1,0 +1,22 @@
+{
+  "schema": "skyrim-forge-framework-plan/1",
+  "profile": "skypatcher-6.4.2",
+  "category": "weapon",
+  "output_file": "Example.ini",
+  "entries": [
+    {
+      "filters": [
+        {
+          "key": "filterByKeywords",
+          "value": "Skyrim.esm|1E715"
+        }
+      ],
+      "patches": [
+        {
+          "key": "attackDamage",
+          "value": "30"
+        }
+      ]
+    }
+  ]
+}

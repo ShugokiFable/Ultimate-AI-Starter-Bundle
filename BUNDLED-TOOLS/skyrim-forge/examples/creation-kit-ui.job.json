@@ -1,0 +1,12 @@
+{
+  "schema": "skyrim-forge-ui/1",
+  "job_id": "ck-facegen-ui-example",
+  "application": "Creation Kit",
+  "expected_process": "CreationKit.exe",
+  "timeout_seconds": 600,
+  "steps": [
+    {"action": "wait_window", "window_title": "Creation Kit*", "timeout_seconds": 120},
+    {"action": "invoke", "window_title": "Creation Kit*", "name": "Export Head"},
+    {"action": "screenshot"}
+  ]
+}

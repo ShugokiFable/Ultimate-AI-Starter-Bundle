@@ -1,0 +1,1065 @@
+{
+  "$id": "https://github.com/ShugokiFable/skyrim-forge/blob/main/schemas/nexus-publication-plan.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "ai": {
+      "additionalProperties": false,
+      "properties": {
+        "areas": {
+          "items": {
+            "enum": [
+              "code",
+              "documentation",
+              "image",
+              "texture",
+              "mesh",
+              "audio",
+              "voice",
+              "dialogue",
+              "translation",
+              "other"
+            ],
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "disclosure": {
+          "type": "string"
+        },
+        "human_verified": {
+          "type": "boolean"
+        },
+        "used": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "used",
+        "areas",
+        "human_verified",
+        "disclosure"
+      ],
+      "type": "object"
+    },
+    "attestation": {
+      "additionalProperties": false,
+      "properties": {
+        "responsibility_accepted": {
+          "type": "boolean"
+        },
+        "signed_at": {
+          "format": "date",
+          "type": "string"
+        },
+        "signed_by": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "signed_by",
+        "signed_at",
+        "responsibility_accepted"
+      ],
+      "type": "object"
+    },
+    "content": {
+      "additionalProperties": false,
+      "properties": {
+        "adult": {
+          "additionalProperties": false,
+          "properties": {
+            "body_stigma": {
+              "type": "boolean"
+            },
+            "extreme_violence": {
+              "type": "boolean"
+            },
+            "nudity": {
+              "type": "boolean"
+            },
+            "other_adult": {
+              "type": "boolean"
+            },
+            "pornographic": {
+              "type": "boolean"
+            },
+            "self_harm": {
+              "type": "boolean"
+            },
+            "sexualised": {
+              "type": "boolean"
+            },
+            "substance_use": {
+              "type": "boolean"
+            },
+            "swearing": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "pornographic",
+            "sexualised",
+            "nudity",
+            "extreme_violence",
+            "swearing",
+            "self_harm",
+            "substance_use",
+            "body_stigma",
+            "other_adult"
+          ],
+          "type": "object"
+        },
+        "msf_branding": {
+          "type": "boolean"
+        },
+        "political_references": {
+          "type": "boolean"
+        },
+        "tags": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "violence": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "adult",
+        "political_references",
+        "msf_branding",
+        "violence",
+        "tags"
+      ],
+      "type": "object"
+    },
+    "declarations": {
+      "additionalProperties": false,
+      "properties": {
+        "claims_verified": {
+          "type": "boolean"
+        },
+        "content_classification_complete": {
+          "type": "boolean"
+        },
+        "credits_complete": {
+          "type": "boolean"
+        },
+        "game_terms_reviewed": {
+          "type": "boolean"
+        },
+        "nexus_upload_licence_understood": {
+          "type": "boolean"
+        },
+        "no_illegal_content": {
+          "type": "boolean"
+        },
+        "no_malware_or_harmful_payload": {
+          "type": "boolean"
+        },
+        "no_password_or_placeholder_files": {
+          "type": "boolean"
+        },
+        "no_pirated_or_original_game_files": {
+          "type": "boolean"
+        },
+        "no_prohibited_external_links": {
+          "type": "boolean"
+        },
+        "no_scraped_or_mined_nexus_content": {
+          "type": "boolean"
+        },
+        "no_third_party_privacy_or_trademark_violation": {
+          "type": "boolean"
+        },
+        "privacy_review_complete": {
+          "type": "boolean"
+        },
+        "public_distribution_intended": {
+          "type": "boolean"
+        },
+        "public_functional_release": {
+          "type": "boolean"
+        },
+        "rights_and_permissions_complete": {
+          "type": "boolean"
+        },
+        "uploader_age_eligibility_confirmed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "rights_and_permissions_complete",
+        "credits_complete",
+        "game_terms_reviewed",
+        "nexus_upload_licence_understood",
+        "public_distribution_intended",
+        "uploader_age_eligibility_confirmed",
+        "public_functional_release",
+        "claims_verified",
+        "no_pirated_or_original_game_files",
+        "no_malware_or_harmful_payload",
+        "no_password_or_placeholder_files",
+        "no_prohibited_external_links",
+        "no_illegal_content",
+        "no_third_party_privacy_or_trademark_violation",
+        "no_scraped_or_mined_nexus_content",
+        "content_classification_complete",
+        "privacy_review_complete"
+      ],
+      "type": "object"
+    },
+    "intent": {
+      "const": "nexus_public"
+    },
+    "mod": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "donation_points": {
+          "type": "boolean"
+        },
+        "event": {
+          "type": "string"
+        },
+        "game": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "game_terms_url": {
+          "pattern": "^https://",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "release_type": {
+          "enum": [
+            "original_mod",
+            "patch",
+            "translation",
+            "compilation",
+            "utility",
+            "modlist_support"
+          ],
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "uploader": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "value_added_description": {
+          "type": "string"
+        },
+        "version": {
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "game",
+        "game_terms_url",
+        "uploader",
+        "summary",
+        "category",
+        "tags",
+        "donation_points",
+        "release_type"
+      ],
+      "type": "object"
+    },
+    "ownership": {
+      "additionalProperties": false,
+      "properties": {
+        "assets": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "author": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "bundled": {
+                "type": "boolean"
+              },
+              "commercial_use": {
+                "enum": [
+                  "allowed",
+                  "not_allowed",
+                  "unknown",
+                  "not_applicable"
+                ],
+                "type": "string"
+              },
+              "credit": {
+                "type": "string"
+              },
+              "credit_required": {
+                "type": "boolean"
+              },
+              "donation_points": {
+                "enum": [
+                  "allowed",
+                  "not_allowed",
+                  "unknown",
+                  "not_applicable"
+                ],
+                "type": "string"
+              },
+              "evidence": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "description": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "public": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "description",
+                    "public"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "plugin",
+                  "papyrus",
+                  "native_code",
+                  "executable",
+                  "mesh",
+                  "texture",
+                  "animation",
+                  "audio",
+                  "voice",
+                  "music",
+                  "image",
+                  "font",
+                  "documentation",
+                  "configuration",
+                  "translation",
+                  "archive",
+                  "other"
+                ],
+                "type": "string"
+              },
+              "license": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "name": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "notice_path": {
+                        "type": "string"
+                      },
+                      "obligations_acknowledged": {
+                        "type": "boolean"
+                      },
+                      "permissions_statement": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "source_code_url": {
+                        "anyOf": [
+                          {
+                            "pattern": "^https://",
+                            "type": "string"
+                          },
+                          {
+                            "const": ""
+                          }
+                        ]
+                      },
+                      "text_path": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "anyOf": [
+                          {
+                            "pattern": "^https://",
+                            "type": "string"
+                          },
+                          {
+                            "const": ""
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "permissions_statement",
+                      "obligations_acknowledged"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "modification": {
+                "enum": [
+                  "allowed",
+                  "not_allowed",
+                  "unknown",
+                  "not_applicable"
+                ],
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "paths": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array",
+                "uniqueItems": true
+              },
+              "permission_basis": {
+                "enum": [
+                  "owned",
+                  "open_license",
+                  "explicit_permission",
+                  "nexus_permission",
+                  "game_terms",
+                  "dependency_not_bundled"
+                ],
+                "type": "string"
+              },
+              "provenance": {
+                "enum": [
+                  "original",
+                  "commissioned",
+                  "open_source",
+                  "third_party_mod",
+                  "game_derived",
+                  "dependency_only",
+                  "generated"
+                ],
+                "type": "string"
+              },
+              "redistribution": {
+                "enum": [
+                  "allowed",
+                  "not_allowed",
+                  "unknown",
+                  "not_applicable"
+                ],
+                "type": "string"
+              },
+              "source_name": {
+                "type": "string"
+              },
+              "source_url": {
+                "anyOf": [
+                  {
+                    "pattern": "^https://",
+                    "type": "string"
+                  },
+                  {
+                    "const": ""
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "paths",
+              "kind",
+              "provenance",
+              "author",
+              "permission_basis",
+              "redistribution",
+              "modification",
+              "commercial_use",
+              "donation_points",
+              "credit_required",
+              "bundled",
+              "evidence"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "collaborators": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "credit": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "name": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "role": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "role",
+              "credit"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "dependencies": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "author": {
+                "type": "string"
+              },
+              "bundled": {
+                "type": "boolean"
+              },
+              "credit": {
+                "type": "string"
+              },
+              "license": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "name": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "notice_path": {
+                        "type": "string"
+                      },
+                      "obligations_acknowledged": {
+                        "type": "boolean"
+                      },
+                      "permissions_statement": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "source_code_url": {
+                        "anyOf": [
+                          {
+                            "pattern": "^https://",
+                            "type": "string"
+                          },
+                          {
+                            "const": ""
+                          }
+                        ]
+                      },
+                      "text_path": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "anyOf": [
+                          {
+                            "pattern": "^https://",
+                            "type": "string"
+                          },
+                          {
+                            "const": ""
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "permissions_statement",
+                      "obligations_acknowledged"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "name": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "url": {
+                "pattern": "^https://",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "url",
+              "required",
+              "bundled"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "original_work": {
+          "type": "boolean"
+        },
+        "project_license": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "name": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "notice_path": {
+              "type": "string"
+            },
+            "obligations_acknowledged": {
+              "type": "boolean"
+            },
+            "permissions_statement": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "source_code_url": {
+              "anyOf": [
+                {
+                  "pattern": "^https://",
+                  "type": "string"
+                },
+                {
+                  "const": ""
+                }
+              ]
+            },
+            "text_path": {
+              "type": "string"
+            },
+            "url": {
+              "anyOf": [
+                {
+                  "pattern": "^https://",
+                  "type": "string"
+                },
+                {
+                  "const": ""
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "permissions_statement",
+            "obligations_acknowledged"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "original_work",
+        "project_license",
+        "collaborators",
+        "assets",
+        "dependencies"
+      ],
+      "type": "object"
+    },
+    "page": {
+      "additionalProperties": false,
+      "properties": {
+        "changelog": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "claims": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "evidence": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "text": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "text",
+              "evidence"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "compatibility": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "description": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "external_links": {
+          "items": {
+            "pattern": "^https://",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "installation": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "known_issues": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "requirements": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "support": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "uninstallation": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "description",
+        "requirements",
+        "installation",
+        "uninstallation",
+        "compatibility",
+        "known_issues",
+        "support",
+        "claims",
+        "changelog",
+        "external_links"
+      ],
+      "type": "object"
+    },
+    "permissions": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_use": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "commercial_use": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "conversion": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "donation_points": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "modification": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "nexus_settings": {
+          "additionalProperties": false,
+          "properties": {
+            "asset_use": {
+              "enum": [
+                "not_allowed",
+                "permission_required",
+                "allowed_with_credit",
+                "allowed",
+                "not_applicable"
+              ],
+              "type": "string"
+            },
+            "commercial_use": {
+              "enum": [
+                "not_allowed",
+                "permission_required",
+                "allowed_with_credit",
+                "allowed",
+                "not_applicable"
+              ],
+              "type": "string"
+            },
+            "conversion": {
+              "enum": [
+                "not_allowed",
+                "permission_required",
+                "allowed_with_credit",
+                "allowed",
+                "not_applicable"
+              ],
+              "type": "string"
+            },
+            "donation_points": {
+              "enum": [
+                "not_allowed",
+                "permission_required",
+                "allowed_with_credit",
+                "allowed",
+                "not_applicable"
+              ],
+              "type": "string"
+            },
+            "modification": {
+              "enum": [
+                "not_allowed",
+                "permission_required",
+                "allowed_with_credit",
+                "allowed",
+                "not_applicable"
+              ],
+              "type": "string"
+            },
+            "translation": {
+              "enum": [
+                "not_allowed",
+                "permission_required",
+                "allowed_with_credit",
+                "allowed",
+                "not_applicable"
+              ],
+              "type": "string"
+            },
+            "upload_elsewhere": {
+              "enum": [
+                "not_allowed",
+                "permission_required",
+                "allowed_with_credit",
+                "allowed",
+                "not_applicable"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "upload_elsewhere",
+            "modification",
+            "asset_use",
+            "conversion",
+            "translation",
+            "commercial_use",
+            "donation_points"
+          ],
+          "type": "object"
+        },
+        "redistribution": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "translation": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "redistribution",
+        "modification",
+        "asset_use",
+        "conversion",
+        "translation",
+        "commercial_use",
+        "donation_points",
+        "nexus_settings"
+      ],
+      "type": "object"
+    },
+    "policy_review": {
+      "additionalProperties": false,
+      "properties": {
+        "reviewed_at": {
+          "format": "date",
+          "type": "string"
+        },
+        "reviewer": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "enum": [
+                  "terms",
+                  "file_submission",
+                  "adult_content",
+                  "donation_points",
+                  "best_practices"
+                ],
+                "type": "string"
+              },
+              "reviewed": {
+                "const": true
+              },
+              "title": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "url": {
+                "pattern": "^https://",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "url",
+              "reviewed"
+            ],
+            "type": "object"
+          },
+          "minItems": 5,
+          "type": "array"
+        }
+      },
+      "required": [
+        "reviewed_at",
+        "reviewer",
+        "sources"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "skyrim-forge-nexus-publication-plan/1"
+    },
+    "software": {
+      "additionalProperties": false,
+      "properties": {
+        "contains_executables": {
+          "type": "boolean"
+        },
+        "internet_access": {
+          "type": "boolean"
+        },
+        "internet_access_crucial": {
+          "type": "boolean"
+        },
+        "network_disclosure": {
+          "type": "string"
+        },
+        "nexus_staff_contact_evidence": {
+          "type": "string"
+        },
+        "source_code_url": {
+          "anyOf": [
+            {
+              "pattern": "^https://",
+              "type": "string"
+            },
+            {
+              "const": ""
+            }
+          ]
+        }
+      },
+      "required": [
+        "contains_executables",
+        "internet_access",
+        "internet_access_crucial",
+        "source_code_url",
+        "nexus_staff_contact_evidence",
+        "network_disclosure"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "intent",
+    "policy_review",
+    "mod",
+    "page",
+    "ownership",
+    "declarations",
+    "software",
+    "ai",
+    "content",
+    "permissions",
+    "attestation"
+  ],
+  "title": "Skyrim Forge Nexus Publication Plan",
+  "type": "object"
+}

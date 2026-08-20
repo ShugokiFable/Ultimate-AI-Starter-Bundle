@@ -1,0 +1,9 @@
+{
+  "schema": "skyrim-forge-external-worker/1",
+  "job_id": "ck-facegen-example",
+  "worker_type": "creation_kit",
+  "operation": "generate_facegen",
+  "inputs": {"plugin": "ExampleFollowers.esp", "npc_editor_ids": ["ExampleFollower"]},
+  "options": {"active_plugin": "ExampleFollowers.esp"},
+  "output_dir": "<Workspace>/CKOutput"
+}

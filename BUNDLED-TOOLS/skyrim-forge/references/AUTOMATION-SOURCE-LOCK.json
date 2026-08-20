@@ -1,0 +1,25 @@
+{
+  "schema": "skyrim-forge-source-lock/1",
+  "updated": "2026-07-23",
+  "sources": {
+    "xedit": {
+      "repository": "TES5Edit/TES5Edit",
+      "source_commit": "fd1e36020b2b5b6217e553dc0038983146a2e2dd",
+      "verified_interfaces": ["-script", "-autoexit", "-autoload", "-quickedit", "Check(aElement)", "Process/Finalize scripts"],
+      "bundled_scripts": ["SkyrimForgeCheckErrors.pas", "SkyrimForgeReportRecords.pas"]
+    },
+    "mo2": {
+      "verified_interfaces": ["-p <profile>", "-i <instance>", "run <executable>"],
+      "blocked": ["--multiple"]
+    },
+    "loot": {
+      "policy": "No invented GUI CLI. Use a version-pinned external worker for analysis and a separate approved plan application."
+    },
+    "wrye_bash": {
+      "policy": "No blind GUI clicking. Use a version-pinned worker around the installed version or a coordinate-free calibrated UI job."
+    },
+    "creation_kit": {
+      "policy": "Prefer direct Papyrus compiler or a version-pinned CK/CKPE worker. Coordinate-free UI Automation is a narrow fallback."
+    }
+  }
+}

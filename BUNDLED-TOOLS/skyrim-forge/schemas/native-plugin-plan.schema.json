@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/skyrim-forge/native-plugin-plan.schema.json",
+  "title": "Skyrim Forge Native Plugin Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "project",
+    "version",
+    "author",
+    "description"
+  ],
+  "properties": {
+    "schema": {
+      "const": "skyrim-forge-native-plugin-plan/1"
+    },
+    "project": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "email": {
+      "type": "string",
+      "maxLength": 252
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "minimum_skse_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "runtime_strategy": {
+      "enum": [
+        "address_library",
+        "signature_scanning",
+        "explicit_runtimes"
+      ]
+    },
+    "compatible_runtimes": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+      }
+    },
+    "struct_dependent": {
+      "type": "boolean"
+    },
+    "log_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "runtime_strategy": {
+            "const": "explicit_runtimes"
+          }
+        },
+        "required": [
+          "runtime_strategy"
+        ]
+      },
+      "then": {
+        "required": [
+          "compatible_runtimes"
+        ],
+        "properties": {
+          "compatible_runtimes": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "runtime_strategy": {
+            "enum": [
+              "address_library",
+              "signature_scanning"
+            ]
+          }
+        },
+        "required": [
+          "runtime_strategy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "compatible_runtimes": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}

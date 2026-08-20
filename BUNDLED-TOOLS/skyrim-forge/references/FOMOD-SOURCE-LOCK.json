@@ -1,0 +1,31 @@
+{
+  "topic": "FOMOD XML installer engineering",
+  "checked": "2026-07-23",
+  "format": "ModuleConfig XML schema 2.0 / ModConfig5.0 ecosystem token",
+  "schema_source": {
+    "repository": "https://github.com/dh-nunes/fomod-schema",
+    "path": "ModuleConfig.xsd",
+    "blob_sha": "303ed3bb93f8177ac6d36416454b9fb100ab6de4",
+    "schema_version_attribute": "2.0",
+    "moduleconfig_schema_location_token": "http://qconsulting.ca/fo3/ModConfig5.0.xsd"
+  },
+  "authorities": [
+    "https://github.com/dh-nunes/fomod-schema/blob/master/ModuleConfig.xsd",
+    "https://fomod-docs.readthedocs.io/en/latest/",
+    "https://github.com/Nexus-Mods/NexusMods.App",
+    "https://fomod-designer.readthedocs.io/en/latest/"
+  ],
+  "locked_decisions": [
+    "Generate ModuleConfig XML through a typed plan rather than free-form AI XML.",
+    "Preserve the schema-defined element order for module, step, plugin, dependency-type, and conditional-pattern nodes.",
+    "Treat an omitted destination in an existing XML mapping as the source path, as defined by the XSD.",
+    "Emit an explicit empty destination for typed Forge mappings that intentionally install at the Data root.",
+    "Reject C# scripted FOMOD installers because they permit arbitrary code execution outside Forge's bounded model.",
+    "Require strict payload coverage by default.",
+    "Treat equal-destination files in mutually exclusive groups as safe branch alternatives only when alwaysInstall and installIfUsable cannot make them co-install.",
+    "Require explicit priority to resolve collisions between branches that can co-install.",
+    "Condition flags used by step visibility or dynamic option types must be defined by earlier steps.",
+    "Validate the generated tree again after writing it.",
+    "Manager installation and presentation remain external Vortex and MO2 runtime gates."
+  ]
+}

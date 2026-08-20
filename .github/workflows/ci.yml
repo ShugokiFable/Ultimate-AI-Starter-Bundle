@@ -1,10 +1,20 @@
 name: CI
 
-# The pack targets Windows PowerShell 5.1 specifically: its encoding defaults,
-# its BOM behaviour and its native-stderr handling are the source of most bugs
-# this repo has shipped. Running the gate anywhere else would test a different
-# language, so every job here is windows-latest and uses `shell: powershell`
-# (Windows PowerShell 5.1), never `pwsh` (PowerShell 7+).
+# Two products, one repository.
+#
+# The PACK jobs target Windows PowerShell 5.1 specifically: its encoding
+# defaults, its BOM behaviour and its native-stderr handling are the source of
+# most bugs this repo has shipped. Running that gate anywhere else would test a
+# different language, so those jobs are windows-latest and use
+# `shell: powershell` (Windows PowerShell 5.1), never `pwsh` (PowerShell 7+).
+#
+# The FORGE jobs came from the SkyrimForge repository when it was merged into
+# BUNDLED-TOOLS/skyrim-forge. They keep their own matrix and their own pinned Go
+# toolchain, because that subtree ships a reproducible native binary and a
+# cross-platform Python package. They are not filtered by changed paths: a
+# required check that only sometimes runs is a required check that eventually
+# blocks everything, and the whole reason these two products now share a
+# repository is that one commit should be able to prove both halves agree.
 
 on:
   push:
@@ -89,3 +99,253 @@ jobs:
       - name: Check declared versions
         shell: powershell
         run: python .github/scripts/check_versions.py
+
+  # ---------------------------------------------------------------------------
+  # BUNDLED-TOOLS/skyrim-forge
+  # ---------------------------------------------------------------------------
+
+  forge-python:
+    name: Forge Python ${{ matrix.python }} on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.13", "3.14"]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: BUNDLED-TOOLS/skyrim-forge
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Python, packaging, and MCP validation
+        run: python scripts/validate_repository.py --scope python
+
+  forge-native:
+    name: Forge native writer on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: BUNDLED-TOOLS/skyrim-forge/writer/native-go
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.23.2"
+          cache: false
+      - name: Verify Go toolchain
+        shell: bash
+        run: test "$(go env GOVERSION)" = "go1.23.2"
+      - name: Formatting
+        shell: bash
+        run: |
+          test -z "$(gofmt -l .)"
+      - name: Vet
+        run: go vet ./...
+      - name: Tests
+        run: go test ./...
+      - name: Race detector
+        run: go test -race ./...
+
+  forge-repository-validation:
+    name: Forge reproducible repository gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: BUNDLED-TOOLS/skyrim-forge
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.23.2"
+          cache: false
+      - name: Verify pinned toolchain
+        run: |
+          python --version
+          test "$(go env GOVERSION)" = "go1.23.2"
+      - name: Full publication validation
+        run: python scripts/validate_repository.py --scope full
+
+  forge-windows-installer:
+    name: Forge Windows installer and legacy migration
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: BUNDLED-TOOLS/skyrim-forge
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Select setup-python interpreter
+        shell: powershell
+        run: |
+          $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+          [IO.File]::AppendAllText($env:GITHUB_ENV, "SKYRIM_FORGE_PYTHON=${{ steps.python.outputs.python-path }}`n", $utf8NoBom)
+          [IO.File]::AppendAllText($env:GITHUB_ENV, "SKYRIM_FORGE_CONFIG=$env:RUNNER_TEMP\skyrim-forge\config.toml`n", $utf8NoBom)
+          & "${{ steps.python.outputs.python-path }}" --version
+      - name: Parse every PowerShell script
+        shell: powershell
+        run: ./PowerShell-Parse-Gate.ps1
+      - name: Exercise exact START-HERE startup gate
+        shell: cmd
+        run: call START-HERE.bat --validate-only
+      - name: Create legacy Papyrus configuration
+        shell: powershell
+        run: |
+          $configRoot = Split-Path -Parent $env:SKYRIM_FORGE_CONFIG
+          New-Item -ItemType Directory -Force -Path $configRoot | Out-Null
+          $workspace = (Join-Path $env:RUNNER_TEMP 'Forge Workspaces').Replace('\', '/')
+          $legacy = @"
+          [paths]
+          workspace_root = "$workspace"
+          skyrim_data = ""
+
+          [papyrus]
+          compiler = "C:/Legacy/PapyrusCompiler.exe"
+          flags = "C:/Legacy/TESV_Papyrus_Flags.flg"
+          imports = ["C:/Legacy/Source"]
+
+          [safety]
+          allow_external_processes = false
+          require_approval_for_writes = true
+          "@
+          $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+          [IO.File]::WriteAllText($env:SKYRIM_FORGE_CONFIG, $legacy, $utf8NoBom)
+      - name: Install, migrate, and reinstall
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path './.venv/Scripts' | Out-Null
+          [IO.File]::WriteAllBytes((Join-Path $PWD '.venv/Scripts/python.exe'), [byte[]](0,1,2,3))
+          ./Install-or-Update.ps1
+          & ./.venv/Scripts/python.exe -c "import sys; raise SystemExit(0 if sys.version_info >= (3,11) else 1)"
+          if ($LASTEXITCODE -ne 0) { throw 'Broken virtual environment was not repaired.' }
+          $backup = "${env:SKYRIM_FORGE_CONFIG}.pre-3.0.1.bak"
+          if (-not (Test-Path -LiteralPath $backup -PathType Leaf)) { throw "Legacy config backup was not created: $backup" }
+          $migrated = Get-Content -LiteralPath $env:SKYRIM_FORGE_CONFIG -Raw
+          if ($migrated -notmatch '\[tools\.papyrus_compiler\]') { throw 'Papyrus compiler was not migrated.' }
+          if ($migrated -match '(?m)^compiler\s*=') { throw 'Legacy papyrus.compiler survived canonical migration.' }
+          ./Install-or-Update.ps1
+      - name: Install every AI skill target twice
+        shell: powershell
+        run: |
+          $skillRoot = Join-Path $env:RUNNER_TEMP 'Forge Skill Homes'
+          $env:CODEX_HOME = Join-Path $skillRoot 'Codex'
+          $env:CLAUDE_CONFIG_DIR = Join-Path $skillRoot 'Claude'
+          $env:GROK_HOME = Join-Path $skillRoot 'Grok'
+          $env:KIMI_CODE_HOME = Join-Path $skillRoot 'Kimi'
+          $env:HERMES_HOME = Join-Path $skillRoot 'Hermes'
+          ./Install-Forge-Skill.ps1 -Provider All
+          ./Install-Forge-Skill.ps1 -Provider All
+          $sourceHash = (Get-FileHash -LiteralPath './integrations/skyrim-forge/SKILL.md' -Algorithm SHA256).Hash
+          foreach ($skillHome in @($env:CODEX_HOME, $env:CLAUDE_CONFIG_DIR, $env:GROK_HOME, $env:KIMI_CODE_HOME, $env:HERMES_HOME)) {
+            $installed = Join-Path $skillHome 'skills/skyrim-forge/SKILL.md'
+            if (-not (Test-Path -LiteralPath $installed -PathType Leaf)) { throw "Installed skill missing: $installed" }
+            $installedHash = (Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash
+            if ($installedHash -ne $sourceHash) { throw "Installed skill hash mismatch: $installed" }
+            $descriptor = Join-Path $skillHome 'skills/skyrim-forge/INSTALLATION.json'
+            if (-not (Test-Path -LiteralPath $descriptor -PathType Leaf)) { throw "Installed Forge descriptor missing: $descriptor" }
+          }
+      - name: Verify Kimi and Hermes MCP bridges
+        shell: powershell
+        run: |
+          ./.venv/Scripts/python.exe -m unittest tests.test_windows_provider_bridge -v
+      - name: Verify installed runtime
+        shell: powershell
+        run: |
+          $version = (& ./writer/published/win-x64/SkyrimForge.Native.exe version | Out-String).Trim()
+          # Derived, never hardcoded: a literal here shipped 4.2.4 while still demanding 4.2.3.
+          $expected = 'SkyrimForge.Native {0} go' -f (./.venv/Scripts/python.exe -c 'from skyrim_forge.version import VERSION; print(VERSION)').Trim()
+          if ($version -ne $expected) { throw "Unexpected native version: $version (expected $expected)" }
+          ./writer/published/win-x64/SkyrimForge.Native.exe self-test
+          $doctor = ./.venv/Scripts/python.exe -m skyrim_forge doctor | ConvertFrom-Json
+          if ($doctor.result -ne 'PASS') { throw ('Doctor failed: ' + ($doctor | ConvertTo-Json -Depth 20)) }
+          if (-not $doctor.read_only_ready) { throw 'Forge is not read-only ready after installation.' }
+      - name: Run Windows regression suite
+        shell: powershell
+        run: |
+          ./.venv/Scripts/python.exe -m compileall -q skyrim_forge tests scripts
+          ./.venv/Scripts/python.exe -m unittest discover -s tests -v
+          ./.venv/Scripts/python.exe -m skyrim_forge self-test
+          ./.venv/Scripts/python.exe scripts/validate_repository.py --scope python
+
+  # The bundle installs Forge from BUNDLED-TOOLS/skyrim-forge, and the two used
+  # to live in separate repositories -- which is exactly how 7.8.0 shipped an
+  # installer that read a contract field Forge never emitted, and threw on every
+  # single run. This job is the one that could not have existed before the
+  # merge: it runs the real installer against the real subtree, end to end, on a
+  # machine with nothing installed.
+  forge-bundle-install:
+    name: Bundle installs Forge end to end
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Install Forge exactly as the AIO does
+        shell: powershell
+        run: |
+          $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+          [IO.File]::AppendAllText($env:GITHUB_ENV, "SKYRIM_FORGE_PYTHON=${{ steps.python.outputs.python-path }}`n", $utf8NoBom)
+          $env:SKYRIM_FORGE_PYTHON = '${{ steps.python.outputs.python-path }}'
+          $root = Join-Path $env:RUNNER_TEMP 'Skyrim Tools\Skyrim-Forge'
+          .\TOOLS\Install-SkyrimForge.ps1 -ForgeRoot $root -Providers Claude
+          if ($LASTEXITCODE -ne 0) { throw "Install-SkyrimForge.ps1 exited $LASTEXITCODE" }
+          $installed = Join-Path $root 'VERSION.txt'
+          if (-not (Test-Path -LiteralPath $installed -PathType Leaf)) { throw "Forge did not install to $root" }
+          $source = [IO.File]::ReadAllText('BUNDLED-TOOLS\skyrim-forge\VERSION.txt').Trim()
+          $target = [IO.File]::ReadAllText($installed).Trim()
+          if ($source -ne $target) { throw "Installed '$target' but the tree ships '$source'" }
+          Write-Host "installed $target -> $root"
+
+      # Job staging defaults to <install root>\Workspaces, and the installer
+      # replaces the install directory to upgrade it. Before 7.9.1 that deleted
+      # the user's mod work on every version change. Downgrade VERSION.txt to
+      # force a real re-stage, leave a marker in Workspaces, and prove it is
+      # still there afterwards.
+      - name: An upgrade must not delete the user's Workspaces
+        shell: powershell
+        run: |
+          $env:SKYRIM_FORGE_PYTHON = '${{ steps.python.outputs.python-path }}'
+          $root = Join-Path $env:RUNNER_TEMP 'Skyrim Tools\Skyrim-Forge'
+          $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+          New-Item -ItemType Directory -Force -Path (Join-Path $root 'Workspaces\MyMod') | Out-Null
+          [IO.File]::WriteAllText((Join-Path $root 'Workspaces\MyMod\keep-me.txt'), 'user data', $utf8NoBom)
+          [IO.File]::WriteAllText((Join-Path $root 'VERSION.txt'), "Skyrim Forge 0.0.1`n", $utf8NoBom)
+          .\TOOLS\Install-SkyrimForge.ps1 -ForgeRoot $root -Providers Claude
+          if ($LASTEXITCODE -ne 0) { throw "re-install exited $LASTEXITCODE" }
+          $marker = Join-Path $root 'Workspaces\MyMod\keep-me.txt'
+          if (-not (Test-Path -LiteralPath $marker -PathType Leaf)) { throw 'The upgrade deleted the user Workspaces.' }
+          if ([IO.File]::ReadAllText($marker) -ne 'user data') { throw 'The upgrade corrupted the user Workspaces.' }
+          $source = [IO.File]::ReadAllText('BUNDLED-TOOLS\skyrim-forge\VERSION.txt').Trim()
+          $after = [IO.File]::ReadAllText((Join-Path $root 'VERSION.txt')).Trim()
+          if ($after -ne $source) { throw "Downgraded install was not re-staged: '$after' != '$source'" }
+          Write-Host "re-staged $after, Workspaces intact"

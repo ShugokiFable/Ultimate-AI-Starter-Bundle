@@ -1,0 +1,11 @@
+{
+  "schema": "skyrim-forge-toolchain-source-lock/1",
+  "reviewed": "2026-07-24",
+  "sources": [
+    {"tool":"BSArch","url":"https://github.com/TES5Edit/TES5Edit/blob/fd1e36020b2b5b6217e553dc0038983146a2e2dd/BSArch.dpr","evidence":"MPL-2.0 source, pack/unpack/info modes, -sse, -z and -mt options"},
+    {"tool":"Synthesis.Bethesda.CLI","url":"https://github.com/Mutagen-Modding/Synthesis/blob/0c3c75d61cb942834094f611ee2029b3155c5826/Synthesis.Bethesda.Execution/Commands/RunPatcherPipelineCommand.cs","evidence":"run-pipeline options and required output/settings arguments"},
+    {"tool":"Champollion","url":"https://github.com/Orvid/Champollion","evidence":"LGPL Papyrus decompiler; local configuration/import only"},
+    {"tool":"Cathedral Assets Optimizer","url":"https://gitlab.com/G_ka/Cathedral_Assets_Optimizer","evidence":"MPL-2.0 upstream; profiled asset optimization, not generic silent execution"}
+  ],
+  "rule": "Catalog metadata is evidence for adapter design, not permission to redistribute third-party binaries."
+}
