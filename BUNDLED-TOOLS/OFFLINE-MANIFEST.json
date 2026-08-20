@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-14",
-  "pack_version": "6.0.0",
+  "generated": "2026-08-20",
+  "pack_version": "7.9.0",
   "assets": [
     {
       "file": "codebase-memory-mcp-windows-amd64.zip",
@@ -9,8 +9,8 @@
     },
     {
       "file": "headroom_ai-0.35.0-cp310-abi3-win_amd64.whl",
-      "sha256": "c80533399c911761fb47f49ac02db35c33ef4eb628c6568c213d7d7f0b594bef",
-      "size": 13591679
+      "size": 13591679,
+      "sha256": "c80533399c911761fb47f49ac02db35c33ef4eb628c6568c213d7d7f0b594bef"
     },
     {
       "file": "houseCARL-1.9.0.zip",
@@ -21,6 +21,11 @@
       "file": "ponytail-v4.9.0.zip",
       "size": 1149510,
       "sha256": "361c15a62c49584c40436ed162527d61c067c55eea621cf49c4a8d2de7e77163"
+    },
+    {
+      "file": "Skyrim-Forge-5.2.1.zip",
+      "size": 3732675,
+      "sha256": "6397693ae905a0d65b454baeb81f80fc0c08977d07c43ca334e73e42ffa773c7"
     },
     {
       "file": "spookys-automod-toolkit-v1.11.2.zip",

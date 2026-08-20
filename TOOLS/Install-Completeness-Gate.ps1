@@ -73,6 +73,11 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# powershell.exe -File serializes Claude,Codex as one comma-delimited string.
+$Providers = @($Providers | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+$AllowedProviders = @('Claude','Grok','Codex','Hermes','Kimi')
+foreach ($ProviderName in $Providers) { if ($AllowedProviders -notcontains $ProviderName) { throw "Unknown provider: $ProviderName" } }
+
 # Windows PowerShell 5.1's `Set-Content -Encoding utf8` writes a UTF-8 BOM, and a
 # strict JSON reader rejects a file that starts with one. This pack exists partly
 # because a BOM once made seven skills invisible.
@@ -261,76 +266,23 @@ foreach ($p in $Providers) {
     'Codex' {
       $cfg = Join-Path $env:USERPROFILE '.codex\config.toml'
       if (-not (Test-Path -LiteralPath $cfg)) { Write-Host 'Codex   not installed'; break }
-      if (-not (Test-Path -LiteralPath $pluginSrc)) { Write-Host 'Codex   plugin source missing from pack'; break }
-      if ($CheckOnly) { Write-Host "Codex   would install plugin marketplace at $marketRoot"; break }
+      if ($CheckOnly) { Write-Host 'Codex   skill/native-plugin enforcement (no executable trust prompt)'; break }
 
-      # Materialise the marketplace, with the gates travelling inside the plugin
-      # so ${CLAUDE_PLUGIN_ROOT} resolves without an absolute path.
-      if (Test-Path -LiteralPath $marketRoot) { Remove-Item -LiteralPath $marketRoot -Recurse -Force }
-      New-Item -ItemType Directory -Force -Path $marketRoot | Out-Null
-      # -LiteralPath does NOT expand wildcards, so this silently copied nothing
-      # and left a registered plugin with no files behind it.
-      Copy-Item -Path (Join-Path $pluginSrc '*') -Destination $marketRoot -Recurse -Force
-      $copied = @(Get-ChildItem -Recurse -File $marketRoot -ErrorAction SilentlyContinue).Count
-      if ($copied -lt 4) { Write-Host "Codex   FAILED to materialise the plugin ($copied files)" -ForegroundColor Yellow; break }
-
-      # Codex needs BOTH halves to agree: the superpowers tree beside the
-      # gate, and a manifest that DECLARES it. This marketplace was wiped and
-      # rebuilt from the pack a few lines up, and the pack manifest ships only
-      # completeness-gate - so whatever the AIO installer's Codex branch added
-      # earlier in the same run is gone by now, while config.toml keeps its
-      # [plugins."superpowers@ultimate-bundle"] enabled = true from that run.
-      # Staging the tree without re-declaring it leaves Codex enabling a plugin
-      # its own marketplace does not list.
-      $spPluginSrc = Join-Path $PackRoot 'BUNDLED-TOOLS\plugins\superpowers'
-      $spStaged = $false
-      if (Test-Path -LiteralPath $spPluginSrc) {
-        Copy-Item -Path $spPluginSrc -Destination (Join-Path $marketRoot 'superpowers') -Recurse -Force
-        $spStaged = Test-Path -LiteralPath (Join-Path $marketRoot 'superpowers\skills') -PathType Container
-        Write-Host 'Codex   superpowers plugin staged into the marketplace'
-      } else {
-        Write-Host 'Codex   BUNDLED-TOOLS\plugins\superpowers missing from pack - not declared in the manifest' -ForegroundColor Yellow
-      }
-      # Declared only when the tree actually landed, so the entry can never
-      # point at a directory that is not there.
-      $mkManifest = Join-Path $marketRoot '.claude-plugin\marketplace.json'
-      if ($spStaged -and (Test-Path -LiteralPath $mkManifest -PathType Leaf)) {
-        if (Get-Command Add-V5MarketplacePluginEntry -ErrorAction SilentlyContinue) {
-          $spDesc = 'Agentic skills framework: brainstorming, TDD, systematic debugging, plans, code review.'
-          if (Add-V5MarketplacePluginEntry -ManifestPath $mkManifest -EntryName 'superpowers' -EntryDescription $spDesc -EntrySource './superpowers' -EntryCategory 'productivity') {
-            Write-Host 'Codex   marketplace manifest declares superpowers'
-          } else {
-            Write-Host 'Codex   could not declare superpowers in the marketplace manifest' -ForegroundColor Yellow
-          }
-          # The helper backs the manifest up in place; this directory is rebuilt
-          # every run, so that copy is pure clutter in a folder Codex scans.
-          Get-ChildItem -LiteralPath (Split-Path $mkManifest -Parent) -Filter 'marketplace.json.bak-*' -File -ErrorAction SilentlyContinue |
-            Remove-Item -Force -ErrorAction SilentlyContinue
-        } else {
-          Write-Host 'Codex   TOOLS\V7-Common.ps1 not loaded - superpowers left undeclared' -ForegroundColor Yellow
-        }
-      }
-
+      # Codex deliberately requires explicit trust for executable plugin hooks.
+      # Do not forge [hooks.state] hashes. v7.8 uses the reliability skills and
+      # native provider plugin rules instead, and disables only our legacy gate
+      # entry if an older bundle registered it.
       $toml = [IO.File]::ReadAllText($cfg)
-      $add = ''
-      if ($toml -notmatch '(?m)^\[marketplaces\.ultimate-bundle\]') {
-        $add += "`r`n[marketplaces.ultimate-bundle]`r`nsource_type = `"local`"`r`nsource = '$marketRoot'`r`n"
-      }
-      if ($toml -notmatch '(?m)^\[plugins\."completeness-gate@ultimate-bundle"\]') {
-        $add += "`r`n[plugins.`"completeness-gate@ultimate-bundle`"]`r`nenabled = true`r`n"
-      }
-      # Same for superpowers - only when the staged tree is actually in place,
-      # so the manifest entry never dangles.
-      if (($toml -notmatch '(?m)^\[plugins\."superpowers@ultimate-bundle"\]') -and (Test-Path -LiteralPath (Join-Path $marketRoot 'superpowers') -PathType Container)) {
-        $add += "`r`n[plugins.`"superpowers@ultimate-bundle`"]`r`nenabled = true`r`n"
-      }
-      if ($add) {
+      $updated = [regex]::Replace(
+        $toml,
+        '(?ms)(^\[plugins\."completeness-gate@ultimate-bundle"\]\s*.*?^enabled\s*=\s*)true',
+        '${1}false'
+      )
+      if ($updated -ne $toml) {
         Copy-Item -LiteralPath $cfg -Destination "$cfg.bak-gate-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force
-        Set-Utf8NoBom -Path $cfg -Text ($toml + $add)
-        Write-Host "Codex   plugin registered (Codex will ask once to trust the hooks)"
-      } else {
-        Write-Host "Codex   plugin already registered ($copied files refreshed)"
+        Set-Utf8NoBom -Path $cfg -Text $updated
       }
+      Write-Host 'Codex   skill/native-plugin enforcement (legacy executable gate disabled; trust state untouched)'
     }
 
     'Hermes' {
@@ -348,7 +300,17 @@ foreach ($p in $Providers) {
         if ($g.AllTools) { $args += '--all-tools' }
         & $python @args
       }
-      & $hx hooks list
+      # Auto-accept only the installer-owned hooks for this one verification
+      # process. Never persist hooks_auto_accept=true for future third-party hooks.
+      $previousAccept = $env:HERMES_ACCEPT_HOOKS
+      try {
+        $env:HERMES_ACCEPT_HOOKS = '1'
+        & $hx hooks list
+        if ($LASTEXITCODE -ne 0) { throw "Hermes hook verification failed with exit $LASTEXITCODE." }
+      } finally {
+        if ($null -eq $previousAccept) { Remove-Item Env:HERMES_ACCEPT_HOOKS -ErrorAction SilentlyContinue }
+        else { $env:HERMES_ACCEPT_HOOKS = $previousAccept }
+      }
     }
   }
 }
@@ -358,4 +320,4 @@ Write-Host 'Kimi    gate not wired - Kimi has a plugin system (installed by the 
 Write-Host '        hook engine, but its hook config schema is not established, so nothing is'
 Write-Host '        guessed into config.toml. Skills and the native plugin are installed.'
 Write-Host ''
-Write-Host 'Restart each app. Verify:  hermes hooks doctor  |  Codex: approve the trust prompt once'
+Write-Host 'Restart each app. Verify: hermes hooks doctor. Codex uses skill/native-plugin enforcement without an executable trust prompt.'

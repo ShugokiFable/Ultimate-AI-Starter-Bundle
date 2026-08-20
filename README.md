@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.7.15
+# Ultimate AI Starter Bundle v7.9.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -103,7 +103,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ## What gets installed
 
-- **Provider skills** — 87 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree
+- **Provider skills** — 142 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removes `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
@@ -112,9 +112,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 - **CodeBurn** (optional, via npm/npx)
 - Grok MCP wiring + portable tool discovery
 
-### Not bundled
+### Skyrim Forge
 
-**Skyrim Forge** is not redistributed. Install it yourself and set `SKYRIM_FORGE_ROOT`, or place `INSTALLATION.json` beside the `skyrim-forge` skill.
+**Skyrim Forge 5.2.1 is bundle-managed in v7.9.0.** Both release variants retain the required Forge payload. The AIO installs or repairs it into ONE versionless install root, migrating any version-stamped install onto it, wires supported selected-provider integrations, sets `SKYRIM_FORGE_ROOT`, and proves Forge's machine-readable compatibility contract before the final success banner.
 
 ## Update tools later
 
@@ -243,6 +243,13 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.8.0 — One-shot reliability + fresh-Windows hardening
+
+- 57 new focused generic reliability/reasoning skills (v7.8.0); 142 total per provider after v7.9.0 removed a skill describing an unshipped product.
+- Fresh-Windows provider bootstrap, final installed-state doctor, deterministic UTF-8-safe release packaging, and fail-closed install/runtime gates.
+- Skyrim Forge 5.2.1 is bundle-managed and contract-checked.
+- Hermes defaults are tuned for DeepSeek V4 Flash 0731: maximum main reasoning (`max`), explicit execution/completion/verification guards, 120k compaction threshold, 30% recent-tail preservation, cache-friendly pruning, 1-hour prompt-cache TTL, and reasoning-free mechanical compression.
+
 ### v7.7.9 — Installer respects existing installs; compression tuned
 
 - The AIO keeps existing houseCARL/Spooky installs (`kept-existing`) instead
@@ -300,9 +307,9 @@ are machine-neutral. A live dump of one PC is refused. Existing homes are
 not overwritten. Unrestraint stays in `0-UNRESTRAINT-PACKS` and in the
 instruction files (`CLAUDE.md` / `AGENTS.md` / `SOUL.md`), not in settings.
 
-Forge 5.1.5+ is required for Claude Code. Extract it as
-`Skyrim-Forge-x.y.z` under your Skyrim tools folder; do not clone it into
-Documents. Grok still wedges at 8 running MCP servers.
+Skyrim Forge 5.2.1 is installed and repaired by the v7.9.0 bundle under the
+Skyrim tools layout. Do not create a second manual copy in Documents. Grok's
+MCP registration still respects its running-server safety budget.
 
 ### v7.7.2 — Grok MCP cliff guard
 

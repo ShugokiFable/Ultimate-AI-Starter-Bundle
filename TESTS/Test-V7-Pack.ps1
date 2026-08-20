@@ -429,6 +429,25 @@ foreach ($tree in (Get-ChildItem (Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES
     else { Bad ($tree.Name + ' truth lock copy differs from canonical') }
 }
 
+Section '11. Forge install root is versionless (upgrade cannot orphan five MCP configs)'
+# The failure this exists for: every provider stores the MCP command as a hard
+# absolute path, so a version-stamped install directory renames itself out from
+# under five configs on upgrade, and a provider that cannot spawn its server
+# fails silently -- it just shows no tools. 7.8.0 shipped an installer that
+# extracted to Skyrim-Forge-<version>, and Repair-McpPaths.ps1 existed to clean
+# up after it. The cure is that the directory name never changes.
+$forgeRootGate = Join-Path $PackRoot 'TESTS\Test-ForgeRootResolution.ps1'
+if (-not (Test-Path -LiteralPath $forgeRootGate -PathType Leaf)) {
+    Bad 'TESTS\Test-ForgeRootResolution.ps1 missing from the pack'
+} else {
+    $rootOut = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $forgeRootGate -PackRoot $PackRoot 2>&1 | Out-String
+    if ($rootOut -match 'FORGE ROOT RESOLUTION: PASS') {
+        Good 'Forge install root resolution PASS'
+    } else {
+        Bad ('Forge install root resolution failed:' + [Environment]::NewLine + ($rootOut.Trim()))
+    }
+}
+
 Write-Host ''
 if ($fail -eq 0) {
     Write-Host "PACK GATE: PASS" -ForegroundColor Green

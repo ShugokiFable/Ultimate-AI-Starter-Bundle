@@ -1,6 +1,6 @@
 ---
 name: codebase-memory
-description: Use the codebase knowledge graph for structural code queries, and index repositories correctly so the graph stays small and truthful. Triggers on: explore the codebase, understand the architecture, what functions exist, show me the structure, who calls this function, what does X call, trace the call chain, find callers of, show dependencies, impact analysis, dead code, unused functions, high fan-out, refactor candidates, code quality audit, graph query syntax, Cypher query examples, edge types, how to use search_graph, index a repo, index_repository, re-index, cbmignore, index is bloated, index burns tokens, project shows 0 nodes, rebuild the index.
+description: Use when exploring a codebase graph, tracing callers/dependencies, finding structure or dead code, or indexing/re-indexing codebase-memory.
 ---
 
 # Codebase Memory — Knowledge Graph Tools

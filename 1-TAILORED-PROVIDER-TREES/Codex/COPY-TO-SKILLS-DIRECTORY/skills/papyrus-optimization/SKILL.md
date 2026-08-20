@@ -1,6 +1,6 @@
 ---
 name: papyrus-optimization
-description: Review and optimize Papyrus (`.psc`) scripts — classify each part as broken, suboptimal, or clean, explain what makes it heavy, and give the fix (event-driven, caching, states, native offload). Use when the user shares or points at a `.psc`, asks why a mod causes script lag, stack dumps, or Papyrus log spam, wants to know if a script in the load order is heavy, asks to review, optimize, or speed up a script, or questions a `RegisterForUpdate`/`OnUpdate` loop, a cloak scan, `Utility.Wait` chains, uncached `Game.GetPlayer()`/`GetFormFromFile`, persistence or save-bloat, or whether an update interval is acceptable. Load this before judging any `.psc`, even if it looks like a trivial one-liner — Papyrus cost is latency, not line count, and the heavy patterns hide in scripts that look simple.
+description: Use when reviewing or optimizing Skyrim Papyrus scripts for latency, polling, stack pressure, save bloat, hot loops, or avoidable native calls.
 ---
 
 # Papyrus Optimization

@@ -1,14 +1,6 @@
 ---
 name: code-review-skill
-description: |
-  Provides comprehensive code review guidance for React 19, Vue 3, Angular 17+, Svelte 5,
-  Rust, TypeScript, Java, Java 8, PHP, Ruby, Rails, Python, Django, FastAPI, Go, C#/.NET, Kotlin, Swift,
-  NestJS, C/C++, Zig, CSS/Less/Sass, Qt, and more.
-  Covers architecture review, performance review, security audit, code quality anti-patterns,
-  and common bugs across all ecosystems.
-  Use when: reviewing pull requests, conducting PR reviews, code review, reviewing code changes,
-  establishing review standards, mentoring developers, architecture reviews, security audits,
-  performance reviews, checking code quality, finding bugs, giving feedback on code.
+description: Use when reviewing code, pull requests, architecture, security, performance, maintainability, or language/framework-specific defects.
 allowed-tools:
   - Read
   - Grep

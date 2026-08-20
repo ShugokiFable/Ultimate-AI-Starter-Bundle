@@ -1,6 +1,6 @@
 ---
 name: kid-authoring
-description: Author or interpret KID (Keyword Item Distributor) `_KID.ini` files — runtime, no-ESP distribution of keywords onto items (weapons, armor, ammo, magic effects, potions, scrolls, books, soul gems, spells, enchantments, and more) — using the bundled KID grammar reference rather than invented syntax. Use when the user wants to write or fix a `_KID` ini, add or distribute a keyword to items, tag all iron weapons / heavy armor / food / soul gems / a whole mod's gear with a keyword, filter items by name, archetype, equip slot, enchanted or templated state, or damage/armor/weight range, set up an `ExclusiveGroup` of mutually-exclusive keywords — or asks what an existing `_KID.ini` does, whether a given item gets a keyword from it, why a line isn't applying, or to audit or review a mod's KID lines. This is keywords on ITEMS — keywords on NPCs are SPID, items in containers are CID, editing a record's own fields is SkyPatcher. Load this before writing or reading any KID line — interpreting a `_KID.ini` needs the same non-obvious grammar as writing one (type strings, the `0x123~Plugin.esp` FormID form, per-type traits, `+`/`-`/`*` modifiers), and a misread token silently changes what you think gets tagged.
+description: Use when writing, fixing, interpreting, or auditing KID _KID.ini keyword distribution rules for Skyrim items.
 ---
 
 # KID Authoring
@@ -120,7 +120,7 @@ the reference may be behind and offer to re-derive from the current KID source/d
 
 - **Provenance.** The `references/` corpus is reconstructed from the MIT KID source
   (`powerof3/Keyword-Item-Distributor`, v3.5.0) and the Nexus #55728 description, with forwarded enum
-  values confirmed against `powerof3/CommonLibSSE`. See `references/_CORPUS_STATUS.md`. On a KID version
+  values confirmed against `powerof3/CommonLibSSE`. On a KID version
   bump, re-derive before trusting it for new features.
 - **Lookup without authoring.** The same reference answers "what's the spell-type number for Ability",
   "which body slot is 33", or "what archetypes can I filter magic effects by" — open `value-tables.md`;

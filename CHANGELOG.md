@@ -3,6 +3,59 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.0
+
+A fresh Windows install of 7.8.0 could not complete, and every gate was green.
+Ships 142 canonical skills total, mirrored across all five provider trees.
+
+- **`Install-SkyrimForge.ps1` tested `$contract.compatible`.** Forge has never
+  emitted that field. `-not $null` is `$true`, so the installer threw
+  *"Forge reports incompatible bundle contract"* on every run, and the AIO
+  aborted the whole install on the non-zero exit. Nothing caught it because no
+  test read the installer and Forge's contract source together. It now checks
+  `result`, and `test_forge_contract_check_reads_a_field_forge_emits` compares
+  every `$contract.<field>` the installer reads against the fields the bundled
+  Forge actually returns.
+- **The Forge install directory no longer carries a version.** Every provider
+  stores the MCP command as a hard absolute path, so a version-stamped folder
+  renames itself out from under five configs on every upgrade -- silently,
+  because a provider that cannot spawn its server just shows no tools. Live
+  state when this audit started: `SKYRIM_FORGE_ROOT` pointed at
+  `Skyrim-Forge-5.1.6` (deleted), all five configs pointed at `Skyrim-Forge`
+  (never created), and disk held `Skyrim-Forge-5.2.0` with no virtualenv. The
+  installer now resolves ONE versionless root and *migrates* a stamped install
+  onto it. `TESTS/Test-ForgeRootResolution.ps1` proves migration, move-not-copy,
+  highest-version selection (5.10.0 beats 5.2.0) and the dead-root case.
+- **Skyrim Forge 5.2.1 replaces 5.2.0.** `forge --help`, the GUI window title
+  and the Go self-test fixture all announced the 4.2 series from inside a 5.2.0
+  install. Forge's version gate only compared files someone had remembered to
+  enumerate; it now also sweeps every shipped `.py`/`.ps1`/`.bat`/`.go` for a
+  stale product-version literal.
+- **`skyrim-forge-bridge` removed** -- 143 canonical skills to 142. It described
+  a 0.2.x preview product that no longer exists, told the agent the shipped
+  Forge *cannot write ESP records* (false since 5.x), and shipped
+  `run_forge_audit.ps1` hardcoded to `$HOME\Documents\Apps\...`, which could not
+  run on any machine. Four skills that pointed at it now point at `forge`.
+- **Restated version literals deleted.** `build_release.py` named the archive
+  prefix in four places and the Forge payload in four more; `Test-Installed-State.ps1`
+  restated the pack version three times; both `.bat` titles sat at v7.8.0 all
+  release because `check_versions.py` never looked at them. All derive from
+  `VERSION.txt` or the payload filename now.
+- **The contract suite is version-agnostic.** `TESTS/test_v780_contract.py` is
+  now `TESTS/test_release_contract.py` and reads `VERSION.txt`; a release bump
+  is no longer a rename plus fifteen find-and-replaces.
+- New gates: skills may not document an unshipped product, skill scripts may not
+  hardcode a machine path, provider trees must match canonical exactly, and the
+  offline manifest's declared sizes/hashes must match the bytes on disk.
+
+## 7.8.0
+
+Reliability/one-shot release: 143 canonical skills total, mirrored across all five
+provider trees. Adds 57 focused generic reliability/cognition skills while
+shrinking trigger metadata, integrates Skyrim Forge 5.2.0, hardens fresh-Windows
+bootstrap and final doctoring, and tunes Hermes for high-quality cache-efficient
+DeepSeek V4 Flash 0731 operation. See `docs/history/V7.8.0-CHANGELOG.md`.
+
 ## 7.7.15
 
 New canonical `release-checklist` skill, fanned to all five providers. See

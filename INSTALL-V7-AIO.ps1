@@ -106,7 +106,9 @@ param(
   # ponytail). On by default: a real plugin install where the CLI has a
   # plugin mechanism (Grok/Hermes/Codex), detect-only for Claude, unsupported
   # for Kimi; fallback is the copied skills. -SkipNativePlugins opts out.
-  [switch]$SkipNativePlugins
+  [switch]$SkipNativePlugins,
+  # Fresh-machine default: install missing provider CLIs from each vendor's official Windows installer.
+  [switch]$SkipProviderBootstrap
 )
 
 if ($WithExtras) {
@@ -153,7 +155,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.7.15 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.9.0 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -163,19 +165,27 @@ if (-not $SkipRuntimes -and -not $SkillsOnly) {
   Write-V5Step "Runtime checks"
   $needNet9 = -not (Test-V5DotNetRuntime 'Microsoft\.NETCore\.App 9\.')
   $needAsp9 = -not (Test-V5DotNetRuntime 'Microsoft\.AspNetCore\.App 9\.')
-  if ($needNet9) { Install-V5Winget @('Microsoft.DotNet.Runtime.9') | Out-Null } else { Write-V5Ok '.NET 9 runtime' }
-  if ($needAsp9) { Install-V5Winget @('Microsoft.DotNet.AspNetCore.9') | Out-Null } else { Write-V5Ok 'ASP.NET Core 9' }
+  $needSdk8 = -not (Test-V5DotNetSdk '^8\.')
+  if ($needNet9 -and -not (Install-V5Winget @('Microsoft.DotNet.Runtime.9'))) { throw '.NET 9 runtime installation failed.' } elseif (-not $needNet9) { Write-V5Ok '.NET 9 runtime' }
+  if ($needAsp9 -and -not (Install-V5Winget @('Microsoft.DotNet.AspNetCore.9'))) { throw 'ASP.NET Core 9 installation failed.' } elseif (-not $needAsp9) { Write-V5Ok 'ASP.NET Core 9' }
+  if ($needSdk8 -and -not (Install-V5Winget @('Microsoft.DotNet.SDK.8'))) { throw '.NET 8 SDK installation failed.' } elseif (-not $needSdk8) { Write-V5Ok '.NET 8 SDK' }
   if (-not (Get-Command python -EA SilentlyContinue) -and -not (Get-Command py -EA SilentlyContinue)) {
-    Write-V5Warn 'Python not found (needed for Headroom) - attempting winget'
-    Install-V5Winget @('Python.Python.3.12') | Out-Null
+    Write-V5Warn 'Python not found (needed for Headroom/Forge) - attempting winget'
+    if (-not (Install-V5Winget @('Python.Python.3.12'))) { throw 'Python 3.12 installation failed.' }
   } else { Write-V5Ok 'Python present' }
   if (-not (Get-Command node -EA SilentlyContinue)) {
-    Write-V5Warn 'Node not found (optional CodeBurn) - attempting winget LTS'
-    Install-V5Winget @('OpenJS.NodeJS.LTS') | Out-Null
+    Write-V5Warn 'Node not found (CodeBurn + reasoning MCPs) - attempting winget LTS'
+    if (-not (Install-V5Winget @('OpenJS.NodeJS.LTS'))) { throw 'Node LTS installation failed.' }
   } else { Write-V5Ok "Node $(node -v)" }
-  if (-not (Get-Command dotnet -EA SilentlyContinue)) {
-    Write-V5Warn 'dotnet SDK/runtime host missing - Spooky CLI may need SDK 8'
-  }
+}
+
+# Fresh-machine provider bootstrap. Existing commands are preserved; only missing
+# CLIs use official vendor Windows installers and every command is --version tested.
+if (-not $ToolsOnly -and -not $SkipProviderBootstrap) {
+  $providerBootstrap = Join-Path $PackRoot 'TOOLS\Ensure-Provider-CLIs.ps1'
+  if (-not (Test-Path -LiteralPath $providerBootstrap -PathType Leaf)) { throw 'Provider bootstrap script missing.' }
+  & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $providerBootstrap -Providers ($Providers -join ',')
+  if ($LASTEXITCODE -ne 0) { throw "Provider bootstrap failed with exit code $LASTEXITCODE." }
 }
 
 function Get-ComponentAssetPath {
@@ -1348,6 +1358,21 @@ if (-not $SkipHouseCarlSetup -and -not $SkillsOnly) {
   }
 }
 
+# ---------- Bundled Skyrim Forge ----------
+# The payload version lives in BUNDLED-TOOLS\offline and nowhere else; the
+# installer derives it from the filename. It resolves ONE versionless install
+# root (migrating a version-stamped install onto it), wires selected providers,
+# then requires the compatibility contract.
+if (-not $ToolsOnly -and -not $SkillsOnly) {
+  $forgeInstaller = Join-Path $PackRoot 'TOOLS\Install-SkyrimForge.ps1'
+  if (-not (Test-Path -LiteralPath $forgeInstaller -PathType Leaf)) { throw 'TOOLS\Install-SkyrimForge.ps1 missing from pack.' }
+  $forgePayload = Get-ChildItem -LiteralPath (Join-Path $PackRoot 'BUNDLED-TOOLS\offline') -Filter 'Skyrim-Forge-*.zip' -File -ErrorAction SilentlyContinue | Select-Object -First 1
+  $forgePayloadVersion = if ($forgePayload) { $forgePayload.BaseName -replace '^Skyrim-Forge-', '' } else { 'unknown' }
+  & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $forgeInstaller -PackRoot $PackRoot -Providers ($Providers -join ',') -BundleVersion '7.9.0'
+  if ($LASTEXITCODE -ne 0) { throw "Skyrim Forge installation/contract failed with exit code $LASTEXITCODE." }
+  $installed['skyrim-forge'] = @{ status='installed'; version=$forgePayloadVersion; root=$env:SKYRIM_FORGE_ROOT }
+}
+
 # ---------- Discover + state ----------
 Write-V5Step "Post-install discovery"
 $disc = Join-Path $PackRoot 'TOOLS\discover_tools.ps1'
@@ -1358,7 +1383,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.7.15'
+  version = '7.9.0'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -1419,6 +1444,16 @@ if (-not $ToolsOnly) {
   }
 }
 
+# Final fail-closed proof. Avoid -Switch:$false because powershell.exe -File on
+# Windows PowerShell 5.1 cannot bind explicit Boolean values to [switch].
+$doctorScript = Join-Path $PackRoot 'TOOLS\Test-Installed-State.ps1'
+if (-not (Test-Path -LiteralPath $doctorScript -PathType Leaf)) { throw 'Final installed-state doctor missing.' }
+$doctorArgs = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$doctorScript,'-PackRoot',$PackRoot,'-Providers',($Providers -join ','))
+if ($ToolsOnly) { $doctorArgs += @('-SkipSkills','-SkipForge') }
+elseif ($SkillsOnly) { $doctorArgs += '-SkipForge' }
+& (Join-Path $PSHOME 'powershell.exe') @doctorArgs
+if ($LASTEXITCODE -ne 0) { throw "Final installed-state doctor failed with exit code $LASTEXITCODE." }
+
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Green
 Write-Host " INSTALL COMPLETE" -ForegroundColor Green
@@ -1431,7 +1466,6 @@ Write-Host '  2. Grok: run /mcp and confirm housecarl, codebase-memory-mcp, head
 Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANCE path.'
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
-Write-Host '  6. Optional Forge 5.1.5+: extract to your Skyrim tools folder as Skyrim-Forge-x.y.z (not Documents). Set SKYRIM_FORGE_ROOT or skill INSTALLATION.json.'
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Codex: approve the one-time plugin trust prompt. Hermes: hermes --accept-hooks once.'

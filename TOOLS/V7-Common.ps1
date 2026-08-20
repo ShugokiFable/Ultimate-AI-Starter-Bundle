@@ -100,12 +100,23 @@ function Test-V5DotNetRuntime([string]$Pattern) {
   } catch { return $false }
 }
 
+function Test-V5DotNetSdk([string]$Pattern) {
+  try {
+    $r = & dotnet --list-sdks 2>$null
+    return [bool]($r | Where-Object { $_ -match $Pattern })
+  } catch { return $false }
+}
+
 function Install-V5Winget([string[]]$Ids) {
   $winget = Get-Command winget -ErrorAction SilentlyContinue
-  if (-not $winget) { Write-V5Warn 'winget not available - install runtime manually'; return $false }
+  if (-not $winget) { Write-V5Warn 'winget not available'; return $false }
   foreach ($id in $Ids) {
     Write-V5Step ("winget install " + $id)
-    & winget install --id $id -e --accept-package-agreements --accept-source-agreements | Out-Host
+    & winget install --id $id -e --accept-package-agreements --accept-source-agreements --disable-interactivity | Out-Host
+    if ($LASTEXITCODE -ne 0) {
+      Write-V5Bad ("winget failed for " + $id + " exit=" + $LASTEXITCODE)
+      return $false
+    }
   }
   return $true
 }
@@ -480,6 +491,35 @@ function Repair-V5GrokDuplicatePlugins {
   return $left
 }
 
+function Get-V5ClaudeMarketplaceName {
+  <#
+  The marketplace directory name Claude Code caches a bundled plugin under.
+
+  Claude installs a plugin to ~/.claude/plugins/cache/<marketplace>/<plugin>,
+  and <marketplace> is the `name` inside the plugin's OWN
+  .claude-plugin/marketplace.json - not the plugin id. Superpowers ships as
+  'superpowers-dev', ponytail as 'ponytail', so guessing the id is right half
+  the time and silently wrong the other half.
+
+  Returns $null when the bundle has no manifest for that plugin, so callers
+  can report SKIP instead of inventing a path.
+
+  Restored in 7.9.0: 7.8.0 dropped this function but left
+  TESTS\Test-HarnessRealization.ps1 calling it, so that gate died on its first
+  Claude check. It is not in CI, so nothing noticed.
+  #>
+  param([string]$PluginRoot)
+  $manifest = Join-Path $PluginRoot '.claude-plugin\marketplace.json'
+  if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) { return $null }
+  try {
+    # ReadAllText, never Get-Content -Raw: on Windows PowerShell 5.1 the latter
+    # decodes with the ANSI codepage and mojibakes any non-ASCII owner name.
+    $json = [IO.File]::ReadAllText($manifest) | ConvertFrom-Json
+  } catch { return $null }
+  if ($json -and $json.name) { return [string]$json.name }
+  return $null
+}
+
 function Get-V5PluginOwnedSkillNames {
   <#
   Skill names a bundled plugin owns, computed from the tree at install time -
@@ -608,232 +648,7 @@ function Set-V5HermesPluginScanOff {
     $text = [IO.File]::ReadAllText($ConfigPath)
     $nl = "`r`n"
     if ($text -notmatch "`r`n") { $nl = "`n" }
-    $lines = @($text -split "\r?\n")
-    $pIdx = -1
-    for ($i = 0; $i -lt $lines.Count; $i++) {
-      if ($lines[$i] -match '^plugins\s*:') { $pIdx = $i; break }
-    }
-    if ($pIdx -lt 0) {
-      # No plugins: key at all - append a minimal one.
-      Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
-      $add = $text
-      if (-not $add.EndsWith("`n")) { $add += $nl }
-      $add += $nl + 'plugins:' + $nl + '  scan_on_install: false' + $nl
-      $enc1 = New-Object System.Text.UTF8Encoding($false)
-      [IO.File]::WriteAllText($ConfigPath, $add, $enc1)
-      Write-V5Ok 'Hermes config: appended plugins.scan_on_install: false (no plugins: key existed)'
-      return 'appended-section'
-    }
-    # Section body = the indented/blank lines following 'plugins:'.
-    $secEnd = $lines.Count - 1
-    for ($i = $pIdx + 1; $i -lt $lines.Count; $i++) {
-      if ($lines[$i] -match '^\S') { $secEnd = $i - 1; break }
-    }
-    for ($i = $pIdx + 1; $i -le $secEnd; $i++) {
-      if ($lines[$i] -match '^\s+scan_on_install\s*:') {
-        Write-V5Ok 'Hermes config: plugins.scan_on_install already set - left as-is'
-        return 'already-present'
-      }
-    }
-    $insertAfter = $pIdx
-    for ($i = $pIdx + 1; $i -le $secEnd; $i++) {
-      if ($lines[$i] -match '^\s+disabled\s*:') {
-        $insertAfter = $i
-        # 'disabled:' with an empty value may own a '- item' block sequence;
-        # inserting between the key and its items would break the YAML.
-        if ($lines[$i] -match '^\s+disabled\s*:\s*(#.*)?$') {
-          for ($j = $i + 1; $j -le $secEnd; $j++) {
-            if ($lines[$j] -match '^\s+-\s') { $insertAfter = $j } else { break }
-          }
-        }
-        break
-      }
-    }
-    Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
-    $newLines = @()
-    $newLines += $lines[0..$insertAfter]
-    $newLines += '  scan_on_install: false'
-    if (($insertAfter + 1) -le ($lines.Count - 1)) { $newLines += $lines[($insertAfter + 1)..($lines.Count - 1)] }
-    $enc2 = New-Object System.Text.UTF8Encoding($false)
-    [IO.File]::WriteAllText($ConfigPath, ($newLines -join $nl), $enc2)
-    Write-V5Ok 'Hermes config: plugins.scan_on_install: false (bundled plugins trip the scanner with false-positive traversal findings)'
-    return 'inserted'
-  } catch {
-    Write-V5Warn ('Hermes scan_on_install edit failed: ' + $_.Exception.Message)
-    return 'failed'
-  }
-}
-
-function Get-V5ClaudeMarketplaceName {
-  <#
-  The marketplace name a bundled plugin publishes itself under, read from its
-  own .claude-plugin\marketplace.json.
-
-  Never hardcode this: superpowers publishes as 'superpowers-dev' and ponytail
-  as 'ponytail', and the name is what Claude uses for BOTH the install target
-  (<plugin>@<marketplace>) and the cache directory it lands in
-  (plugins\cache\<marketplace>\<plugin>). A guessed name makes the
-  post-install check look at the wrong path and report a false failure on an
-  install that actually worked.
-
-  Returns the name, or '' when the plugin ships no Claude marketplace.
-  #>
-  param([Parameter(Mandatory)][string]$PluginRoot)
-  try {
-    $mk = Join-Path $PluginRoot '.claude-plugin\marketplace.json'
-    if (-not (Test-Path -LiteralPath $mk -PathType Leaf)) { return '' }
-    $doc = ([IO.File]::ReadAllText($mk)) | ConvertFrom-Json
-    if ($doc -and $doc.name) { return [string]$doc.name }
-    return ''
-  } catch {
-    Write-V5Warn ('could not read marketplace name from ' + $PluginRoot + ': ' + $_.Exception.Message)
-    return ''
-  }
-}
-
-function Install-V5KimiPlugin {
-  <#
-  Install a bundled plugin into Kimi Code natively, without the TUI.
-
-  kimi-code 0.27.0 has no `kimi plugin` SUBCOMMAND, which is what earlier
-  versions of this installer observed - and then wrongly concluded that Kimi
-  has no plugin system at all, so Kimi got copied skills only. It does have
-  one; it is driven by the in-session `/plugins` slash command, and prompt
-  mode cannot stand in for that because it demands a login first.
-
-  Reading the shipped CLI settles the contract:
-    - `/plugins install` copies the source to <home>\plugins\managed\<id>
-    - the registry is <home>\plugins\installed.json, {version:1, plugins:[]}
-    - each persisted entry is thin: id, root, source, enabled, installedAt,
-      updatedAt, originalSource, capabilities, github
-    - on load, materialize(entry) re-runs parseManifest(entry.root), so
-      manifest, skillCount and state are DERIVED from disk every time
-
-  That last point is what makes writing the registry safe rather than
-  brittle: nothing here has to reproduce Kimi's manifest parsing, and a Kimi
-  upgrade that changes the manifest schema cannot leave a stale record behind.
-
-  The manifest itself is read from <root>\plugin.json, else
-  <root>\.kimi-plugin\plugin.json - which is where the bundled Superpowers
-  Kimi adapter (sessionStart.skill + the Kimi tool mapping) already lives.
-
-  Returns @{ ok; status; root; reason }.
-  #>
-  param(
-    [Parameter(Mandatory)][string]$KimiHome,
-    [Parameter(Mandatory)][string]$PluginId,
-    [Parameter(Mandatory)][string]$SourceRoot
-  )
-  $res = [ordered]@{ ok = $false; status = 'failed'; root = ''; reason = '' }
-  try {
-    if (-not (Test-Path -LiteralPath $SourceRoot -PathType Container)) {
-      $res.reason = 'source plugin tree missing: ' + $SourceRoot
-      return $res
-    }
-    # Refuse to install something Kimi will only reject at load time.
-    $mRoot = Join-Path $SourceRoot 'plugin.json'
-    $mDir  = Join-Path $SourceRoot '.kimi-plugin\plugin.json'
-    if (-not (Test-Path -LiteralPath $mRoot -PathType Leaf) -and
-        -not (Test-Path -LiteralPath $mDir -PathType Leaf)) {
-      $res.reason = 'no plugin.json or .kimi-plugin\plugin.json in ' + $SourceRoot
-      return $res
-    }
-
-    $managedDir  = Join-Path (Join-Path $KimiHome 'plugins') 'managed'
-    $managedRoot = Join-Path $managedDir $PluginId
-    New-Item -ItemType Directory -Force -Path $managedDir | Out-Null
-
-    # Stage then swap, the way the CLI does: a half-copied plugin tree left in
-    # place by an interrupted copy would load as a broken plugin.
-    $staging = Join-Path $managedDir ($PluginId + '-staging-' + (Get-Date -Format 'yyyyMMddHHmmssfff'))
-    Copy-Item -LiteralPath $SourceRoot -Destination $staging -Recurse -Force
-    if (Test-Path -LiteralPath $managedRoot) {
-      Remove-Item -LiteralPath $managedRoot -Recurse -Force
-    }
-    Move-Item -LiteralPath $staging -Destination $managedRoot -Force
-    $res.root = $managedRoot
-
-    # Merge into installed.json, preserving every other plugin's entry as-is.
-    $store = Join-Path (Join-Path $KimiHome 'plugins') 'installed.json'
-    $plugins = @()
-    if (Test-Path -LiteralPath $store -PathType Leaf) {
-      $existing = $null
-      try {
-        $existing = ([IO.File]::ReadAllText($store)) | ConvertFrom-Json
-      } catch {
-        Copy-Item -LiteralPath $store -Destination ($store + '.bad-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
-        Write-V5Warn ('Kimi installed.json was unparseable - kept a copy and rebuilt it')
-      }
-      if ($existing -and $existing.plugins) {
-        foreach ($p in @($existing.plugins)) {
-          if ($p.id -eq $PluginId) { continue }   # replaced below
-          $keep = [ordered]@{}
-          foreach ($prop in $p.PSObject.Properties) { $keep[$prop.Name] = $prop.Value }
-          $plugins += ,$keep
-        }
-      }
-    }
-
-    $now = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffZ')
-    $entry = [ordered]@{
-      id          = $PluginId
-      root        = $managedRoot
-      source      = 'local-path'
-      enabled     = $true
-      installedAt = $now
-      updatedAt   = $now
-    }
-    $plugins += ,$entry
-
-    $doc = [ordered]@{ version = 1; plugins = $plugins }
-    $json = $doc | ConvertTo-Json -Depth 12
-    $enc = New-Object System.Text.UTF8Encoding($false)
-    New-Item -ItemType Directory -Force -Path (Split-Path $store -Parent) | Out-Null
-    $tmp = $store + '.tmp'
-    [IO.File]::WriteAllText($tmp, $json, $enc)
-    if (Test-Path -LiteralPath $store) { Remove-Item -LiteralPath $store -Force }
-    Move-Item -LiteralPath $tmp -Destination $store -Force
-
-    $res.ok = $true
-    $res.status = 'installed'
-    return $res
-  } catch {
-    $res.reason = $_.Exception.Message
-    return $res
-  }
-}
-
-function Restore-V5HermesPluginScan {
-  <#
-  Undo the temporary scan_on_install override once the bundled plugins are in.
-
-  Turning Hermes' install-time security scanner off permanently would weaken
-  every FUTURE third-party plugin the operator installs, which is not ours to
-  decide - Hermes treats plugin loading as an explicit trust boundary. So the
-  override is scoped to our own install window and removed here.
-
-  This removes a single line rather than restoring a snapshot of the file: the
-  Hermes gateway re-serializes config.yaml on its own schedule (observed ~13
-  min after start), so a whole-file restore taken before the install would
-  clobber whatever the gateway legitimately wrote in between.
-
-  $State is the string returned by Set-V5HermesPluginScanOff. When it reports
-  'already-present' the operator had their own setting and it is left alone.
-
-  Returns 'removed' | 'kept-user-setting' | 'absent' | 'failed'.
-  #>
-  param([string]$ConfigPath, [string]$State)
-  try {
-    if ($State -eq 'already-present') {
-      Write-V5Ok 'Hermes config: scan_on_install was the operator''s own setting - left as-is'
-      return 'kept-user-setting'
-    }
-    if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) { return 'absent' }
-    $text = [IO.File]::ReadAllText($ConfigPath)
-    $nl = "`r`n"
-    if ($text -notmatch "`r`n") { $nl = "`n" }
-    $lines = @($text -split "?
-")
+    $lines = @($text -split '\r?\n')
     $keep = @()
     $dropped = 0
     $inPlugins = $false

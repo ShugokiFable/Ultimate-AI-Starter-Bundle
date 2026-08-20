@@ -141,7 +141,7 @@ function Find-SkyrimSe {
     $steam = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Valve\Steam' -ErrorAction SilentlyContinue).InstallPath
     $vdf = Join-Path $steam 'steamapps\libraryfolders.vdf'
     if (Test-ExistingPath $vdf) {
-      $txt = Get-Content -LiteralPath $vdf -Raw
+      $txt = [IO.File]::ReadAllText($vdf)
       $paths = [regex]::Matches($txt, '"path"\s+"([^"]+)"') | ForEach-Object { $_.Groups[1].Value -replace '\\\\','\' }
       foreach ($lib in $paths) {
         $p = Join-Path $lib 'steamapps\common\Skyrim Special Edition'
@@ -395,7 +395,7 @@ function Update-GrokMcp {
   if (Test-ExistingPath $configPath) {
     $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
     Copy-Item -LiteralPath $configPath -Destination "$configPath.before-housecarl-$ts.bak" -Force
-    $content = Get-Content -LiteralPath $configPath -Raw
+    $content = [IO.File]::ReadAllText($configPath)
   }
   $sectionPattern = '(?ms)^[ \t]*\[mcp_servers\.(?:housecarl|"housecarl"|''housecarl'')\][ \t]*\r?\n.*?(?=^[ \t]*\[|\z)'
   $content = [regex]::Replace($content, $sectionPattern, '')
@@ -436,7 +436,7 @@ function Update-GrokMcp-FlatEnv {
   if (Test-ExistingPath $configPath) {
     $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
     Copy-Item -LiteralPath $configPath -Destination "$configPath.before-housecarl-$ts.bak" -Force
-    $content = Get-Content -LiteralPath $configPath -Raw
+    $content = [IO.File]::ReadAllText($configPath)
   }
   $sectionPattern = '(?ms)^[ \t]*\[mcp_servers\.(?:housecarl|"housecarl"|''housecarl'')\][ \t]*\r?\n.*?(?=^[ \t]*\[|\z)'
   $content = [regex]::Replace($content, $sectionPattern, '')

@@ -18,7 +18,7 @@
 | Superpowers | yes zip + plugins/ | obra/superpowers |
 | Ponytail | yes zip + plugins/ | DietrichGebert/ponytail |
 | CodeBurn | npx/npm | getagentseal/codeburn |
-| Skyrim Forge | **not bundled** | your product install |
+| Skyrim Forge 5.2.1 | **required payload bundled** | installed/repaired automatically by v7.9.0 |
 
 ## Later updates
 
@@ -34,6 +34,6 @@
 - Python 3 (Headroom)
 - Node.js LTS (CodeBurn)
 
-## Manual only
+## Bundle-managed
 
-Skyrim Forge 5.1.5+ — extract as `Skyrim-Forge-x.y.z` under your Skyrim tools folder (not Documents). Set `SKYRIM_FORGE_ROOT` or skill `INSTALLATION.json`. Claude Code needs 5.1.5+ (`resultType` on `tools/call`).
+Skyrim Forge 5.2.1 ships with v7.9.0 and is installed, compatibility-checked, skill-wired, and MCP-registered by the AIO installer. `SKYRIM_FORGE_ROOT` and the per-provider skill descriptor are generated automatically; no manual extraction is part of a fresh install. The install directory never carries a version suffix, so an upgrade cannot disconnect a provider whose MCP command is an absolute path.

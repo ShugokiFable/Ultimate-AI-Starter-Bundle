@@ -1,17 +1,20 @@
 {
- "pack": "Ultimate AI Starter Bundle",
- "version": "7.7.15",
- "generated": "2026-08-20",
- "base": "v7.7.11",
- "canonical_skills": 85,
- "provider_trees": 10,
- "registry_entries": 85,
- "gates": [
-  "TESTS/Test-V7-Pack.ps1",
-  "TOOLS/audit_skills.py",
-  "TOOLS/hooks/completeness_gate.py --selftest",
-  "TOOLS/hooks/assumption_gate.py --selftest"
- ],
- "runtime_status": "tool-validated",
- "notes": "v7.7.15: Claude Desktop app MCP support. Add-Reasoning-MCPs.ps1 wrote only ~/.claude.json (the Claude Code CLI surface); the Claude Desktop app reads its own claude_desktop_config.json (normal %APPDATA%\\Claude or Microsoft Store LocalCache\\Roaming\\Claude) and showed zero servers. The script now detects the desktop config for both install types and merges context7 / sequential-thinking / github there, reusing the existing backup-and-merge writer. ~/.claude.json behaviour unchanged. PACK GATE: PASS."
+  "pack": "Ultimate AI Starter Bundle",
+  "version": "7.9.0",
+  "generated": "2026-08-20",
+  "base": "v7.8.0",
+  "canonical_skills": 142,
+  "provider_trees": 5,
+  "registry_entries": 142,
+  "gates": [
+    "TESTS/Test-V7-Pack.ps1",
+    "TESTS/test_release_contract.py",
+    "TESTS/test_hermes_bootstrap.py",
+    "TOOLS/audit_skills.py",
+    "TOOLS/hooks/completeness_gate.py --selftest",
+    "TOOLS/hooks/assumption_gate.py --selftest",
+    "TESTS/Test-ForgeRootResolution.ps1"
+  ],
+  "runtime_status": "release-candidate; local static/artifact gates require final extracted-zip pass; Windows CI remains authoritative for Windows PowerShell 5.1 execution",
+  "notes": "v7.9.0: fixes a fresh install of 7.8.0 that could not complete - Install-SkyrimForge.ps1 tested $contract.compatible, a field Forge has never emitted, so it threw on every run and the AIO aborted. The Forge install directory is now versionless and an existing version-stamped install is migrated onto it, ending the upgrade-renames-the-folder-and-disconnects-five-MCP-configs cycle; TESTS/Test-ForgeRootResolution.ps1 gates it. Bundles Skyrim Forge 5.2.1 (help text, GUI title and Go self-test fixture all announced the 4.2 series from a 5.2.0 install; its version gate now sweeps shipped source instead of an enumerated file list). Removes skyrim-forge-bridge, which documented a preview product that no longer exists, and the personal-path script it shipped: 142 canonical skills across 5 provider trees. The release-contract suite is version-agnostic and reads VERSION.txt."
 }
