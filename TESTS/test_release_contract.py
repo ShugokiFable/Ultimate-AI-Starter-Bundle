@@ -13,6 +13,7 @@ from __future__ import annotations
 import io
 import json
 import re
+import subprocess
 import sys
 import zipfile
 import ast
@@ -616,6 +617,49 @@ def test_hermes_mcp_registration_is_noninteractive_and_bounded() -> None:
     reasoning = read(ROOT / "TOOLS" / "Add-Reasoning-MCPs.ps1")
     assert "'y' | & $hx mcp add" not in reasoning, "reasoning-MCP wiring still hides Hermes interactive prompts"
 
+def test_linux_helpers_keep_their_execute_bit() -> None:
+    """Every shipped Linux ELF must be executable in git AND in the archives.
+
+    CI found this the hard way: `forge-repository-validation` runs the helper
+    straight from a fresh checkout and died with PermissionError, because the
+    tree is authored on Windows where `core.filemode` is false and git recorded
+    100644. The release builder had the mirror-image bug -- it named one path
+    instead of sweeping, so the sibling under `skyrim_forge/bin` shipped 0644.
+    """
+    helpers = sorted(
+        p.relative_to(ROOT).as_posix()
+        for p in ROOT.rglob("linux-x64/SkyrimForge.Native")
+        if p.is_file()
+    )
+    assert helpers, "no Linux native helper found; this gate is aimed at nothing"
+
+    spec = importlib.util.spec_from_file_location(
+        "uabs_build_release_modes", ROOT / "TOOLS" / "build_release.py"
+    )
+    assert spec and spec.loader
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
+    wrong = [h for h in helpers if builder._archive_mode(Path(h)) != 0o100755]
+    assert not wrong, f"release archives would ship these Linux helpers non-executable: {wrong}"
+
+    # The git index is the other half. Absent in an extracted release, which is
+    # exactly when there is no index to be wrong about.
+    if not (ROOT / ".git").exists():
+        return
+    listing = subprocess.run(
+        ["git", "ls-files", "-s", "--", *helpers],
+        cwd=ROOT, capture_output=True, text=True, check=True,
+    ).stdout.splitlines()
+    modes = {row[1]: row[0].split()[0] for row in (line.split("\t", 1) for line in listing) if len(row) == 2}
+    missing = [h for h in helpers if h not in modes]
+    assert not missing, f"Linux helper is not tracked by git: {missing}"
+    not_exec = sorted(path for path, mode in modes.items() if mode != "100755")
+    assert not not_exec, (
+        f"git records these Linux helpers as non-executable: {not_exec}. "
+        "Fix with: git update-index --chmod=+x <path>"
+    )
+
+
 def test_version_sources() -> None:
     assert VERSION.startswith("v") and BARE.count(".") == 2, f"VERSION.txt is not vX.Y.Z: {VERSION!r}"
     assert VERSION.lower() in read(ROOT / "README.md").splitlines()[0].lower()
@@ -937,6 +981,7 @@ def main() -> int:
         test_windows_ci_and_ps51_static_contract,
         test_release_contains_no_accidental_next_major_version_surface,
         test_hermes_mcp_registration_is_noninteractive_and_bounded,
+        test_linux_helpers_keep_their_execute_bit,
         test_version_sources,
         test_forge_install_directory_is_never_version_stamped,
         test_forge_health_check_reads_fields_forge_emits,

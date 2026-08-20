@@ -18456,8 +18456,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 53767,
-  "sha256": "e4393653fe8f87f22b4af82314792254abca4729156cae2549104f19144f4315"
+  "size": 55871,
+  "sha256": "330e638738597cbb20c9975c1de335583fbbcd14b5667ef6aad406380471963d"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18561,8 +18561,8 @@
  },
  {
   "path": "TOOLS/build_release.py",
-  "size": 10200,
-  "sha256": "82a8b5257fe9835d4512e5eb9852ca9d447af4a516b7f9c4e64a2d6f867e2087"
+  "size": 10433,
+  "sha256": "5d9aa842ebb5694c8bae44cc03e705eb4fd1ed2aaa6e7cd4e48a3a696c56b1eb"
  },
  {
   "path": "TOOLS/discover_tools.ps1",
