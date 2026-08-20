@@ -306,6 +306,20 @@ else {
             if ($null -eq $got2) { Good 'resolver refuses to guess unversioned paths' }
             else { Bad "resolver invented a replacement: $got2" }
 
+            # The bundle registers houseCARL via the HOUSECARL_MCP env, and the
+            # resolver must repoint a dead housecarl-mcp.exe from that registry
+            # (its live root is not a version-stamped sibling of the dead path).
+            $envMcpBak = [Environment]::GetEnvironmentVariable('HOUSECARL_MCP','User')
+            try {
+              [Environment]::SetEnvironmentVariable('HOUSECARL_MCP', $liveExe, 'User')
+              $got3 = Resolve-LivePath (Join-Path (Join-Path $sandbox 'houseCARL') 'server\housecarl-mcp.exe')
+              if ($got3 -eq $liveExe) { Good 'dead housecarl-mcp.exe repoints from HOUSECARL_MCP env' }
+              else { Bad "env fallback returned '$got3', expected '$liveExe'" }
+            } finally {
+              if ($null -eq $envMcpBak) { [Environment]::SetEnvironmentVariable('HOUSECARL_MCP', $null, 'User') }
+              else { [Environment]::SetEnvironmentVariable('HOUSECARL_MCP', $envMcpBak, 'User') }
+            }
+
             # Escaping. A JSON config stores every separator doubled; writing a
             # lone backslash back produces an invalid escape and an unparseable
             # config. Two earlier attempts got this wrong in opposite directions

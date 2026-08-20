@@ -102,6 +102,17 @@ function Resolve-LivePath([string]$dead) {
       return (($cands | Sort-Object Version -Descending)[0]).Full
     }
   }
+  # The bundle registers houseCARL via the HOUSECARL_MCP user env. It is the
+  # one server whose live root is NOT a version-stamped sibling of the dead
+  # path (users move it to a tools drive; the sibling rule cannot cross
+  # drives, so the loop above finds nothing and this used to report
+  # "no replacement found" for a perfectly live server). That env is the
+  # bundle's own registry - repoint from it, never guess.
+  if ((Get-NormalPath $dead) -match '(?i)housecarl-mcp\.exe$') {
+    $envMcp = [Environment]::GetEnvironmentVariable('HOUSECARL_MCP','User')
+    if (-not $envMcp) { $envMcp = $env:HOUSECARL_MCP }
+    if ($envMcp -and (Test-Path -LiteralPath (Get-NormalPath $envMcp))) { return (Get-NormalPath $envMcp) }
+  }
   return $null
 }
 

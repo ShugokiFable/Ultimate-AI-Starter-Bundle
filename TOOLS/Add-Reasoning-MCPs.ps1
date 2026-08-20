@@ -88,7 +88,7 @@ $servers = @(
   },
   @{
     id   = 'github'
-    args = @('-y', '@modelcontextprotocol/server-github')
+    args = @('-y', '@modelcontextprotocol/server-github@2025.4.8')
     note = 'repos, PRs, releases, CI status'
     env  = @{}
     key  = 'GITHUB_PERSONAL_ACCESS_TOKEN'
