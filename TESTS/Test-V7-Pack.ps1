@@ -376,6 +376,9 @@ if ($aio -match 'Repair-V5GrokDuplicatePlugins') {
 if ($aio -match "Invoke-V5SkillDedupe -Provider 'Grok'") {
     Bad 'AIO still dedupes Grok superpowers copies (TUI then fails with no reason)'
 } else { Good 'AIO leaves Grok superpowers copies in ~/.grok/skills' }
+if ($aio -match "Invoke-V5SkillDedupe -Provider 'Hermes'") {
+    Bad 'AIO still dedupes Hermes superpowers/ponytail copies (slash commands and autofill then disappear)'
+} else { Good 'AIO leaves Hermes plugin copies in the skills dir (slash commands load that path)' }
 $grokStarter = [IO.File]::ReadAllText((Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\Grok\COPY-TO-PROVIDER-HOME\config.toml'))
 if ($grokStarter -match '(?m)^\s*skills\s*=\s*false\s*$') {
     Good 'Grok starter config.toml sets compat.claude skills = false'

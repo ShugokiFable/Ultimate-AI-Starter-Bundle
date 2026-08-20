@@ -153,7 +153,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.7.6 - ALL-IN-ONE INSTALLER (Grok MCP cliff guard parse fix)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.7.7 - ALL-IN-ONE INSTALLER (Hermes skill copies stay)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -485,7 +485,12 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
             }
           }
           if ($hEntry.native) {
-            Invoke-V5SkillDedupe -Provider 'Hermes' -PluginId $pluginId -SkillsDir $skillsDir -StateEntry $hEntry
+            # Keep the copies. Hermes derives /skill-name slash commands and
+            # desktop autofill from the skills dir (scan_skill_commands scans
+            # SKILLS_DIR, not plugin registrations). Dedupe left that path
+            # missing and /using-superpowers etc. stopped autocompleting -
+            # same failure class as Grok's TUI (v7.7.5).
+            Write-V5Ok ('Hermes: ' + $pluginId + ' copies stay under ' + $skillsDir + ' (slash commands load that path; plugin path is opaque)')
           }
         }
         # Restart the gateway ONLY when a plugin actually changed hands and the

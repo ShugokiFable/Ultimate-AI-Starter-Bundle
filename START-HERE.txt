@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.7.6 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.7.7 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -131,6 +131,7 @@ process, no yes-man, verify-don't-assume).
 
 READ NEXT
 ---------
+  docs\history\V7.7.7-CHANGELOG.md  Hermes keeps plugin skill copies: /using-superpowers slash commands + autofill work again
   docs\history\V7.7.6-CHANGELOG.md  MCP cliff guard parse fix: $((if(...)) -> $(if(...); no more 'if not recognized' error
   docs\history\V7.6.7-CHANGELOG.md  root folders renumbered 0-1-2-3; names say what they are
   docs\history\V7.6.6-CHANGELOG.md  dead skill tree removed; unrestraint cleanup; MCP sweep
