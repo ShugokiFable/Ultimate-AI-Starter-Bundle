@@ -3,6 +3,16 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.14
+
+Live → bundle sync of provider touches (portable parts only):
+
+- **Claude settings.json**: add `enabledPlugins` — claude-code-setup,
+  claude-mem, headroom, obsidian, ponytail, superpowers (marketplaces were
+  already known; the enable flags were missing).
+- **Codex config.toml**: add `model = "gpt-5.6-sol"` default (parent and
+  installer copy mirrored).
+
 ## 7.7.13
 
 Bundle == live-machine reconciliation after a local folder rename:
