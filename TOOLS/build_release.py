@@ -95,12 +95,16 @@ def _core_manifest_bytes(root:Path)->bytes:
     rows.sort(key=lambda r:str(r['path']))
     return (json.dumps(rows,indent=1)+'\n').encode('utf-8')
 
+# Any Linux ELF the tree ships, wherever it ships it. Naming one path missed
+# skyrim_forge/bin/linux-x64/SkyrimForge.Native, which went out at 0644 while
+# its sibling went out at 0755.
+LINUX_EXECUTABLES=('linux-x64/SkyrimForge.Native',)
 def _archive_mode(rel:Path)->int:
     # ZIPs created on Windows do not preserve POSIX execute bits. The merged
-    # Forge tree carries a published Linux helper that repository validation
+    # Forge tree carries published Linux helpers that repository validation
     # executes after extraction, so encode that portable contract explicitly.
     posix=rel.as_posix()
-    if posix.endswith('/writer/published/linux-x64/SkyrimForge.Native'):
+    if any(posix.endswith(suffix) for suffix in LINUX_EXECUTABLES):
         return 0o100755
     return 0o100644
 
