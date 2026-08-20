@@ -3,6 +3,11 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.15
+
+New canonical `release-checklist` skill, fanned to all five providers. See
+`docs/history/V7.7.15-CHANGELOG.md`.
+
 ## 7.7.14
 
 Live → bundle sync of provider touches (portable parts only):
