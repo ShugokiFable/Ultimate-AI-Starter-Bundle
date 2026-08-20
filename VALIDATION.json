@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.7.9",
- "generated": "2026-08-19",
- "base": "v7.7.8",
+ "version": "7.7.10",
+ "generated": "2026-08-20",
+ "base": "v7.7.9",
  "canonical_skills": 85,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.7.9: AIO keeps existing houseCARL/Spooky installs (HOUSECARL_MCP / SPOOKY_AUTOMOD_ROOT respected); Hermes template compression tuned (threshold 0.14, protect_last_n 6, in_place, idle compact)."
+ "notes": "v7.7.10: audit of v7.7.2-v7.7.9. The SPID/KID framework truth lock had been dead since v7.7.8 (FileNotFoundError on deleted skill paths) and no gate ran it - repointed at the merged spid-authoring/kid-authoring owners, made line-wrap proof, and wired into the pack gate as section 10. Harness 'no duplicate skills' asserted nothing for 8 of 10 provider/plugin pairs and was inverted for Grok/Hermes after v7.7.5/v7.7.7 - replaced with a policy-aware delivery check, which then caught 3 Superpowers skill copies missing from the live Hermes install. VALIDATION.json restored to LF. The v7.7.8 SPID/KID consolidation itself was checked against FRAMEWORK-SOURCE-LOCK.json and is sound. PACK GATE: PASS."
 }

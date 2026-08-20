@@ -3,6 +3,46 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.10
+
+Audit of everything between v7.7.2 and v7.7.9. Every gate was green; two of
+them were green because they had stopped testing anything.
+
+- **The SPID/KID framework truth lock had been dead since v7.7.8.** When that
+  release consolidated `skyrim-spid-distribution` / `skyrim-kid-distribution`
+  into `spid-authoring` / `kid-authoring`, `verify_framework_truth.py` kept
+  reading the deleted paths and raised `FileNotFoundError` on every run - in
+  the canonical tree and all five provider trees. This is the script that pins
+  the exact parser facts the pack refuses to let an agent invent. It now reads
+  the whole owning skill (SKILL.md + references), normalizes whitespace so a
+  token survives a line wrap, and **reports a finding instead of crashing**
+  when an owner goes missing.
+- **No gate ever ran it** - the actual root cause, and why it could rot for a
+  full release. Pack gate section 10 now runs it and checks the five provider
+  copies against canonical.
+- **The harness `no duplicate skills` check asserted nothing.** It keyed off a
+  `$pstateAll` map written for `superpowers` in three branches and never for
+  `ponytail` or for Claude, so 8 of 10 provider/plugin pairs printed PASS
+  while testing nothing - and after v7.7.5/v7.7.7 made copies *required* for
+  Grok and Hermes, the check was asserting the opposite of the policy. It is
+  now policy-aware: dedupe providers must have no shadowing copy, keep-copies
+  providers must have every copy, and anything unconfirmed reports SKIP rather
+  than a free PASS.
+- **That fix immediately caught a live defect.** Hermes was missing three
+  Superpowers skill copies - `requesting-code-review`, `systematic-debugging`,
+  `test-driven-development`. v7.7.7 restored 11 of 14 from the dedupe backups
+  and the shortfall was invisible. Those three `/slash` commands were dead.
+  Restored from the pack.
+- `VALIDATION.json` had flipped LF -> CRLF, against the pack's own byte-fidelity
+  rule. Reverted. It was the only flip in 163 changed files.
+
+**Checked and cleared:** the v7.7.8 SPID/KID consolidation itself. Nine of ten
+pinned truth tokens no longer matched, which looked like lost grammar. Every
+locked claim in `FRAMEWORK-SOURCE-LOCK.json` survives in the AUTHORITY
+references, and the generative rules there (`[Final]Death<Type>`,
+`[Global]Linked[Final][Death]<Type>`) are strictly more complete than the
+`DeathItem` example they replaced. The tokens were stale, not the knowledge.
+
 ## 7.7.9
 
 Installer respects existing tool installs; tuned Hermes compression.

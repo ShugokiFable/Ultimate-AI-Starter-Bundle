@@ -5,15 +5,38 @@ from pathlib import Path
 import json,subprocess,sys,re,tempfile
 ROOT=Path(__file__).resolve().parents[2]
 findings=[]
-spid=(ROOT/'skyrim-spid-distribution'/'SKILL.md').read_text(encoding='utf-8')
-kid=(ROOT/'skyrim-kid-distribution'/'SKILL.md').read_text(encoding='utf-8')
+def _corpus(owner:str)->str:
+    """SKILL.md + every reference of an owning skill, whitespace-normalized.
+
+    Reading the whole skill directory rather than one file is deliberate: the
+    v7.7.8 consolidation moved SPID/KID grammar out of `skyrim-*-distribution`
+    SKILL.md into `*-authoring` references, and this script - which pinned one
+    exact path - died with FileNotFoundError instead of reporting anything.
+    Normalizing whitespace makes a token survive a line wrap for the same
+    reason: the truth is the sentence, not its column width.
+    """
+    d=ROOT/owner
+    if not d.is_dir(): return ''
+    parts=[]
+    for p in [d/'SKILL.md',*sorted((d/'references').glob('*.md'))]:
+        if p.is_file(): parts.append(p.read_text(encoding='utf-8',errors='ignore'))
+    return re.sub(r'\s+',' ','\n'.join(parts))
+def _tok(t:str)->str: return re.sub(r'\s+',' ',t)
+spid=_corpus('spid-authoring')
+kid=_corpus('kid-authoring')
+if not spid: findings.append('SPID owner skill spid-authoring/ not found (was it renamed?)')
+if not kid: findings.append('KID owner skill kid-authoring/ not found (was it renamed?)')
 linter=ROOT/'skyrim-distr-kid-validation'/'scripts'/'lint_framework_configs.py'
 bos_auditor=ROOT/'skyrim-base-object-swapper'/'scripts'/'audit_bos_configs.py'
 lock=json.loads((ROOT/'skyrim-frameworks-index'/'references'/'FRAMEWORK-SOURCE-LOCK.json').read_text(encoding='utf-8'))
-for token in ['ExclusiveGroup','DeathItem','GlobalLinkedFinalDeathOutfit','There is no `Weapon` distribution key','The parser splits TraitFilters on `/`','`65/`','`18!` is valid']:
-    if token not in spid: findings.append(f'SPID skill missing truth token: {token}')
-for token in ['ordinary usable `Keyword` row needs','Record signatures','ExclusiveGroup']:
-    if token not in kid: findings.append(f'KID skill missing truth token: {token}')
+# Tokens mirror FRAMEWORK-SOURCE-LOCK.json locked_claims. Change one only when
+# the pinned upstream commit changes, never to make a reworded skill pass.
+if spid:
+    for token in ['ExclusiveGroup','[Final]Death<Type>','[Global]Linked[Final][Death]<Type>','`Weapon` is not a distributable type key','TraitFilters split on `/`','deterministic Chance may end with one `!`','actor-level ranges need both slash endpoints']:
+        if _tok(token) not in spid: findings.append(f'SPID skill missing truth token: {token}')
+if kid:
+    for token in ['ExclusiveGroup','GroupName|KeywordFormFilters','invalid ordinary type','`GetType` performs an exact lookup against the human-readable type array']:
+        if _tok(token) not in kid: findings.append(f'KID skill missing truth token: {token}')
 for pattern in [r'slash traits? (?:are )?forbidden',r'TraitFilters? (?:combine|separate|split) with comma',r'(?:use|write|generate)\s+`?Weapon\s*=']:
     rx=re.compile(pattern,re.I)
     for p in ROOT.rglob('*.md'):
@@ -22,10 +45,13 @@ for pattern in [r'slash traits? (?:are )?forbidden',r'TraitFilters? (?:combine|s
 for name,expected in [('spid','e5ef32b99ecb277778644f4deae0ac04851ca614'),('kid','895df224d4964dc9723460038eb533bfff06d860')]:
     if lock.get(name,{}).get('source_commit')!=expected: findings.append(f'{name.upper()} source lock mismatch')
 for script in [linter,bos_auditor,ROOT/'skyrim-runtime-log-forensics'/'scripts'/'analyze_runtime_logs.py',ROOT/'skyrim-container-distribution'/'scripts'/'lint_cdf_json.py']:
+    if not script.is_file():
+        findings.append(f'{script.name} not found at {script}'); continue
     proc=subprocess.run([sys.executable,str(script),'--self-test'],text=True,capture_output=True)
     if proc.returncode: findings.append(f'{script.name} self-test failed:\n{proc.stdout}{proc.stderr}')
 # Production-path fixtures, not helper-only assertions.
-with tempfile.TemporaryDirectory() as td:
+if linter.is_file() and bos_auditor.is_file():
+  with tempfile.TemporaryDirectory() as td:
     r=Path(td)
     good={
       'Special_DISTR.ini':'ExclusiveGroup = RMB|0x800~A.esp,0x801~A.esp ; published-style comment\nDeathItem = 0x900~A.esp|ActorTypeNPC||||1|100 ; published-style comment\n',

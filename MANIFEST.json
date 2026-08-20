@@ -3321,8 +3321,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distr-kid-validation/scripts/verify_framework_truth.py",
-  "size": 3736,
-  "sha256": "36974808260489bcae84b25352546b03e706de1705ca37e0a037808432d77766"
+  "size": 5194,
+  "sha256": "1ca73bf26fc332dd73041a256ffd43702b8e40efb2c4cee317b7d0d289a5988b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distribution-pipeline/SKILL.md",
@@ -5831,8 +5831,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distr-kid-validation/scripts/verify_framework_truth.py",
-  "size": 3736,
-  "sha256": "36974808260489bcae84b25352546b03e706de1705ca37e0a037808432d77766"
+  "size": 5194,
+  "sha256": "1ca73bf26fc332dd73041a256ffd43702b8e40efb2c4cee317b7d0d289a5988b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distribution-pipeline/SKILL.md",
@@ -8326,8 +8326,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distr-kid-validation/scripts/verify_framework_truth.py",
-  "size": 3736,
-  "sha256": "36974808260489bcae84b25352546b03e706de1705ca37e0a037808432d77766"
+  "size": 5194,
+  "sha256": "1ca73bf26fc332dd73041a256ffd43702b8e40efb2c4cee317b7d0d289a5988b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distribution-pipeline/SKILL.md",
@@ -10821,8 +10821,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distr-kid-validation/scripts/verify_framework_truth.py",
-  "size": 3736,
-  "sha256": "36974808260489bcae84b25352546b03e706de1705ca37e0a037808432d77766"
+  "size": 5194,
+  "sha256": "1ca73bf26fc332dd73041a256ffd43702b8e40efb2c4cee317b7d0d289a5988b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distribution-pipeline/SKILL.md",
@@ -13326,8 +13326,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distr-kid-validation/scripts/verify_framework_truth.py",
-  "size": 3736,
-  "sha256": "36974808260489bcae84b25352546b03e706de1705ca37e0a037808432d77766"
+  "size": 5194,
+  "sha256": "1ca73bf26fc332dd73041a256ffd43702b8e40efb2c4cee317b7d0d289a5988b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-distribution-pipeline/SKILL.md",
@@ -13981,8 +13981,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 13115,
-  "sha256": "cbf97e60482f2283035273c24c44b1aa9d1493aadecccf1c8460194b93323b20"
+  "size": 13116,
+  "sha256": "2038d7f9e055ce924ee7ce29ff2307ed3faa960944d0e93eefa875ac68008645"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15786,8 +15786,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 31703,
-  "sha256": "6a923d6fbb005841c33244f3199de2e43ceae4141d345e4af193876fc24821b1"
+  "size": 34166,
+  "sha256": "b163769f43ec3c7feefab23b7ff0ce4b4b260251c5008da032995073ef2e73f6"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -15876,8 +15876,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 75576,
-  "sha256": "0141a88783ea074e4622795508c374c5f180bf4e55695045e9cf68395f7ea7b4"
+  "size": 75578,
+  "sha256": "15947fe45c8a21f110c26adea5bfc6cf42725650b75fff88392bb615ac002d90"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -15916,18 +15916,18 @@
  },
  {
   "path": "README.md",
-  "size": 30634,
-  "sha256": "20f545f6c0ddc62e9d8fc8abf3868b6787aa60d251c5f756dd24c053dd7cacbd"
+  "size": 30635,
+  "sha256": "5dd88e650a16cf5ad5f5a68238c740bb9f803c176aac8bfbe19e091bf7b1db1b"
  },
  {
   "path": "START-HERE.txt",
-  "size": 8467,
-  "sha256": "f8771d93c82b49d9c5c8e48b9f5f3e79f946632090725cacf2f9d0975552af9a"
+  "size": 8468,
+  "sha256": "845f4c7041563fe262ee354ac5d0e22f50d8fa3b41d7ebbd4e9ab9e0025fcdd7"
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
-  "size": 14193,
-  "sha256": "8fc7783804bc1edb374402b2d2bced43be4ea9974fa52069fc90fa7b38dd8117"
+  "size": 15983,
+  "sha256": "ece614bacfcee8b9caa10509f631fba02ea2672519d97a1e5a4ec5fcaccdca97"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -15936,8 +15936,8 @@
  },
  {
   "path": "TESTS/Test-V7-Pack.ps1",
-  "size": 19758,
-  "sha256": "7c56dadfec9ca6bf392493039de0636d4871a0049b86718ad7f1756eda505f25"
+  "size": 21568,
+  "sha256": "cee8e0dda65c9ab7797b92ed98f5a87c758ae63e09bc674a953ae8c046c7b9ba"
  },
  {
   "path": "TESTS/test_hermes_bootstrap.py",
@@ -16126,13 +16126,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 612,
-  "sha256": "0c9f49e64ee3ddda121e3b91ed0b29e18c58d9f858a0616f221de349addc918a"
+  "size": 1100,
+  "sha256": "09658ab38793324cec71c991cebdbd33499f862fc257f1b94ee585d124742be9"
  },
  {
   "path": "VERSION.txt",
-  "size": 7,
-  "sha256": "dc78d28da7606daa7ddd0293c7c30afb5acdd346116cfda628a2d0c591c313f1"
+  "size": 8,
+  "sha256": "36c058ac61026c06d8900fc502275e3b0e7abe8cebb2979c251b7d33f37afd39"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -18016,8 +18016,8 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-distr-kid-validation/scripts/verify_framework_truth.py",
-  "size": 3736,
-  "sha256": "36974808260489bcae84b25352546b03e706de1705ca37e0a037808432d77766"
+  "size": 5194,
+  "sha256": "1ca73bf26fc332dd73041a256ffd43702b8e40efb2c4cee317b7d0d289a5988b"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/skyrim-distribution-pipeline/SKILL.md",
@@ -18783,6 +18783,11 @@
   "path": "docs/history/V7.7.1-CHANGELOG.md",
   "size": 5399,
   "sha256": "1a042921c200a132fad277f3dd50ffba904d5a1d886c94d602501044340da6b8"
+ },
+ {
+  "path": "docs/history/V7.7.10-CHANGELOG.md",
+  "size": 6138,
+  "sha256": "e31297fc9b588a54631552885faa6679d3db27524f24d620dfc985e3c61eda18"
  },
  {
   "path": "docs/history/V7.7.2-CHANGELOG.md",
