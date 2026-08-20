@@ -284,7 +284,7 @@ function Register-HeadroomMcp([string]$Hr) {
     $configured = ([regex]::Matches($raw, '(?m)^\[mcp_servers\.')).Count
     $pluginActive = -not ($raw -match '(?m)^disabled_mcp_servers\s*=.*mcp-search')
     if ($configured -ge 7 -or ($configured -ge 6 -and $pluginActive)) {
-      Warn "Grok already has $configured configured MCP servers; mcp-search plugin $((if($pluginActive){'ACTIVE'}else{'disabled'}))."
+      Warn "Grok already has $configured configured MCP servers; mcp-search plugin $(if($pluginActive){'ACTIVE'}else{'disabled'})."
       Warn 'Skipping headroom registration - headroom stays Hermes/Claude-only, or disable mcp-search with: grok mcp disable mcp-search'
       return
     }

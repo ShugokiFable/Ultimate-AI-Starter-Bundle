@@ -3,6 +3,19 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.6
+
+Ensure-Headroom-Grok MCP cliff guard parses on Windows PowerShell.
+
+- **`if : The term 'if' is not recognized as the name of a cmdlet` during
+  install.** `Ensure-Headroom-Grok.ps1` built its 7-server guard warning
+  with `$((if($pluginActive){'ACTIVE'}else{'disabled'}))` - the extra
+  parenthesis makes PowerShell parse `(if ...)` as a command call, so the
+  warning line threw instead of printing. Dropped the redundant paren
+  (`$(if(...){...}else{...})`). The guard now reports
+  `mcp-search plugin disabled.` cleanly and the AIO run no longer shows a
+  red error when Grok sits at the MCP budget.
+
 ## 7.7.5
 
 Grok Superpowers copies stay in `~/.grok/skills`.

@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.7.5",
+ "version": "7.7.6",
  "generated": "2026-08-19",
- "base": "v7.7.4",
+ "base": "v7.7.5",
  "canonical_skills": 92,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.7.5: Grok Superpowers copies stay in ~/.grok/skills so slash/TUI load of verification-before-completion does not fail with an empty error."
+ "notes": "v7.7.6: Ensure-Headroom-Grok MCP cliff guard parses on Windows PowerShell (extra paren in string interpolation threw 'if not recognized')."
 }
