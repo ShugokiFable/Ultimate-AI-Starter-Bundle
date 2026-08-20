@@ -18800,6 +18800,11 @@
   "sha256": "a19d1251b92e96b585ce7993a70ff6fbbb61ca2129471c4d369309f9c700b0f8"
  },
  {
+  "path": "docs/history/V7.7.14-CHANGELOG.md",
+  "size": 899,
+  "sha256": "b153566ccce9b840187aa76b38a98dc0020c9d1600f5067913611315c912ee17"
+ },
+ {
   "path": "docs/history/V7.7.2-CHANGELOG.md",
   "size": 1139,
   "sha256": "46816017fda3cb564a6b07aa6912ca79e96708df14298870f42f9bb360e08099"
