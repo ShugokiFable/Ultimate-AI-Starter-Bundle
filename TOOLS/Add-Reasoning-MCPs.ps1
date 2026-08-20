@@ -60,6 +60,21 @@ function Set-Utf8NoBom {
   [System.IO.File]::WriteAllText($Path, $Text, $enc)
 }
 
+function Get-ClaudeDesktopConfigPath {
+  # Claude Desktop app ships as either a normal install (%APPDATA%\Claude)
+  # or a Microsoft Store package (LocalCache\Roaming\Claude). Return the
+  # live claude_desktop_config.json, or $null when the app is absent. The
+  # app's own MCP surface is this file; ~/.claude.json only feeds Claude
+  # Code CLI sessions, so a desktop-only user would otherwise get no servers.
+  $Normal = Join-Path ([Environment]::GetFolderPath('ApplicationData')) 'Claude\claude_desktop_config.json'
+  if (Test-Path -LiteralPath $Normal -PathType Leaf) { return $Normal }
+  $Store = Get-ChildItem -LiteralPath (Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Packages') -Directory -Filter 'Claude_*' -ErrorAction SilentlyContinue |
+    ForEach-Object { Join-Path $_.FullName 'LocalCache\Roaming\Claude\claude_desktop_config.json' } |
+    Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } |
+    Select-Object -First 1
+  return $Store
+}
+
 
 if (-not (Get-Command npx -ErrorAction SilentlyContinue)) {
   Write-Host 'SKIP: Node/npx not found. Install Node 18+ and re-run.' -ForegroundColor Yellow
@@ -132,7 +147,7 @@ function Add-ToJsonMcp {
 }
 
 $targets = @{
-  'Claude' = @{ Path = Join-Path $env:USERPROFILE '.claude.json'; Section = 'mcpServers'; Style = 'json' }
+  'Claude' = @{ Path = Join-Path $env:USERPROFILE '.claude.json'; Section = 'mcpServers'; Style = 'json'; Desktop = $true }
   'Kimi'   = @{ Path = Join-Path $env:USERPROFILE '.kimi-code\mcp.json'; Section = 'mcpServers'; Style = 'json' }
   'Grok'   = @{ Path = Join-Path $env:USERPROFILE '.grok\config.toml'; Section = 'mcp_servers'; Style = 'toml' }
   'Codex'  = @{ Path = Join-Path $env:USERPROFILE '.codex\config.toml'; Section = 'mcp_servers'; Style = 'toml' }
@@ -169,6 +184,17 @@ foreach ($p in $Providers) {
       Write-Host ("{0,-7} {1} -> {2}" -f $p, ($added -join ', '), $t.Path)
     } else {
       Write-Host ("{0,-7} already has all three" -f $p)
+    }
+    if ($t.Desktop) {
+      # Claude Desktop app reads claude_desktop_config.json, not ~/.claude.json.
+      # Merge the same entries there so desktop-only users get the servers.
+      $desktopCfg = Get-ClaudeDesktopConfigPath
+      if ($desktopCfg) {
+        $addedD = Add-ToJsonMcp -Path $desktopCfg -Section 'mcpServers'
+        if ($addedD.Count) {
+          Write-Host ("{0,-7} {1} -> {2} (Claude Desktop app)" -f $p, ($addedD -join ', '), $desktopCfg)
+        }
+      }
     }
   } else {
     # TOML: append only the servers that are not already declared. Editing TOML

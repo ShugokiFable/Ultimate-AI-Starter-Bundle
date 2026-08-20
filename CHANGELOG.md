@@ -3,6 +3,15 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.12
+
+Claude Desktop app support. Add-Reasoning-MCPs.ps1 now also writes the MCP
+servers into claude_desktop_config.json (both normal `%APPDATA%\Claude` and
+Microsoft Store package locations), so users of the Claude Desktop app - which
+does not read `~/.claude.json` - get context7, sequential-thinking and github
+in the app's own MCP surface. Desktop-only installs (no `claude` CLI) are
+covered. Existing `~/.claude.json` registration is unchanged.
+
 ## 7.7.11
 
 Fresh-install hardening. See `docs/history/V7.7.11-CHANGELOG.md`.
