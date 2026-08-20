@@ -13982,7 +13982,7 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 13116,
-  "sha256": "2038d7f9e055ce924ee7ce29ff2307ed3faa960944d0e93eefa875ac68008645"
+  "sha256": "07ce9de2ae0b4ec4c054359b1b4867fff4189e0287c2910cfbc8b10c1194e2c9"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15877,7 +15877,7 @@
  {
   "path": "INSTALL-V7-AIO.ps1",
   "size": 75578,
-  "sha256": "15947fe45c8a21f110c26adea5bfc6cf42725650b75fff88392bb615ac002d90"
+  "sha256": "52484c9797ecc028b10e222dd1ad0df3d01c1d8770a1490b5dd26ed3c96689bf"
  },
  {
   "path": "OFFICIAL-PATH-AUDIT.txt",
@@ -15917,12 +15917,12 @@
  {
   "path": "README.md",
   "size": 30635,
-  "sha256": "5dd88e650a16cf5ad5f5a68238c740bb9f803c176aac8bfbe19e091bf7b1db1b"
+  "sha256": "6c383c7143df0a50038e1aff43ac448882019ed94878e03b45b0818c2f325e4b"
  },
  {
   "path": "START-HERE.txt",
   "size": 8468,
-  "sha256": "845f4c7041563fe262ee354ac5d0e22f50d8fa3b41d7ebbd4e9ab9e0025fcdd7"
+  "sha256": "3a3d39f289294618134525c8ebf36e33b578a64d7eca95e23f2bc862573b4e86"
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
@@ -16126,8 +16126,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1100,
-  "sha256": "09658ab38793324cec71c991cebdbd33499f862fc257f1b94ee585d124742be9"
+  "size": 1066,
+  "sha256": "dc373c76ea4c8e6c62246485c4a1e5415a63239574c094d3c5dd8db678211f3d"
  },
  {
   "path": "VERSION.txt",
