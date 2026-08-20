@@ -3,6 +3,21 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.7.11
+
+Fresh-install hardening. See `docs/history/V7.7.11-CHANGELOG.md`.
+
+- **github MCP pinned in `Add-Reasoning-MCPs.ps1`** — the one reasoning
+  server that shipped unpinned (`@modelcontextprotocol/server-github` →
+  `@2025.4.8`), violating the file's own "Exact versions" rule and the
+  README's pin guidance. Fresh installs now write all three servers pinned.
+- **`Repair-McpPaths.ps1` repairs a moved houseCARL** — `Resolve-LivePath`
+  only handled version-stamped sibling dirs, so a houseCARL moved to another
+  drive (no sibling, no version) reported "no replacement found" and left the
+  provider silently disconnected. It now repoints `housecarl-mcp.exe` dead
+  paths from the bundle's own `HOUSECARL_MCP` env registry; all other
+  unversioned paths still refuse to guess. New test in pack gate section 8.
+
 ## 7.7.10
 
 Audit of everything between v7.7.2 and v7.7.9. Every gate was green; two of

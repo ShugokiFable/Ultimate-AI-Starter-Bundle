@@ -1,8 +1,8 @@
 {
  "pack": "Ultimate AI Starter Bundle",
- "version": "7.7.10",
+ "version": "7.7.11",
  "generated": "2026-08-20",
- "base": "v7.7.9",
+ "base": "v7.7.10",
  "canonical_skills": 85,
  "provider_trees": 10,
  "registry_entries": 85,
@@ -13,5 +13,5 @@
   "TOOLS/hooks/assumption_gate.py --selftest"
  ],
  "runtime_status": "tool-validated",
- "notes": "v7.7.10: audit of v7.7.2-v7.7.9. The SPID/KID framework truth lock had been dead since v7.7.8 (FileNotFoundError on deleted skill paths) and no gate ran it - repointed at the merged spid-authoring/kid-authoring owners, made line-wrap proof, and wired into the pack gate as section 10. Harness 'no duplicate skills' asserted nothing for 8 of 10 provider/plugin pairs and was inverted for Grok/Hermes after v7.7.5/v7.7.7 - replaced with a policy-aware delivery check, which then caught 3 Superpowers skill copies missing from the live Hermes install. VALIDATION.json restored to LF. The v7.7.8 SPID/KID consolidation itself was checked against FRAMEWORK-SOURCE-LOCK.json and is sound. PACK GATE: PASS."
+ "notes": "v7.7.11: fresh-install hardening found by auditing a live machine that had moved houseCARL. (1) github MCP was the one reasoning server shipped unpinned in Add-Reasoning-MCPs.ps1 - pinned to @2025.4.8 so every fresh install writes exact pins everywhere. (2) Repair-McpPaths could not repair a houseCARL moved off the default path (live root is not a version-stamped sibling of the dead path) and reported 'no replacement found'; Resolve-LivePath now repoints dead housecarl-mcp.exe paths from the bundle's own HOUSECARL_MCP env registry, with a new pack-gate test asserting the env fallback while arbitrary unversioned paths still refuse to guess. PACK GATE: PASS."
 }

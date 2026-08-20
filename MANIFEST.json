@@ -15786,8 +15786,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 34166,
-  "sha256": "b163769f43ec3c7feefab23b7ff0ce4b4b260251c5008da032995073ef2e73f6"
+  "size": 34993,
+  "sha256": "aa70dbb92cedabc52cb5883f617f64719ebc0cb131ff226ff3c485c04c4ccc21"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -15936,8 +15936,8 @@
  },
  {
   "path": "TESTS/Test-V7-Pack.ps1",
-  "size": 21568,
-  "sha256": "cee8e0dda65c9ab7797b92ed98f5a87c758ae63e09bc674a953ae8c046c7b9ba"
+  "size": 22547,
+  "sha256": "56e3d5794a4f6bb9a4b775c420656f06e4a529421a712261191ab6bf64def950"
  },
  {
   "path": "TESTS/test_hermes_bootstrap.py",
@@ -15946,8 +15946,8 @@
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 9369,
-  "sha256": "4b672416a686c8caf2feb4ef1c84ae07d733db0b70bfc995e7b35cba2cb347b0"
+  "size": 9378,
+  "sha256": "66435d985b93d6197c9ff09994cb36d610c2b93229a4ca974447e703e4108f81"
  },
  {
   "path": "TOOLS/Build-Release.ps1",
@@ -15996,8 +15996,8 @@
  },
  {
   "path": "TOOLS/Repair-McpPaths.ps1",
-  "size": 7167,
-  "sha256": "1de7d4a4fb024d8ebe7bfc3e8dffd22499e8e44b716bd7ce59a9c0721d9f4802"
+  "size": 7899,
+  "sha256": "9927a996d9de80b8fee697a875411f5869b8b2ef5e0d65bd879002fc06eed378"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
@@ -16132,7 +16132,7 @@
  {
   "path": "VERSION.txt",
   "size": 8,
-  "sha256": "36c058ac61026c06d8900fc502275e3b0e7abe8cebb2979c251b7d33f37afd39"
+  "sha256": "1e932d9e5e879786b3dc95c3287ec545f9c806d1359fa37931da6df806868e72"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -18788,6 +18788,11 @@
   "path": "docs/history/V7.7.10-CHANGELOG.md",
   "size": 6138,
   "sha256": "e31297fc9b588a54631552885faa6679d3db27524f24d620dfc985e3c61eda18"
+ },
+ {
+  "path": "docs/history/V7.7.11-CHANGELOG.md",
+  "size": 2426,
+  "sha256": "b8d9a7c5dac7b554f1d58b2c100f96a911a0e18e09f9ff44c3ab112d8ead1731"
  },
  {
   "path": "docs/history/V7.7.2-CHANGELOG.md",
