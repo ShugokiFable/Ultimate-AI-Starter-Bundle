@@ -37,16 +37,24 @@ tool_loop_guardrails:
     idempotent_no_progress: 5
 compression:
   enabled: true
-  progress_notices: false
-  threshold: 0.25
-  threshold_tokens: 250000
-  target_ratio: 0.15
+  progress_notices: true
+  threshold: 0.14
+  threshold_tokens: 140000
+  target_ratio: 0.11
   tail_mode: lean
-  protect_last_n: 20
+  protect_last_n: 6
   min_tail_user_messages: 1
   max_attempts: 3
   proactive_prune_tokens: 48000
+  proactive_prune_min_result_chars: 8000
+  proactive_prune_min_reclaim_tokens: 4096
   protect_first_n: 3
+  codex_gpt55_autoraise: true
+  codex_app_server_auto: native
+  codex_responses_native: false
+  codex_responses_compact_threshold: 200000
+  in_place: true
+  idle_compact_after_seconds: 1800
 auxiliary:
   vision:
     provider: openrouter

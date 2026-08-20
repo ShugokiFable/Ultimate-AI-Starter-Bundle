@@ -933,24 +933,36 @@ if (-not $SkillsOnly) {
           $rootExtract = Resolve-V5SingleRoot $stage
           # houseCARL zip layout: may contain housecarl\server or server
           if ($id -eq 'housecarl') {
-            $mcp = Find-V5FileUnder $rootExtract 'housecarl-mcp.exe' 8
-            if (-not $mcp) { throw "housecarl-mcp.exe not in zip" }
-            $serverDir = Split-Path $mcp -Parent
-            $productRoot = Split-Path $serverDir -Parent
-            # Install to LOCALAPPDATA\houseCARL
-            New-Item -ItemType Directory -Force -Path $target | Out-Null
-            Copy-V5Robo -From $productRoot -To $target
-            # If setup exe present at outer folder
-            $setup = Find-V5FileUnder $rootExtract 'houseCARL-Setup.exe' 4
-            if ($setup) {
-              Copy-Item $setup (Join-Path $target 'houseCARL-Setup.exe') -Force
+            # NEVER overwrite a live/working houseCARL install. Respect an
+            # existing HOUSECARL_MCP (user-curated root) instead.
+            $existingMcp = $env:HOUSECARL_MCP
+            if ($existingMcp -and (Test-Path $existingMcp)) {
+              $existingRoot = if ($env:HOUSECARL_ROOT -and (Test-Path $env:HOUSECARL_ROOT)) { $env:HOUSECARL_ROOT } else { Split-Path (Split-Path $existingMcp -Parent) -Parent }
+              Set-V5UserEnv 'HOUSECARL_MCP' $existingMcp
+              Set-V5UserEnv 'HOUSECARL_ROOT' $existingRoot
+              $installed[$id] = @{ status='kept-existing'; mcp=$existingMcp; root=$existingRoot }
+              Write-V5Ok ("houseCARL kept existing (no overwrite): " + $existingMcp)
             }
-            $mcpFinal = Join-Path $target 'server\housecarl-mcp.exe'
-            if (-not (Test-Path $mcpFinal)) { $mcpFinal = Find-V5FileUnder $target 'housecarl-mcp.exe' 5 }
-            Set-V5UserEnv 'HOUSECARL_MCP' $mcpFinal
-            Set-V5UserEnv 'HOUSECARL_ROOT' $target
-            $installed[$id] = @{ status='installed'; mcp=$mcpFinal; root=$target }
-            Write-V5Ok "houseCARL -> $target"
+            else {
+              $mcp = Find-V5FileUnder $rootExtract 'housecarl-mcp.exe' 8
+              if (-not $mcp) { throw "housecarl-mcp.exe not in zip" }
+              $serverDir = Split-Path $mcp -Parent
+              $productRoot = Split-Path $serverDir -Parent
+              # Install to LOCALAPPDATA\houseCARL
+              New-Item -ItemType Directory -Force -Path $target | Out-Null
+              Copy-V5Robo -From $productRoot -To $target
+              # If setup exe present at outer folder
+              $setup = Find-V5FileUnder $rootExtract 'houseCARL-Setup.exe' 4
+              if ($setup) {
+                Copy-Item $setup (Join-Path $target 'houseCARL-Setup.exe') -Force
+              }
+              $mcpFinal = Join-Path $target 'server\housecarl-mcp.exe'
+              if (-not (Test-Path $mcpFinal)) { $mcpFinal = Find-V5FileUnder $target 'housecarl-mcp.exe' 5 }
+              Set-V5UserEnv 'HOUSECARL_MCP' $mcpFinal
+              Set-V5UserEnv 'HOUSECARL_ROOT' $target
+              $installed[$id] = @{ status='installed'; mcp=$mcpFinal; root=$target }
+              Write-V5Ok "houseCARL -> $target"
+            }
           }
           elseif ($id -eq 'codebase-memory') {
             # NEVER overwrite a live/working codebase-memory install.
@@ -981,18 +993,28 @@ if (-not $SkillsOnly) {
             }
           }
           elseif ($id -eq 'spooky') {
-            New-Item -ItemType Directory -Force -Path $target | Out-Null
-            Copy-V5Robo -From $rootExtract -To $target
-            # find sln
-            $sln = Find-V5FileUnder $target 'SpookysAutomod.sln' 5
-            $toolkitRoot = if ($sln) { Split-Path $sln -Parent } else { $target }
-            # nested spookys-automod-toolkit folder
-            $inner = Join-Path $toolkitRoot 'spookys-automod-toolkit'
-            if (Test-Path (Join-Path $inner 'SpookysAutomod.sln')) { $toolkitRoot = $inner }
-            Set-V5UserEnv 'SPOOKY_AUTOMOD_ROOT' $toolkitRoot
-            $installed[$id] = @{ status='installed'; root=$toolkitRoot }
-            Write-V5Ok "Spooky -> $toolkitRoot"
-            Write-V5Warn "Optional: run SpookysAutomodSetup.exe inside the toolkit folder for headers/compiler"
+            # NEVER overwrite a live/working Spooky install. Respect an
+            # existing SPOOKY_AUTOMOD_ROOT (user-curated root) instead.
+            $existingRoot = $env:SPOOKY_AUTOMOD_ROOT
+            if ($existingRoot -and (Test-Path (Join-Path $existingRoot 'SpookysAutomod.sln'))) {
+              Set-V5UserEnv 'SPOOKY_AUTOMOD_ROOT' $existingRoot
+              $installed[$id] = @{ status='kept-existing'; root=$existingRoot }
+              Write-V5Ok ("Spooky kept existing (no overwrite): " + $existingRoot)
+            }
+            else {
+              New-Item -ItemType Directory -Force -Path $target | Out-Null
+              Copy-V5Robo -From $rootExtract -To $target
+              # find sln
+              $sln = Find-V5FileUnder $target 'SpookysAutomod.sln' 5
+              $toolkitRoot = if ($sln) { Split-Path $sln -Parent } else { $target }
+              # nested spookys-automod-toolkit folder
+              $inner = Join-Path $toolkitRoot 'spookys-automod-toolkit'
+              if (Test-Path (Join-Path $inner 'SpookysAutomod.sln')) { $toolkitRoot = $inner }
+              Set-V5UserEnv 'SPOOKY_AUTOMOD_ROOT' $toolkitRoot
+              $installed[$id] = @{ status='installed'; root=$toolkitRoot }
+              Write-V5Ok "Spooky -> $toolkitRoot"
+              Write-V5Warn "Optional: run SpookysAutomodSetup.exe inside the toolkit folder for headers/compiler"
+            }
           }
           else {
             Copy-V5Robo -From $rootExtract -To $target
