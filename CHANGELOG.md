@@ -3,7 +3,21 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
-## 7.7.8
+## 7.7.9
+
+Installer respects existing tool installs; tuned Hermes compression.
+
+- **AIO keeps existing houseCARL/Spooky installs.** If `HOUSECARL_MCP` points
+  at a valid `housecarl-mcp.exe` or `SPOOKY_AUTOMOD_ROOT` at a valid
+  `SpookysAutomod.sln`, the installer records `kept-existing` and never
+  overwrites — same pattern as codebase-memory. Curated tool copies survive
+  re-runs.
+- **Hermes compression tuned.** `1-TAILORED-PROVIDER-TREES/Hermes/config.yaml`
+  compacts earlier (threshold 0.14 / target_ratio 0.11), protects a leaner
+  tail (protect_last_n 6), and gains `in_place`, `idle_compact_after_seconds`,
+  and the codex_* compaction settings. Template stays portable.
+
+See docs/history/V7.7.9-CHANGELOG.md for details.
 
 Skill tree dedupe: dead modules pruned; KID/SPID grammar owners consolidated.
 
