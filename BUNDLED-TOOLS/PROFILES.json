@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "catalog_version": "7.9.5",
-  "pack_version": "7.9.5",
-  "updated_utc": "2026-08-21T00:00:00Z",
-  "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 143 skill bodies are ~153,000 tokens while the description index an agent actually reads is ~5,500. There is no equivalent discount for MCP. So the servers here are NOT registered globally. Each profile is a named set that gets wired only when the machine can actually run it and the project actually needs it -- decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
+  "catalog_version": "7.9.6",
+  "pack_version": "7.9.6",
+  "updated_utc": "2026-08-21T12:00:00Z",
+  "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 144 skill bodies are ~154,000 tokens while the description index an agent actually reads is ~5,500. There is no equivalent discount for MCP. So the servers here are NOT registered globally, and -- since 7.9.6 -- are not registered machine-wide either: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
   "reads": "TOOLS/Set-McpProfile.ps1",
   "always_on_note": "The always-on core (context7, sequential-thinking, github) lives in TOOLS/Add-Reasoning-MCPs.ps1, not here. Those three earn a permanent slot because they apply to every task. Nothing below does. playwright-mcp, firecrawl-mcp and perplexity-mcp are -WithExtras components in CATALOG.json and are likewise not repeated here; registering a server twice is two handshakes for one name.",
   "requires_forms": {
@@ -11,14 +11,14 @@
     "any_path": "At least one of these paths must exist. Entries may contain environment variables and a single '*' wildcard per segment.",
     "env": "This environment variable must be set and non-empty. Used for servers that cannot do anything without a key.",
     "project_rel": "A path relative to the project directory that must exist. Project-scoped servers only.",
-    "auto_install": "Steps this pack may run unattended to satisfy the requirement, when 'requires_command' resolves. Package installs only -- never something that needs a GUI, a licence acceptance, or a credential."
+    "auto_install": "Steps this pack may run unattended to satisfy the requirement, when 'requires_command' resolves. Package installs only -- never something that needs a GUI, a licence acceptance, or a credential. An auto_install makes a tool INSTALLED, never ENABLED: registration is still decided per project."
   },
   "profiles": [
     {
-      "id": "code-deep",
+      "id": "code-intel",
       "title": "Language-server-accurate code navigation and editing",
-      "scope": "global",
-      "why": "Serena drives real language servers, so find-symbol, find-referencing-symbols and replace-symbol-body answer from the compiler's view of the code rather than from a text match. It overlaps codebase-memory-mcp deliberately: that one answers 'where is this in the graph', Serena answers 'what exactly does this symbol resolve to, and rewrite its body'. Worth the context on a real codebase, not worth it on a two-file mod.",
+      "scope": "project",
+      "why": "Serena drives real language servers, so find-symbol, find-referencing-symbols and replace-symbol-body answer from the compiler's view of the code rather than from a text match. It overlaps codebase-memory-mcp deliberately: that one answers 'where is this in the graph', Serena answers 'what exactly does this symbol resolve to, and rewrite its body'. Worth the context on a real codebase, not worth it on a two-file mod -- which is why it is wired for that codebase and nowhere else. Named code-intel, not code-deep: it was renamed in 7.9.6 and has nothing to do with any package of a similar name.",
       "detect": {
         "files": [
           "pyproject.toml",
@@ -75,8 +75,8 @@
             "command": "%USERPROFILE%\\.local\\bin\\serena.exe"
           },
           "install_hint": "uv tool install -p 3.13 serena-agent && serena init",
-          "upstream_setup": "serena setup {claude-code|codex|grok}",
-          "context_note": "--context trims the tool set to what the client does not already have. Serena ships a named context for claude-code, codex and grok; Kimi and Hermes have none, so they get the generic 'agent' context. --enable-web-dashboard false keeps a browser window from opening on every session start.",
+          "upstream_setup": "serena setup {claude-code|codex|grok} registers Serena machine-wide for that client. This pack deliberately does not call it: a machine-wide registration is the cost this file exists to avoid.",
+          "context_note": "--context trims the tool set to what the client does not already have. Serena 1.7.0 ships named contexts for claude-code, codex and grok; Kimi and Hermes have none, so they get the generic 'agent' context. --project pins the registration to the project it was written for; --project-from-cwd is used instead for a -Global registration, since one baked path would activate the wrong project everywhere else. --enable-web-dashboard false keeps Serena from opening a browser window and from leaving an HTTP listener on the machine. Upstream recommends leaving the dashboard on and setting --open-web-dashboard false instead; this pack does not start a local web server a user did not ask for, and uses TOOLS/Test-McpHandshake.ps1 for diagnosis.",
           "auto_install": {
             "requires_command": "uv",
             "why": "Serena is a Python tool, not an npx package, so it has to exist on disk before a config can point at it. uv installs it into an isolated environment with its own interpreter.",
@@ -98,14 +98,22 @@
                 ]
               }
             ]
-          }
+          },
+          "project_args": [
+            "--project",
+            "{project}"
+          ],
+          "global_args": [
+            "--project-from-cwd"
+          ],
+          "side_effect_note": "Activating a project makes Serena write .serena/project.yml inside it on first run. That happens only for a project the profile was explicitly enabled for."
         }
       ]
     },
     {
       "id": "web",
       "title": "Live browser inspection and debugging",
-      "scope": "global",
+      "scope": "project",
       "why": "Chrome DevTools MCP reads a real Chrome: console messages, network requests, performance traces and the rendered DOM. That is the half playwright-mcp does not do -- playwright drives a browser, this one explains what the browser did. Enable it for front-end work; it is dead weight in a Papyrus session.",
       "detect": {
         "files": [
@@ -153,7 +161,6 @@
           ],
           "note": "search, inspect and add components from configured shadcn registries",
           "key": null,
-          "scope": "project",
           "requires": {
             "command": "npx",
             "project_rel": "components.json"
@@ -165,7 +172,7 @@
     {
       "id": "cloud",
       "title": "Supabase project management",
-      "scope": "global",
+      "scope": "project",
       "why": "Schema, migrations, logs and edge functions for a Supabase project, read and written through the platform API instead of guessed SQL.",
       "detect": {
         "files": [
@@ -196,7 +203,7 @@
     {
       "id": "engine-blender",
       "title": "Blender scene control",
-      "scope": "global",
+      "scope": "project",
       "why": "Inspect and drive a running Blender: objects, materials, modifiers, and Python execution in the live scene. Relevant to this pack because Skyrim mesh work rides on Blender.",
       "detect": {
         "files": [],
@@ -229,7 +236,7 @@
     {
       "id": "engine-godot",
       "title": "Godot project control",
-      "scope": "global",
+      "scope": "project",
       "why": "Run a Godot project, read its scene tree and capture runtime errors without leaving the agent loop.",
       "detect": {
         "files": [
@@ -297,5 +304,23 @@
       "id": "storybook-mcp",
       "reason": "No first-party server from the Storybook project at evaluation time. Community servers exist; none had provenance this pack would accept for an install it performs on a user's machine unattended."
     }
-  ]
+  ],
+  "installed_vs_enabled": "Two different things, and conflating them is what made 7.9.5's code-deep expensive. INSTALLED means the executable exists on disk: it costs disk and nothing else, no model context, no startup time. ENABLED means an MCP entry is registered in a provider config, so the server is spawned and its tool schemas ride in context on every turn of every session that config covers. Set-McpProfile.ps1 will install a missing tool when it can (see auto_install) and still leave it disabled everywhere except the project that asked.",
+  "scope_forms": {
+    "project": "The default and, for every server in this file, the correct one. The entry is written where only sessions opened in that project can see it. What that means per provider is under provider_project_scope.",
+    "global": "Written into the provider's machine-wide config, where every session pays for it. No profile here declares it. TOOLS/Set-McpProfile.ps1 -Global is the opt-in, and it prints the cost."
+  },
+  "provider_project_scope": {
+    "Claude": "projects[\"<absolute project path>\"].mcpServers in %USERPROFILE%\\.claude.json -- the same place `claude mcp add --scope local` writes (verified against Claude Code 2.1.237). Chosen over the project's .mcp.json because it adds no file to the user's repository and raises no trust prompt. A team that wants the server checked in should copy the entry into .mcp.json by hand.",
+    "Grok": "<project>\\.grok\\config.toml, the `project` scope of `grok mcp add -s project` (verified against grok 1.0.5). This one IS a file inside the project, because it is the only project mechanism grok-cli has.",
+    "Codex": "None. `codex mcp add` has no scope flag and a project-local .codex/config.toml is ignored -- verified against codex-cli 0.147.0 by putting one there and reading `codex mcp list`. Capability servers are therefore not written for Codex unless -Global is passed.",
+    "Kimi": "None found. kimi-code reads %USERPROFILE%\\.kimi-code\\mcp.json; a project-local .kimi-code\\mcp.json was not picked up by `kimi doctor`. Not written unless -Global.",
+    "Hermes": "None. `hermes mcp add` has no scope option and the config is a single file under the Hermes home. Not written unless -Global."
+  },
+  "arg_forms": {
+    "args": "Base arguments. May contain %ENVVAR% and {project}.",
+    "args_by_provider": "Replaces args entirely for the named provider.",
+    "project_args": "Appended when the entry is written project-scoped, where the project path is known.",
+    "global_args": "Appended instead when the entry is written machine-wide with -Global. A server that needs to know its project must discover it from the session here, because one baked path would be wrong in every other session."
+  }
 }

@@ -982,6 +982,9 @@ def main() -> int:
         test_forge_source_is_complete_and_buildable,
         test_offline_manifest_complete,
         test_capability_profiles_are_not_registered_globally,
+        test_project_scope_is_implemented_not_just_declared,
+        test_upgrading_moves_a_globally_registered_profile,
+        test_docs_do_not_contradict_the_profile_scope,
         test_extras_never_overwrite_a_skill_the_bundle_vendors,
         test_mcp_config_writing_has_exactly_one_implementation,
         test_npx_pin_reaches_machines_that_already_have_the_entry,
@@ -1035,6 +1038,23 @@ def test_capability_profiles_are_not_registered_globally() -> None:
     profile_servers = [s for p in profiles["profiles"] for s in p["servers"]]
     assert profile_servers, "PROFILES.json declares no servers"
 
+    # The half this test used to miss. "Not in the always-on list" is one way to
+    # avoid a global registration; declaring scope "global" and being written
+    # into every provider's machine-wide config the moment the profile is
+    # enabled is the other, and that is what 7.9.5 shipped -- under a `why`
+    # paragraph in this same file explaining why it must not.
+    for prof in profiles["profiles"]:
+        assert prof.get("scope") == "project", (
+            f"profile {prof['id']} is not project-scoped: {prof.get('scope')!r}. "
+            "A capability server useful in every project belongs in the always-on "
+            "core, not here."
+        )
+        for server in prof["servers"]:
+            assert server.get("scope", "project") == "project", (
+                f"{prof['id']}/{server['id']} widens its profile's scope to "
+                f"{server.get('scope')!r}"
+            )
+
     for server in profile_servers:
         assert f"id      = '{server['id']}'" not in reasoning, (
             f"{server['id']} is a profile server but is also wired globally"
@@ -1075,6 +1095,131 @@ def test_capability_profiles_are_not_registered_globally() -> None:
     # gap nobody knows about.
     for entry in profiles.get("evaluated_not_shipped", []):
         assert entry.get("reason"), f"{entry.get('id')} was excluded with no reason"
+
+    # The renamed profile. code-deep held one server and promised depth.
+    ids = [p["id"] for p in profiles["profiles"]]
+    assert "code-intel" in ids, "the code-intel profile is missing"
+    assert "code-deep" not in ids, "the old profile id is still declared"
+
+    # Serena has to be told which project, and told it in the form that can be
+    # true where the entry lands: an absolute path for a registration written
+    # for one project, and --project-from-cwd for a machine-wide one, since one
+    # baked path would activate that project in every unrelated session.
+    serena = next(s for s in profile_servers if s["id"] == "serena")
+    assert serena.get("project_args") == ["--project", "{project}"], (
+        f"Serena is not told its project: {serena.get('project_args')!r}"
+    )
+    assert serena.get("global_args") == ["--project-from-cwd"], (
+        f"a machine-wide Serena would bake one project path: {serena.get('global_args')!r}"
+    )
+
+
+def test_project_scope_is_implemented_not_just_declared() -> None:
+    """A scope field nothing reads is worse than no scope field.
+
+    7.9.5 carried one -- `Get-V5ProfileScope` existed and the only thing the
+    writer did with the answer was swap Claude's config path. Every other
+    provider got the machine-wide file whatever the field said, which is how
+    "project-scoped" came to mean "global, with a comment".
+    """
+    writer = read(ROOT / "TOOLS" / "V7-Mcp-Write.ps1")
+    front = read(ROOT / "TOOLS" / "Set-McpProfile.ps1")
+
+    for func in ("Get-V5ProviderProjectTarget", "Get-V5ProviderNoProjectScope",
+                 "Get-V5JsonScopeContainer", "Test-V5ServerIsProjectBound",
+                 "Test-V5ServerDeclared"):
+        assert f"function {func}" in writer, f"{func} missing from the shared writer"
+
+    assert "Get-V5ProviderProjectTarget" in front, (
+        "the profile router does not ask where a provider keeps project-scoped servers"
+    )
+    # Claude Code's own local scope, not the project's .mcp.json: no file in the
+    # user's repository and no trust prompt.
+    assert "ProjectKey" in writer and "projects" in writer, (
+        "the JSON writer cannot address a project-scoped section"
+    )
+    # A provider that cannot be scoped must be skipped with a reason, never
+    # written machine-wide behind a comment claiming otherwise.
+    assert "not written: {1}" in front, (
+        "a provider without project scope is skipped without saying why"
+    )
+
+    # A diagnostic that reads only the machine-wide config cannot see the
+    # servers this release moved, and reports a cost no real session pays.
+    probe = read(ROOT / "TOOLS" / "Test-McpHandshake.ps1")
+    assert "[string]$Path," in probe, "the handshake probe cannot be pointed at a project"
+    assert "Get-V5ProviderProjectTarget" in probe, (
+        "the handshake probe does not read project-scoped servers"
+    )
+
+    # GetFolderPath returns the empty string for a folder that does not exist.
+    # Join-Path on that throws and takes the run down inside a helper whose only
+    # job is to answer "is Claude Desktop installed".
+    assert "function Get-V5AppDataRoot" in writer, (
+        "AppData roots are resolved without a guard against an empty result"
+    )
+
+    # A native command writing to stderr is not a failure. `uv tool install`
+    # prints "already installed" there and exits 0.
+    assert "$ErrorActionPreference = 'Continue'" in front, (
+        "the auto-install still treats a native command's stderr as fatal"
+    )
+
+
+def test_upgrading_moves_a_globally_registered_profile() -> None:
+    """Renaming a profile in a state file does not un-register a server.
+
+    A machine upgrading from 7.9.5 has Serena in the machine-wide config of
+    every provider. Migration has to remove those entries and re-register for
+    the project the state recorded; a state-only migration would leave the cost
+    in place while the state file claimed the profile was project-scoped.
+    """
+    front = read(ROOT / "TOOLS" / "Set-McpProfile.ps1")
+    assert "V5ProfileAliases" in front, "the old profile id no longer resolves"
+    assert "'code-deep' = 'code-intel'" in front, "code-deep does not map to code-intel"
+    assert "function Convert-V5ProfileState" in front, "there is no state migration"
+    assert "function Invoke-V5StaleGlobalMigration" in front, (
+        "nothing removes the machine-wide registrations an earlier version wrote"
+    )
+    gate = read(ROOT / "TESTS" / "Test-McpProfiles.ps1")
+    for needle in ("the upgrade drops the machine-wide Claude registration",
+                   "an unrelated project has no Serena entry",
+                   "a clean install leaves Serena unregistered machine-wide"):
+        assert needle in gate, f"the profile gate does not prove: {needle}"
+
+
+def test_docs_do_not_contradict_the_profile_scope() -> None:
+    """7.9.5 shipped both halves of a contradiction in the same commit.
+
+    CATALOG.json's Serena entry said "NOT registered globally". PROFILES.json
+    gave every profile scope "global". Whichever a reader found first, the other
+    was wrong. Assert the prose and the field agree.
+    """
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    assert all(p.get("scope") == "project" for p in profiles["profiles"])
+
+    for comp in catalog["components"]:
+        if not comp.get("profile"):
+            continue
+        assert comp.get("auto_register") is False, (
+            f"{comp['id']} carries a profile and is still auto-registered"
+        )
+        note = comp.get("scope_note") or ""
+        assert note, f"{comp['id']} carries a profile with no scope_note"
+
+    declared = {p["id"] for p in profiles["profiles"]}
+    for comp in catalog["components"]:
+        if comp.get("profile"):
+            assert comp["profile"] in declared, (
+                f"{comp['id']} names profile {comp['profile']}, which PROFILES.json does not declare"
+            )
+
+    skill = read(ROOT / "_V7-CANONICAL-SKILLS" / "capability-profiles" / "SKILL.md")
+    assert "code-intel" in skill, "the skill still teaches the old profile id as current"
+    assert "Installed is not enabled" in skill, (
+        "the skill does not distinguish an installed tool from a registered server"
+    )
 
 
 def test_mcp_config_writing_has_exactly_one_implementation() -> None:

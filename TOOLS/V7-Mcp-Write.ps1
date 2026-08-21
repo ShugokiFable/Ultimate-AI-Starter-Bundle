@@ -25,8 +25,15 @@
     note               one-line comment written above TOML entries
     key                optional env var name; copied into env when set
     env_passthrough    env var names copied into env when set
+    project_args       appended when written project-scoped (path is known)
+    global_args        appended instead when written machine-wide (-Global)
     requires           optional preconditions (see Test-V5ServerRequirement)
-    scope              'global' (default) or 'project'
+    scope              'project' (default) or 'global'
+
+  Scope is not decoration. A machine-wide entry puts its tool schemas in every
+  session on the box; a project-scoped one is only paid for by the project that
+  asked. Get-V5ProviderProjectTarget is where each provider's project mechanism
+  lives, and it returns $null for the three that have none.
 #>
 
 # Windows PowerShell 5.1's `Set-Content -Encoding utf8` writes a UTF-8 BOM. A BOM
@@ -45,9 +52,21 @@ function Test-V5GrokInheritsClaudeMcp {
 }
 
 function Get-V5GrokMcpCount {
-  $cfg = Join-Path $env:USERPROFILE '.grok\config.toml'
-  if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) { return 0 }
-  return @([regex]::Matches([IO.File]::ReadAllText($cfg), '(?m)^\[mcp_servers\.(?<n>[^\].]+)\]')).Count
+  <# Grok runs the union of ~/.grok/config.toml and <project>/.grok/config.toml,
+     so the ceiling has to be counted over both. Counting only the user file let
+     a project-scoped add push the running total past the budget it was checked
+     against. #>
+  param([string]$ProjectPath)
+  $files = @(Join-Path $env:USERPROFILE '.grok\config.toml')
+  if ($ProjectPath) { $files += (Join-Path $ProjectPath '.grok\config.toml') }
+  $names = @()
+  foreach ($cfg in $files) {
+    if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) { continue }
+    foreach ($m in [regex]::Matches([IO.File]::ReadAllText($cfg), '(?m)^\[mcp_servers\.(?<n>[^\].]+)\]')) {
+      $names += $m.Groups['n'].Value
+    }
+  }
+  return @($names | Select-Object -Unique).Count
 }
 
 function Select-V5WithinGrokBudget {
@@ -57,8 +76,8 @@ function Select-V5WithinGrokBudget {
      name (skyrim-forge) while every other path added freely -- enumeration
      where a sweep was needed. Returns the servers that fit, and reports the
      rest by name so an omission is never silent. #>
-  param([object[]]$Servers, [int]$Budget = 6)
-  $have = Get-V5GrokMcpCount
+  param([object[]]$Servers, [int]$Budget = 6, [string]$ProjectPath)
+  $have = Get-V5GrokMcpCount -ProjectPath $ProjectPath
   $room = $Budget - $have
   # No comma operator here: every caller wraps the result in @(), and ,@(...)
   # would hand them a one-element array containing the array.
@@ -139,14 +158,37 @@ function Write-JsonFile {
   Set-Utf8NoBom -Path $Path -Text ($Object | ConvertTo-Json -Depth 20)
 }
 
+function Get-V5AppDataRoot {
+  <# %APPDATA% / %LOCALAPPDATA% first: every other path in this pack comes from
+     an environment variable, and GetFolderPath returns an EMPTY STRING when the
+     folder does not exist -- which is not an error, but does make the next
+     Join-Path throw and take the whole run with it. #>
+  param([ValidateSet('Roaming', 'Local')][string]$Which)
+  $fromEnv = if ($Which -eq 'Roaming') { $env:APPDATA } else { $env:LOCALAPPDATA }
+  if ($fromEnv) { return $fromEnv }
+  $folder = if ($Which -eq 'Roaming') { 'ApplicationData' } else { 'LocalApplicationData' }
+  $resolved = [Environment]::GetFolderPath($folder)
+  if ([string]::IsNullOrEmpty($resolved)) { return '' }
+  return $resolved
+}
+
 function Get-ClaudeDesktopConfigPath {
   # Claude Desktop ships as either a normal install (%APPDATA%\Claude) or a
   # Microsoft Store package. Its MCP surface is claude_desktop_config.json;
   # ~/.claude.json only feeds Claude Code CLI sessions, so a desktop-only user
   # would otherwise get no servers at all.
-  $normal = Join-Path ([Environment]::GetFolderPath('ApplicationData')) 'Claude\claude_desktop_config.json'
-  if (Test-Path -LiteralPath $normal -PathType Leaf) { return $normal }
-  $packages = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Packages'
+  #
+  # Both roots are checked for emptiness before use. "Claude Desktop is not
+  # installed" is the right answer when a folder does not resolve; a crash
+  # inside this helper is not.
+  $roaming = Get-V5AppDataRoot -Which 'Roaming'
+  if ($roaming) {
+    $normal = Join-Path $roaming 'Claude\claude_desktop_config.json'
+    if (Test-Path -LiteralPath $normal -PathType Leaf) { return $normal }
+  }
+  $local = Get-V5AppDataRoot -Which 'Local'
+  if (-not $local) { return $null }
+  $packages = Join-Path $local 'Packages'
   if (-not (Test-Path -LiteralPath $packages)) { return $null }
   return Get-ChildItem -LiteralPath $packages -Directory -Filter 'Claude_*' -ErrorAction SilentlyContinue |
     ForEach-Object { Join-Path $_.FullName 'LocalCache\Roaming\Claude\claude_desktop_config.json' } |
@@ -161,6 +203,94 @@ function Get-V5McpTargets {
     'Grok'   = @{ Path = Join-Path $env:USERPROFILE '.grok\config.toml'; Section = 'mcp_servers'; Style = 'toml'; Desktop = $false }
     'Codex'  = @{ Path = Join-Path $env:USERPROFILE '.codex\config.toml'; Section = 'mcp_servers'; Style = 'toml'; Desktop = $false }
   }
+}
+
+function Get-V5ProviderProjectTarget {
+  <# Where a provider keeps MCP servers for ONE project, or $null when it keeps
+     them only machine-wide. Each answer was verified against the installed CLI,
+     not recalled:
+
+       Claude  projects["<abs>"].mcpServers in ~/.claude.json -- where
+               `claude mcp add --scope local` writes, and what `claude mcp list`
+               reads back inside that directory. Chosen over the project's
+               .mcp.json because it leaves no file in the user's repository and
+               raises no trust prompt.
+       Grok    <project>\.grok\config.toml -- `grok mcp add -s project`. This one
+               is a file in the project, because grok-cli has no other form.
+       Codex   none. A .codex/config.toml inside a project did not appear in
+               `codex mcp list` run from that project.
+       Kimi    none found. `kimi doctor` in a project holding .kimi-code/mcp.json
+               reported only the home configs.
+       Hermes  none. `hermes mcp add` has no scope option. #>
+  param([string]$Provider, [string]$ProjectPath)
+  if ([string]::IsNullOrEmpty($ProjectPath)) { return $null }
+  switch ($Provider) {
+    'Claude' {
+      return @{
+        Style      = 'json'
+        Path       = (Join-Path $env:USERPROFILE '.claude.json')
+        Section    = 'mcpServers'
+        ProjectKey = $ProjectPath.TrimEnd('\', '/')
+      }
+    }
+    'Grok' {
+      return @{
+        Style      = 'toml'
+        Path       = (Join-Path $ProjectPath '.grok\config.toml')
+        Section    = 'mcp_servers'
+        ProjectKey = ''
+      }
+    }
+  }
+  return $null
+}
+
+function Test-V5ServerIsProjectBound {
+  <# True when the server cannot exist outside one project: its command or its
+     arguments are resolved from {project}. Unity-MCP is the case -- the server
+     executable is generated inside that project's Library folder, so a
+     machine-wide entry for it would be a path that is wrong everywhere else.
+     project_args are deliberately not consulted: those are only appended when
+     the entry IS project-scoped. #>
+  param($Server)
+  $parts = @([string]$Server['command']) + @($Server['args'])
+  if ($Server.Contains('args_by_provider') -and $Server['args_by_provider']) {
+    foreach ($k in $Server['args_by_provider'].Keys) { $parts += @($Server['args_by_provider'][$k]) }
+  }
+  foreach ($p in $parts) { if ([string]$p -like '*{project}*') { return $true } }
+  return $false
+}
+
+function Get-V5ProviderNoProjectScope {
+  <# The exact reason, so a skipped provider is a decision the user can read
+     rather than a capability that silently went missing. #>
+  param([string]$Provider)
+  switch ($Provider) {
+    'Codex'  { return 'codex-cli has no project-scoped MCP config (a project .codex/config.toml is ignored)' }
+    'Kimi'   { return 'kimi-code reads only %USERPROFILE%\.kimi-code\mcp.json' }
+    'Hermes' { return 'hermes mcp add has no scope option; its config is one file' }
+  }
+  return ('{0} has no project-scoped MCP config' -f $Provider)
+}
+
+function Get-V5ClaudeProjectKeys {
+  <# Claude Code keys a project by the working directory string as its shell
+     reported it, and ~/.claude.json on this machine holds both
+     'Z:\a\b' and 'Z:/a/b' for the same tree -- one written from PowerShell, one
+     from a POSIX shell. Write the Windows form, and mirror into a slash form
+     only when the file already has one, so an entry is never invisible in
+     whichever shell the user actually opens. #>
+  param([string]$ProjectPath, [string]$ConfigPath)
+  $canonical = $ProjectPath.TrimEnd('\', '/')
+  $keys = @($canonical)
+  $alt = $canonical -replace '\\', '/'
+  if ($alt -ne $canonical -and (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
+    try {
+      $existing = [IO.File]::ReadAllText($ConfigPath) | ConvertFrom-Json
+      if ($existing.projects -and ($existing.projects.PSObject.Properties.Name -contains $alt)) { $keys += $alt }
+    } catch { }
+  }
+  return ,@($keys)
 }
 
 function Expand-V5Template {
@@ -234,12 +364,23 @@ function Test-V5ServerRequirement {
 }
 
 function Resolve-V5ServerArgs {
-  param($Server, [string]$Provider, [string]$ProjectPath)
+  param($Server, [string]$Provider, [string]$ProjectPath, [string]$Scope = 'project')
   # Not $args: that is an automatic variable inside a function.
   $argv = $Server['args']
   if ($Server.Contains('args_by_provider') -and $Server['args_by_provider']) {
     $byProvider = $Server['args_by_provider']
     if ($byProvider.Contains($Provider)) { $argv = $byProvider[$Provider] }
+  }
+  # A server that has to know its project gets told, but only in the form that
+  # can be true where the entry lands. Serena takes `--project <path>` for a
+  # registration written for one known project, and `--project-from-cwd` for a
+  # machine-wide one -- a baked absolute path in a global config would activate
+  # that one project in every unrelated session.
+  $argv = @($argv)
+  if ($Scope -eq 'global') {
+    if ($Server.Contains('global_args') -and $Server['global_args']) { $argv += @($Server['global_args']) }
+  } elseif ($ProjectPath -and $Server.Contains('project_args') -and $Server['project_args']) {
+    $argv += @($Server['project_args'])
   }
   # Comma operator, not plain @(): `return` unrolls a pipeline, so a
   # one-argument server ('uvx blender-mcp') came back as a bare string and
@@ -278,10 +419,29 @@ function Test-V5TextMatchesAny {
   return $false
 }
 
+function Get-V5JsonScopeContainer {
+  <# Returns the object that holds the server section: the document itself for a
+     machine-wide entry, or projects["<abs path>"] for a project-scoped one.
+     Returns $null when -Create was not asked for and the project is absent. #>
+  param($Json, [string]$ProjectKey, [switch]$Create)
+  if (-not $ProjectKey) { return $Json }
+  if ($Json.PSObject.Properties.Name -notcontains 'projects') {
+    if (-not $Create) { return $null }
+    $Json | Add-Member -NotePropertyName 'projects' -NotePropertyValue ([pscustomobject]@{})
+  }
+  if ($Json.projects.PSObject.Properties.Name -notcontains $ProjectKey) {
+    if (-not $Create) { return $null }
+    $Json.projects | Add-Member -NotePropertyName $ProjectKey -NotePropertyValue ([pscustomobject]@{})
+  }
+  return $Json.projects.$ProjectKey
+}
+
 function Remove-V5McpJson {
-  param([string]$Path, [string]$Section, [string[]]$Ids = @(), [string[]]$MatchLiterals = @(), [switch]$CheckOnly)
+  param([string]$Path, [string]$Section, [string[]]$Ids = @(), [string[]]$MatchLiterals = @(), [switch]$CheckOnly, [string]$ProjectKey)
   if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return @() }
-  $json = [IO.File]::ReadAllText($Path) | ConvertFrom-Json
+  $doc = [IO.File]::ReadAllText($Path) | ConvertFrom-Json
+  $json = Get-V5JsonScopeContainer -Json $doc -ProjectKey $ProjectKey
+  if ($null -eq $json) { return @() }
   if (-not $json.PSObject.Properties[$Section] -or $null -eq $json.$Section) { return @() }
   $dropped = @()
   foreach ($prop in @($json.$Section.PSObject.Properties)) {
@@ -294,7 +454,7 @@ function Remove-V5McpJson {
       $dropped += $prop.Name
     }
   }
-  if ($dropped.Count -and -not $CheckOnly) { Write-JsonFile -Path $Path -Object $json }
+  if ($dropped.Count -and -not $CheckOnly) { Write-JsonFile -Path $Path -Object $doc }
   return $dropped
 }
 
@@ -325,6 +485,8 @@ function Remove-V5McpToml {
   foreach ($m in $blocks) {
     if ($names -contains $m.Groups['name'].Value) { $text = $text.Replace($m.Value, '') }
   }
+  # Otherwise every enable/disable cycle leaves another run of blank lines.
+  $text = [regex]::Replace($text, '(\r?\n){3,}', "`r`n`r`n")
   Copy-Item -LiteralPath $Path -Destination "$Path.bak-mcp-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force
   Set-Utf8NoBom -Path $Path -Text $text
   return $names
@@ -335,31 +497,38 @@ function Remove-V5McpToml {
 function Add-V5McpJson {
   param(
     [string]$Path, [string]$Section, [object[]]$Servers, [string]$Provider,
-    [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath
+    [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath,
+    [string]$ProjectKey, [string]$Scope = 'global'
   )
-  $json = if (Test-Path -LiteralPath $Path) {
+  $doc = if (Test-Path -LiteralPath $Path) {
     [IO.File]::ReadAllText($Path) | ConvertFrom-Json
   } else { [pscustomobject]@{} }
+  $json = Get-V5JsonScopeContainer -Json $doc -ProjectKey $ProjectKey -Create
 
   if ($json.PSObject.Properties.Name -notcontains $Section) {
     $json | Add-Member -NotePropertyName $Section -NotePropertyValue ([pscustomobject]@{})
   }
   $added = @()
   foreach ($s in $Servers) {
-    if ($json.$Section.PSObject.Properties.Name -contains $s['id']) {
-      if (-not $Refresh) { continue }
-      $json.$Section.PSObject.Properties.Remove($s['id'])
-    }
     $entry = [ordered]@{
       command = Expand-V5Template -Text $s['command'] -ProjectPath $ProjectPath
-      args    = Resolve-V5ServerArgs -Server $s -Provider $Provider -ProjectPath $ProjectPath
+      args    = Resolve-V5ServerArgs -Server $s -Provider $Provider -ProjectPath $ProjectPath -Scope $Scope
     }
     $envBlock = Resolve-V5ServerEnv -Server $s
     if ($envBlock.Count) { $entry['env'] = $envBlock }
+    if ($json.$Section.PSObject.Properties.Name -contains $s['id']) {
+      if (-not $Refresh) { continue }
+      # Rewriting a byte-identical entry is not a change. Reporting it as one is
+      # noise; taking a timestamped backup for it is litter.
+      $before = $json.$Section.($s['id']) | ConvertTo-Json -Depth 20 -Compress
+      $after  = ([pscustomobject]$entry) | ConvertTo-Json -Depth 20 -Compress
+      if ($before -eq $after) { continue }
+      $json.$Section.PSObject.Properties.Remove($s['id'])
+    }
     $json.$Section | Add-Member -NotePropertyName $s['id'] -NotePropertyValue ([pscustomobject]$entry)
     $added += $s['id']
   }
-  if ($added.Count -and -not $CheckOnly) { Write-JsonFile -Path $Path -Object $json }
+  if ($added.Count -and -not $CheckOnly) { Write-JsonFile -Path $Path -Object $doc }
   return $added
 }
 
@@ -368,20 +537,18 @@ function Add-V5McpToml {
      reorder and strip the comments in a file they own. #>
   param(
     [string]$Path, [string]$Section, [object[]]$Servers, [string]$Provider,
-    [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath, [switch]$GrokTimeout
+    [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath, [switch]$GrokTimeout,
+    [string]$Scope = 'global'
   )
   $text = if (Test-Path -LiteralPath $Path) { [IO.File]::ReadAllText($Path) } else { '' }
   $append = ''
   $added = @()
   foreach ($s in $Servers) {
     $header = "[$Section.$($s['id'])]"
-    if ($text -match [regex]::Escape($header)) {
-      if (-not $Refresh) { continue }
-      $dropped = Remove-V5McpToml -Path $Path -Section $Section -Ids @($s['id'])
-      if ($dropped.Count) { $text = [IO.File]::ReadAllText($Path) }
-    }
+    $declared = $text -match [regex]::Escape($header)
+    if ($declared -and -not $Refresh) { continue }
     $cmd = Expand-V5Template -Text $s['command'] -ProjectPath $ProjectPath
-    $argv = Resolve-V5ServerArgs -Server $s -Provider $Provider -ProjectPath $ProjectPath
+    $argv = Resolve-V5ServerArgs -Server $s -Provider $Provider -ProjectPath $ProjectPath -Scope $Scope
     # TOML escapes a backslash as exactly two. Four parses back to a doubled
     # separator and a command that does not exist.
     $cmdToml = $cmd -replace '\\', '\\'
@@ -395,13 +562,23 @@ function Add-V5McpToml {
         $block += ("{0} = `"{1}`"`r`n" -f $k, ($envBlock[$k] -replace '\\', '\\'))
       }
     }
+    if ($declared) {
+      # Same rule as JSON: an identical rewrite is not a change, and taking a
+      # backup for it drops a .bak file into the user's project every run.
+      $existing = [regex]::Match($text, '(?ms)(?:^[ \t]*#[^\r\n]*\r?\n)?^' + [regex]::Escape($header) + '.*?(?=^\[|\z)')
+      if ($existing.Success -and $existing.Value.Trim() -eq $block.Trim()) { continue }
+      $dropped = Remove-V5McpToml -Path $Path -Section $Section -Ids @($s['id']) -CheckOnly:$CheckOnly
+      if ($dropped.Count -and -not $CheckOnly) { $text = [IO.File]::ReadAllText($Path) }
+    }
     $append += $block
     $added += $s['id']
   }
   if ($added.Count -and -not $CheckOnly) {
+    $dir = Split-Path -Parent $Path
+    if ($dir -and -not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
     if (Test-Path -LiteralPath $Path) {
       Copy-Item -LiteralPath $Path -Destination "$Path.bak-mcp-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force -ErrorAction SilentlyContinue
-      Set-Utf8NoBom -Path $Path -Text (([IO.File]::ReadAllText($Path)) + $append)
+      Set-Utf8NoBom -Path $Path -Text ($text + $append)
     } else {
       Set-Utf8NoBom -Path $Path -Text $append
     }
@@ -410,6 +587,31 @@ function Add-V5McpToml {
 }
 
 # ---- Hermes ----------------------------------------------------------------
+
+function Test-V5ServerDeclared {
+  <# Is this server registered in that config right now? The add functions
+     answer "did I change anything", which is a different question: once an
+     identical rewrite correctly stopped counting as a change, a re-run reported
+     nothing written and the profile state went back to off while the server was
+     still registered. State has to record registration, or -Disable cannot find
+     what to remove. #>
+  param([string]$Path, [string]$Style, [string]$Section, [string]$Id, [string]$ProjectKey)
+  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+  $text = [IO.File]::ReadAllText($Path)
+  if ($Style -eq 'toml') { return [bool]($text -match [regex]::Escape("[$Section.$Id]")) }
+  try { $doc = $text | ConvertFrom-Json } catch { return $false }
+  $c = Get-V5JsonScopeContainer -Json $doc -ProjectKey $ProjectKey
+  if ($null -eq $c) { return $false }
+  if (-not $c.PSObject.Properties[$Section] -or $null -eq $c.$Section) { return $false }
+  return ($c.$Section.PSObject.Properties.Name -contains $Id)
+}
+
+function Test-V5HermesServerDeclared {
+  param([string]$Id)
+  $paths = Get-V5HermesPaths
+  if (-not (Test-Path -LiteralPath $paths.Config -PathType Leaf)) { return $false }
+  return [bool]([IO.File]::ReadAllText($paths.Config) -match ('(?m)^[ \t]{2,}' + [regex]::Escape($Id) + '[ \t]*:'))
+}
 
 function Get-V5HermesPaths {
   $home_ = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCALAPPDATA 'hermes' }
@@ -476,7 +678,7 @@ save_config(cfg)
 '@
 
 function Add-V5McpHermes {
-  param([object[]]$Servers, [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath)
+  param([object[]]$Servers, [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath, [string]$Scope = 'global')
   $paths = Get-V5HermesPaths
   $existing = ''
   if (Test-Path -LiteralPath $paths.Config -PathType Leaf) { $existing = [IO.File]::ReadAllText($paths.Config) }
@@ -490,7 +692,7 @@ function Add-V5McpHermes {
     Invoke-V5HermesConfig -Script $script:V5HermesAddScript -EnvVars @{
       UABS_HERMES_MCP_ID        = $s['id']
       UABS_HERMES_MCP_COMMAND   = (Expand-V5Template -Text $s['command'] -ProjectPath $ProjectPath)
-      UABS_HERMES_MCP_ARGS_JSON = ((Resolve-V5ServerArgs -Server $s -Provider 'Hermes' -ProjectPath $ProjectPath) | ConvertTo-Json -Compress)
+      UABS_HERMES_MCP_ARGS_JSON = ((Resolve-V5ServerArgs -Server $s -Provider 'Hermes' -ProjectPath $ProjectPath -Scope $Scope) | ConvertTo-Json -Compress)
       UABS_HERMES_MCP_ENV_JSON  = ((Resolve-V5ServerEnv -Server $s) | ConvertTo-Json -Compress)
     }
     $added += $s['id']

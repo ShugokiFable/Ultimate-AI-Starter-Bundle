@@ -42,3 +42,10 @@ BUNDLED-TOOLS/offline/*/
 # from being committed.
 dist/
 artifacts/
+
+# Written into a project by TOOLS\Set-McpProfile.ps1 and by Serena itself when
+# a capability profile is enabled for that project. Machine-local wiring, not
+# pack content -- and this repository is one of the projects it can be enabled
+# for, where an untracked .grok\config.toml would fail the manifest verifier.
+.grok/
+.serena/

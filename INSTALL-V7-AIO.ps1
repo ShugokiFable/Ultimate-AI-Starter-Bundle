@@ -215,7 +215,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.9.5 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.9.6 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -1527,7 +1527,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.9.5'
+  version = '7.9.6'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -1637,7 +1637,8 @@ Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -Refre
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
 Write-Host '  6. Prove every MCP server actually answers: TOOLS\Test-McpHandshake.ps1 -Provider Claude'
 Write-Host '     Capability profiles (browser, Serena, Blender, Godot, Unity, Supabase) are off'
-Write-Host '     until a project needs them: TOOLS\Set-McpProfile.ps1 -List'
+Write-Host '     until a project needs them, and are then wired for THAT project only:'
+Write-Host '     TOOLS\Set-McpProfile.ps1 -List | -Auto -Path <project> | -Disable <id>'
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Codex: approve the one-time plugin trust prompt. Hermes: hermes --accept-hooks once.'
