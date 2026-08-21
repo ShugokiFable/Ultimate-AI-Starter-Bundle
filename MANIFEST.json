@@ -17821,8 +17821,8 @@
   },
   {
     "path": "BUNDLED-TOOLS/skyrim-forge/scripts/validate_repository.py",
-    "size": 38433,
-    "sha256": "be3e24f40be5a20278ad8bd7c09035dc44c11ca431541df91f0c790e58f8c175"
+    "size": 38435,
+    "sha256": "4e9b086b676fad63c5e0fb3834a7516d274db0d975ad6d265a6c4ca9922bc7b9"
   },
   {
     "path": "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/__init__.py",
@@ -18276,8 +18276,8 @@
   },
   {
     "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_powershell_release.py",
-    "size": 8681,
-    "sha256": "ca27ccd21d60d19e69ab7869a925c84b8f7eade34bf8be20ebdd7c29c618ad24"
+    "size": 8682,
+    "sha256": "9187877661d30b7b55191bb7995ee25f69fe44e9ce9d2b15a9e971ffe5e7587a"
   },
   {
     "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_process_launch.py",
