@@ -3,6 +3,50 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.6
+
+The capability profiles 7.9.5 shipped were detected per project and registered
+per machine. Every profile in `PROFILES.json` carried `"scope": "global"`, so
+enabling `code-deep` for one repository put Serena's tool schemas into every
+session on the box -- while the same file's opening paragraph and CATALOG.json's
+own Serena entry both said it was not registered globally. Found by a user
+noticing the context bill and disabling the profile by hand.
+
+- **Every profile is project-scoped.** Written where only its project can see
+  it: `projects["<abs path>"].mcpServers` in `~/.claude.json` for Claude Code
+  (where `claude mcp add --scope local` writes -- no file in the repository, no
+  trust prompt), `<project>\.grok\config.toml` for Grok. Codex, Kimi and Hermes
+  have no project-scoped MCP config, each verified against the installed CLI, so
+  they are skipped with the reason printed instead of written machine-wide.
+  `-Global` is the explicit opt-in and states the cost.
+- **`code-deep` is now `code-intel`.** The old name promised depth; the profile
+  holds one server. The old id still resolves. `team-harness/code-deep` was not
+  added: Serena plus `codebase-memory-mcp` remain the stack until something else
+  is benchmarked against them.
+- **Serena is told which project.** `--project <path>` for a project
+  registration; `--project-from-cwd` for a `-Global` one, because one baked
+  absolute path would activate that project in every unrelated session. Both
+  verified against the installed Serena 1.7.0's own `--help`.
+- **Installed is not enabled.** `-List` distinguishes them and prints which
+  project each profile is on for, and which providers took it.
+- **Migration moves the old entries, not just the state.** State goes from a
+  flat map to per-project; the upgrade removes the machine-wide registrations
+  from every provider config and re-registers for the project the state
+  recorded, touching only ids this pack recorded as enabled. A recorded project
+  that no longer exists is reported and left off.
+- **Four defects found on the way, all reachable by users.**
+  `Get-ClaudeDesktopConfigPath` crashed whenever `GetFolderPath` returned the
+  empty string it documents for a missing folder. `uv tool install` prints
+  "already installed" on stderr and exits 0, which under
+  `$ErrorActionPreference = 'Stop'` killed the auto-install on every re-run. An
+  identical rewrite counted as a change, dropping a timestamped `.bak` into the
+  user's project once per install run. `-Disable` with no `-Path` swept the
+  current directory instead of the projects the profile was enabled for.
+- **49 new checks** in `TESTS/Test-McpProfiles.ps1`, all driving the real
+  front-end script against a sandboxed `USERPROFILE`/`LOCALAPPDATA`/`APPDATA`
+  and reading the provider configs it produced. Every one fails against 7.9.5.
+- **No new skills.** 144 canonical across five provider trees, unchanged.
+
 ## 7.9.5
 
 Seven MCP servers from an external capability review, shipped as profiles rather

@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.5
+# Ultimate AI Starter Bundle v7.9.6
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -243,10 +243,30 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v7.9.6 — Profiles scoped to a project
+
+- 7.9.5 detected profiles per project and registered them per machine: every
+  entry in `PROFILES.json` carried `"scope": "global"`, so enabling one for a
+  single repository put its tool schemas into every session on the box. Fixed.
+- Each profile is now written where only its project sees it — Claude Code's
+  local scope in `~/.claude.json`, Grok's `<project>\.grok\config.toml`. Codex,
+  Kimi and Hermes have no project-scoped MCP config, so they are skipped with
+  the reason printed; `-Global` is the opt-in.
+- `code-deep` is renamed `code-intel` (the old id still resolves), and Serena is
+  told which project with `--project <path>`.
+- `-List` distinguishes **installed** (on disk, free) from **enabled**
+  (registered, costs context every turn) and prints which project each profile
+  is on for.
+- Four unrelated defects found while building it: a crash when
+  `GetFolderPath` returned an empty string, a successful `uv` install treated as
+  fatal because it writes to stderr, a `.bak` file dropped into the user's
+  project on every install run, and `-Disable` sweeping the current directory.
+
 ### v7.9.5 — Capability profiles
 
 - Seven MCP servers added as **profiles**, not global registrations: Serena,
-  Chrome DevTools, shadcn, Supabase, Blender, Godot, Unity.
+  Chrome DevTools, shadcn, Supabase, Blender, Godot, Unity. (7.9.5 still wrote
+  them machine-wide once enabled; v7.9.6 scopes them to one project.)
 - `TOOLS\Test-McpHandshake.ps1` proves a configured server actually answers, and
   reports what it costs: **188 tool schemas rode in context on every Claude turn**
   on the development machine before this release.
@@ -641,6 +661,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.6** — 2026-08-21. Based on v7.9.5; capability profiles scoped to one project instead of the machine.
 
 **v7.9.5** — 2026-08-21. Based on v7.9.2; capability profiles for seven MCP servers.
 

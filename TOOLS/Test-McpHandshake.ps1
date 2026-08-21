@@ -25,6 +25,11 @@
 .PARAMETER Name
   Check one server instead of all of them.
 
+.PARAMETER Path
+  A project directory. Capability profiles are registered per project, so
+  without this the check sees only the machine-wide config -- and reports a
+  cost that no session opened in that project would actually pay.
+
 .PARAMETER TimeoutSeconds
   Per-server budget. Default 60: a cold `npx -y` has to download the package.
 #>
@@ -32,6 +37,7 @@
 param(
   [ValidateSet('Claude', 'Codex', 'Grok', 'Kimi', 'Hermes')][string]$Provider = 'Claude',
   [string]$Name,
+  [string]$Path,
   [int]$TimeoutSeconds = 60
 )
 
@@ -91,21 +97,22 @@ function Get-TomlString($Match) {
   return $Match.Groups['l'].Value
 }
 
-function Get-ServersFromConfig([string]$Provider) {
-  $t = (Get-V5McpTargets)[$Provider]
-  if (-not (Test-Path -LiteralPath $t.Path -PathType Leaf)) {
-    throw "$Provider config not found at $($t.Path)"
-  }
-  $text = [IO.File]::ReadAllText($t.Path)
+function Get-ServersFromFile {
+  param([string]$ConfigPath, [string]$Style, [string]$Section, [string]$ProjectKey, [string]$Scope = 'machine')
+  if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) { return @() }
+  $text = [IO.File]::ReadAllText($ConfigPath)
   $out = @()
-  if ($t.Style -eq 'json') {
-    $json = $text | ConvertFrom-Json
-    if (-not $json.PSObject.Properties[$t.Section]) { return @() }
-    foreach ($p in $json.($t.Section).PSObject.Properties) {
-      $out += @{ id = $p.Name; command = $p.Value.command; args = @($p.Value.args) }
+  if ($Style -eq 'json') {
+    $doc = $text | ConvertFrom-Json
+    $json = Get-V5JsonScopeContainer -Json $doc -ProjectKey $ProjectKey
+    if ($null -eq $json) { return @() }
+    if (-not $json.PSObject.Properties[$Section]) { return @() }
+    foreach ($p in $json.($Section).PSObject.Properties) {
+      $out += @{ id = $p.Name; command = $p.Value.command; args = @($p.Value.args); scope = $Scope }
     }
     return $out
   }
+  $t = @{ Section = $Section }
   # TOML: read only what this check needs -- the command and args of each
   # server table. A full TOML parser is not a dependency worth adding to a
   # read-only diagnostic.
@@ -129,6 +136,33 @@ function Get-ServersFromConfig([string]$Provider) {
       id      = $m.Groups['name'].Value
       command = (Get-TomlString $cmd)
       args    = $argv
+      scope   = $Scope
+    }
+  }
+  return $out
+}
+
+function Get-ServersFromConfig {
+  <# What a session opened in $ProjectPath would actually see: the machine-wide
+     config, plus whatever that project adds. Reading only the first meant the
+     one tool that can answer "is this server working" was blind to every
+     capability profile, since those are registered per project. #>
+  param([string]$Provider, [string]$ProjectPath)
+  $t = (Get-V5McpTargets)[$Provider]
+  if (-not (Test-Path -LiteralPath $t.Path -PathType Leaf)) {
+    throw "$Provider config not found at $($t.Path)"
+  }
+  $out = @(Get-ServersFromFile -ConfigPath $t.Path -Style $t.Style -Section $t.Section -ProjectKey '' -Scope 'machine')
+  if ($ProjectPath) {
+    $proj = Get-V5ProviderProjectTarget -Provider $Provider -ProjectPath $ProjectPath
+    if ($proj) {
+      $names = @($out | ForEach-Object { $_.id })
+      foreach ($s in @(Get-ServersFromFile -ConfigPath $proj.Path -Style $proj.Style -Section $proj.Section -ProjectKey $proj.ProjectKey -Scope 'project')) {
+        # A project entry of the same name overrides, it does not duplicate:
+        # one server runs, not two.
+        $out = @($out | Where-Object { $_.id -ne $s.id })
+        $out += $s
+      }
     }
   }
   return $out
@@ -247,16 +281,23 @@ function Invoke-McpHandshake {
   }
 }
 
-$servers = if ($Provider -eq 'Hermes') { @(Get-HermesServers) } else { @(Get-ServersFromConfig $Provider) }
+if ($Path) {
+  if (-not (Test-Path -LiteralPath $Path -PathType Container)) { throw "-Path does not exist: $Path" }
+  $Path = (Resolve-Path -LiteralPath $Path).Path.TrimEnd('\', '/')
+}
+$servers = if ($Provider -eq 'Hermes') { @(Get-HermesServers) } else { @(Get-ServersFromConfig -Provider $Provider -ProjectPath $Path) }
 if ($Name) { $servers = @($servers | Where-Object { $_.id -eq $Name }) }
 if (-not $servers.Count) { Write-Host "No matching servers in the $Provider config."; exit 0 }
 
 Write-Host ("MCP handshake: {0} ({1} server(s))" -f $Provider, $servers.Count) -ForegroundColor Cyan
+if ($Path) { Write-Host ("  as a session opened in {0}" -f $Path) -ForegroundColor DarkGray }
+else { Write-Host '  machine-wide config only -- pass -Path <project> to include that project''s own servers' -ForegroundColor DarkGray }
 Write-Host ''
 $failed = 0
 $totalTools = 0
 foreach ($s in $servers) {
-  Write-Host ("  {0,-24} " -f $s.id) -NoNewline
+  $tag = if ($s.scope -eq 'project') { ' [project]' } else { '' }
+  Write-Host ("  {0,-24} " -f ($s.id + $tag)) -NoNewline
   try {
     $r = Invoke-McpHandshake -Command $s.command -Arguments $s.args -TimeoutSeconds $TimeoutSeconds
   } catch {
