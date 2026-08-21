@@ -42,6 +42,16 @@ provider trees.
   unpinned. The probe deadlocked on stderr it redirected and never drained,
   reporting a false FAIL for a healthy server. Grok would have registered a
   profile twice, because it reads `~/.claude.json` as well as its own config.
+- **Every dedupe in this pack keys on the server name**, which cannot see the
+  same package declared under a different one: Hermes ran `@playwright/mcp` as
+  `playwright`, and adding by catalog id wrote `playwright-mcp` beside it. The
+  extras branch matches the package now, with the version stripped so a pin bump
+  is still the same server.
+- **The handshake probe leaked a process tree per check.** `Process.Kill()` ends
+  one process; `cmd /c npx ...` leaves node running. After a dozen runs the
+  orphans held the ports the next check needed, and the probe reported ten
+  healthy servers as broken -- a false FAIL caused by the diagnostic. It kills
+  the tree now.
 - **Grok was missing two of the three always-on servers.** The wiring skipped
   anything declared in `~/.claude.json` as "inherited" -- true of grok-cli's
   default, untrue since this installer began writing `[compat.claude] mcps =

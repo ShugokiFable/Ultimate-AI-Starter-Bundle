@@ -1297,9 +1297,18 @@ if (-not $SkillsOnly) {
             'Kimi' {
               $kimiCfg = Join-Path $env:USERPROFILE '.kimi-code\mcp.json'
               if (Test-Path -LiteralPath (Split-Path -Parent $kimiCfg)) {
-                $spec = @{ id = $id; command = $comp.npx_command; args = $npxArgs; note = $id; key = $keyName }
-                [void](Add-V5McpJson -Path $kimiCfg -Section 'mcpServers' -Servers @($spec) -Provider 'Kimi' -Refresh)
-                $regs += 'Kimi'
+                # Adding by catalog id is blind to the same server already
+                # present under another name, which is how Hermes ended up with
+                # both `playwright` and `playwright-mcp`. Match the package.
+                $existingText = if (Test-Path -LiteralPath $kimiCfg) { [IO.File]::ReadAllText($kimiCfg) } else { '' }
+                $dupe = Find-V5ServerByPackage -ConfigText $existingText -PackageBase (Get-V5NpxPackageBase -Arguments $npxArgs)
+                if ($dupe -and $dupe -ne $id) {
+                  Write-V5Warn ("{0}: Kimi already runs this package as '{1}', not adding a second entry" -f $id, $dupe)
+                } else {
+                  $spec = @{ id = $id; command = $comp.npx_command; args = $npxArgs; note = $id; key = $keyName }
+                  [void](Add-V5McpJson -Path $kimiCfg -Section 'mcpServers' -Servers @($spec) -Provider 'Kimi' -Refresh)
+                  $regs += 'Kimi'
+                }
               } else {
                 Write-V5Warn "${id}: Kimi not installed, skipped"
               }
@@ -1307,9 +1316,15 @@ if (-not $SkillsOnly) {
             'Hermes' {
               $hp = Get-V5HermesPaths
               if (Test-Path -LiteralPath $hp.Python -PathType Leaf) {
-                $spec = @{ id = $id; command = $comp.npx_command; args = $npxArgs; note = $id; key = $keyName }
-                [void](Add-V5McpHermes -Servers @($spec) -Refresh)
-                $regs += 'Hermes'
+                $existingText = if (Test-Path -LiteralPath $hp.Config) { [IO.File]::ReadAllText($hp.Config) } else { '' }
+                $dupe = Find-V5ServerByPackage -ConfigText $existingText -PackageBase (Get-V5NpxPackageBase -Arguments $npxArgs)
+                if ($dupe -and $dupe -ne $id) {
+                  Write-V5Warn ("{0}: Hermes already runs this package as '{1}', not adding a second entry" -f $id, $dupe)
+                } else {
+                  $spec = @{ id = $id; command = $comp.npx_command; args = $npxArgs; note = $id; key = $keyName }
+                  [void](Add-V5McpHermes -Servers @($spec) -Refresh)
+                  $regs += 'Hermes'
+                }
               } else {
                 Write-V5Warn "${id}: Hermes not installed, skipped"
               }

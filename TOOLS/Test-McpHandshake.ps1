@@ -232,7 +232,17 @@ function Invoke-McpHandshake {
     }
   } finally {
     if ($errSub) { Unregister-Event -SourceIdentifier $errSub.Name -ErrorAction SilentlyContinue }
-    if (-not $proc.HasExited) { try { $proc.Kill() } catch { } }
+    # Kill the TREE, not the process. .NET Framework has no
+    # Kill(entireProcessTree), and `cmd /c npx ...` means killing cmd leaves
+    # node running -- one orphan per check, holding the ports and locks the
+    # next check needs. This diagnostic reported ten healthy servers as broken
+    # before that was fixed.
+    if (-not $proc.HasExited) {
+      try {
+        & taskkill.exe /T /F /PID $proc.Id *> $null
+      } catch { }
+      try { if (-not $proc.WaitForExit(5000)) { $proc.Kill() } } catch { }
+    }
     $proc.Dispose()
   }
 }

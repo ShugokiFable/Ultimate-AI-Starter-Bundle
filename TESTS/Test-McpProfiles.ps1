@@ -235,6 +235,38 @@ mcp_servers:
   if ($null -eq $savedHome) { Remove-Item Env:HERMES_HOME -ErrorAction SilentlyContinue } else { $env:HERMES_HOME = $savedHome }
 }
 
+# ------------------------------------------------------- same server, name ----
+Section 'the same server under a different name'
+
+# Dedupe keys on the server NAME everywhere in this pack. That is right for user
+# configuration and blind to one case: the same package already declared under
+# another name. Adding by catalog id gave Hermes both `playwright` and
+# `playwright-mcp` -- two entries, two handshakes, one server each.
+Is (Get-V5NpxPackageBase -Arguments @('-y', '@playwright/mcp@0.0.79')) '@playwright/mcp' 'scoped package base, version dropped'
+Is (Get-V5NpxPackageBase -Arguments @('-y', 'firecrawl-mcp@3.24.0')) 'firecrawl-mcp' 'unscoped package base'
+Is (Get-V5NpxPackageBase -Arguments @('-y', 'shadcn@4.18.0', 'mcp')) 'shadcn' 'the first non-flag argument wins'
+Is (Get-V5NpxPackageBase -Arguments @()) '' 'no arguments means no package'
+
+$yaml = @"
+mcp_servers:
+  playwright:
+    command: npx
+    args:
+      - -y
+      - '@playwright/mcp@latest'
+  housecarl:
+    command: x
+    args: []
+"@
+Is (Find-V5ServerByPackage -ConfigText $yaml -PackageBase '@playwright/mcp') 'playwright' 'finds a YAML entry by package, whatever it is named'
+Is (Find-V5ServerByPackage -ConfigText $yaml -PackageBase 'firecrawl-mcp') '' 'does not invent a match'
+
+# A pin change must still count as the same server, or every bump adds a copy.
+Is (Find-V5ServerByPackage -ConfigText $yaml -PackageBase (Get-V5NpxPackageBase -Arguments @('-y','@playwright/mcp@0.0.79'))) 'playwright' 'a different pin is still the same server'
+
+$json = '{"mcpServers":{"web":{"command":"npx","args":["-y","@playwright/mcp@0.0.79"]},"other":{"command":"z","args":[]}}}'
+Is (Find-V5ServerByPackage -ConfigText $json -PackageBase '@playwright/mcp') 'web' 'finds a JSON entry by package'
+
 # ------------------------------------------------------------ Grok budget ----
 Section 'Grok inheritance and budget'
 
