@@ -372,7 +372,14 @@ def validate_mcp(errors: list[str]) -> dict[str, Any]:
 def _powershell_expandable_strings(text: str) -> list[tuple[int, str]]:
     strings: list[tuple[int, str]] = []
     for line_number, line in enumerate(text.splitlines(), 1):
-        for match in re.finditer(r'"(?:[^"\r\n]|`.)*"', line):
+        # Disjoint alternatives. The escape branch starts with a backtick, so
+        # the ordinary branch excludes it -- a backtick also satisfies
+        # [^"\r\n], and that overlap is the py/redos CodeQL flagged. Restoring
+        # the parenthesis the autofix dropped made it compile and left the
+        # blowup where it was (4.2 s against 0 ms on an unterminated string
+        # with 26 escapes) -- and, by putting the ordinary branch first, made
+        # an escaped quote `" end the string instead of continuing it.
+        for match in re.finditer(r'"(?:`[^\r\n]|[^"`\r\n])*"', line):
             strings.append((line_number, match.group(0)))
     for match in re.finditer(r'@"\r?\n(.*?)\r?\n"@', text, flags=re.S):
         line_number = text.count("\n", 0, match.start()) + 1
@@ -394,7 +401,9 @@ def validate_powershell(errors: list[str], warnings: list[str]) -> dict[str, Any
             if bad:
                 findings.append(f"ambiguous variable followed by colon at {path.name}:{line_number}: {bad.group(0)}")
         # Simple delimiter scan after removing strings/comments is not a parser, but catches accidental truncation.
-        scrub=re.sub(r"(?m)#.*$|'(?:''|[^'])*'|\"(?:[^\"]|`.)*\"","",script_text)
+        # Same disjointness rule; [\s\S] rather than . so a backtick before a
+        # newline -- PowerShell's line continuation -- is still consumed.
+        scrub=re.sub(r"(?m)#.*$|'(?:''|[^'])*'|\"(?:`[\s\S]|[^\"`])*\"","",script_text)
         for left,right in (("{","}"),("(",")")):
             if scrub.count(left)!=scrub.count(right): findings.append(f"unbalanced {left}{right}: {path.name}")
     quoted_dp0 = re.compile(r'"%~dp0"(?=\s|$)', re.I)

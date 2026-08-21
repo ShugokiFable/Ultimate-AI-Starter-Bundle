@@ -28,7 +28,8 @@ class PowerShellReleaseTests(unittest.TestCase):
         for path in owned_powershell_scripts(ROOT):
             text = path.read_text(encoding='utf-8-sig')
             for line_number, line in enumerate(text.splitlines(), 1):
-                for match in re.finditer(r'"(?:[^"\r\n]|`.)*"', line):
+                # Disjoint alternatives; see validate_repository.py.
+                for match in re.finditer(r'"(?:`[^\r\n]|[^"`\r\n])*"', line):
                     invalid = bad.search(match.group(0))
                     if invalid:
                         findings.append(f'{path.relative_to(ROOT)}:{line_number}:{invalid.group(0)}')
