@@ -18431,8 +18431,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 87255,
-  "sha256": "4b40cd6b657a5f1812b048aafadeb918836a88c824feb175659ab3099ccc1241"
+  "size": 88110,
+  "sha256": "dcfc1b600e4e30382d7d3c5efcb830cf6d72aafeaac55a25fa1a5fda537fe027"
  },
  {
   "path": "LICENSE",
@@ -18746,8 +18746,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 5354,
-  "sha256": "baafcbcbf2f05ab03bcff0e1dfb582162ad49b7f810710d9fb94d646c009bc33"
+  "size": 5689,
+  "sha256": "fa83765b91d8f251047634b41e9c4a7d0e8cd1b34cce16690008f8e16d1c81c7"
  },
  {
   "path": "VERSION.txt",
@@ -21786,7 +21786,7 @@
  },
  {
   "path": "docs/history/V7.9.5-CHANGELOG.md",
-  "size": 15198,
-  "sha256": "7a7ce269a5fe1ac8990942c1f15a371b0bbe491691e9d036996a4fe84f3a7477"
+  "size": 15482,
+  "sha256": "c27fe38934740778a58ff929bd78e92768178560fa1f278bc212e382c410f716"
  }
 ]
