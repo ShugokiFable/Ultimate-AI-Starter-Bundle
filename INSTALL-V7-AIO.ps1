@@ -183,6 +183,7 @@ if (-not (Test-Path (Join-Path $PackRoot 'BUNDLED-TOOLS\CATALOG.json'))) {
   throw "Run INSTALL-V7-AIO.ps1 from the V7 pack root (folder containing BUNDLED-TOOLS)."
 }
 . (Join-Path $PackRoot 'TOOLS\V7-Common.ps1')
+. (Join-Path $PackRoot 'TOOLS\V7-Mcp-Write.ps1')
 $script:V5PackRoot = $PackRoot
 $catalog = Get-V5Catalog
 $offline = Join-Path $PackRoot 'BUNDLED-TOOLS\offline'
@@ -1258,7 +1259,31 @@ if (-not $SkillsOnly) {
                 Write-V5Warn "$id for Claude: run  claude mcp add --scope user $id -- $($comp.npx_command) $($npxArgs -join ' ')"
               }
             }
+            'Kimi' {
+              $kimiCfg = Join-Path $env:USERPROFILE '.kimi-code\mcp.json'
+              if (Test-Path -LiteralPath (Split-Path -Parent $kimiCfg)) {
+                $spec = @{ id = $id; command = $comp.npx_command; args = $npxArgs; note = $id; key = $keyName }
+                [void](Add-V5McpJson -Path $kimiCfg -Section 'mcpServers' -Servers @($spec) -Provider 'Kimi' -Refresh)
+                $regs += 'Kimi'
+              } else {
+                Write-V5Warn "${id}: Kimi not installed, skipped"
+              }
+            }
+            'Hermes' {
+              $hp = Get-V5HermesPaths
+              if (Test-Path -LiteralPath $hp.Python -PathType Leaf) {
+                $spec = @{ id = $id; command = $comp.npx_command; args = $npxArgs; note = $id; key = $keyName }
+                [void](Add-V5McpHermes -Servers @($spec) -Refresh)
+                $regs += 'Hermes'
+              } else {
+                Write-V5Warn "${id}: Hermes not installed, skipped"
+              }
+            }
             default {
+              # Reached only by a provider this pack does not know how to write.
+              # Printing the block is a handoff, and it is the last resort, not
+              # the plan -- Hermes and Kimi used to land here and silently got
+              # nothing while the catalog claimed five providers.
               Write-V5Warn ("{0}: add this MCP block to {1} yourself:" -f $id, $prov)
               Write-Host ("      command = ""{0}""  args = [{1}]" -f $comp.npx_command, (($npxArgs | ForEach-Object { '"' + $_ + '"' }) -join ', '))
             }
