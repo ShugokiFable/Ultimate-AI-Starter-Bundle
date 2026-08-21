@@ -36,6 +36,17 @@ provider trees.
   the server never answered. v7.9.2 pinned it in the catalog, but
   `-SkipIfPresent` compared only the *command* -- and every npx server has the
   same command. It now compares the args.
+- **Four more found by running it, after CI was already green.** The catalog's
+  own Playwright entry had no `-y`; widening the contract from the new servers to
+  *every* npx entry then caught `firecrawl-mcp` and `@perplexity-ai/mcp-server`
+  unpinned. The probe deadlocked on stderr it redirected and never drained,
+  reporting a false FAIL for a healthy server. Grok would have registered a
+  profile twice, because it reads `~/.claude.json` as well as its own config.
+- **`Repair-McpPaths.ps1` now repoints opaquely-named directories.** Its rule was
+  a version-stamped sibling -- this pack's convention. Codex keys runtimes by
+  content hash, so three dead command paths were reported unrepairable. Rule
+  generalised to "exactly one sibling under which the tail exists"; two
+  candidates are still reported rather than guessed between.
 
 See `docs/history/V7.9.5-CHANGELOG.md`.
 

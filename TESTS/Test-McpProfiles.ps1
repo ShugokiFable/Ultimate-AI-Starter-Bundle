@@ -235,6 +235,57 @@ mcp_servers:
   if ($null -eq $savedHome) { Remove-Item Env:HERMES_HOME -ErrorAction SilentlyContinue } else { $env:HERMES_HOME = $savedHome }
 }
 
+# ------------------------------------------------------- dead-path repair ----
+Section 'dead MCP command paths'
+
+# Repair-McpPaths knew one shape: a version-stamped sibling (Name-1.2.3), which
+# is this pack's own convention. Codex keys its runtime directories by content
+# hash, so an update leaves every config pointing at a directory that no longer
+# exists -- same silent failure, unmatched by that rule. The generalisation is
+# "exactly one sibling under which the tail exists", and the uniqueness half is
+# what has to be tested: picking wrong writes a config aimed at another binary.
+function New-FakeExe([string]$Path) {
+  New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Path) | Out-Null
+  Set-Utf8NoBom -Path $Path -Text 'x'
+}
+
+function Invoke-RepairInSandbox([string]$Root, [string]$DeadPath) {
+  $codexDir = Join-Path $Root '.codex'
+  New-Item -ItemType Directory -Force -Path $codexDir | Out-Null
+  Set-Utf8NoBom -Path (Join-Path $codexDir 'config.toml') -Text (
+    "[mcp_servers.node_repl]`r`ncommand = '" + $DeadPath + "'`r`nargs = []`r`n")
+  $saved = @{ U = $env:USERPROFILE; L = $env:LOCALAPPDATA }
+  try {
+    $env:USERPROFILE = $Root
+    $env:LOCALAPPDATA = Join-Path $Root 'LocalAppData'
+    New-Item -ItemType Directory -Force -Path $env:LOCALAPPDATA | Out-Null
+    & (Join-Path $PackRoot 'TOOLS\Repair-McpPaths.ps1') -Apply -Quiet *> $null
+  } finally {
+    $env:USERPROFILE = $saved.U
+    $env:LOCALAPPDATA = $saved.L
+  }
+  return [IO.File]::ReadAllText((Join-Path $codexDir 'config.toml'))
+}
+
+$repairRoot = Join-Path $sandbox 'repair-unique'
+$runtimes = Join-Path $repairRoot 'runtimes\cua_node'
+New-FakeExe (Join-Path $runtimes '84464046935436b8\bin\node_repl.exe')
+$dead = Join-Path $runtimes '2fb562745e6d66f0\bin\node_repl.exe'
+$after = Invoke-RepairInSandbox -Root $repairRoot -DeadPath $dead
+if ($after -match '84464046935436b8') { Good 'repoints a hash-named directory to its only live sibling' }
+else { Bad ('hash-named directory was not repaired: ' + ($after -replace "`r?`n", ' ')) }
+if ($after -notmatch '2fb562745e6d66f0') { Good 'the dead path is gone' } else { Bad 'the dead path survived the repair' }
+
+$ambigRoot = Join-Path $sandbox 'repair-ambiguous'
+$ambigRuntimes = Join-Path $ambigRoot 'runtimes\cua_node'
+New-FakeExe (Join-Path $ambigRuntimes 'aaaaaaaaaaaaaaaa\bin\node_repl.exe')
+New-FakeExe (Join-Path $ambigRuntimes 'bbbbbbbbbbbbbbbb\bin\node_repl.exe')
+$deadAmbig = Join-Path $ambigRuntimes 'cccccccccccccccc\bin\node_repl.exe'
+$afterAmbig = Invoke-RepairInSandbox -Root $ambigRoot -DeadPath $deadAmbig
+# Two candidates is not a resolution. Reporting it beats picking one.
+if ($afterAmbig -match 'cccccccccccccccc') { Good 'two candidates are reported, not guessed between' }
+else { Bad 'an ambiguous dead path was rewritten anyway' }
+
 # ------------------------------------------------------------ script shape ----
 Section 'front-end script'
 

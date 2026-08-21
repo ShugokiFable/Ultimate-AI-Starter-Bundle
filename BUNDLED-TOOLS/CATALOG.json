@@ -270,6 +270,7 @@
       },
       "npx_command": "npx",
       "npx_args": [
+        "-y",
         "@playwright/mcp@0.0.79"
       ],
       "extra_args_env": "PLAYWRIGHT_MCP_EXECUTABLE_PATH",
@@ -307,7 +308,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "firecrawl-mcp"
+        "firecrawl-mcp@3.24.0"
       ],
       "api_key_env": "FIRECRAWL_API_KEY",
       "api_key_optional": true,
@@ -327,7 +328,8 @@
         "web-docs-extract"
       ],
       "offline_asset": null,
-      "scope_note": "Scraping general web docs (CommonLib docs, wikis, GitHub READMEs). NEVER Nexus Mods - houseCARL reads Nexus keylessly with changelogs and file lists."
+      "scope_note": "Scraping general web docs (CommonLib docs, wikis, GitHub READMEs). NEVER Nexus Mods - houseCARL reads Nexus keylessly with changelogs and file lists.",
+      "version": "3.24.0"
     },
     {
       "id": "perplexity-mcp",
@@ -342,7 +344,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "@perplexity-ai/mcp-server"
+        "@perplexity-ai/mcp-server@1.2.0"
       ],
       "api_key_env": "PERPLEXITY_API_KEY",
       "api_key_optional": false,
@@ -362,7 +364,8 @@
       ],
       "offline_asset": null,
       "scope_note": "REQUIRES PERPLEXITY_API_KEY (paid). Not installed on a keyless machine. Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts.",
-      "key_required": true
+      "key_required": true,
+      "version": "1.2.0"
     },
     {
       "id": "github-mcp-server",
