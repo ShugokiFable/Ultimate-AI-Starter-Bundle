@@ -1,0 +1,29 @@
+<title>Order summary</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; background: #f6f7f9; }
+  header { position: fixed; top: 0; left: 0; right: 0; height: 72px;
+           background: #1f2430; color: #fff; display: flex;
+           align-items: center; padding: 0 24px; }
+  main   { padding: 24px; }
+  .card  { background: #fff; border-radius: 10px; padding: 20px;
+           max-width: 460px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .total { font-size: 28px; font-weight: 600; }
+  .note  { color: #9aa0aa; font-size: 11px; }
+  button { margin-top: 16px; padding: 10px 18px; border: 0; border-radius: 6px;
+           background: #2f6feb; color: #fff; font-size: 15px; }
+</style>
+<header><strong>Acme</strong></header>
+<main>
+  <div class="card">
+    <h1>Order summary</h1>
+    <p class="total">$1,248.00</p>
+    <p class="note">Includes tax. Refunds within 30 days of delivery.</p>
+    <button id="pay">Pay now</button>
+  </div>
+</main>
+<script>
+  document.getElementById('pay').addEventListener('click', function () {
+    document.querySelector('.card').insertAdjacentHTML(
+      'beforeend', '<p id="ok" style="color:#137333">Payment accepted.</p>');
+  });
+</script>

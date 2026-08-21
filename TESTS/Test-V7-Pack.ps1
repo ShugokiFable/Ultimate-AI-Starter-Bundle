@@ -471,6 +471,12 @@ if (-not (Test-Path -LiteralPath $providerSyncGate -PathType Leaf)) {
 }
 
 
+function Test-V5PackPath([string]$Path) {
+  if ([string]::IsNullOrEmpty($Path)) { return $false }
+  try { return [bool](Test-Path -LiteralPath $Path -PathType Leaf -ErrorAction SilentlyContinue) }
+  catch { return $false }
+}
+
 Section '13. MCP profile catalog and the shared config writer'
 # Both MCP writers share TOOLS\V7-Mcp-Write.ps1. Every config bug this pack has
 # shipped was a bug in one of three config shapes that the other two did not
@@ -486,6 +492,35 @@ if (-not (Test-Path -LiteralPath $mcpGate -PathType Leaf)) {
         Bad ('MCP profile gate failed:' + [Environment]::NewLine + ($mcpOut.Trim()))
     }
 }
+Section '14. Evidence-behaviour scenarios still contain their defects'
+# These fixtures measure whether an agent goes and looks instead of guessing.
+# Scoring the agent is a judgement; scoring the FIXTURE is not, and a benchmark
+# whose defects have quietly been repaired passes everything while measuring
+# nothing.
+$scenCheck = Join-Path $PackRoot 'TESTS\evidence-scenarios\check_fixtures.py'
+if (-not (Test-V5PackPath $scenCheck)) {
+    Bad 'TESTS\evidence-scenarios\check_fixtures.py missing from the pack'
+} else {
+    $scenOut = & python $scenCheck 2>&1 | Out-String
+    if ($scenOut -match 'EVIDENCE SCENARIOS: fixtures intact') {
+        Good 'evidence scenario fixtures intact'
+    } else {
+        Bad ('evidence scenario fixtures no longer test what they claim:' + [Environment]::NewLine + ($scenOut.Trim()))
+    }
+}
+
+# The vision canary is the falsifiable half of visual-verification. If a wrong
+# answer passes it, the skill is back to being an unverifiable instruction.
+$canaryChk = Join-Path $PackRoot 'TOOLS\Test-VisionCanary.ps1'
+if (-not (Test-V5PackPath $canaryChk)) {
+    Bad 'TOOLS\Test-VisionCanary.ps1 missing from the pack'
+} else {
+    $canOut = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $canaryChk `
+                -Word 'not' -Shape 'the' -Color 'answer' 2>&1 | Out-String
+    if ($canOut -match 'VISION CANARY: FAIL') { Good 'the vision canary rejects a wrong answer' }
+    else { Bad ('the vision canary accepted an answer that cannot have come from the image:' + [Environment]::NewLine + $canOut.Trim()) }
+}
+
 Write-Host ''
 if ($fail -eq 0) {
     Write-Host "PACK GATE: PASS" -ForegroundColor Green

@@ -46,6 +46,19 @@ Skip any step = lying, not verifying
 | Regression test works | Red-green cycle verified | Test passes once |
 | Agent completed | VCS diff shows changes | Agent reports "success" |
 | Requirements met | Line-by-line checklist | Tests passing |
+| Looks right | Rendered output inspected after the last change | DOM/CSS/scene data, a passing test, an earlier screenshot |
+| App works | Real artifact launched and the main path exercised | Build succeeded, unit tests passed |
+| Process exits cleanly | Checked no child survived | The window closed |
+| Fact is current | The source that settled it, named | "I recall that…" |
+
+Appearance is owned by `visual-verification`, runtime artifacts by
+`artifact-proof`, process cleanup by `process-lifecycle-cleanup`, and current
+external facts by `research-verification`. This skill owns only the gate: fresh
+evidence exists for the claim about to be made.
+
+**Fresh means after the last relevant change.** A screenshot taken before the
+final CSS edit, or a test run from before the last commit, is not evidence about
+what ships. If you changed anything after gathering evidence, gather it again.
 
 ## Red Flags - STOP
 

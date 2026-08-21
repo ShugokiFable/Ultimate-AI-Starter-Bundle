@@ -3,7 +3,7 @@
   Install the MCP servers that most directly raise one-shot success.
 
 .DESCRIPTION
-  These three were chosen against a single question: what actually makes the
+  These two were chosen against a single question: what actually makes the
   first attempt correct, rather than making the agent feel more capable?
 
   context7      Live, versioned library and API documentation with citations.
@@ -11,23 +11,26 @@
                 an invented function signature or a call that was valid two
                 releases ago. This replaces recall with the current doc.
 
-  sequential-thinking
-                Structured decomposition as a tool the model calls, so a hard
-                problem is broken down explicitly instead of answered in one
-                jump. Helps most on the multi-constraint tasks where a fast
-                model skips a step.
+  Not here any more: sequential-thinking. It held the third slot until 7.9.7
+  and lost it on measurement. Speaking real MCP to it gives one tool and a
+  4,587-byte schema -- ~1,146 tokens on every turn of every session, as much as
+  context7's two tools -- for a structured scratchpad rather than a capability:
+  it fetches nothing and reaches nothing the model could not write in its own
+  reasoning. It is the 'reasoning' profile now, off unless asked for:
+
+      TOOLS\Set-McpProfile.ps1 -Enable reasoning -Global
 
   github        Official GitHub server: repos, PRs, issues, releases, CI status,
                 Dependabot and security findings. Turns "push and hope" into
                 something the agent can verify it actually did.
 
-  These three are always on because they apply to every task. Everything else
+  These two are always on because they apply to every task. Everything else
   this pack can wire is a capability profile in BUNDLED-TOOLS/PROFILES.json,
   registered by TOOLS\Set-McpProfile.ps1 only when a project needs it -- MCP
   tool schemas are not lazy, and a server that is connected costs context on
   every turn whether or not the task is related.
 
-  context7 and sequential-thinking are npx-based. GitHub's official MCP server
+  context7 is npx-based. GitHub's official MCP server
   ships Windows binaries rather than an npm package, so it is installed from the
   pack's SHA-pinned offline asset and registered by absolute path.
 
@@ -79,6 +82,28 @@ if (-not $hasNpx) {
 # skills-only run) means the entry is skipped, not guessed at.
 $ghExe = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\github-mcp-server\github-mcp-server.exe'
 
+# A machine installed before 7.9.7 still has sequential-thinking registered.
+# Say so, with the number and the command -- do not silently remove a server the
+# user may be relying on, and do not silently keep charging them for it either.
+function Show-V5SequentialThinkingNotice {
+  $found = @()
+  foreach ($t in (Get-V5McpTargets).GetEnumerator()) {
+    if (-not (Test-Path -LiteralPath $t.Value.Path -PathType Leaf)) { continue }
+    $text = [IO.File]::ReadAllText($t.Value.Path)
+    if ($text -match 'server-sequential-thinking') { $found += $t.Key }
+  }
+  $hp = Get-V5HermesPaths
+  if ((Test-Path -LiteralPath $hp.Config -PathType Leaf) -and
+      ([IO.File]::ReadAllText($hp.Config) -match 'server-sequential-thinking')) { $found += 'Hermes' }
+  if (-not $found.Count) { return }
+  Write-Host ''
+  Write-Host ("sequential-thinking is still registered for: {0}" -f (($found | Sort-Object -Unique) -join ', ')) -ForegroundColor Yellow
+  Write-Host  '  It left the always-on core in 7.9.7 on measurement: 1 tool, 4,587-byte schema,' -ForegroundColor DarkGray
+  Write-Host  '  ~1,146 tokens on every turn of every session. Nothing here removed it for you.' -ForegroundColor DarkGray
+  Write-Host  '  Keep it:   TOOLS\Set-McpProfile.ps1 -Enable reasoning -Global' -ForegroundColor DarkGray
+  Write-Host  '  Drop it:   TOOLS\Set-McpProfile.ps1 -Disable reasoning' -ForegroundColor DarkGray
+}
+
 $servers = @(
   @{
     id      = 'context7'
@@ -86,13 +111,6 @@ $servers = @(
     args    = @('-y', '@upstash/context7-mcp@4.0.2')
     note    = 'live library/API docs - stops invented signatures'
     key     = 'CONTEXT7_API_KEY'   # optional: higher rate limits
-  },
-  @{
-    id      = 'sequential-thinking'
-    command = 'npx'
-    args    = @('-y', '@modelcontextprotocol/server-sequential-thinking@2026.7.4')
-    note    = 'explicit problem decomposition'
-    key     = $null
   },
   @{
     # GitHub's official server. The previous entry here was
@@ -147,7 +165,7 @@ foreach ($p in $Providers) {
     if (Test-V5HermesRetired -Literals $retiredLiterals) {
       $retired = @(Remove-V5McpHermes -Ids $serverIds -CheckOnly:$CheckOnly)
       if ($retired.Count) {
-        Write-Host ("{0,-7} retired {1} (upstream package withdrawn, rewriting all three)" -f $p, ($retired -join ', ')) -ForegroundColor Yellow
+        Write-Host ("{0,-7} retired {1} (upstream package withdrawn, rewriting the core)" -f $p, ($retired -join ', ')) -ForegroundColor Yellow
       }
     }
     $addedH = @(Add-V5McpHermes -Servers $servers -Refresh:$Refresh -CheckOnly:$CheckOnly)
@@ -233,7 +251,9 @@ Write-Host '  setx CONTEXT7_API_KEY "<key>"                 https://context7.com
 Write-Host '  setx GITHUB_PERSONAL_ACCESS_TOKEN "<token>"   github.com/settings/tokens'
 Write-Host 'Restart each AI app, then check /mcp.'
 Write-Host ''
-Write-Host 'Capability profiles (browser, Serena, Blender, Godot, Unity, Supabase) are'
-Write-Host 'off by default. See what applies to a project:'
+Show-V5SequentialThinkingNotice
+Write-Host ''
+Write-Host 'Capability profiles (browser, Serena, Blender, Godot, Unity, reasoning) are'
+Write-Host 'off by default and wired for one project. See what applies to a project:'
 Write-Host '  TOOLS\Set-McpProfile.ps1 -List'
 Write-Host '  TOOLS\Set-McpProfile.ps1 -Auto -Path <your project>'

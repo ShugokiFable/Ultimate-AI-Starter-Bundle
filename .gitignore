@@ -49,3 +49,7 @@ artifacts/
 # for, where an untracked .grok\config.toml would fail the manifest verifier.
 .grok/
 .serena/
+
+# Written by TESTS/evidence-scenarios/check_fixtures.py when it proves scenario C
+# still fails. Output of running a fixture, not pack content.
+TESTS/evidence-scenarios/*/app.log

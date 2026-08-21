@@ -58,7 +58,15 @@ if (-not (Test-Path -LiteralPath $profilesPath -PathType Leaf)) {
   # A profile server that collides with an always-on server would be written
   # twice under one name: two handshakes, one entry, and whichever the provider
   # read last wins.
-  $core = @('context7', 'sequential-thinking', 'github')
+  # Read the core from the script that defines it. Hardcoding it here meant
+  # this check kept comparing against a list that had moved on: 7.9.7 took
+  # sequential-thinking out of always-on and into a profile, which this test
+  # then reported as a collision with a core it was no longer part of.
+  $reasoningSrc = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\Add-Reasoning-MCPs.ps1'))
+  $coreBlock = ($reasoningSrc -split [regex]::Escape('$servers = @('))[1]
+  $core = @([regex]::Matches($coreBlock, "(?m)^\s*id\s*=\s*'(?<id>[^']+)'") | ForEach-Object { $_.Groups['id'].Value })
+  if (-not $core.Count) { Bad 'could not read the always-on core from Add-Reasoning-MCPs.ps1' }
+  else { Good ("always-on core read from source: {0}" -f ($core -join ', ')) }
   $collide = @($serverIds | Where-Object { $core -contains $_ })
   if ($collide.Count) { Bad ("profile server collides with the always-on core: {0}" -f ($collide -join ', ')) }
   else { Good 'no profile server shadows an always-on server' }
@@ -674,6 +682,77 @@ try {
   Set-Utf8NoBom -Path (Join-Path $bbox.Proj '.grok\config.toml') -Text "[mcp_servers.b]`r`ncommand = `"b`"`r`nargs = []`r`n"
   Is (Get-V5GrokMcpCount -ProjectPath $bbox.Proj) 2 'a server declared in both files is counted once'
 } finally { $env:USERPROFILE = $savedU }
+
+
+# ----------------------------------------------- withdrawn and opt-in ----
+Section 'a withdrawn profile, and the one that is deliberately machine-wide'
+
+# Deleting a profile from the catalog does not un-register its servers from the
+# machines that enabled it: the entry keeps starting and keeps costing its tool
+# schemas, with nothing left in the catalog able to turn it off. Supabase was
+# withdrawn in 7.9.7, so this is that path.
+$wbox = New-V5TestBox
+$cj = Get-V5BoxClaude $wbox
+$cj.mcpServers | Add-Member -NotePropertyName 'supabase' -NotePropertyValue ([pscustomobject]@{ command = 'npx'; args = @('-y', '@supabase/mcp-server-supabase@0.11.0') })
+# ...and one the USER configured, under a different name, which must survive.
+$cj.mcpServers | Add-Member -NotePropertyName 'my-own-supabase' -NotePropertyValue ([pscustomobject]@{ command = 'npx'; args = @('-y', '@supabase/mcp-server-supabase@0.11.0') })
+Set-Utf8NoBom -Path (Join-Path $wbox.Home '.claude.json') -Text ($cj | ConvertTo-Json -Depth 20)
+New-Item -ItemType Directory -Force -Path (Join-Path $wbox.Local 'Skyrim-AI-V5') | Out-Null
+Set-Utf8NoBom -Path (Join-Path $wbox.Local 'Skyrim-AI-V5\mcp-profiles.json') -Text (
+  '{"schema":2,"profiles":{"cloud":{"global":{"enabled_utc":"2026-08-21T00:00:00Z","servers":["supabase"],"providers":["Claude"]}}}}')
+
+$out = Invoke-V5Profile -Box $wbox -Arguments @('-Auto', '-Path', $wbox.Proj)
+$after = (Get-V5BoxClaude $wbox).mcpServers.PSObject.Properties.Name
+if ($after -notcontains 'supabase') { Good 'a withdrawn profile is un-registered, not just forgotten' }
+else { Bad ("the withdrawn Supabase entry survived: " + $out) }
+if ($after -contains 'my-own-supabase') { Good 'a server the user configured themselves is untouched' }
+else { Bad 'the migration removed a server this pack never created' }
+$stateAfter = Get-V5BoxText (Join-Path $wbox.Local 'Skyrim-AI-V5\mcp-profiles.json')
+if ($stateAfter -notmatch '"cloud"') { Good 'the withdrawn profile leaves the state file' }
+else { Bad 'the withdrawn profile is still in state' }
+
+# The `reasoning` profile is the single deliberate machine-wide one. It has no
+# detection markers precisely so that -Auto can never turn it on: a thinking aid
+# is not a property of a project, and ~1,146 tokens a turn is not something to
+# acquire by accident.
+$rbox = New-V5TestBox
+$out = Invoke-V5Profile -Box $rbox -Arguments @('-Auto', '-Path', $rbox.Proj)
+$rClaude = Get-V5BoxClaude $rbox
+if ($rClaude.mcpServers.PSObject.Properties.Name -notcontains 'sequential-thinking') { Good '-Auto never enables the reasoning profile' }
+else { Bad '-Auto enabled a machine-wide profile from a project marker' }
+if (-not (Test-V5BoxProjectServer $rbox $rbox.Proj 'sequential-thinking')) { Good 'and it does not arrive project-scoped either' }
+else { Bad 'the reasoning profile was written into a project scope' }
+
+$out = Invoke-V5Profile -Box $rbox -Arguments @('-Enable', 'reasoning', '-Global')
+$rClaude = Get-V5BoxClaude $rbox
+if ($rClaude.mcpServers.PSObject.Properties.Name -contains 'sequential-thinking') { Good 'an explicit -Enable reasoning -Global does register it' }
+else { Bad ("-Enable reasoning -Global registered nothing: " + $out) }
+$out = Invoke-V5Profile -Box $rbox -Arguments @('-Disable', 'reasoning')
+$rClaude = Get-V5BoxClaude $rbox
+if ($rClaude.mcpServers.PSObject.Properties.Name -notcontains 'sequential-thinking') { Good '-Disable reasoning gives the context back' }
+else { Bad '-Disable left the machine-wide reasoning server behind' }
+
+# ------------------------------------------------------- vision canary ----
+Section 'the vision canary is falsifiable'
+
+# "Look at the screenshot" cannot be checked by reading a skill file: the honest
+# report and the fabricated one are the same sentence. The canary is the part
+# that can be checked.
+$canaryImg = Join-Path $PackRoot 'TOOLS\vision-canary\vision-canary.png'
+$canaryMeta = Join-Path $PackRoot 'TOOLS\vision-canary\canary.json'
+$canaryChk = Join-Path $PackRoot 'TOOLS\Test-VisionCanary.ps1'
+foreach ($p in @($canaryImg, $canaryMeta, $canaryChk)) {
+  if (Test-V5Path -LiteralPath $p -PathType Leaf) { Good ("ships " + (Split-Path -Leaf $p)) } else { Bad ("missing " + $p) }
+}
+if (Test-V5Path -LiteralPath $canaryChk -PathType Leaf) {
+  # A wrong answer must fail, or the check proves nothing.
+  $wrong = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $canaryChk `
+             -Word 'definitely' -Shape 'not' -Color 'right' -CanaryRoot (Split-Path -Parent $canaryImg) 2>&1 | Out-String
+  if ($LASTEXITCODE -ne 0 -and $wrong -match 'FAIL') { Good 'a wrong answer fails the canary' }
+  else { Bad 'the canary passes an answer that cannot have come from the image' }
+  if ($wrong -match 'visual verification unavailable') { Good 'and it says what to do instead' }
+  else { Bad 'a canary failure does not tell the agent how to report honestly' }
+}
 
 } finally {
   Remove-Item -LiteralPath $sandbox -Recurse -Force -ErrorAction SilentlyContinue

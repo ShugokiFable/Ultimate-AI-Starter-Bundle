@@ -1,0 +1,11 @@
+{
+  "what": "A falsifiable check for whether this agent can actually see image pixels.",
+  "how": [
+    "Open TOOLS/vision-canary/vision-canary.png with whatever image-reading capability you have.",
+    "Read the single word printed across the top, the shape below it, and that shape's colour.",
+    "Run: TOOLS\\Test-VisionCanary.ps1 -Word <word> -Shape <shape> -Color <colour>",
+    "It answers PASS or FAIL. A FAIL means you cannot see pixels -- say so, do not claim visual verification."
+  ],
+  "why_hashed": "The expected answer is stored only as a SHA-256 of '<word>|<shape>|<colour>' in lower case. Reading this repository cannot substitute for looking at the image, which is the entire point: 'screenshot captured' and 'agent inspected the pixels' are different claims.",
+  "answer_sha256": "6fad97a91c42124dac59bffa6f7b0f68b061cc405a433c23f88e9f72be9bc0e4"
+}

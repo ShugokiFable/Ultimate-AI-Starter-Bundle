@@ -3,6 +3,71 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.7
+
+Make agents seek the cheapest decisive evidence before guessing, and require
+real evidence before claiming visual or behavioural work is finished.
+145 canonical skills total, mirrored across five provider trees; the always-on
+MCP core got *smaller*, not larger.
+
+- **The audit came before the addition.** Eleven existing reliability skills
+  were read first. Exactly one behaviour had no owner -- does the rendered
+  result actually look right -- so `visual-verification` was added and the other
+  six were extended at their own seams instead of cloned: `observability-first`
+  now covers software the agent writes, `secret-hygiene` covers proving a
+  variable is set without printing it, `research-verification` gained a tool
+  ladder *and* the counterweight against reflexive browsing,
+  `verification-before-completion` gained rendered/runtime evidence rows and
+  freshness, `assumption-audit` gained routing.
+- **"Use vision" ships a falsifiable check, not an instruction.** A model that
+  cannot see pixels can still write "I inspected the screenshot". So
+  `TOOLS\vision-canary` holds an image whose contents exist only as a SHA-256,
+  and `TOOLS\Test-VisionCanary.ps1` answers PASS or FAIL. A FAIL is an answer:
+  say "visual verification unavailable in this provider/session", keep the
+  artifact, fall back to DOM/console/geometry. Provider capability was
+  established by running each CLI, and the one gap is stated: Codex's
+  `-i/--image` flag exists but end-to-end delivery is untested, because the
+  account hit its usage limit mid-verification.
+- **Eight fixtures for the behaviour itself** in `TESTS/evidence-scenarios/`,
+  each with a rubric, plus `check_fixtures.py` chained into the pack gate so the
+  defects cannot quietly be repaired into passing everything. Scenario A was run
+  for real: a heading clipped behind a fixed header, invisible to every DOM and
+  CSS check.
+- **Supabase withdrawn.** The only profile needing an account and a token,
+  against this pack's free/local/keyless default. Withdrawing a profile does not
+  un-register it, so the migration removes only what this pack recorded and
+  leaves an independently configured server alone. A contract now fails the
+  build if any profile server requires an API key.
+- **Blender pinned and discovered.** `uvx blender-mcp` was the one unpinned
+  invocation; 1.8.3 verified against PyPI and by running it. The maintainer's own
+  `S:\Steam\...` path is replaced by what `blender-mcp addon-paths` actually
+  reports, and a new contract fails the build on any drive letter or user
+  directory in a shipped config. Telemetry was read from the wheel:
+  consent-gated inside the addon, no telemetry endpoint, unreachable from
+  outside the editor -- so the note states that rather than claiming a disable.
+- **sequential-thinking left the always-on core on measurement.** Real MCP
+  `initialize -> tools/list`: 1 tool, 4,587-byte schema, ~1,146 tokens on every
+  turn of every session -- as much as context7's two tools, for a scratchpad
+  rather than a capability. It is the opt-in `reasoning` profile now, with no
+  detection markers so `-Auto` can never reach it; machines that already have it
+  are told with the number, not edited. What was *not* measured: its benefit to
+  weaker models.
+- **Godot re-compared and kept.** hi-godot/godot-ai is fresher but needs an
+  editor plugin, uv and a WebSocket; Coding-Solo's headless npx server wins on
+  friction for this bundle. Recorded with the trigger for revisiting.
+- **A finding nobody was looking for.** A real Codex run reported "Exceeded
+  skills context budget. All skill descriptions were removed" -- description
+  routing, this pack's whole mechanism, is degraded on Codex at 215 installed
+  skills / 38,228 characters. `skill_search` is already enabled there, so this
+  is a size problem, not a flag. The doctor now reports it with the measurement
+  and the remedy. A limitation, not a fix.
+- **The preamble grew by one clause, measured:** +91 bytes, ~23 tokens per
+  request, on the line that already owned evidence order.
+- **Fixed: the accepted CodeQL autofix did not compile**, and main was red.
+  Restoring the dropped parenthesis made it compile while leaving the ReDoS
+  intact (3,571 ms against 0 ms) and silently changing what the validator parses
+  on ten lines. The repair makes the alternation disjoint.
+
 ## 7.9.6
 
 The capability profiles 7.9.5 shipped were detected per project and registered

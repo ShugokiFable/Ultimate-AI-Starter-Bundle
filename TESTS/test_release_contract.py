@@ -969,6 +969,158 @@ def test_grok_forge_wiring_does_not_warn_before_bundled_forge_install() -> None:
         "Grok wiring still emits a false 'Skyrim Forge not configured' warning before the bundled Forge component runs"
     )
 
+
+
+def test_no_shipped_config_carries_a_maintainer_path() -> None:
+    """7.9.6 shipped this maintainer's own Steam drive in a profile requirement.
+
+    `S:\\Steam\\steamapps\\common\\Blender\\blender.exe` cannot match on anybody
+    else's machine, in a pack whose own rule is that a drive letter is never
+    assumed. There was already a check for skill scripts; the data files it did
+    not cover are exactly where it happened.
+    """
+    suspects = [
+        ROOT / "BUNDLED-TOOLS" / "PROFILES.json",
+        ROOT / "BUNDLED-TOOLS" / "CATALOG.json",
+        ROOT / "TOOLS" / "Set-McpProfile.ps1",
+        ROOT / "TOOLS" / "V7-Mcp-Write.ps1",
+        ROOT / "TOOLS" / "Test-McpHandshake.ps1",
+    ]
+    # A drive letter that is not the conventional C:, and any user profile path
+    # with a literal name in it. %VARS% and {project} are the portable forms.
+    drive = re.compile(r"(?<![A-Za-z0-9_%])([D-Zd-z]):[\\/]{1,2}[A-Za-z0-9]")
+    userdir = re.compile(r"(?i)[\\/](?:Users|home)[\\/](?!%|<|\{)[A-Za-z0-9._-]+[\\/]")
+    offenders = []
+    for path in suspects:
+        if not path.is_file():
+            continue
+        for i, line in enumerate(read(path).splitlines(), 1):
+            stripped = line.strip()
+            # Examples inside prose are how the rule gets taught; a value is a
+            # different thing. Only flag lines that look like configuration.
+            if stripped.startswith("#") or stripped.startswith("//"):
+                continue
+            for rx, what in ((drive, "drive letter"), (userdir, "user directory")):
+                m = rx.search(line)
+                if m:
+                    offenders.append(f"{path.name}:{i} {what}: {stripped[:110]}")
+    assert not offenders, "maintainer-specific paths in shipped config:\n  " + "\n  ".join(offenders)
+
+
+def test_bundle_stays_free_and_accountless() -> None:
+    """Supabase was withdrawn in 7.9.7 and must not come back, nor be replaced.
+
+    It was the only profile that required an account and a personal access
+    token, against this pack's default of free, local, keyless and no signup.
+    """
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+
+    ids = [p["id"] for p in profiles["profiles"]]
+    assert "cloud" not in ids, "the withdrawn Supabase profile is back"
+    for prof in profiles["profiles"]:
+        for server in prof["servers"]:
+            blob = json.dumps(server).lower()
+            assert "supabase" not in blob, f"{prof['id']}/{server['id']} references Supabase"
+            # A profile gated on an API key is an account requirement by another
+            # name. Any future one has to be argued for here deliberately.
+            key = server.get("key")
+            assert not key, (
+                f"{prof['id']}/{server['id']} requires {key}. This pack's default is "
+                "free, local and keyless; adding an account-dependent server needs "
+                "this contract updated on purpose."
+            )
+    assert not any(c.get("id") == "supabase-mcp" for c in catalog["components"]), (
+        "supabase-mcp is back in CATALOG.json"
+    )
+    # Withdrawing it from the catalog does not un-register it from a machine.
+    front = read(ROOT / "TOOLS" / "Set-McpProfile.ps1")
+    assert "V5RetiredProfiles" in front and "'cloud'" in front, (
+        "nothing un-registers a withdrawn profile from machines that enabled it"
+    )
+
+
+def test_visual_verification_ships_its_own_falsifiable_check() -> None:
+    """A skill that says "look at the screenshot" is unfalsifiable on its own.
+
+    The honest report and the fabricated one are the same sentence, so the skill
+    ships a canary: an image whose contents are recorded only as a hash, and a
+    checker that answers PASS or FAIL.
+    """
+    skill = ROOT / "_V7-CANONICAL-SKILLS" / "visual-verification" / "SKILL.md"
+    assert skill.is_file(), "the visual-verification skill is missing"
+    body = read(skill)
+    for needle in ("Test-VisionCanary", "visual verification unavailable"):
+        assert needle in body, f"visual-verification does not mention {needle}"
+
+    checker = ROOT / "TOOLS" / "Test-VisionCanary.ps1"
+    assert checker.is_file(), "the vision canary checker is missing"
+    canary_png = ROOT / "TOOLS" / "vision-canary" / "vision-canary.png"
+    canary_meta = ROOT / "TOOLS" / "vision-canary" / "canary.json"
+    assert canary_png.is_file(), "the canary image is missing"
+    assert canary_meta.is_file(), "the canary metadata is missing"
+
+    meta = json.loads(read(canary_meta))
+    assert re.fullmatch(r"[0-9a-f]{64}", meta.get("answer_sha256", "")), (
+        "the canary answer is not stored as a hash"
+    )
+    # The point of hashing it: reading the repository must not substitute for
+    # looking at the image.
+    for path in (canary_meta, checker, skill):
+        text = read(path).lower()
+        for word in ("marlowe", "triangle"):
+            assert word not in text, (
+                f"{path.name} leaks the canary answer in plain text, which makes "
+                "the check bluffable"
+            )
+
+
+def test_always_on_core_is_two_servers_and_says_why() -> None:
+    """sequential-thinking left the always-on set on a measurement.
+
+    One tool, but a 4,587-byte schema: ~1,146 tokens on every turn of every
+    session, as much as context7's two tools, for a structured scratchpad rather
+    than a capability. It must not drift back without that being revisited.
+    """
+    reasoning_script = read(ROOT / "TOOLS" / "Add-Reasoning-MCPs.ps1")
+    servers_block = reasoning_script.split("$servers = @(", 1)[1].split("\n)", 1)[0]
+    assert "'context7'" in servers_block, "context7 left the always-on core"
+    assert "github" in servers_block, "github left the always-on core"
+    assert "sequential-thinking" not in servers_block, (
+        "sequential-thinking is back in the always-on core; if that is deliberate, "
+        "re-measure its per-turn schema cost and update this contract"
+    )
+    # Told, not silently removed, on machines that already have it.
+    assert "Show-V5SequentialThinkingNotice" in reasoning_script, (
+        "machines that already have sequential-thinking are never told it moved"
+    )
+
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    prof = next((p for p in profiles["profiles"] if p["id"] == "reasoning"), None)
+    assert prof, "sequential-thinking was removed from always-on with nowhere to go"
+    cost = prof["servers"][0].get("measured_cost") or {}
+    assert cost.get("approx_tokens_per_turn"), (
+        "the reasoning profile does not record what it costs"
+    )
+
+
+def test_blender_is_pinned_and_discovered() -> None:
+    """`uvx blender-mcp` was the one unpinned invocation in the catalog."""
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    blender = next(
+        s for p in profiles["profiles"] if p["id"] == "engine-blender" for s in p["servers"]
+    )
+    pkg = next((a for a in blender["args"] if not a.startswith("-")), None)
+    assert pkg and re.search(r"@[0-9]", pkg), f"blender-mcp is not version-pinned: {pkg}"
+    paths = blender["requires"]["any_path"]
+    assert any("%APPDATA%" in p for p in paths), (
+        "Blender is not discovered from the user directory it creates on first run"
+    )
+    # 'The MCP executable starts' and 'the addon is connected' are different
+    # claims, and the profile has to say so.
+    assert "editor_side_note" in blender and "different claims" in blender["editor_side_note"]
+
+
 def main() -> int:
     tests = [
         test_skills,
@@ -985,6 +1137,11 @@ def main() -> int:
         test_project_scope_is_implemented_not_just_declared,
         test_upgrading_moves_a_globally_registered_profile,
         test_docs_do_not_contradict_the_profile_scope,
+        test_no_shipped_config_carries_a_maintainer_path,
+        test_bundle_stays_free_and_accountless,
+        test_visual_verification_ships_its_own_falsifiable_check,
+        test_always_on_core_is_two_servers_and_says_why,
+        test_blender_is_pinned_and_discovered,
         test_extras_never_overwrite_a_skill_the_bundle_vendors,
         test_mcp_config_writing_has_exactly_one_implementation,
         test_npx_pin_reaches_machines_that_already_have_the_entry,
@@ -1044,6 +1201,20 @@ def test_capability_profiles_are_not_registered_globally() -> None:
     # enabled is the other, and that is what 7.9.5 shipped -- under a `why`
     # paragraph in this same file explaining why it must not.
     for prof in profiles["profiles"]:
+        if prof.get("scope") == "global":
+            # One profile is allowed to be machine-wide, on terms that make it
+            # impossible to enable by accident: `reasoning` is a way of thinking
+            # rather than a property of a project, so a project scope would be
+            # meaningless. It must declare NO detection markers, so -Auto can
+            # never turn it on, and it must say why it costs what it costs.
+            detect = prof.get("detect") or {}
+            assert not detect.get("files") and not detect.get("globs"), (
+                f"profile {prof['id']} is machine-wide AND auto-detected. "
+                "That combination registers a server on every session from a "
+                "marker in one project."
+            )
+            assert prof.get("why"), f"global profile {prof['id']} does not justify itself"
+            continue
         assert prof.get("scope") == "project", (
             f"profile {prof['id']} is not project-scoped: {prof.get('scope')!r}. "
             "A capability server useful in every project belongs in the always-on "
@@ -1222,7 +1393,14 @@ def test_docs_do_not_contradict_the_profile_scope() -> None:
     """
     profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
     catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
-    assert all(p.get("scope") == "project" for p in profiles["profiles"])
+    for prof in profiles["profiles"]:
+        scope = prof.get("scope")
+        assert scope in ("project", "global"), f"{prof['id']} declares scope {scope!r}"
+        if scope == "global":
+            # Allowed for `reasoning` alone, and only because it can never be
+            # auto-enabled: no detection markers means -Auto cannot reach it.
+            detect = prof.get("detect") or {}
+            assert not detect.get("files") and not detect.get("globs")
 
     for comp in catalog["components"]:
         if not comp.get("profile"):
