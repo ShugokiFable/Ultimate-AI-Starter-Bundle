@@ -1,11 +1,16 @@
 {
   "generated": "2026-08-20",
-  "pack_version": "7.9.1",
+  "pack_version": "7.9.2",
   "assets": [
     {
       "file": "codebase-memory-mcp-windows-amd64.zip",
       "size": 39154915,
       "sha256": "1e5ba3cca69194b9229f89a0cafe4a6538ba9e0040d892d57bf472e992420273"
+    },
+    {
+      "file": "github-mcp-server-1.10.1-windows-x86_64.zip",
+      "size": 8321910,
+      "sha256": "3b94ca079cf51a54698401b7affea7288a64b38118c243ae488dd8dd96f4ffb2"
     },
     {
       "file": "headroom_ai-0.35.0-cp310-abi3-win_amd64.whl",
