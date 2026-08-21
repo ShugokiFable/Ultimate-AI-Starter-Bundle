@@ -152,7 +152,7 @@ foreach ($p in $Providers) {
     }
     $addedH = @(Add-V5McpHermes -Servers $servers -Refresh:$Refresh -CheckOnly:$CheckOnly)
     if ($addedH.Count) { Write-Host ("{0,-7} {1} -> Hermes config (noninteractive)" -f $p, ($addedH -join ', ')) }
-    else { Write-Host ("{0,-7} already has all three" -f $p) }
+    else { Write-Host ("{0,-7} nothing to add" -f $p) }
     continue
   }
 
@@ -166,7 +166,7 @@ foreach ($p in $Providers) {
     if ($retired.Count) { Write-Host ("{0,-7} retired {1} (upstream package withdrawn)" -f $p, ($retired -join ', ')) -ForegroundColor Yellow }
     $added = @(Add-V5McpJson -Path $t.Path -Section $t.Section -Servers $servers -Provider $p -Refresh:$Refresh -CheckOnly:$CheckOnly)
     if ($added.Count) { Write-Host ("{0,-7} {1} -> {2}" -f $p, ($added -join ', '), $t.Path) }
-    else { Write-Host ("{0,-7} already has all three" -f $p) }
+    else { Write-Host ("{0,-7} nothing to add" -f $p) }
 
     if ($t.Desktop) {
       # Claude Desktop app reads claude_desktop_config.json, not ~/.claude.json.
@@ -184,25 +184,39 @@ foreach ($p in $Providers) {
   $retired = @(Remove-V5McpToml -Path $t.Path -Section $t.Section -MatchLiterals $retiredLiterals -CheckOnly:$CheckOnly)
   if ($retired.Count) { Write-Host ("{0,-7} retired {1} (upstream package withdrawn)" -f $p, ($retired -join ', ')) -ForegroundColor Yellow }
 
-  # Grok also reads ~/.claude.json. A second copy of the same server is two
-  # handshakes for one name, which is how "MCP is slow to start" starts.
+  # Grok can read ~/.claude.json, but only while its Claude-compat MCP cell is
+  # on -- and this same installer writes [compat.claude] mcps = false. Assuming
+  # inheritance after switching it off is not a dedupe, it is a silent omission:
+  # Grok ended up with no github and no sequential-thinking.
   $tomlServers = $servers
   if ($p -eq 'Grok') {
-    $claudeJson = Join-Path $env:USERPROFILE '.claude.json'
-    $claudeHas = @()
-    if (Test-Path -LiteralPath $claudeJson) {
-      try {
-        $cj = [IO.File]::ReadAllText($claudeJson) | ConvertFrom-Json
-        if ($cj.mcpServers) { $claudeHas = @($cj.mcpServers.PSObject.Properties.Name) }
-      } catch { }
-    }
-    $tomlServers = @($servers | Where-Object {
-      if ($claudeHas -contains $_['id']) {
-        Write-Host ("{0,-7} inherits {1} from ~/.claude.json (not duplicated)" -f $p, $_['id'])
-        return $false
+    if (Test-V5GrokInheritsClaudeMcp) {
+      $claudeJson = Join-Path $env:USERPROFILE '.claude.json'
+      $claudeHas = @()
+      if (Test-Path -LiteralPath $claudeJson) {
+        try {
+          $cj = [IO.File]::ReadAllText($claudeJson) | ConvertFrom-Json
+          if ($cj.mcpServers) { $claudeHas = @($cj.mcpServers.PSObject.Properties.Name) }
+        } catch { }
       }
-      return $true
-    })
+      $tomlServers = @($servers | Where-Object {
+        if ($claudeHas -contains $_['id']) {
+          Write-Host ("{0,-7} inherits {1} from ~/.claude.json (not duplicated)" -f $p, $_['id'])
+          return $false
+        }
+        return $true
+      })
+    }
+    # Only the ones not already declared count against the budget.
+    $grokText = if (Test-Path -LiteralPath $t.Path) { [IO.File]::ReadAllText($t.Path) } else { '' }
+    $newOnes = @($tomlServers | Where-Object { $grokText -notmatch [regex]::Escape("[$($t.Section).$($_['id'])]") })
+    if ($newOnes.Count) {
+      $allowed = @(Select-V5WithinGrokBudget -Servers $newOnes)
+      $allowedIds = @($allowed | ForEach-Object { $_['id'] })
+      $tomlServers = @($tomlServers | Where-Object {
+        ($grokText -match [regex]::Escape("[$($t.Section).$($_['id'])]")) -or ($allowedIds -contains $_['id'])
+      })
+    }
   }
 
   $added = @()
@@ -210,7 +224,7 @@ foreach ($p in $Providers) {
     $added = @(Add-V5McpToml -Path $t.Path -Section $t.Section -Servers $tomlServers -Provider $p -Refresh:$Refresh -CheckOnly:$CheckOnly -GrokTimeout:($p -eq 'Grok'))
   }
   if ($added.Count) { Write-Host ("{0,-7} {1} -> {2}" -f $p, ($added -join ', '), $t.Path) }
-  else { Write-Host ("{0,-7} already has all three" -f $p) }
+  else { Write-Host ("{0,-7} nothing to add" -f $p) }
 }
 
 Write-Host ''

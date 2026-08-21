@@ -31,6 +31,49 @@
 
 # Windows PowerShell 5.1's `Set-Content -Encoding utf8` writes a UTF-8 BOM. A BOM
 # in a JSON config is a real hazard: a strict reader rejects the file outright.
+function Test-V5GrokInheritsClaudeMcp {
+  <# grok-cli adopts ~/.claude.json by default, but this pack writes
+     [compat.claude] mcps = false because inherited MCP startup cost 65s on the
+     first turn of every session and attached zero tools. Assuming inheritance
+     after switching it off turns a dedupe into a silent omission. #>
+  $cfg = Join-Path $env:USERPROFILE '.grok\config.toml'
+  if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) { return $true }
+  $text = [IO.File]::ReadAllText($cfg)
+  $m = [regex]::Match($text, '(?ms)^\[compat\.claude\][^\[]*?^\s*mcps\s*=\s*(?<v>true|false)')
+  if (-not $m.Success) { return $true }
+  return ($m.Groups['v'].Value -ieq 'true')
+}
+
+function Get-V5GrokMcpCount {
+  $cfg = Join-Path $env:USERPROFILE '.grok\config.toml'
+  if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) { return 0 }
+  return @([regex]::Matches([IO.File]::ReadAllText($cfg), '(?m)^\[mcp_servers\.(?<n>[^\].]+)\]')).Count
+}
+
+function Select-V5WithinGrokBudget {
+  <# grok-cli 1.0.4 wedges at EIGHT servers running, and an enabled Claude
+     plugin with a .mcp.json can quietly supply one, so the pack's default
+     budget is six. The budget used to be enforced for exactly one server by
+     name (skyrim-forge) while every other path added freely -- enumeration
+     where a sweep was needed. Returns the servers that fit, and reports the
+     rest by name so an omission is never silent. #>
+  param([object[]]$Servers, [int]$Budget = 6)
+  $have = Get-V5GrokMcpCount
+  $room = $Budget - $have
+  # No comma operator here: every caller wraps the result in @(), and ,@(...)
+  # would hand them a one-element array containing the array.
+  if ($room -ge @($Servers).Count) { return @($Servers) }
+  if ($room -le 0) {
+    Write-Host ("Grok    at {0} MCP server(s), budget {1}: not adding {2}" -f $have, $Budget, ((@($Servers) | ForEach-Object { $_['id'] }) -join ', ')) -ForegroundColor Yellow
+    Write-Host  '        grok-cli wedges at eight running. Remove one from ~/.grok/config.toml, or raise -GrokMcpBudget.' -ForegroundColor DarkGray
+    return @()
+  }
+  $fit = @($Servers | Select-Object -First $room)
+  $cut = @($Servers | Select-Object -Skip $room | ForEach-Object { $_['id'] })
+  Write-Host ("Grok    budget {0} reached: not adding {1}" -f $Budget, ($cut -join ', ')) -ForegroundColor Yellow
+  return $fit
+}
+
 function Set-Utf8NoBom {
   param([string]$Path, [string]$Text)
   $enc = New-Object System.Text.UTF8Encoding($false)

@@ -251,7 +251,9 @@ function Invoke-V5ProfileWrite {
     if (-not $t) { Write-Skip ("{0} unknown provider" -f $prov); continue }
 
     $write = $Servers
-    $claudeHas = if ($prov -eq 'Grok') { @(Get-ClaudeDeclared) } else { @() }
+    # Only while Grok's Claude-compat MCP cell is actually on; this pack turns
+    # it off, and assuming otherwise omits the server instead of deduping it.
+    $claudeHas = if ($prov -eq 'Grok' -and (Test-V5GrokInheritsClaudeMcp)) { @(Get-ClaudeDeclared) } else { @() }
     if (-not $Remove -and $prov -eq 'Grok' -and $claudeHas.Count) {
       # Only on add. Removal must reach the entry wherever it actually is.
       $write = @($Servers | Where-Object {
@@ -261,6 +263,10 @@ function Invoke-V5ProfileWrite {
         }
         return $true
       })
+      if (-not $write.Count) { continue }
+    }
+    if (-not $Remove -and $prov -eq 'Grok') {
+      $write = @(Select-V5WithinGrokBudget -Servers $write)
       if (-not $write.Count) { continue }
     }
 

@@ -18341,8 +18341,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 53696,
-  "sha256": "4c6b6d1bdd4e232fd8799e9b1d50280f9eacde7e743d75c5429caa814cf3365a"
+  "size": 54144,
+  "sha256": "5cd17de4dc91d050046f8b440cef07e59769199dbb5e61f8dd41c599582679f4"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18506,8 +18506,8 @@
  },
  {
   "path": "TESTS/Test-McpProfiles.ps1",
-  "size": 16105,
-  "sha256": "1fac018fb64d53658e54f15df9d3d034c4b63f20d79c57ac3cfc3f8d07a3d30f"
+  "size": 18336,
+  "sha256": "9fa7f832d24c9904d262efc13ea32ba34fd384d7752141217e4242c9f1e5d6a7"
  },
  {
   "path": "TESTS/Test-ProviderSkillSync.ps1",
@@ -18531,8 +18531,8 @@
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 10566,
-  "sha256": "282f97eeb64f7644f8c633cef374d23e93e08c9b5b5cf0cec9dea3ffd0ec13d6"
+  "size": 11388,
+  "sha256": "3e3d2ab964438e22ea6906ec8fd3125320171b35437d0a95d1d6775e7e708d2b"
  },
  {
   "path": "TOOLS/Build-Release.ps1",
@@ -18596,8 +18596,8 @@
  },
  {
   "path": "TOOLS/Set-McpProfile.ps1",
-  "size": 17105,
-  "sha256": "94bf79509fc96dff2c013016a963ac3f30da5eee7b510d84d421752a557290d3"
+  "size": 17452,
+  "sha256": "69c7e6b3b1dc6590106fd4cc3fd30ea39943fc107222c7269ac60fda94fcfaac"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
@@ -18631,8 +18631,8 @@
  },
  {
   "path": "TOOLS/V7-Mcp-Write.ps1",
-  "size": 19675,
-  "sha256": "2fc86ab9ced6ab788d3b772cd70454f760ddee63f5eafd5d3d9c80e83eb91933"
+  "size": 22020,
+  "sha256": "5a4b1ec045dd6729e5ea675e8c85cf12fb59d3833f303f9008c2fd2ddf60fceb"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -18746,8 +18746,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 4783,
-  "sha256": "8667140b7ebe7a5b413297c1b1786761522d4ed28e91fd40923200f953dcd60e"
+  "size": 5354,
+  "sha256": "baafcbcbf2f05ab03bcff0e1dfb582162ad49b7f810710d9fb94d646c009bc33"
  },
  {
   "path": "VERSION.txt",
@@ -21786,7 +21786,7 @@
  },
  {
   "path": "docs/history/V7.9.5-CHANGELOG.md",
-  "size": 13753,
-  "sha256": "8be8996ea406b32d01c3b1e648dc77c5adca681165add33ff5431f9b564690b7"
+  "size": 15198,
+  "sha256": "7a7ce269a5fe1ac8990942c1f15a371b0bbe491691e9d036996a4fe84f3a7477"
  }
 ]
