@@ -18341,8 +18341,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 52814,
-  "sha256": "958520cb0c6bbbdb3766e10bfc92a6fa812e688f8405c612b24debba955f659f"
+  "size": 53260,
+  "sha256": "09e536955df72b91dec308842e6c1e168b513fdddd5ac2d163b7808c1684b1ab"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18431,8 +18431,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 84283,
-  "sha256": "77ad99bda53bfa79247edf7c3321209250211fcdc4a0cbcb772ad2e5dbf6f33c"
+  "size": 85654,
+  "sha256": "9aee1099962c46645e8601d9e1be5ddd0d02d40219aadea7c9d2b78e8e8fcc86"
  },
  {
   "path": "LICENSE",
@@ -18526,8 +18526,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 62097,
-  "sha256": "9d4e13f9c87d48752b69d5db5bb3cc12d77de4321baf8f7282a11ab767e0c812"
+  "size": 62490,
+  "sha256": "94e823831631806c5fe2bdcb077cbec39954e1aaeb591f4aee66870f6b6c73fb"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18616,8 +18616,8 @@
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
-  "size": 8777,
-  "sha256": "6c84f3fb2aadac9ee668c1874230f5f60a8c8e0ebac58044d461c0df3753e188"
+  "size": 10905,
+  "sha256": "6c3c1f07a92ceef0f5da6b8a2497a03f62b701e1f2af155b412cb6d165bda3d1"
  },
  {
   "path": "TOOLS/Update-From-GitHub.ps1",
@@ -18746,8 +18746,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 3549,
-  "sha256": "acc463b2720497aa2812741dcd6489192aeb6c4bc55e544b75729a6546349637"
+  "size": 4091,
+  "sha256": "06c9a499cf8dd52b4fd2ef2fb85b50b44f7d820b55ae03207142cda5ad63bc48"
  },
  {
   "path": "VERSION.txt",
@@ -21786,7 +21786,7 @@
  },
  {
   "path": "docs/history/V7.9.5-CHANGELOG.md",
-  "size": 11365,
-  "sha256": "39ab2816cfe134318fe6aa2d9e6b4ced144762b759cd215aa130f7c425c41aab"
+  "size": 12674,
+  "sha256": "ffc2aa224c9bfc34c214e4712444b11c87f3d555fe812ec2e96f62caca797057"
  }
 ]

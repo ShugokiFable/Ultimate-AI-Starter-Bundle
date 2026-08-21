@@ -20,8 +20,7 @@
   Nothing is written. This is a read-only check.
 
 .PARAMETER Provider
-  Claude (default), Codex, Grok or Kimi. Hermes stores servers in YAML and is
-  not read here.
+  Claude (default), Codex, Grok, Kimi or Hermes.
 
 .PARAMETER Name
   Check one server instead of all of them.
@@ -31,13 +30,58 @@
 #>
 [CmdletBinding()]
 param(
-  [ValidateSet('Claude', 'Codex', 'Grok', 'Kimi')][string]$Provider = 'Claude',
+  [ValidateSet('Claude', 'Codex', 'Grok', 'Kimi', 'Hermes')][string]$Provider = 'Claude',
   [string]$Name,
   [int]$TimeoutSeconds = 60
 )
 
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'V7-Mcp-Write.ps1')
+
+function Get-HermesServers {
+  <# Hermes writes one predictable shape: two-space nesting under mcp_servers,
+     a scalar `command`, and `args` as either [] or a block list. This reads
+     that shape, not YAML in general -- anything unrecognised is skipped with a
+     note rather than guessed at. #>
+  $paths = Get-V5HermesPaths
+  if (-not (Test-Path -LiteralPath $paths.Config -PathType Leaf)) {
+    throw "Hermes config not found at $($paths.Config)"
+  }
+  $lines = [IO.File]::ReadAllText($paths.Config) -split "`r?`n"
+  $out = @()
+  $inBlock = $false
+  $cur = $null
+  $inArgs = $false
+  function Get-YamlScalar([string]$v) {
+    $v = $v.Trim()
+    if ($v.Length -ge 2 -and (($v[0] -eq "'" -and $v[-1] -eq "'") -or ($v[0] -eq '"' -and $v[-1] -eq '"'))) {
+      return $v.Substring(1, $v.Length - 2)
+    }
+    return $v
+  }
+  foreach ($line in $lines) {
+    if ($line -match '^mcp_servers:\s*$') { $inBlock = $true; continue }
+    if (-not $inBlock) { continue }
+    if ($line -match '^\S') { break }                      # back to top level
+    if ($line -match '^\s*$' -or $line -match '^\s*#') { continue }
+
+    if ($line -match '^  (?<name>[^\s:#][^:]*):\s*$') {
+      if ($cur -and $cur.command) { $out += $cur }
+      $cur = @{ id = (Get-YamlScalar $Matches['name']); command = ''; args = @(); enabled = $true }
+      $inArgs = $false
+      continue
+    }
+    if (-not $cur) { continue }
+    if ($line -match '^    command:\s*(?<v>.+)$') { $cur.command = Get-YamlScalar $Matches['v']; $inArgs = $false; continue }
+    if ($line -match '^    enabled:\s*(?<v>\S+)') { $cur.enabled = ((Get-YamlScalar $Matches['v']) -ine 'false'); $inArgs = $false; continue }
+    if ($line -match '^    args:\s*\[\s*\]\s*$') { $cur.args = @(); $inArgs = $false; continue }
+    if ($line -match '^    args:\s*$') { $inArgs = $true; continue }
+    if ($inArgs -and $line -match '^      -\s*(?<v>.*)$') { $cur.args += (Get-YamlScalar $Matches['v']); continue }
+    if ($line -match '^    \S') { $inArgs = $false }
+  }
+  if ($cur -and $cur.command) { $out += $cur }
+  return @($out | Where-Object { $_.enabled })
+}
 
 function Get-TomlString($Match) {
   <# A basic string unescapes; a literal string is taken exactly as written. #>
@@ -193,7 +237,7 @@ function Invoke-McpHandshake {
   }
 }
 
-$servers = @(Get-ServersFromConfig $Provider)
+$servers = if ($Provider -eq 'Hermes') { @(Get-HermesServers) } else { @(Get-ServersFromConfig $Provider) }
 if ($Name) { $servers = @($servers | Where-Object { $_.id -eq $Name }) }
 if (-not $servers.Count) { Write-Host "No matching servers in the $Provider config."; exit 0 }
 

@@ -42,6 +42,12 @@ provider trees.
   unpinned. The probe deadlocked on stderr it redirected and never drained,
   reporting a false FAIL for a healthy server. Grok would have registered a
   profile twice, because it reads `~/.claude.json` as well as its own config.
+- **The probe reads Hermes now.** Its docs used to say Hermes was not read here
+  -- a stated blind spot in a tool for proving servers answer. It found the same
+  unpinned Playwright there, which traced back to the installer: `CATALOG.json`
+  lists Hermes and Kimi as providers for three npx extras, but the npx branch
+  only knew Grok, Codex and Claude and **printed the block at the other two**.
+  Both are wired through the shared writer now.
 - **`Repair-McpPaths.ps1` now repoints opaquely-named directories.** Its rule was
   a version-stamped sibling -- this pack's convention. Codex keys runtimes by
   content hash, so three dead command paths were reported unrepairable. Rule

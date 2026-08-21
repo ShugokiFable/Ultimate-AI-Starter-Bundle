@@ -803,9 +803,16 @@ def test_every_v5_helper_called_actually_exists() -> None:
     machine -- so nothing noticed for a release. PowerShell has no import-time
     resolution to catch this; a static check is the only thing that can.
     """
-    common = read(ROOT / "TOOLS" / "V7-Common.ps1")
-    defined = set(re.findall(r"^function\s+([A-Za-z][A-Za-z0-9-]*)", common, re.M))
+    # Two shared modules now, not one. Naming a single file here meant a call
+    # into the other read as undefined, and a script that sources only the other
+    # was never scanned at all.
+    modules = ["V7-Common.ps1", "V7-Mcp-Write.ps1"]
+    defined: set = set()
+    for module in modules:
+        body = read(ROOT / "TOOLS" / module)
+        defined |= set(re.findall(r"^function\s+([A-Za-z][A-Za-z0-9-]*)", body, re.M))
     assert "Get-V5PackRoot" in defined, "V7-Common.ps1 no longer parses as expected"
+    assert "Add-V5McpJson" in defined, "V7-Mcp-Write.ps1 no longer parses as expected"
 
     verbs = ("Get|Set|New|Add|Remove|Test|Install|Restore|Repair|Invoke|Update"
              "|Copy|Save|Expand|Resolve|Find|Write|Convert|Import|Export")
@@ -822,7 +829,7 @@ def test_every_v5_helper_called_actually_exists() -> None:
         callers.extend(sorted((ROOT / folder).glob("*.ps1")))
     for p in callers:
         text = read(p)
-        if "V7-Common.ps1" not in text:
+        if not any(module in text for module in modules):
             continue
         code = re.sub(r"(?s)<#.*?#>", "", text)          # <# block comments #>
         code = "\n".join(re.sub(r"#.*$", "", line) for line in code.split("\n"))
@@ -830,7 +837,7 @@ def test_every_v5_helper_called_actually_exists() -> None:
         for name in sorted(set(call.findall(code))):
             if name not in defined and name not in local:
                 missing.append(f"{p.relative_to(ROOT).as_posix()} calls {name}")
-    assert not missing, "undefined V7-Common helper(s): " + "; ".join(sorted(missing))
+    assert not missing, "undefined shared helper(s): " + "; ".join(sorted(missing))
 
 
 def test_local_launcher_failure_is_persistent_and_diagnosable() -> None:
