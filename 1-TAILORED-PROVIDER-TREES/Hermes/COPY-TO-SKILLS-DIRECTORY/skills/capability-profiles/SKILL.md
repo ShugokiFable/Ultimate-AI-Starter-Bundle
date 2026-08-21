@@ -12,8 +12,8 @@ are off until something needs them.
 ## Why servers are not like skills
 
 A skill costs nothing until its description matches. Its body is loaded on
-demand. Measured in this pack: 144 skill bodies are ~154,000 tokens, while the
-name-and-description index the agent actually reads is ~5,500.
+demand. Measured in this pack: the 146 SKILL.md files are ~163,000 tokens,
+while the name-and-description index the agent actually reads is ~6,900.
 
 **MCP tool schemas have no such discount.** Every tool of every connected server
 is in context on every turn, in every session, whether or not the task is
@@ -26,6 +26,19 @@ codebase-memory 15   headroom 3   context7 2   sequential-thinking 1
 ```
 
 That is the budget. Spend it on what the task uses.
+
+**Count bytes, not tools.** The same servers by serialized schema size —
+`TOOLS\Measure-McpSchemaCost.ps1`, real `initialize` → `tools/list`:
+
+```
+firecrawl            25 tools   36,337 bytes   ~9,084 tokens/turn
+context7              2 tools    5,124 bytes   ~1,281 tokens/turn
+sequential-thinking   1 tool     4,590 bytes   ~1,148 tokens/turn
+```
+
+One tool cost as much as two. Twenty-five cost more than the rest of the
+always-on core put together. A tool count tells you almost nothing about what a
+server charges you.
 
 ## Installed is not enabled
 
@@ -41,12 +54,23 @@ router expensive:
 disabled everywhere except the project that asked for it. "Serena is installed"
 is not a reason to expect `find_symbol` in this session.
 
-## The always-on three
+## The always-on two
 
-`context7`, `sequential-thinking` and `github` are wired globally because they
-apply to every task: current API docs instead of recalled signatures, explicit
-decomposition, and the ability to verify a push rather than hope. Everything
-else is a profile, and every profile is **project-scoped**.
+`context7` and `github` are wired globally because they apply to every task:
+current API docs instead of recalled signatures, and the ability to verify a
+push rather than hope. Everything else is a profile, and every profile is
+**project-scoped**.
+
+`sequential-thinking` was the third until 7.9.7 measured it: 1 tool, but a
+4,590-byte schema — ~1,148 tokens on every turn of every session, as much as
+context7's two tools, for a structured scratchpad rather than a capability.
+It is the opt-in `reasoning` profile now, with no detection markers so `-Auto`
+can never reach it.
+
+This is the one number to keep in view when judging any server: **tools is the
+wrong unit, bytes is the right one.** Measure before arguing about it —
+`TOOLS\Measure-McpSchemaCost.ps1 -Command 'npx -y <package>'` runs the real
+`initialize` → `tools/list` and prints per-tool bytes.
 
 ## Profiles
 
@@ -148,6 +172,12 @@ one that answers this question, not the set that looks related:
 Do not enable Chrome DevTools to edit a README. Do not enable `shadcn` because a
 `package.json` exists. Do not open a browser when a deterministic test answers
 the question more cheaply.
+
+This skill answers **which server to turn on**. For the other half — choosing
+between a capability you already have and writing the thing yourself, and what
+to do when the tool you picked fails — see `capability-routing`. The short
+version: do not rebuild an installed capability with a weaker ad-hoc script,
+and do not reach for machinery a file read would have finished.
 
 ## Before proposing a new MCP server
 

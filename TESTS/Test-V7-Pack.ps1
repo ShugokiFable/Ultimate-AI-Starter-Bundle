@@ -509,6 +509,21 @@ if (-not (Test-V5PackPath $scenCheck)) {
     }
 }
 
+# Routing fixtures: A's payload must stay unreachable without rendering and B's
+# must stay reachable without it. They are a matched pair, and if either drifts
+# the benchmark stops measuring the distinction the release exists for.
+$routeCheck = Join-Path $PackRoot 'TESTS\routing-scenarios\check_fixtures.py'
+if (-not (Test-V5PackPath $routeCheck)) {
+    Bad 'TESTS\routing-scenarios\check_fixtures.py missing from the pack'
+} else {
+    $routeOut = & python $routeCheck 2>&1 | Out-String
+    if ($routeOut -match 'ROUTING SCENARIOS: fixtures intact') {
+        Good 'routing scenario fixtures intact'
+    } else {
+        Bad ('routing scenario fixtures no longer test what they claim:' + [Environment]::NewLine + ($routeOut.Trim()))
+    }
+}
+
 # The vision canary is the falsifiable half of visual-verification. If a wrong
 # answer passes it, the skill is back to being an unverifiable instruction.
 $canaryChk = Join-Path $PackRoot 'TOOLS\Test-VisionCanary.ps1'
@@ -519,6 +534,78 @@ if (-not (Test-V5PackPath $canaryChk)) {
                 -Word 'not' -Shape 'the' -Color 'answer' 2>&1 | Out-String
     if ($canOut -match 'VISION CANARY: FAIL') { Good 'the vision canary rejects a wrong answer' }
     else { Bad ('the vision canary accepted an answer that cannot have come from the image:' + [Environment]::NewLine + $canOut.Trim()) }
+}
+
+Section '15. Starter templates cannot smuggle MCP servers onto a fresh machine'
+# Through 7.9.7 the Hermes starter carried five live servers and this gate said
+# PASS. Install-Provider-Starter-Settings.ps1 copies a template WHOLE onto a
+# machine with no config, so anything left in one is a fresh-install default.
+# A contract in the python suite checks the guard still exists; this checks it
+# still WORKS, which is the part that protects a user's machine.
+$starterPs = Join-Path $PackRoot 'TOOLS\Install-Provider-Starter-Settings.ps1'
+if (-not (Test-V5PackPath $starterPs)) {
+    Bad 'TOOLS\Install-Provider-Starter-Settings.ps1 missing from the pack'
+} else {
+    $guardSrc = [IO.File]::ReadAllText($starterPs)
+    $guardFn = [regex]::Match($guardSrc, '(?s)function Test-V5PortableTemplate \{.*?\r?\n\}')
+    if (-not $guardFn.Success) {
+        Bad 'Test-V5PortableTemplate not found in the starter installer'
+    } else {
+        . ([scriptblock]::Create($guardFn.Value))
+
+        # 1. Every template the pack actually ships must be accepted.
+        $refused = @()
+        Get-ChildItem (Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\*\COPY-TO-PROVIDER-HOME\*') -File |
+          ForEach-Object {
+            try { Test-V5PortableTemplate -Path $_.FullName }
+            catch { $refused += ($_.Directory.Parent.Name + '\' + $_.Name) }
+          }
+        if ($refused.Count) { Bad ('shipped starter templates refused by the guard: ' + ($refused -join ', ')) }
+        else { Good 'all shipped starter templates pass the portability guard' }
+
+        # 2. Each defect 7.9.7 shipped must be refused, plus the comment case
+        #    that must NOT be -- the explanation names the banned literals.
+        $fx = Join-Path ([IO.Path]::GetTempPath()) ('uabs-starter-fx-' + [guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Force -Path $fx | Out-Null
+        try {
+            $cases = [ordered]@{
+                'live-yaml.yaml' = @{ refuse = $true;  body = "model:`n  a: b`nmcp_servers:`n  firecrawl:`n    command: npx`n" }
+                'live-toml.toml' = @{ refuse = $true;  body = "model = 'x'`n[mcp_servers.github]`ncommand = 'npx'`n" }
+                'live-json.json' = @{ refuse = $true;  body = '{"mcpServers":{"github":{"command":"npx"}}}' }
+                'unpinned.yaml'  = @{ refuse = $true;  body = "mcp_servers: {}`na: '@playwright/mcp@latest'`n" }
+                'clean.yaml'     = @{ refuse = $false; body = "# mcp_servers: only a comment, and @latest in prose`nmcp_servers: {}`nmodel:`n  a: b`n" }
+            }
+            $wrong = @()
+            foreach ($n in $cases.Keys) {
+                $p = Join-Path $fx $n
+                [IO.File]::WriteAllText($p, $cases[$n].body)
+                $threw = $false
+                try { Test-V5PortableTemplate -Path $p } catch { $threw = $true }
+                if ($threw -ne $cases[$n].refuse) {
+                    $wrong += ('{0} (expected {1})' -f $n, $(if ($cases[$n].refuse) { 'refused' } else { 'accepted' }))
+                }
+            }
+            if ($wrong.Count) { Bad ('starter guard verdicts wrong for: ' + ($wrong -join ', ')) }
+            else { Good 'starter guard refuses live MCP entries and @latest, and tolerates comments' }
+        } finally {
+            Remove-Item -LiteralPath $fx -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+
+# The Hermes starter is the file that actually regressed. Check the shipped
+# artifact directly, not only the guard that is supposed to protect it.
+$hermesCfg = Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\Hermes\COPY-TO-PROVIDER-HOME\config.yaml'
+if (-not (Test-V5PackPath $hermesCfg)) {
+    Bad 'Hermes starter config.yaml missing from the pack'
+} else {
+    $hraw = [IO.File]::ReadAllText($hermesCfg)
+    $hcode = (($hraw -split "`r?`n") | Where-Object { $_ -notmatch '^\s*#' }) -join "`n"
+    $banned = @('sequential-thinking', '@modelcontextprotocol/server-github', '@latest', 'firecrawl-mcp')
+    $found = @($banned | Where-Object { $hcode -match [regex]::Escape($_) })
+    if ($found.Count) { Bad ('the Hermes starter would register: ' + ($found -join ', ')) }
+    elseif ($hcode -notmatch '(?m)^mcp_servers:\s*\{\s*\}') { Bad 'the Hermes starter no longer declares an empty mcp_servers' }
+    else { Good 'a fresh Hermes install inherits no MCP servers from the template' }
 }
 
 Write-Host ''

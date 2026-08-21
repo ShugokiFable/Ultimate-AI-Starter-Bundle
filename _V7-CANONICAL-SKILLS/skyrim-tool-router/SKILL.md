@@ -9,7 +9,6 @@ metadata:
   updated: '2026-07-31'
   library: overseer-skyrim-agent-skills
   error_registry_revision: 4.3.0
-  final_pack_version: 5.0.0
 ---
 
 # Skyrim tool router (V5)

@@ -12,7 +12,6 @@ metadata:
   provider_pack_version: 1.0.0
   base_library: Skyrim-Agent-Skills-v6
   error_registry_revision: 4.3.0
-  final_pack_version: 4.3.0
 when_to_use: Use for orchestrate a new skyrim se/ae mod or major feature from requirements through implementation, validation,
   packaging, and release. this skill coordinates specialists and does not own framework syntax.
 effort: high

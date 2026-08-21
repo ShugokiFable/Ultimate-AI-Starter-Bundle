@@ -2,11 +2,12 @@
 # by INSTALL-V7-AIO.ps1 from discovered local tools. This file must never
 # contain a machine username, drive letter, or live MCP command.
 #
-# Reference-machine live config (ShugokiFable) reconciled into this portable
-# form: aliases, free-model provider, plugins, and the npx-based MCP servers
-# are portable and ship here. Path-based MCP servers (housecarl, forge,
-# codebase-memory, headroom) stay OUT of this file -- INSTALL-V7-AIO.ps1
-# discovers and wires them from the local machine.
+# What ships here: aliases, free-model provider, agent/compression/display
+# preferences, plugins. What does NOT: MCP servers of any kind. Until 7.9.8
+# the npx-based ones were considered "portable enough" to ship, which is how a
+# fresh install acquired five servers the bundle had already ruled out -- the
+# rule three lines up was true as written and false in practice. See the
+# mcp_servers note at the bottom.
 model:
   default: deepseek/deepseek-v4-flash-0731
   provider: openrouter
@@ -265,40 +266,21 @@ session_reset:
   idle_minutes: 1440
   at_hour: 4
 group_sessions_per_user: true
-# Portable MCP servers (npx-based, no local paths). housecarl / skyrim-forge /
-# codebase-memory-mcp / headroom are wired by INSTALL-V7-AIO.ps1 from
-# discovered tools and must NOT be hardcoded here.
-mcp_servers:
-  context7:
-    command: npx
-    args:
-      - -y
-      - '@upstash/context7-mcp@4.0.2'
-    enabled: true
-  sequential-thinking:
-    command: npx
-    args:
-      - -y
-      - '@modelcontextprotocol/server-sequential-thinking@2026.7.4'
-    enabled: true
-  github:
-    command: npx
-    args:
-      - -y
-      - '@modelcontextprotocol/server-github@2025.4.8'
-    enabled: true
-  playwright:
-    command: npx
-    args:
-      - -y
-      - '@playwright/mcp@latest'
-    enabled: true
-  firecrawl:
-    command: npx
-    args:
-      - -y
-      - firecrawl-mcp@3.24.0
-    enabled: true
+# MCP is NOT owned by this file. INSTALL-V7-AIO.ps1 wires the always-on core
+# and TOOLS\Set-McpProfile.ps1 wires capability profiles, both from what is
+# actually installed on this machine and in the scope each server belongs in.
+#
+# A live block here duplicated that ownership: because the installer copies
+# this file whole onto a machine that has no config.yaml, every entry became a
+# fresh-install default that outranked the bundle's own decisions. It shipped
+# sequential-thinking after 7.9.7 measured it out of the always-on core, a
+# GitHub package upstream had withdrawn, an unpinned @latest server, and
+# firecrawl-mcp -- 25 tool schemas, ~9,080 tokens on every turn, for search
+# and scrape that Hermes already does natively and keylessly.
+#
+# Keep this empty. To add a server, use the installer or `hermes mcp add`;
+# then it is yours, and no bundle upgrade will assume it was.
+mcp_servers: {}
 plugins:
   enabled:
     - disk-cleanup

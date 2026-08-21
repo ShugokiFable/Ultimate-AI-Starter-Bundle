@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.7
+# Ultimate AI Starter Bundle v7.9.8
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -103,7 +103,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ## What gets installed
 
-- **Provider skills** — 145 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
+- **Provider skills** — 146 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
@@ -242,6 +242,27 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.9.8 — Best tool wins: capability routing
+
+- **`capability-routing`** — one new skill, added only after auditing six that
+  might already have owned it. It answers *what is the hard part, and which
+  available capability owns it* — and it cuts both ways: do not write a crawler
+  when a rendered extractor exists, and do not launch a browser stack to read a
+  static JSON file.
+- **Escalate the class, don't tune the weak tool.** After two failures of the
+  same shape — challenge page, empty JS shell, 403/429, extract that holds only
+  the nav — change the class of tool instead of adding another header.
+- **A fresh Hermes install no longer inherits five MCP servers** from a starter
+  template that contradicted its own README. Root cause fixed, and the installer
+  now refuses any template declaring live MCP entries or an `@latest` package.
+- **Firecrawl stays native, on measurement.** Hermes' own keyless web ring does
+  search and scrape with no key; `firecrawl-mcp` costs ~9,084 tokens every turn
+  and keylessly offers nothing the native route lacks. Install it with
+  `-WithExtras` when you have a key and need crawl/map/interact.
+- **`TOOLS\Measure-McpSchemaCost.ps1`** — measure what a server costs before
+  arguing about it. Tools is the wrong unit; bytes is the right one.
+- `final_pack_version` removed from 37 skills. `VERSION.txt` is the authority.
 
 ### v7.9.7 — Stop assuming: evidence closure
 
@@ -688,6 +709,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.8** — 2026-08-21. Based on v7.9.7; capability routing, and a fresh-install path that no longer contradicts the bundle's own decisions.
 
 **v7.9.7** — 2026-08-21. Based on v7.9.6; evidence closure — visual verification, evidence scenarios, Supabase withdrawn, sequential-thinking demoted on measurement.
 

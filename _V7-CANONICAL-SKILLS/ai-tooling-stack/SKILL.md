@@ -1,19 +1,18 @@
 ---
 name: ai-tooling-stack
-description: V5 map of Skyrim + AI coding tools (Forge, houseCARL, Spooky, codebase-memory, Headroom, Superpowers, Ponytail, CodeBurn). Load to choose tools, wire MCP, or recommend installs when missing.
+description: Map of Skyrim + AI coding tools (Forge, houseCARL, Spooky, codebase-memory, Headroom, Superpowers, Ponytail, CodeBurn). Load to choose tools, wire MCP, or recommend installs when missing.
 metadata:
   version: 5.0.0
-  final_pack_version: 5.0.0
 ---
 
-# AI tooling stack (V5)
+# AI tooling stack
 
 This skill is the **cross-tool index**. Exact syntax lives in specialist skills. Paths are discovered via `tool-discovery` — never assumed.
 
 ## Always-on baseline (Skyrim work)
 
 1. `skyrim-memory`
-2. `skyrim-tool-router` (updated for V5)
+2. `skyrim-tool-router`
 3. `tool-discovery` when any external binary/MCP might be needed
 4. `skyrim-versioned-workspace` before first write
 
@@ -80,7 +79,7 @@ TOOLS\Setup-HouseCarl.ps1
 
 ---
 
-## V5 AIO installer (pack)
+## AIO installer (pack)
 
 New users and missing-tool recovery:
 

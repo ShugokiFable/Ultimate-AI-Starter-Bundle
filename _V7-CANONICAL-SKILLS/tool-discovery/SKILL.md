@@ -3,7 +3,6 @@ name: tool-discovery
 description: Resolve optional Skyrim and AI tooling on the current machine without assuming drive letters or usernames. Use at session start, when a tool path is unknown, or before recommending install.
 metadata:
   version: 5.0.0
-  final_pack_version: 5.0.0
 ---
 
 # Tool discovery (portable)
@@ -152,7 +151,7 @@ After editing MCP config: **fully restart** the AI application.
 - Never copy another user's absolute paths into a shareable mod release.
 - Never write to live Skyrim `Data`, MO2 overwrite, or saves while "just checking tools".
 
-## houseCARL setup automation (V5)
+## houseCARL setup automation
 
 If `housecarl-mcp` is FOUND but `SKYRIM_MO2_INSTANCE` / shim is unset, or MCP tools fail on missing instance:
 
@@ -173,7 +172,7 @@ State file after success:
 
 ---
 
-## V5 AIO installer (pack)
+## AIO installer (pack)
 
 New users and missing-tool recovery:
 

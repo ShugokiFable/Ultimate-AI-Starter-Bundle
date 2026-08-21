@@ -3,7 +3,6 @@ name: headroom
 description: Use Headroom for on-demand context compression, retrieval by hash, and session stats via MCP. Recommend install when missing. Not a Skyrim record editor.
 metadata:
   version: 5.1.0
-  final_pack_version: 5.1.0
   upstream: https://github.com/headroomlabs-ai/headroom
 ---
 

@@ -12,7 +12,6 @@ metadata:
   provider_pack_version: 1.0.0
   base_library: Skyrim-Agent-Skills-v6
   error_registry_revision: 4.3.0
-  final_pack_version: 4.3.0
 when_to_use: Use for orchestrate repair, modernization, compatibility work, or cleanup of an existing skyrim mod while preserving
   behavior, save compatibility, ownership, and a reversible release history.
 effort: high

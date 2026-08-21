@@ -80,3 +80,4 @@ UNRESOLVED: none | exact remaining risks
 - Before patching from load-order winners, load `tool-output-awareness` (DynDOLOD, ParallaxGen, Reqtificator, Synthesis, …).
 - Prefer exact authoring skills (`spid-authoring`, `kid-authoring`, `skypatcher-authoring`, …) over invented framework tokens.
 - Still never launch SSEEdit, xEdit, or Creation Kit GUI from the agent.
+- Terminal and code execution are an escape hatch, not a first choice. Before writing a crawler, scraper, parser, or tool wrapper, load `capability-routing`: use the cheapest capability that already owns the hard part, and escalate the tool CLASS after two failures of the same shape rather than retrying a weaker one.

@@ -242,7 +242,27 @@ def test_release_checklist_exact_sha_contract() -> None:
     assert "required sub-skill" in text and "ci-convergence" in text, "release checklist does not delegate CI convergence"
     assert "exact pushed sha" in text or "exact pushed commit" in text, "release checklist can still follow the wrong run"
     assert "--branch main --limit 1" not in text, "release checklist still polls latest-on-main instead of the pushed SHA"
-    assert f"final_pack_version: {BARE}" in text, "release checklist metadata is version-stale"
+
+
+def test_no_skill_restates_the_pack_version() -> None:
+    """A skill that restates the release number is a drift point, not a fact.
+
+    `final_pack_version` lived in 37 skills. Nothing read it at runtime; its only
+    consumer was a contract asserting it stayed current, so the field existed to
+    serve its own test. 36 of the 37 had drifted anyway -- 4.3.0, 5.0.0 and
+    5.1.0 inside a 7.9.x pack -- which makes it worse than useless as a version
+    signal. VERSION.txt is the single authority, and a file that does not
+    restate a number cannot disagree with it.
+    """
+    offenders = [
+        p.relative_to(ROOT).as_posix()
+        for p in ROOT.rglob("SKILL.md")
+        if "final_pack_version" in read(p)
+    ]
+    assert not offenders, (
+        "skills restate the pack version again (drift point re-introduced): "
+        + ", ".join(sorted(offenders)[:10])
+    )
 
 
 def test_provider_bootstrap_contract() -> None:
@@ -834,6 +854,15 @@ def test_every_v5_helper_called_actually_exists() -> None:
         code = re.sub(r"(?s)<#.*?#>", "", text)          # <# block comments #>
         code = "\n".join(re.sub(r"#.*$", "", line) for line in code.split("\n"))
         local = set(re.findall(r"^\s*function\s+([A-Za-z][A-Za-z0-9-]*)", text, re.M))
+        # A helper realized at runtime out of another shipped file --
+        # [regex]::Match($src, '(?s)function Foo \{...') then
+        # [scriptblock]::Create(...) -- is defined, just not by a literal
+        # `function` statement in this file. Test-V7-Pack does exactly this to
+        # exercise the starter guard without executing the installer body.
+        # Scoped to files that actually realize code, so a bare mention in
+        # prose still counts as undefined.
+        if "scriptblock]::Create" in text or "Invoke-Expression" in text:
+            local |= set(re.findall(r"function\s+([A-Za-z][A-Za-z0-9-]*)\s*\\?\{", text))
         for name in sorted(set(call.findall(code))):
             if name not in defined and name not in local:
                 missing.append(f"{p.relative_to(ROOT).as_posix()} calls {name}")
@@ -1123,6 +1152,18 @@ def test_blender_is_pinned_and_discovered() -> None:
 
 def main() -> int:
     tests = [
+        # v7.9.8 -- the starter template is not a place to register MCP servers,
+        # and the routing decision has to be measurable.
+        test_starter_templates_declare_no_mcp_servers,
+        test_no_unpinned_package_in_live_templates,
+        test_retired_github_package_cannot_become_live_config,
+        test_hermes_readme_matches_the_shipped_starter,
+        test_both_hermes_config_copies_agree,
+        test_starter_installer_refuses_the_shape_not_the_symptoms,
+        test_capability_routing_owns_tool_selection,
+        test_withextras_is_the_only_owner_of_the_optional_servers,
+        test_schema_cost_is_measurable_not_just_asserted,
+        test_no_skill_restates_the_pack_version,
         test_skills,
         test_all_descriptions_under_budget,
         test_documented_skill_counts,
@@ -1515,6 +1556,197 @@ def test_extras_never_overwrite_a_skill_the_bundle_vendors() -> None:
             assert folder in canonical or comp.get("skills_subdir"), (
                 f"{comp['id']} installs {folder}, which canonical neither vendors nor sources"
             )
+
+
+# --------------------------------------------------------------------------
+# v7.9.8 -- the starter template is not a place to register MCP servers.
+#
+# Through 7.9.7 the Hermes starter carried five live servers and the pack gate
+# passed. Because Install-Provider-Starter-Settings.ps1 copies the file whole
+# onto a machine with no config.yaml, each was a fresh-install default that
+# outranked the bundle's own decisions.
+# --------------------------------------------------------------------------
+
+STARTER_GLOB = "1-TAILORED-PROVIDER-TREES/*/COPY-TO-PROVIDER-HOME/*"
+
+
+def _starter_templates():
+    return sorted(ROOT.glob(STARTER_GLOB))
+
+
+def config_code(path: Path) -> str:
+    """A config template with its comments removed.
+
+    Same reasoning as ps_code: the comment explaining why a package is banned
+    names that package, and a gate that cannot tell code from commentary either
+    fails on the explanation or forces the explanation to be deleted.
+    """
+    text = read(path)
+    if path.suffix.lower() in (".json", ".md"):
+        return text
+    out = []
+    for line in text.split("\n"):
+        stripped = line.strip()
+        if stripped.startswith("#") or stripped.startswith("//"):
+            continue
+        out.append(line)
+    return "\n".join(out)
+
+
+def test_starter_templates_declare_no_mcp_servers() -> None:
+    shapes = {
+        "YAML mcp_servers mapping": re.compile(r"(?m)^[ \t]*mcp_servers:[ \t]*\r?\n[ \t]+\S"),
+        "TOML mcp_servers table": re.compile(r"(?m)^[ \t]*\[[ \t]*mcp[_.]servers\."),
+        "JSON mcpServers object": re.compile(r'(?m)"mcpServers"[ \t]*:[ \t]*\{[ \t\r\n]*"'),
+    }
+    bad = []
+    for p in _starter_templates():
+        code = config_code(p)
+        for label, rx in shapes.items():
+            if rx.search(code):
+                bad.append(f"{p.relative_to(ROOT).as_posix()} ({label})")
+    assert not bad, (
+        "starter templates declare live MCP servers; MCP is wired by the "
+        "installer and Set-McpProfile from what is installed: " + ", ".join(bad)
+    )
+
+
+def test_no_unpinned_package_in_live_templates() -> None:
+    """An unpinned server can change its tool surface mid-session.
+
+    npx will also happily reuse a broken cache. The catalog pins everything it
+    owns; 7.9.7's Hermes starter shipped @playwright/mcp@latest anyway.
+    """
+    bad = [
+        p.relative_to(ROOT).as_posix()
+        for p in _starter_templates()
+        if "@latest" in config_code(p)
+    ]
+    assert not bad, "unpinned @latest package in a live provider template: " + ", ".join(bad)
+
+
+def test_retired_github_package_cannot_become_live_config() -> None:
+    """npm reports @modelcontextprotocol/server-github as no longer supported.
+
+    v7.7.11 'fixed' it by pinning; the pin held and the package died anyway.
+    The official server replaced it -- and 7.9.7 still shipped the dead one in
+    the Hermes starter, where a fresh install would load it.
+    """
+    retired = "@modelcontextprotocol/server-github"
+    bad = [
+        p.relative_to(ROOT).as_posix()
+        for p in _starter_templates()
+        if retired in config_code(p)
+    ]
+    assert not bad, f"retired package {retired} in a live provider template: " + ", ".join(bad)
+
+
+def test_hermes_readme_matches_the_shipped_starter() -> None:
+    """Cross-source contract: docs that describe executable config must be true.
+
+    The 7.9.7 Hermes README said 'Empty mcp_servers' while the starter shipped
+    five, and said reasoning=high / max_turns=350 / 250K compression while the
+    file said max / null / 120000. Four false claims, no test watching.
+    """
+    readme = read(ROOT / "1-TAILORED-PROVIDER-TREES" / "Hermes" / "README.txt")
+    cfg = read(ROOT / "1-TAILORED-PROVIDER-TREES" / "Hermes" / "COPY-TO-PROVIDER-HOME" / "config.yaml")
+
+    assert "mcp_servers: {}" in cfg, "the Hermes starter no longer has an empty mcp_servers"
+    assert "mcp_servers: {}" in readme, "the Hermes README no longer states the empty mcp_servers"
+
+    # Each claim in the README that names a config value must match the file.
+    for key, claim in (
+        ("reasoning_effort", "reasoning_effort: max"),
+        ("max_turns", "max_turns: null"),
+        ("threshold_tokens", "threshold_tokens: 120000"),
+    ):
+        assert claim in cfg, f"starter no longer sets {claim!r}"
+        value = claim.split(": ", 1)[1]
+        assert value in readme, (
+            f"Hermes README does not state the shipped {key} ({value}); "
+            "a README that describes executable config has to track it"
+        )
+
+
+def test_both_hermes_config_copies_agree() -> None:
+    """The tree ships the starter twice; a fix to one is a bug in the other."""
+    a = read(ROOT / "1-TAILORED-PROVIDER-TREES" / "Hermes" / "config.yaml")
+    b = read(ROOT / "1-TAILORED-PROVIDER-TREES" / "Hermes" / "COPY-TO-PROVIDER-HOME" / "config.yaml")
+    assert a == b, "the two shipped Hermes config.yaml copies have diverged"
+
+
+def test_starter_installer_refuses_the_shape_not_the_symptoms() -> None:
+    """The guard has to live in the installer, not only in this suite.
+
+    A contract catches it in CI; the installer catches it on a user's machine
+    when someone drops a live config into the folder.
+    """
+    code = ps_code(ROOT / "TOOLS" / "Install-Provider-Starter-Settings.ps1")
+    assert "mcp_servers" in code and "mcpServers" in code, (
+        "Install-Provider-Starter-Settings no longer refuses templates with live MCP entries"
+    )
+    assert "@latest" in code, "the starter installer no longer refuses unpinned packages"
+
+
+def test_capability_routing_owns_tool_selection() -> None:
+    """One skill owns 'do not rebuild an installed capability with a weaker script'.
+
+    Added in 7.9.8 only after auditing capability-profiles, tool-discovery,
+    ai-tooling-stack, research-verification, tool-output-awareness and
+    assumption-audit. The nearest owner, capability-profiles, triggers on
+    enabling servers -- a model about to write a crawler does not match that
+    description, and description routing is how these skills load at all.
+    """
+    p = CANON / "capability-routing" / "SKILL.md"
+    assert p.is_file(), "capability-routing skill is missing"
+    text = read(p)
+    lower = text.lower()
+
+    for cue in ("crawler", "parser", "browser", "shell/python/node", "failed twice"):
+        assert cue in read(p).split("---")[1].lower(), (
+            f"capability-routing description does not trigger on {cue!r}; "
+            "it has to fire when an ad-hoc implementation is about to be written"
+        )
+
+    assert "hard part" in lower, "capability-routing lost its central question"
+    assert "escalate" in lower, "capability-routing lost the escalation ladder"
+    # The anti-dogma half matters as much as the routing half.
+    assert "primitive" in lower and (
+        "not a browser stack" in lower or "not code-intel" in lower
+    ), "capability-routing does not say when the plain primitive wins"
+    assert "measure-mcpschemacost" in lower or "36,337" in text, (
+        "capability-routing states a routing decision without the measurement behind it"
+    )
+
+
+def test_withextras_is_the_only_owner_of_the_optional_servers() -> None:
+    """`-WithExtras` has to change the final state, or the flag is decoration.
+
+    It did not, for Hermes: playwright and firecrawl were documented as extras
+    and shipped enabled in the starter, so a default install got them anyway.
+    Worse, the starter called it `playwright` while extras adds
+    `playwright-mcp`, so a `-WithExtras` run produced two entries for one
+    package -- the duplicate that Find-V5ServerByPackage exists to work around.
+
+    The default side is guaranteed by test_starter_templates_declare_no_mcp_servers.
+    This is the other half: the extras list must still own them.
+    """
+    aio = read(ROOT / "INSTALL-V7-AIO.ps1")
+    block = re.search(r"if \(\$WithExtras\) \{(.*?)\}", aio, re.S)
+    assert block, "the -WithExtras component block is gone"
+    for comp in ("playwright-mcp", "firecrawl-mcp"):
+        assert comp in block.group(1), f"{comp} is no longer gated behind -WithExtras"
+
+
+def test_schema_cost_is_measurable_not_just_asserted() -> None:
+    """7.9.7 demoted a server on a byte count it shipped no way to reproduce."""
+    p = ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1"
+    assert p.is_file(), "TOOLS/Measure-McpSchemaCost.ps1 is missing"
+    code = ps_code(p)
+    assert "tools/list" in code and "initialize" in code, (
+        "the schema-cost tool no longer speaks real MCP"
+    )
+    assert "GetByteCount" in code, "the schema-cost tool no longer measures bytes"
 
 
 if __name__ == "__main__":

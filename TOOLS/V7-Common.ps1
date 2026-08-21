@@ -41,8 +41,15 @@ function Get-V5ProviderHome([string]$Provider, $Catalog) {
   $p = $Catalog.providers.$Provider
   if (-not $p) { throw ("Unknown provider " + $Provider) }
   $envName = $p.home_env
-  $fromEnv = [Environment]::GetEnvironmentVariable($envName, 'User')
-  if (-not $fromEnv) { $fromEnv = [Environment]::GetEnvironmentVariable($envName, 'Process') }
+  # Process BEFORE User. Process is the more specific scope: it is what someone
+  # sets to redirect a single run, and honouring User first made that override
+  # impossible on any machine where the User variable exists. Two consequences,
+  # both real: Get-V5HermesPaths resolves the same path from $env: (which is
+  # process scope), so the two helpers disagreed about the same home; and the
+  # installer could not be exercised against an isolated empty home, which is
+  # why "installer PASS" was never evidence about fresh installs.
+  $fromEnv = [Environment]::GetEnvironmentVariable($envName, 'Process')
+  if (-not $fromEnv) { $fromEnv = [Environment]::GetEnvironmentVariable($envName, 'User') }
   if ($fromEnv) { return $fromEnv }
   return (Expand-V5EnvPath $p.home_default)
 }
