@@ -3,6 +3,32 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.2
+
+Four defects from an independent audit of 7.9.1, plus the token-efficiency work
+they led to. 143 canonical skills, mirrored across all five provider trees.
+
+- **The GitHub MCP server was a deprecated package.** `@modelcontextprotocol/server-github@2025.4.8`
+  is marked `Package no longer supported` by npm itself. Replaced with GitHub's
+  official `github/github-mcp-server` v1.10.1 (MIT), vendored as a SHA-pinned
+  offline asset because it ships binaries rather than npm. v7.7.11 had already
+  "fixed" this line by pinning it — the pin held and the package died anyway,
+  which is why catalog entries now carry a version to check, not just a pin to
+  trust.
+- **It is registered with scoped toolsets**, not `all`. The server groups its
+  tools into 20 toolsets and every enabled group costs schema tokens on every
+  turn.
+- **`mcp-protocol-2026` did not exist**, and was cited in `START-HERE.txt`.
+- **Playwright was `@latest`** in a catalog that documents why that is unsafe.
+  Pinned to `0.0.79`.
+- **Perplexity is key-gated** and now says so.
+- **New `token-efficiency` skill.** Prompt caching does not make watching cheap:
+  a cache read is 0.1x input but a cache write is 1.25x-2x and output is never
+  discounted. The harness waits; the model sleeps. Includes the measured 153k vs
+  5.5k skill-loading numbers behind this pack's lazy-loading design.
+
+See `docs/history/V7.9.2-CHANGELOG.md`.
+
 ## 7.9.1
 
 One repository. Skyrim Forge is developed here now, at

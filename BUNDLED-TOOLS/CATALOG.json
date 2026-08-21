@@ -270,7 +270,7 @@
       },
       "npx_command": "npx",
       "npx_args": [
-        "@playwright/mcp@latest"
+        "@playwright/mcp@0.0.79"
       ],
       "extra_args_env": "PLAYWRIGHT_MCP_EXECUTABLE_PATH",
       "extra_args_template": [
@@ -292,7 +292,7 @@
         "browser-automation"
       ],
       "offline_asset": null,
-      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly. BROWSER CHOICE: with no flags, playwright-mcp defaults to the Google Chrome channel and prompts you to install Chrome. To use your own browser (Opera GX, Edge, Brave, Vivaldi, ...), set user env PLAYWRIGHT_MCP_EXECUTABLE_PATH to the browser exe BEFORE running the installer - the wiring appends --executable-path automatically. Example (Opera GX): setx PLAYWRIGHT_MCP_EXECUTABLE_PATH \"%LOCALAPPDATA%\\Programs\\Opera GX\\opera.exe\". To change later, edit the args in your provider's MCP config (Grok/Codex config.toml, Kimi ~/.kimi-code/mcp.json)."
+      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly. BROWSER CHOICE: with no flags, playwright-mcp defaults to the Google Chrome channel and prompts you to install Chrome. To use your own browser (Opera GX, Edge, Brave, Vivaldi, ...), set user env PLAYWRIGHT_MCP_EXECUTABLE_PATH to the browser exe BEFORE running the installer - the wiring appends --executable-path automatically. Example (Opera GX): setx PLAYWRIGHT_MCP_EXECUTABLE_PATH \"%LOCALAPPDATA%\\Programs\\Opera GX\\opera.exe\". To change later, edit the args in your provider's MCP config (Grok/Codex config.toml, Kimi ~/.kimi-code/mcp.json). Pinned, not @latest: an unpinned npx server can change its tool surface mid-session, and npx will happily reuse a broken cache."
     },
     {
       "id": "firecrawl-mcp",
@@ -361,10 +361,40 @@
         "web-research"
       ],
       "offline_asset": null,
-      "scope_note": "Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts."
+      "scope_note": "REQUIRES PERPLEXITY_API_KEY (paid). Not installed on a keyless machine. Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts.",
+      "key_required": true
+    },
+    {
+      "id": "github-mcp-server",
+      "name": "GitHub MCP Server (official)",
+      "kind": "mcp-binary",
+      "mcp": true,
+      "license": "MIT",
+      "version": "1.10.1",
+      "github": {
+        "owner": "github",
+        "repo": "github-mcp-server"
+      },
+      "install": "zip-extract",
+      "offline_asset": "github-mcp-server-1.10.1-windows-x86_64.zip",
+      "asset_match": [
+        "github-mcp-server-*-windows-x86_64.zip",
+        "*github-mcp-server*Windows_x86_64.zip"
+      ],
+      "target_dir": "%LOCALAPPDATA%\\Skyrim-AI-V5\\github-mcp-server",
+      "exe_rel": "github-mcp-server.exe",
+      "required_for": [
+        "repo-status",
+        "pull-requests",
+        "ci-status"
+      ],
+      "api_key_env": "GITHUB_PERSONAL_ACCESS_TOKEN",
+      "api_key_optional": true,
+      "toolsets": "context,repos,pull_requests,actions,issues",
+      "scope_note": "GitHub's official server, replacing @modelcontextprotocol/server-github, which npm marks 'Package no longer supported'. Registered with a scoped --toolsets list, not 'all': the server exposes 20 toolset groups and every enabled group costs tool-schema tokens on every turn. Widen it per project, never globally."
     }
   ],
-  "pack_version": "7.9.1",
+  "pack_version": "7.9.2",
   "updated_utc": "2026-08-20T01:50:00+00:00",
   "providers": {
     "Grok": {
@@ -440,7 +470,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "7.9.1",
+  "catalog_version": "7.9.2",
   "updated": "2026-08-20",
-  "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. See skill mcp-protocol-2026."
+  "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them."
 }

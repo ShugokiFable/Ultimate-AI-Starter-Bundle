@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.1
+# Ultimate AI Starter Bundle v7.9.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -103,7 +103,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ## What gets installed
 
-- **Provider skills** — 142 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
+- **Provider skills** — 143 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
@@ -243,7 +243,7 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
-### v7.9.1 — One repository + real Windows closure
+### v7.9.2 — One repository + real Windows closure
 
 - Skyrim Forge 6.0.0 is developed and shipped directly under `BUNDLED-TOOLS/skyrim-forge`; no separate Forge payload/release can drift from the bundle installer.
 - `START-HERE.bat` is the canonical launcher and failures persist to `INSTALL-LAST.log` / `INSTALL-FAILED.txt`.
@@ -261,7 +261,7 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
 - 57 new focused generic reliability/reasoning skills (v7.8.0); 142 total per provider since v7.9.0 removed a skill describing an unshipped product.
 - Fresh-Windows provider bootstrap, final installed-state doctor, deterministic UTF-8-safe release packaging, and fail-closed install/runtime gates.
-- At v7.8.0, Skyrim Forge was still a separately versioned 5.2.x payload; v7.9.1 supersedes that design with the in-repository Forge 6.0.0 source tree.
+- At v7.8.0, Skyrim Forge was still a separately versioned 5.2.x payload; v7.9.2 supersedes that design with the in-repository Forge 6.0.0 source tree.
 - Hermes defaults are tuned for DeepSeek V4 Flash 0731: maximum main reasoning (`max`), explicit execution/completion/verification guards, 120k compaction threshold, 30% recent-tail preservation, cache-friendly pruning, 1-hour prompt-cache TTL, and reasoning-free mechanical compression.
 
 ### v7.7.9 — Installer respects existing installs; compression tuned
@@ -321,7 +321,7 @@ are machine-neutral. A live dump of one PC is refused. Existing homes are
 not overwritten. Unrestraint stays in `0-UNRESTRAINT-PACKS` and in the
 instruction files (`CLAUDE.md` / `AGENTS.md` / `SOUL.md`), not in settings.
 
-Skyrim Forge 6.0.0 is installed and repaired by the v7.9.1 bundle under the
+Skyrim Forge 6.0.0 is installed and repaired by the v7.9.2 bundle under the
 Skyrim tools layout. Do not create a second manual copy in Documents. Grok's
 MCP registration still respects its running-server safety budget.
 
@@ -622,14 +622,14 @@ registry.
   verify, and the BOM fix is confirmed live in a provider's own skill listing.
   A real Windows PowerShell 5.1 run on an existing installation reached every
   provider and Forge 6.0.0, then exposed two final-doctor defects that are fixed
-  and regression-tested in v7.9.1. A completely clean Windows machine remains
+  and regression-tested in v7.9.2. A completely clean Windows machine remains
   the authoritative GitHub Actions gate after push. The v7.5.0 preamble wiring
   was sandbox-tested (fresh file, existing file, BOM file, re-run replace); the
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
 
-**v7.9.1** — 2026-08-20. Based on v7.9.0; merged Forge 6.0.0 and Windows installer/doctor closure.
+**v7.9.2** — 2026-08-20. Based on v7.9.0; merged Forge 6.0.0 and Windows installer/doctor closure.
 
 **v7.9.0** — 2026-08-20. Based on v7.8.0.
 

@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.9.1 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V7.9.2 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -109,7 +109,7 @@ MCP 2026-07-28
 The protocol is now stateless: no initialize handshake, no Mcp-Session-Id,
 routing headers required, list results cacheable, Roots/Sampling/Logging
 deprecated on a 12-month window. Every MCP server this pack wires is local
-stdio, so NOTHING here needs to change. Skill: mcp-protocol-2026
+stdio, so NOTHING here needs to change.
 
 
 AI PREAMBLE - INSTALLED AUTOMATICALLY (v7.5.0)
