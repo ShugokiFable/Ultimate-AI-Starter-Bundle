@@ -4,7 +4,6 @@ description: Drive Spooky's AutoMod Toolkit CLI for Skyrim ESP, Papyrus, MCM, NI
 metadata:
   version: 5.0.0
   toolkit_version_pinned: 1.11.2
-  final_pack_version: 5.0.0
 ---
 
 # Spooky's AutoMod Toolkit

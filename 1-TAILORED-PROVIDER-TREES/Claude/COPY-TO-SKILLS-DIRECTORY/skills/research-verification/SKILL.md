@@ -45,3 +45,19 @@ Research in proportion to **uncertainty × consequence × freshness**:
 - already answered by local source, runtime output or `--help` → do not open a browser
 
 When the authoritative source is unavailable, state the limitation and reduce confidence rather than laundering a secondary claim into certainty.
+
+## Escalate the capability, do not tune the weak one
+
+The ladder above is about **authority**. This is **capability**: when a tool
+fails because its class cannot do the job, the fix is a stronger class, not
+another parameter on the same one.
+
+```
+challenge page / empty JS shell   -> rendered extraction, not another User-Agent
+needs a click, login, or scroll   -> browser interaction, not a guessed URL
+docs contradict installed runtime -> the runtime wins, not a third blog post
+```
+
+Two failures of the same shape settle it; a third try at that class is a
+decision to keep failing. Only "wrong class" justifies switching — not a missing
+credential, not a rate limit. `capability-routing` owns the full ladder.

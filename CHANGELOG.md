@@ -3,6 +3,65 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.8
+
+Make the agent reach for the strongest capability it already has instead of
+rebuilding a weaker one, and repair a fresh-install path that had been
+contradicting the bundle's own decisions. 146 canonical skills total; no new
+always-on MCP, and this release *removes* servers from a fresh install rather
+than adding any.
+
+- **The Hermes starter was registering five MCP servers nobody chose.**
+  `COPY-TO-PROVIDER-HOME\config.yaml` shipped a live `mcp_servers` block while
+  its own README said "Empty mcp_servers" and its own header said the file must
+  never contain a live MCP command. The installer copies that file whole onto a
+  machine with no config, so each entry was a fresh-install default:
+  `sequential-thinking` after 7.9.7 measured it out of the always-on core,
+  `@modelcontextprotocol/server-github@2025.4.8` which npm marks no longer
+  supported, `@playwright/mcp@latest` against the pack's own pinning rule, and
+  `firecrawl-mcp`, which is documented as `-WithExtras` and was therefore
+  arriving without it. Fixed at the source, not cleaned up after the copy.
+- **The installer now refuses the shape, not the four symptoms.**
+  `Install-Provider-Starter-Settings.ps1` rejects any starter template that
+  declares live MCP entries -- YAML, TOML or JSON -- or names an `@latest`
+  package. Verified against all eight shipped templates and four defect
+  fixtures. Contracts enforce the same rules in CI, including a cross-source
+  test that the Hermes README's claims match the shipped file, which is the
+  check whose absence let a four-way contradiction ship.
+- **Firecrawl: the measurement contradicted the plan.** The brief assumed
+  wiring Firecrawl in more places would help. Hermes v0.20.4 already ships
+  `web_search`/`web_extract` over a keyless vendor ring (exa, parallel, tavily,
+  firecrawl, keenable) with round-robin and rate-limit failover -- confirmed by
+  running it with no key: search 1.4 s, extract 0.7 s. Against that,
+  `firecrawl-mcp` is 25 tool schemas and 36,337 bytes, **~9,084 tokens on every
+  turn** -- eight times the server 7.9.7 deleted for being too expensive -- and
+  keylessly it answers only `search` and `scrape`; `map`, `crawl`, `agent` and
+  `interact` each return *"API key is required"*, verified by calling them. The
+  expensive surface duplicated the native one and its unique half needed an
+  account. So it is not registered, and the native route is the strong one.
+- **One new skill, after auditing six.** `capability-routing` owns "do not
+  rebuild an installed capability with a weaker ad-hoc script", plus the
+  escalation ladder and the anti-dogma half: when the plain primitive is the
+  right answer. The nearest existing owner, `capability-profiles`, triggers on
+  *enabling servers* -- a model about to write a Node crawler never matches that
+  description, and description matching is how these skills load at all.
+  `research-verification` gained the escalation principle at its own seam.
+- **`final_pack_version` is gone from 37 skills.** Nothing read it at runtime;
+  its only consumer was a contract asserting it stayed current, so the field
+  existed to serve its own test. 36 of the 37 had drifted to 4.3.0, 5.0.0 or
+  5.1.0 inside a 7.9.x pack. `VERSION.txt` is the single authority, and a file
+  that does not restate a release number cannot disagree with it. A contract
+  now forbids its return.
+- **Fixed from 7.9.7:** `capability-profiles` still called sequential-thinking
+  one of "the always-on three" after 7.9.7 demoted it, and the Hermes README was
+  stale about `reasoning_effort`, `max_turns` and the compression threshold as
+  well as MCP.
+- **`TOOLS\Measure-McpSchemaCost.ps1`** ships the measurement 7.9.7 asserted but
+  had no way to reproduce: real `initialize` -> `tools/list`, per-tool bytes.
+  Building it exposed three bugs worth naming -- a blocking `ReadLine` that made
+  the timeout unreachable, an undrained stderr pipe that deadlocked npx, and a
+  handshake that waited for an `initialize` reply context7 never sends.
+
 ## 7.9.7
 
 Make agents seek the cheapest decisive evidence before guessing, and require

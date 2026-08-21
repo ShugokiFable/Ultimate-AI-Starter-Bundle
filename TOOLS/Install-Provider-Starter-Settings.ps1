@@ -33,6 +33,37 @@ function Test-V5PortableTemplate {
   if ($raw -match '(?i)C:\\Users\\[^\\\s"]+' -or $raw -match '(?i)/Users/[^/\s"]+' -or $raw -match '(?i)S:\\Apps\\') {
     throw ("Refusing machine-local template (contains a user or Apps path): " + $Path)
   }
+
+  # A starter template carries portable PREFERENCES. MCP registration belongs to
+  # INSTALL-V7-AIO.ps1 and Set-McpProfile.ps1, which read what is actually
+  # installed on this machine and choose the scope each server belongs in.
+  #
+  # Through 7.9.7 the Hermes starter carried five live servers. Because the copy
+  # is whole-file, each became a fresh-install default that outranked the
+  # bundle's own decisions: sequential-thinking after 7.9.7 measured it out of
+  # the always-on core, a GitHub package upstream had withdrawn, an unpinned
+  # @latest server, and a 25-tool web server duplicating a native capability.
+  # The file's own header said it must never contain a live MCP command. Only a
+  # check can hold that line, so refuse the SHAPE rather than the four symptoms.
+  $code = (($raw -split "`r?`n") | Where-Object { $_ -notmatch '^\s*(#|//)' }) -join "`n"
+  $mcpShapes = [ordered]@{
+    'YAML mcp_servers mapping' = '(?m)^[ \t]*mcp_servers:[ \t]*\r?\n[ \t]+\S'
+    'TOML mcp_servers table'   = '(?m)^[ \t]*\[[ \t]*mcp[_.]servers\.'
+    'JSON mcpServers object'   = '(?m)"mcpServers"[ \t]*:[ \t]*\{[ \t\r\n]*"'
+  }
+  foreach ($shape in $mcpShapes.Keys) {
+    if ($code -match $mcpShapes[$shape]) {
+      throw ("Refusing starter template with live MCP entries (" + $shape + "): " + $Path +
+             " -- MCP is wired by INSTALL-V7-AIO.ps1 and Set-McpProfile.ps1 from what is installed, not copied from a template.")
+    }
+  }
+
+  # An unpinned server can change its tool surface mid-session, and npx will
+  # happily reuse a broken cache. The catalog pins every server it owns; a
+  # template is not the place the policy gets an exemption.
+  if ($code -match '@latest') {
+    throw ("Refusing starter template with an unpinned @latest package: " + $Path)
+  }
 }
 
 function Backup-V5File {

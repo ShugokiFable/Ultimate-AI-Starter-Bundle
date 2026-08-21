@@ -12,7 +12,6 @@ metadata:
   provider_pack_version: 1.0.0
   base_library: Skyrim-Agent-Skills-v6
   error_registry_revision: 4.3.0
-  final_pack_version: 4.3.0
 when_to_use: Use for build or repair a shareable skyrim follower from a racemenu or chargen preset, including plugin records,
   facegen, head parts, tint, body assets, voice, recruitment, and skin-normal compatibility.
 ---

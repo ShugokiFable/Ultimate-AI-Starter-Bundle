@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Quarterly Report</title>
+<!-- Everything a reader sees is injected below. A fetch of this file's HTML
+     contains no report text at all -- the same shape as a JS-rendered or
+     anti-bot-gated page, without needing a real blocked site in a test. -->
+<div id="app">Loading&hellip;</div>
+<noscript>This report requires JavaScript.</noscript>
+<script>
+  var DATA = {
+    title: "Q3 Revenue Review",
+    rows: [
+      ["Northwind", 412900, "+12%"],
+      ["Contoso", 288400, "-3%"],
+      ["Fabrikam", 907150, "+41%"]
+    ],
+    note: "Fabrikam growth driven by the Helios contract renewal."
+  };
+  var h = "<h1>" + DATA.title + "</h1><table>";
+  DATA.rows.forEach(function (r) {
+    h += "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + "</td></tr>";
+  });
+  h += "</table><p>" + DATA.note + "</p>";
+  document.getElementById("app").innerHTML = h;
+</script>

@@ -9,7 +9,6 @@ metadata:
   updated: '2026-07-22'
   library: overseer-skyrim-agent-skills
   error_registry_revision: 4.3.0
-  final_pack_version: 4.3.0
 ---
 
 # SKSE and CommonLib

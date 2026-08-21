@@ -20,7 +20,7 @@ For each:
 Prioritize assumptions by blast radius, not by convenience. A guessed path used in one log line matters less than a guessed path written into five provider configs.
 
 ## Then route it
-Naming an assumption is half the job; the other half is the cheapest thing that settles it. `research-verification` for an external or version-specific fact, `visual-verification` for anything about appearance, `systematic-debugging` for a failure, `observability-first` when nothing in the system can currently answer the question at all.
+Naming an assumption is half the job; the other half is the cheapest thing that settles it. `research-verification` for an external or version-specific fact, `visual-verification` for anything about appearance, `systematic-debugging` for a failure, `observability-first` when nothing in the system can currently answer the question at all, `capability-routing` when the assumption is that you have to build something to find out.
 
 ## Red flag
 If the sentence “this should exist/work because it usually does” appears in your reasoning, turn it into a check.

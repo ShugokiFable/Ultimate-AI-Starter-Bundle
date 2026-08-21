@@ -12,7 +12,6 @@ metadata:
   provider_pack_version: 1.0.0
   base_library: Skyrim-Agent-Skills-v6
   error_registry_revision: 4.3.0
-  final_pack_version: 4.3.0
 when_to_use: Use for prepare a nexus mods release page, bbcode description, requirements, permissions, changelog, credits,
   troubleshooting, and file metadata after the artifact passes the ship gate.
 ---
