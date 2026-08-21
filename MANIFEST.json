@@ -18341,8 +18341,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 54144,
-  "sha256": "5cd17de4dc91d050046f8b440cef07e59769199dbb5e61f8dd41c599582679f4"
+  "size": 54816,
+  "sha256": "0b46f56d0a3275e1cad71eb8e116d26de83e4bd7efd4f0c8fdb1fd3784cf0584"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18431,8 +18431,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 88110,
-  "sha256": "dcfc1b600e4e30382d7d3c5efcb830cf6d72aafeaac55a25fa1a5fda537fe027"
+  "size": 89278,
+  "sha256": "28f1eb8811c95e06d474b168bbac19f9e89e7c2df18a3b9558698f16e64dc4b8"
  },
  {
   "path": "LICENSE",
@@ -18506,8 +18506,8 @@
  },
  {
   "path": "TESTS/Test-McpProfiles.ps1",
-  "size": 18336,
-  "sha256": "9fa7f832d24c9904d262efc13ea32ba34fd384d7752141217e4242c9f1e5d6a7"
+  "size": 20097,
+  "sha256": "17c62a39bf2f28f6e7e13e7b51aa6aca92c3884b712437e593e5bdace252d091"
  },
  {
   "path": "TESTS/Test-ProviderSkillSync.ps1",
@@ -18616,8 +18616,8 @@
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
-  "size": 10905,
-  "sha256": "6c3c1f07a92ceef0f5da6b8a2497a03f62b701e1f2af155b412cb6d165bda3d1"
+  "size": 11356,
+  "sha256": "a0dcab6f51af7b654a043dc62757028a28622dc6c38162b3f5f458e422f5b37e"
  },
  {
   "path": "TOOLS/Update-From-GitHub.ps1",
@@ -18631,8 +18631,8 @@
  },
  {
   "path": "TOOLS/V7-Mcp-Write.ps1",
-  "size": 22020,
-  "sha256": "5a4b1ec045dd6729e5ea675e8c85cf12fb59d3833f303f9008c2fd2ddf60fceb"
+  "size": 24152,
+  "sha256": "fd535adceee676da8db68932b390c869f7ca7c2922c146ebca4b3489ce1426ee"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -18746,8 +18746,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 5689,
-  "sha256": "fa83765b91d8f251047634b41e9c4a7d0e8cd1b34cce16690008f8e16d1c81c7"
+  "size": 6250,
+  "sha256": "78fbb677728ac985942ea2eecca2d87da7a58149c059f94f38837577ef2f9db8"
  },
  {
   "path": "VERSION.txt",
@@ -21786,7 +21786,7 @@
  },
  {
   "path": "docs/history/V7.9.5-CHANGELOG.md",
-  "size": 15482,
-  "sha256": "c27fe38934740778a58ff929bd78e92768178560fa1f278bc212e382c410f716"
+  "size": 16768,
+  "sha256": "5ab392585d9894980025285f371c9ca6b7ecb24b7d0d5b1882e0ad23e7a85a3f"
  }
 ]

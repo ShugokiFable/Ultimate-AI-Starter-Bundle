@@ -74,6 +74,55 @@ function Select-V5WithinGrokBudget {
   return $fit
 }
 
+function Get-V5NpxPackageBase {
+  <# '@scope/name@1.2.3' -> '@scope/name'; 'name@1.2.3' -> 'name'. The version
+     is deliberately dropped: a pin change must still match the same server. #>
+  param([string[]]$Arguments)
+  foreach ($a in @($Arguments)) {
+    if ($a -like '-*') { continue }
+    $at = $a.LastIndexOf('@')
+    if ($at -gt 0) { return $a.Substring(0, $at) }
+    return $a
+  }
+  return ''
+}
+
+function Find-V5ServerByPackage {
+  <# Returns the name of an existing entry that already runs this package, or
+     ''. Dedupe keys on the server NAME everywhere else, which cannot see the
+     same server declared under a different one -- Hermes ended up with both
+     `playwright` and `playwright-mcp`. #>
+  param([string]$ConfigText, [string]$PackageBase)
+  if (-not $PackageBase -or -not $ConfigText) { return '' }
+  if ($ConfigText -notmatch [regex]::Escape($PackageBase)) { return '' }
+  # YAML (Hermes): two-space server keys, the package somewhere in the block.
+  # Walked rather than matched with one multiline regex: `$` against CRLF and a
+  # greedy `\s*` made that version match nothing at all.
+  $current = ''
+  $block = New-Object System.Text.StringBuilder
+  foreach ($line in ($ConfigText -split "`r?`n")) {
+    if ($line -match '^  (?<name>[^\s:#][^:]*):[ \t]*$') {
+      if ($current -and $block.ToString().Contains($PackageBase)) { return $current }
+      $current = $Matches['name']
+      [void]$block.Clear()
+      continue
+    }
+    if ($line -match '^    \S' -or $line -match '^      ') { [void]$block.AppendLine($line); continue }
+    if ($line -notmatch '^\s*$') {
+      if ($current -and $block.ToString().Contains($PackageBase)) { return $current }
+      $current = ''
+      [void]$block.Clear()
+    }
+  }
+  if ($current -and $block.ToString().Contains($PackageBase)) { return $current }
+  # JSON (Kimi/Claude): the whole entry is one object under its name.
+  $json = [regex]::Matches($ConfigText, '(?ms)"(?<name>[^"]+)"\s*:\s*\{(?<body>[^{}]*)\}')
+  foreach ($m in $json) {
+    if ($m.Groups['body'].Value -match [regex]::Escape($PackageBase)) { return $m.Groups['name'].Value }
+  }
+  return ''
+}
+
 function Set-Utf8NoBom {
   param([string]$Path, [string]$Text)
   $enc = New-Object System.Text.UTF8Encoding($false)
