@@ -7,7 +7,7 @@ metadata:
   updated: '2026-08-20'
   library: overseer-skyrim-agent-skills
   error_registry_revision: 4.3.0
-  final_pack_version: 7.9.2
+  final_pack_version: 7.9.5
 ---
 
 # Release checklist

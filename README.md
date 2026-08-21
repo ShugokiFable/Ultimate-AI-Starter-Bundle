@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.2
+# Ultimate AI Starter Bundle v7.9.5
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -103,7 +103,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ## What gets installed
 
-- **Provider skills** — 143 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
+- **Provider skills** — 144 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
@@ -242,6 +242,19 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.9.5 — Capability profiles
+
+- Seven MCP servers added as **profiles**, not global registrations: Serena,
+  Chrome DevTools, shadcn, Supabase, Blender, Godot, Unity.
+- `TOOLS\Test-McpHandshake.ps1` proves a configured server actually answers, and
+  reports what it costs: **188 tool schemas rode in context on every Claude turn**
+  on the development machine before this release.
+- `TOOLS\Set-McpProfile.ps1` wires a profile only when the project needs it and
+  the machine can run it; anything else is skipped with the reason printed.
+- Both MCP writers now share `TOOLS/V7-Mcp-Write.ps1`. Its new gate found two
+  defects immediately, and the handshake probe found a third on a live config:
+  Codex still held `@playwright/mcp@latest` with no `-y`, blocking npx forever.
 
 ### v7.9.2 — One repository + real Windows closure
 
@@ -628,6 +641,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.5** — 2026-08-21. Based on v7.9.2; capability profiles for seven MCP servers.
 
 **v7.9.2** — 2026-08-20. Based on v7.9.0; merged Forge 6.0.0 and Windows installer/doctor closure.
 

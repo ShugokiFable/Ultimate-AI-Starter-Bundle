@@ -174,14 +174,29 @@ function Update-V5GrokMcpBlock {
   }
 
   $cmdNorm = ($Command -replace '\\', '/').Trim()
+  $argNorm = (@($ArgList | ForEach-Object { ($_ -replace '\\', '/').Trim() }) -join ([char]31))
   if ($SkipIfPresent -and $content) {
     $nameEsc = [regex]::Escape($Name)
-    $m = [regex]::Match($content, '(?ms)^[ \t]*\[mcp_servers\.(?:' + $nameEsc + ')\][ \t]*\r?\n(?:.*?\r?\n)*?[ \t]*command[ \t]*=[ \t]*["'']([^"'']+)["'']')
-    if ($m.Success) {
-      $existingCmd = ($m.Groups[1].Value -replace '\\', '/').Trim()
-      if ($existingCmd -ieq $cmdNorm) {
+    $block = [regex]::Match($content, '(?ms)^[ \t]*\[mcp_servers\.' + $nameEsc + '\][ \t]*\r?\n(?<body>.*?)(?=^[ \t]*\[|\z)')
+    if ($block.Success) {
+      $body = $block.Groups['body'].Value
+      $m = [regex]::Match($body, '(?m)^[ \t]*command[ \t]*=[ \t]*["'']([^"'']+)["'']')
+      $existingCmd = if ($m.Success) { ($m.Groups[1].Value -replace '\\', '/').Trim() } else { '' }
+      # Every npx server shares one command, so comparing only the command
+      # always matched and a drifted pin in the args survived every upgrade.
+      $am = [regex]::Match($body, '(?ms)^[ \t]*args[ \t]*=[ \t]*\[(?<v>.*?)\]')
+      $existingArgs = @()
+      if ($am.Success) {
+        foreach ($a in [regex]::Matches($am.Groups['v'].Value, '"(?<v>(?:[^"\\]|\\.)*)"|''(?<v>[^'']*)''')) {
+          $existingArgs += (($a.Groups['v'].Value -replace '\\\\', '/' -replace '\\', '/').Trim())
+        }
+      }
+      if (($existingCmd -ieq $cmdNorm) -and ((@($existingArgs) -join ([char]31)) -ieq $argNorm)) {
         Write-V5Ok ('Grok MCP unchanged (already correct): ' + $Name)
         return
+      }
+      if ($existingCmd -ieq $cmdNorm) {
+        Write-V5Warn ('Grok MCP args drifted, rewriting: ' + $Name + '  was [' + (@($existingArgs) -join ' ') + ']')
       }
     }
   }

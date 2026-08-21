@@ -470,6 +470,22 @@ if (-not (Test-Path -LiteralPath $providerSyncGate -PathType Leaf)) {
     }
 }
 
+
+Section '13. MCP profile catalog and the shared config writer'
+# Both MCP writers share TOOLS\V7-Mcp-Write.ps1. Every config bug this pack has
+# shipped was a bug in one of three config shapes that the other two did not
+# have, and each was found on a user's machine rather than in a test.
+$mcpGate = Join-Path $PackRoot 'TESTS\Test-McpProfiles.ps1'
+if (-not (Test-Path -LiteralPath $mcpGate -PathType Leaf)) {
+    Bad 'TESTS\Test-McpProfiles.ps1 missing from the pack'
+} else {
+    $mcpOut = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $mcpGate -PackRoot $PackRoot 2>&1 | Out-String
+    if ($mcpOut -match 'MCP PROFILE GATE: PASS') {
+        Good 'MCP profile catalog + shared config writer PASS'
+    } else {
+        Bad ('MCP profile gate failed:' + [Environment]::NewLine + ($mcpOut.Trim()))
+    }
+}
 Write-Host ''
 if ($fail -eq 0) {
     Write-Host "PACK GATE: PASS" -ForegroundColor Green

@@ -3,6 +3,42 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.5
+
+Seven MCP servers from an external capability review, shipped as profiles rather
+than registered globally. 144 canonical skills total, mirrored across all five
+provider trees.
+
+- **The measurement that decided the design.** New `TOOLS\Test-McpHandshake.ps1`
+  runs the real `initialize` -> `tools/list` exchange against a provider's own
+  config. On this machine: **188 tool schemas in context on every Claude turn**,
+  136 for Codex, 90 for Grok. Skills are lazy; MCP schemas are not.
+- **Capability profiles.** `BUNDLED-TOOLS/PROFILES.json` +
+  `TOOLS\Set-McpProfile.ps1`. A profile is wired only when the project shows its
+  markers *and* the machine satisfies its requirements; otherwise it is skipped
+  with the missing prerequisite printed, never written as an entry that fails on
+  first call. This is the capability-profile router v7.9.2 declared as designed
+  but not built.
+- **Added:** Serena 1.7.0 (`code-deep`, auto-installs via uv, per-client
+  `--context`), Chrome DevTools 1.7.0 + shadcn 4.18.0 (`web`), Supabase 0.11.0
+  read-only (`cloud`), blender-mcp 1.8.3, godot-mcp 0.1.1, Unity-MCP 0.89.0.
+- **Not shipped, with reasons:** Unreal MCP (last upstream commit 2025-06-06)
+  and Storybook (no first-party server). Both are recorded in `PROFILES.json`
+  and printed by `-List`.
+- **One writer for three config shapes.** `TOOLS/V7-Mcp-Write.ps1` is now the
+  only place this pack writes an MCP entry. The new gate
+  `TESTS/Test-McpProfiles.ps1` caught two defects on its first run: PowerShell
+  unrolls a single-element array on `return` (a one-argument server would have
+  been written as a string), and `-CheckOnly` deleted the entries it claimed it
+  would only report on.
+- **A live defect only the handshake could find.** Codex still held
+  `@playwright/mcp@latest` with no `-y`, so npx blocked on an install prompt and
+  the server never answered. v7.9.2 pinned it in the catalog, but
+  `-SkipIfPresent` compared only the *command* -- and every npx server has the
+  same command. It now compares the args.
+
+See `docs/history/V7.9.5-CHANGELOG.md`.
+
 ## 7.9.2
 
 Four defects from an independent audit of 7.9.1, plus the token-efficiency work

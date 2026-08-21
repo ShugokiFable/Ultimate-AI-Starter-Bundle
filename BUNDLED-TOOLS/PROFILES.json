@@ -1,0 +1,301 @@
+{
+  "schema": 1,
+  "catalog_version": "7.9.5",
+  "pack_version": "7.9.5",
+  "updated_utc": "2026-08-21T00:00:00Z",
+  "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 143 skill bodies are ~153,000 tokens while the description index an agent actually reads is ~5,500. There is no equivalent discount for MCP. So the servers here are NOT registered globally. Each profile is a named set that gets wired only when the machine can actually run it and the project actually needs it -- decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
+  "reads": "TOOLS/Set-McpProfile.ps1",
+  "always_on_note": "The always-on core (context7, sequential-thinking, github) lives in TOOLS/Add-Reasoning-MCPs.ps1, not here. Those three earn a permanent slot because they apply to every task. Nothing below does. playwright-mcp, firecrawl-mcp and perplexity-mcp are -WithExtras components in CATALOG.json and are likewise not repeated here; registering a server twice is two handshakes for one name.",
+  "requires_forms": {
+    "command": "A command that must resolve on PATH, or an absolute path that must exist as a file.",
+    "any_path": "At least one of these paths must exist. Entries may contain environment variables and a single '*' wildcard per segment.",
+    "env": "This environment variable must be set and non-empty. Used for servers that cannot do anything without a key.",
+    "project_rel": "A path relative to the project directory that must exist. Project-scoped servers only.",
+    "auto_install": "Steps this pack may run unattended to satisfy the requirement, when 'requires_command' resolves. Package installs only -- never something that needs a GUI, a licence acceptance, or a credential."
+  },
+  "profiles": [
+    {
+      "id": "code-deep",
+      "title": "Language-server-accurate code navigation and editing",
+      "scope": "global",
+      "why": "Serena drives real language servers, so find-symbol, find-referencing-symbols and replace-symbol-body answer from the compiler's view of the code rather than from a text match. It overlaps codebase-memory-mcp deliberately: that one answers 'where is this in the graph', Serena answers 'what exactly does this symbol resolve to, and rewrite its body'. Worth the context on a real codebase, not worth it on a two-file mod.",
+      "detect": {
+        "files": [
+          "pyproject.toml",
+          "Cargo.toml",
+          "go.mod",
+          "pom.xml",
+          "build.gradle",
+          "build.gradle.kts",
+          "package.json",
+          "CMakeLists.txt"
+        ],
+        "globs": [
+          "*.sln",
+          "*.csproj"
+        ]
+      },
+      "servers": [
+        {
+          "id": "serena",
+          "command": "%USERPROFILE%\\.local\\bin\\serena.exe",
+          "args": [
+            "start-mcp-server",
+            "--context",
+            "agent",
+            "--enable-web-dashboard",
+            "false"
+          ],
+          "args_by_provider": {
+            "Claude": [
+              "start-mcp-server",
+              "--context",
+              "claude-code",
+              "--enable-web-dashboard",
+              "false"
+            ],
+            "Codex": [
+              "start-mcp-server",
+              "--context",
+              "codex",
+              "--enable-web-dashboard",
+              "false"
+            ],
+            "Grok": [
+              "start-mcp-server",
+              "--context",
+              "grok",
+              "--enable-web-dashboard",
+              "false"
+            ]
+          },
+          "note": "LSP-accurate symbol search and symbol-level editing (Serena)",
+          "key": null,
+          "requires": {
+            "command": "%USERPROFILE%\\.local\\bin\\serena.exe"
+          },
+          "install_hint": "uv tool install -p 3.13 serena-agent && serena init",
+          "upstream_setup": "serena setup {claude-code|codex|grok}",
+          "context_note": "--context trims the tool set to what the client does not already have. Serena ships a named context for claude-code, codex and grok; Kimi and Hermes have none, so they get the generic 'agent' context. --enable-web-dashboard false keeps a browser window from opening on every session start.",
+          "auto_install": {
+            "requires_command": "uv",
+            "why": "Serena is a Python tool, not an npx package, so it has to exist on disk before a config can point at it. uv installs it into an isolated environment with its own interpreter.",
+            "steps": [
+              {
+                "command": "uv",
+                "args": [
+                  "tool",
+                  "install",
+                  "-p",
+                  "3.13",
+                  "serena-agent"
+                ]
+              },
+              {
+                "command": "%USERPROFILE%\\.local\\bin\\serena.exe",
+                "args": [
+                  "init"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "web",
+      "title": "Live browser inspection and debugging",
+      "scope": "global",
+      "why": "Chrome DevTools MCP reads a real Chrome: console messages, network requests, performance traces and the rendered DOM. That is the half playwright-mcp does not do -- playwright drives a browser, this one explains what the browser did. Enable it for front-end work; it is dead weight in a Papyrus session.",
+      "detect": {
+        "files": [
+          "package.json",
+          "index.html",
+          "angular.json",
+          "svelte.config.js",
+          "nuxt.config.ts"
+        ],
+        "globs": [
+          "next.config.*",
+          "vite.config.*"
+        ]
+      },
+      "servers": [
+        {
+          "id": "chrome-devtools",
+          "command": "npx",
+          "args": [
+            "-y",
+            "chrome-devtools-mcp@1.7.0",
+            "--no-usage-statistics"
+          ],
+          "note": "console, network, performance traces and DOM from a live Chrome",
+          "key": null,
+          "requires": {
+            "command": "npx",
+            "any_path": [
+              "%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe",
+              "%ProgramFiles(x86)%\\Google\\Chrome\\Application\\chrome.exe",
+              "%LOCALAPPDATA%\\Google\\Chrome\\Application\\chrome.exe",
+              "%USERPROFILE%\\.cache\\puppeteer\\chrome\\*\\chrome-win64\\chrome.exe"
+            ]
+          },
+          "requires_note": "Upstream supports Google Chrome and Chrome for Testing only. Chromium forks (Edge, Brave, Opera GX, Vivaldi) are not supported by this server; playwright-mcp is the one that takes PLAYWRIGHT_MCP_EXECUTABLE_PATH.",
+          "flag_note": "--no-usage-statistics opts out of Google's telemetry for this server. It is on by default upstream, and this pack does not enable third-party telemetry on a user's machine without asking."
+        },
+        {
+          "id": "shadcn",
+          "command": "npx",
+          "args": [
+            "-y",
+            "shadcn@4.18.0",
+            "mcp"
+          ],
+          "note": "search, inspect and add components from configured shadcn registries",
+          "key": null,
+          "scope": "project",
+          "requires": {
+            "command": "npx",
+            "project_rel": "components.json"
+          },
+          "requires_note": "The server resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only."
+        }
+      ]
+    },
+    {
+      "id": "cloud",
+      "title": "Supabase project management",
+      "scope": "global",
+      "why": "Schema, migrations, logs and edge functions for a Supabase project, read and written through the platform API instead of guessed SQL.",
+      "detect": {
+        "files": [
+          "supabase/config.toml"
+        ],
+        "globs": []
+      },
+      "servers": [
+        {
+          "id": "supabase",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@supabase/mcp-server-supabase@0.11.0",
+            "--read-only"
+          ],
+          "note": "Supabase schema, migrations, logs (read-only by default)",
+          "key": "SUPABASE_ACCESS_TOKEN",
+          "requires": {
+            "command": "npx",
+            "env": "SUPABASE_ACCESS_TOKEN"
+          },
+          "requires_note": "Does nothing without a personal access token, so it is gated on the variable being set rather than registered as a server that fails on first call.",
+          "flag_note": "--read-only is this pack's default. An agent that can DROP a production table on a misread is not a capability, it is an incident. Remove the flag by hand if you want writes."
+        }
+      ]
+    },
+    {
+      "id": "engine-blender",
+      "title": "Blender scene control",
+      "scope": "global",
+      "why": "Inspect and drive a running Blender: objects, materials, modifiers, and Python execution in the live scene. Relevant to this pack because Skyrim mesh work rides on Blender.",
+      "detect": {
+        "files": [],
+        "globs": [
+          "*.blend"
+        ]
+      },
+      "servers": [
+        {
+          "id": "blender",
+          "command": "uvx",
+          "args": [
+            "blender-mcp"
+          ],
+          "note": "live Blender scene inspection and control",
+          "key": null,
+          "requires": {
+            "command": "uvx",
+            "any_path": [
+              "%ProgramFiles%\\Blender Foundation\\*\\blender.exe",
+              "%ProgramFiles%\\Steam\\steamapps\\common\\Blender\\blender.exe",
+              "S:\\Steam\\steamapps\\common\\Blender\\blender.exe"
+            ]
+          },
+          "editor_side": "uvx blender-mcp install-addon",
+          "editor_side_note": "The server talks to an addon inside Blender. Installing that addon is the one step that cannot be done from outside the editor process, so Set-McpProfile prints the command rather than pretending it ran it. Blender must be open with the addon enabled before the server has anything to connect to."
+        }
+      ]
+    },
+    {
+      "id": "engine-godot",
+      "title": "Godot project control",
+      "scope": "global",
+      "why": "Run a Godot project, read its scene tree and capture runtime errors without leaving the agent loop.",
+      "detect": {
+        "files": [
+          "project.godot"
+        ],
+        "globs": []
+      },
+      "servers": [
+        {
+          "id": "godot",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@coding-solo/godot-mcp@0.1.1"
+          ],
+          "note": "run Godot projects, read scene trees, capture runtime errors",
+          "key": null,
+          "env_passthrough": [
+            "GODOT_PATH"
+          ],
+          "requires": {
+            "command": "npx",
+            "env": "GODOT_PATH"
+          },
+          "requires_note": "The server shells out to the Godot editor binary and cannot find it by itself on Windows, where Godot has no fixed install location. Gated on GODOT_PATH rather than registered as a server that fails on first call: setx GODOT_PATH \"C:\\path\\to\\Godot.exe\"."
+        }
+      ]
+    },
+    {
+      "id": "engine-unity",
+      "title": "Unity editor control",
+      "scope": "project",
+      "why": "Read and drive an open Unity project -- GameObjects, components, assets, console, play mode.",
+      "detect": {
+        "files": [
+          "ProjectSettings/ProjectVersion.txt"
+        ],
+        "globs": []
+      },
+      "servers": [
+        {
+          "id": "unity",
+          "command": "{project}\\Library\\mcp-server\\win-x64\\gamedev-mcp-server.exe",
+          "args": [
+            "client-transport=stdio"
+          ],
+          "note": "live Unity editor control (per-project server binary)",
+          "key": null,
+          "requires": {
+            "project_rel": "Library\\mcp-server\\win-x64\\gamedev-mcp-server.exe"
+          },
+          "editor_side": "npx -y unity-mcp-cli@0.89.0 install-plugin \"{project}\"",
+          "requires_note": "Unity-MCP does not ship a machine-wide server. The executable is generated inside the project's Library folder by the Unity package, so there is no global registration to write -- the entry is project-scoped by construction, and the command is the resolved absolute path for that one project. Until the package is installed the exe does not exist, and the profile refuses rather than writing a path that is not there."
+        }
+      ]
+    }
+  ],
+  "evaluated_not_shipped": [
+    {
+      "id": "unreal-mcp",
+      "source": "runreal/unreal-mcp",
+      "reason": "Last upstream commit 2025-06-06 and 113 stars at evaluation time. A bridge into a running editor is exactly the kind of component that breaks on an engine point release, and this pack pins exact versions precisely so it can tell when upstream has moved. Vendoring a bridge nobody is maintaining would ship that risk under a version number that implies otherwise."
+    },
+    {
+      "id": "storybook-mcp",
+      "reason": "No first-party server from the Storybook project at evaluation time. Community servers exist; none had provenance this pack would accept for an install it performs on a user's machine unattended."
+    }
+  ]
+}
