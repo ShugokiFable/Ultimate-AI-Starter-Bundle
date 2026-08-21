@@ -1045,6 +1045,21 @@ def test_capability_profiles_are_not_registered_globally() -> None:
             # on Codex with @playwright/mcp@latest.
             assert "-y" in server["args"], f"{server['id']} runs npx without -y"
 
+    # Sweep, do not enumerate. The same two rules apply to every npx server the
+    # catalog declares, and CATALOG.json shipped playwright-mcp with no -y while
+    # this test only looked at the new profile entries.
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    for comp in catalog["components"]:
+        if comp.get("npx_command") != "npx":
+            continue
+        args = comp.get("npx_args") or []
+        assert "-y" in args, f"{comp['id']} runs npx without -y: {args}"
+        pkg = next((a for a in args if not a.startswith("-")), None)
+        assert pkg and re.search(r"@[0-9]", pkg), (
+            f"{comp['id']} npx package is not version-pinned: {pkg}"
+        )
+        assert not pkg.endswith("@latest"), f"{comp['id']} pins @latest"
+
     ids = [s["id"] for s in profile_servers]
     assert len(ids) == len(set(ids)), f"duplicate profile server ids: {ids}"
 

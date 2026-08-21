@@ -15466,8 +15466,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 21803,
-  "sha256": "811e8741decbc178e6c92dec3fff48565417aecaaf40be9da4cc7188d88b82a7"
+  "size": 21883,
+  "sha256": "f132511f1a14238381af927cd3a2b85629a944315d8633766a02fe446f94aa84"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -18341,8 +18341,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 51973,
-  "sha256": "fb251fe48eaf055d98ad445656981f4811107834548794e6f17db4fd249dc00a"
+  "size": 52814,
+  "sha256": "958520cb0c6bbbdb3766e10bfc92a6fa812e688f8405c612b24debba955f659f"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18506,8 +18506,8 @@
  },
  {
   "path": "TESTS/Test-McpProfiles.ps1",
-  "size": 13303,
-  "sha256": "7055b921e3aa717ed51cbcc61aaadc431afc95fb6f002b8e142d925a0796b51b"
+  "size": 16105,
+  "sha256": "1fac018fb64d53658e54f15df9d3d034c4b63f20d79c57ac3cfc3f8d07a3d30f"
  },
  {
   "path": "TESTS/Test-ProviderSkillSync.ps1",
@@ -18526,8 +18526,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 61314,
-  "sha256": "0f112b710f0fca7a8fa0ea9211751b0216ed6252d4dee612297c5a762d6b1d8b"
+  "size": 62097,
+  "sha256": "9d4e13f9c87d48752b69d5db5bb3cc12d77de4321baf8f7282a11ab767e0c812"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18591,13 +18591,13 @@
  },
  {
   "path": "TOOLS/Repair-McpPaths.ps1",
-  "size": 8834,
-  "sha256": "0fa37b4751a1ef0134bf60ffd31e0be0d7b59c1f27c73c37fdf7d44fe580177b"
+  "size": 10113,
+  "sha256": "11f7bd287728889d4f8db9d9084c15ecd867426085250355381fefb8fbb6372b"
  },
  {
   "path": "TOOLS/Set-McpProfile.ps1",
-  "size": 15931,
-  "sha256": "7509e31049b35cb1dff49bc51339758267a3a274f32d1ccbbb20c14fd9dec793"
+  "size": 17105,
+  "sha256": "94bf79509fc96dff2c013016a963ac3f30da5eee7b510d84d421752a557290d3"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
@@ -18616,8 +18616,8 @@
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
-  "size": 7848,
-  "sha256": "5b3ebb18ed753d8eadf52603e2ce85382a10f23284503f0e1e2e60f42d45826b"
+  "size": 8777,
+  "sha256": "6c84f3fb2aadac9ee668c1874230f5f60a8c8e0ebac58044d461c0df3753e188"
  },
  {
   "path": "TOOLS/Update-From-GitHub.ps1",
@@ -18746,8 +18746,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 2568,
-  "sha256": "6d1d3ef4abd3cbf75d3571acf18a05d81d5836a0a46f9d64c52873693a93c75f"
+  "size": 3549,
+  "sha256": "acc463b2720497aa2812741dcd6489192aeb6c4bc55e544b75729a6546349637"
  },
  {
   "path": "VERSION.txt",
@@ -21786,7 +21786,7 @@
  },
  {
   "path": "docs/history/V7.9.5-CHANGELOG.md",
-  "size": 8095,
-  "sha256": "f1fd65f302539f297ab361288d8eec0820f1ab2e6270409ac0b931979f7d3bce"
+  "size": 11365,
+  "sha256": "39ab2816cfe134318fe6aa2d9e6b4ced144762b759cd215aa130f7c425c41aab"
  }
 ]

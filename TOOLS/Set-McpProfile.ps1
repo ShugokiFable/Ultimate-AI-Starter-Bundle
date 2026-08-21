@@ -219,6 +219,20 @@ function Invoke-V5ProfileWrite {
   $ids = @($Servers | ForEach-Object { $_['id'] })
   $targets = Get-V5McpTargets
 
+  # Grok also reads ~/.claude.json. A second copy of the same server under one
+  # name is two handshakes for one entry, and Grok wedges at eight running.
+  # Read this INSIDE the loop, not before it: Claude is written earlier in the
+  # same pass, so a snapshot taken up front would never see what was just added.
+  function Get-ClaudeDeclared {
+    $p = Join-Path $env:USERPROFILE '.claude.json'
+    if (-not (Test-Path -LiteralPath $p)) { return @() }
+    try {
+      $cj = [IO.File]::ReadAllText($p) | ConvertFrom-Json
+      if ($cj.mcpServers) { return @($cj.mcpServers.PSObject.Properties.Name) }
+    } catch { }
+    return @()
+  }
+
   foreach ($prov in $Providers) {
     if ($prov -eq 'Hermes') {
       $hpaths = Get-V5HermesPaths
@@ -236,6 +250,20 @@ function Invoke-V5ProfileWrite {
     $t = $targets[$prov]
     if (-not $t) { Write-Skip ("{0} unknown provider" -f $prov); continue }
 
+    $write = $Servers
+    $claudeHas = if ($prov -eq 'Grok') { @(Get-ClaudeDeclared) } else { @() }
+    if (-not $Remove -and $prov -eq 'Grok' -and $claudeHas.Count) {
+      # Only on add. Removal must reach the entry wherever it actually is.
+      $write = @($Servers | Where-Object {
+        if ($claudeHas -contains $_['id']) {
+          Write-Skip ("Grok    inherits {0} from ~/.claude.json (not duplicated)" -f $_['id'])
+          return $false
+        }
+        return $true
+      })
+      if (-not $write.Count) { continue }
+    }
+
     # Claude Code is the only provider here with a project-scoped MCP file.
     # For the rest, a project-scoped server still has to live in the global
     # config -- with the project's absolute path baked into the command, which
@@ -252,13 +280,13 @@ function Invoke-V5ProfileWrite {
       if ($Remove) {
         $done = @(Remove-V5McpJson -Path $cfgPath -Section $t.Section -Ids $ids -CheckOnly:$CheckOnly)
       } else {
-        $done = @(Add-V5McpJson -Path $cfgPath -Section $t.Section -Servers $Servers -Provider $prov -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath)
+        $done = @(Add-V5McpJson -Path $cfgPath -Section $t.Section -Servers $write -Provider $prov -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath)
       }
     } else {
       if ($Remove) {
         $done = @(Remove-V5McpToml -Path $cfgPath -Section $t.Section -Ids $ids -CheckOnly:$CheckOnly)
       } else {
-        $done = @(Add-V5McpToml -Path $cfgPath -Section $t.Section -Servers $Servers -Provider $prov -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath -GrokTimeout:($prov -eq 'Grok'))
+        $done = @(Add-V5McpToml -Path $cfgPath -Section $t.Section -Servers $write -Provider $prov -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath -GrokTimeout:($prov -eq 'Grok'))
       }
     }
     if ($done.Count) { Write-Ok ("{0,-7} {1} -> {2}" -f $prov, ($done -join ', '), $cfgPath) }

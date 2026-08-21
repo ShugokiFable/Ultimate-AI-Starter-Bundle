@@ -118,6 +118,16 @@ function Invoke-McpHandshake {
   $psi.CreateNoWindow = $true
 
   $proc = [System.Diagnostics.Process]::Start($psi)
+  # A redirected pipe that nobody reads fills at about 4KB and blocks the
+  # writer. Serena logs ~20 startup lines to stderr and deadlocked there,
+  # producing a false "no initialize response" from a tool whose entire job is
+  # telling a real failure from a configuration mistake. Drain it, and keep the
+  # tail so a genuine failure can quote what the server said.
+  $errBuf = New-Object System.Text.StringBuilder
+  $errSub = Register-ObjectEvent -InputObject $proc -EventName ErrorDataReceived -MessageData $errBuf -Action {
+    if ($EventArgs.Data) { [void]$Event.MessageData.AppendLine($EventArgs.Data) }
+  }
+  $proc.BeginErrorReadLine()
   try {
     $send = {
       param($obj)
@@ -163,7 +173,12 @@ function Invoke-McpHandshake {
       }
     }
 
-    if (-not $initResult) { return @{ Ok = $false; Reason = "no initialize response within ${TimeoutSeconds}s" } }
+    if (-not $initResult) {
+      $tail = ($errBuf.ToString() -split "`r?`n" | Where-Object { $_ } | Select-Object -Last 3) -join ' | '
+      $why = "no initialize response within ${TimeoutSeconds}s"
+      if ($tail) { $why += "  [stderr: $tail]" }
+      return @{ Ok = $false; Reason = $why }
+    }
     if ($null -eq $tools)  { return @{ Ok = $false; Reason = "initialized but never answered tools/list" } }
     return @{
       Ok        = $true
@@ -172,6 +187,7 @@ function Invoke-McpHandshake {
       ToolCount = $tools.Count
     }
   } finally {
+    if ($errSub) { Unregister-Event -SourceIdentifier $errSub.Name -ErrorAction SilentlyContinue }
     if (-not $proc.HasExited) { try { $proc.Kill() } catch { } }
     $proc.Dispose()
   }

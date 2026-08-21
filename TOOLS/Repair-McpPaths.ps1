@@ -118,6 +118,30 @@ function Resolve-LivePath([string]$dead) {
       if (Test-Path -LiteralPath $full) { return $full }
     }
   }
+  # Version-stamped siblings are this pack's own convention. Other tools rename
+  # a directory without any version in it at all -- Codex keys its runtimes by
+  # content hash, so 'cua_node\2fb562745e6d66f0' becomes
+  # 'cua_node\84464046935436b8' on an update and every config still points at
+  # the old one. Same silent failure, unmatched by the rule above.
+  #
+  # Rule: exactly ONE sibling directory under which the remaining tail exists.
+  # Uniqueness is what makes this a resolution and not a guess; if two siblings
+  # both fit, report it and let a human choose. Deepest segment first, because
+  # that is the smallest substitution that can work.
+  for ($i = $parts.Count - 2; $i -ge 1; $i--) {
+    $parent = ($parts[0..($i - 1)] -join '\')
+    if (-not $parent -or -not (Test-Path -LiteralPath $parent -PathType Container)) { continue }
+    $tail = ($parts[($i + 1)..($parts.Count - 1)]) -join '\'
+    if (-not $tail) { continue }
+    $hits = @()
+    foreach ($d in (Get-ChildItem -LiteralPath $parent -Directory -ErrorAction SilentlyContinue)) {
+      if ($d.Name -ieq $parts[$i]) { continue }
+      $full = Join-Path $d.FullName $tail
+      if (Test-Path -LiteralPath $full -PathType Leaf) { $hits += $full }
+    }
+    if ($hits.Count -eq 1) { return $hits[0] }
+  }
+
   # The bundle registers houseCARL via the HOUSECARL_MCP user env. It is the
   # one server whose live root is NOT a version-stamped sibling of the dead
   # path (users move it to a tools drive; the sibling rule cannot cross
