@@ -34,14 +34,18 @@ noticing the context bill and disabling the profile by hand.
   from every provider config and re-registers for the project the state
   recorded, touching only ids this pack recorded as enabled. A recorded project
   that no longer exists is reported and left off.
-- **Four defects found on the way, all reachable by users.**
+- **Six defects found on the way, all reachable by users.**
   `Get-ClaudeDesktopConfigPath` crashed whenever `GetFolderPath` returned the
   empty string it documents for a missing folder. `uv tool install` prints
   "already installed" on stderr and exits 0, which under
   `$ErrorActionPreference = 'Stop'` killed the auto-install on every re-run. An
   identical rewrite counted as a change, dropping a timestamped `.bak` into the
   user's project once per install run. `-Disable` with no `-Path` swept the
-  current directory instead of the projects the profile was enabled for.
+  current directory instead of the projects the profile was enabled for. And an
+  unmounted drive was fatal twice over: `Test-Path` raises "Cannot find drive"
+  rather than answering `False`, and `Join-Path` does the same because it
+  resolves the base through the provider -- swept into guarded helpers across 37
+  and 26 call sites, with a release contract to keep them that way.
 - **49 new checks** in `TESTS/Test-McpProfiles.ps1`, all driving the real
   front-end script against a sandboxed `USERPROFILE`/`LOCALAPPDATA`/`APPDATA`
   and reading the provider configs it produced. Every one fails against 7.9.5.

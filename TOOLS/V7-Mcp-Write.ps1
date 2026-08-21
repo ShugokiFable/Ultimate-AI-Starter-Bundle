@@ -38,13 +38,41 @@
 
 # Windows PowerShell 5.1's `Set-Content -Encoding utf8` writes a UTF-8 BOM. A BOM
 # in a JSON config is a real hazard: a strict reader rejects the file outright.
+function Join-V5Path {
+  <# Join-V5Path asks the provider to resolve the drive, so it raises "Cannot find
+     drive" for a base on a drive that is not mounted -- fatal under
+     $ErrorActionPreference = 'Stop', in a function whose whole job is string
+     concatenation. [IO.Path]::Combine never touches the filesystem. Same class
+     as Test-V5Path, found in the same CI run. #>
+  param([string]$Base, [string]$Child)
+  if ([string]::IsNullOrEmpty($Base)) { return $Child }
+  return [IO.Path]::Combine($Base, $Child)
+}
+
+function Test-V5Path {
+  <# Test-Path does not answer $false for a path on a drive that is not mounted.
+     It writes "Cannot find drive. A drive with the name 'Z' does not exist.",
+     and every script here runs with $ErrorActionPreference = 'Stop', which makes
+     that fatal. An unmounted drive is exactly where a recorded project path, a
+     tool on a removable disk or a UNC share ends up, and the answer wanted there
+     is "no". Caught in CI, where a test recorded a project on Z:\ and the gate
+     died on a runner that has no Z:. #>
+  param(
+    [string]$LiteralPath,
+    [ValidateSet('Any', 'Leaf', 'Container')][string]$PathType = 'Any'
+  )
+  if ([string]::IsNullOrEmpty($LiteralPath)) { return $false }
+  try { return [bool](Test-Path -LiteralPath $LiteralPath -PathType $PathType -ErrorAction SilentlyContinue) }
+  catch { return $false }
+}
+
 function Test-V5GrokInheritsClaudeMcp {
   <# grok-cli adopts ~/.claude.json by default, but this pack writes
      [compat.claude] mcps = false because inherited MCP startup cost 65s on the
      first turn of every session and attached zero tools. Assuming inheritance
      after switching it off turns a dedupe into a silent omission. #>
-  $cfg = Join-Path $env:USERPROFILE '.grok\config.toml'
-  if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) { return $true }
+  $cfg = Join-V5Path $env:USERPROFILE '.grok\config.toml'
+  if (-not (Test-V5Path -LiteralPath $cfg -PathType Leaf)) { return $true }
   $text = [IO.File]::ReadAllText($cfg)
   $m = [regex]::Match($text, '(?ms)^\[compat\.claude\][^\[]*?^\s*mcps\s*=\s*(?<v>true|false)')
   if (-not $m.Success) { return $true }
@@ -57,11 +85,11 @@ function Get-V5GrokMcpCount {
      a project-scoped add push the running total past the budget it was checked
      against. #>
   param([string]$ProjectPath)
-  $files = @(Join-Path $env:USERPROFILE '.grok\config.toml')
-  if ($ProjectPath) { $files += (Join-Path $ProjectPath '.grok\config.toml') }
+  $files = @(Join-V5Path $env:USERPROFILE '.grok\config.toml')
+  if ($ProjectPath) { $files += (Join-V5Path $ProjectPath '.grok\config.toml') }
   $names = @()
   foreach ($cfg in $files) {
-    if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) { continue }
+    if (-not (Test-V5Path -LiteralPath $cfg -PathType Leaf)) { continue }
     foreach ($m in [regex]::Matches([IO.File]::ReadAllText($cfg), '(?m)^\[mcp_servers\.(?<n>[^\].]+)\]')) {
       $names += $m.Groups['n'].Value
     }
@@ -151,8 +179,8 @@ function Set-Utf8NoBom {
 function Write-JsonFile {
   param([string]$Path, $Object)
   $dir = Split-Path -Parent $Path
-  if ($dir -and -not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
-  if (Test-Path -LiteralPath $Path) {
+  if ($dir -and -not (Test-V5Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+  if (Test-V5Path -LiteralPath $Path) {
     Copy-Item -LiteralPath $Path -Destination "$Path.bak-mcp-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force
   }
   Set-Utf8NoBom -Path $Path -Text ($Object | ConvertTo-Json -Depth 20)
@@ -162,7 +190,7 @@ function Get-V5AppDataRoot {
   <# %APPDATA% / %LOCALAPPDATA% first: every other path in this pack comes from
      an environment variable, and GetFolderPath returns an EMPTY STRING when the
      folder does not exist -- which is not an error, but does make the next
-     Join-Path throw and take the whole run with it. #>
+     Join-V5Path throw and take the whole run with it. #>
   param([ValidateSet('Roaming', 'Local')][string]$Which)
   $fromEnv = if ($Which -eq 'Roaming') { $env:APPDATA } else { $env:LOCALAPPDATA }
   if ($fromEnv) { return $fromEnv }
@@ -183,25 +211,25 @@ function Get-ClaudeDesktopConfigPath {
   # inside this helper is not.
   $roaming = Get-V5AppDataRoot -Which 'Roaming'
   if ($roaming) {
-    $normal = Join-Path $roaming 'Claude\claude_desktop_config.json'
-    if (Test-Path -LiteralPath $normal -PathType Leaf) { return $normal }
+    $normal = Join-V5Path $roaming 'Claude\claude_desktop_config.json'
+    if (Test-V5Path -LiteralPath $normal -PathType Leaf) { return $normal }
   }
   $local = Get-V5AppDataRoot -Which 'Local'
   if (-not $local) { return $null }
-  $packages = Join-Path $local 'Packages'
-  if (-not (Test-Path -LiteralPath $packages)) { return $null }
+  $packages = Join-V5Path $local 'Packages'
+  if (-not (Test-V5Path -LiteralPath $packages)) { return $null }
   return Get-ChildItem -LiteralPath $packages -Directory -Filter 'Claude_*' -ErrorAction SilentlyContinue |
-    ForEach-Object { Join-Path $_.FullName 'LocalCache\Roaming\Claude\claude_desktop_config.json' } |
-    Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } |
+    ForEach-Object { Join-V5Path $_.FullName 'LocalCache\Roaming\Claude\claude_desktop_config.json' } |
+    Where-Object { Test-V5Path -LiteralPath $_ -PathType Leaf } |
     Select-Object -First 1
 }
 
 function Get-V5McpTargets {
   @{
-    'Claude' = @{ Path = Join-Path $env:USERPROFILE '.claude.json'; Section = 'mcpServers'; Style = 'json'; Desktop = $true }
-    'Kimi'   = @{ Path = Join-Path $env:USERPROFILE '.kimi-code\mcp.json'; Section = 'mcpServers'; Style = 'json'; Desktop = $false }
-    'Grok'   = @{ Path = Join-Path $env:USERPROFILE '.grok\config.toml'; Section = 'mcp_servers'; Style = 'toml'; Desktop = $false }
-    'Codex'  = @{ Path = Join-Path $env:USERPROFILE '.codex\config.toml'; Section = 'mcp_servers'; Style = 'toml'; Desktop = $false }
+    'Claude' = @{ Path = Join-V5Path $env:USERPROFILE '.claude.json'; Section = 'mcpServers'; Style = 'json'; Desktop = $true }
+    'Kimi'   = @{ Path = Join-V5Path $env:USERPROFILE '.kimi-code\mcp.json'; Section = 'mcpServers'; Style = 'json'; Desktop = $false }
+    'Grok'   = @{ Path = Join-V5Path $env:USERPROFILE '.grok\config.toml'; Section = 'mcp_servers'; Style = 'toml'; Desktop = $false }
+    'Codex'  = @{ Path = Join-V5Path $env:USERPROFILE '.codex\config.toml'; Section = 'mcp_servers'; Style = 'toml'; Desktop = $false }
   }
 }
 
@@ -228,7 +256,7 @@ function Get-V5ProviderProjectTarget {
     'Claude' {
       return @{
         Style      = 'json'
-        Path       = (Join-Path $env:USERPROFILE '.claude.json')
+        Path       = (Join-V5Path $env:USERPROFILE '.claude.json')
         Section    = 'mcpServers'
         ProjectKey = $ProjectPath.TrimEnd('\', '/')
       }
@@ -236,7 +264,7 @@ function Get-V5ProviderProjectTarget {
     'Grok' {
       return @{
         Style      = 'toml'
-        Path       = (Join-Path $ProjectPath '.grok\config.toml')
+        Path       = (Join-V5Path $ProjectPath '.grok\config.toml')
         Section    = 'mcp_servers'
         ProjectKey = ''
       }
@@ -284,7 +312,7 @@ function Get-V5ClaudeProjectKeys {
   $canonical = $ProjectPath.TrimEnd('\', '/')
   $keys = @($canonical)
   $alt = $canonical -replace '\\', '/'
-  if ($alt -ne $canonical -and (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
+  if ($alt -ne $canonical -and (Test-V5Path -LiteralPath $ConfigPath -PathType Leaf)) {
     try {
       $existing = [IO.File]::ReadAllText($ConfigPath) | ConvertFrom-Json
       if ($existing.projects -and ($existing.projects.PSObject.Properties.Name -contains $alt)) { $keys += $alt }
@@ -313,7 +341,7 @@ function Test-V5CommandAvailable {
   param([string]$Command, [string]$ProjectPath)
   $resolved = Expand-V5Template -Text $Command -ProjectPath $ProjectPath
   if ([string]::IsNullOrEmpty($resolved)) { return $false }
-  if ($resolved -match '[\\/]') { return (Test-Path -LiteralPath $resolved -PathType Leaf) }
+  if ($resolved -match '[\\/]') { return (Test-V5Path -LiteralPath $resolved -PathType Leaf) }
   return [bool](Get-Command $resolved -ErrorAction SilentlyContinue)
 }
 
@@ -355,8 +383,8 @@ function Test-V5ServerRequirement {
     if ([string]::IsNullOrEmpty($ProjectPath)) {
       return @{ Ok = $false; Reason = 'project-scoped server needs -Path <project directory>' }
     }
-    $full = Join-Path $ProjectPath $req['project_rel']
-    if (-not (Test-Path -LiteralPath $full)) {
+    $full = Join-V5Path $ProjectPath $req['project_rel']
+    if (-not (Test-V5Path -LiteralPath $full)) {
       return @{ Ok = $false; Reason = ("not present in this project: {0}" -f $req['project_rel']) }
     }
   }
@@ -438,7 +466,7 @@ function Get-V5JsonScopeContainer {
 
 function Remove-V5McpJson {
   param([string]$Path, [string]$Section, [string[]]$Ids = @(), [string[]]$MatchLiterals = @(), [switch]$CheckOnly, [string]$ProjectKey)
-  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return @() }
+  if (-not (Test-V5Path -LiteralPath $Path -PathType Leaf)) { return @() }
   $doc = [IO.File]::ReadAllText($Path) | ConvertFrom-Json
   $json = Get-V5JsonScopeContainer -Json $doc -ProjectKey $ProjectKey
   if ($null -eq $json) { return @() }
@@ -460,7 +488,7 @@ function Remove-V5McpJson {
 
 function Remove-V5McpToml {
   param([string]$Path, [string]$Section, [string[]]$Ids = @(), [string[]]$MatchLiterals = @(), [switch]$CheckOnly)
-  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return @() }
+  if (-not (Test-V5Path -LiteralPath $Path -PathType Leaf)) { return @() }
   $text = [IO.File]::ReadAllText($Path)
   # A table ends at the next line that STARTS a header, not at the next '['.
   # `args = ["-y", "..."]` contains a bracket, and matching to it truncated the
@@ -500,7 +528,7 @@ function Add-V5McpJson {
     [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath,
     [string]$ProjectKey, [string]$Scope = 'global'
   )
-  $doc = if (Test-Path -LiteralPath $Path) {
+  $doc = if (Test-V5Path -LiteralPath $Path) {
     [IO.File]::ReadAllText($Path) | ConvertFrom-Json
   } else { [pscustomobject]@{} }
   $json = Get-V5JsonScopeContainer -Json $doc -ProjectKey $ProjectKey -Create
@@ -540,7 +568,7 @@ function Add-V5McpToml {
     [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath, [switch]$GrokTimeout,
     [string]$Scope = 'global'
   )
-  $text = if (Test-Path -LiteralPath $Path) { [IO.File]::ReadAllText($Path) } else { '' }
+  $text = if (Test-V5Path -LiteralPath $Path) { [IO.File]::ReadAllText($Path) } else { '' }
   $append = ''
   $added = @()
   foreach ($s in $Servers) {
@@ -575,8 +603,8 @@ function Add-V5McpToml {
   }
   if ($added.Count -and -not $CheckOnly) {
     $dir = Split-Path -Parent $Path
-    if ($dir -and -not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
-    if (Test-Path -LiteralPath $Path) {
+    if ($dir -and -not (Test-V5Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+    if (Test-V5Path -LiteralPath $Path) {
       Copy-Item -LiteralPath $Path -Destination "$Path.bak-mcp-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force -ErrorAction SilentlyContinue
       Set-Utf8NoBom -Path $Path -Text ($text + $append)
     } else {
@@ -596,7 +624,7 @@ function Test-V5ServerDeclared {
      still registered. State has to record registration, or -Disable cannot find
      what to remove. #>
   param([string]$Path, [string]$Style, [string]$Section, [string]$Id, [string]$ProjectKey)
-  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+  if (-not (Test-V5Path -LiteralPath $Path -PathType Leaf)) { return $false }
   $text = [IO.File]::ReadAllText($Path)
   if ($Style -eq 'toml') { return [bool]($text -match [regex]::Escape("[$Section.$Id]")) }
   try { $doc = $text | ConvertFrom-Json } catch { return $false }
@@ -609,18 +637,18 @@ function Test-V5ServerDeclared {
 function Test-V5HermesServerDeclared {
   param([string]$Id)
   $paths = Get-V5HermesPaths
-  if (-not (Test-Path -LiteralPath $paths.Config -PathType Leaf)) { return $false }
+  if (-not (Test-V5Path -LiteralPath $paths.Config -PathType Leaf)) { return $false }
   return [bool]([IO.File]::ReadAllText($paths.Config) -match ('(?m)^[ \t]{2,}' + [regex]::Escape($Id) + '[ \t]*:'))
 }
 
 function Get-V5HermesPaths {
-  $home_ = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCALAPPDATA 'hermes' }
-  $exe = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'
+  $home_ = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-V5Path $env:LOCALAPPDATA 'hermes' }
+  $exe = Join-V5Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'
   @{
     Home   = $home_
-    Config = Join-Path $home_ 'config.yaml'
+    Config = Join-V5Path $home_ 'config.yaml'
     Exe    = $exe
-    Python = Join-Path (Split-Path -Parent $exe) 'python.exe'
+    Python = Join-V5Path (Split-Path -Parent $exe) 'python.exe'
   }
 }
 
@@ -629,8 +657,8 @@ function Invoke-V5HermesConfig {
      can block on Windows PowerShell 5.1. Drive its own config API instead. #>
   param([string]$Script, [hashtable]$EnvVars)
   $paths = Get-V5HermesPaths
-  if (-not (Test-Path -LiteralPath $paths.Python -PathType Leaf)) { throw 'Hermes Python runtime missing' }
-  $tmp = Join-Path ([IO.Path]::GetTempPath()) ('uabs-hermes-' + [guid]::NewGuid().ToString('N') + '.py')
+  if (-not (Test-V5Path -LiteralPath $paths.Python -PathType Leaf)) { throw 'Hermes Python runtime missing' }
+  $tmp = Join-V5Path ([IO.Path]::GetTempPath()) ('uabs-hermes-' + [guid]::NewGuid().ToString('N') + '.py')
   $saved = @{}
   try {
     foreach ($k in $EnvVars.Keys) {
@@ -681,7 +709,7 @@ function Add-V5McpHermes {
   param([object[]]$Servers, [switch]$Refresh, [switch]$CheckOnly, [string]$ProjectPath, [string]$Scope = 'global')
   $paths = Get-V5HermesPaths
   $existing = ''
-  if (Test-Path -LiteralPath $paths.Config -PathType Leaf) { $existing = [IO.File]::ReadAllText($paths.Config) }
+  if (Test-V5Path -LiteralPath $paths.Config -PathType Leaf) { $existing = [IO.File]::ReadAllText($paths.Config) }
   $added = @()
   foreach ($s in $Servers) {
     # Match the config, never `mcp list`: that prints server NAMES and not the
@@ -705,7 +733,7 @@ function Test-V5HermesRetired {
      the commands behind them, so a withdrawn package can never show up in it. #>
   param([string[]]$Literals)
   $paths = Get-V5HermesPaths
-  if (-not (Test-Path -LiteralPath $paths.Config -PathType Leaf)) { return $false }
+  if (-not (Test-V5Path -LiteralPath $paths.Config -PathType Leaf)) { return $false }
   return (Test-V5TextMatchesAny -Text ([IO.File]::ReadAllText($paths.Config)) -Literals $Literals)
 }
 
@@ -716,7 +744,7 @@ function Remove-V5McpHermes {
      on every run, rewriting a healthy config for no reason. #>
   param([string[]]$Ids, [switch]$CheckOnly)
   $paths = Get-V5HermesPaths
-  if (-not (Test-Path -LiteralPath $paths.Config -PathType Leaf)) { return @() }
+  if (-not (Test-V5Path -LiteralPath $paths.Config -PathType Leaf)) { return @() }
   $text = [IO.File]::ReadAllText($paths.Config)
   $targets = @()
   foreach ($id in @($Ids)) {

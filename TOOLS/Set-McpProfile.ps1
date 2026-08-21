@@ -62,6 +62,7 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
+# Join-Path, not Join-V5Path: the helper lives in the file being sourced.
 . (Join-Path $PSScriptRoot 'V7-Mcp-Write.ps1')
 
 # Accept both -Providers Claude,Codex (one comma string, which is what
@@ -69,8 +70,8 @@ if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
 if ($Providers.Count -eq 1 -and $Providers[0] -match ',') { $Providers = $Providers[0] -split ',' }
 $Providers = @($Providers | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 
-$profilesPath = Join-Path $PackRoot 'BUNDLED-TOOLS\PROFILES.json'
-if (-not (Test-Path -LiteralPath $profilesPath -PathType Leaf)) {
+$profilesPath = Join-V5Path $PackRoot 'BUNDLED-TOOLS\PROFILES.json'
+if (-not (Test-V5Path -LiteralPath $profilesPath -PathType Leaf)) {
   throw "PROFILES.json not found at $profilesPath. Pass -PackRoot <pack root>."
 }
 
@@ -134,13 +135,13 @@ function Test-V5ProfileDetected($ProfileDef, [string]$ProjectPath) {
   <# Top level only, deliberately: a recursive scan of a large tree would be
      slow and would match a marker in some vendored dependency. #>
   if ([string]::IsNullOrEmpty($ProjectPath)) { return $false }
-  if (-not (Test-Path -LiteralPath $ProjectPath -PathType Container)) { return $false }
+  if (-not (Test-V5Path -LiteralPath $ProjectPath -PathType Container)) { return $false }
   $d = $null
   if ($ProfileDef.Contains('detect')) { $d = $ProfileDef['detect'] }
   if (-not $d) { return $false }
   if ($d.Contains('files')) {
     foreach ($f in @($d['files'])) {
-      if (Test-Path -LiteralPath (Join-Path $ProjectPath $f)) { return $true }
+      if (Test-V5Path -LiteralPath (Join-V5Path $ProjectPath $f)) { return $true }
     }
   }
   if ($d.Contains('globs')) {
@@ -158,12 +159,12 @@ function Test-V5ProfileDetected($ProfileDef, [string]$ProjectPath) {
 # reach every one of them. An orphaned entry is a server that keeps starting
 # with nothing turning it off.
 
-$statePath = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\mcp-profiles.json'
+$statePath = Join-V5Path $env:LOCALAPPDATA 'Skyrim-AI-V5\mcp-profiles.json'
 
 function New-V5ProfileState { @{ schema = 2; profiles = @{} } }
 
 function Get-V5RawProfileState {
-  if (-not (Test-Path -LiteralPath $statePath -PathType Leaf)) { return @{} }
+  if (-not (Test-V5Path -LiteralPath $statePath -PathType Leaf)) { return @{} }
   try { return ConvertTo-V5Hashtable ([IO.File]::ReadAllText($statePath) | ConvertFrom-Json) } catch { return @{} }
 }
 
@@ -208,7 +209,7 @@ function Convert-V5ProfileState {
 function Save-V5ProfileState($State) {
   if ($CheckOnly) { return }
   $dir = Split-Path -Parent $statePath
-  if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+  if (-not (Test-V5Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
   Set-Utf8NoBom -Path $statePath -Text (($State | ConvertTo-Json -Depth 10))
 }
 
@@ -231,8 +232,8 @@ function Get-ClaudeDeclared {
   # cell is on, and this pack writes mcps = false. Read INSIDE the provider
   # loop, not before it: Claude is written earlier in the same pass, so a
   # snapshot taken up front would never see what was just added.
-  $p = Join-Path $env:USERPROFILE '.claude.json'
-  if (-not (Test-Path -LiteralPath $p)) { return @() }
+  $p = Join-V5Path $env:USERPROFILE '.claude.json'
+  if (-not (Test-V5Path -LiteralPath $p)) { return @() }
   try {
     $cj = [IO.File]::ReadAllText($p) | ConvertFrom-Json
     if ($cj.mcpServers) { return @($cj.mcpServers.PSObject.Properties.Name) }
@@ -259,7 +260,7 @@ function Invoke-V5ProfileWrite {
     # -- Hermes keeps its servers behind its own Python config API.
     if ($prov -eq 'Hermes') {
       $hpaths = Get-V5HermesPaths
-      if (-not (Test-Path -LiteralPath $hpaths.Exe -PathType Leaf)) { Write-Skip 'Hermes  not installed'; continue }
+      if (-not (Test-V5Path -LiteralPath $hpaths.Exe -PathType Leaf)) { Write-Skip 'Hermes  not installed'; continue }
       if ($Remove) {
         $done = @(Remove-V5McpHermes -Ids $ids -CheckOnly:$CheckOnly)
         if ($done.Count) { Write-Ok ("Hermes  removed {0}" -f ($done -join ', ')); $touched += 'Hermes' }
@@ -291,7 +292,7 @@ function Invoke-V5ProfileWrite {
       if ($project) { $sweep += $project }
       $sweep += @{ Style = $machineTarget.Style; Path = $machineTarget.Path; Section = $machineTarget.Section; ProjectKey = '' }
       foreach ($tgt in $sweep) {
-        if (-not (Test-Path -LiteralPath $tgt.Path -PathType Leaf)) { continue }
+        if (-not (Test-V5Path -LiteralPath $tgt.Path -PathType Leaf)) { continue }
         if ($tgt.Style -eq 'json') {
           $keys = if ($tgt.ProjectKey) { @(Get-V5ClaudeProjectKeys -ProjectPath $tgt.ProjectKey -ConfigPath $tgt.Path) } else { @('') }
           foreach ($k in $keys) {
@@ -347,7 +348,7 @@ function Invoke-V5ProfileWrite {
     }
 
     $parent = Split-Path -Parent $target.Path
-    if ($target.Style -eq 'json' -and -not (Test-Path -LiteralPath $parent)) {
+    if ($target.Style -eq 'json' -and -not (Test-V5Path -LiteralPath $parent)) {
       Write-Skip ("{0,-7} not installed" -f $prov); continue
     }
 
@@ -469,7 +470,7 @@ function Invoke-V5StaleGlobalMigration {
 
     [void](Invoke-V5ProfileWrite -Servers $servers -ProjectPath $e['path'] -Remove)
 
-    if ($e['path'] -and (Test-Path -LiteralPath $e['path'] -PathType Container)) {
+    if ($e['path'] -and (Test-V5Path -LiteralPath $e['path'] -PathType Container)) {
       $usable = @($servers | Where-Object { (Test-V5ServerRequirement -Server $_ -ProjectPath $e['path']).Ok })
       if ($usable.Count) {
         $provs = @(Invoke-V5ProfileWrite -Servers $usable -ProjectPath $e['path'])
@@ -543,7 +544,7 @@ if (-not $Path -and -not $Global -and $PSCmdlet.ParameterSetName -ne 'Disable') 
   $Path = (Get-Location).Path
 }
 if ($Path) {
-  if (-not (Test-Path -LiteralPath $Path)) { throw "-Path does not exist: $Path" }
+  if (-not (Test-V5Path -LiteralPath $Path)) { throw "-Path does not exist: $Path" }
   $Path = (Resolve-Path -LiteralPath $Path).Path.TrimEnd('\', '/')
 }
 
