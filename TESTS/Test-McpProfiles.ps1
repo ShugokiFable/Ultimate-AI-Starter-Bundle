@@ -235,6 +235,50 @@ mcp_servers:
   if ($null -eq $savedHome) { Remove-Item Env:HERMES_HOME -ErrorAction SilentlyContinue } else { $env:HERMES_HOME = $savedHome }
 }
 
+# ------------------------------------------------------------ Grok budget ----
+Section 'Grok inheritance and budget'
+
+# grok-cli adopts ~/.claude.json by default, but this pack writes
+# [compat.claude] mcps = false because inherited MCP startup cost 65s on the
+# first turn of every session and attached zero tools. Skipping a server on the
+# assumption it is inherited, after switching inheritance off, is not a dedupe --
+# it is a silent omission, and it left Grok with no github and no
+# sequential-thinking.
+$grokRoot = Join-Path $sandbox 'grokhome'
+New-Item -ItemType Directory -Force -Path (Join-Path $grokRoot '.grok') | Out-Null
+$grokCfg = Join-Path $grokRoot '.grok\config.toml'
+$savedProfile = $env:USERPROFILE
+try {
+  $env:USERPROFILE = $grokRoot
+
+  Set-Utf8NoBom -Path $grokCfg -Text "[compat.claude]`r`nmcps = false`r`n"
+  Is (Test-V5GrokInheritsClaudeMcp) $false 'mcps = false means Grok inherits nothing'
+
+  Set-Utf8NoBom -Path $grokCfg -Text "[compat.claude]`r`nmcps = true`r`n"
+  Is (Test-V5GrokInheritsClaudeMcp) $true 'mcps = true means Grok does inherit'
+
+  # No flag at all is grok-cli's own default, which is inheritance on.
+  Set-Utf8NoBom -Path $grokCfg -Text "[general]`r`ntheme = `"dark`"`r`n"
+  Is (Test-V5GrokInheritsClaudeMcp) $true 'no compat cell falls back to the CLI default'
+
+  $body = "[mcp_servers.a]`r`ncommand = `"a`"`r`nargs = []`r`n[mcp_servers.b]`r`ncommand = `"b`"`r`nargs = []`r`n"
+  Set-Utf8NoBom -Path $grokCfg -Text $body
+  Is (Get-V5GrokMcpCount) 2 'counts declared servers'
+
+  # The budget used to be enforced for exactly one server by name while every
+  # other path added freely. grok-cli wedges at eight running.
+  $three = @(
+    @{ id = 'x'; command = 'c'; args = @(); note = 'n' },
+    @{ id = 'y'; command = 'c'; args = @(); note = 'n' },
+    @{ id = 'z'; command = 'c'; args = @(); note = 'n' }
+  )
+  Is (@(Select-V5WithinGrokBudget -Servers $three -Budget 6)).Count 3 'all three fit under a budget of 6'
+  Is (@(Select-V5WithinGrokBudget -Servers $three -Budget 4)).Count 2 'only the ones that fit are added'
+  Is (@(Select-V5WithinGrokBudget -Servers $three -Budget 2)).Count 0 'nothing is added once the budget is spent'
+} finally {
+  $env:USERPROFILE = $savedProfile
+}
+
 # ------------------------------------------------------- dead-path repair ----
 Section 'dead MCP command paths'
 
