@@ -1264,8 +1264,19 @@ if (-not $SkillsOnly) {
         foreach ($prov in $wanted) {
           switch ($prov) {
             'Grok'  {
-              Update-V5GrokMcpBlock -Name $id -Command $comp.npx_command -ArgList $npxArgs -EnvMap $envMap -Startup 120 -Tool 6000 -SkipIfPresent
-              $regs += 'Grok'
+              # grok-cli wedges at eight servers running. Add-Reasoning-MCPs and
+              # Set-McpProfile both check this ceiling; the extras branch did
+              # not, and walked Grok past it with no message.
+              $grokCfg = Join-Path $env:USERPROFILE '.grok\config.toml'
+              $grokDeclared = (Test-Path -LiteralPath $grokCfg) -and
+                ([IO.File]::ReadAllText($grokCfg) -match [regex]::Escape("[mcp_servers.$id]"))
+              if (-not $grokDeclared -and (Get-V5GrokMcpCount) -ge $GrokMcpBudget) {
+                Write-V5Warn ("{0}: Grok already has {1} MCP server(s) (budget {2}); not added." -f $id, (Get-V5GrokMcpCount), $GrokMcpBudget)
+                Write-V5Warn ('  Remove one from ~/.grok/config.toml, or re-run with -GrokMcpBudget 7 if no plugin adds one.')
+              } else {
+                Update-V5GrokMcpBlock -Name $id -Command $comp.npx_command -ArgList $npxArgs -EnvMap $envMap -Startup 120 -Tool 6000 -SkipIfPresent
+                $regs += 'Grok'
+              }
             }
             'Codex' {
               $cfg = Join-Path (Get-V5ProviderHome -Provider Codex -Catalog $catalog) 'config.toml'
