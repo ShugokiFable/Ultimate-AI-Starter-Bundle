@@ -18341,8 +18341,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 53260,
-  "sha256": "09e536955df72b91dec308842e6c1e168b513fdddd5ac2d163b7808c1684b1ab"
+  "size": 53696,
+  "sha256": "4c6b6d1bdd4e232fd8799e9b1d50280f9eacde7e743d75c5429caa814cf3365a"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18431,8 +18431,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 85654,
-  "sha256": "9aee1099962c46645e8601d9e1be5ddd0d02d40219aadea7c9d2b78e8e8fcc86"
+  "size": 87255,
+  "sha256": "4b40cd6b657a5f1812b048aafadeb918836a88c824feb175659ab3099ccc1241"
  },
  {
   "path": "LICENSE",
@@ -18526,8 +18526,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 62490,
-  "sha256": "94e823831631806c5fe2bdcb077cbec39954e1aaeb591f4aee66870f6b6c73fb"
+  "size": 64524,
+  "sha256": "64a33949beded45cd5f2c257bae95789e928812c99acf406e7cac03945411228"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18746,8 +18746,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 4091,
-  "sha256": "06c9a499cf8dd52b4fd2ef2fb85b50b44f7d820b55ae03207142cda5ad63bc48"
+  "size": 4783,
+  "sha256": "8667140b7ebe7a5b413297c1b1786761522d4ed28e91fd40923200f953dcd60e"
  },
  {
   "path": "VERSION.txt",
@@ -21786,7 +21786,7 @@
  },
  {
   "path": "docs/history/V7.9.5-CHANGELOG.md",
-  "size": 12674,
-  "sha256": "ffc2aa224c9bfc34c214e4712444b11c87f3d555fe812ec2e96f62caca797057"
+  "size": 13753,
+  "sha256": "8be8996ea406b32d01c3b1e648dc77c5adca681165add33ff5431f9b564690b7"
  }
 ]

@@ -1130,14 +1130,38 @@ if (-not $SkillsOnly) {
           } else {
             $pairs += @{ name = $comp.skill_folder; path = $stage }
           }
-          foreach ($prov in $wanted) {
-            $destRoot = Join-Path (Get-V5ProviderHome -Provider $prov -Catalog $catalog) 'skills'
-            foreach ($pair in $pairs) {
-              Copy-V5Robo -From $pair.path -To (Join-Path $destRoot $pair.name)
-            }
-            Write-V5Ok ("$id -> $prov ({0} skill(s))" -f $pairs.Count)
+          # The bundle vendors a snapshot of several of these skills in
+          # _V7-CANONICAL-SKILLS, and the final doctor verifies every provider
+          # skill against what the bundle shipped. Copying an upstream clone
+          # over the top makes those two facts disagree: the doctor reported six
+          # skills stale/modified on five providers and failed the install, for
+          # a switch this installer documents and offers. One owner per skill --
+          # canonical owns what it ships, and this component installs the rest.
+          $canonRoot = Join-Path $PackRoot '_V7-CANONICAL-SKILLS'
+          $ownedByCanonical = @()
+          if (Test-Path -LiteralPath $canonRoot) {
+            $ownedByCanonical = @(Get-ChildItem -LiteralPath $canonRoot -Directory -EA SilentlyContinue |
+              Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') } |
+              ForEach-Object { $_.Name })
           }
-          $installed[$id] = @{ status='installed'; skills=@($pairs.name); providers=$wanted }
+          $skipped = @($pairs | Where-Object { $ownedByCanonical -contains $_.name } | ForEach-Object { $_.name })
+          $pairs = @($pairs | Where-Object { $ownedByCanonical -notcontains $_.name })
+          if ($skipped.Count) {
+            Write-V5Warn ("{0}: already vendored by this pack, not overwritten: {1}" -f $id, ($skipped -join ', '))
+          }
+          if (-not $pairs.Count) {
+            Write-V5Ok ("${id}: every skill it provides is already vendored; nothing to copy")
+            $installed[$id] = @{ status='vendored'; skills=@($skipped); providers=@() }
+          } else {
+            foreach ($prov in $wanted) {
+              $destRoot = Join-Path (Get-V5ProviderHome -Provider $prov -Catalog $catalog) 'skills'
+              foreach ($pair in $pairs) {
+                Copy-V5Robo -From $pair.path -To (Join-Path $destRoot $pair.name)
+              }
+              Write-V5Ok ("$id -> $prov ({0} skill(s))" -f $pairs.Count)
+            }
+            $installed[$id] = @{ status='installed'; skills=@($pairs.name); vendored=@($skipped); providers=$wanted }
+          }
           if ($comp.scope_note) { Write-V5Warn ("scope: " + $comp.scope_note) }
         } catch {
           Write-V5Bad ("$id failed: " + $_.Exception.Message)

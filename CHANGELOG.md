@@ -42,6 +42,12 @@ provider trees.
   unpinned. The probe deadlocked on stderr it redirected and never drained,
   reporting a false FAIL for a healthy server. Grok would have registered a
   profile twice, because it reads `~/.claude.json` as well as its own config.
+- **`-WithExtras` failed its own doctor, every time.** Running the published
+  installer end to end ended in INSTALL FAILED with 30 errors -- six skills
+  reported stale/modified on five providers. The canonical tree vendors those
+  six and the `skills-git` components fetched the same ones from upstream and
+  copied over the top. Two writers, one directory. `skills-git` now skips what
+  canonical owns and reports each skip by name.
 - **The probe reads Hermes now.** Its docs used to say Hermes was not read here
   -- a stated blind spot in a tool for proving servers answer. It found the same
   unpinned Playwright there, which traced back to the installer: `CATALOG.json`
