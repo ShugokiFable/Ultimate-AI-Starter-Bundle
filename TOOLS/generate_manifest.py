@@ -14,7 +14,10 @@ import sys
 # them here makes MANIFEST describe a tree that only exists on the machine
 # that built them, so a fresh clone fails verification with MISSING dist/...
 SKIP_DIRS = {'.git', '.worktrees', '__pycache__', 'node_modules', 'cache', 'dist', 'artifacts', '.venv', 'venv', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.tox', '.nox', 'htmlcov', '.grok', '.serena'}
-SKIP_NAMES = {'MANIFEST.json', '.git', '.coverage', 'coverage.xml', '.DS_Store'}
+SKIP_NAMES = {'MANIFEST.json', '.git', '.coverage', 'coverage.xml', '.DS_Store',
+              # Written by TESTS/evidence-scenarios/check_fixtures.py when it
+              # proves scenario C still fails. Output of a fixture, not content.
+              'app.log'}
 
 
 def main():

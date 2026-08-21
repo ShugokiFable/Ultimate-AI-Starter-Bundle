@@ -111,6 +111,39 @@ if(-not $SkipSkills){
       Err "$provider missing bundled skill with no native-plugin ownership record: $skill"
     }
     Write-V5Ok ("$provider bundled skills accounted: $verified exact file(s), $nativeOwned native-plugin-owned, $($expectedSkills.Count) expected.")
+
+    # Codex keeps a context budget for its skills index and degrades silently
+    # when the index exceeds it: first by shortening descriptions, then by
+    # dropping them entirely and omitting skills from the model-visible list.
+    # Observed on a real run here:
+    #   "Exceeded skills context budget. All skill descriptions were removed
+    #    and 23 additional skills were not included"
+    # This pack routes BY description, so that state is the routing mechanism
+    # failing quietly. The doctor cannot raise Codex's budget; it can refuse to
+    # let the failure be invisible.
+    if($provider -eq 'Codex'){
+      $indexChars=0
+      $indexCount=0
+      foreach($d in @(Get-ChildItem -LiteralPath $destSkills -Directory -ErrorAction SilentlyContinue)){
+        $file=Join-Path $d.FullName 'SKILL.md'
+        if(-not(Test-Path -LiteralPath $file -PathType Leaf)){continue}
+        $head=''
+        try{ $head=(Get-Content -LiteralPath $file -TotalCount 40 -ErrorAction Stop) -join "`n" }catch{ continue }
+        $m=[regex]::Match($head,'(?ms)^description:[ 	]*(?<d>.*?)(?=^[A-Za-z_-]+:|^---)')
+        if(-not $m.Success){continue}
+        $indexCount++
+        $indexChars+=$d.Name.Length+$m.Groups['d'].Value.Trim().Length
+      }
+      # 215 skills / 38,228 chars is the state that produced the warning above.
+      # Anything at or past it is known to degrade, so it is reported rather
+      # than guessed at from a budget number Codex does not publish.
+      if($indexCount -ge 200 -or $indexChars -ge 36000){
+        Warn ("Codex skills index is $indexCount skills / $indexChars chars (~$([int]($indexChars/4)) tokens). At this size Codex reports 'Exceeded skills context budget' and drops ALL skill descriptions, which is how this pack routes.")
+        Warn ("  Remedy: remove skills you do not use from $destSkills, or invoke by name. The bundle supplies $($expectedSkills.Count); the rest are plugins and your own.")
+      } else {
+        Write-V5Ok ("Codex skills index: $indexCount skills / $indexChars chars (~$([int]($indexChars/4)) tokens), within the size that has been observed to route.")
+      }
+    }
   }
 }
 if(-not $SkipForge){

@@ -108,6 +108,16 @@ $allProfiles = @($catalog['profiles'])
 # state, script and habit that names it breaks on upgrade.
 $script:V5ProfileAliases = @{ 'code-deep' = 'code-intel' }
 
+# Profiles this pack has WITHDRAWN. Deleting a profile definition does not
+# un-register its servers from the machines that enabled it: the entry keeps
+# starting and keeps costing its tool schemas, with nothing left in the catalog
+# able to turn it off. Each one here is un-registered on the next run, using the
+# server ids the state recorded -- so a server the user configured themselves,
+# which is not in that state, is never touched.
+$script:V5RetiredProfiles = @{
+  'cloud' = 'Supabase: withdrawn in 7.9.7. It was the only profile here needing an account and a personal access token.'
+}
+
 function Resolve-V5ProfileId([string]$Id) {
   if ($script:V5ProfileAliases.ContainsKey($Id)) { return $script:V5ProfileAliases[$Id] }
   return $Id
@@ -447,6 +457,39 @@ $converted = Convert-V5ProfileState -Raw $raw
 $state = $converted.State
 $stale = @($converted.Stale)
 
+function Invoke-V5RetiredProfileMigration {
+  <# Un-register a profile this pack has withdrawn, wherever the state says this
+     pack put it, then forget it. Only the recorded ids in the recorded scopes:
+     an independently configured server of the same kind is not in the state file
+     and stays exactly where its owner put it. #>
+  param($State)
+  $retired = @($State['profiles'].Keys | Where-Object { $script:V5RetiredProfiles.ContainsKey($_) })
+  if (-not $retired.Count) { return }
+  foreach ($id in $retired) {
+    Write-Head ("Withdrawing {0}" -f $id)
+    Write-Host ("  {0}" -f $script:V5RetiredProfiles[$id]) -ForegroundColor DarkGray
+    $entry = $State['profiles'][$id]
+
+    $scopes = @()
+    if ($entry.Contains('projects') -and $entry['projects']) {
+      foreach ($proj in @($entry['projects'].Keys)) { $scopes += @{ Path = $proj; Record = $entry['projects'][$proj] } }
+    }
+    if ($entry.Contains('global') -and $entry['global']) { $scopes += @{ Path = ''; Record = $entry['global'] } }
+
+    foreach ($scope in $scopes) {
+      $ids = @($scope.Record['servers'])
+      if (-not $ids.Count) { continue }
+      # Synthesised from the recorded ids, not from the catalog: the profile is
+      # gone from the catalog, which is the whole reason this runs.
+      $servers = @($ids | ForEach-Object { @{ id = $_; command = ''; args = @(); note = $_ } })
+      if ($scope.Path) { Write-Host ("  project: {0}" -f $scope.Path) -ForegroundColor DarkGray }
+      [void](Invoke-V5ProfileWrite -Servers $servers -ProjectPath $scope.Path -Remove)
+    }
+    if (-not $CheckOnly) { [void]$State['profiles'].Remove($id) }
+  }
+  Write-Host ''
+}
+
 function Invoke-V5StaleGlobalMigration {
   <# 7.9.5 registered every enabled profile machine-wide. Upgrading has to move
      those entries, not just rename them in a state file: drop the machine-wide
@@ -524,6 +567,13 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
     Write-Host ("  not shipped: {0} -- {1}" -f $skipped['id'], $skipped['reason']) -ForegroundColor DarkGray
   }
   Write-Host ''
+  $retiredOn = @($state['profiles'].Keys | Where-Object { $script:V5RetiredProfiles.ContainsKey($_) })
+  if ($retiredOn.Count) {
+    Write-Host '  Withdrawn from this pack but still registered on this machine.' -ForegroundColor Yellow
+    Write-Host '  Run -Auto or -Enable once to un-register them:' -ForegroundColor Yellow
+    foreach ($id in $retiredOn) { Write-Host ("    {0} -- {1}" -f $id, $script:V5RetiredProfiles[$id]) -ForegroundColor Yellow }
+    Write-Host ''
+  }
   if ($stale.Count) {
     Write-Host '  An earlier version registered these machine-wide. Run -Auto or -Enable to move them:' -ForegroundColor Yellow
     foreach ($e in $stale) { Write-Host ("    {0}" -f $e['old_id']) -ForegroundColor Yellow }
@@ -567,6 +617,7 @@ if ($PSCmdlet.ParameterSetName -eq 'Detect') {
 # ---- disable ---------------------------------------------------------------
 
 Invoke-V5StaleGlobalMigration -Entries $stale
+Invoke-V5RetiredProfileMigration -State $state
 
 if ($PSCmdlet.ParameterSetName -eq 'Disable') {
   foreach ($rawId in $Disable) {

@@ -304,8 +304,9 @@ function Get-V5ProviderNoProjectScope {
 function Get-V5ClaudeProjectKeys {
   <# Claude Code keys a project by the working directory string as its shell
      reported it, and ~/.claude.json on this machine holds both
-     'Z:\a\b' and 'Z:/a/b' for the same tree -- one written from PowerShell, one
-     from a POSIX shell. Write the Windows form, and mirror into a slash form
+     a backslash form and a slash form of the same tree -- one written from
+     PowerShell, one from a POSIX shell. Write the Windows form, and mirror
+     into a slash form
      only when the file already has one, so an entry is never invisible in
      whichever shell the user actually opens. #>
   param([string]$ProjectPath, [string]$ConfigPath)

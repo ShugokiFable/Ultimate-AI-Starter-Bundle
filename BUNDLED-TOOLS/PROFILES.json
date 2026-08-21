@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "catalog_version": "7.9.6",
-  "pack_version": "7.9.6",
-  "updated_utc": "2026-08-21T12:00:00Z",
+  "catalog_version": "7.9.7",
+  "pack_version": "7.9.7",
+  "updated_utc": "2026-08-21T20:00:00Z",
   "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 144 skill bodies are ~154,000 tokens while the description index an agent actually reads is ~5,500. There is no equivalent discount for MCP. So the servers here are NOT registered globally, and -- since 7.9.6 -- are not registered machine-wide either: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
   "reads": "TOOLS/Set-McpProfile.ps1",
-  "always_on_note": "The always-on core (context7, sequential-thinking, github) lives in TOOLS/Add-Reasoning-MCPs.ps1, not here. Those three earn a permanent slot because they apply to every task. Nothing below does. playwright-mcp, firecrawl-mcp and perplexity-mcp are -WithExtras components in CATALOG.json and are likewise not repeated here; registering a server twice is two handshakes for one name.",
+  "always_on_note": "The always-on core is context7 and github, in TOOLS/Add-Reasoning-MCPs.ps1, not here. Both earn a permanent slot: current documentation instead of recalled signatures, and the ability to verify a push rather than hope. sequential-thinking held the third slot until 7.9.7 and lost it on measurement -- one tool, but a 4,587-byte schema, ~1,146 tokens on every turn of every session, for a structured scratchpad rather than a capability. It is the 'reasoning' profile below now: nothing auto-enables it, and -Enable reasoning -Global turns it on. playwright-mcp, firecrawl-mcp and perplexity-mcp are -WithExtras components in CATALOG.json and are likewise not repeated here; registering a server twice is two handshakes for one name.",
   "requires_forms": {
     "command": "A command that must resolve on PATH, or an absolute path that must exist as a file.",
     "any_path": "At least one of these paths must exist. Entries may contain environment variables and a single '*' wildcard per segment.",
@@ -170,37 +170,6 @@
       ]
     },
     {
-      "id": "cloud",
-      "title": "Supabase project management",
-      "scope": "project",
-      "why": "Schema, migrations, logs and edge functions for a Supabase project, read and written through the platform API instead of guessed SQL.",
-      "detect": {
-        "files": [
-          "supabase/config.toml"
-        ],
-        "globs": []
-      },
-      "servers": [
-        {
-          "id": "supabase",
-          "command": "npx",
-          "args": [
-            "-y",
-            "@supabase/mcp-server-supabase@0.11.0",
-            "--read-only"
-          ],
-          "note": "Supabase schema, migrations, logs (read-only by default)",
-          "key": "SUPABASE_ACCESS_TOKEN",
-          "requires": {
-            "command": "npx",
-            "env": "SUPABASE_ACCESS_TOKEN"
-          },
-          "requires_note": "Does nothing without a personal access token, so it is gated on the variable being set rather than registered as a server that fails on first call.",
-          "flag_note": "--read-only is this pack's default. An agent that can DROP a production table on a misread is not a capability, it is an incident. Remove the flag by hand if you want writes."
-        }
-      ]
-    },
-    {
       "id": "engine-blender",
       "title": "Blender scene control",
       "scope": "project",
@@ -216,20 +185,23 @@
           "id": "blender",
           "command": "uvx",
           "args": [
-            "blender-mcp"
+            "blender-mcp@1.8.3"
           ],
           "note": "live Blender scene inspection and control",
           "key": null,
           "requires": {
             "command": "uvx",
             "any_path": [
+              "%APPDATA%\\Blender Foundation\\Blender\\*\\scripts\\addons",
+              "%APPDATA%\\Blender Foundation\\Blender\\*\\extensions\\user_default",
               "%ProgramFiles%\\Blender Foundation\\*\\blender.exe",
-              "%ProgramFiles%\\Steam\\steamapps\\common\\Blender\\blender.exe",
-              "S:\\Steam\\steamapps\\common\\Blender\\blender.exe"
+              "%LOCALAPPDATA%\\Programs\\Blender Foundation\\*\\blender.exe"
             ]
           },
-          "editor_side": "uvx blender-mcp install-addon",
-          "editor_side_note": "The server talks to an addon inside Blender. Installing that addon is the one step that cannot be done from outside the editor process, so Set-McpProfile prints the command rather than pretending it ran it. Blender must be open with the addon enabled before the server has anything to connect to."
+          "editor_side": "uvx blender-mcp@1.8.3 install-addon",
+          "editor_side_note": "The server talks to an addon inside Blender. `install-addon` copies it into the user addons folder, but ENABLING it is inside the editor process and cannot be done from outside -- so Set-McpProfile prints the command rather than pretending it ran it. 'The MCP executable starts' and 'the addon is connected' are different claims: the server answers initialize with no Blender running at all. Only a tool call that reaches the scene proves the second.",
+          "requires_note": "Discovered, never hardcoded. 7.9.6 listed a Steam path on this maintainer's own drive letter, which could not match on anybody else's machine -- the exact class of path this pack forbids elsewhere. The first two entries are what `uvx blender-mcp@1.8.3 addon-paths` reports: Blender creates that user directory on first run whatever the install source, Steam included.",
+          "telemetry_note": "There is no telemetry flag to pass this server. Read from the 1.8.3 wheel: the bundled addon carries a `telemetry_consent` preference and attaches its edit-capture handlers only with consent, and the addon contains no telemetry endpoint (its outbound URLs are PolyHaven, Rodin and Sketchfab, each separately toggled in the addon). So it is off unless you turn it on, inside Blender's addon preferences, where this pack cannot reach it. Stated rather than claimed: nothing here disabled anything."
         }
       ]
     },
@@ -261,7 +233,8 @@
             "command": "npx",
             "env": "GODOT_PATH"
           },
-          "requires_note": "The server shells out to the Godot editor binary and cannot find it by itself on Windows, where Godot has no fixed install location. Gated on GODOT_PATH rather than registered as a server that fails on first call: setx GODOT_PATH \"C:\\path\\to\\Godot.exe\"."
+          "requires_note": "The server shells out to the Godot editor binary and cannot find it by itself on Windows, where Godot has no fixed install location. Gated on GODOT_PATH rather than registered as a server that fails on first call: setx GODOT_PATH \"C:\\path\\to\\Godot.exe\".",
+          "alternative_evaluated": "hi-godot/godot-ai, compared 2026-08-21 on capability / context cost / setup friction / reliability. It is the fresher project (last push 2026-08-21 against Coding-Solo/godot-mcp 2026-04-16) but has fewer stars (1,822 against 5,299), is not published on npm under that name, and requires installing a Godot EDITOR PLUGIN which then starts the server itself and connects over WebSocket -- plus uv as a second runtime. That is the Unity-MCP shape: an editor-side step this pack cannot automate and must print. Coding-Solo runs headless through the Godot binary via a pinned npx package and one environment variable, which is the lower-friction fit for a bundle whose Godot support is incidental. Kept. Revisit if Coding-Solo goes a year without a push, or if a user needs live editor integration rather than run-and-read-the-scene-tree."
         }
       ]
     },
@@ -292,6 +265,39 @@
           "requires_note": "Unity-MCP does not ship a machine-wide server. The executable is generated inside the project's Library folder by the Unity package, so there is no global registration to write -- the entry is project-scoped by construction, and the command is the resolved absolute path for that one project. Until the package is installed the exe does not exist, and the profile refuses rather than writing a path that is not there."
         }
       ]
+    },
+    {
+      "id": "reasoning",
+      "title": "Explicit step-by-step decomposition (sequential-thinking)",
+      "scope": "global",
+      "why": "Held an always-on slot through 7.9.6 and lost it on measurement in 7.9.7: one tool, but a 4,587-byte schema -- ~1,146 tokens on every turn of every session, as much as context7's two tools. It is a structured scratchpad, not a capability: it fetches nothing and reaches nothing the model could not write in its own reasoning, while this pack ships decomposition skills that cost nothing until they match and every provider it targets has native reasoning. Kept as an opt-in rather than deleted, because the benefit to WEAKER models was never benchmarked -- only the cost was. Turn it on with -Enable reasoning -Global if your provider has no native reasoning and you want it everywhere.",
+      "detect": {
+        "files": [],
+        "globs": []
+      },
+      "detect_note": "Deliberately empty. This is a way of thinking, not a property of a project, so there is no marker that could honestly imply it. -Auto will never enable it.",
+      "servers": [
+        {
+          "id": "sequential-thinking",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-sequential-thinking@2026.7.4"
+          ],
+          "note": "explicit step-by-step decomposition (~1,146 tokens per turn while enabled)",
+          "key": null,
+          "requires": {
+            "command": "npx"
+          },
+          "measured_cost": {
+            "tools": 1,
+            "schema_bytes": 4587,
+            "approx_tokens_per_turn": 1146,
+            "method": "real MCP initialize -> tools/list over stdio, tools array serialized compactly",
+            "measured_utc": "2026-08-21"
+          }
+        }
+      ]
     }
   ],
   "evaluated_not_shipped": [
@@ -303,12 +309,16 @@
     {
       "id": "storybook-mcp",
       "reason": "No first-party server from the Storybook project at evaluation time. Community servers exist; none had provenance this pack would accept for an install it performs on a user's machine unattended."
+    },
+    {
+      "id": "supabase-mcp",
+      "reason": "Shipped as the 'cloud' profile in 7.9.5 and 7.9.6; removed in 7.9.7 at the owner's decision. It was also the only profile here that required an account and a personal access token, against this pack's default of free, local, keyless and no signup. Deliberately not replaced with another account-dependent backend MCP. Anyone who wants it can register @supabase/mcp-server-supabase themselves; the migration removes only entries this pack created and leaves an independently configured one alone."
     }
   ],
   "installed_vs_enabled": "Two different things, and conflating them is what made 7.9.5's code-deep expensive. INSTALLED means the executable exists on disk: it costs disk and nothing else, no model context, no startup time. ENABLED means an MCP entry is registered in a provider config, so the server is spawned and its tool schemas ride in context on every turn of every session that config covers. Set-McpProfile.ps1 will install a missing tool when it can (see auto_install) and still leave it disabled everywhere except the project that asked.",
   "scope_forms": {
     "project": "The default and, for every server in this file, the correct one. The entry is written where only sessions opened in that project can see it. What that means per provider is under provider_project_scope.",
-    "global": "Written into the provider's machine-wide config, where every session pays for it. No profile here declares it. TOOLS/Set-McpProfile.ps1 -Global is the opt-in, and it prints the cost."
+    "global": "Written into the provider's machine-wide config, where every session pays for it. One profile declares it: 'reasoning' is a thinking aid rather than a project capability, so a project scope would be meaningless. It has no detection markers, so -Auto never turns it on; -Enable reasoning -Global is deliberate. Everything else here is project-scoped, and TOOLS/Set-McpProfile.ps1 -Global is the per-run override."
   },
   "provider_project_scope": {
     "Claude": "projects[\"<absolute project path>\"].mcpServers in %USERPROFILE%\\.claude.json -- the same place `claude mcp add --scope local` writes (verified against Claude Code 2.1.237). Chosen over the project's .mcp.json because it adds no file to the user's repository and raises no trust prompt. A team that wants the server checked in should copy the entry into .mcp.json by hand.",

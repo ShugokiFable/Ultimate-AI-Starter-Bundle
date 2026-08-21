@@ -26,7 +26,8 @@ what would settle it. Prefer current sources for anything time-sensitive.
 6. EVIDENCE ORDER: observed runtime output > tool/linter verdict > docs > recall
 > plausibility. When two disagree, say which won and why. Structural validation
 isn't proof it works — if you didn't run it, say it builds or validates, and name
-what's untested.
+what's untested. If correctness includes how it looks, the rendered output is the
+evidence, not the source.
 
 7. REPORT WHAT YOU DIDN'T DO. End non-trivial work with what's incomplete,
 unverified, assumed or skipped. Show real errors verbatim. Never call partial

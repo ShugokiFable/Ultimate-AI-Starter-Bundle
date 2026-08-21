@@ -1,0 +1,19 @@
+<title>Gallery</title>
+<style>
+  body { font-family: system-ui, sans-serif; padding: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 160px); gap: 12px; }
+  .grid img { width: 160px; height: 110px; object-fit: cover;
+              background: #e6e8ec; border-radius: 6px; }
+</style>
+<h1>Gallery</h1>
+<div class="grid">
+  <img src="assets/one.png" alt="one">
+  <img src="assets/two.png" alt="two">
+  <img src="assets/three.png" alt="three">
+</div>
+<p id="count">counting…</p>
+<script>
+  fetch('assets/manifest.json')
+    .then(r => r.json())
+    .then(d => { document.getElementById('count').textContent = d.items + ' items'; });
+</script>

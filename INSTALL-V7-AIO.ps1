@@ -215,7 +215,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.9.6 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.9.7 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -1527,7 +1527,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.9.6'
+  version = '7.9.7'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -1636,7 +1636,7 @@ Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANC
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
 Write-Host '  6. Prove every MCP server actually answers: TOOLS\Test-McpHandshake.ps1 -Provider Claude'
-Write-Host '     Capability profiles (browser, Serena, Blender, Godot, Unity, Supabase) are off'
+Write-Host '     Capability profiles (browser, Serena, Blender, Godot, Unity, reasoning) are off'
 Write-Host '     until a project needs them, and are then wired for THAT project only:'
 Write-Host '     TOOLS\Set-McpProfile.ps1 -List | -Auto -Path <project> | -Disable <id>'
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'

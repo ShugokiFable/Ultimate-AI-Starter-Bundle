@@ -1,6 +1,6 @@
 ---
 name: capability-profiles
-description: Use when a task needs a capability the connected MCP servers do not cover (browser debugging, symbol-level code navigation, Blender, Godot, Unity, Supabase), when deciding whether to add an MCP server, when a server is configured but shows no tools, or when a session feels slow and MCP tool schemas are the suspected cause.
+description: Use when a task needs a capability the connected MCP servers do not cover (browser debugging, symbol-level code navigation, Blender, Godot, Unity), when deciding whether to add an MCP server, when a server is configured but shows no tools, when a session feels slow and MCP tool schemas are the suspected cause, or when choosing the smallest capability that can produce the evidence a task actually needs.
 ---
 
 # Capability profiles
@@ -54,12 +54,17 @@ else is a profile, and every profile is **project-scoped**.
 |---|---|---|
 | `code-intel` | Serena: LSP-accurate find-symbol, find-referencing-symbols, symbol-level edits | uv (auto-installs) |
 | `web` | Chrome DevTools: console, network, performance traces, live DOM; shadcn registry | Google Chrome |
-| `cloud` | Supabase schema, migrations, logs (read-only by default) | `SUPABASE_ACCESS_TOKEN` |
 | `engine-blender` | live Blender scene control | Blender + its addon running |
 | `engine-godot` | run projects, read scene trees, capture runtime errors | `GODOT_PATH` |
 | `engine-unity` | live Unity editor control | the Unity package installed in that project |
 
 `code-intel` was called `code-deep` before 7.9.6. The old id still resolves.
+
+The `cloud` profile (Supabase) was withdrawn in 7.9.7: it was the only profile
+here that needed an account and a personal access token, against this pack's
+default of free, local, keyless and no signup. A machine that had it enabled
+gets it un-registered on the next run — only the entries this pack created; a
+Supabase server you configured yourself is untouched.
 
 ```powershell
 TOOLS\Set-McpProfile.ps1 -List                    # what exists, what is ready, what is on where
@@ -126,6 +131,24 @@ machine-wide only              188 tool schemas every turn
 Those 21 are paid by that project and by nothing else. For the "wrong project"
 cause, `Set-McpProfile.ps1 -List` prints which project each profile is on for.
 
+## Pick the capability the evidence needs
+
+A profile is not a subject area, it is a way of getting evidence. Turn on the
+one that answers this question, not the set that looks related:
+
+| task | what settles it |
+|---|---|
+| UI change, "make it look right" | run it, look at the rendered output — `web` for console/network/layout, plus `visual-verification` |
+| CLI or parser bug | the failing input, the real output, the tests. No browser. |
+| symbol-level refactor in a real codebase | `code-intel` |
+| "which API does this library have now" | `research-verification` — installed `--help`, upstream, Context7. No Blender, no DevTools. |
+| Blender / Godot / Unity work | that engine's profile, plus a render or capture if you can see it |
+| Skyrim crash | the crash log and the Skyrim diagnostic skills. Only reach outward if a version fact is genuinely unresolved. |
+
+Do not enable Chrome DevTools to edit a README. Do not enable `shadcn` because a
+`package.json` exists. Do not open a browser when a deterministic test answers
+the question more cheaply.
+
 ## Before proposing a new MCP server
 
 1. **Does a connected server already do it?** houseCARL reads Nexus keylessly;
@@ -143,6 +166,9 @@ cause, `Set-McpProfile.ps1 -List` prints which project each profile is on for.
    talk to produces a server that starts and answers nothing.
 6. **Is upstream alive?** Check the last commit before vendoring a bridge into
    someone else's machine.
+7. **Does it need an account, a key or a signup?** This pack's default is free,
+   local and keyless. That is why Supabase was withdrawn rather than kept
+   behind a token check.
 
 Report what you did not enable and why. A profile left off on purpose is a
 decision; a profile left off silently is a missing capability nobody knows about.

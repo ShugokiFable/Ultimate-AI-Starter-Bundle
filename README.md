@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.6
+# Ultimate AI Starter Bundle v7.9.7
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -103,7 +103,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 
 ## What gets installed
 
-- **Provider skills** — 144 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
+- **Provider skills** — 145 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
@@ -242,6 +242,32 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.9.7 — Stop assuming: evidence closure
+
+- One new skill after auditing eleven existing ones: `visual-verification`. If
+  appearance is part of the requirement, the **rendered output** is the evidence
+  — not the DOM, the CSS, the scene tree or a passing test.
+- It ships a **canary** rather than an instruction: an image whose contents are
+  stored only as a hash, so a session can prove it actually sees pixels instead
+  of claiming it. A failure is a reportable answer, not an error.
+- `TESTS/evidence-scenarios/` — eight fixtures with rubrics for the behaviour
+  itself: a rendered defect invisible in source, a grey box that is really a
+  404, a crash whose log already names the cause, the same crash with nothing to
+  read, a version-specific fact, a stable fact that must **not** trigger
+  research, a screenshot without vision, and a secret in the environment.
+- **Supabase withdrawn** — the only profile needing an account and a token. The
+  migration un-registers only what this pack created.
+- **Blender pinned to 1.8.3** and discovered from `%APPDATA%\Blender Foundation`
+  instead of a maintainer's Steam drive. A contract now fails the build on any
+  hardcoded drive letter or user directory in a shipped config.
+- **sequential-thinking left the always-on core**: 1 tool, but a 4,587-byte
+  schema — ~1,146 tokens every turn, as much as context7's two. Now the opt-in
+  `reasoning` profile, never auto-enabled; existing machines are told, not
+  edited.
+- Codex reports "Exceeded skills context budget" at this many installed skills,
+  which removes every description and breaks description-based routing there.
+  Measured and reported by the doctor; not yet solved.
 
 ### v7.9.6 — Profiles scoped to a project
 
@@ -662,6 +688,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.7** — 2026-08-21. Based on v7.9.6; evidence closure — visual verification, evidence scenarios, Supabase withdrawn, sequential-thinking demoted on measurement.
 
 **v7.9.6** — 2026-08-21. Based on v7.9.5; capability profiles scoped to one project instead of the machine.
 
