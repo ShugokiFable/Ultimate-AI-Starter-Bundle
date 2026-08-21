@@ -36,5 +36,9 @@ TOOLBELT.md
 BUNDLED-TOOLS/offline/*/
 2-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK/Other-Games-Modding-Skills-Mega-Pack-v2.1.0/
 
-# Release artifacts from TOOLS/Build-Release.ps1
+# Release artifacts from TOOLS/Build-Release.ps1 and TOOLS/build_release.py.
+# The Python builder defaults to --outdir artifacts, which is also what CI
+# uses, so a release build left ~180MB untracked and one `git add -A` away
+# from being committed.
 dist/
+artifacts/
