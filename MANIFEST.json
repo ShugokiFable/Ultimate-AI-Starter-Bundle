@@ -18341,8 +18341,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 57745,
-  "sha256": "7dcf5bbe051a289f88d211bbc7410135bde831e6e09d48036f3f50dc24239369"
+  "size": 58053,
+  "sha256": "de2d8c1bb65c8c8983d7df95121bae1a6f04c58e7dc0cc508b2af2b39d66d566"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18476,8 +18476,8 @@
  },
  {
   "path": "README.md",
-  "size": 36203,
-  "sha256": "84f499ff0e098a43bb79f1f1b99fa64d2dd18b63b194e0494aa936e26cdff460"
+  "size": 36281,
+  "sha256": "0bc2db11f9837b90664f3fee5eded4ed9188b471a996893a21e4d9873c906af0"
  },
  {
   "path": "START-HERE.bat",
@@ -18506,8 +18506,8 @@
  },
  {
   "path": "TESTS/Test-McpProfiles.ps1",
-  "size": 38867,
-  "sha256": "e021d26251f870721e3677919a957baad42e1da40a92b33be930bba805e54242"
+  "size": 41032,
+  "sha256": "a38a32c9ba1280abeb9af21fb595dbcbf84c9471cb62bb63327bb5baee6ee5d3"
  },
  {
   "path": "TESTS/Test-ProviderSkillSync.ps1",
@@ -18526,8 +18526,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 71923,
-  "sha256": "ca97272350071c2d8d2d55e5dee556b3bcb78b9954adc511a9ab469a892b1d0b"
+  "size": 73553,
+  "sha256": "c30966a0c0fef9e9e92f898c82c31f363ca97fc78631b0a4ceca446fa615a150"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18596,8 +18596,8 @@
  },
  {
   "path": "TOOLS/Set-McpProfile.ps1",
-  "size": 33023,
-  "sha256": "302c14e0366b58fc69ef00a1defe9f0791db66abf91f459804b13e0097d81dfd"
+  "size": 33127,
+  "sha256": "a231dad68c7f9707f009d8d2dfb6d77a731eb8424291219fd2decd840e7a805a"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
@@ -18616,8 +18616,8 @@
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
-  "size": 13537,
-  "sha256": "6a11af49b8dff06b123300955a052dfa153362d25a19e9ce2e8a972409aaa194"
+  "size": 13619,
+  "sha256": "d23535d4aae6d5e647267b6abe675502bee88c6c9698071295e0d920036e8eea"
  },
  {
   "path": "TOOLS/Update-From-GitHub.ps1",
@@ -18631,8 +18631,8 @@
  },
  {
   "path": "TOOLS/V7-Mcp-Write.ps1",
-  "size": 34398,
-  "sha256": "721c24b25b0e31983c671d46bbdaa82a523a2a6cdbe5553ff7a0019ae5a5a3f6"
+  "size": 35865,
+  "sha256": "74e7a8629529526a8b5517e353fddfcefeb391829630a11c1612cf1a5fbc6de6"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -21791,7 +21791,7 @@
  },
  {
   "path": "docs/history/V7.9.6-CHANGELOG.md",
-  "size": 10385,
-  "sha256": "2739aabca9f38cd07aa50bb99f601fd5c59ff835263e85dc3e8e2f74e55d551d"
+  "size": 11526,
+  "sha256": "b7edc2f71c7232036ad060014d80795e570858222d836e504283b5555326c876"
  }
 ]

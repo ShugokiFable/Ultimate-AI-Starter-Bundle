@@ -1144,6 +1144,31 @@ def test_project_scope_is_implemented_not_just_declared() -> None:
         "a provider without project scope is skipped without saying why"
     )
 
+    # Test-Path raises "Cannot find drive" for a path on an unmounted drive
+    # rather than answering False, and every script here runs with
+    # $ErrorActionPreference = 'Stop'. The tools on the development machine live
+    # on S: and its projects on Z:; neither is guaranteed to be mounted.
+    assert "function Test-V5Path" in writer, "paths are tested without a guard for an unmounted drive"
+    for rel in ("TOOLS/V7-Mcp-Write.ps1", "TOOLS/Set-McpProfile.ps1", "TOOLS/Test-McpHandshake.ps1"):
+        body = read(ROOT / rel)
+        for i, line in enumerate(body.splitlines(), 1):
+            if "Test-Path -LiteralPath" in line and "-ErrorAction SilentlyContinue" not in line:
+                raise AssertionError(f"{rel}:{i} tests a path without the unmounted-drive guard: {line.strip()}")
+
+    # Join-Path asks the provider to resolve the drive, so it raises the same
+    # error for a base that is not mounted -- in a function whose whole job is
+    # string concatenation.
+    assert "function Join-V5Path" in writer, "paths are joined without the unmounted-drive guard"
+    for rel in ("TOOLS/V7-Mcp-Write.ps1", "TOOLS/Set-McpProfile.ps1", "TOOLS/Test-McpHandshake.ps1"):
+        body = read(ROOT / rel)
+        for i, line in enumerate(body.splitlines(), 1):
+            if "Join-Path " not in line or line.lstrip().startswith("#"):
+                continue
+            # The one legitimate use: sourcing the file the helper lives in.
+            if "V7-Mcp-Write.ps1" in line:
+                continue
+            raise AssertionError(f"{rel}:{i} joins a path without the unmounted-drive guard: {line.strip()}")
+
     # A diagnostic that reads only the machine-wide config cannot see the
     # servers this release moved, and reports a cost no real session pays.
     probe = read(ROOT / "TOOLS" / "Test-McpHandshake.ps1")

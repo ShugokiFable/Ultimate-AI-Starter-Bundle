@@ -42,6 +42,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# Join-Path, not Join-V5Path: the helper lives in the file being sourced.
 . (Join-Path $PSScriptRoot 'V7-Mcp-Write.ps1')
 
 function Get-HermesServers {
@@ -50,7 +51,7 @@ function Get-HermesServers {
      that shape, not YAML in general -- anything unrecognised is skipped with a
      note rather than guessed at. #>
   $paths = Get-V5HermesPaths
-  if (-not (Test-Path -LiteralPath $paths.Config -PathType Leaf)) {
+  if (-not (Test-V5Path -LiteralPath $paths.Config -PathType Leaf)) {
     throw "Hermes config not found at $($paths.Config)"
   }
   $lines = [IO.File]::ReadAllText($paths.Config) -split "`r?`n"
@@ -99,7 +100,7 @@ function Get-TomlString($Match) {
 
 function Get-ServersFromFile {
   param([string]$ConfigPath, [string]$Style, [string]$Section, [string]$ProjectKey, [string]$Scope = 'machine')
-  if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) { return @() }
+  if (-not (Test-V5Path -LiteralPath $ConfigPath -PathType Leaf)) { return @() }
   $text = [IO.File]::ReadAllText($ConfigPath)
   $out = @()
   if ($Style -eq 'json') {
@@ -149,7 +150,7 @@ function Get-ServersFromConfig {
      capability profile, since those are registered per project. #>
   param([string]$Provider, [string]$ProjectPath)
   $t = (Get-V5McpTargets)[$Provider]
-  if (-not (Test-Path -LiteralPath $t.Path -PathType Leaf)) {
+  if (-not (Test-V5Path -LiteralPath $t.Path -PathType Leaf)) {
     throw "$Provider config not found at $($t.Path)"
   }
   $out = @(Get-ServersFromFile -ConfigPath $t.Path -Style $t.Style -Section $t.Section -ProjectKey '' -Scope 'machine')
@@ -282,7 +283,7 @@ function Invoke-McpHandshake {
 }
 
 if ($Path) {
-  if (-not (Test-Path -LiteralPath $Path -PathType Container)) { throw "-Path does not exist: $Path" }
+  if (-not (Test-V5Path -LiteralPath $Path -PathType Container)) { throw "-Path does not exist: $Path" }
   $Path = (Resolve-Path -LiteralPath $Path).Path.TrimEnd('\', '/')
 }
 $servers = if ($Provider -eq 'Hermes') { @(Get-HermesServers) } else { @(Get-ServersFromConfig -Provider $Provider -ProjectPath $Path) }

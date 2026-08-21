@@ -257,10 +257,11 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 - `-List` distinguishes **installed** (on disk, free) from **enabled**
   (registered, costs context every turn) and prints which project each profile
   is on for.
-- Four unrelated defects found while building it: a crash when
-  `GetFolderPath` returned an empty string, a successful `uv` install treated as
-  fatal because it writes to stderr, a `.bak` file dropped into the user's
-  project on every install run, and `-Disable` sweeping the current directory.
+- Six unrelated defects found while building it: a crash when `GetFolderPath`
+  returned an empty string, a successful `uv` install treated as fatal because
+  it writes to stderr, a `.bak` file dropped into the user's project on every
+  install run, `-Disable` sweeping the current directory, and an unmounted drive
+  killing the run through both `Test-Path` and `Join-Path`.
 
 ### v7.9.5 — Capability profiles
 

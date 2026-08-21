@@ -622,13 +622,40 @@ if ($stateText -match '"schema"') { Good 'state is written in the new shape' } e
 # A machine whose recorded project no longer exists must not re-register blind.
 $dbox = New-V5TestBox
 New-Item -ItemType Directory -Force -Path (Join-Path $dbox.Local 'Skyrim-AI-V5') | Out-Null
+# Not a hardcoded drive letter: this pack's own rule, and CI proved why -- a
+# path on Z:\ made Test-Path raise "Cannot find drive" on a runner that has no
+# Z:, and $ErrorActionPreference = 'Stop' turned that into a dead gate.
+$goneProject = Join-Path $dbox.Root 'was-a-project'
 Set-Utf8NoBom -Path (Join-Path $dbox.Local 'Skyrim-AI-V5\mcp-profiles.json') -Text (
-  '{"code-deep":{"enabled_utc":"2026-08-21T00:00:00Z","servers":["serena"],"path":"Z:\\\\gone\\\\missing"}}')
+  '{"code-deep":{"enabled_utc":"2026-08-21T00:00:00Z","servers":["serena"],"path":' + ($goneProject | ConvertTo-Json) + '}}')
 $out = Invoke-V5Profile -Box $dbox -Arguments @('-Auto', '-Path', $dbox.Other)
 if ($out -match 'recorded project is gone') { Good 'a vanished project is reported, not re-registered' }
 else { Bad "a vanished recorded project was handled silently: $out" }
 if ((Get-V5BoxClaude $dbox).mcpServers.PSObject.Properties.Name -notcontains 'serena') { Good 'a vanished project does not fall back to machine-wide' }
 else { Bad 'a vanished project fell back to a machine-wide registration' }
+
+# The drive itself being gone is the harder case: Test-Path raises "Cannot find
+# drive" rather than answering $false, and under $ErrorActionPreference = 'Stop'
+# that kills the run. The tools on this pack's development machine live on S:
+# and its projects on Z:; neither is guaranteed to be mounted.
+# Pick a letter that is verifiably absent right now. Hardcoding Z: is what
+# broke CI; hardcoding a less popular letter is the same mistake with better
+# odds. This pack's rule is that a drive letter is never assumed.
+$taken = @(Get-PSDrive -PSProvider FileSystem -ErrorAction SilentlyContinue | ForEach-Object { $_.Name.ToUpper() })
+$freeLetter = @([char[]]'QVWXY' | Where-Object { $taken -notcontains ([string]$_) } | Select-Object -First 1)[0]
+if (-not $freeLetter) { Bad 'no free drive letter to test the unmounted case with'; $freeLetter = 'Q' }
+$unmounted = ('{0}:\definitely-not-mounted\project' -f $freeLetter)
+Is (Test-V5Path -LiteralPath $unmounted -PathType Container) $false 'an unmounted drive answers no instead of throwing'
+Is (Test-V5Path -LiteralPath '' -PathType Leaf) $false 'an empty path answers no instead of throwing'
+$ubox = New-V5TestBox
+New-Item -ItemType Directory -Force -Path (Join-Path $ubox.Local 'Skyrim-AI-V5') | Out-Null
+Set-Utf8NoBom -Path (Join-Path $ubox.Local 'Skyrim-AI-V5\mcp-profiles.json') -Text (
+  '{"code-deep":{"enabled_utc":"2026-08-21T00:00:00Z","servers":["serena"],"path":' + ($unmounted | ConvertTo-Json) + '}}')
+# -Auto is the path that reaches it: migration asks whether the recorded
+# project still exists before deciding to re-register it there.
+$out = Invoke-V5Profile -Box $ubox -Arguments @('-Auto', '-Path', $ubox.Other)
+if ($out -match 'recorded project is gone') { Good 'a state entry on an unmounted drive is reported, not fatal' }
+else { Bad ("a project on an unmounted drive broke the run: " + $out) }
 
 # ---- the Grok budget counts the project file too -----------------------------
 # grok-cli runs the union of ~/.grok/config.toml and <project>/.grok/config.toml,
