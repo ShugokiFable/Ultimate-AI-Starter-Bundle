@@ -214,7 +214,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.9.2 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.9.5 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -1452,7 +1452,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.9.2'
+  version = '7.9.5'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers
@@ -1485,6 +1485,22 @@ if (-not $ToolsOnly) {
       L 'reasoning MCP servers wired'
     } catch {
       Write-V5Warn ('Reasoning MCPs: ' + $_.Exception.Message)
+    }
+  }
+
+  # Capability profiles. Everything beyond the always-on three is off until a
+  # project needs it: MCP tool schemas are in context on every turn, so a
+  # globally registered server is a permanent cost paid by every unrelated
+  # session. -Auto writes a profile only when the workspace shows its markers
+  # AND the machine satisfies its requirements, and prints the missing
+  # prerequisite otherwise rather than leaving an entry that fails on first call.
+  $mcpProfile = Join-Path $PackRoot 'TOOLS\Set-McpProfile.ps1'
+  if ((Test-Path -LiteralPath $mcpProfile) -and $WorkspaceRoot -and (Test-Path -LiteralPath $WorkspaceRoot)) {
+    try {
+      & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $mcpProfile -Auto -Path $WorkspaceRoot -Providers ($Providers -join ',') -PackRoot $PackRoot
+      L 'capability profiles evaluated for the workspace'
+    } catch {
+      Write-V5Warn ('Capability profiles: ' + $_.Exception.Message)
     }
   }
 
@@ -1544,6 +1560,9 @@ Write-Host '  2. Grok: run /mcp and confirm housecarl, codebase-memory-mcp, head
 Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANCE path.'
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
+Write-Host '  6. Prove every MCP server actually answers: TOOLS\Test-McpHandshake.ps1 -Provider Claude'
+Write-Host '     Capability profiles (browser, Serena, Blender, Godot, Unity, Supabase) are off'
+Write-Host '     until a project needs them: TOOLS\Set-McpProfile.ps1 -List'
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Codex: approve the one-time plugin trust prompt. Hermes: hermes --accept-hooks once.'

@@ -392,9 +392,187 @@
       "api_key_optional": true,
       "toolsets": "context,repos,pull_requests,actions,issues",
       "scope_note": "GitHub's official server, replacing @modelcontextprotocol/server-github, which npm marks 'Package no longer supported'. Registered with a scoped --toolsets list, not 'all': the server exposes 20 toolset groups and every enabled group costs tool-schema tokens on every turn. Widen it per project, never globally."
+    },
+    {
+      "id": "serena",
+      "name": "Serena",
+      "kind": "mcp-python",
+      "mcp": true,
+      "license": "MIT",
+      "version": "1.7.0",
+      "github": {
+        "owner": "oraios",
+        "repo": "serena"
+      },
+      "install": "uv-tool",
+      "install_command": "uv tool install -p 3.13 serena-agent",
+      "exe_rel": "%USERPROFILE%\\.local\\bin\\serena.exe",
+      "profile": "code-deep",
+      "auto_register": false,
+      "api_key_env": null,
+      "required_for": [
+        "symbol-navigation",
+        "symbol-level-edits"
+      ],
+      "scope_note": "Language-server-backed symbol search and editing. NOT registered globally: TOOLS\\Set-McpProfile.ps1 wires it for a project that shows source-tree markers, because every connected server's tool schemas ride in context on every turn. Registered with a per-client --context so the tool set is trimmed to what the client does not already provide; Serena ships one for claude-code, codex and grok, and Kimi/Hermes fall back to the generic 'agent' context. Overlaps codebase-memory-mcp deliberately -- that answers 'where is this in the graph', this answers 'what does this symbol resolve to, and rewrite its body'."
+    },
+    {
+      "id": "chrome-devtools-mcp",
+      "name": "Chrome DevTools MCP",
+      "kind": "mcp-npx",
+      "mcp": true,
+      "license": "Apache-2.0",
+      "version": "1.7.0",
+      "github": {
+        "owner": "ChromeDevTools",
+        "repo": "chrome-devtools-mcp"
+      },
+      "install": "mcp-npx",
+      "npx_command": "npx",
+      "npx_args": [
+        "-y",
+        "chrome-devtools-mcp@1.7.0",
+        "--no-usage-statistics"
+      ],
+      "profile": "web",
+      "auto_register": false,
+      "api_key_env": null,
+      "required_for": [
+        "browser-console",
+        "network-inspection",
+        "performance-traces"
+      ],
+      "scope_note": "Reads a live Chrome: console, network, performance traces, rendered DOM. The half playwright-mcp does not do -- playwright drives a browser, this explains what the browser did. Google Chrome and Chrome for Testing only; Chromium forks are not supported by this server, unlike playwright-mcp which takes PLAYWRIGHT_MCP_EXECUTABLE_PATH. --no-usage-statistics opts out of Google's telemetry, which is on by default upstream; this pack does not enable third-party telemetry on a user's machine without asking."
+    },
+    {
+      "id": "shadcn-mcp",
+      "name": "shadcn registry MCP",
+      "kind": "mcp-npx",
+      "mcp": true,
+      "license": "MIT",
+      "version": "4.18.0",
+      "github": {
+        "owner": "shadcn-ui",
+        "repo": "ui"
+      },
+      "install": "mcp-npx",
+      "npx_command": "npx",
+      "npx_args": [
+        "-y",
+        "shadcn@4.18.0",
+        "mcp"
+      ],
+      "profile": "web",
+      "auto_register": false,
+      "api_key_env": null,
+      "required_for": [
+        "component-registry"
+      ],
+      "scope_note": "Resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only."
+    },
+    {
+      "id": "supabase-mcp",
+      "name": "Supabase MCP",
+      "kind": "mcp-npx",
+      "mcp": true,
+      "license": "Apache-2.0",
+      "version": "0.11.0",
+      "github": {
+        "owner": "supabase-community",
+        "repo": "supabase-mcp"
+      },
+      "install": "mcp-npx",
+      "npx_command": "npx",
+      "npx_args": [
+        "-y",
+        "@supabase/mcp-server-supabase@0.11.0",
+        "--read-only"
+      ],
+      "profile": "cloud",
+      "auto_register": false,
+      "api_key_env": "SUPABASE_ACCESS_TOKEN",
+      "key_required": true,
+      "required_for": [
+        "database-schema",
+        "migrations",
+        "edge-function-logs"
+      ],
+      "scope_note": "Does nothing without a personal access token, so the profile is gated on the variable being set rather than registering a server that fails on first call. --read-only is this pack's default: an agent that can DROP a production table on a misread is not a capability, it is an incident."
+    },
+    {
+      "id": "blender-mcp",
+      "name": "Blender MCP",
+      "kind": "mcp-uvx",
+      "mcp": true,
+      "license": "MIT",
+      "version": "1.8.3",
+      "github": {
+        "owner": "ahujasid",
+        "repo": "blender-mcp"
+      },
+      "install": "mcp-uvx",
+      "npx_command": "uvx",
+      "npx_args": [
+        "blender-mcp"
+      ],
+      "profile": "engine-blender",
+      "auto_register": false,
+      "api_key_env": null,
+      "required_for": [
+        "blender-scene-control"
+      ],
+      "scope_note": "Talks to an addon inside a running Blender. `uvx blender-mcp install-addon` places the addon, but enabling it is inside the editor and cannot be done from outside that process -- so the profile prints the step rather than claiming it ran it."
+    },
+    {
+      "id": "godot-mcp",
+      "name": "Godot MCP",
+      "kind": "mcp-npx",
+      "mcp": true,
+      "license": "MIT",
+      "version": "0.1.1",
+      "github": {
+        "owner": "Coding-Solo",
+        "repo": "godot-mcp"
+      },
+      "install": "mcp-npx",
+      "npx_command": "npx",
+      "npx_args": [
+        "-y",
+        "@coding-solo/godot-mcp@0.1.1"
+      ],
+      "profile": "engine-godot",
+      "auto_register": false,
+      "api_key_env": null,
+      "required_for": [
+        "godot-run",
+        "godot-scene-tree"
+      ],
+      "scope_note": "Shells out to the Godot editor binary, which has no fixed install location on Windows, so the profile is gated on GODOT_PATH: setx GODOT_PATH \"C:\\path\\to\\Godot.exe\"."
+    },
+    {
+      "id": "unity-mcp",
+      "name": "Unity MCP",
+      "kind": "mcp-project-binary",
+      "mcp": true,
+      "license": "Apache-2.0",
+      "version": "0.89.0",
+      "github": {
+        "owner": "IvanMurzak",
+        "repo": "Unity-MCP"
+      },
+      "install": "unity-package",
+      "install_command": "npx -y unity-mcp-cli@0.89.0 install-plugin \"<project>\"",
+      "exe_rel": "Library\\mcp-server\\win-x64\\gamedev-mcp-server.exe",
+      "profile": "engine-unity",
+      "auto_register": false,
+      "api_key_env": null,
+      "required_for": [
+        "unity-editor-control"
+      ],
+      "scope_note": "There is no machine-wide Unity MCP server. The executable is generated inside the project's Library folder by the Unity package, so the entry is project-scoped by construction and its command is the resolved absolute path for that one project. Until the package is installed the exe does not exist, and the profile refuses rather than writing a path that is not there."
     }
   ],
-  "pack_version": "7.9.2",
+  "pack_version": "7.9.5",
   "updated_utc": "2026-08-20T01:50:00+00:00",
   "providers": {
     "Grok": {
@@ -470,7 +648,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "7.9.2",
+  "catalog_version": "7.9.5",
   "updated": "2026-08-20",
-  "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them."
+  "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. v7.9.5: components carrying a 'profile' are NOT registered by the installer. BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile only when the project shows its markers and the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a globally registered server is a permanent cost; measured on a real machine, eight connected servers were 188 tool schemas per turn. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

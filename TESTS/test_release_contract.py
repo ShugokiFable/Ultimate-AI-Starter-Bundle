@@ -974,6 +974,9 @@ def main() -> int:
         test_hermes_cost_contract,
         test_forge_source_is_complete_and_buildable,
         test_offline_manifest_complete,
+        test_capability_profiles_are_not_registered_globally,
+        test_mcp_config_writing_has_exactly_one_implementation,
+        test_npx_pin_reaches_machines_that_already_have_the_entry,
         test_manifest_generator_excludes_developer_state,
         test_release_builder_contract,
         test_current_forge_docs_contract,
@@ -1007,6 +1010,106 @@ def main() -> int:
             print("FAIL", fn.__name__, "-", exc)
     print("\n%d passed, %d failed" % (len(tests) - len(failed), len(failed)))
     return 1 if failed else 0
+
+
+def test_capability_profiles_are_not_registered_globally() -> None:
+    """The whole point of the profile catalog.
+
+    MCP tool schemas are in context on every turn of every session, so a
+    globally registered server is a permanent cost paid by every unrelated task.
+    A profile server that leaked into the always-on list would be exactly the
+    regression this release exists to avoid -- and it would be invisible, since
+    both lists are just names in different files.
+    """
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    reasoning = read(ROOT / "TOOLS" / "Add-Reasoning-MCPs.ps1")
+
+    profile_servers = [s for p in profiles["profiles"] for s in p["servers"]]
+    assert profile_servers, "PROFILES.json declares no servers"
+
+    for server in profile_servers:
+        assert f"id      = '{server['id']}'" not in reasoning, (
+            f"{server['id']} is a profile server but is also wired globally"
+        )
+        # An unpinned npx server can change its tool surface mid-session, and
+        # npx will happily reuse a broken cache.
+        for arg in server["args"]:
+            assert not arg.endswith("@latest"), f"{server['id']} pins @latest: {arg}"
+        if server["command"] == "npx":
+            pkg = next((a for a in server["args"] if not a.startswith("-")), None)
+            assert pkg and re.search(r"@[0-9]", pkg), (
+                f"{server['id']} npx package is not version-pinned: {pkg}"
+            )
+            # Without -y, npx blocks on an install prompt for a package that is
+            # not cached, and the server never answers initialize. Observed live
+            # on Codex with @playwright/mcp@latest.
+            assert "-y" in server["args"], f"{server['id']} runs npx without -y"
+
+    ids = [s["id"] for s in profile_servers]
+    assert len(ids) == len(set(ids)), f"duplicate profile server ids: {ids}"
+
+    # A capability declined on purpose is a decision; one declined silently is a
+    # gap nobody knows about.
+    for entry in profiles.get("evaluated_not_shipped", []):
+        assert entry.get("reason"), f"{entry.get('id')} was excluded with no reason"
+
+
+def test_mcp_config_writing_has_exactly_one_implementation() -> None:
+    """Four providers, three config shapes, one writer.
+
+    Every config bug this pack has shipped was a bug in one shape the other two
+    did not have: a TOML matcher that stopped at the '[' inside `args = [...]`,
+    a Hermes check that read `mcp list` output for a command string, a backslash
+    escaped four times instead of two. Two scripts writing configs meant each
+    one had to be found twice.
+    """
+    writer = ROOT / "TOOLS" / "V7-Mcp-Write.ps1"
+    assert writer.is_file(), "shared MCP writer missing"
+    body = read(writer)
+    for func in ("Add-V5McpJson", "Add-V5McpToml", "Add-V5McpHermes",
+                 "Remove-V5McpJson", "Remove-V5McpToml", "Remove-V5McpHermes"):
+        assert f"function {func}" in body, f"{func} missing from the shared writer"
+
+    for rel in ("TOOLS/Add-Reasoning-MCPs.ps1", "TOOLS/Set-McpProfile.ps1"):
+        text = read(ROOT / rel)
+        assert "V7-Mcp-Write.ps1" in text, f"{rel} does not dot-source the shared writer"
+        assert "function Add-ToJsonMcp" not in text, f"{rel} kept a private JSON writer"
+
+    # PowerShell unrolls a pipeline on `return`, so a one-argument server came
+    # back as a bare string and was written as "args": "blender-mcp".
+    assert "return ,@(" in body, "argument resolution can unroll a single-element array again"
+
+    gate = ROOT / "TESTS" / "Test-McpProfiles.ps1"
+    assert gate.is_file(), "TESTS/Test-McpProfiles.ps1 missing"
+    assert "Test-McpProfiles.ps1" in read(ROOT / "TESTS" / "Test-V7-Pack.ps1"), (
+        "the MCP profile gate is not chained into the pack gate"
+    )
+
+
+def test_npx_pin_reaches_machines_that_already_have_the_entry() -> None:
+    """A fix that cannot reach the machines that need it is not a fix.
+
+    -SkipIfPresent compared only the command. Every npx server has the same
+    command, so the comparison always matched and a drifted pin in the args
+    survived every upgrade: v7.9.2 pinned Playwright to 0.0.79 and Codex was
+    still running @playwright/mcp@latest with no -y, blocking npx on an install
+    prompt so the server never answered initialize.
+    """
+    common = read(ROOT / "TOOLS" / "V7-Common.ps1")
+    assert "$argNorm" in common, "Update-V5GrokMcpBlock no longer normalises args for comparison"
+    assert "args drifted, rewriting" in common, "a drifted pin is not rewritten or not reported"
+    probe = ROOT / "TOOLS" / "Test-McpHandshake.ps1"
+    assert probe.is_file(), "TOOLS/Test-McpHandshake.ps1 missing"
+    probe_body = read(probe)
+    assert "tools/list" in probe_body and "notifications/initialized" in probe_body, (
+        "the handshake probe does not run a real MCP exchange"
+    )
+    # Codex writes its own entries as TOML literal strings; reading only basic
+    # strings dropped two real servers from the first report.
+    assert "Get-TomlString" in probe_body, "the probe cannot read TOML literal strings"
+    assert "$psi.ArgumentList" not in probe_body, (
+        "ProcessStartInfo.ArgumentList is .NET Core only; Windows PowerShell 5.1 cannot use it"
+    )
 
 
 if __name__ == "__main__":
