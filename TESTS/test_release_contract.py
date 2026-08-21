@@ -982,6 +982,7 @@ def main() -> int:
         test_forge_source_is_complete_and_buildable,
         test_offline_manifest_complete,
         test_capability_profiles_are_not_registered_globally,
+        test_extras_never_overwrite_a_skill_the_bundle_vendors,
         test_mcp_config_writing_has_exactly_one_implementation,
         test_npx_pin_reaches_machines_that_already_have_the_entry,
         test_manifest_generator_excludes_developer_state,
@@ -1132,6 +1133,40 @@ def test_npx_pin_reaches_machines_that_already_have_the_entry() -> None:
     assert "$psi.ArgumentList" not in probe_body, (
         "ProcessStartInfo.ArgumentList is .NET Core only; Windows PowerShell 5.1 cannot use it"
     )
+
+
+def test_extras_never_overwrite_a_skill_the_bundle_vendors() -> None:
+    """-WithExtras and the bundled-skill integrity check must not disagree.
+
+    The canonical tree vendors code-review-skill, defuddle, json-canvas,
+    obsidian-bases, obsidian-cli and obsidian-markdown. The `skills-git`
+    components fetched the same skills from upstream and copied them over the
+    top, so the final doctor -- which verifies every provider skill against what
+    the bundle shipped -- reported six skills stale/modified on five providers
+    and failed the install. Thirty errors, from a switch the installer documents
+    and offers. Two writers, one directory: the same defect v7.9.2 fixed for the
+    Forge skill, in a different place.
+    """
+    aio = read(ROOT / "INSTALL-V7-AIO.ps1")
+    assert "_V7-CANONICAL-SKILLS" in aio, "the installer no longer knows what canonical owns"
+    assert "$ownedByCanonical" in aio, "skills-git does not filter against the canonical tree"
+    assert "already vendored by this pack, not overwritten" in aio, (
+        "a skipped skill is not reported, so the skip is indistinguishable from a silent failure"
+    )
+
+    # The overlap has to be real, or the filter is aimed at nothing. These are
+    # the skills both the catalog's skills-git components and the canonical tree
+    # claim, confirmed by the doctor failing on exactly these six.
+    canonical = {p.parent.name for p in CANON.glob("*/SKILL.md")}
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    git_components = [c for c in catalog["components"] if c.get("install") == "skills-git"]
+    assert git_components, "no skills-git components left; this gate is aimed at nothing"
+    for comp in git_components:
+        folder = comp.get("skill_folder")
+        if folder:
+            assert folder in canonical or comp.get("skills_subdir"), (
+                f"{comp['id']} installs {folder}, which canonical neither vendors nor sources"
+            )
 
 
 if __name__ == "__main__":
