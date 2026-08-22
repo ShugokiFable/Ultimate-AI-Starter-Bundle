@@ -141,7 +141,6 @@ if(-not $SkipSkills){
     # The doctor cannot raise the budget. It can stop the silent stage being
     # invisible and name the levers that actually move it.
     if($provider -eq 'Codex'){
-      $indexChars=0
       $indexCount=0
       foreach($d in @(Get-ChildItem -LiteralPath $destSkills -Directory -ErrorAction SilentlyContinue)){
         $file=Join-Path $d.FullName 'SKILL.md'
@@ -151,18 +150,26 @@ if(-not $SkipSkills){
         $m=[regex]::Match($head,'(?ms)^description:[ 	]*(?<d>.*?)(?=^[A-Za-z_-]+:|^---)')
         if(-not $m.Success){continue}
         $indexCount++
-        $indexChars+=$d.Name.Length+$m.Groups['d'].Value.Trim().Length
       }
       # ~100 entries is roughly where descriptions stop being truncated. Past
       # that the per-entry allowance shrinks in proportion to the count.
-      if($indexCount -gt 100){
-        Warn ("Codex skills index is $indexCount entries. Codex splits a character budget across them, so each description is truncated -- measured at ~88 visible chars for 146 entries, less as the count grows. This pack routes by description.")
-        Warn ("  Shortening descriptions does NOT help: the allowance follows entry COUNT, not how much you wrote. Measured -- cutting every description to 60 chars gave no entry more room.")
-        Warn ("  Fewer entries does help: 60 skills render at ~183 chars, untruncated. Look in $destSkills for entries nothing here installed:")
-        Warn ("    - the OPTIONAL Other-Games mega-pack (70 skills). It is a manual extra; INSTALL-V7-AIO.ps1 never deploys it.")
+      # Whether to WARN depends on whether anything is removable, not on the
+      # raw count. This pack ships 146 skills, so a bare "> 100" fired on every
+      # correct install and then advised deleting an optional mega-pack, stale
+      # duplicates and unused plugins -- none of which exist on a clean one.
+      # Telling a user to remove things that are not there is noise, and noise
+      # is how a real warning gets ignored.
+      $extraEntries = $indexCount - $expectedSkills.Count
+      if($extraEntries -gt 10){
+        Warn ("Codex skills index is $indexCount entries, $extraEntries of them not from this pack. Codex splits a character budget evenly across entries, so every description is truncated -- and this pack routes by description.")
+        Warn ("  Shortening descriptions does NOT help: the allowance follows entry COUNT. Measured -- cutting every description to 60 chars gave no entry more room.")
+        Warn ("  Fewer entries does: 146 skills render at ~88 chars each, 60 skills at ~183 untruncated. Candidates in ${destSkills}:")
+        Warn ("    - the OPTIONAL Other-Games mega-pack (70 skills). A manual extra; INSTALL-V7-AIO.ps1 never deploys it.")
         Warn ("    - superseded duplicates such as skyrim-kid-distribution / skyrim-spid-distribution (now kid-authoring / spid-authoring)")
         Warn ("    - skills from Codex plugins you do not use; each costs a full entry")
-        Warn ("  This pack supplies $($expectedSkills.Count) of them. Reproduce any of this with: codex debug prompt-input")
+        Warn ("  Reproduce any of this with: codex debug prompt-input")
+      } elseif($indexCount -gt 100){
+        Write-V5Ok ("Codex skills index: $indexCount entries, essentially all from this pack. Descriptions are truncated to roughly 88 chars each -- structural at this skill count, and nothing here is removable without losing a skill.")
       } else {
         Write-V5Ok ("Codex skills index: $indexCount entries -- inside the range where descriptions survive intact.")
       }
@@ -207,16 +214,24 @@ try { $capCatalog = Get-V5Catalog } catch { $capCatalog = $null }
 try { $mcpTargets = Get-V5McpTargets } catch { $mcpTargets = @{} }
 if ($capCatalog) {
   foreach ($comp in @($capCatalog.components | Where-Object { $_.mcp })) {
+    # $capState, not $state: $state holds the parsed install-state.json that
+    # earlier checks read. Reusing the name worked only because this block runs
+    # last, and PowerShell's case-insensitive variables leave no $State escape.
     $cid = [string]$comp.id
     # The MCP entry is not always named after the catalog component:
     # codebase-memory registers as codebase-memory-mcp, github-mcp-server as
     # github. Declared in the catalog, because a guessed alias reports a
     # capability absent on a machine that has it.
     $sid = if ($comp.server_id) { [string]$comp.server_id } else { $cid }
-    $state = [ordered]@{
+    $capState = [ordered]@{
       component = $cid
       key_env = [string]$comp.api_key_env
-      installed = $false
+      # What the installer RECORDED, not a guess derived from registration.
+      # This field used to be (registered -or credentialled), which is the
+      # conflation this release exists to remove -- and for an mcp-npx
+      # component nothing is installed at all until npx resolves it on first
+      # launch, so a boolean here would be false either way.
+      install_state = 'unknown'
       registered_for = @()
       keyless_tools = @()
       credentialled = $false
@@ -229,7 +244,7 @@ if ($capCatalog) {
     if ($comp.api_key_env) {
       $kv = [Environment]::GetEnvironmentVariable([string]$comp.api_key_env, 'User')
       if (-not $kv) { $kv = [Environment]::GetEnvironmentVariable([string]$comp.api_key_env, 'Process') }
-      $state.credentialled = [bool]$kv
+      $capState.credentialled = [bool]$kv
     }
 
     # KEYLESS-CAPABLE + SCHEMA COST: from the generated record, never by hand.
@@ -237,14 +252,20 @@ if ($capCatalog) {
     if (Test-Path -LiteralPath $rec -PathType Leaf) {
       try {
         $r = [IO.File]::ReadAllText($rec) | ConvertFrom-Json
-        $state.keyless_tools = @($r.keyless)
-        $state.schema_bytes = $r.schema_bytes
-        $state.tools_total = $r.tools
+        # @($r.keyless) on a record with no keyless field is Count=1 holding
+        # $null, which prints as "1 keyless" -- a confident false capability
+        # count from a truncated or older-format record.
+        $capState.keyless_tools = @($r.keyless_capable | Where-Object { $_ })
+        if (-not $capState.keyless_tools.Count) {
+          $capState.keyless_tools = @($r.keyless | Where-Object { $_ })
+        }
+        $capState.schema_bytes = $r.schema_bytes
+        $capState.tools_total = $r.tools
       } catch { }
     }
-    if ($comp.keyless_registration -eq 'skip' -and -not $state.credentialled) {
-      $state.not_registered_because = [string]$comp.keyless_skip_reason
-    }
+    # Only explain a skip that actually happened. Without the registered_for
+    # guard a machine carrying a pre-7.9.9 registration printed "registered:
+    # Claude,Codex,Grok,Kimi" and "registered only with a key" three lines apart.
 
     # REGISTERED: which provider configs actually name it. Test-V5ServerDeclared
     # takes a resolved config target, not a provider name -- calling it with
@@ -254,19 +275,27 @@ if ($capCatalog) {
     foreach ($prov in @('Claude','Codex','Grok','Kimi','Hermes')) {
       try {
         if ($prov -eq 'Hermes') {
-          if (Test-V5HermesServerDeclared -Id $sid) { $state.registered_for += $prov }
+          if (Test-V5HermesServerDeclared -Id $sid) { $capState.registered_for += $prov }
           continue
         }
         $tgt = $mcpTargets[$prov]
         if (-not $tgt) { continue }
         if (Test-V5ServerDeclared -Path $tgt.Path -Style $tgt.Style -Section $tgt.Section -Id $sid) {
-          $state.registered_for += $prov
+          $capState.registered_for += $prov
         }
       } catch { }
     }
-    $state.installed = ($state.registered_for.Count -gt 0) -or $state.credentialled
+    if ($state -and $state.components) {
+      $rec = $state.components.PSObject.Properties[$cid]
+      if ($rec -and $rec.Value.status) { $capState.install_state = [string]$rec.Value.status }
+    }
 
-    $capabilityStates += $state
+    if ($comp.keyless_registration -eq 'skip' -and -not $capState.credentialled -and
+        -not $capState.registered_for.Count) {
+      $capState.not_registered_because = [string]$comp.keyless_skip_reason
+    }
+
+    $capabilityStates += $capState
   }
 }
 

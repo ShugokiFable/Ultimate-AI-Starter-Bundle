@@ -254,9 +254,10 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
   counts. It is generated now by `TOOLS/measure_mcp_capability.py`, which keeps
   *rate-limited* separate from *needs a key* — the daily-limit message
   recommends OAuth, and reading it as an auth failure inverts the conclusion.
-- **Installed ≠ registered.** `-WithExtras` installs firecrawl-mcp but leaves it
-  unregistered without a key: keyless it costs ~9,084 tokens every turn for two
-  tools you already have. `-RegisterKeylessExtras` overrides.
+- **Registration is a choice, not a side effect.** `-WithExtras` no longer
+  registers firecrawl-mcp without a key: keyless it costs ~9,080 tokens every
+  turn for two tools you already have. It is an npx server, so nothing is
+  cached either way. `-RegisterKeylessExtras` overrides.
 - **The doctor now reports capability state** — registered where, keyless tools,
   schema cost, and why something is deliberately off.
 - **Codex:** shortening skill descriptions does *not* fit more into its index —

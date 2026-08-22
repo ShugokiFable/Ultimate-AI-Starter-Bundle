@@ -62,7 +62,7 @@ Three honest limits on the word "keyless":
   gives the wrong impression.
 
 The alternative measured: firecrawl-mcp is 25 tool schemas, 36,321 bytes,
-~9,084 tokens on every turn, and keyless exactly TWO of the 25 work -- scrape
+~9,080 tokens on every turn, and keyless exactly TWO of the 25 work -- scrape
 and search. 21 answer "Unauthorized: API key is required", extract is
 deprecated, and parse wants a self-hosted FIRECRAWL_API_URL. Eight times the
 per-turn cost of the server 7.9.7 removed as too expensive, for a duplicate of

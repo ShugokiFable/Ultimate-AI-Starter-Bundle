@@ -51,11 +51,32 @@ SAMPLE_URL = "https://modelcontextprotocol.io"
 SAMPLE_PAGE = "https://modelcontextprotocol.io/docs/getting-started/intro"
 SAMPLE_ID = "00000000-0000-0000-0000-000000000000"
 
-# Anything matching these is removed from the child's environment, so the
-# measurement describes a machine with no accounts rather than this one.
-CRED_HINTS = ("FIRECRAWL", "NOUS", "EXA", "TAVILY", "PARALLEL", "SERPER",
-              "BRAVE", "SEARXNG", "KEENABLE", "BROWSERBASE", "SERPAPI",
-              "PERPLEXITY", "OPENAI", "ANTHROPIC")
+# The child gets an ALLOWLIST, not a blacklist.
+#
+# This was a list of vendor names to strip, which meant every credential nobody
+# had thought of survived -- there was no GITHUB, TOKEN, KEY, SECRET or PAT in
+# it. This script calls EVERY tool a server advertises with synthesized
+# arguments. Against github-mcp-server with a live token that is
+# create_pull_request, merge_pull_request, push_files and delete_file. A
+# measurement tool must not be one typo away from writing to someone's repo.
+#
+# Only what a process needs to start survives. Anything else, credential or not,
+# is dropped: an unknown variable cannot authenticate anything.
+ENV_ALLOW = (
+    "PATH", "PATHEXT", "SYSTEMROOT", "WINDIR", "COMSPEC", "TEMP", "TMP",
+    "APPDATA", "LOCALAPPDATA", "PROGRAMFILES", "PROGRAMFILES(X86)",
+    "PROGRAMDATA", "HOMEDRIVE", "HOMEPATH", "USERPROFILE", "SYSTEMDRIVE",
+    "NUMBER_OF_PROCESSORS", "PROCESSOR_ARCHITECTURE", "OS", "NODE_PATH",
+    "NVM_HOME", "NVM_SYMLINK", "PYTHONIOENCODING", "PYTHONUTF8",
+)
+
+# Names that change state somewhere. Skipped unless --include-mutating, because
+# "measure what this server can do" must never mean "find out by doing it".
+MUTATING_HINTS = (
+    "create", "update", "delete", "remove", "write", "push", "merge", "close",
+    "add", "set", "post", "send", "upload", "fork", "rename", "move", "start",
+    "stop", "cancel", "run", "execute", "install", "publish", "revoke",
+)
 
 AUTH_MARKERS = ("api key", "unauthorized", "payment required",
                 "insufficient credits", "authentication", "forbidden")
@@ -67,8 +88,10 @@ GONE_MARKERS = ("deprecated", "no longer", "unavailable through mcp", "removed")
 # NEEDS_KEY. That misreading turns a working keyless tool into a documented
 # false negative -- it is how the first run of this script contradicted a
 # correct measurement taken twenty minutes earlier.
-THROTTLE_MARKERS = ("free daily limit", "rate limit", "rate-limit", "too many requests",
-                    "429", "quota exceeded", "try again in", "slow down")
+THROTTLE_MARKERS = ("free daily limit", "rate limit", "rate-limit", "ratelimit",
+                    "too many requests", "429", "quota exceeded", "try again in",
+                    "slow down", "cap reached", "hourly_cap", "daily_cap",
+                    "usage limit", "limit reached", "throttl", "retry-after")
 
 
 def sample_value(tool_name: str, prop: str, spec: dict):
@@ -97,9 +120,9 @@ def sample_value(tool_name: str, prop: str, spec: dict):
     return "model context protocol"
 
 
-def measure(command: str, component_id: str, timeout: int = 90) -> dict:
-    env = {k: v for k, v in os.environ.items()
-           if not any(h in k.upper() for h in CRED_HINTS)}
+def measure(command: str, component_id: str, timeout: int = 90,
+            include_mutating: bool = False) -> dict:
+    env = {k: v for k, v in os.environ.items() if k.upper() in ENV_ALLOW}
     proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                             stderr=subprocess.DEVNULL, shell=True, text=True,
                             encoding="utf-8", bufsize=1, env=env)
@@ -108,12 +131,23 @@ def measure(command: str, component_id: str, timeout: int = 90) -> dict:
                      daemon=True).start()
 
     def send(obj):
-        proc.stdin.write(json.dumps(obj) + "\n")
-        proc.stdin.flush()
+        if proc.poll() is not None:
+            raise SystemExit("%s: server exited (code %s) before the sweep finished"
+                             % (component_id, proc.returncode))
+        try:
+            proc.stdin.write(json.dumps(obj) + "\n")
+            proc.stdin.flush()
+        except (OSError, ValueError) as exc:
+            raise SystemExit("%s: cannot write to the server: %s" % (component_id, exc))
 
     def wait(msg_id, budget=timeout):
         end = time.time() + budget
         while time.time() < end:
+            # A server that died mid-sweep used to burn the full budget on
+            # every remaining tool -- 25 tools x 90s is 37 minutes producing a
+            # record full of "timeout" that looks like data.
+            if proc.poll() is not None:
+                return None
             for line in list(lines):
                 try:
                     m = json.loads(line)
@@ -140,15 +174,24 @@ def measure(command: str, component_id: str, timeout: int = 90) -> dict:
         "component": component_id,
         "command": command,
         "tested_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "credentials": "none (scrubbed: %s)" % ", ".join(CRED_HINTS),
+        "credentials": "none (environment reduced to %d process variables)" % len(ENV_ALLOW),
         "tools": len(tools),
         "schema_bytes": len(json.dumps(tools, separators=(",", ":"))),
         "keyless": [], "needs_key": [], "rate_limited": [], "deprecated": [],
-        "unverified": {},
+        "unverified": {}, "skipped_mutating": [],
+        # A tool that answers "free daily limit reached" was REACHED without
+        # credentials -- you cannot be throttled on a tier you cannot access.
+        # So throttled tools are keyless-capable, and a sweep run inside a spent
+        # quota window still establishes that, which is why this set exists
+        # separately from `keyless` (that one means "worked right now").
+        "keyless_capable": [],
     }
 
     for offset, tool in enumerate(tools, start=200):
         name = tool["name"]
+        if not include_mutating and any(h in name.lower() for h in MUTATING_HINTS):
+            record["skipped_mutating"].append(name)
+            continue
         schema = tool.get("inputSchema") or {}
         props = schema.get("properties") or {}
         required = schema.get("required") or list(props)[:1]
@@ -175,19 +218,38 @@ def measure(command: str, component_id: str, timeout: int = 90) -> dict:
         blob = (text + " " + json.dumps(err or res)).lower()
         failed = bool(err) or bool(res.get("isError"))
 
-        if not failed:
-            record["keyless"].append(name)
-        elif any(g in blob for g in GONE_MARKERS):
+        # The markers are consulted BEFORE trusting the absence of an error
+        # flag. Plenty of servers report failures as plain content without
+        # setting isError, and keying off `failed` alone filed those as KEYLESS
+        # even when the text said "Unauthorized: API key is required" -- the
+        # exact inversion this script exists to prevent, landing in the bucket
+        # that looks safest.
+        #
+        # Order matters and is asserted by a release contract: DEPRECATED, then
+        # THROTTLE, then AUTH. Firecrawl's daily-limit message recommends OAuth,
+        # so auth-first would file a working keyless tool as needing a key.
+        if any(g in blob for g in GONE_MARKERS):
             record["deprecated"].append(name)
-        elif any(t in blob for t in THROTTLE_MARKERS):
+        elif any(x in blob for x in THROTTLE_MARKERS):
             # Throttled means the tool IS keyless and the free allowance is
             # spent -- the opposite conclusion from "needs a key".
             record["rate_limited"].append(name)
         elif any(a in blob for a in AUTH_MARKERS):
             record["needs_key"].append(name)
+        elif not failed:
+            record["keyless"].append(name)
         else:
             record["unverified"][name] = (text or json.dumps(err or res))[:160].replace("\n", " ")
 
+    record["keyless_capable"] = sorted(set(record["keyless"]) | set(record["rate_limited"]))
+    record["provenance"] = (
+        "Generated by TOOLS/measure_mcp_capability.py. `keyless` means the call "
+        "succeeded during THIS sweep; `rate_limited` means it was reached without "
+        "credentials and the free allowance was spent. `keyless_capable` is the "
+        "union and is the set to compare against documentation -- a sweep run "
+        "inside a spent quota window reports the same capability with a different "
+        "split."
+    )
     proc.kill()
     return record
 
@@ -197,7 +259,8 @@ def main() -> int:
         print(__doc__)
         return 2
     command, component_id = sys.argv[1], sys.argv[2]
-    record = measure(command, component_id)
+    include_mutating = "--include-mutating" in sys.argv[3:]
+    record = measure(command, component_id, include_mutating=include_mutating)
 
     print("%s -- %d tools, %d schema bytes, no credentials\n"
           % (component_id, record["tools"], record["schema_bytes"]))
@@ -206,6 +269,10 @@ def main() -> int:
         print("%-11s %2d  %s" % (bucket.upper(), len(names), ", ".join(names) or "-"))
     print("%-11s %2d  %s" % ("UNVERIFIED", len(record["unverified"]),
                              ", ".join(record["unverified"]) or "-"))
+    if record["skipped_mutating"]:
+        print("%-11s %2d  %s" % ("SKIPPED", len(record["skipped_mutating"]),
+                                 ", ".join(record["skipped_mutating"])))
+        print("  Not called: the name suggests it changes state. --include-mutating overrides.")
     if record["unverified"]:
         print("\n  UNVERIFIED is not a synonym for keyless. Each of these never")
         print("  reached the auth check, so nothing is known about it:")

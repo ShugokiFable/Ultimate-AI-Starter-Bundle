@@ -1720,8 +1720,14 @@ def test_capability_routing_owns_tool_selection() -> None:
     assert "primitive" in lower and (
         "not a browser stack" in lower or "not code-intel" in lower
     ), "capability-routing does not say when the plain primitive wins"
-    assert "measure-mcpschemacost" in lower or "36,337" in text, (
-        "capability-routing states a routing decision without the measurement behind it"
+    # The point is that the decision cites a REPRODUCIBLE source, not which one.
+    # Naming a single tool made this fail when the skill switched to citing the
+    # generated capability record -- a better source, not a missing one.
+    cites = ("measure-mcpschemacost", "capability-records", "measure_mcp_capability",
+             "36,321", "36,337")
+    assert any(c in lower for c in cites), (
+        "capability-routing states a routing decision without naming the measurement "
+        "behind it (expected one of: %s)" % ", ".join(cites)
     )
 
 
@@ -1746,12 +1752,20 @@ def test_every_version_gate_accepts_the_shipped_version() -> None:
         f"the installed-state doctor rejects the shipped version {bare!r} "
         f"(pattern {m.group(1)!r}) -- it would fail a correct install"
     )
-    # 2. The CI version checker.
-    checker = read(ROOT / ".github" / "scripts" / "check_versions.py")
-    for rx in set(re.findall(r"\(\(\?:\[0-9\]\+\\\.\)\+\[0-9\]\+\)", checker)):
-        assert re.fullmatch(r"(?:[0-9]+\.)+[0-9]+", bare), (
-            f"check_versions.py pattern {rx} cannot match {bare!r}"
-        )
+    # 2. The CI version checker -- run it, rather than pattern-match its source.
+    #    The first version of this collected regexes with findall, never used
+    #    them, and asserted a hardcoded pattern against BARE. Narrowing
+    #    check_versions.py back to three parts made the findall return nothing,
+    #    the loop body never ran, and the test passed: it failed open on the one
+    #    regression it existed to catch.
+    checker = ROOT / ".github" / "scripts" / "check_versions.py"
+    assert checker.is_file(), "the CI version checker is missing"
+    proc = subprocess.run([sys.executable, str(checker)], capture_output=True,
+                          text=True, cwd=str(ROOT))
+    assert proc.returncode == 0, (
+        "check_versions.py rejects the shipped version %s:\n%s"
+        % (bare, (proc.stdout + proc.stderr)[-600:])
+    )
     # 3. Nothing may re-introduce a hard three-part assertion on the version.
     #    Matched as executable code, not as text: the first cut of this check
     #    searched for the literal and found its own guard string.
@@ -1779,12 +1793,40 @@ def test_capability_claims_match_the_measured_record() -> None:
     assert generator.is_file(), "the capability-record generator is missing"
 
     gen = read(generator)
-    # Throttle must be classified before auth, or a rate-limited keyless tool is
-    # recorded as needing a key -- the exact inversion that produced a wrong
-    # measurement during 7.9.9 development.
-    assert gen.index("THROTTLE_MARKERS") < gen.index("AUTH_MARKERS = ") or True
-    assert "rate_limited" in gen, "the generator no longer separates throttling from auth failure"
+    # Assert the order the BRANCHES run in, not the order two constants happen
+    # to be defined in. The first version of this check compared
+    # gen.index("THROTTLE_MARKERS") < gen.index("AUTH_MARKERS = ") and then
+    # wrote `or True` after it -- which is how it stayed green while being
+    # false, and it would have passed either way if the branches were swapped.
+    try:
+        i_gone = gen.index('record["deprecated"].append')
+        i_throttle = gen.index('record["rate_limited"].append')
+        i_auth = gen.index('record["needs_key"].append')
+        i_keyless = gen.index('record["keyless"].append')
+    except ValueError as exc:
+        raise AssertionError("the generator's classification buckets are gone: %s" % exc)
+    assert i_throttle < i_auth, (
+        "throttling is classified after auth: a rate-limited keyless tool would be "
+        "recorded as needing a key. Firecrawl's daily-limit message recommends OAuth, "
+        "which is exactly how a correct measurement got contradicted during 7.9.9."
+    )
+    assert i_gone < i_auth, "a deprecated tool would be reported as needing a key"
+    assert i_keyless > i_auth, (
+        "the keyless branch runs before the marker chain: a server that reports "
+        "'Unauthorized' as plain text without isError would have every tool filed "
+        "as keyless"
+    )
     assert "unverified" in gen, "the generator no longer separates unverified from keyless"
+    # A measurement tool must not be able to authenticate as the user.
+    assert re.search(r"os\.environ\.items\(\)\s+if\s+k\.upper\(\)\s+in\s+ENV_ALLOW", gen), (
+        "the generator no longer builds the child environment from an allowlist; "
+        "a credential blacklist lets every unlisted token through to synthesized "
+        "tool calls -- against github-mcp-server that is create/merge/delete"
+    )
+    assert "MUTATING_HINTS" in gen, (
+        "the generator no longer skips state-changing tools; 'measure what this "
+        "server can do' must not mean 'find out by doing it'"
+    )
 
     catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
     entries = {c.get("id"): c for c in catalog.get("components", []) if isinstance(c, dict)}
@@ -1797,9 +1839,24 @@ def test_capability_claims_match_the_measured_record() -> None:
             continue
         claimed = entry.get("keyless_tools")
         assert claimed is not None, f"{cid}: catalog states no keyless_tools but a measured record exists"
-        assert sorted(claimed) == sorted(record["keyless"]), (
+        # keyless_capable, not keyless: a tool that answers "free daily limit
+        # reached" was reached WITHOUT credentials, so being throttled proves
+        # keyless access rather than disproving it. Comparing against `keyless`
+        # alone made this contract depend on whether the sweep happened to run
+        # inside a spent quota window.
+        capable = record.get("keyless_capable")
+        assert capable is not None, (
+            f"{cid}: the record predates keyless_capable -- regenerate with "
+            "TOOLS/measure_mcp_capability.py"
+        )
+        assert sorted(claimed) == sorted(capable), (
             f"{cid}: catalog keyless_tools {sorted(claimed)} disagree with the measured "
-            f"record {sorted(record['keyless'])} -- regenerate with TOOLS/measure_mcp_capability.py"
+            f"record {sorted(capable)} -- regenerate with TOOLS/measure_mcp_capability.py"
+        )
+        # The record must be generator-shaped, or a hand-written file can satisfy
+        # both sides of its own consistency check.
+        assert record.get("provenance"), (
+            f"{cid}: record carries no provenance line; it may have been written by hand"
         )
         # A tool the record proves needs a key must never be advertised as keyless.
         overlap = set(claimed) & set(record["needs_key"])
@@ -1811,9 +1868,9 @@ def test_optional_key_server_is_not_registered_for_a_sliver_of_itself() -> None:
 
     Through 7.9.8, -WithExtras registered firecrawl-mcp on a machine with no
     key, announcing it in one line. Measured, that bought 2 usable tools out of
-    25 for ~9,084 tokens on every turn -- and those two duplicate the native web
-    tools every provider already has. The package still installs; only the MCP
-    entry waits for the key that makes the other 23 reachable.
+    25 for ~9,080 tokens on every turn -- and those two duplicate the native web
+    tools every provider already has. It is an npx server, so registering IS
+    installing and nothing is cached either way; the entry waits for the key.
     """
     catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
     entries = {c.get("id"): c for c in catalog.get("components", []) if isinstance(c, dict)}
@@ -1821,15 +1878,19 @@ def test_optional_key_server_is_not_registered_for_a_sliver_of_itself() -> None:
     assert fc, "firecrawl-mcp left the catalog"
     assert fc.get("keyless_registration") == "skip", (
         "firecrawl-mcp would be registered keyless again; measured keyless surface is "
-        "2 of 25 tools at ~9,084 tokens/turn"
+        "2 of 25 tools at ~9,080 tokens/turn"
     )
     assert fc.get("keyless_skip_reason"), "the skip has no stated reason, so a user cannot judge it"
 
     aio = ps_code(ROOT / "INSTALL-V7-AIO.ps1")
     assert "RegisterKeylessExtras" in aio, "no explicit override for keyless registration"
     assert "keyless_registration" in aio, "the installer ignores the catalog's keyless_registration"
-    assert "installed-not-registered" in aio, (
-        "the installer no longer records installed-but-unregistered as its own state"
+    assert "not-registered-no-key" in aio, (
+        "the installer no longer records not-registered-without-a-key as its own state"
+    )
+    assert "installed-not-registered" not in aio, (
+        "the installer claims the package is installed; mcp-npx installs nothing "
+        "until npx resolves it on first launch, so registering IS installing"
     )
 
 
