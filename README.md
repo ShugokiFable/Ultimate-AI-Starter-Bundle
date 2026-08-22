@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.8
+# Ultimate AI Starter Bundle v7.9.8.5
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,15 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.9.8.5 — cbm dashboard zeros: confirmed upstream, workaround shipped
+
+- `codebase-memory` skill documents **issue #1663**: the web dashboard's
+  NODES/EDGES zero-tiles are an upstream allowlist regression (0.10.5+), not
+  your data — and ships the working shape of the fix (same-origin stats proxy).
+- Warns that #1764's accepted idle-CPU root cause **failed an A/B repro**;
+  do not trust it as solved.
+- Version gate accepts 4-part point releases (`7.9.8.5`) without failing CI.
 
 ### v7.9.8 — Best tool wins: capability routing
 
@@ -709,6 +718,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.8.5** — 2026-08-22. Based on v7.9.8; cbm field lessons (#1663 workaround, #1764 root-cause doubt) and a version gate that accepts point releases.
 
 **v7.9.8** — 2026-08-21. Based on v7.9.7; capability routing, and a fresh-install path that no longer contradicts the bundle's own decisions.
 

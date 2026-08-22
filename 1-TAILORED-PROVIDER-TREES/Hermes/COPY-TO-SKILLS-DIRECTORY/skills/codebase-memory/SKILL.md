@@ -143,6 +143,7 @@ in an older snapshot:
 | Agent session dumps under `.claude` / `.grok` | not authority |
 | Bundled reference corpora (large `corpus.json`, `*.jsonl`) | served through skills; one 6.43 MB corpus alone cost ~15,000 nodes |
 | A thin whole-workspace root graph | prefer one graph per owner project |
+| `auto_index` stays OFF | verified trap: one MCP handshake from a scratch directory indexed `%TEMP%` as its own project within seconds. Indexing is a deliberate act. |
 
 ## Secrets and hostile filenames
 
@@ -196,6 +197,24 @@ Per-project health uses **`?name=`**, not `?project=` (the latter returns 400):
 
 In PowerShell, `curl` is an alias for `Invoke-WebRequest` and does **not** accept
 `-H` / `-d`. Use `Invoke-RestMethod` as above.
+
+### Working fix on this machine (v7.9.8.5 field note)
+
+`%LOCALAPPDATA%\Skyrim-AI-V5\tools\cbm-dashboard-plus.py` is a same-origin loopback
+proxy on **http://127.0.0.1:9751/** serving the stock dashboard plus injected real
+totals, per-project nodes/edges and language badges — it exists precisely because of
+#1663. Prefer it for human dashboarding; autostarts at login. Upstream rejects any
+foreign-origin page reading those endpoints (DNS-rebinding defense), which is why the
+fix must be same-origin rather than a userscript.
+
+### Issue #1764: do not trust its root cause
+
+The idle-CPU burn (~0.6 core per idle client on Windows) was attributed upstream to two
+10 ms maintenance observers walking the file-lock path. That attribution **failed an A/B
+repro**: a geometric-backoff patch of exactly those observers was built from source with
+no improvement over stock while idle, and the burn reproduces only on roughly half of
+spawns, always as one hot thread. Treat #1764 as unsolved and unattributed; do not cite
+the observer theory or claim any shipped fix.
 
 ## The index has no backup
 
