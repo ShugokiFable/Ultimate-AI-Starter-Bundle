@@ -681,7 +681,10 @@ def test_linux_helpers_keep_their_execute_bit() -> None:
 
 
 def test_version_sources() -> None:
-    assert VERSION.startswith("v") and BARE.count(".") == 2, f"VERSION.txt is not vX.Y.Z: {VERSION!r}"
+    # Three or more dot-separated parts: 3-part normal releases, 4-part point
+    # releases (7.9.8.5). check_versions.py accepts the same two shapes.
+    assert VERSION.startswith("v") and BARE.count(".") >= 2 and all(
+        p.isdigit() for p in BARE.split(".")), f"VERSION.txt is not vX.Y.Z(.W): {VERSION!r}"
     assert VERSION.lower() in read(ROOT / "README.md").splitlines()[0].lower()
     assert VERSION.upper() in read(ROOT / "START-HERE.txt").splitlines()[0].upper()
     for rel in ("START-HERE.bat", "INSTALL-V7-AIO.bat"):

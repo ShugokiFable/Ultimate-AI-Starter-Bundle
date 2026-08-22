@@ -11,8 +11,8 @@
  },
  {
   "path": ".github/scripts/check_versions.py",
-  "size": 4087,
-  "sha256": "99a59fdca549e7a89795f1cc76dc33529be54e233e6a66a5ea0cc6c374b9f0ee"
+  "size": 4274,
+  "sha256": "800b0b923506c99826dab8691dad576ea3ba5595d8dcdba8ddf0bc8e4ed662c8"
  },
  {
   "path": ".github/scripts/verify_manifest.py",
@@ -1831,8 +1831,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 14582,
-  "sha256": "aaf35fc13cbcff420ba9c4cc99a1891819b85eb560ac325306fba02dac6c479b"
+  "size": 15813,
+  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -4646,8 +4646,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 14582,
-  "sha256": "aaf35fc13cbcff420ba9c4cc99a1891819b85eb560ac325306fba02dac6c479b"
+  "size": 15813,
+  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -7446,8 +7446,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 14582,
-  "sha256": "aaf35fc13cbcff420ba9c4cc99a1891819b85eb560ac325306fba02dac6c479b"
+  "size": 15813,
+  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -10246,8 +10246,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 14582,
-  "sha256": "aaf35fc13cbcff420ba9c4cc99a1891819b85eb560ac325306fba02dac6c479b"
+  "size": 15813,
+  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -13056,8 +13056,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 14582,
-  "sha256": "aaf35fc13cbcff420ba9c4cc99a1891819b85eb560ac325306fba02dac6c479b"
+  "size": 15813,
+  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -15516,13 +15516,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 22380,
-  "sha256": "69fc88a9634162375178ccb740cb8deaf31341d2ed7aeb7512a94ee9204f7c56"
+  "size": 23012,
+  "sha256": "faa22e892e1b57256a0fe78ad3f95d2998fde7504aaff46654f6473490c7423a"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 1492,
-  "sha256": "d1e04ea5640235b9e2ea6c51666a7fa8c656ff435801d8e3d19b5cf47df8a48f"
+  "size": 1536,
+  "sha256": "462d85ee2c6e5d04cd0cc5fad4589fd4faa7a238f9e364d264d0de8f595bcf36"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -18391,8 +18391,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 66447,
-  "sha256": "a9874de2e05fe851720f00b77954550cf08dd01907fdde949be2c453b3f49b3c"
+  "size": 66962,
+  "sha256": "3047b0e74b1ae2b8ffd9d8418b15624c602d39a0b9423fb66f24aad62d56e18a"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18476,13 +18476,13 @@
  },
  {
   "path": "INSTALL-V7-AIO.bat",
-  "size": 130,
-  "sha256": "4b75d0f52dac48f342a52ada6bb2344c6ca0ac6516d2d654cdda940e2e0e7817"
+  "size": 132,
+  "sha256": "5e591c2ac65522d626221f8c7201468d90df646a0717510b438de2e89b9c9544"
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 89379,
-  "sha256": "f0a12f95c2237c6d63ab34416559faded84f6c33c2dfc6657b0f1247da64af15"
+  "size": 89383,
+  "sha256": "658a90a0319c0f46ff691cb6ddc6e87f66f0b0bcb7b5586f2e1069b11669a06b"
  },
  {
   "path": "LICENSE",
@@ -18526,18 +18526,18 @@
  },
  {
   "path": "README.md",
-  "size": 39681,
-  "sha256": "aa2b5d20d8c86b3b5d41b97b416cd1693acdbf3010238b8c433920420aa3f7b3"
+  "size": 40331,
+  "sha256": "2fdd34c27e4f431e4a70ba4789026fd9968835323318dbb083366ec2f339d93e"
  },
  {
   "path": "START-HERE.bat",
-  "size": 712,
-  "sha256": "c19db0d89bf34ece2834f7e5aff0dd097672724a655ab63f05e507cdec533460"
+  "size": 714,
+  "sha256": "9833ce001ea7a5228a82c6fef48739867fda32e4faea99575585d56935ebd7e4"
  },
  {
   "path": "START-HERE.txt",
-  "size": 8465,
-  "sha256": "bc60b2ad1d0dae0bcba9f2d8d4f812756b82dc689803b06240d55e9b697a9082"
+  "size": 8594,
+  "sha256": "030965a9411cf266a85c695afd8b108a706ccd08ce4e777423595d783146b404"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18721,8 +18721,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 93391,
-  "sha256": "4051936945ee901358dd22ccde127091effc934c0af7ede1a6c3619ef4b4bfd7"
+  "size": 93601,
+  "sha256": "b1fb20f87a9c40d705adc69ec5c445c4d532c67be5d3ee1fc057f81d3e521193"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18961,13 +18961,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 3962,
-  "sha256": "821eb480a87c9433e8c5d619a3232fd6768520266a98ccf2528eb68c63a748fb"
+  "size": 2182,
+  "sha256": "e68b30949a4c59e70694bfdcdd94a05a0e9c2421b8883ee39e435e7fc3280925"
  },
  {
   "path": "VERSION.txt",
-  "size": 7,
-  "sha256": "f537cefe1bd38a29de1b7bfe4189ea8a7c5f2267e956c7c7f60c5c077af40972"
+  "size": 9,
+  "sha256": "016caf29a041ff98b1df5359bd2deedd3ec44f7d285f31f026d496b191b28c2b"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -19351,8 +19351,8 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/codebase-memory/SKILL.md",
-  "size": 14582,
-  "sha256": "aaf35fc13cbcff420ba9c4cc99a1891819b85eb560ac325306fba02dac6c479b"
+  "size": 15813,
+  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/codeburn/SKILL.md",
@@ -22028,5 +22028,10 @@
   "path": "docs/history/V7.9.8-CHANGELOG.md",
   "size": 10290,
   "sha256": "7d06ef184dd3f94cc518dd4fe793547e5a2880a6fa6d22ae61f49e947000cde0"
+ },
+ {
+  "path": "docs/history/V7.9.8.5-CHANGELOG.md",
+  "size": 3007,
+  "sha256": "1b0e62586c521e1f24917e8d8c2952408aaf35741481a2779d40d286de8b8adb"
  }
 ]

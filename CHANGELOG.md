@@ -3,6 +3,16 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.8.5
+
+Point release carrying production field lessons for `codebase-memory` into the
+pack: upstream issue #1663 (dashboard tiles read zero; UI RPC allowlist rejects
+`get_graph_schema` since 0.10.5) documented with its same-origin proxy
+workaround, plus a warning that #1764's accepted idle-CPU root cause failed an
+A/B repro from source. `.github/scripts/check_versions.py` now accepts
+three-or-more-part versions so point releases like this one pass the gate.
+146 canonical skills; no bundled tool changes.
+
 ## 7.9.8
 
 Make the agent reach for the strongest capability it already has instead of
