@@ -167,8 +167,8 @@ The routing decision for Hermes' web stack, since it shows the method:
   extract against a plain `urllib` fetch: TradingView **39,437 chars vs 12,535**
   (3.1x) in 0.4 s, react.dev 1.3x. So Hermes already has rendered extraction at
   **zero permanent schema cost**.
-- firecrawl-mcp adds 25 tool schemas, 36,337 bytes, **~9,084 tokens on every
-  turn** (`TOOLS\Measure-McpSchemaCost.ps1`) — and keyless, exactly **two** of
+- firecrawl-mcp adds 25 tool schemas, 36,321 bytes, **~9,080 tokens on every
+  turn** (`BUNDLED-TOOLS/capability-records/firecrawl-mcp.json`) — and keyless, exactly **two** of
   those 25 work: `scrape` and `search`. 21 answer *"Unauthorized: API key is
   required"*, `extract` is deprecated, and `parse` demands a self-hosted URL.
 

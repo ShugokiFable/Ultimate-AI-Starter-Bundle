@@ -1242,15 +1242,17 @@ if (-not $SkillsOnly) {
             # Installed is not registered. A server whose keyless surface is a
             # small fraction of its schema costs full price for a sliver of
             # capability -- firecrawl-mcp keyless is 2 usable tools out of 25,
-            # ~9,084 tokens every turn, duplicating a native capability. Through
+            # ~9,080 tokens every turn, duplicating a native capability. Through
             # 7.9.8 -WithExtras registered it anyway and said so in one line
-            # nobody reads. The package is still installed; only the MCP entry
-            # waits for the key that makes it worth carrying.
-            Write-V5Warn "${id}: installed, NOT registered (no $keyName)"
+            # nobody reads. Note this is an mcp-npx component: registering IS
+            # installing, because npx resolves the package on first launch. So
+            # nothing is cached here and nothing is lost -- the entry simply
+            # waits for the key that makes the server worth carrying.
+            Write-V5Warn "${id}: NOT registered (no $keyName)"
             if ($comp.keyless_skip_reason) { Write-Host ("     " + $comp.keyless_skip_reason) -ForegroundColor DarkGray }
             Write-Host ("     Enable: setx $keyName ""<key>"" then re-run with -WithExtras") -ForegroundColor DarkGray
             Write-Host ("     Or register it keyless anyway: -WithExtras -RegisterKeylessExtras") -ForegroundColor DarkGray
-            $installed[$id] = @{ status='installed-not-registered'; needs=$keyName }
+            $installed[$id] = @{ status='not-registered-no-key'; needs=$keyName }
             continue
           } elseif ($comp.api_key_optional) {
             Write-V5Warn "${id}: no $keyName - registering anyway ($($comp.keyless_note))"

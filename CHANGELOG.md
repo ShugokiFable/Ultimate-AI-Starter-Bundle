@@ -47,10 +47,11 @@ new skills, no new always-on MCP, and one server that used to be registered by
   naive classifier files a working keyless tool as needing a key. That is
   exactly how a first cut of this tool contradicted a correct measurement taken
   twenty minutes earlier.
-- **Installed is not registered.** `-WithExtras` no longer registers an
-  optional-key server for a sliver of itself. Keyless, firecrawl-mcp is 2 usable
-  tools for **~9,084 tokens on every turn**, duplicating a capability the
-  providers already have; it installs, and the MCP entry waits for a key.
+- **Registration is a choice, not a side effect.** `-WithExtras` no longer
+  registers an optional-key server for a sliver of itself. Keyless, firecrawl-mcp
+  is 2 usable tools for **~9,080 tokens on every turn**, duplicating a capability
+  the providers already have. It is an npx server -- registering *is* installing,
+  since npx resolves on first launch -- so the entry simply waits for a key.
   `-RegisterKeylessExtras` is the explicit override.
 - **The doctor reports capability states**: installed, registered and where,
   keyless tools, credentialled, schema cost, and why something is deliberately
