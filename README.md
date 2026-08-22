@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.8.5
+# Ultimate AI Starter Bundle v7.9.9
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,26 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.9.9 — Truthful capability routing
+
+- **Every capability claim re-measured on a clean machine.** Hermes' keyless web
+  ring was re-verified from an isolated home with all credentials scrubbed: five
+  vendors, search and extract, no key — and the native extract really renders
+  (3.1x more content than a plain fetch on a JS-heavy page).
+- **Firecrawl MCP: 2 of 25 tools work keyless**, `extract` is deprecated, and
+  `parse` needs a self-hosted URL. The catalog's old claim was wrong on two
+  counts. It is generated now by `TOOLS/measure_mcp_capability.py`, which keeps
+  *rate-limited* separate from *needs a key* — the daily-limit message
+  recommends OAuth, and reading it as an auth failure inverts the conclusion.
+- **Installed ≠ registered.** `-WithExtras` installs firecrawl-mcp but leaves it
+  unregistered without a key: keyless it costs ~9,084 tokens every turn for two
+  tools you already have. `-RegisterKeylessExtras` overrides.
+- **The doctor now reports capability state** — registered where, keyless tools,
+  schema cost, and why something is deliberately off.
+- **Codex:** shortening skill descriptions does *not* fit more into its index —
+  measured. Entry count is the only lever, so nothing was trimmed and the doctor
+  now names what is actually removable.
 
 ### v7.9.8.5 — cbm dashboard zeros: confirmed upstream, workaround shipped
 
@@ -718,6 +738,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.9** — 2026-08-22. Based on v7.9.8.5; capability claims re-measured on clean machines.
 
 **v7.9.8.5** — 2026-08-22. Based on v7.9.8; cbm field lessons (#1663 workaround, #1764 root-cause doubt) and a version gate that accepts point releases.
 

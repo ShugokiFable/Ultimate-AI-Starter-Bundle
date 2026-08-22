@@ -1,0 +1,56 @@
+{
+  "component": "firecrawl-mcp",
+  "command": "npx -y firecrawl-mcp@3.24.0",
+  "tested_utc": "2026-08-21T00:00:00Z",
+  "credentials": "none (FIRECRAWL_* and every other provider credential scrubbed from the child environment)",
+  "tools": 25,
+  "schema_bytes": 36321,
+  "keyless": [
+    "firecrawl_scrape",
+    "firecrawl_search"
+  ],
+  "needs_key": [
+    "firecrawl_map",
+    "firecrawl_crawl",
+    "firecrawl_check_crawl_status",
+    "firecrawl_agent",
+    "firecrawl_agent_status",
+    "firecrawl_interact",
+    "firecrawl_interact_stop",
+    "firecrawl_monitor_create",
+    "firecrawl_monitor_list",
+    "firecrawl_monitor_get",
+    "firecrawl_monitor_update",
+    "firecrawl_monitor_delete",
+    "firecrawl_monitor_run",
+    "firecrawl_monitor_checks",
+    "firecrawl_monitor_check",
+    "firecrawl_research_search_papers",
+    "firecrawl_research_inspect_paper",
+    "firecrawl_research_related_papers",
+    "firecrawl_research_read_paper",
+    "firecrawl_research_search_github",
+    "firecrawl_developer_search"
+  ],
+  "rate_limited": [],
+  "deprecated": [
+    "firecrawl_extract"
+  ],
+  "unverified": {
+    "firecrawl_parse": "requires FIRECRAWL_API_URL pointing at a self-hosted instance, so it is neither keyless nor unlocked by a cloud API key"
+  },
+  "quota": {
+    "tier": "free keyless, per network",
+    "observed_limit_message": "The free daily limit for this network has been reached; try again in about 71901 seconds.",
+    "reset_seconds_observed": 71901,
+    "meaning": "keyless is real but rationed. Two full 25-tool sweeps exhausted the daily allowance for this network."
+  },
+  "notes": [
+    "2 of 25 tools work without credentials. The other 23 are unreachable on a free machine, and their schemas cost the same as the working ones.",
+    "The catalog previously claimed interact was keyless and extract was key-gated. Both were wrong: interact answers 'Unauthorized: API key is required', and extract answers 'deprecated and unavailable through MCP'.",
+    "Firecrawl's own MCP server instructions say Search, Scrape and Parse are free without authentication. Parse is not: on this pinned server it demands a self-hosted FIRECRAWL_API_URL.",
+    "A throttled response is NOT an auth failure. The daily-limit message names OAuth as the remedy, which reads as 'needs a key' to a naive classifier and inverts the conclusion. TOOLS/measure_mcp_capability.py checks throttle markers before auth markers for exactly this reason.",
+    "keyless/needs_key/deprecated here were measured in two independent clean runs before the daily allowance was spent. Re-running the generator inside a spent quota window reclassifies scrape and search as rate_limited, which is the generator working correctly, not a change in capability.",
+    "schema_bytes here is 36,321 from this generator (python json.dumps). TOOLS/Measure-McpSchemaCost.ps1 reports 36,337 for the same server because PowerShell's ConvertTo-Json serializes a few characters differently. Both are ~9,08x tokens/turn; the difference is the serializer, not the server."
+  ]
+}

@@ -12,6 +12,11 @@ param(
 $ErrorActionPreference='Stop'
 if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
 . (Join-Path $PackRoot 'TOOLS\V7-Common.ps1')
+# Join-Path, not Join-V5Path: the helper lives inside the file being sourced.
+# Needed for Test-V5ServerDeclared in the capability-state section -- without it
+# every component reports "registered: none", which is a wrong answer rather
+# than a visible failure.
+. (Join-Path $PackRoot 'TOOLS\V7-Mcp-Write.ps1')
 $Providers = @($Providers | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 $catalog = Get-V5Catalog
 $state = $null
@@ -37,7 +42,11 @@ Write-V5Step 'Final installed-state doctor'
 # places, so a release bump could leave the doctor failing a correct install.
 $packVersion = [IO.File]::ReadAllText((Join-Path $PackRoot 'VERSION.txt')).Trim()
 $packBare = $packVersion.TrimStart('v','V')
-if ($packBare -notmatch '^\d+\.\d+\.\d+$') { Err "Pack VERSION.txt is not a semantic version: $packVersion" }
+# Three or more parts. v7.9.8.5 was the pack's first four-part version, and it
+# widened check_versions.py and test_version_sources but not this gate -- so the
+# doctor failed the release that shipped it, on a correct tree. A version format
+# is agreed by every check that reads it or by none of them.
+if ($packBare -notmatch '^\d+(\.\d+){2,}$') { Err "Pack VERSION.txt is not a dotted version of three or more parts: $packVersion" }
 $statePath=Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\install-state.json'
 if(-not(Test-Path -LiteralPath $statePath -PathType Leaf)){Err 'install-state.json is missing.'}
 else{
@@ -112,15 +121,25 @@ if(-not $SkipSkills){
     }
     Write-V5Ok ("$provider bundled skills accounted: $verified exact file(s), $nativeOwned native-plugin-owned, $($expectedSkills.Count) expected.")
 
-    # Codex keeps a context budget for its skills index and degrades silently
-    # when the index exceeds it: first by shortening descriptions, then by
-    # dropping them entirely and omitting skills from the model-visible list.
-    # Observed on a real run here:
-    #   "Exceeded skills context budget. All skill descriptions were removed
-    #    and 23 additional skills were not included"
-    # This pack routes BY description, so that state is the routing mechanism
-    # failing quietly. The doctor cannot raise Codex's budget; it can refuse to
-    # let the failure be invisible.
+    # Codex budgets its skills index in CHARACTERS, scaled to the model's
+    # context window, and degrades in two stages -- the first one silent:
+    #
+    #   over budget      every description is truncated to a per-entry
+    #                    allowance. The list still looks complete.
+    #   far over budget  descriptions removed and entries dropped outright
+    #                    ("Exceeded skills context budget..."), the message
+    #                    7.9.7 caught.
+    #
+    # Measured with `codex debug prompt-input` against throwaway CODEX_HOMEs:
+    # 146 bundle skills alone render at ~88 visible chars per description (142
+    # of the 146 are written longer than that); 60 skills render at ~183 with
+    # nothing truncated. Cutting every raw description to 60 chars did NOT give
+    # anyone more room -- the rendered total just shrank. The allowance follows
+    # entry COUNT, so shortening descriptions is not the lever, and this pack
+    # routes by description.
+    #
+    # The doctor cannot raise the budget. It can stop the silent stage being
+    # invisible and name the levers that actually move it.
     if($provider -eq 'Codex'){
       $indexChars=0
       $indexCount=0
@@ -134,14 +153,18 @@ if(-not $SkipSkills){
         $indexCount++
         $indexChars+=$d.Name.Length+$m.Groups['d'].Value.Trim().Length
       }
-      # 215 skills / 38,228 chars is the state that produced the warning above.
-      # Anything at or past it is known to degrade, so it is reported rather
-      # than guessed at from a budget number Codex does not publish.
-      if($indexCount -ge 200 -or $indexChars -ge 36000){
-        Warn ("Codex skills index is $indexCount skills / $indexChars chars (~$([int]($indexChars/4)) tokens). At this size Codex reports 'Exceeded skills context budget' and drops ALL skill descriptions, which is how this pack routes.")
-        Warn ("  Remedy: remove skills you do not use from $destSkills, or invoke by name. The bundle supplies $($expectedSkills.Count); the rest are plugins and your own.")
+      # ~100 entries is roughly where descriptions stop being truncated. Past
+      # that the per-entry allowance shrinks in proportion to the count.
+      if($indexCount -gt 100){
+        Warn ("Codex skills index is $indexCount entries. Codex splits a character budget across them, so each description is truncated -- measured at ~88 visible chars for 146 entries, less as the count grows. This pack routes by description.")
+        Warn ("  Shortening descriptions does NOT help: the allowance follows entry COUNT, not how much you wrote. Measured -- cutting every description to 60 chars gave no entry more room.")
+        Warn ("  Fewer entries does help: 60 skills render at ~183 chars, untruncated. Look in $destSkills for entries nothing here installed:")
+        Warn ("    - the OPTIONAL Other-Games mega-pack (70 skills). It is a manual extra; INSTALL-V7-AIO.ps1 never deploys it.")
+        Warn ("    - superseded duplicates such as skyrim-kid-distribution / skyrim-spid-distribution (now kid-authoring / spid-authoring)")
+        Warn ("    - skills from Codex plugins you do not use; each costs a full entry")
+        Warn ("  This pack supplies $($expectedSkills.Count) of them. Reproduce any of this with: codex debug prompt-input")
       } else {
-        Write-V5Ok ("Codex skills index: $indexCount skills / $indexChars chars (~$([int]($indexChars/4)) tokens), within the size that has been observed to route.")
+        Write-V5Ok ("Codex skills index: $indexCount entries -- inside the range where descriptions survive intact.")
       }
     }
   }
@@ -173,8 +196,113 @@ if(-not $SkipForge){
     }
   }
 }
+# ---------------------------------------------------------------------------
+# Capability states. "Installed" is the least informative thing the doctor can
+# say about an MCP server, and until 7.9.9 it was the only thing it said.
+# Registered-but-useless and installed-but-deliberately-unregistered look
+# identical from the outside; they are opposite situations.
+$capabilityStates = @()
+$capRecordDir = Join-Path $PackRoot 'BUNDLED-TOOLS\capability-records'
+try { $capCatalog = Get-V5Catalog } catch { $capCatalog = $null }
+try { $mcpTargets = Get-V5McpTargets } catch { $mcpTargets = @{} }
+if ($capCatalog) {
+  foreach ($comp in @($capCatalog.components | Where-Object { $_.mcp })) {
+    $cid = [string]$comp.id
+    # The MCP entry is not always named after the catalog component:
+    # codebase-memory registers as codebase-memory-mcp, github-mcp-server as
+    # github. Declared in the catalog, because a guessed alias reports a
+    # capability absent on a machine that has it.
+    $sid = if ($comp.server_id) { [string]$comp.server_id } else { $cid }
+    $state = [ordered]@{
+      component = $cid
+      key_env = [string]$comp.api_key_env
+      installed = $false
+      registered_for = @()
+      keyless_tools = @()
+      credentialled = $false
+      schema_bytes = $null
+      tools_total = $null
+      not_registered_because = $null
+    }
+
+    # CREDENTIALLED: presence only. The doctor never reads a key's value.
+    if ($comp.api_key_env) {
+      $kv = [Environment]::GetEnvironmentVariable([string]$comp.api_key_env, 'User')
+      if (-not $kv) { $kv = [Environment]::GetEnvironmentVariable([string]$comp.api_key_env, 'Process') }
+      $state.credentialled = [bool]$kv
+    }
+
+    # KEYLESS-CAPABLE + SCHEMA COST: from the generated record, never by hand.
+    $rec = Join-Path $capRecordDir ($cid + '.json')
+    if (Test-Path -LiteralPath $rec -PathType Leaf) {
+      try {
+        $r = [IO.File]::ReadAllText($rec) | ConvertFrom-Json
+        $state.keyless_tools = @($r.keyless)
+        $state.schema_bytes = $r.schema_bytes
+        $state.tools_total = $r.tools
+      } catch { }
+    }
+    if ($comp.keyless_registration -eq 'skip' -and -not $state.credentialled) {
+      $state.not_registered_because = [string]$comp.keyless_skip_reason
+    }
+
+    # REGISTERED: which provider configs actually name it. Test-V5ServerDeclared
+    # takes a resolved config target, not a provider name -- calling it with
+    # -Provider throws, and a swallowed throw here reports "registered: none"
+    # for a machine where everything is registered. Resolve the target first,
+    # and let Hermes use its own YAML-shaped check.
+    foreach ($prov in @('Claude','Codex','Grok','Kimi','Hermes')) {
+      try {
+        if ($prov -eq 'Hermes') {
+          if (Test-V5HermesServerDeclared -Id $sid) { $state.registered_for += $prov }
+          continue
+        }
+        $tgt = $mcpTargets[$prov]
+        if (-not $tgt) { continue }
+        if (Test-V5ServerDeclared -Path $tgt.Path -Style $tgt.Style -Section $tgt.Section -Id $sid) {
+          $state.registered_for += $prov
+        }
+      } catch { }
+    }
+    $state.installed = ($state.registered_for.Count -gt 0) -or $state.credentialled
+
+    $capabilityStates += $state
+  }
+}
+
+if ($capabilityStates.Count) {
+  # "registered" here means the MACHINE-WIDE config names it. Capability
+  # profiles are project-scoped by design (7.9.6), so a profile enabled for one
+  # project correctly shows as not registered machine-wide. Say so, rather than
+  # let the column read as "this capability is absent".
+  Write-Host '     registered = machine-wide config only; project-scoped profiles: Set-McpProfile.ps1 -List' -ForegroundColor DarkGray
+  foreach ($s in $capabilityStates) {
+    $reg = if ($s.registered_for.Count) { ($s.registered_for -join ',') } else { 'none' }
+    $kl  = if ($s.keyless_tools.Count) { "$($s.keyless_tools.Count) keyless" } else { 'keyless unmeasured' }
+    $cost = if ($s.schema_bytes) { "$([math]::Round($s.schema_bytes/4)) tok/turn" } else { 'cost unmeasured' }
+    $cred = if ($s.credentialled) { 'key set' } else { 'no key' }
+    Write-V5Ok ("{0,-16} registered: {1,-22} {2}, {3}, {4}" -f $s.component, $reg, $kl, $cred, $cost)
+    if ($s.not_registered_because) {
+      Write-Host ("     " + $s.not_registered_because) -ForegroundColor DarkGray
+    }
+    # Registered, no key, and only a sliver of it works keyless: the machine is
+    # paying full schema price on every turn for a fraction of the server. An
+    # earlier -WithExtras run could have done this before 7.9.9 stopped it.
+    # Tell, do not edit -- the same rule sequential-thinking got in 7.9.7. A
+    # server someone chose does not vanish because a measurement went the other
+    # way, but they should be able to see what it costs.
+    if ($s.registered_for.Count -and -not $s.credentialled -and
+        $s.keyless_tools.Count -and $s.schema_bytes -and $s.tools_total -and
+        ($s.keyless_tools.Count * 4) -lt $s.tools_total) {
+      $perTurn = [math]::Round($s.schema_bytes / 4)
+      Write-Host ("     $($s.component) is registered on $($s.registered_for.Count) provider(s) with no key: ~$perTurn tokens every turn for $($s.keyless_tools.Count) of its $($s.tools_total) tools.") -ForegroundColor DarkGray
+      Write-Host ("     Nothing here removed it. Keep it, set $($s.key_env) to unlock the rest, or drop the entry from those configs.") -ForegroundColor DarkGray
+    }
+  }
+}
+
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
-$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);result=$doctorResult}
+$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);result=$doctorResult}
 $reportPath=Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\installed-state-doctor.json'
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
 if($errors.Count){Write-V5Bad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}

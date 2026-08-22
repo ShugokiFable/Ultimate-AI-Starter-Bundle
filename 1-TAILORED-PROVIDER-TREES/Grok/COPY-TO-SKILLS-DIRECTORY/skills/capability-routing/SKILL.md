@@ -154,25 +154,57 @@ available, so JS-injected content may be missing" is a complete answer.
 
 ## Worked example, measured
 
-The routing decision for Hermes' web stack in 7.9.8, since it shows the method:
+The routing decision for Hermes' web stack, since it shows the method:
 
-- Hermes v0.20.4 ships `web_search` / `web_extract` over a keyless vendor ring
-  (exa, parallel, tavily, firecrawl, keenable) with round-robin and rate-limit
-  failover. Verified by running it: keyless Firecrawl search 1.4 s, extract
-  0.7 s, no key.
+- Hermes v0.20.4 resolves `web_search` / `web_extract` through a keyless vendor
+  ring (exa, parallel, tavily, firecrawl, keenable) with round-robin and
+  failover **on recognized rate-limit responses**. Re-verified in 7.9.9 from an
+  isolated `HERMES_HOME` with every provider credential scrubbed: **all five
+  vendors served search and extract with no key**, and the user-facing
+  `web_search_tool` returned real results in 1.9 s. Under a 30-request burst,
+  bare Exa rejected 27 with HTTP 429 while the ring served 30 of 30.
+- That extraction genuinely renders. Same clean environment, native keyless
+  extract against a plain `urllib` fetch: TradingView **39,437 chars vs 12,535**
+  (3.1x) in 0.4 s, react.dev 1.3x. So Hermes already has rendered extraction at
+  **zero permanent schema cost**.
 - firecrawl-mcp adds 25 tool schemas, 36,337 bytes, **~9,084 tokens on every
-  turn** (`TOOLS\Measure-McpSchemaCost.ps1`).
-- Keyless, that server answers only `search` and `scrape`; `map`, `crawl`,
-  `agent` and `interact` return *"API key is required"*. Verified by calling
-  each one.
+  turn** (`TOOLS\Measure-McpSchemaCost.ps1`) — and keyless, exactly **two** of
+  those 25 work: `scrape` and `search`. 21 answer *"Unauthorized: API key is
+  required"*, `extract` is deprecated, and `parse` demands a self-hosted URL.
 
-So the expensive surface duplicated the native one and its unique half was
-unreachable without an account. It is not registered by default — and the
-native route is the strong one, not a compromise. Add it deliberately with
-`-WithExtras` when you have a key and need crawl/map/interact.
+So the expensive surface duplicated a native capability Hermes already had, and
+the part that would justify it needs an account. Not registered by default; add
+it with `-WithExtras` when you have a key and need crawl/map/interact.
 
-The point is not the conclusion, it is that the conclusion came from three
-measurements instead of an assumption about which brand sounds stronger.
+### Two traps this measurement walked into
+
+Both are general, not Firecrawl-specific:
+
+- **"Available" can mean two different things.** Firecrawl's provider reports
+  `is_available() == False` with no credentials — that is the *keyed* path — while
+  `is_keyless_available() == True` puts it in the free ring. Reading only the
+  first says the capability is missing; reading only the second oversells it.
+  Check which question the code is answering before quoting it.
+- **Keyless is rationed, not free.** After two full tool sweeps the server
+  replied *"The free daily limit for this network has been reached; try again in
+  about 71901 seconds"* — and that message recommends OAuth, so a careless reader
+  files a working keyless tool under "needs a key". A throttle means the capability
+  is right and the allowance is spent. It is also why the ring matters: with
+  Firecrawl throttled, `web_search` still returned results, served by keenable.
+
+**And the failover has a hole worth knowing about.** Hermes matches throttling by
+string, not status code (`_RATE_LIMIT_MARKERS` in `plugins/web/keyless_mcp.py`).
+Tavily's keyless cap says `hourly_cap_reached`, which is not in that list, so the
+ring treats it as permanent and stops walking instead of trying the four vendors
+that are still answering — measured at ~15% hard failures on the default path
+during a cap window, and 100% if `web.backend` is pinned to tavily. That is an
+upstream defect in Hermes 0.20.4, not something this pack patches. The routing
+lesson generalises: **"the tool failed" and "the tool is unavailable" are
+different claims, and a fallback chain that cannot tell them apart will strand
+you on a working system.**
+
+The point is not the conclusion. It is that every line above came from running
+the thing, and two of them reversed an assumption that sounded obvious.
 
 ## Terminal and execute-code are an escape hatch
 
