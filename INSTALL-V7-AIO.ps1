@@ -94,6 +94,10 @@ param(
   #   code-review-skill  obsidian-skills  claude-mem
   #   playwright-mcp     firecrawl-mcp    perplexity-mcp
   [switch]$WithExtras,
+  # Register an optional-key MCP server even when its keyless surface is a
+  # fraction of what it charges in schema. Off by default: see
+  # keyless_skip_reason in CATALOG.json for the measured numbers.
+  [switch]$RegisterKeylessExtras,
   # SOUL + AIO preamble wiring (v7.5.0). On by default: appends the marked
   # preamble block (SOUL.md + AIO-INSTRUCTION.txt) to every selected
   # provider's instruction file and copies the same SOUL.md into Hermes'
@@ -215,7 +219,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.9.8.5 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.9.9 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -1234,6 +1238,20 @@ if (-not $SkillsOnly) {
           if (-not $keyVal) { $keyVal = [Environment]::GetEnvironmentVariable($keyName, 'Process') }
           if ($keyVal) {
             $envMap = @{ $keyName = $keyVal }
+          } elseif ($comp.api_key_optional -and $comp.keyless_registration -eq 'skip' -and -not $RegisterKeylessExtras) {
+            # Installed is not registered. A server whose keyless surface is a
+            # small fraction of its schema costs full price for a sliver of
+            # capability -- firecrawl-mcp keyless is 2 usable tools out of 25,
+            # ~9,084 tokens every turn, duplicating a native capability. Through
+            # 7.9.8 -WithExtras registered it anyway and said so in one line
+            # nobody reads. The package is still installed; only the MCP entry
+            # waits for the key that makes it worth carrying.
+            Write-V5Warn "${id}: installed, NOT registered (no $keyName)"
+            if ($comp.keyless_skip_reason) { Write-Host ("     " + $comp.keyless_skip_reason) -ForegroundColor DarkGray }
+            Write-Host ("     Enable: setx $keyName ""<key>"" then re-run with -WithExtras") -ForegroundColor DarkGray
+            Write-Host ("     Or register it keyless anyway: -WithExtras -RegisterKeylessExtras") -ForegroundColor DarkGray
+            $installed[$id] = @{ status='installed-not-registered'; needs=$keyName }
+            continue
           } elseif ($comp.api_key_optional) {
             Write-V5Warn "${id}: no $keyName - registering anyway ($($comp.keyless_note))"
           } else {
@@ -1527,7 +1545,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.9.8.5'
+  version = '7.9.9'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers

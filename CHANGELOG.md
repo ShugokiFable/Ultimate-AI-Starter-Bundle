@@ -3,6 +3,80 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.9
+
+Make the bundle's capability claims match what a clean machine can actually do,
+without regressing 7.9.8's routing architecture. 146 canonical skills total; no
+new skills, no new always-on MCP, and one server that used to be registered by
+`-WithExtras` now waits for the key that makes it worth carrying.
+
+- **The claim under review was my own, and it survived.** v7.9.8 said Hermes
+  ships keyless `web_search`/`web_extract`. That was measured on a developer
+  machine, which is not evidence about a new user, so it was re-run from an
+  isolated `HERMES_HOME` with every provider credential scrubbed: **all five
+  ring vendors served both search and extract with no key**, `web_search_tool`
+  returned real results in 1.9 s, and the native extract genuinely renders --
+  39,437 chars against a plain `urllib` fetch's 12,535 on a JS-heavy page
+  (3.1x) in 0.4 s. Hermes already has rendered extraction at zero permanent
+  schema cost.
+- **The reviewer was half right, and the half matters.** Firecrawl's provider
+  really does report `is_available() == False` without credentials -- that is
+  the *keyed* path. `is_keyless_available()` returns True and the free ring is a
+  separate resolution step. Quoting either method alone gives a false picture,
+  so both are now written down next to each other.
+- **An independent adversarial check reproduced all of it and found something I
+  had missed.** Hermes 0.20.4 recognises throttling by string-matching, and
+  Tavily's `hourly_cap_reached` is not in that list, so the ring treats a spent
+  quota as permanent and stops failing over while four vendors are still
+  answering -- ~15% hard failures on the default path during a cap window. That
+  is upstream, not something this pack patches. It is documented instead of
+  being claimed away, and the docs now say "failover on **recognized**
+  rate-limit responses".
+- **Firecrawl MCP, measured tool by tool.** Exactly **2 of 25** work keyless
+  (`scrape`, `search`). 21 answer *"Unauthorized: API key is required"*.
+  `firecrawl_extract` is **deprecated**, not key-gated. `firecrawl_parse` wants
+  a self-hosted `FIRECRAWL_API_URL` -- so Firecrawl's own documentation, that
+  Search/Scrape/**Parse** are free without authentication, does not hold for the
+  pinned server. The catalog had claimed `interact` was keyless and `extract`
+  needed a key; both were wrong, and nobody had called the tools.
+- **That note is generated now.** `TOOLS/measure_mcp_capability.py` calls every
+  advertised tool with credentials scrubbed and writes
+  `BUNDLED-TOOLS/capability-records/`. It keeps **KEYLESS, NEEDS_KEY,
+  DEPRECATED, RATE_LIMITED and UNVERIFIED** apart, and the throttle bucket
+  exists for a reason: Firecrawl's daily-limit message recommends OAuth, so a
+  naive classifier files a working keyless tool as needing a key. That is
+  exactly how a first cut of this tool contradicted a correct measurement taken
+  twenty minutes earlier.
+- **Installed is not registered.** `-WithExtras` no longer registers an
+  optional-key server for a sliver of itself. Keyless, firecrawl-mcp is 2 usable
+  tools for **~9,084 tokens on every turn**, duplicating a capability the
+  providers already have; it installs, and the MCP entry waits for a key.
+  `-RegisterKeylessExtras` is the explicit override.
+- **The doctor reports capability states**: installed, registered and where,
+  keyless tools, credentialled, schema cost, and why something is deliberately
+  not registered. Its first cut reported "registered: none" on a machine where
+  everything was registered -- twice, once from a wrong call signature and once
+  because catalog ids differ from registered server names (`codebase-memory` ->
+  `codebase-memory-mcp`, `github-mcp-server` -> `github`). Both fixed; the
+  mapping is declared rather than guessed.
+- **Codex's skills budget, measured rather than guessed.** With
+  `codex debug prompt-input`: 146 bundle skills render at **~88 visible chars**
+  per description and 142 of the 146 are written longer than that; 60 skills
+  render at ~183, untruncated. Cutting every description to 60 chars gave no
+  entry more room. **So shortening descriptions is not the lever and this
+  release deliberately does not rewrite 146 of them.** Entry count is the lever
+  -- on the development machine 70 of 217 entries come from this bundle's own
+  *optional manual* mega-pack, which the installer never deploys. The doctor now
+  says all of that instead of quoting a token figure and a remedy that does not
+  work.
+- **Fixed, from v7.9.8.5:** that release widened `check_versions.py` and
+  `test_version_sources` for the pack's first four-part version but not
+  `TOOLS/Test-Installed-State.ps1`, so the installed-state doctor failed the
+  release that shipped it, on a correct tree. A contract now asserts every
+  version gate accepts the shipped version.
+- **Routing scenario I** covers throttle-vs-auth, and the fixtures gained a
+  scorecard that rewards choosing correctly *first* rather than eventually.
+
 ## 7.9.8.5
 
 Point release carrying production field lessons for `codebase-memory` into the

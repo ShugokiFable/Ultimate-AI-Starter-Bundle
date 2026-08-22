@@ -77,7 +77,8 @@
       ],
       "install": "zip-extract",
       "exe_rel": "codebase-memory-mcp.exe",
-      "scope_note": " NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default."
+      "scope_note": " NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default.",
+      "server_id": "codebase-memory-mcp"
     },
     {
       "install": "pip-or-wheel",
@@ -312,7 +313,14 @@
       ],
       "api_key_env": "FIRECRAWL_API_KEY",
       "api_key_optional": true,
-      "keyless_note": "scrape/search/interact work on the keyless hosted tier; crawl/map/agent/extract need a key.",
+      "keyless_registration": "skip",
+      "keyless_skip_reason": "Keyless this server is 2 usable tools out of 25 (scrape, search) for 36,321 bytes of schema, ~9,084 tokens on EVERY turn - and those two duplicate the native web tools the providers already have. Installed either way; registered only with a key, when the other 23 unlock. Override with -RegisterKeylessExtras.",
+      "keyless_note": "Measured against the pinned 3.24.0 with FIRECRAWL_* scrubbed, all 25 tools called: exactly TWO work keyless - firecrawl_scrape and firecrawl_search. 21 answer 'Unauthorized: API key is required', including interact, which this note previously listed as keyless. firecrawl_extract is DEPRECATED ('deprecated and unavailable through MCP'), not key-gated. firecrawl_parse needs FIRECRAWL_API_URL pointing at a self-hosted instance, so Firecrawl's own docs saying 'Search, Scrape and Parse' are free do not hold for this server. Regenerate with TOOLS/measure_mcp_capability.py rather than editing by hand.",
+      "keyless_tools": [
+        "firecrawl_scrape",
+        "firecrawl_search"
+      ],
+      "capability_record": "BUNDLED-TOOLS/capability-records/firecrawl-mcp.json",
       "providers": [
         "Claude",
         "Codex",
@@ -394,7 +402,8 @@
       "api_key_env": "GITHUB_PERSONAL_ACCESS_TOKEN",
       "api_key_optional": true,
       "toolsets": "context,repos,pull_requests,actions,issues",
-      "scope_note": "GitHub's official server, replacing @modelcontextprotocol/server-github, which npm marks 'Package no longer supported'. Registered with a scoped --toolsets list, not 'all': the server exposes 20 toolset groups and every enabled group costs tool-schema tokens on every turn. Widen it per project, never globally."
+      "scope_note": "GitHub's official server, replacing @modelcontextprotocol/server-github, which npm marks 'Package no longer supported'. Registered with a scoped --toolsets list, not 'all': the server exposes 20 toolset groups and every enabled group costs tool-schema tokens on every turn. Widen it per project, never globally.",
+      "server_id": "github"
     },
     {
       "id": "serena",
@@ -546,7 +555,7 @@
       "scope_note": "There is no machine-wide Unity MCP server. The executable is generated inside the project's Library folder by the Unity package, so the entry is project-scoped by construction and its command is the resolved absolute path for that one project. Until the package is installed the exe does not exist, and the profile refuses rather than writing a path that is not there."
     }
   ],
-  "pack_version": "7.9.8.5",
+  "pack_version": "7.9.9",
   "updated_utc": "2026-08-20T01:50:00+00:00",
   "providers": {
     "Grok": {
@@ -622,7 +631,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "7.9.8.5",
+  "catalog_version": "7.9.9",
   "updated": "2026-08-20",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

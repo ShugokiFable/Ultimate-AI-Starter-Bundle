@@ -1571,8 +1571,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 8475,
-  "sha256": "d5a2de87e80cbb326bfcf513c9da385de925507085b7ca4a828478300af63698"
+  "size": 10684,
+  "sha256": "1a3c54597a568bd0666bee4e18c3a257c785d298a5a2f6a712d5c55e3e1d9296"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -4386,8 +4386,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 8475,
-  "sha256": "d5a2de87e80cbb326bfcf513c9da385de925507085b7ca4a828478300af63698"
+  "size": 10684,
+  "sha256": "1a3c54597a568bd0666bee4e18c3a257c785d298a5a2f6a712d5c55e3e1d9296"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -7186,8 +7186,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 8475,
-  "sha256": "d5a2de87e80cbb326bfcf513c9da385de925507085b7ca4a828478300af63698"
+  "size": 10684,
+  "sha256": "1a3c54597a568bd0666bee4e18c3a257c785d298a5a2f6a712d5c55e3e1d9296"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -9986,8 +9986,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 8475,
-  "sha256": "d5a2de87e80cbb326bfcf513c9da385de925507085b7ca4a828478300af63698"
+  "size": 10684,
+  "sha256": "1a3c54597a568bd0666bee4e18c3a257c785d298a5a2f6a712d5c55e3e1d9296"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -12611,8 +12611,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-WORKSPACE/AGENTS.md",
-  "size": 5255,
-  "sha256": "91c5c9758e3c7f470ece122a6ca03a7c9cfeafb4ddf456de2b1a2a3d8725b5a2"
+  "size": 6316,
+  "sha256": "985b0315c9522df3c17d769457adbb7ca5f45d6554bd7206388bd602e341169b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/OPTIONAL-PROJECT-TEMPLATE/CHANGELOG.txt",
@@ -12661,8 +12661,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/README.txt",
-  "size": 2364,
-  "sha256": "ed71e0dc1ac0738d933fa29c1a58e996332a54968ae2119fbc00a3831c8a33be"
+  "size": 4342,
+  "sha256": "3e5d02fb35bb9c49aaef7264cc5ba104c58d82c16564f0222b08e96163fd4925"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
@@ -12796,8 +12796,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 8475,
-  "sha256": "d5a2de87e80cbb326bfcf513c9da385de925507085b7ca4a828478300af63698"
+  "size": 10684,
+  "sha256": "1a3c54597a568bd0666bee4e18c3a257c785d298a5a2f6a712d5c55e3e1d9296"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -15516,13 +15516,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 23012,
-  "sha256": "faa22e892e1b57256a0fe78ad3f95d2998fde7504aaff46654f6473490c7423a"
+  "size": 24149,
+  "sha256": "05aebba99c49c970e37377ef417dd5263b73f918d50a341f809d14d8af5664f7"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 1536,
-  "sha256": "462d85ee2c6e5d04cd0cc5fad4589fd4faa7a238f9e364d264d0de8f595bcf36"
+  "size": 1534,
+  "sha256": "f67d46d608454cd386f1ece69d1df7d0ebd8f942655086f60c43733478bbb63c"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -15538,6 +15538,11 @@
   "path": "BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md",
   "size": 997,
   "sha256": "38203fc36a6d40d3fc55848a555289dcd1836c65afcccc0202f1827be51a658b"
+ },
+ {
+  "path": "BUNDLED-TOOLS/capability-records/firecrawl-mcp.json",
+  "size": 3051,
+  "sha256": "7e87aa888849237e73dcd813d446916b740f4c1d9bd0eb25235ea6590ed1c248"
  },
  {
   "path": "BUNDLED-TOOLS/offline/codebase-memory-mcp-windows-amd64.zip",
@@ -18391,8 +18396,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 66962,
-  "sha256": "3047b0e74b1ae2b8ffd9d8418b15624c602d39a0b9423fb66f24aad62d56e18a"
+  "size": 71966,
+  "sha256": "5171cb104ac4a1d66bdee2afd0776f0c7cdb4025a09ccb8a0fe8b25ce38f7f41"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18476,13 +18481,13 @@
  },
  {
   "path": "INSTALL-V7-AIO.bat",
-  "size": 132,
-  "sha256": "5e591c2ac65522d626221f8c7201468d90df646a0717510b438de2e89b9c9544"
+  "size": 130,
+  "sha256": "5842f31aab0719166f56d3f452b330a294d95296b316f7df1e2a2142f7a46481"
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 89383,
-  "sha256": "658a90a0319c0f46ff691cb6ddc6e87f66f0b0bcb7b5586f2e1069b11669a06b"
+  "size": 90817,
+  "sha256": "20bd7a8757e2622e0be885296b50907f9f6c9768945260e12d6b27aa0737d122"
  },
  {
   "path": "LICENSE",
@@ -18526,18 +18531,18 @@
  },
  {
   "path": "README.md",
-  "size": 40331,
-  "sha256": "2fdd34c27e4f431e4a70ba4789026fd9968835323318dbb083366ec2f339d93e"
+  "size": 41723,
+  "sha256": "bea449fa192ad7d872f207c89941710333bbc02a4439b1739e0e5016772df090"
  },
  {
   "path": "START-HERE.bat",
-  "size": 714,
-  "sha256": "9833ce001ea7a5228a82c6fef48739867fda32e4faea99575585d56935ebd7e4"
+  "size": 712,
+  "sha256": "8334ae4a455433f17802b2b108373b05ee4e93b376a785d3c0fba7f52e04107d"
  },
  {
   "path": "START-HERE.txt",
-  "size": 8594,
-  "sha256": "030965a9411cf266a85c695afd8b108a706ccd08ce4e777423595d783146b404"
+  "size": 8592,
+  "sha256": "7ae7f9c36e936f3db30236d5ace07301ac42acb2cc3f55819ad9a46e5f2c3142"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18705,9 +18710,14 @@
   "sha256": "9e8477992ffebf086bc06ced558df46bc329beaade2c6248ae16749e013c7bac"
  },
  {
+  "path": "TESTS/routing-scenarios/I-throttle-not-auth/QUESTION.md",
+  "size": 2039,
+  "sha256": "f0ac82b0f311ccb5b4c033962041bc17c633127f11bf9954fec7338cd3a113ca"
+ },
+ {
   "path": "TESTS/routing-scenarios/README.md",
-  "size": 2007,
-  "sha256": "5f806ab190bf6b5eda8eb7a6d66e91dff0e9b3bbcb6208f6ceeb18f6d58ff00f"
+  "size": 3980,
+  "sha256": "cbbf75e7a16fd956346b452acf1b9749ef608eff6443ae2d3df1d36eceeba840"
  },
  {
   "path": "TESTS/routing-scenarios/check_fixtures.py",
@@ -18721,8 +18731,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 93601,
-  "sha256": "b1fb20f87a9c40d705adc69ec5c445c4d532c67be5d3ee1fc057f81d3e521193"
+  "size": 99521,
+  "sha256": "98bb4848dedf3f7fcbd0837acf20bed9f49a23409f181772bcf5408596855b2c"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18811,8 +18821,8 @@
  },
  {
   "path": "TOOLS/Test-Installed-State.ps1",
-  "size": 9807,
-  "sha256": "070fc9f72ea7228704aa6814a434b29c1948bc97106a1754c7a30477ec961bdb"
+  "size": 16956,
+  "sha256": "70da61718ffa875b92854d658ab31beb24a4eae928bd737ce5271278f88a3560"
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
@@ -18930,6 +18940,11 @@
   "sha256": "44972a4243b7f6332c3e86740dfc3143240bced74384f6e123b62384c0d39ae9"
  },
  {
+  "path": "TOOLS/measure_mcp_capability.py",
+  "size": 9136,
+  "sha256": "ea5774e81fa8eb275e082097eb32bb8c759c052699f03f9aaf2ca039884a1433"
+ },
+ {
   "path": "TOOLS/merge_registry.py",
   "size": 2405,
   "sha256": "3fd63344e158a64dcfb02094d21fc0886f9be3b732e1ebcde5c451205fa219ed"
@@ -18961,13 +18976,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 2182,
-  "sha256": "e68b30949a4c59e70694bfdcdd94a05a0e9c2421b8883ee39e435e7fc3280925"
+  "size": 5028,
+  "sha256": "94337973ac417215c39b52954100ec6627a726ebf0ebb3f75cc70e800674e55c"
  },
  {
   "path": "VERSION.txt",
-  "size": 9,
-  "sha256": "016caf29a041ff98b1df5359bd2deedd3ec44f7d285f31f026d496b191b28c2b"
+  "size": 7,
+  "sha256": "21b068375e39b9db793c60ced15c19d2cd8ca538c4613cbb5d69550f678a33dd"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -19091,8 +19106,8 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/capability-routing/SKILL.md",
-  "size": 8475,
-  "sha256": "d5a2de87e80cbb326bfcf513c9da385de925507085b7ca4a828478300af63698"
+  "size": 10684,
+  "sha256": "1a3c54597a568bd0666bee4e18c3a257c785d298a5a2f6a712d5c55e3e1d9296"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/check-work/SKILL.md",
@@ -22033,5 +22048,10 @@
   "path": "docs/history/V7.9.8.5-CHANGELOG.md",
   "size": 3007,
   "sha256": "1b0e62586c521e1f24917e8d8c2952408aaf35741481a2779d40d286de8b8adb"
+ },
+ {
+  "path": "docs/history/V7.9.9-CHANGELOG.md",
+  "size": 11032,
+  "sha256": "43a41296cea6468125b0457bfad6fee1b671e7bdade69a2ce2d9ab0362dcd3f1"
  }
 ]
