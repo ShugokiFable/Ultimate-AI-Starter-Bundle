@@ -1,0 +1,1 @@
+Bundle defaults optimize for a new user's reliability. Personal/provider profiles optimize for the capabilities actually present on that machine.
