@@ -1,31 +1,72 @@
-# ── Model / OpenRouter ────────────────────────────────────────────────
-# Use Hermes' native OpenRouter provider. The old custom "openrouter-extra"
-# provider disabled live discovery and hardcoded a tiny stale model list.
+# Portable Hermes starter. MCP servers and completeness-gate hooks are wired
+# by INSTALL-V7-AIO.ps1 from discovered local tools. This file must never
+# contain a machine username, drive letter, or live MCP command.
+#
+# What ships here: aliases, free-model provider, agent/compression/display
+# preferences, plugins. What does NOT: MCP servers of any kind. Until 7.9.8
+# the npx-based ones were considered "portable enough" to ship, which is how a
+# fresh install acquired five servers the bundle had already ruled out -- the
+# rule three lines up was true as written and false in practice. See the
+# mcp_servers note at the bottom.
 model:
-  default: stealth/ox-alpha
+  default: deepseek/deepseek-v4-flash-0731
   provider: openrouter
-  base_url: ''
+  base_url: https://openrouter.ai/api/v1
   aliases:
-    ox: openrouter/stealth/ox-alpha
-    deepseek-v4: openrouter/deepseek/deepseek-v4-flash-0731
-    ling-free: openrouter/inclusionai/ling-3.0-flash:free
-    kimi-free: openrouter/moonshotai/kimi-k2.6:free
-    dots3-free: openrouter/dots-studio/dots-3-note-preview:free
-    nemotron-super-free: openrouter/nvidia/nemotron-3-super-120b-a12b:free
-
+    dots-3: openrouter/dots-studio/dots-3-note-preview:free
+    nemotron-ultra: openrouter/nvidia/nemotron-3-ultra-550b-a55b:free
+    dots-3-nofree: openrouter/dots-studio/dots-3-note-preview
+    nemotron-ultra-nofree: openrouter/nvidia/nemotron-3-ultra-550b-a55b
+providers:
+  openrouter-extra:
+    name: OpenRouter Extras
+    api: https://openrouter.ai/api/v1
+    key_env: OPENROUTER_API_KEY
+    transport: chat_completions
+    discover_models: false
+    default_model: dots-studio/dots-3-note-preview:free
+    models:
+      dots-studio/dots-3-note-preview:free: dots-3 free
+      dots-studio/dots-3-note-preview: dots-3
+      nvidia/nemotron-3-ultra-550b-a55b:free: nemotron ultra free
+      nvidia/nemotron-3-ultra-550b-a55b: nemotron ultra
 database:
   journal_mode: wal
 runtime:
   nofile_soft_limit: 4096
 agent:
-  max_turns: 350
+  # Unlimited prevents large one-shot jobs from being amputated mid-task.
+  max_turns: null
   verbose: false
-  reasoning_effort: ultra
+  # V4 Flash 0731 exposes max/high/low reasoning through OpenRouter.
+  # Max is intentional: a few extra reasoning tokens are cheaper than another
+  # full 120K-context repair turn, and Hermes clamps unsupported levels safely.
+  reasoning_effort: max
+  # OpenRouter already retries across eligible backends. Keep Hermes' outer
+  # retry loop bounded so a transient failure cannot rebill the full context
+  # three extra times.
+  api_max_retries: 2
+  # DeepSeek is not covered by every historical "auto" tool-use heuristic.
+  # Force the modern execution/closure guards on for dependable one-shot work.
+  tool_use_enforcement: true
+  execution_guidance: true
+  intent_ack_continuation: true
+  stall_guards: true
+  task_completion_guidance: true
+  parallel_tool_call_guidance: true
+  environment_probe: true
+  coding_context: auto
+  verify_guidance: true
+  max_verify_nudges: 3
+  verify_on_stop: true
+  empty_response_guard:
+    enabled: true
+    cost_threshold_usd: 0.01
   personalities: {}
 terminal:
   backend: local
   cwd: .
-  timeout: 180
+  timeout: 600
   home_mode: auto
   container_cpu: 1
   container_memory: 5120
@@ -55,91 +96,86 @@ tool_loop_guardrails:
 compression:
   enabled: true
   progress_notices: true
-  threshold: 0.7
-  threshold_tokens: 140000
-  target_ratio: 0.3
+  # Fixed threshold_tokens is authoritative for the 1M default. Keep the
+  # ratio at the upstream-safe default as a fallback for model switches.
+  threshold: 0.50
+  threshold_tokens: 120000
+  target_ratio: 0.30
   tail_mode: lean
-  protect_last_n: 12
-  min_tail_user_messages: 1
-  max_attempts: 3
-  proactive_prune_tokens: 48000
-  proactive_prune_min_result_chars: 8000
-  proactive_prune_min_reclaim_tokens: 4096
+  protect_last_n: 20
+  min_tail_user_messages: 3
+  max_attempts: 4
+  # Pruning rewrites the sent prefix and therefore breaks provider cache.
+  # Wait until the context is substantial and only commit a large reclaim.
+  proactive_prune_tokens: 80000
+  proactive_prune_min_result_chars: 12000
+  proactive_prune_min_reclaim_tokens: 32768
+  micro_compact: false
+  # Fail closed: never drop middle history just because the summarizer failed.
+  abort_on_summary_failure: true
   protect_first_n: 3
   codex_gpt55_autoraise: true
   codex_app_server_auto: native
   codex_responses_native: false
   codex_responses_compact_threshold: 200000
   in_place: true
-  idle_compact_after_seconds: 1800
+  # Let the absolute 120K size gate control DeepSeek compaction. Time-based
+  # rewrites can destroy a still-warm OpenRouter prefix below that threshold.
+  idle_compact_after_seconds: 0
 prompt_caching:
-  cache_ttl: 5m
+  cache_ttl: 1h
+# OpenRouter full-response cache is separate from prefix/prompt caching. Keep
+# it short so exact retries can be free without serving stale agent decisions.
+mcp:
+  # MCP surface changes invalidate the warm prompt/tool prefix. Apply them
+  # deliberately via /reload-mcp instead of paying that cost on file writes.
+  auto_reload_on_config_change: false
+openrouter:
+  response_cache: true
+  response_cache_ttl: 300
+  min_coding_score: 0.65
 auxiliary:
-  # Do not enable auxiliary.free_only here yet: current Hermes has an upstream
-  # bug where that gate can reject explicitly selected :free OpenRouter models.
-  #
-  # Mechanical side-jobs use fast/free models. Strategy-critical MCP routing
-  # stays on auto, whose first choice is the active main model.
+  # One retry is enough for a transient side-call; more can rebill a huge
+  # compression/web payload before the fallback chain gets a chance.
+  transient_retries: 1
+  # This curated bundle already owns skill quality and explicit memory nudges.
+  # Avoid an extra full post-turn LLM fork and unreviewed automatic skill edits.
+  background_review:
+    enabled: false
   vision:
     provider: openrouter
-    model: moonshotai/kimi-k2.6:free
-    fallback_chain:
-      - provider: openrouter
-        model: dots-studio/dots-3-note-preview:free
-
+    model: google/gemini-3.7-flash
   web_extract:
     provider: openrouter
-    model: inclusionai/ling-3.0-flash:free
-    fallback_chain:
-      - provider: openrouter
-        model: dots-studio/dots-3-note-preview:free
-      - provider: openrouter
-        model: nvidia/nemotron-3-super-120b-a12b:free
-
+    model: dots-studio/dots-3-note-preview:free
   compression:
+    # A bad compression summary costs far more in repair loops than this call.
+    # Use the strong main model, but disable reasoning because summarization is
+    # mechanical and thinking tokens add cost/latency without useful fidelity.
     provider: openrouter
-    model: inclusionai/ling-3.0-flash:free
-    fallback_chain:
-      - provider: openrouter
-        model: dots-studio/dots-3-note-preview:free
-      - provider: openrouter
-        model: nvidia/nemotron-3-super-120b-a12b:free
-
+    model: deepseek/deepseek-v4-flash-0731
+    reasoning_effort: none
+    timeout: 180
+    extra_body:
+      provider:
+        sort: price
+        require_parameters: true
   skills_hub:
     provider: openrouter
-    model: inclusionai/ling-3.0-flash:free
-    fallback_chain:
-      - provider: openrouter
-        model: dots-studio/dots-3-note-preview:free
-
+    model: dots-studio/dots-3-note-preview:free
   approval:
     provider: openrouter
-    model: inclusionai/ling-3.0-flash:free
-    fallback_chain:
-      - provider: openrouter
-        model: dots-studio/dots-3-note-preview:free
-
-  # MCP/tool routing can change the whole execution strategy, so keep the
-  # strongest active model first instead of forcing a cheap helper.
+    model: dots-studio/dots-3-note-preview:free
   mcp:
-    provider: auto
-    model: ''
-
-  title_generation:
-    enabled: true
     provider: openrouter
-    model: inclusionai/ling-3.0-flash:free
-    fallback_chain:
-      - provider: openrouter
-        model: dots-studio/dots-3-note-preview:free
-
+    model: dots-studio/dots-3-note-preview:free
+  title_generation:
+    enabled: false
+    provider: openrouter
+    model: dots-studio/dots-3-note-preview:free
   curator:
     provider: openrouter
-    model: inclusionai/ling-3.0-flash:free
-    fallback_chain:
-      - provider: openrouter
-        model: dots-studio/dots-3-note-preview:free
-
+    model: dots-studio/dots-3-note-preview:free
 display:
   compact: false
   personality: ''
@@ -165,7 +201,7 @@ stt:
 memory:
   memory_enabled: true
   user_profile_enabled: true
-  memory_char_limit: 4000
+  memory_char_limit: 2200
   user_char_limit: 1375
   nudge_interval: 10
   flush_min_turns: 6
@@ -177,76 +213,43 @@ moa:
   presets:
     default:
       reference_models:
-        - provider: openrouter-extra
-          model: stealth/ox-alpha
+        - provider: openrouter
+          model: deepseek/deepseek-v4-flash-0731
           enabled: false
-        - provider: openrouter-extra
-          model: stealth/ox-alpha
+        - provider: openrouter
+          model: google/gemini-3.7-flash
           enabled: false
       aggregator:
-        provider: openrouter-extra
-        model: stealth/ox-alpha
+        model: deepseek/deepseek-v4-flash-0731
       enabled: false
       degraded_reference_policy: loud
       fanout: user_turn
   reference_models:
-    - provider: openrouter-extra
-      model: stealth/ox-alpha
+    - provider: openrouter
+      model: deepseek/deepseek-v4-flash-0731
       enabled: false
-    - provider: openrouter-extra
-      model: stealth/ox-alpha
+    - provider: openrouter
+      model: google/gemini-3.7-flash
       enabled: false
   aggregator:
-    provider: openrouter-extra
-    model: stealth/ox-alpha
+    provider: openrouter
+    model: deepseek/deepseek-v4-flash-0731
   degraded_reference_policy: loud
   max_tokens: 4096
   fanout: user_turn
   enabled: false
 skills:
-  creation_nudge_interval: 15
-command_allowlist:
-  - git force push (rewrites remote history)
-  - script execution via -e/-c flag
-  - script execution via heredoc
-  - overwrite project env/config file
-  - PowerShell encoded command execution
-  - execute_code
-  - recursive delete
-  - force kill processes (Stop-Process -Force)
-  - git force push short flag (rewrites remote history)
-  - git reset --hard (destroys uncommitted changes)
-  - force kill processes (taskkill /F)
-hooks:
-  pre_tool_call:
-    - matcher: terminal
-      command: '"C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe"
-        "C:/Users/karlo/AppData/Local/Skyrim-AI-V5/hooks/completeness_gate.py" --pre'
-      timeout: 20
-    - command: '"C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe"
-        "C:/Users/karlo/AppData/Local/Skyrim-AI-V5/hooks/assumption_gate.py" --pre'
-      timeout: 20
-  pre_verify:
-    - command: '"C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe"
-        "C:/Users/karlo/AppData/Local/Skyrim-AI-V5/hooks/completeness_gate.py" --stop'
-      timeout: 40
-    - command: '"C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe"
-        "C:/Users/karlo/AppData/Local/Skyrim-AI-V5/hooks/assumption_gate.py" --stop'
-      timeout: 40
-  output_spill:
-    enabled: true
-    max_chars: 8000
-    preview_head: 500
-    preview_tail: 500
+  # The bundle already ships a curated cross-provider skill library. Automatic
+  # skill-creation nudges add prompt churn every N tool iterations and can grow
+  # unreviewed local skill drift; manual skill creation remains available.
+  creation_nudge_interval: 0
 security:
   allow_private_urls: true
 kanban:
   review_dispatch: true
 code_execution:
-  timeout: 300
-  max_tool_calls: 50
-streaming:
-  enabled: false
+  timeout: 600
+  max_tool_calls: 100
 telemetry:
   shared_metrics:
     enabled: false
@@ -263,133 +266,21 @@ session_reset:
   idle_minutes: 1440
   at_hour: 4
 group_sessions_per_user: true
-platform_toolsets:
-  cli:
-    - bfl
-    - browser
-    - clarify
-    - code_execution
-    - computer_use
-    - cronjob
-    - delegation
-    - file
-    - image_gen
-    - kanban
-    - memory
-    - session_search
-    - skills
-    - spotify
-    - terminal
-    - todo
-    - tts
-    - vision
-    - web
-    - x_search
-  telegram:
-    - hermes-telegram
-  discord:
-    - hermes-discord
-  whatsapp:
-    - hermes-whatsapp
-  slack:
-    - hermes-slack
-  signal:
-    - hermes-signal
-  homeassistant:
-    - hermes-homeassistant
-  qqbot:
-    - hermes-qqbot
-  yuanbao:
-    - hermes-yuanbao
-  teams:
-    - hermes-teams
-  google_chat:
-    - hermes-google_chat
-mcp_servers:
-  context7:
-    command: npx
-    args:
-      - -y
-      - '@upstash/context7-mcp@4.0.2'
-    enabled: true
-    connect_timeout: 30
-  sequential-thinking:
-    command: npx
-    args:
-      - -y
-      - '@modelcontextprotocol/server-sequential-thinking@2026.7.4'
-    enabled: false
-    connect_timeout: 30
-  github:
-    command: 
-      C:\Users\karlo\AppData\Local\Skyrim-AI-V5\github-mcp-server\github-mcp-server.exe
-    args:
-      - stdio
-      - --toolsets
-      - context,repos,pull_requests,actions,issues
-    enabled: false
-    connect_timeout: 30
-  housecarl:
-    command: S:/Apps/Skyrim Tools/houseCARL/housecarl/server/housecarl-mcp.exe
-    args: []
-    enabled: true
-  codebase-memory-mcp:
-    command: 
-      C:/Users/karlo/AppData/Local/Programs/codebase-memory-mcp/codebase-memory-mcp.exe
-    args: []
-    enabled: true
-  headroom:
-    command: 
-      C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe
-    args:
-      - C:/Users/karlo/AppData/Local/Skyrim-AI-V5/tools/headroom-mcp-launch.py
-    enabled: true
-  playwright:
-    command: npx
-    args:
-      - -y
-      - '@playwright/mcp@0.0.79'
-    enabled: false
-  firecrawl:
-    command: npx
-    args:
-      - -y
-      - firecrawl-mcp@3.24.0
-    enabled: false
-  skyrim-forge:
-    command: S:\Apps\Skyrim Tools\Skyrim-Forge\.venv\Scripts\python.exe
-    args:
-      - -m
-      - skyrim_forge
-      - mcp
-    enabled: false
-    connect_timeout: 30
-  serena:
-    command: C:\Users\karlo\.local\bin\serena.exe
-    args:
-      - start-mcp-server
-      - --context
-      - agent
-      - --enable-web-dashboard
-      - 'false'
-    enabled: false
-    connect_timeout: 30
-  roblox-studio:
-    command: cmd.exe
-    args:
-      - /c
-      - cd /d %LOCALAPPDATA%\Roblox && .\mcp.bat
-    enabled: true
-  robloxforge:
-    command: python
-    args:
-      - S:/Apps/Roblox Tools/RobloxForge/mcp_server/server.py
-    enabled: true
-  saintsrow-forge:
-    command: python
-    args:
-      - S:/Apps/Saints Row Tools/SaintsRowForge/mcp_server/server.py
-    enabled: false
+# MCP is NOT owned by this file. INSTALL-V7-AIO.ps1 wires the always-on core
+# and TOOLS\Set-McpProfile.ps1 wires capability profiles, both from what is
+# actually installed on this machine and in the scope each server belongs in.
+#
+# A live block here duplicated that ownership: because the installer copies
+# this file whole onto a machine that has no config.yaml, every entry became a
+# fresh-install default that outranked the bundle's own decisions. It shipped
+# sequential-thinking after 7.9.7 measured it out of the always-on core, a
+# GitHub package upstream had withdrawn, an unpinned @latest server, and
+# firecrawl-mcp -- 25 tool schemas, ~9,080 tokens on every turn, for search
+# and scrape that Hermes already does natively and keylessly.
+#
+# Keep this empty. To add a server, use the installer or `hermes mcp add`;
+# then it is yours, and no bundle upgrade will assume it was.
+mcp_servers: {}
 plugins:
   enabled:
     - disk-cleanup
@@ -400,74 +291,3 @@ plugins:
   entries:
     ponytail:
       allow_tool_override: false
-known_plugin_toolsets:
-  cli:
-    - a2a
-    - spotify
-known_builtin_toolsets:
-  cli:
-    - bfl
-    - browser
-    - clarify
-    - code_execution
-    - computer_use
-    - context_engine
-    - cronjob
-    - delegation
-    - discord
-    - discord_admin
-    - file
-    - homeassistant
-    - image_gen
-    - memory
-    - session_search
-    - skills
-    - spotify
-    - stt
-    - terminal
-    - todo
-    - tts
-    - video
-    - video_gen
-    - vision
-    - web
-    - x_search
-    - yuanbao
-
-# ── Security ──────────────────────────────────────────────────────────
-# Secret redaction is ON by default — strings that look like API keys,
-# tokens, and passwords are masked in tool output, logs, and chat
-# responses before the model or user ever sees them. Set redact_secrets
-# to false to disable (e.g. when developing the redactor itself).
-# tirith pre-exec scanning is enabled by default when the tirith binary
-# is available. Configure via security.tirith_* keys or env vars
-# (TIRITH_ENABLED, TIRITH_BIN, TIRITH_TIMEOUT, TIRITH_FAIL_OPEN).
-#
-# security:
-#   redact_secrets: true
-#   tirith_enabled: true
-#   tirith_path: "tirith"
-#   tirith_timeout: 5
-#   tirith_fail_open: true
-
-# ── Fallback Model ────────────────────────────────────────────────────
-# Automatic provider failover when primary is unavailable.
-# Uncomment and configure to enable. Triggers on rate limits (429),
-# overload (529), service errors (503), or connection failures.
-#
-# Supported providers:
-#   openrouter   (OPENROUTER_API_KEY)  — routes to any model
-#   openai-codex (OAuth — hermes auth) — OpenAI Codex
-#   nous         (OAuth — hermes auth) — Nous Portal
-#   zai          (ZAI_API_KEY)         — Z.AI / GLM
-#   kimi-coding  (KIMI_API_KEY)        — Kimi / Moonshot
-#   kimi-coding-cn (KIMI_CN_API_KEY)   — Kimi / Moonshot (China)
-#   minimax      (MINIMAX_API_KEY)     — MiniMax
-#   minimax-cn   (MINIMAX_CN_API_KEY)  — MiniMax (China)
-#   bedrock      (AWS IAM / boto3)     — AWS Bedrock (Converse API)
-#
-# For custom OpenAI-compatible endpoints, add base_url and key_env.
-#
-# fallback_model:
-#   provider: openrouter
-#   model: anthropic/claude-sonnet-4
