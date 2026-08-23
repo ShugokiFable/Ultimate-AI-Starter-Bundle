@@ -1566,8 +1566,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10269,
-  "sha256": "d8369e98d3e1e5c345cf8b190004e1c586df99328668de68271fd9ff14f5f667"
+  "size": 10322,
+  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -4381,8 +4381,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10269,
-  "sha256": "d8369e98d3e1e5c345cf8b190004e1c586df99328668de68271fd9ff14f5f667"
+  "size": 10322,
+  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -7181,8 +7181,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10269,
-  "sha256": "d8369e98d3e1e5c345cf8b190004e1c586df99328668de68271fd9ff14f5f667"
+  "size": 10322,
+  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -9981,8 +9981,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10269,
-  "sha256": "d8369e98d3e1e5c345cf8b190004e1c586df99328668de68271fd9ff14f5f667"
+  "size": 10322,
+  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -12791,8 +12791,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10269,
-  "sha256": "d8369e98d3e1e5c345cf8b190004e1c586df99328668de68271fd9ff14f5f667"
+  "size": 10322,
+  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -18396,8 +18396,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 72063,
-  "sha256": "3ba38d1ba3fefb8a8754ff16676d31c507557a40a22273a0755c8b397bba750b"
+  "size": 73432,
+  "sha256": "b68b577475df38703df618c3e0b488b2360c673798259fefae886a63550d0ae5"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18981,8 +18981,8 @@
  },
  {
   "path": "VERSION.txt",
-  "size": 7,
-  "sha256": "21b068375e39b9db793c60ced15c19d2cd8ca538c4613cbb5d69550f678a33dd"
+  "size": 9,
+  "sha256": "0d17445931039856df0331153a2785e84037767d63c2ef6e4629056e16a25218"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -19101,8 +19101,8 @@
  },
  {
   "path": "_V7-CANONICAL-SKILLS/capability-profiles/SKILL.md",
-  "size": 10269,
-  "sha256": "d8369e98d3e1e5c345cf8b190004e1c586df99328668de68271fd9ff14f5f667"
+  "size": 10322,
+  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
  },
  {
   "path": "_V7-CANONICAL-SKILLS/capability-routing/SKILL.md",
