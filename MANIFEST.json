@@ -1416,8 +1416,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-PROVIDER-HOME/CLAUDE.md",
-  "size": 5460,
-  "sha256": "af5612ebb7194e97941db876245832fb6dd5287bab60138e43e2ca3fdacb62f8"
+  "size": 24386,
+  "sha256": "ed833e0d4fcb3278ae2c36eaba15ea08d7fc85ff0774bc2ec9fb878b5c66d581"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-PROVIDER-HOME/settings.json",
@@ -4231,8 +4231,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-PROVIDER-HOME/AGENTS.md",
-  "size": 5535,
-  "sha256": "0a071b12c7c9c0d0245c6516d7b06f9bbbafbb51f03ee4f05fc0b1858c1dfe5f"
+  "size": 24460,
+  "sha256": "39f759a50cd0674c4a96861e9ff51e04f43ab43eb307ecee5b0a4eb574888680"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-PROVIDER-HOME/config.toml",
@@ -9776,8 +9776,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-WORKSPACE/AGENTS.md",
-  "size": 6059,
-  "sha256": "738f09238026e9c18ae59e4907c21dc42ca80959ae167d33d7bc7f1d2d394654"
+  "size": 19032,
+  "sha256": "bd0bd590333c74f97d420d1863060632663fc00cf772a1e0fcf786d99167c622"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/OPTIONAL-PROJECT-TEMPLATE/CHANGELOG.txt",
@@ -9836,8 +9836,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-PROVIDER-HOME/config.yaml",
-  "size": 9881,
-  "sha256": "1428c2b980dfe5088f02e6293b207a9e24a3c06eb39a4daa6c04d81f7fca2d0c"
+  "size": 12659,
+  "sha256": "f060935304db69ff80c4699e62856bdfdc01ed41ac0b6492fb70ee7175a02095"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -12631,8 +12631,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
-  "size": 9881,
-  "sha256": "1428c2b980dfe5088f02e6293b207a9e24a3c06eb39a4daa6c04d81f7fca2d0c"
+  "size": 12659,
+  "sha256": "f060935304db69ff80c4699e62856bdfdc01ed41ac0b6492fb70ee7175a02095"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-MAP.md",
@@ -15468,6 +15468,11 @@
   "path": "3-PREAMBLES/SOUL.md",
   "size": 1380,
   "sha256": "cc78c53511ecc131843b2429313be9560c448cba286740053d481a282748e38b"
+ },
+ {
+  "path": "3-PREAMBLES/SOUL.md.bak-20260823-171723",
+  "size": 2993,
+  "sha256": "a920aadb4234cea76b3bb0ebc8e3afc66865bce472f325c57f40acfc2cef32e8"
  },
  {
   "path": "AIO-INSTRUCTION.md",
@@ -18366,8 +18371,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 74455,
-  "sha256": "838537520dfff7c9bef3e8aca77a75a76367c345ac152b40716f15e149253e97"
+  "size": 74715,
+  "sha256": "bdd3479ebe8afc2c8eef3121b0330b586b8c1396c48bc5879a5e5586be984354"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18462,7 +18467,7 @@
  {
   "path": "INSTALL-V7-AIO.ps1",
   "size": 91698,
-  "sha256": "a56836702a1e1685d1d199d663b54a72564d692dfcfa505862bb5c92a0a651d0"
+  "sha256": "de9e2a0484afd34ce54d530a390c3199df4990db55f0fb6967faaeef5b367c46"
  },
  {
   "path": "LICENSE",
@@ -18473,6 +18478,16 @@
   "path": "OFFICIAL-PATH-AUDIT.txt",
   "size": 1305,
   "sha256": "5d9db0cfc6574a93842bde32a16529eddcf64187e588d4c2e03bf40b1e10cdb5"
+ },
+ {
+  "path": "PROMPTS/AIO-INSTRUCTION-COMPACT-CORE-v1.0.md",
+  "size": 7474,
+  "sha256": "1afce8744482ba31616062c696ebf61196dd9879e8b6a194174284f80e99662d"
+ },
+ {
+  "path": "PROMPTS/AIO-INSTRUCTION-WEB-CORE-v1.0.md",
+  "size": 4584,
+  "sha256": "f1d3e8e90e323a6226ff980c6f909dec7693a424ff5ec3feaf7cb1b51fcf9172"
  },
  {
   "path": "PROMPTS/AIO-INSTRUCTION.txt",
@@ -18507,12 +18522,12 @@
  {
   "path": "README.md",
   "size": 45518,
-  "sha256": "fcdb87c0079ceb881a74f3d4aff15ee1cb1653cb2f109e0ef765a64f0a206375"
+  "sha256": "3e8ac415e3a75820e13b4b92c3ec9972a4f8fd1d37f88cd4d7b3b2cfe4002b69"
  },
  {
   "path": "START-HERE.bat",
   "size": 714,
-  "sha256": "fcf74453c871cf5ca05d2659281ee11cf7f4d84ab84593e14b5d709eb49b7885"
+  "sha256": "09472ac57a1d51552db549adfb7a9cc11181e603f2829e599db24ce3f0b7ce21"
  },
  {
   "path": "START-HERE.txt",
@@ -22038,5 +22053,10 @@
   "path": "docs/history/V7.9.9.2-CHANGELOG.md",
   "size": 1360,
   "sha256": "57c7ed07c9bec7e840505723264ca899f8d8e76b7ed0103c829cf803c0eaa781"
+ },
+ {
+  "path": "docs/history/V7.9.9.3-CHANGELOG.md",
+  "size": 527,
+  "sha256": "910b0765c36e1b7312051b4452f976f892c339e1bbee0d21c2e5288dcbe9ab3f"
  }
 ]

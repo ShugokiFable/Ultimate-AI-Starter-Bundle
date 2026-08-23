@@ -1,3 +1,7 @@
+## 7.9.9.4
+
+- Hermes provider tree: refreshed `config.yaml` to current tuned setup (model aliases, auxiliary free-model routing, loop guardrails, MCP board incl. roblox-studio/robloxforge ON, ponytail/superpowers plugins); synced `COPY-TO-PROVIDER-HOME` copy
+
 ## 7.9.9.3
 
 - Default `AIO-INSTRUCTION.txt` upgraded to ULTIMATE GENERAL AIO - UABS MAX v6.0 (16-section operating contract).
