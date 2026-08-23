@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.9.2
+# Ultimate AI Starter Bundle v7.9.9.3
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -54,6 +54,8 @@ Rule of thumb: **enable for the job, park it after** — or just leave the small
 ---
 
 ## AI preamble (`AIO-INSTRUCTION.txt`)
+
+Compact variants for smaller hosts: `PROMPTS/AIO-INSTRUCTION-COMPACT-CORE-v1.0.md` and `PROMPTS/AIO-INSTRUCTION-WEB-CORE-v1.0.md`.
 
 The operating contract to paste into any provider's custom-instructions box.
 ~614 tokens, sized deliberately: it rides on every request, so every line has to
@@ -795,7 +797,7 @@ registry.
 
 ## Version
 
-**v7.9.9.2** — 2026-08-23. Installer hotfix: Register-MCP.ps1 crashed under PowerShell 5.1 when a provider had no prior skyrim-forge registration (stderr redirect under Stop preference). Affects every fresh machine with a claude/grok/codex CLI.
+**v7.9.9.3** — 2026-08-23. Installer hotfix: Register-MCP.ps1 crashed under PowerShell 5.1 when a provider had no prior skyrim-forge registration (stderr redirect under Stop preference). Affects every fresh machine with a claude/grok/codex CLI.
 
 **v7.9.9.1** — 2026-08-22. Based on v7.9.9; the capability-profile policy became the machine-wide default on every provider.
 
