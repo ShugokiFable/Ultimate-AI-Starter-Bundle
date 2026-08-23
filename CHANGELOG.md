@@ -1,3 +1,9 @@
+## 7.9.9.3
+
+- Default `AIO-INSTRUCTION.txt` upgraded to ULTIMATE GENERAL AIO - UABS MAX v6.0 (16-section operating contract).
+- New compact opt-in variants under `PROMPTS/`: COMPACT-CORE v1.0 and WEB-CORE v1.0 for smaller/web-only hosts.
+- `3-PREAMBLES/SOUL.md` stripped of a legacy DECOMPOSE tail that leaked into every stamped provider block.
+
 ## 7.9.9.2
 - Installer python probe now rejects virtualenv interpreters for `--user` installs (headroom component failed under venv-first PATHs); verified by full AIO rerun.
 
