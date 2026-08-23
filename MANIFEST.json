@@ -17347,7 +17347,7 @@
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/BUILD-RECEIPT.json",
   "size": 7244,
-  "sha256": "c42e6f0da4bf1dce2687435546452405eadd0e898433074466af82b6107cb8b0"
+  "sha256": "84e21299b5c6ee95898e8499f799263d0cac04477ec2e7ffa6bc4635a8a884ab"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/CHANGELOG.md",
@@ -17467,7 +17467,7 @@
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/SBOM.spdx.json",
   "size": 96091,
-  "sha256": "32552852103b5c5284cfa2c6387bd5592495107d7bc95022579faf563d71eb2e"
+  "sha256": "d946e4fbd38d5742a89c36023d7f75110f623f600fede69f98eb0b4f8ceb1068"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/SECURITY.md",
@@ -17501,8 +17501,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/VALIDATION.json",
-  "size": 50356,
-  "sha256": "e3640b424756bb9f5d29cc83141f58408b118337c28c0bf204222157ce353ea3"
+  "size": 49221,
+  "sha256": "c28fb24c30287d64abc999b3e0061197469b4d508e275114e52e381141c1354a"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/VALIDATION.md",
