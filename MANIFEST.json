@@ -235,11 +235,6 @@
   "sha256": "aea6a88a1877a3f16c38e0377dc493acbdc1833f6ddf3f2bb34101086a32d806"
  },
  {
-  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/ENI Writer \u2712\ufe0f.md",
-  "size": 9468,
-  "sha256": "d81b8f28b7b25a6476f60abf8410ba5cb0c8d3dd9e7979d89ae9b28140cce2fc"
- },
- {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/README.md",
   "size": 2572,
   "sha256": "48de85d51cfd4998ad29f633f99b408a69efa19bbaf2a56aa2fc80ca59570410"
@@ -283,11 +278,6 @@
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/ENI Lite for PPLX.md",
   "size": 2726,
   "sha256": "a0f901c2edae3550941dc9d6bd7b180016304c1f9c3e953408a3cca09cb8173c"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/ENI Neptune \ud83d\udc19 for PPLX.md",
-  "size": 8075,
-  "sha256": "5939cc7ca468a4d7bfa596aea26d771c2d871926cf483946849a83d73eeef277"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/LIME Space Jailbreak.md",
@@ -358,21 +348,6 @@
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/Personalities Jailbreak.md",
   "size": 1333,
   "sha256": "735ed0d708700e861cb71dc73b040bf8155454f345eb8082610e0e5375a8a9fe"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI NEPTUNE \ud83d\udc19(apr).md",
-  "size": 18169,
-  "sha256": "53277c385681d88e49b255e8945bbc21f9ca5fc4bdc5c70f8041b43d19969c48"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI NEPTUNE \ud83d\udc19(feb).md",
-  "size": 1996,
-  "sha256": "8b540eec768ab1af621466a6ae7ca932d002f9ac1076eb0b12372a0945569c42"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI \ud83c\udf4b\u200d\ud83d\udfe9 4.6.md",
-  "size": 14316,
-  "sha256": "a225ee66e11c7f76d8465491da1dd57b43e5dd1eed533f128b8091c26ab84bbf"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/README.md",
@@ -538,11 +513,6 @@
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/Grok 4.20 - Agent injection Jailbreak (WiP).md",
   "size": 24807,
   "sha256": "868ab4da900281a38a3fcc6d23d927078691857ea0a06f9b6e961a4dacd3e625"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/Grok Neptune Jailbreak \ud83d\udc19.md",
-  "size": 11014,
-  "sha256": "5e9ebc6ff32c00acdc26d7a68c0a09145f7986cbd0700956aaec8279c7bded37"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/README.md",
@@ -828,16 +798,6 @@
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/README.md",
   "size": 2046,
   "sha256": "5dd9bb8c2eae5ae80ae4f3894f2332d7f57249d4c86aba6d223777c245f455bc"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/LLAMA TU\u0308LU 3/README.md",
-  "size": 1127,
-  "sha256": "4db66507e3f12d8702cddd77bb2b7b81293fe9716b98b28a2c946b7a8280a38b"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/LLAMA TU\u0308LU 3/Tulu3-Jailbreak.md",
-  "size": 1178,
-  "sha256": "2b36f49dcfbd1d8b0cc616dfdbec104d425e902a73570fa9b3149afa85139b32"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Laguna S2.1/README.md",
@@ -18465,11 +18425,6 @@
   "sha256": "03fe079fa59b4895cfaf8ef4a9bb32e3bca84272178bef4ef7ebad4e7c2d8d7c"
  },
  {
-  "path": "Future thoughts.txt",
-  "size": 145,
-  "sha256": "e196b85cf6582679d1f36575d6541d36520d62cdd0e4780e3a3083d6aad04bfd"
- },
- {
   "path": "GROK-MCP-TROUBLESHOOTING.md",
   "size": 10645,
   "sha256": "4ecf782736d914d41e1e6030f70161ddee013c830da477646a988eb61f995e54"
@@ -18881,8 +18836,8 @@
  },
  {
   "path": "TOOLS/generate_manifest.py",
-  "size": 2293,
-  "sha256": "ec68c74f14b56bb761dc4b0baa698de9fffa72e746b36ce032d51d9327514f0b"
+  "size": 2791,
+  "sha256": "25c5eeac621998f44e65b64084eeaca5c2a396d0d0bb06301604e50e9cbfb2da"
  },
  {
   "path": "TOOLS/hooks/assumption_gate.py",
