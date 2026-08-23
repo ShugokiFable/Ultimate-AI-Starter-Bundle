@@ -947,7 +947,13 @@ if (-not $SkillsOnly) {
               foreach ($c in @('python', 'py', 'python3')) {
                 if (Get-Command $c -EA SilentlyContinue) {
                   $probe = if ($c -eq 'py') { @('-3', '-m', 'pip', '--version') } else { @('-m', 'pip', '--version') }
-                  try { & $c @probe *> $null; $py = $c; break } catch { }
+                  try { & $c @probe *> $null; if ($LASTEXITCODE -ne 0) { continue } } catch { continue }
+                  # A venv interpreter cannot --user install (user site-packages
+                  # are invisible inside a virtualenv), and shells whose PATH
+                  # puts a venv first used to fail the whole component here.
+                  $kind = ''
+                  try { $kind = (& $c -c "import sys; print('venv' if sys.prefix != sys.base_prefix else 'base')").Trim() } catch { }
+                  if ($kind -eq 'base' -or $c -eq 'py') { $py = $c; break }
                 }
               }
               if (-not $py) {

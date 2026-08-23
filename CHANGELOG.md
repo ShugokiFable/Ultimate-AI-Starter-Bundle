@@ -1,4 +1,5 @@
 ## 7.9.9.2
+- Installer python probe now rejects virtualenv interpreters for `--user` installs (headroom component failed under venv-first PATHs); verified by full AIO rerun.
 
 Installer hotfix. Register-MCP.ps1 threw under Windows PowerShell 5.1 whenever
 a provider had NO prior skyrim-forge registration: `mcp remove ... 2>$null`

@@ -18396,8 +18396,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 73946,
-  "sha256": "fd8434519940dc96b130074904b1ccd0cbacef602feff490b2fcd8e28fa9713f"
+  "size": 74109,
+  "sha256": "82f2ccfdb25c0f871ee312b8664789aa047f4d88af799403389841ca14efe585"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18486,8 +18486,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 90970,
-  "sha256": "135090ab358a2f1e9b0d03c5644f8254b254e97d4ad7dfd3996b81d5849f17d8"
+  "size": 91476,
+  "sha256": "f26c8bb6cdd8fe09e52c5c72ebf9aacca9a75d05f045463d3883ab056584765f"
  },
  {
   "path": "LICENSE",
@@ -22061,7 +22061,7 @@
  },
  {
   "path": "docs/history/V7.9.9.2-CHANGELOG.md",
-  "size": 651,
-  "sha256": "6617693d367b8443f1a0407c36fa77a2ccb1f26b5fd0c7c8ee1c3c1a5cfad270"
+  "size": 1360,
+  "sha256": "57c7ed07c9bec7e840505723264ca899f8d8e76b7ed0103c829cf803c0eaa781"
  }
 ]
