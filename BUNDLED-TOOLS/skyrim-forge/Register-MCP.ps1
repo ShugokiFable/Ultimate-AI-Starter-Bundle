@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [ValidateSet('All', 'Codex', 'Claude', 'Grok', 'Kimi', 'Hermes')]
     [string]$Provider = 'All',
@@ -133,7 +133,9 @@ function Invoke-Registration {
     try {
         switch ($Name) {
             'Codex' {
-                & $Executable mcp remove skyrim-forge 2>$null | Out-Null
+                $ErrorActionPreference = 'Continue'
+                & $Executable mcp remove skyrim-forge 2>&1 | Out-Null
+                $ErrorActionPreference = 'Stop'
                 & $Executable mcp add skyrim-forge -- $Python -m skyrim_forge mcp | Out-Null
                 if ($LASTEXITCODE -ne 0) { throw "Codex registration exited $LASTEXITCODE." }
                 & $Executable mcp get skyrim-forge | Out-Null
@@ -142,7 +144,9 @@ function Invoke-Registration {
             'Claude' {
                 if ($Executable) {
                     # Claude Code CLI surface (~/.claude.json)
-                    & $Executable mcp remove skyrim-forge -s user 2>$null | Out-Null
+                    $ErrorActionPreference = 'Continue'
+                    & $Executable mcp remove skyrim-forge -s user 2>&1 | Out-Null
+                    $ErrorActionPreference = 'Stop'
                     & $Executable mcp add --transport stdio --scope user skyrim-forge -- $Python -m skyrim_forge mcp | Out-Null
                     if ($LASTEXITCODE -ne 0) { throw "Claude registration exited $LASTEXITCODE." }
                 }
@@ -161,7 +165,9 @@ function Invoke-Registration {
                         detail = 'Grok wedges at 8 running MCP servers. Forge was not added. Run grok mcp disable mcp-search and/or disable another server, then rerun Register-MCP.ps1 -Provider Grok. Require Forge 5.1.5+ so tools/call carries resultType.'
                     }
                 }
-                & $Executable mcp remove skyrim-forge 2>$null | Out-Null
+                $ErrorActionPreference = 'Continue'
+                & $Executable mcp remove skyrim-forge 2>&1 | Out-Null
+                $ErrorActionPreference = 'Stop'
                 # Windows PowerShell 5 rewrites native `--` boundaries when the
                 # executable is invoked through a variable. Start-Process keeps
                 # Grok's documented separator and Python's `-m` as server args.

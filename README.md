@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.9.1
+# Ultimate AI Starter Bundle v7.9.9.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -752,6 +752,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.9.2** — 2026-08-23. Installer hotfix: Register-MCP.ps1 crashed under PowerShell 5.1 when a provider had no prior skyrim-forge registration (stderr redirect under Stop preference). Affects every fresh machine with a claude/grok/codex CLI.
 
 **v7.9.9.1** — 2026-08-22. Based on v7.9.9; the capability-profile policy became the machine-wide default on every provider.
 
