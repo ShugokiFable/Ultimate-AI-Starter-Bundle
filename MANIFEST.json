@@ -9836,8 +9836,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-PROVIDER-HOME/config.yaml",
-  "size": 12659,
-  "sha256": "f060935304db69ff80c4699e62856bdfdc01ed41ac0b6492fb70ee7175a02095"
+  "size": 9881,
+  "sha256": "1428c2b980dfe5088f02e6293b207a9e24a3c06eb39a4daa6c04d81f7fca2d0c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -12631,8 +12631,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
-  "size": 12659,
-  "sha256": "f060935304db69ff80c4699e62856bdfdc01ed41ac0b6492fb70ee7175a02095"
+  "size": 9881,
+  "sha256": "1428c2b980dfe5088f02e6293b207a9e24a3c06eb39a4daa6c04d81f7fca2d0c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-MAP.md",
@@ -15492,12 +15492,12 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 23591,
-  "sha256": "99beee4fc2df8e8b040e93facfa1162d5b29bde6e457632e0581b2f3c9f3487d"
+  "sha256": "2957f0aa81bde71738a04756d2d1e3871a8829dc62ce17f386ccd60ecf1ec2c8"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1494,
-  "sha256": "3a8dc9d65c05ba35c271df0a1655a9e2791dbe2a47746c7be05988c1cfb80927"
+  "sha256": "dc8460acd874526ff1af1d915589a7dc7e512c70d90c5c6f4045b026f25520ac"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -18462,7 +18462,7 @@
  {
   "path": "INSTALL-V7-AIO.bat",
   "size": 126,
-  "sha256": "b7370f056bfb11a14e5fede6aec57eac57ab73843e0416a5d7e3c735acefdd1a"
+  "sha256": "f2ee9c5aba13c244101eee8db55b3671f9ce9d37476f156e7b265655a231f2fb"
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
@@ -18532,7 +18532,7 @@
  {
   "path": "START-HERE.txt",
   "size": 8594,
-  "sha256": "5ed3dc5b5c8362f60fece375c88f206c72d4121980527a1bb42f49bf6b3abf80"
+  "sha256": "e4ae7ee8cde8dcea9fd620ae6e5609c7e488e3a3725c0fc80f7b98ae3e8f87cf"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18967,12 +18967,12 @@
  {
   "path": "VALIDATION.json",
   "size": 5124,
-  "sha256": "99fddb3fb55a18e5709f01bf317306371606df992117c61bc097b3b802379bf6"
+  "sha256": "43a597c29f404163b24d8e9cd18537116643c57279d932bdfdb9db9227fa9569"
  },
  {
   "path": "VERSION.txt",
   "size": 9,
-  "sha256": "9a036152c72cc443786c809d137e9fa50ee8c988b718bd836a9db41cbb8e2e5c"
+  "sha256": "865f8c94f51b5094cb76e8e86a4c562d5543bcfef39d51d203c236f28cdd12d0"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
