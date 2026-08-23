@@ -22,6 +22,12 @@ SKIP_NAMES = {'MANIFEST.json', '.git', '.coverage', 'coverage.xml', '.DS_Store',
 
 def main():
     root = sys.argv[1] if len(sys.argv) > 1 else '.'
+    # Only describe git-tracked files. Walking the raw filesystem pins
+    # personal/scratch files into MANIFEST, and a fresh clone then fails
+    # verification with MISSING for files it never had.
+    import subprocess
+    tracked = set(subprocess.run(['git', '-C', root, 'ls-files'], capture_output=True,
+                                 text=True).stdout.splitlines())
     rows = []
     total = 0
     for dp, dirs, fs in os.walk(root):
@@ -38,6 +44,8 @@ def main():
                 continue
             p = os.path.join(dp, f)
             rel = os.path.relpath(p, root).replace('\\', '/')
+            if rel not in tracked:
+                continue  # ponytail: untracked personal files are invisible to the pack
             data = open(p, 'rb').read()
             total += len(data)
             rows.append({'path': rel,
