@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Final fail-closed installed-state doctor for Ultimate AI Starter Bundle 7.9.x.
 #>
@@ -187,7 +187,9 @@ if(-not $SkipForge){
       # old cross-repository version-handshake command. Prove the installed copy
       # is runnable and read-only ready with the same health contract used by
       # Install-SkyrimForge.ps1.
+      $prevEap=$ErrorActionPreference; $ErrorActionPreference='Continue'
       $forgeDoctorRaw = (& $py -m skyrim_forge doctor 2>&1 | Out-String)
+      $ErrorActionPreference=$prevEap
       $forgeDoctorExit = $LASTEXITCODE
       if($forgeDoctorExit -ne 0){
         Err "Forge doctor failed with exit code $forgeDoctorExit. $($forgeDoctorRaw.Trim())"
