@@ -35,11 +35,6 @@
   "sha256": "9205266ab5a13aabf05d4ba7568f64b39c495ac841857285df4a7cd389ecc49b"
  },
  {
-  "path": "0-UNRESTRAINT-PACKS/AIO-Instruction-full.txt",
-  "size": 2639,
-  "sha256": "94616a5aed264539c95f33b5a074b8b550319f8fee7e0f585a02db30232d1639"
- },
- {
   "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/AIO.txt",
   "size": 982,
   "sha256": "6e857f99de226cab67d3cf468e74cf3598bb797af434a6ad5897e6d8cc353aca"
@@ -15466,8 +15461,8 @@
  },
  {
   "path": "AIO-INSTRUCTION.txt",
-  "size": 2789,
-  "sha256": "38fdade5a88788862eb3f0bd1f89034f7822afb00750f363534aa7e31a7af838"
+  "size": 9854,
+  "sha256": "1c7987415be55b897d0b5c4c88e2d2fc06de058cd17fd0a4956450637aaa7a6c"
  },
  {
   "path": "BOOTSTRAP.txt",
@@ -18366,8 +18361,8 @@
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AIO-INSTRUCTION.txt",
-  "size": 2639,
-  "sha256": "94616a5aed264539c95f33b5a074b8b550319f8fee7e0f585a02db30232d1639"
+  "size": 9854,
+  "sha256": "1c7987415be55b897d0b5c4c88e2d2fc06de058cd17fd0a4956450637aaa7a6c"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/CLAUDE.md",
@@ -18461,8 +18456,8 @@
  },
  {
   "path": "PROMPTS/AIO-INSTRUCTION.txt",
-  "size": 2639,
-  "sha256": "94616a5aed264539c95f33b5a074b8b550319f8fee7e0f585a02db30232d1639"
+  "size": 9854,
+  "sha256": "1c7987415be55b897d0b5c4c88e2d2fc06de058cd17fd0a4956450637aaa7a6c"
  },
  {
   "path": "PROMPTS/README.md",
