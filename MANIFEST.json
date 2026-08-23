@@ -15516,13 +15516,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 23584,
-  "sha256": "5f48343ca5c518d2ef34c09eec34fe26c9a479a9d61889546d6631e1190da39d"
+  "size": 23588,
+  "sha256": "f5642da1b2141da1f38477c7939f7eb38aa2e50f63574760b27813c9c8bca408"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 1492,
-  "sha256": "61cc24d5abe67d1a5559b833ed32077b53eb70051d4e0117873043f27e2ec1bb"
+  "size": 1494,
+  "sha256": "e752f2d83926dab7f3b891f524ca9f05de1195ae2f003636b788e03d58edcd3e"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -18481,13 +18481,13 @@
  },
  {
   "path": "INSTALL-V7-AIO.bat",
-  "size": 130,
-  "sha256": "5842f31aab0719166f56d3f452b330a294d95296b316f7df1e2a2142f7a46481"
+  "size": 126,
+  "sha256": "2c93bd0b622670ffedbb8cfdff1babd1fc6d6b1c90ee2071870df6eeb7baa6c2"
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 90966,
-  "sha256": "e8196172966c5138d779c4924d690330c473276c1f2cd998339875e9a255f929"
+  "size": 90970,
+  "sha256": "58b606161affe49fa4da450541aa1ac67ae9fa108f9e9d8447389cb87cdb17b7"
  },
  {
   "path": "LICENSE",
@@ -18531,18 +18531,18 @@
  },
  {
   "path": "README.md",
-  "size": 41782,
-  "sha256": "3c19a580092b2c003d2bf1068de3e7c2f13066b1f876f4bbad8c4fe3728c7162"
+  "size": 42586,
+  "sha256": "d05c03eb1734d126839ec278d7b24d02fb8c489ab5f036f32682181ca9d76632"
  },
  {
   "path": "START-HERE.bat",
-  "size": 712,
-  "sha256": "8334ae4a455433f17802b2b108373b05ee4e93b376a785d3c0fba7f52e04107d"
+  "size": 714,
+  "sha256": "ec94d86d6ddc35ae7ad11431556e1555acc576e1c5a732d81fd50a05a0a0eb34"
  },
  {
   "path": "START-HERE.txt",
-  "size": 8592,
-  "sha256": "7ae7f9c36e936f3db30236d5ace07301ac42acb2cc3f55819ad9a46e5f2c3142"
+  "size": 8594,
+  "sha256": "6f38071a32dd8c10af1e17d8df9edae211ef628298189556b9d19a3d871e0197"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18976,8 +18976,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 5122,
-  "sha256": "ac5ca19ca3671b6b68af7f8f5347c1b126d4fde1a0062932a0c3c3b73ac177b6"
+  "size": 5124,
+  "sha256": "8e31cefab687be015fffd45b092e7c5d21b359e90b8df42e27052a899e0689fa"
  },
  {
   "path": "VERSION.txt",
@@ -22053,5 +22053,10 @@
   "path": "docs/history/V7.9.9-CHANGELOG.md",
   "size": 12143,
   "sha256": "af094c19b0c87ab915d1e5026f3b0258c83d7072797f15a0c2a1c06b5afb1123"
+ },
+ {
+  "path": "docs/history/V7.9.9.1-CHANGELOG.md",
+  "size": 2223,
+  "sha256": "518e10e53d7a3d1122b2216025dc8fd0b5f37632bd30053f7af3e71343f032de"
  }
 ]

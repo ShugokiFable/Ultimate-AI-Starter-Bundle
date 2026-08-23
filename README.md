@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.9
+# Ultimate AI Starter Bundle v7.9.9.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -242,6 +242,19 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v7.9.9.1 — The always-on three
+
+- **Machine-wide MCP profile flip executed.** Every provider surface
+  (Hermes, Claude Code, Claude Desktop, Codex, Grok) now runs exactly
+  three always-on servers — `context7`, `github`, `headroom`. Everything
+  else (housecarl, skyrim-forge, codebase-memory, firecrawl,
+  sequential-thinking, serena, playwright, roblox-studio, robloxforge)
+  is registered but off by default, enabled per task by the
+  `capability-profiles` skill via `Set-McpProfile.ps1`.
+- `capability-profiles` canonical skill updated: "always-on two" is now
+  "always-on three"; provider copies byte-identical.
+- MANIFEST.json regenerated for the new hashes.
 
 ### v7.9.9 — Truthful capability routing
 
@@ -739,6 +752,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v7.9.9.1** — 2026-08-22. Based on v7.9.9; the capability-profile policy became the machine-wide default on every provider.
 
 **v7.9.9** — 2026-08-22. Based on v7.9.8.5; capability claims re-measured on clean machines.
 
