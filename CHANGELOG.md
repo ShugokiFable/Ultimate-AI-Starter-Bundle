@@ -3,6 +3,29 @@
 This file exists so the completeness gate can see the current version on the
 same commit that bumped `VERSION.txt`. Detail lives in the dated files.
 
+## 7.9.9.1
+
+Applied this pack's own capability-profiles policy on a real four-provider
+machine (Hermes, Claude Code, Claude Desktop, Codex, Grok; Kimi uninstalled).
+The policy was already written; the machine had drifted from it.
+
+- **Always-on core is now three, not two:** `context7`, `github`, `headroom`.
+  Headroom joins because three tiny schemas buy compression that pays rent.
+- **Everything else disabled by default on every provider**: housecarl,
+  skyrim-forge, codebase-memory-mcp, firecrawl-mcp, sequential-thinking,
+  serena, playwright-mcp, roblox-studio, robloxforge (~200 tool schemas and
+  ~10k tokens/turn recovered). Per-provider mechanics differ -- Hermes
+  `enabled: false` keys; Grok explicit `enabled = false` (its default is ON);
+  Codex non-core blocks commented out (no verified disable key); the Claude
+  pair strip global entries into a sibling `mcp-catalog.json` with one-line
+  re-enable instructions. SaintsRowForge stays deliberately unregistered:
+  installed is not enabled.
+- **Re-enable is per task, not per machine**: flip the one server back on
+  before the session that needs it, flip it off after. The catalog files and
+  commented blocks preserve every original definition byte-for-byte.
+- The canonical capability-profiles skill text was updated ("always-on two"
+  -> "always-on three") and synced to all five provider trees.
+
 ## 7.9.9
 
 Make the bundle's capability claims match what a clean machine can actually do,

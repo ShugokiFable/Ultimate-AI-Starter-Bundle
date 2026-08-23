@@ -54,12 +54,12 @@ router expensive:
 disabled everywhere except the project that asked for it. "Serena is installed"
 is not a reason to expect `find_symbol` in this session.
 
-## The always-on two
+## The always-on three
 
-`context7` and `github` are wired globally because they apply to every task:
-current API docs instead of recalled signatures, and the ability to verify a
-push rather than hope. Everything else is a profile, and every profile is
-**project-scoped**.
+`context7`, `github`, and `headroom` are wired globally because they apply to
+every task: current API docs instead of recalled signatures, verified pushes
+instead of hoped-for ones, and context compression that pays for itself.
+Everything else is a profile, and every profile is **project-scoped**.
 
 `sequential-thinking` was the third until 7.9.7 measured it: 1 tool, but a
 4,590-byte schema — ~1,148 tokens on every turn of every session, as much as
