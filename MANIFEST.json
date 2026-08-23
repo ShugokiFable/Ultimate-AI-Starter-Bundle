@@ -17416,8 +17416,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/Install-or-Update.ps1",
-  "size": 12987,
-  "sha256": "bf3395ada5db3129c3327f4b28fb92b43f97a6bd1c1b101e793d22efe616216d"
+  "size": 13097,
+  "sha256": "7578a9e331bfa2699085a2048fd2a107f37b2f5cd5fddc0158f82dec5de187fa"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/LICENSE",
@@ -18486,8 +18486,8 @@
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 91476,
-  "sha256": "f26c8bb6cdd8fe09e52c5c72ebf9aacca9a75d05f045463d3883ab056584765f"
+  "size": 91701,
+  "sha256": "b6a90562278ac35d666fe56b1d0e3aa97181c0e7146db664632a0ca8fb98ee44"
  },
  {
   "path": "LICENSE",
@@ -18781,8 +18781,8 @@
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",
-  "size": 15594,
-  "sha256": "a8dfed6bf11897b2133c544b47037638e73d09bf4d6338b9d28e7783c62880a4"
+  "size": 15696,
+  "sha256": "c2fd1fa159ad479c711260842e257df8e7e14139257af477003692a5082b9aff"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -18821,8 +18821,8 @@
  },
  {
   "path": "TOOLS/Test-Installed-State.ps1",
-  "size": 18935,
-  "sha256": "ad0966859629dd9de8ae58388d2becfb6bb9ea0a13d8b1946496c81545dd5647"
+  "size": 19049,
+  "sha256": "1b92737a7280e1f7d819623ce3f6a9fc5fe45c4150fd3c04c1abec4d513b8809"
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",

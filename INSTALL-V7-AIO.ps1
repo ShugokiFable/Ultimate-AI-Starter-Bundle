@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Ultimate AI Starter Bundle V7 - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
 
@@ -749,8 +749,10 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
             continue
           }
           try {
+            $prevEap=$ErrorActionPreference; $ErrorActionPreference='Continue'
             & claude plugin marketplace add "$srcRoot" 2>&1 | Out-Null
             & claude plugin install ("$pluginId@$mkName") --scope user 2>&1 | Out-Null
+            $ErrorActionPreference=$prevEap
             $cachePath = Join-Path $providerHome ('plugins\cache\' + $mkName + '\' + $pluginId)
             if (Test-Path -LiteralPath $cachePath -PathType Container) {
               $cEntry.native = $true
@@ -1641,7 +1643,9 @@ elseif ($SkillsOnly) { $doctorArgs += '-SkipForge' }
 # Start-Transcript does not reliably capture output written directly by a child
 # powershell.exe process, which previously left INSTALL-LAST.log with only the
 # generic exit code and hid the actual failing doctor check.
+$prevEap=$ErrorActionPreference; $ErrorActionPreference='Continue'
 $doctorOutput = @(& (Join-Path $PSHOME 'powershell.exe') @doctorArgs 2>&1)
+$ErrorActionPreference=$prevEap
 $doctorExitCode = $LASTEXITCODE
 foreach ($doctorLine in $doctorOutput) { Write-Host ([string]$doctorLine) }
 if ($doctorExitCode -ne 0) {

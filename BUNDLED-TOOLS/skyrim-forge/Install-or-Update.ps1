@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [switch]$BootstrapPython
 )
@@ -13,7 +13,9 @@ function Invoke-Checked {
     param([string]$Label, [string]$Command, [object[]]$Arguments = @())
     Write-Host ("  ..  " + $Label + '...') -ForegroundColor DarkCyan
     $Timer = [Diagnostics.Stopwatch]::StartNew()
+    $prevEap=$ErrorActionPreference; $ErrorActionPreference='Continue'
     $Output = (& $Command @Arguments 2>&1 | Out-String)
+    $ErrorActionPreference=$prevEap
     $ExitCode = $LASTEXITCODE
     $Timer.Stop()
     $Elapsed = $Timer.Elapsed.TotalSeconds

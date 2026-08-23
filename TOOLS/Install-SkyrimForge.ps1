@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Install Skyrim Forge from this pack's source tree and prove it runs.
 
@@ -266,7 +266,9 @@ $installedText = [IO.File]::ReadAllText((Join-Path $target 'VERSION.txt'))
 if ($installedText -notmatch ('(?m)^Skyrim Forge\s+' + [regex]::Escape($forgeVersion) + '\s*$')) {
   throw "Installed Forge is not the version this pack ships ($forgeVersion): $target"
 }
+$prevEap=$ErrorActionPreference; $ErrorActionPreference='Continue'
 $doctorRaw = (& $python -m skyrim_forge doctor 2>&1 | Out-String)
+$ErrorActionPreference=$prevEap
 if ($LASTEXITCODE -ne 0) { throw "Forge doctor failed after installation.`n$doctorRaw" }
 $doctor = $doctorRaw | ConvertFrom-Json
 if ($doctor.result -ne 'PASS') { throw "Forge doctor reports $($doctor.result) after installation.`n$doctorRaw" }
