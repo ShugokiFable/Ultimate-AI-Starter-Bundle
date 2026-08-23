@@ -1,3 +1,13 @@
+## 7.9.9.2
+
+Installer hotfix. Register-MCP.ps1 threw under Windows PowerShell 5.1 whenever
+a provider had NO prior skyrim-forge registration: `mcp remove ... 2>$null`
+turns the harmless "not found" stderr into a terminating error under Stop
+preference. Every fresh machine with claude/grok/codex CLIs hit this at the
+Forge step (INSTALL FAILED, exit 1). Fix: merge streams (`2>&1`) at all three
+remove sites. Found by running the real AIO installer end-to-end against the
+post-v7.9.9.1 dormant-MCP machine state.
+
 # Changelog
 
 This file exists so the completeness gate can see the current version on the
