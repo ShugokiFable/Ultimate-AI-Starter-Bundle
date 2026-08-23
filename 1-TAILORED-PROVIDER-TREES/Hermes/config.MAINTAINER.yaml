@@ -1,0 +1,447 @@
+# Maintainer reference ONLY - karlo's live Hermes config.
+# NOT shipped: excluded from release zips and source manifest.
+# The shippable starter template is config.yaml next to this file.
+model:
+  default: stealth/ox-alpha
+  provider: openrouter
+  base_url: ''
+  aliases:
+    ox: openrouter/stealth/ox-alpha
+    deepseek-v4: openrouter/deepseek/deepseek-v4-flash-0731
+    deepseek-v4-vision: openrouter/deepseek/deepseek-v4-flash-vision-exp
+    dots3-free: openrouter/dots-studio/dots-3-note-preview:free
+    nemotron-super-free: openrouter/nvidia/nemotron-3-super-120b-a12b:free
+    ling-cheap: openrouter/inclusionai/ling-3.0-flash
+database:
+  journal_mode: wal
+runtime:
+  nofile_soft_limit: 4096
+agent:
+  max_turns: 350
+  verbose: false
+  reasoning_effort: ultra
+  personalities: {}
+terminal:
+  backend: local
+  cwd: .
+  timeout: 180
+  home_mode: auto
+  container_cpu: 1
+  container_memory: 5120
+  container_disk: 51200
+  container_persistent: true
+  docker_mount_cwd_to_workspace: false
+  lifetime_seconds: 300
+browser:
+  inactivity_timeout: 120
+  allow_private_urls: true
+file_read_max_chars: 80000
+tool_output:
+  max_bytes: 30000
+  max_lines: 1500
+  max_line_length: 2000
+tool_loop_guardrails:
+  warnings_enabled: true
+  hard_stop_enabled: true
+  warn_after:
+    exact_failure: 2
+    same_tool_failure: 3
+    idempotent_no_progress: 2
+  hard_stop_after:
+    exact_failure: 5
+    same_tool_failure: 8
+    idempotent_no_progress: 5
+compression:
+  enabled: true
+  progress_notices: true
+  threshold: 0.7
+  threshold_tokens: 200000
+  target_ratio: 0.25
+  tail_mode: lean
+  protect_last_n: 12
+  min_tail_user_messages: 1
+  max_attempts: 3
+  proactive_prune_tokens: 48000
+  proactive_prune_min_result_chars: 8000
+  proactive_prune_min_reclaim_tokens: 4096
+  protect_first_n: 3
+  codex_gpt55_autoraise: true
+  codex_app_server_auto: native
+  codex_responses_native: false
+  codex_responses_compact_threshold: 200000
+  in_place: true
+  idle_compact_after_seconds: 1800
+prompt_caching:
+  cache_ttl: 5m
+auxiliary:
+  vision:
+    provider: openrouter
+    model: dots-studio/dots-3-note-preview:free
+    fallback_chain:
+      - provider: openrouter
+        model: deepseek/deepseek-v4-flash-vision-exp
+  web_extract:
+    provider: openrouter
+    model: nvidia/nemotron-3-super-120b-a12b:free
+    fallback_chain:
+      - provider: openrouter
+        model: deepseek/deepseek-v4-flash-0731
+  compression:
+    provider: openrouter
+    model: dots-studio/dots-3-note-preview:free
+    fallback_chain:
+      - provider: openrouter
+        model: deepseek/deepseek-v4-flash-0731
+  skills_hub:
+    provider: openrouter
+    model: nvidia/nemotron-3-super-120b-a12b:free
+    fallback_chain:
+      - provider: openrouter
+        model: deepseek/deepseek-v4-flash-0731
+  approval:
+    provider: auto
+    model: ''
+  mcp:
+    provider: auto
+    model: ''
+  title_generation:
+    enabled: true
+    provider: openrouter
+    model: nvidia/nemotron-3-super-120b-a12b:free
+    fallback_chain:
+      - provider: openrouter
+        model: deepseek/deepseek-v4-flash-0731
+  curator:
+    provider: openrouter
+    model: dots-studio/dots-3-note-preview:free
+    fallback_chain:
+      - provider: openrouter
+        model: deepseek/deepseek-v4-flash-0731
+display:
+  compact: false
+  personality: ''
+  busy_input_mode: interrupt
+  bell_on_complete: false
+  show_reasoning: true
+  background_process_notifications: concise
+  streaming: true
+  skin: default
+  interim_assistant_messages: true
+  tool_progress: all
+  cleanup_progress: false
+  long_running_notifications: true
+  busy_ack_detail: true
+stt:
+  enabled: true
+  language: en
+  local:
+    model: base
+  openai:
+    model: whisper-1
+    language: ''
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+  memory_char_limit: 4000
+  user_char_limit: 1375
+  nudge_interval: 10
+  flush_min_turns: 6
+delegation:
+  max_iterations: 50
+  max_concurrent_children: 2
+  max_spawn_depth: 1
+moa:
+  presets:
+    default:
+      reference_models:
+        - provider: openrouter
+          model: dots-studio/dots-3-note-preview:free
+          enabled: false
+        - provider: openrouter
+          model: nvidia/nemotron-3-super-120b-a12b:free
+          enabled: false
+      aggregator:
+        provider: openrouter
+        model: deepseek/deepseek-v4-flash-0731
+      enabled: false
+      degraded_reference_policy: loud
+      fanout: user_turn
+  reference_models:
+    - provider: openrouter
+      model: dots-studio/dots-3-note-preview:free
+      enabled: false
+    - provider: openrouter
+      model: nvidia/nemotron-3-super-120b-a12b:free
+      enabled: false
+  aggregator:
+    provider: openrouter
+    model: deepseek/deepseek-v4-flash-0731
+  degraded_reference_policy: loud
+  max_tokens: 4096
+  fanout: user_turn
+  enabled: false
+skills:
+  creation_nudge_interval: 15
+command_allowlist:
+  - git force push (rewrites remote history)
+  - script execution via -e/-c flag
+  - script execution via heredoc
+  - overwrite project env/config file
+  - PowerShell encoded command execution
+  - execute_code
+  - recursive delete
+  - force kill processes (Stop-Process -Force)
+  - git force push short flag (rewrites remote history)
+  - git reset --hard (destroys uncommitted changes)
+  - force kill processes (taskkill /F)
+hooks:
+  pre_tool_call:
+    - matcher: terminal
+      command: '"C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe"
+        "C:/Users/karlo/AppData/Local/Skyrim-AI-V5/hooks/completeness_gate.py" --pre'
+      timeout: 20
+    - command: '"C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe"
+        "C:/Users/karlo/AppData/Local/Skyrim-AI-V5/hooks/assumption_gate.py" --pre'
+      timeout: 20
+  pre_verify:
+    - command: '"C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe"
+        "C:/Users/karlo/AppData/Local/Skyrim-AI-V5/hooks/completeness_gate.py" --stop'
+      timeout: 40
+    - command: '"C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe"
+        "C:/Users/karlo/AppData/Local/Skyrim-AI-V5/hooks/assumption_gate.py" --stop'
+      timeout: 40
+  output_spill:
+    enabled: true
+    max_chars: 8000
+    preview_head: 500
+    preview_tail: 500
+security:
+  allow_private_urls: true
+kanban:
+  review_dispatch: true
+code_execution:
+  timeout: 300
+  max_tool_calls: 50
+streaming:
+  enabled: false
+telemetry:
+  shared_metrics:
+    enabled: false
+updates:
+  pre_update_backup: false
+  backup_keep: 5
+  non_interactive_local_changes: stash
+_config_version: 37
+provider_routing:
+  sort: price
+  require_parameters: true
+session_reset:
+  mode: none
+  idle_minutes: 1440
+  at_hour: 4
+group_sessions_per_user: true
+platform_toolsets:
+  cli:
+    - bfl
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - cronjob
+    - delegation
+    - file
+    - image_gen
+    - kanban
+    - memory
+    - session_search
+    - skills
+    - spotify
+    - terminal
+    - todo
+    - tts
+    - vision
+    - web
+    - x_search
+  telegram:
+    - hermes-telegram
+  discord:
+    - hermes-discord
+  whatsapp:
+    - hermes-whatsapp
+  slack:
+    - hermes-slack
+  signal:
+    - hermes-signal
+  homeassistant:
+    - hermes-homeassistant
+  qqbot:
+    - hermes-qqbot
+  yuanbao:
+    - hermes-yuanbao
+  teams:
+    - hermes-teams
+  google_chat:
+    - hermes-google_chat
+mcp_servers:
+  context7:
+    command: npx
+    args:
+      - -y
+      - '@upstash/context7-mcp@4.0.2'
+    enabled: true
+    connect_timeout: 30
+  sequential-thinking:
+    command: npx
+    args:
+      - -y
+      - '@modelcontextprotocol/server-sequential-thinking@2026.7.4'
+    enabled: false
+    connect_timeout: 30
+  github:
+    command: C:\Users\karlo\AppData\Local\Skyrim-AI-V5\github-mcp-server\github-mcp-server.exe
+    args:
+      - stdio
+      - --toolsets
+      - context,repos,pull_requests,actions,issues
+    enabled: false
+    connect_timeout: 30
+  housecarl:
+    command: S:/Apps/Skyrim Tools/houseCARL/housecarl/server/housecarl-mcp.exe
+    args: []
+    enabled: false
+  codebase-memory-mcp:
+    command: C:/Users/karlo/AppData/Local/Programs/codebase-memory-mcp/codebase-memory-mcp.exe
+    args: []
+    enabled: false
+  headroom:
+    command: C:/Users/karlo/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe
+    args:
+      - C:/Users/karlo/AppData/Local/Skyrim-AI-V5/tools/headroom-mcp-launch.py
+    enabled: true
+  playwright:
+    command: npx
+    args:
+      - -y
+      - '@playwright/mcp@0.0.79'
+    enabled: false
+  firecrawl:
+    command: npx
+    args:
+      - -y
+      - firecrawl-mcp@3.24.0
+    enabled: false
+  skyrim-forge:
+    command: S:\Apps\Skyrim Tools\Skyrim-Forge\.venv\Scripts\python.exe
+    args:
+      - -m
+      - skyrim_forge
+      - mcp
+    enabled: false
+    connect_timeout: 30
+  serena:
+    command: C:\Users\karlo\.local\bin\serena.exe
+    args:
+      - start-mcp-server
+      - --context
+      - agent
+      - --enable-web-dashboard
+      - 'false'
+    enabled: false
+    connect_timeout: 30
+  roblox-studio:
+    command: cmd.exe
+    args:
+      - /c
+      - cd /d %LOCALAPPDATA%\Roblox && .\mcp.bat
+    enabled: false
+  robloxforge:
+    command: python
+    args:
+      - S:/Apps/Roblox Tools/RobloxForge/mcp_server/server.py
+    enabled: false
+  saintsrow-forge:
+    command: python
+    args:
+      - S:/Apps/Saints Row Tools/SaintsRowForge/mcp_server/server.py
+    enabled: false
+plugins:
+  enabled:
+    - disk-cleanup
+    - ponytail
+    - superpowers/.hermes-plugin
+  disabled:
+    - web/brave_free
+  entries:
+    ponytail:
+      allow_tool_override: false
+known_plugin_toolsets:
+  cli:
+    - a2a
+    - spotify
+known_builtin_toolsets:
+  cli:
+    - bfl
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - context_engine
+    - cronjob
+    - delegation
+    - discord
+    - discord_admin
+    - file
+    - homeassistant
+    - image_gen
+    - memory
+    - session_search
+    - skills
+    - spotify
+    - stt
+    - terminal
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+    - yuanbao
+
+# ── Security ──────────────────────────────────────────────────────────
+# Secret redaction is ON by default — strings that look like API keys,
+# tokens, and passwords are masked in tool output, logs, and chat
+# responses before the model or user ever sees them. Set redact_secrets
+# to false to disable (e.g. when developing the redactor itself).
+# tirith pre-exec scanning is enabled by default when the tirith binary
+# is available. Configure via security.tirith_* keys or env vars
+# (TIRITH_ENABLED, TIRITH_BIN, TIRITH_TIMEOUT, TIRITH_FAIL_OPEN).
+#
+# security:
+#   redact_secrets: true
+#   tirith_enabled: true
+#   tirith_path: "tirith"
+#   tirith_timeout: 5
+#   tirith_fail_open: true
+
+# ── Fallback Model ────────────────────────────────────────────────────
+# Automatic provider failover when primary is unavailable.
+# Uncomment and configure to enable. Triggers on rate limits (429),
+# overload (529), service errors (503), or connection failures.
+#
+# Supported providers:
+#   openrouter   (OPENROUTER_API_KEY)  — routes to any model
+#   openai-codex (OAuth — hermes auth) — OpenAI Codex
+#   nous         (OAuth — hermes auth) — Nous Portal
+#   zai          (ZAI_API_KEY)         — Z.AI / GLM
+#   kimi-coding  (KIMI_API_KEY)        — Kimi / Moonshot
+#   kimi-coding-cn (KIMI_CN_API_KEY)   — Kimi / Moonshot (China)
+#   minimax      (MINIMAX_API_KEY)     — MiniMax
+#   minimax-cn   (MINIMAX_CN_API_KEY)  — MiniMax (China)
+#   bedrock      (AWS IAM / boto3)     — AWS Bedrock (Converse API)
+#
+# For custom OpenAI-compatible endpoints, add base_url and key_env.
+#
+# fallback_model:
+#   provider: openrouter
+#   model: anthropic/claude-sonnet-4

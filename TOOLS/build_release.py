@@ -19,7 +19,7 @@ def _prefix(root:Path)->str:
     return 'Ultimate-AI-Starter-Bundle-v'+_pack_version(root)
 EXCLUDE_PARTS={'.git','.worktrees','.venv','venv','__pycache__','node_modules','.pytest_cache','.mypy_cache','.ruff_cache','.tox','.nox','htmlcov','cache','dist','artifacts'}
 EXCLUDE_SUFFIXES={'.pyc','.pyo','.log'}
-EXCLUDE_NAMES={'INSTALLATION.json','.DS_Store','.coverage','coverage.xml'}
+EXCLUDE_NAMES={'INSTALLATION.json','.DS_Store','.coverage','coverage.xml','config.MAINTAINER.yaml'}
 # Forge is not an offline payload any more. Its source lives in the tree at
 # BUNDLED-TOOLS/skyrim-forge, so BOTH variants carry it without a special case,
 # and there is no archive whose version could disagree with the installer.

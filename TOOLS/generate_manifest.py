@@ -17,7 +17,7 @@ SKIP_DIRS = {'.git', '.worktrees', '__pycache__', 'node_modules', 'cache', 'dist
 SKIP_NAMES = {'MANIFEST.json', '.git', '.coverage', 'coverage.xml', '.DS_Store',
               # Written by TESTS/evidence-scenarios/check_fixtures.py when it
               # proves scenario C still fails. Output of a fixture, not content.
-              'app.log'}
+              'app.log', 'config.MAINTAINER.yaml'}
 
 
 def main():

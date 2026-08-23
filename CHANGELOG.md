@@ -1,4 +1,4 @@
-## 7.9.9.5
+## 7.9.9.6
 
 - Hermes provider tree: refreshed `config.yaml` to current tuned setup (model aliases, auxiliary free-model routing, loop guardrails, MCP board incl. roblox-studio/robloxforge ON, ponytail/superpowers plugins); synced `COPY-TO-PROVIDER-HOME` copy
 
