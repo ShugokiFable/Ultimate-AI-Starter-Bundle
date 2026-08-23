@@ -10,6 +10,48 @@ Install skills, MCP servers, plugins, and offline tools for:
 
 Skyrim is a major included domain. The pack is also a general "good start" for serious AI-assisted development.
 
+---
+
+## ⚡ NEW TO AI CLI TOOLS? Read this first: installed ≠ enabled
+
+One distinction explains almost everything about how this pack behaves:
+
+| State | What it means | What it costs you |
+|---|---|---|
+| **INSTALLED** | The tool exists on disk | Disk space only. **Zero** effect on your AI chats. |
+| **ENABLED** | Registered in a provider's config | Its tool descriptions ride along inside **every message you send, in every chat, forever** — related to your task or not. |
+
+The 146 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, the heaviest server (houseCARL) burns ~17,000 tokens *every single turn*, and enabling the entire catalog would cost ~40,000+ tokens/turn before you've typed a word. That's why the installer enables almost nothing.
+
+### What's ON after install
+
+Exactly three servers, everywhere: `context7` (library docs), `github` (repo access — zero-config for new users), `headroom` (context compression). Total: ~3,700 tokens/turn. Everything else is **parked**: installed, harmless, invisible, free.
+
+### There is NO auto-disable. No timer. No expiry.
+
+If your AI enables something to do a job — say, the Roblox Studio server during a game jam, or houseCARL to debug a mod load order — **it stays on across restarts and chats until a human turns it off.** That is deliberate: nothing will silently rip tools out from under a running project, and nothing will silently bill you either — the switch is visible and yours. Done with it? Park it in one line:
+
+```powershell
+# Hermes (then restart the app)
+hermes config set mcp_servers.<name>.enabled false   # true to re-enable
+
+# Claude Code
+claude mcp remove <name>          # claude mcp add ... to bring it back
+
+# Codex / Grok / Kimi — open the provider's config file and set enabled=false,
+# comment the entry out, or delete it. Restore the same way.
+```
+
+Not sure what's on, or what a task actually needs?
+
+```powershell
+powershell -ExecutionPolicy Bypass -File TOOLS\Set-McpProfile.ps1 -List            # see profiles & state
+powershell -ExecutionPolicy Bypass -File TOOLS\Set-McpProfile.ps1 -Auto -Path C:\code\my-app   # enable just what THIS project needs
+```
+
+Rule of thumb: **enable for the job, park it after** — or just leave the small stuff on and never think about it again. The pack's agents know this too: the `capability-profiles` skill tells them to flip servers on and off themselves as tasks come and go.
+
+---
 
 ## AI preamble (`AIO-INSTRUCTION.txt`)
 
