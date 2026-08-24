@@ -200,7 +200,7 @@ In PowerShell, `curl` is an alias for `Invoke-WebRequest` and does **not** accep
 
 ### Working fix on this machine (v7.9.8.5 field note)
 
-`%LOCALAPPDATA%\Skyrim-AI-V5\tools\cbm-dashboard-plus.py` is a same-origin loopback
+`%LOCALAPPDATA%\Ultimate-AI-Starter-Bundle\tools\cbm-dashboard-plus.py` is a same-origin loopback
 proxy on **http://127.0.0.1:9751/** serving the stock dashboard plus injected real
 totals, per-project nodes/edges and language badges — it exists precisely because of
 #1663. Prefer it for human dashboarding; autostarts at login. Upstream rejects any

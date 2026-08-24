@@ -1,4 +1,4 @@
-﻿# Example MCP snippets for V5 tools
+﻿# Example MCP snippets for Uabs tools
 # Copy only what you installed. Replace paths. Restart the AI app after edits.
 
 # ---------- Grok Build: %USERPROFILE%\.grok\config.toml ----------

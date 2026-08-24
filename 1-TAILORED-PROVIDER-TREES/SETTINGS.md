@@ -19,8 +19,8 @@ provider home. They are not a dump of any one machine.
   `CLAUDE.md` / `AGENTS.md` / Hermes `SOUL.md`
 - A subscription model name (Claude Fable, a pinned Codex runtime hash, …)
 
-`INSTALL-V7-AIO.ps1` installs these automatically. `-SkipStarterSettings` opts out.
+`INSTALL-AIO.ps1` installs these automatically. `-SkipStarterSettings` opts out.
 Hermes `-SkipHermesConfig` still skips only Hermes.
 
 A template that contains a user profile path is rejected by the installer and by
-`TESTS\Test-V7-Pack.ps1`.
+`TESTS\Test-Pack.ps1`.

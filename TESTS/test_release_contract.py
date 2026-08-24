@@ -23,7 +23,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CANON = ROOT / "_V7-CANONICAL-SKILLS"
+CANON = ROOT / "_CANONICAL-SKILLS"
 PROVIDERS = ("Claude", "Codex", "Grok", "Hermes", "Kimi")
 
 VERSION = (ROOT / "VERSION.txt").read_text(encoding="utf-8-sig").strip()   # current bundle version
@@ -211,27 +211,31 @@ def test_bootstrap() -> None:
     start = ROOT / "START-HERE.bat"
     assert start.is_file(), "canonical START-HERE.bat missing"
     txt = read(start).lower()
-    assert "install-v7-aio.ps1" in txt
+    assert "install-aio.ps1" in txt
     assert "set \"exitcode=%errorlevel%\"" in txt
     assert "exit /b %exitcode%" in txt
 
-    compat = read(ROOT / "INSTALL-V7-AIO.bat").lower()
+    compat = read(ROOT / "INSTALL-V8-AIO.bat").lower()
     assert 'call "%~dp0start-here.bat" %*' in compat
     assert "install-v7-aio.ps1" not in compat
     assert "exit /b %errorlevel%" in compat
     assert "skyrim ai v5" not in compat
 
-    ps = read(ROOT / "INSTALL-V7-AIO.ps1")
+    ps = read(ROOT / "INSTALL-AIO.ps1")
     assert VERSION in ps
     doctor = "Test-Installed-State.ps1"
     assert doctor in ps, "final install-state doctor is not invoked"
     assert ps.index(doctor) < ps.index('INSTALL COMPLETE'), "doctor must run before success banner"
     assert "Optional Forge" not in ps, "Forge still presented as manual optional next step"
     assert "BUNDLED-TOOLS\\skyrim-forge\\VERSION.txt" in ps, "AIO no longer reads the in-tree Forge version"
-    assert "-BundleVersion" not in ps_code(ROOT / "INSTALL-V7-AIO.ps1"), (
+    assert "-BundleVersion" not in ps_code(ROOT / "INSTALL-AIO.ps1"), (
         "AIO still negotiates a bundle version with its own subtree"
     )
     assert "Microsoft.DotNet.SDK.8" in ps, ".NET 8 SDK is required for default Spooky component"
+    assert "Oven-sh.Bun" in ps and "Find-UabsBunExecutable" in ps, "default Claude plugin install does not provision Bun"
+    assert "Microsoft\\WinGet\\Packages\\Oven-sh.Bun_" in ps, "current-process Bun discovery misses Winget's package directory"
+    assert "claude-mem','telemetry','disable" in ps, "claude-mem telemetry is left on by the AIO"
+    assert "claude-mem','start" in ps, "claude-mem install still leaves its worker as a manual step"
 
 
 
@@ -298,9 +302,16 @@ def test_gate_and_remote_fail_closed() -> None:
 
     remote = read(ROOT / "INSTALL-REMOTE.ps1")
     assert "if ($LASTEXITCODE -ne 0) { Fail" in remote, "remote installer can still print DONE after installer failure"
+    assert "Programs\\Ultimate-AI-Starter-Bundle" in remote, "remote installer still uses a version-stamped/state path"
+    assert "$dest = $DestRoot" in remote and "$dest + '.previous'" in remote, (
+        "remote installer lacks stable destination plus rollback"
+    )
+    assert "archive version $extractedVersion does not match requested tag $tag" in remote, (
+        "remote installer does not validate extracted bytes against the requested release"
+    )
 
-    common = read(ROOT / "TOOLS" / "V7-Common.ps1")
-    block = common[common.index("function Install-V5Winget"):]
+    common = read(ROOT / "TOOLS" / "UABS-Common.ps1")
+    block = common[common.index("function Install-UabsWinget"):]
     block = block[: block.index("function ", 10)]
     assert "$LASTEXITCODE" in block and ("return $false" in block or "throw" in block), "winget failures are not checked"
 
@@ -479,7 +490,7 @@ def test_release_builder_contract() -> None:
         }
         required = {
             "START-HERE.bat": b"@echo off\r\n",
-            "INSTALL-V7-AIO.ps1": b"# aio\n",
+            "INSTALL-AIO.ps1": b"# aio\n",
             "BUNDLED-TOOLS/CATALOG.json": b"{}\n",
             "BUNDLED-TOOLS/OFFLINE-MANIFEST.json": (json.dumps(offline_inventory, indent=2) + "\n").encode("utf-8"),
             "VERSION.txt": VERSION.encode("utf-8") + b"\n",
@@ -534,7 +545,7 @@ def test_current_forge_docs_contract() -> None:
     current = [
         ROOT / "README.md",
         ROOT / "TOOLS" / "RECOMMENDED-INSTALLS.md",
-        ROOT / "_V7-CANONICAL-SKILLS" / "skyrim-forge" / "SKILL.md",
+        ROOT / "_CANONICAL-SKILLS" / "skyrim-forge" / "SKILL.md",
     ]
     for p in current:
         text = read(p)
@@ -550,8 +561,8 @@ def test_current_forge_docs_contract() -> None:
         read(ROOT / "BUNDLED-TOOLS" / "skyrim-forge" / "README.md"),
     ]
     for doc in current_launch_docs:
-        assert ".\\INSTALL-V7-AIO.bat" not in doc, "current docs still recommend the legacy V7 BAT instead of START-HERE"
-        assert "Run the bundle's `INSTALL-V7-AIO.bat`" not in doc, "embedded Forge README points at the legacy launcher"
+        assert ".\\INSTALL-V8-AIO.bat" not in doc, "current docs still recommend the legacy V7 BAT instead of START-HERE"
+        assert "Run the bundle's `INSTALL-V8-AIO.bat`" not in doc, "embedded Forge README points at the legacy launcher"
 
 
 
@@ -578,7 +589,7 @@ def test_ps51_utf8_reads_are_explicit() -> None:
                 assert ps.read_bytes().startswith(b"\xef\xbb\xbf"), f"PS5.1 UTF-8 BOM lost: {ps}"
 
 def test_windows_ci_and_ps51_static_contract() -> None:
-    common = read(ROOT / 'TOOLS' / 'V7-Common.ps1')
+    common = read(ROOT / 'TOOLS' / 'UABS-Common.ps1')
     assert "$text -split '\\r?\\n'" in common, 'Hermes config line split must be a valid one-line regex'
     remote = read(ROOT / 'INSTALL-REMOTE.ps1')
     assert remote.count("*-Full-Offline.zip") == 1, 'remote installer Full preference block duplicated'
@@ -604,7 +615,7 @@ def test_windows_ci_and_ps51_static_contract() -> None:
     assert "\\n    $providerHome" not in doctor, "doctor contains literal \\n edit debris that comments out provider-home setup"
     assert "bundle-contract" not in doctor, "final doctor still calls Forge 5.x bundle-contract removed in Forge 6.0.0"
     assert "-m skyrim_forge doctor" in doctor, "final doctor does not use the merged Forge 6 health check"
-    aio = read(ROOT / "INSTALL-V7-AIO.ps1")
+    aio = read(ROOT / "INSTALL-AIO.ps1")
     assert "$doctorOutput" in aio and "2>&1" in aio and "Select-Object -Last" in aio, "AIO does not persist/replay final-doctor diagnostics before throwing"
 
     provider = read(ROOT / "TOOLS" / "Ensure-Provider-CLIs.ps1")
@@ -612,21 +623,26 @@ def test_windows_ci_and_ps51_static_contract() -> None:
 
 
 
-def test_release_contains_no_accidental_next_major_version_surface() -> None:
-    """The bundle release is 7.9.1; the accidentally chosen next-major label must not ship."""
-    forbidden = "8.0" + ".0"
+def test_v8_active_surface_uses_versionless_names() -> None:
+    """V8 keeps history intact but active install paths must not carry V5/V7 debt."""
+    forbidden = (
+        "_V7-CANONICAL-SKILLS", "INSTALL-V7-AIO", "V7-Common",
+        "V7-Mcp-Write", "Skyrim-AI-V5",
+    )
     text_exts = {".md", ".txt", ".ps1", ".psm1", ".py", ".json", ".yaml", ".yml", ".toml", ".bat", ".cmd"}
     offenders = []
     for path in ROOT.rglob("*"):
         if not path.is_file() or path.suffix.lower() not in text_exts or path.name == "MANIFEST.json":
             continue
+        rel = path.relative_to(ROOT).as_posix()
+        if rel.startswith("docs/history/") or rel == "CHANGELOG.md" or rel in (
+            "TOOLS/UABS-Common.ps1", "TESTS/test_release_contract.py"
+        ):
+            continue
         body = path.read_text(encoding="utf-8", errors="replace")
-        if forbidden in body.lower():
-            offenders.append(path.relative_to(ROOT).as_posix())
-    for path in ROOT.rglob("*"):
-        if forbidden in path.name.lower():
-            offenders.append(path.relative_to(ROOT).as_posix())
-    assert not offenders, f"next-major version contamination remains in v7.9.1 release: {offenders}"
+        if any(token.lower() in body.lower() for token in forbidden):
+            offenders.append(rel)
+    assert not offenders, f"version-stamped active V5/V7 surface remains: {offenders}"
 
 
 def test_hermes_mcp_registration_is_noninteractive_and_bounded() -> None:
@@ -687,7 +703,7 @@ def test_version_sources() -> None:
         p.isdigit() for p in BARE.split(".")), f"VERSION.txt is not vX.Y.Z(.W): {VERSION!r}"
     assert VERSION.lower() in read(ROOT / "README.md").splitlines()[0].lower()
     assert VERSION.upper() in read(ROOT / "START-HERE.txt").splitlines()[0].upper()
-    for rel in ("START-HERE.bat", "INSTALL-V7-AIO.bat"):
+    for rel in ("START-HERE.bat", "INSTALL-V8-AIO.bat"):
         # Not covered by check_versions.py before 7.9.0: both title lines sat
         # at v7.8.0 through the whole release.
         assert VERSION.lower() in read(ROOT / rel).lower(), f"{rel} title is version-stale"
@@ -820,7 +836,7 @@ def test_no_skill_script_hardcodes_a_machine_path() -> None:
 def test_every_v5_helper_called_actually_exists() -> None:
     """A PowerShell call to a function that is not defined is a runtime death.
 
-    7.8.0 dropped Get-V5ClaudeMarketplaceName from TOOLS/V7-Common.ps1 and left
+    7.8.0 dropped Get-UabsClaudeMarketplaceName from TOOLS/UABS-Common.ps1 and left
     TESTS/Test-HarnessRealization.ps1 calling it, so that gate died on its first
     check with CommandNotFoundException. It is not in CI -- it inspects a live
     machine -- so nothing noticed for a release. PowerShell has no import-time
@@ -829,22 +845,22 @@ def test_every_v5_helper_called_actually_exists() -> None:
     # Two shared modules now, not one. Naming a single file here meant a call
     # into the other read as undefined, and a script that sources only the other
     # was never scanned at all.
-    modules = ["V7-Common.ps1", "V7-Mcp-Write.ps1"]
+    modules = ["UABS-Common.ps1", "UABS-Mcp-Write.ps1"]
     defined: set = set()
     for module in modules:
         body = read(ROOT / "TOOLS" / module)
         defined |= set(re.findall(r"^function\s+([A-Za-z][A-Za-z0-9-]*)", body, re.M))
-    assert "Get-V5PackRoot" in defined, "V7-Common.ps1 no longer parses as expected"
-    assert "Add-V5McpJson" in defined, "V7-Mcp-Write.ps1 no longer parses as expected"
+    assert "Get-UabsPackRoot" in defined, "UABS-Common.ps1 no longer parses as expected"
+    assert "Add-UabsMcpJson" in defined, "UABS-Mcp-Write.ps1 no longer parses as expected"
 
     verbs = ("Get|Set|New|Add|Remove|Test|Install|Restore|Repair|Invoke|Update"
              "|Copy|Save|Expand|Resolve|Find|Write|Convert|Import|Export")
     # Call position only. A helper name inside a comment or a quoted string is
-    # prose or a pattern, not an invocation: Test-V7-Pack.ps1 legitimately
-    # asserts that the AIO does NOT contain "Invoke-V5SkillDedupe -Provider
-    # 'Grok'", and V7-Common.ps1 names a retired helper in a comment. Flagging
+    # prose or a pattern, not an invocation: Test-Pack.ps1 legitimately
+    # asserts that the AIO does NOT contain "Invoke-UabsSkillDedupe -Provider
+    # 'Grok'", and UABS-Common.ps1 names a retired helper in a comment. Flagging
     # those would make the gate lie, and a lying gate gets switched off.
-    call = re.compile(r"(?<![\w\"'`-])((?:" + verbs + r")-V5[A-Za-z0-9]*)(?![\w\"'-])")
+    call = re.compile(r"(?<![\w\"'`-])((?:" + verbs + r")-Uabs[A-Za-z0-9]*)(?![\w\"'-])")
 
     missing = []
     callers = list(sorted(ROOT.glob("*.ps1")))
@@ -860,7 +876,7 @@ def test_every_v5_helper_called_actually_exists() -> None:
         # A helper realized at runtime out of another shipped file --
         # [regex]::Match($src, '(?s)function Foo \{...') then
         # [scriptblock]::Create(...) -- is defined, just not by a literal
-        # `function` statement in this file. Test-V7-Pack does exactly this to
+        # `function` statement in this file. Test-Pack does exactly this to
         # exercise the starter guard without executing the installer body.
         # Scoped to files that actually realize code, so a bare mention in
         # prose still counts as undefined.
@@ -874,11 +890,11 @@ def test_every_v5_helper_called_actually_exists() -> None:
 
 def test_local_launcher_failure_is_persistent_and_diagnosable() -> None:
     start = read(ROOT / "START-HERE.bat").lower()
-    compat = read(ROOT / "INSTALL-V7-AIO.bat").lower()
-    ps = read(ROOT / "INSTALL-V7-AIO.ps1")
+    compat = read(ROOT / "INSTALL-V8-AIO.bat").lower()
+    ps = read(ROOT / "INSTALL-AIO.ps1")
 
-    # START-HERE is the one canonical local launcher. The legacy V7 BAT is an alias.
-    assert 'install-v7-aio.ps1' in start
+    # START-HERE is the one canonical local launcher. The V8 BAT is an alias.
+    assert 'install-aio.ps1' in start
     assert 'call "%~dp0start-here.bat" %*' in compat
     assert 'install-v7-aio.ps1' not in compat
 
@@ -904,29 +920,50 @@ def test_local_launcher_failure_is_persistent_and_diagnosable() -> None:
 
 
 def test_provider_skill_sync_is_content_authoritative() -> None:
-    common = read(ROOT / "TOOLS" / "V7-Common.ps1")
-    installer = read(ROOT / "INSTALL-V7-AIO.ps1")
+    common = read(ROOT / "TOOLS" / "UABS-Common.ps1")
+    installer = read(ROOT / "INSTALL-AIO.ps1")
 
-    assert "function Sync-V5ProviderSkills" in common, (
+    assert "function Sync-UabsProviderSkills" in common, (
         "provider skill installation still has no content-authoritative sync primitive"
     )
-    sync_body = common.split("function Sync-V5ProviderSkills", 1)[1].split("function Copy-V5RoboSafe", 1)[0]
+    sync_body = common.split("function Sync-UabsProviderSkills", 1)[1].split("function Copy-UabsRoboSafe", 1)[0]
     assert "robocopy" not in sync_body.lower(), (
         "provider skill sync still depends on Robocopy metadata classification instead of content-authoritative replacement"
     )
     for needle in ("Get-FileHash", "Move-Item", ".uabs-skill-stage-", ".uabs-skill-backup-"):
         assert needle in sync_body, f"provider skill sync missing {needle} stage/verify/swap contract"
-    assert "Sync-V5ProviderSkills -From $srcSkills -To $destSkills" in installer, (
+    assert "Sync-UabsProviderSkills -From $srcSkills -To $destSkills -Provider $prov" in installer, (
         "AIO does not use content-authoritative provider skill sync"
     )
-    assert "Copy-V5Robo -From $srcSkills -To $destSkills" not in installer, (
+    assert "Copy-UabsRobo -From $srcSkills -To $destSkills" not in installer, (
         "AIO still uses metadata-only whole-tree Robocopy for provider skills"
     )
+    for needle in ("managed-skills", "Get-UabsTreeDigest", "retired skill was modified; preserved"):
+        assert needle in common, f"managed skill retirement contract missing {needle}"
+    assert "existing instructions preserved" in installer, (
+        "AIO can still overwrite an existing provider instruction file before merging its managed block"
+    )
+
+
+def test_codex_plugins_use_the_official_lifecycle() -> None:
+    aio = ps_code(ROOT / "INSTALL-AIO.ps1")
+    for command in (
+        "'plugin','marketplace','add'", "'plugin','marketplace','upgrade'",
+        "'plugin','add'", "'plugin','remove'",
+    ):
+        assert command in aio, f"Codex official lifecycle missing {command}"
+    assert "codex-plugin-src" in aio and "'git'" in aio, (
+        "offline Codex plugin source is not materialized as the Git source its CLI requires"
+    )
+    assert "[plugins.`\"superpowers@ultimate-bundle`\"]" not in aio, (
+        "AIO still hand-writes the legacy Codex plugin TOML"
+    )
+    assert "pluginId" in aio, "Codex inventory parser reads the wrong JSON field"
 
 
 def test_bundle_forge_install_has_single_skill_writer() -> None:
     wrapper = read(ROOT / "TOOLS" / "Install-SkyrimForge.ps1")
-    installer = read(ROOT / "INSTALL-V7-AIO.ps1")
+    installer = read(ROOT / "INSTALL-AIO.ps1")
     assert "[switch]$BundleOwnsProviderSkills" in wrapper, (
         "bundle Forge wrapper has no mode that prevents Forge from replacing bundle-owned provider skills"
     )
@@ -939,7 +976,7 @@ def test_bundle_forge_install_has_single_skill_writer() -> None:
 
 
 def test_forge_skill_has_one_canonical_source() -> None:
-    canonical = ROOT / "_V7-CANONICAL-SKILLS" / "skyrim-forge" / "SKILL.md"
+    canonical = ROOT / "_CANONICAL-SKILLS" / "skyrim-forge" / "SKILL.md"
     embedded = ROOT / "BUNDLED-TOOLS" / "skyrim-forge" / "integrations" / "skyrim-forge" / "SKILL.md"
     assert canonical.read_bytes() == embedded.read_bytes(), (
         "Forge's provider installer overwrites the bundle canonical skyrim-forge skill with divergent content"
@@ -996,7 +1033,7 @@ def test_double_click_launcher_keeps_success_visible() -> None:
 
 
 def test_grok_forge_wiring_does_not_warn_before_bundled_forge_install() -> None:
-    installer = read(ROOT / "INSTALL-V7-AIO.ps1")
+    installer = read(ROOT / "INSTALL-AIO.ps1")
     assert "Skyrim Forge MCP deferred to bundled Forge installer" in installer, (
         "Grok wiring still emits a false 'Skyrim Forge not configured' warning before the bundled Forge component runs"
     )
@@ -1015,7 +1052,7 @@ def test_no_shipped_config_carries_a_maintainer_path() -> None:
         ROOT / "BUNDLED-TOOLS" / "PROFILES.json",
         ROOT / "BUNDLED-TOOLS" / "CATALOG.json",
         ROOT / "TOOLS" / "Set-McpProfile.ps1",
-        ROOT / "TOOLS" / "V7-Mcp-Write.ps1",
+        ROOT / "TOOLS" / "UABS-Mcp-Write.ps1",
         ROOT / "TOOLS" / "Test-McpHandshake.ps1",
     ]
     # A drive letter that is not the conventional C:, and any user profile path
@@ -1067,7 +1104,7 @@ def test_bundle_stays_free_and_accountless() -> None:
     )
     # Withdrawing it from the catalog does not un-register it from a machine.
     front = read(ROOT / "TOOLS" / "Set-McpProfile.ps1")
-    assert "V5RetiredProfiles" in front and "'cloud'" in front, (
+    assert "UabsRetiredProfiles" in front and "'cloud'" in front, (
         "nothing un-registers a withdrawn profile from machines that enabled it"
     )
 
@@ -1079,7 +1116,7 @@ def test_visual_verification_ships_its_own_falsifiable_check() -> None:
     ships a canary: an image whose contents are recorded only as a hash, and a
     checker that answers PASS or FAIL.
     """
-    skill = ROOT / "_V7-CANONICAL-SKILLS" / "visual-verification" / "SKILL.md"
+    skill = ROOT / "_CANONICAL-SKILLS" / "visual-verification" / "SKILL.md"
     assert skill.is_file(), "the visual-verification skill is missing"
     body = read(skill)
     for needle in ("Test-VisionCanary", "visual verification unavailable"):
@@ -1107,7 +1144,7 @@ def test_visual_verification_ships_its_own_falsifiable_check() -> None:
             )
 
 
-def test_always_on_core_is_two_servers_and_says_why() -> None:
+def test_always_on_core_is_three_servers_and_says_why() -> None:
     """sequential-thinking left the always-on set on a measurement.
 
     One tool, but a 4,587-byte schema: ~1,146 tokens on every turn of every
@@ -1118,12 +1155,13 @@ def test_always_on_core_is_two_servers_and_says_why() -> None:
     servers_block = reasoning_script.split("$servers = @(", 1)[1].split("\n)", 1)[0]
     assert "'context7'" in servers_block, "context7 left the always-on core"
     assert "github" in servers_block, "github left the always-on core"
+    assert "'headroom'" in reasoning_script, "headroom is not registered across provider configs"
     assert "sequential-thinking" not in servers_block, (
         "sequential-thinking is back in the always-on core; if that is deliberate, "
         "re-measure its per-turn schema cost and update this contract"
     )
     # Told, not silently removed, on machines that already have it.
-    assert "Show-V5SequentialThinkingNotice" in reasoning_script, (
+    assert "Show-UabsSequentialThinkingNotice" in reasoning_script, (
         "machines that already have sequential-thinking are never told it moved"
     )
 
@@ -1167,7 +1205,7 @@ def main() -> int:
         test_every_version_gate_accepts_the_shipped_version,
         test_capability_claims_match_the_measured_record,
         test_optional_key_server_is_not_registered_for_a_sliver_of_itself,
-        test_withextras_is_the_only_owner_of_the_optional_servers,
+        test_full_default_owns_optional_servers_and_coreonly_opts_out,
         test_schema_cost_is_measurable_not_just_asserted,
         test_no_skill_restates_the_pack_version,
         test_skills,
@@ -1187,7 +1225,7 @@ def main() -> int:
         test_no_shipped_config_carries_a_maintainer_path,
         test_bundle_stays_free_and_accountless,
         test_visual_verification_ships_its_own_falsifiable_check,
-        test_always_on_core_is_two_servers_and_says_why,
+        test_always_on_core_is_three_servers_and_says_why,
         test_blender_is_pinned_and_discovered,
         test_extras_never_overwrite_a_skill_the_bundle_vendors,
         test_mcp_config_writing_has_exactly_one_implementation,
@@ -1197,7 +1235,7 @@ def main() -> int:
         test_current_forge_docs_contract,
         test_ps51_utf8_reads_are_explicit,
         test_windows_ci_and_ps51_static_contract,
-        test_release_contains_no_accidental_next_major_version_surface,
+        test_v8_active_surface_uses_versionless_names,
         test_hermes_mcp_registration_is_noninteractive_and_bounded,
         test_linux_helpers_keep_their_execute_bit,
         test_version_sources,
@@ -1207,6 +1245,7 @@ def main() -> int:
         test_no_skill_script_hardcodes_a_machine_path,
         test_every_v5_helper_called_actually_exists,
         test_provider_skill_sync_is_content_authoritative,
+        test_codex_plugins_use_the_official_lifecycle,
         test_bundle_forge_install_has_single_skill_writer,
         test_forge_skill_has_one_canonical_source,
         test_forge_install_checked_commands_are_quiet_but_diagnostic,
@@ -1335,20 +1374,20 @@ def test_capability_profiles_are_not_registered_globally() -> None:
 def test_project_scope_is_implemented_not_just_declared() -> None:
     """A scope field nothing reads is worse than no scope field.
 
-    7.9.5 carried one -- `Get-V5ProfileScope` existed and the only thing the
+    7.9.5 carried one -- `Get-UabsProfileScope` existed and the only thing the
     writer did with the answer was swap Claude's config path. Every other
     provider got the machine-wide file whatever the field said, which is how
     "project-scoped" came to mean "global, with a comment".
     """
-    writer = read(ROOT / "TOOLS" / "V7-Mcp-Write.ps1")
+    writer = read(ROOT / "TOOLS" / "UABS-Mcp-Write.ps1")
     front = read(ROOT / "TOOLS" / "Set-McpProfile.ps1")
 
-    for func in ("Get-V5ProviderProjectTarget", "Get-V5ProviderNoProjectScope",
-                 "Get-V5JsonScopeContainer", "Test-V5ServerIsProjectBound",
-                 "Test-V5ServerDeclared"):
+    for func in ("Get-UabsProviderProjectTarget", "Get-UabsProviderNoProjectScope",
+                 "Get-UabsJsonScopeContainer", "Test-UabsServerIsProjectBound",
+                 "Test-UabsServerDeclared"):
         assert f"function {func}" in writer, f"{func} missing from the shared writer"
 
-    assert "Get-V5ProviderProjectTarget" in front, (
+    assert "Get-UabsProviderProjectTarget" in front, (
         "the profile router does not ask where a provider keeps project-scoped servers"
     )
     # Claude Code's own local scope, not the project's .mcp.json: no file in the
@@ -1366,8 +1405,8 @@ def test_project_scope_is_implemented_not_just_declared() -> None:
     # rather than answering False, and every script here runs with
     # $ErrorActionPreference = 'Stop'. The tools on the development machine live
     # on S: and its projects on Z:; neither is guaranteed to be mounted.
-    assert "function Test-V5Path" in writer, "paths are tested without a guard for an unmounted drive"
-    for rel in ("TOOLS/V7-Mcp-Write.ps1", "TOOLS/Set-McpProfile.ps1", "TOOLS/Test-McpHandshake.ps1"):
+    assert "function Test-UabsPath" in writer, "paths are tested without a guard for an unmounted drive"
+    for rel in ("TOOLS/UABS-Mcp-Write.ps1", "TOOLS/Set-McpProfile.ps1", "TOOLS/Test-McpHandshake.ps1"):
         body = read(ROOT / rel)
         for i, line in enumerate(body.splitlines(), 1):
             if "Test-Path -LiteralPath" in line and "-ErrorAction SilentlyContinue" not in line:
@@ -1376,14 +1415,14 @@ def test_project_scope_is_implemented_not_just_declared() -> None:
     # Join-Path asks the provider to resolve the drive, so it raises the same
     # error for a base that is not mounted -- in a function whose whole job is
     # string concatenation.
-    assert "function Join-V5Path" in writer, "paths are joined without the unmounted-drive guard"
-    for rel in ("TOOLS/V7-Mcp-Write.ps1", "TOOLS/Set-McpProfile.ps1", "TOOLS/Test-McpHandshake.ps1"):
+    assert "function Join-UabsPath" in writer, "paths are joined without the unmounted-drive guard"
+    for rel in ("TOOLS/UABS-Mcp-Write.ps1", "TOOLS/Set-McpProfile.ps1", "TOOLS/Test-McpHandshake.ps1"):
         body = read(ROOT / rel)
         for i, line in enumerate(body.splitlines(), 1):
             if "Join-Path " not in line or line.lstrip().startswith("#"):
                 continue
             # The one legitimate use: sourcing the file the helper lives in.
-            if "V7-Mcp-Write.ps1" in line:
+            if "UABS-Mcp-Write.ps1" in line:
                 continue
             raise AssertionError(f"{rel}:{i} joins a path without the unmounted-drive guard: {line.strip()}")
 
@@ -1391,14 +1430,14 @@ def test_project_scope_is_implemented_not_just_declared() -> None:
     # servers this release moved, and reports a cost no real session pays.
     probe = read(ROOT / "TOOLS" / "Test-McpHandshake.ps1")
     assert "[string]$Path," in probe, "the handshake probe cannot be pointed at a project"
-    assert "Get-V5ProviderProjectTarget" in probe, (
+    assert "Get-UabsProviderProjectTarget" in probe, (
         "the handshake probe does not read project-scoped servers"
     )
 
     # GetFolderPath returns the empty string for a folder that does not exist.
     # Join-Path on that throws and takes the run down inside a helper whose only
     # job is to answer "is Claude Desktop installed".
-    assert "function Get-V5AppDataRoot" in writer, (
+    assert "function Get-UabsAppDataRoot" in writer, (
         "AppData roots are resolved without a guard against an empty result"
     )
 
@@ -1418,10 +1457,10 @@ def test_upgrading_moves_a_globally_registered_profile() -> None:
     in place while the state file claimed the profile was project-scoped.
     """
     front = read(ROOT / "TOOLS" / "Set-McpProfile.ps1")
-    assert "V5ProfileAliases" in front, "the old profile id no longer resolves"
+    assert "UabsProfileAliases" in front, "the old profile id no longer resolves"
     assert "'code-deep' = 'code-intel'" in front, "code-deep does not map to code-intel"
-    assert "function Convert-V5ProfileState" in front, "there is no state migration"
-    assert "function Invoke-V5StaleGlobalMigration" in front, (
+    assert "function Convert-UabsProfileState" in front, "there is no state migration"
+    assert "function Invoke-UabsStaleGlobalMigration" in front, (
         "nothing removes the machine-wide registrations an earlier version wrote"
     )
     gate = read(ROOT / "TESTS" / "Test-McpProfiles.ps1")
@@ -1465,7 +1504,7 @@ def test_docs_do_not_contradict_the_profile_scope() -> None:
                 f"{comp['id']} names profile {comp['profile']}, which PROFILES.json does not declare"
             )
 
-    skill = read(ROOT / "_V7-CANONICAL-SKILLS" / "capability-profiles" / "SKILL.md")
+    skill = read(ROOT / "_CANONICAL-SKILLS" / "capability-profiles" / "SKILL.md")
     assert "code-intel" in skill, "the skill still teaches the old profile id as current"
     assert "Installed is not enabled" in skill, (
         "the skill does not distinguish an installed tool from a registered server"
@@ -1481,16 +1520,16 @@ def test_mcp_config_writing_has_exactly_one_implementation() -> None:
     escaped four times instead of two. Two scripts writing configs meant each
     one had to be found twice.
     """
-    writer = ROOT / "TOOLS" / "V7-Mcp-Write.ps1"
+    writer = ROOT / "TOOLS" / "UABS-Mcp-Write.ps1"
     assert writer.is_file(), "shared MCP writer missing"
     body = read(writer)
-    for func in ("Add-V5McpJson", "Add-V5McpToml", "Add-V5McpHermes",
-                 "Remove-V5McpJson", "Remove-V5McpToml", "Remove-V5McpHermes"):
+    for func in ("Add-UabsMcpJson", "Add-UabsMcpToml", "Add-UabsMcpHermes",
+                 "Remove-UabsMcpJson", "Remove-UabsMcpToml", "Remove-UabsMcpHermes"):
         assert f"function {func}" in body, f"{func} missing from the shared writer"
 
     for rel in ("TOOLS/Add-Reasoning-MCPs.ps1", "TOOLS/Set-McpProfile.ps1"):
         text = read(ROOT / rel)
-        assert "V7-Mcp-Write.ps1" in text, f"{rel} does not dot-source the shared writer"
+        assert "UABS-Mcp-Write.ps1" in text, f"{rel} does not dot-source the shared writer"
         assert "function Add-ToJsonMcp" not in text, f"{rel} kept a private JSON writer"
 
     # PowerShell unrolls a pipeline on `return`, so a one-argument server came
@@ -1499,7 +1538,7 @@ def test_mcp_config_writing_has_exactly_one_implementation() -> None:
 
     gate = ROOT / "TESTS" / "Test-McpProfiles.ps1"
     assert gate.is_file(), "TESTS/Test-McpProfiles.ps1 missing"
-    assert "Test-McpProfiles.ps1" in read(ROOT / "TESTS" / "Test-V7-Pack.ps1"), (
+    assert "Test-McpProfiles.ps1" in read(ROOT / "TESTS" / "Test-Pack.ps1"), (
         "the MCP profile gate is not chained into the pack gate"
     )
 
@@ -1513,8 +1552,8 @@ def test_npx_pin_reaches_machines_that_already_have_the_entry() -> None:
     still running @playwright/mcp@latest with no -y, blocking npx on an install
     prompt so the server never answered initialize.
     """
-    common = read(ROOT / "TOOLS" / "V7-Common.ps1")
-    assert "$argNorm" in common, "Update-V5GrokMcpBlock no longer normalises args for comparison"
+    common = read(ROOT / "TOOLS" / "UABS-Common.ps1")
+    assert "$argNorm" in common, "Update-UabsGrokMcpBlock no longer normalises args for comparison"
     assert "args drifted, rewriting" in common, "a drifted pin is not rewritten or not reported"
     probe = ROOT / "TOOLS" / "Test-McpHandshake.ps1"
     assert probe.is_file(), "TOOLS/Test-McpHandshake.ps1 missing"
@@ -1542,8 +1581,8 @@ def test_extras_never_overwrite_a_skill_the_bundle_vendors() -> None:
     and offers. Two writers, one directory: the same defect v7.9.2 fixed for the
     Forge skill, in a different place.
     """
-    aio = read(ROOT / "INSTALL-V7-AIO.ps1")
-    assert "_V7-CANONICAL-SKILLS" in aio, "the installer no longer knows what canonical owns"
+    aio = read(ROOT / "INSTALL-AIO.ps1")
+    assert "_CANONICAL-SKILLS" in aio, "the installer no longer knows what canonical owns"
     assert "$ownedByCanonical" in aio, "skills-git does not filter against the canonical tree"
     assert "already vendored by this pack, not overwritten" in aio, (
         "a skipped skill is not reported, so the skip is indistinguishable from a silent failure"
@@ -1882,7 +1921,7 @@ def test_optional_key_server_is_not_registered_for_a_sliver_of_itself() -> None:
     )
     assert fc.get("keyless_skip_reason"), "the skip has no stated reason, so a user cannot judge it"
 
-    aio = ps_code(ROOT / "INSTALL-V7-AIO.ps1")
+    aio = ps_code(ROOT / "INSTALL-AIO.ps1")
     assert "RegisterKeylessExtras" in aio, "no explicit override for keyless registration"
     assert "keyless_registration" in aio, "the installer ignores the catalog's keyless_registration"
     assert "not-registered-no-key" in aio, (
@@ -1894,23 +1933,23 @@ def test_optional_key_server_is_not_registered_for_a_sliver_of_itself() -> None:
     )
 
 
-def test_withextras_is_the_only_owner_of_the_optional_servers() -> None:
-    """`-WithExtras` has to change the final state, or the flag is decoration.
+def test_full_default_owns_optional_servers_and_coreonly_opts_out() -> None:
+    """V8 installs the full catalog by default; -CoreOnly is the opt-out.
 
     It did not, for Hermes: playwright and firecrawl were documented as extras
     and shipped enabled in the starter, so a default install got them anyway.
     Worse, the starter called it `playwright` while extras adds
     `playwright-mcp`, so a `-WithExtras` run produced two entries for one
-    package -- the duplicate that Find-V5ServerByPackage exists to work around.
+    package -- the duplicate that Find-UabsServerByPackage exists to work around.
 
     The default side is guaranteed by test_starter_templates_declare_no_mcp_servers.
     This is the other half: the extras list must still own them.
     """
-    aio = read(ROOT / "INSTALL-V7-AIO.ps1")
-    block = re.search(r"if \(\$WithExtras\) \{(.*?)\}", aio, re.S)
-    assert block, "the -WithExtras component block is gone"
+    aio = read(ROOT / "INSTALL-AIO.ps1")
+    block = re.search(r"if \(-not \$CoreOnly\) \{(.*?)\}", aio, re.S)
+    assert block, "the V8 full-default component block is gone"
     for comp in ("playwright-mcp", "firecrawl-mcp"):
-        assert comp in block.group(1), f"{comp} is no longer gated behind -WithExtras"
+        assert comp in block.group(1), f"{comp} is no longer owned by the full-default block"
 
 
 def test_schema_cost_is_measurable_not_just_asserted() -> None:

@@ -85,8 +85,8 @@ New users and missing-tool recovery:
 
 ```powershell
 # Pack root
-.\INSTALL-V7-AIO.ps1
-.\INSTALL-V7-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-AIO.ps1
+.\INSTALL-AIO.ps1 -Mode OnlineLatest
 .\TOOLS\Ensure-Tools.ps1
 .\TOOLS\Update-From-GitHub.ps1
 ```

@@ -26,8 +26,9 @@ def main():
     # personal/scratch files into MANIFEST, and a fresh clone then fails
     # verification with MISSING for files it never had.
     import subprocess
-    tracked = set(subprocess.run(['git', '-C', root, 'ls-files'], capture_output=True,
-                                 text=True).stdout.splitlines())
+    tracked = set(subprocess.run(
+        ['git', '-C', root, '-c', 'safe.directory=' + os.path.abspath(root), 'ls-files'],
+        capture_output=True, check=True, text=True).stdout.splitlines())
     rows = []
     total = 0
     for dp, dirs, fs in os.walk(root):

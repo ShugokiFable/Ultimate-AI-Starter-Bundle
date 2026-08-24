@@ -1,3 +1,15 @@
+## 8.0.0
+
+- Made `START-HERE.bat` the stable one-click entry; `INSTALL-V8-AIO.bat` is an alias and internal paths are versionless.
+- Moved state to `%LOCALAPPDATA%\Ultimate-AI-Starter-Bundle` and remote installs to `%LOCALAPPDATA%\Programs\Ultimate-AI-Starter-Bundle`, with atomic replacement and one rollback.
+- Migrates known V7-owned state, removes only verified version-stamped bundle folders, and preserves unknown/conflicting files.
+- Installs the full catalog by default (`-CoreOnly` opts out), refreshes bundle-owned binaries, and preserves external user-managed installs.
+- Replaced hand-written Codex marketplace/TOML plugin registration with the official `codex plugin` lifecycle and retires the legacy `ultimate-bundle` marketplace.
+- Adds a hash ledger for bundle-owned skills: unchanged retired skills are removed; modified and unrelated skills are preserved.
+- Wires context7, GitHub, and Headroom across all five providers and requires a real MCP initialize/tools-list handshake before success.
+- Fixes same-run executable discovery, exact-path process replacement, and Hermes one-item JSON array serialization; installs claude-mem officially with telemetry disabled and its worker started.
+- Renamed active V7/V5 implementation paths and release gates to stable names; historical changelogs remain historical.
+
 ## 7.9.9.9
 
 Removed the static `openrouter-extra` provider block from the starter template.

@@ -471,7 +471,7 @@ function Set-UserEnv([string]$Name,[string]$Value) {
 function Write-StateFile([hashtable]$State) {
   $dir = Join-Path $env:LOCALAPPDATA 'houseCARL-data'
   New-DirectorySafe $dir
-  $path = Join-Path $dir 'v5-setup-state.json'
+  $path = Join-Path $dir 'uabs-setup-state.json'
   ($State | ConvertTo-Json -Depth 6) | Set-Content -LiteralPath $path -Encoding UTF8
   Write-Ok "State: $path"
   return $path

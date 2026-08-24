@@ -62,7 +62,7 @@ Always fully restart the AI app after MCP edits.
 |---|---|
 | Setup script | `TOOLS\Setup-HouseCarl.ps1` |
 | Vortex shim root | `%LOCALAPPDATA%\houseCARL-Shim` |
-| Setup state | `%LOCALAPPDATA%\houseCARL-data\v5-setup-state.json` |
+| Setup state | `%LOCALAPPDATA%\houseCARL-data\uabs-setup-state.json` |
 | MCP env | `HouseCarl__Mo2InstanceDir` = instance or shim |
 | User env | `SKYRIM_MO2_INSTANCE`, `HOUSECARL_MCP` |
 

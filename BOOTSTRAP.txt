@@ -1,4 +1,4 @@
-ONE-SHOT BOOTSTRAP (v7.5.0)
+ONE-SHOT BOOTSTRAP (v8.0.0)
 Paste this into a fresh session of any agentic AI (Grok, Claude Code, Codex,
 Kimi, Hermes) that can run commands. It sets itself up on a machine with
 NOTHING installed. You do nothing else.
@@ -9,7 +9,7 @@ do not ask me to run anything you can run yourself.
 
 1. Get the bundle.
    - First look for a local copy: any folder containing
-     INSTALL-V7-AIO.ps1 and BUNDLED-TOOLS\CATALOG.json.
+     INSTALL-AIO.ps1 and BUNDLED-TOOLS\CATALOG.json.
    - If none exists, download the latest release to a temp folder:
 
        $zip = Join-Path $env:TEMP 'uabs.zip'
@@ -31,7 +31,7 @@ do not ask me to run anything you can run yourself.
      (a.k.a. the bundle root).
 
 2. From the bundle root, run:
-     powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
    This installs the skills, wires the MCP servers, installs the tools, and
    wires the SOUL + AIO preamble into every agent instruction file
    (~/.claude/CLAUDE.md, ~/.codex/AGENTS.md, ~/.kimi-code/AGENTS.md,
@@ -46,7 +46,7 @@ do not ask me to run anything you can run yourself.
 
 4. Verify, and fix anything that fails rather than reporting it to me:
      python TOOLS\audit_skills.py "%USERPROFILE%\.claude\skills"
-     powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V7-Pack.ps1
+     powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-Pack.ps1
 
 5. Read 0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md and 3-PREAMBLES\README.md and follow the rules
    for the rest of this session. This machine was just configured with the

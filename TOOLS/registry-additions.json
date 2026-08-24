@@ -1,5 +1,5 @@
 {
-  "_comment": "New evidence-backed entries added in v6. ARMA-RACE-001 and VAL-REACH-001 were MOVED to v7-registry-corrections.json on 2026-08-14 after a runtime contradiction; that file is authoritative for them. Apply additions first, then corrections.",
+  "_comment": "New evidence-backed entries added in v6. ARMA-RACE-001 and VAL-REACH-001 were MOVED to registry-corrections.json on 2026-08-14 after a runtime contradiction; that file is authoritative for them. Apply additions first, then corrections.",
   "entries": [
     {
       "id": "SKILL-BOM-001",

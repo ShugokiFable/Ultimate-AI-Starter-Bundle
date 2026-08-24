@@ -11,7 +11,7 @@
   That merge fixed a specific failure. Bundle 7.8.0 ended this script with
   `if (-not $contract.compatible) { throw }`. Forge has never emitted a
   `compatible` field, `-not $null` is `$true`, so it threw on EVERY run and
-  INSTALL-V7-AIO aborted the whole install on the non-zero exit. Two files that
+  The previous AIO aborted the whole install on the non-zero exit. Two files that
   had to agree, in two repositories, with no single commit that could test both.
 
   The install directory carries NO version suffix, and that is the whole point.
@@ -222,7 +222,7 @@ if ($refreshRequired) {
 
 $bundleCatalog = $null
 if ($BundleOwnsProviderSkills) {
-  $commonPath = Join-Path $PackRoot 'TOOLS\V7-Common.ps1'
+  $commonPath = Join-Path $PackRoot 'TOOLS\UABS-Common.ps1'
   $catalogPath = Join-Path $PackRoot 'BUNDLED-TOOLS\CATALOG.json'
   if (-not (Test-Path -LiteralPath $commonPath -PathType Leaf)) { throw "Bundle common helpers missing: $commonPath" }
   if (-not (Test-Path -LiteralPath $catalogPath -PathType Leaf)) { throw "Bundle catalog missing: $catalogPath" }
@@ -234,7 +234,7 @@ foreach ($provider in $Providers) {
   if ($BundleOwnsProviderSkills) {
     # The all-in-one bundle already installed the canonical skill. Preserve that
     # single writer and add only Forge's per-machine launch descriptor beside it.
-    $providerHome = Get-V5ProviderHome -Provider $provider -Catalog $bundleCatalog
+    $providerHome = Get-UabsProviderHome -Provider $provider -Catalog $bundleCatalog
     $providerSkill = Join-Path $providerHome 'skills\skyrim-forge'
     $providerSkillMd = Join-Path $providerSkill 'SKILL.md'
     if (-not (Test-Path -LiteralPath $providerSkillMd -PathType Leaf)) {

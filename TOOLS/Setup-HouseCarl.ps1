@@ -471,7 +471,7 @@ function Set-UserEnv([string]$Name,[string]$Value) {
 function Write-StateFile([hashtable]$State) {
   $dir = Join-Path $env:LOCALAPPDATA 'houseCARL-data'
   New-DirectorySafe $dir
-  $path = Join-Path $dir 'v5-setup-state.json'
+  $path = Join-Path $dir 'uabs-setup-state.json'
   ($State | ConvertTo-Json -Depth 6) | Set-Content -LiteralPath $path -Encoding UTF8
   Write-Ok "State: $path"
   return $path
@@ -493,7 +493,7 @@ function Write-CodexHint([string]$McpExe,[string]$InstanceDir) {
 
 # ---------------- main ----------------
 Write-Host ""
-Write-Host "houseCARL V5 automatic setup (MO2 + Vortex shim)" -ForegroundColor Magenta
+Write-Host "houseCARL Uabs automatic setup (MO2 + Vortex shim)" -ForegroundColor Magenta
 Write-Host ""
 
 if (-not $ShimRoot) { $ShimRoot = Join-Path $env:LOCALAPPDATA 'houseCARL-Shim' }

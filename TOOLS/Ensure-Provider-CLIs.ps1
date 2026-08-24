@@ -13,7 +13,7 @@ param(
   [switch]$CheckOnly
 )
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'V7-Common.ps1')
+. (Join-Path $PSScriptRoot 'UABS-Common.ps1')
 
 # -File turns Claude,Codex into one string on Windows PowerShell 5.1.
 $Providers = @($Providers | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
@@ -44,7 +44,7 @@ function Resolve-ProviderExe([string]$Provider) {
 function Invoke-VerifiedOfficialScript([string]$Provider,[string]$Url,[string[]]$ScriptArgs=@()) {
   $temp = Join-Path $env:TEMP ("uabs-" + $Provider.ToLowerInvariant() + '-' + [guid]::NewGuid().ToString('N') + '.ps1')
   try {
-    Write-V5Step "$Provider official installer"
+    Write-UabsStep "$Provider official installer"
     $downloaded = $false
     for ($attempt = 1; $attempt -le 3; $attempt++) {
       try {
@@ -80,7 +80,7 @@ function Invoke-VerifiedOfficialScript([string]$Provider,[string]$Url,[string[]]
 Refresh-ProcessPath
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
   if ($CheckOnly) { Write-Host 'Git would be installed with winget Git.Git' }
-  elseif (-not (Install-V5Winget @('Git.Git'))) { throw 'Git for Windows installation failed.' }
+  elseif (-not (Install-UabsWinget @('Git.Git'))) { throw 'Git for Windows installation failed.' }
   Refresh-ProcessPath
 }
 if (-not $CheckOnly) {
@@ -113,7 +113,7 @@ foreach ($provider in $Providers) {
       } catch {
         if ($provider -ne 'Claude') { throw }
         Write-Warning "Claude native installer failed; trying Anthropic's official WinGet package. $($_.Exception.Message)"
-        if (-not (Install-V5Winget @('Anthropic.ClaudeCode'))) { throw 'Claude official script and WinGet fallback both failed.' }
+        if (-not (Install-UabsWinget @('Anthropic.ClaudeCode'))) { throw 'Claude official script and WinGet fallback both failed.' }
       }
     } finally {
       if ($provider -eq 'Codex') {
@@ -135,10 +135,10 @@ foreach ($provider in $Providers) {
   if ($provider -eq 'Codex' -and ((Test-Path (Join-Path $env:USERPROFILE '.codex\auth.json')) -or $env:OPENAI_API_KEY)) { $auth='AUTH_PRESENT' }
   if ($provider -eq 'Hermes' -and ($env:OPENROUTER_API_KEY -or $env:NOUS_API_KEY)) { $auth='AUTH_PRESENT' }
   $results += [pscustomobject]@{ provider=$provider; executable=$exe; installed_now=$installedNow; auth_state=$auth }
-  Write-V5Ok ("$provider executable verified; " + $auth)
+  Write-UabsOk ("$provider executable verified; " + $auth)
 }
 if (-not $CheckOnly) {
-  $reportDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
+  $reportDir = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
   New-Item -ItemType Directory -Force -Path $reportDir | Out-Null
   $enc = New-Object System.Text.UTF8Encoding($false)
   [IO.File]::WriteAllText((Join-Path $reportDir 'provider-bootstrap.json'), ($results | ConvertTo-Json -Depth 6), $enc)

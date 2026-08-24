@@ -5,7 +5,7 @@
 .DESCRIPTION
   Agents assume partly because they do not know what they have. This script
   does not guess: it reads each provider's real config and runs Get-Command /
-  Test-Path. The result is written to %LOCALAPPDATA%\Skyrim-AI-V5\TOOLBELT.md
+  Test-Path. The result is written to %LOCALAPPDATA%\Ultimate-AI-Starter-Bundle\TOOLBELT.md
   (and optionally -OutFile). It is never committed: another machine's inventory
   is an assumption.
 
@@ -154,7 +154,7 @@ $lines.Add('powershell -NoProfile -ExecutionPolicy Bypass -File .\TOOLS\Build-To
 $lines.Add('```')
 
 $text = ($lines -join "`r`n") + "`r`n"
-$stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
+$stateDir = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $default = Join-Path $stateDir 'TOOLBELT.md'
 $enc = New-Object System.Text.UTF8Encoding($false)

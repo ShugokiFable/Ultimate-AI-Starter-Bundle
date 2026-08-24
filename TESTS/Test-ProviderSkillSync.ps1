@@ -20,7 +20,7 @@ if (-not $PackRoot) {
     $PackRoot = Split-Path -Parent $here
 }
 
-. (Join-Path $PackRoot 'TOOLS\V7-Common.ps1')
+. (Join-Path $PackRoot 'TOOLS\UABS-Common.ps1')
 
 $tempRoot = Join-Path ([IO.Path]::GetTempPath()) ('uabs-provider-sync-' + [Guid]::NewGuid().ToString('N'))
 $srcRoot = Join-Path $tempRoot 'source skills'
@@ -28,9 +28,12 @@ $dstRoot = Join-Path $tempRoot 'installed skills'
 $srcSkill = Join-Path $srcRoot 'release-checklist'
 $dstSkill = Join-Path $dstRoot 'release-checklist'
 $customSkill = Join-Path $dstRoot 'my-custom-skill'
+$modifiedSkill = Join-Path $srcRoot 'modified-retired'
+$previousLocal = $env:LOCALAPPDATA
+$env:LOCALAPPDATA = Join-Path $tempRoot 'state'
 
 try {
-    New-Item -ItemType Directory -Force -Path $srcSkill, $dstSkill, $customSkill | Out-Null
+    New-Item -ItemType Directory -Force -Path $srcSkill, $dstSkill, $customSkill, $modifiedSkill | Out-Null
 
     # Exactly the old failure shape: same byte count and same last-write time,
     # but different bytes. Deterministic release ZIPs normalize timestamps.
@@ -45,6 +48,7 @@ try {
     $dstFile = Join-Path $dstSkill 'SKILL.md'
     [IO.File]::WriteAllText($srcFile, $new, $utf8)
     [IO.File]::WriteAllText($dstFile, $old, $utf8)
+    [IO.File]::WriteAllText((Join-Path $modifiedSkill 'SKILL.md'), 'managed-before-user-edit', $utf8)
 
     $sameTime = [DateTime]::SpecifyKind([DateTime]'2026-08-20T00:00:00', [DateTimeKind]::Local)
     (Get-Item -LiteralPath $srcFile).LastWriteTime = $sameTime
@@ -56,7 +60,7 @@ try {
     $customFile = Join-Path $customSkill 'SKILL.md'
     [IO.File]::WriteAllText($customFile, 'user-owned', $utf8)
 
-    Sync-V5ProviderSkills -From $srcRoot -To $dstRoot
+    Sync-UabsProviderSkills -From $srcRoot -To $dstRoot -Provider Test
 
     $actual = [IO.File]::ReadAllText($dstFile)
     if ($actual -cne $new) {
@@ -76,6 +80,17 @@ try {
         throw 'unrelated user skill was modified by bundle sync'
     }
 
+    # The ownership ledger removes a retired, unchanged bundle skill but keeps
+    # one the user changed after installation.
+    Remove-Item -LiteralPath $srcSkill -Recurse -Force
+    [IO.File]::WriteAllText((Join-Path $dstRoot 'modified-retired\SKILL.md'), 'user-edited', $utf8)
+    Remove-Item -LiteralPath $modifiedSkill -Recurse -Force
+    Sync-UabsProviderSkills -From $srcRoot -To $dstRoot -Provider Test
+    if (Test-Path -LiteralPath $dstSkill) { throw 'unchanged retired managed skill was not removed' }
+    if ([IO.File]::ReadAllText((Join-Path $dstRoot 'modified-retired\SKILL.md')) -cne 'user-edited') {
+        throw 'modified retired managed skill was not preserved'
+    }
+
     Write-Host 'PROVIDER SKILL SYNC: PASS' -ForegroundColor Green
     exit 0
 }
@@ -84,5 +99,6 @@ catch {
     exit 1
 }
 finally {
+    $env:LOCALAPPDATA = $previousLocal
     Remove-Item -LiteralPath $tempRoot -Recurse -Force -ErrorAction SilentlyContinue
 }

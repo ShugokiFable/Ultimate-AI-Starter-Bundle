@@ -11,8 +11,8 @@
  },
  {
   "path": ".github/scripts/check_versions.py",
-  "size": 4274,
-  "sha256": "800b0b923506c99826dab8691dad576ea3ba5595d8dcdba8ddf0bc8e4ed662c8"
+  "size": 4262,
+  "sha256": "38f59876457304b14769b05d37fcd13aaf583355eadaeb99429b48d9b8c109cc"
  },
  {
   "path": ".github/scripts/verify_manifest.py",
@@ -21,8 +21,8 @@
  },
  {
   "path": ".github/workflows/ci.yml",
-  "size": 15775,
-  "sha256": "8eff0cb90d0d248ee2af45b4295c128060ad2f9e2cd8d4603690ec8b3d9e5f30"
+  "size": 15772,
+  "sha256": "2eaf0e4127d133722692e5e660c03e192be53f8efa6f2a6cf56b3b642d0b5b23"
  },
  {
   "path": ".github/workflows/codeql.yml",
@@ -1381,13 +1381,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-MAP.md",
-  "size": 1596,
-  "sha256": "247d75f7aafe6fcf956405c9e1d3a5dd0640e251cf17cc6f26fb8a228c14aa3a"
+  "size": 1593,
+  "sha256": "8410107f94f05c3b36bbd4d46c96314e17f2823861bff95fb68b5626ee91e5fc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-PROVIDER-HOME/CLAUDE.md",
-  "size": 24386,
-  "sha256": "ed833e0d4fcb3278ae2c36eaba15ea08d7fc85ff0774bc2ec9fb878b5c66d581"
+  "size": 24383,
+  "sha256": "cf32c62039a622dd43598be41154a2069aa73181009b5084cb51dc26ae2fca91"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-PROVIDER-HOME/settings.json",
@@ -1411,8 +1411,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4840,
-  "sha256": "81ee59506dfaad2a9f155e6eb2cf8095415075164eefab68c5fcabb2012f2f96"
+  "size": 4834,
+  "sha256": "0b6526b0164912aa2a5e0a4e3cf00a8693f34cf5ebfe17dc919d4bf28d84c34d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -1506,8 +1506,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 10704,
-  "sha256": "5400f1bc5a55287d0957a7e700ae357c25ce343772622b0b11668995fb1665fe"
+  "size": 10713,
+  "sha256": "1acc191213afde3610df6a5a934b86b4427b8910f70ae0615921bbca20da3a60"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -1766,8 +1766,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 15813,
-  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
+  "size": 15827,
+  "sha256": "07180481e00c0861b98680dc5b66c6ca248117e3a1998c4c6d1cad7645035343"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -1966,8 +1966,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/SKILL.md",
-  "size": 6983,
-  "sha256": "2e93076a2014ec21ecf875ebdd1485ae055b88310450a047afd7ccc278e6c274"
+  "size": 6981,
+  "sha256": "30b610cfc5e4277d180b026dd594e9f50e22513dc33b7a14d86dc41b186bc0a8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/THIRD-PARTY-NOTICES.txt",
@@ -1981,8 +1981,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/SETUP-README.md",
-  "size": 3203,
-  "sha256": "373ff4c588099b677f5215eaf41efc643866f582386f77815fef107e141bc2fb"
+  "size": 3205,
+  "sha256": "85b183c5465d1d273636f62e0ce00d15492cf687faa97e2113a420282a64abdf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/houseCARL-Vortex-shim-setup.pdf",
@@ -1991,8 +1991,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/scripts/Setup-HouseCarl.ps1",
-  "size": 25775,
-  "sha256": "ce9e8a3a7d3189da4081d39b87948800255a8ebd5fa3fbaa6e24eb45eab14412"
+  "size": 25777,
+  "sha256": "c216fe56bf9e178c8c37fc4bf2478c11fc5e2bf0e205ffbd1d86512079f5019a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/invariant-driven-design/SKILL.md",
@@ -3176,8 +3176,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
-  "size": 4580,
-  "sha256": "7ccf0e6ab4e5f74e8d879b46ffd2119cf1f7c56a32c53e1581359d194a62183e"
+  "size": 4577,
+  "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -4006,13 +4006,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 7054,
-  "sha256": "2b0ebcc1a1512ea6baee21d80cac29dfbea507b80e32d9a864fef91718ea5f67"
+  "size": 7050,
+  "sha256": "917ee6e5be364b9312edc87822652718f1398f4f6a9616aad9e75435df4ce6ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
-  "size": 8305,
-  "sha256": "556c2b4a72cc9f775320b3ad301f9614c6e8ea5b890bdc3e7725321bdf231cdf"
+  "size": 8321,
+  "sha256": "5bfb747c16f6256b7f91279b0a3fc0b5d6553ec61131351daeeceda698565f1f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/tool-output-awareness/SKILL.md",
@@ -4026,8 +4026,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
-  "size": 2583,
-  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+  "size": 2570,
+  "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/upgrade-path-testing/SKILL.md",
@@ -4196,13 +4196,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-MAP.md",
-  "size": 1335,
-  "sha256": "f6d0e79b62ba3d6a0537a25c50aaeb0de00aa010d7cb55ecda62287e9c4c31fe"
+  "size": 1332,
+  "sha256": "325b7f5495bab98dac99822401ad79769746373dc90f0a01d22e66e306423d00"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-PROVIDER-HOME/AGENTS.md",
-  "size": 24460,
-  "sha256": "39f759a50cd0674c4a96861e9ff51e04f43ab43eb307ecee5b0a4eb574888680"
+  "size": 24457,
+  "sha256": "d65e463eb994a4a03587b210402a6cfccc2d088fc803815aa824ae36f627213e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-PROVIDER-HOME/config.toml",
@@ -4226,8 +4226,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4840,
-  "sha256": "81ee59506dfaad2a9f155e6eb2cf8095415075164eefab68c5fcabb2012f2f96"
+  "size": 4834,
+  "sha256": "0b6526b0164912aa2a5e0a4e3cf00a8693f34cf5ebfe17dc919d4bf28d84c34d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -4321,8 +4321,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 10704,
-  "sha256": "5400f1bc5a55287d0957a7e700ae357c25ce343772622b0b11668995fb1665fe"
+  "size": 10713,
+  "sha256": "1acc191213afde3610df6a5a934b86b4427b8910f70ae0615921bbca20da3a60"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -4581,8 +4581,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 15813,
-  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
+  "size": 15827,
+  "sha256": "07180481e00c0861b98680dc5b66c6ca248117e3a1998c4c6d1cad7645035343"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -4781,8 +4781,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/SKILL.md",
-  "size": 6983,
-  "sha256": "2e93076a2014ec21ecf875ebdd1485ae055b88310450a047afd7ccc278e6c274"
+  "size": 6981,
+  "sha256": "30b610cfc5e4277d180b026dd594e9f50e22513dc33b7a14d86dc41b186bc0a8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/THIRD-PARTY-NOTICES.txt",
@@ -4796,8 +4796,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/SETUP-README.md",
-  "size": 3203,
-  "sha256": "373ff4c588099b677f5215eaf41efc643866f582386f77815fef107e141bc2fb"
+  "size": 3205,
+  "sha256": "85b183c5465d1d273636f62e0ce00d15492cf687faa97e2113a420282a64abdf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/houseCARL-Vortex-shim-setup.pdf",
@@ -4806,8 +4806,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/scripts/Setup-HouseCarl.ps1",
-  "size": 25775,
-  "sha256": "ce9e8a3a7d3189da4081d39b87948800255a8ebd5fa3fbaa6e24eb45eab14412"
+  "size": 25777,
+  "sha256": "c216fe56bf9e178c8c37fc4bf2478c11fc5e2bf0e205ffbd1d86512079f5019a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/invariant-driven-design/SKILL.md",
@@ -5991,8 +5991,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
-  "size": 4580,
-  "sha256": "7ccf0e6ab4e5f74e8d879b46ffd2119cf1f7c56a32c53e1581359d194a62183e"
+  "size": 4577,
+  "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -6821,13 +6821,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 7054,
-  "sha256": "2b0ebcc1a1512ea6baee21d80cac29dfbea507b80e32d9a864fef91718ea5f67"
+  "size": 7050,
+  "sha256": "917ee6e5be364b9312edc87822652718f1398f4f6a9616aad9e75435df4ce6ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
-  "size": 8305,
-  "sha256": "556c2b4a72cc9f775320b3ad301f9614c6e8ea5b890bdc3e7725321bdf231cdf"
+  "size": 8321,
+  "sha256": "5bfb747c16f6256b7f91279b0a3fc0b5d6553ec61131351daeeceda698565f1f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/tool-output-awareness/SKILL.md",
@@ -6841,8 +6841,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
-  "size": 2583,
-  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+  "size": 2570,
+  "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/upgrade-path-testing/SKILL.md",
@@ -7001,8 +7001,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-MAP.md",
-  "size": 1483,
-  "sha256": "9a3a121368d09aca1b3d6af86662b63e65bbe66802bd54ff39932a73937ca31e"
+  "size": 1480,
+  "sha256": "05e4a35b28ce13b5971ea0cff808f6afe639ed5e08e397732ac9d8bbc63c6dc1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-PROVIDER-HOME/config.toml",
@@ -7026,8 +7026,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4840,
-  "sha256": "81ee59506dfaad2a9f155e6eb2cf8095415075164eefab68c5fcabb2012f2f96"
+  "size": 4834,
+  "sha256": "0b6526b0164912aa2a5e0a4e3cf00a8693f34cf5ebfe17dc919d4bf28d84c34d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -7121,8 +7121,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 10704,
-  "sha256": "5400f1bc5a55287d0957a7e700ae357c25ce343772622b0b11668995fb1665fe"
+  "size": 10713,
+  "sha256": "1acc191213afde3610df6a5a934b86b4427b8910f70ae0615921bbca20da3a60"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -7381,8 +7381,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 15813,
-  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
+  "size": 15827,
+  "sha256": "07180481e00c0861b98680dc5b66c6ca248117e3a1998c4c6d1cad7645035343"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -7581,8 +7581,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/SKILL.md",
-  "size": 6983,
-  "sha256": "2e93076a2014ec21ecf875ebdd1485ae055b88310450a047afd7ccc278e6c274"
+  "size": 6981,
+  "sha256": "30b610cfc5e4277d180b026dd594e9f50e22513dc33b7a14d86dc41b186bc0a8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/THIRD-PARTY-NOTICES.txt",
@@ -7596,8 +7596,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/SETUP-README.md",
-  "size": 3203,
-  "sha256": "373ff4c588099b677f5215eaf41efc643866f582386f77815fef107e141bc2fb"
+  "size": 3205,
+  "sha256": "85b183c5465d1d273636f62e0ce00d15492cf687faa97e2113a420282a64abdf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/houseCARL-Vortex-shim-setup.pdf",
@@ -7606,8 +7606,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/scripts/Setup-HouseCarl.ps1",
-  "size": 25775,
-  "sha256": "ce9e8a3a7d3189da4081d39b87948800255a8ebd5fa3fbaa6e24eb45eab14412"
+  "size": 25777,
+  "sha256": "c216fe56bf9e178c8c37fc4bf2478c11fc5e2bf0e205ffbd1d86512079f5019a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/invariant-driven-design/SKILL.md",
@@ -8791,8 +8791,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
-  "size": 4580,
-  "sha256": "7ccf0e6ab4e5f74e8d879b46ffd2119cf1f7c56a32c53e1581359d194a62183e"
+  "size": 4577,
+  "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -9621,13 +9621,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 7054,
-  "sha256": "2b0ebcc1a1512ea6baee21d80cac29dfbea507b80e32d9a864fef91718ea5f67"
+  "size": 7050,
+  "sha256": "917ee6e5be364b9312edc87822652718f1398f4f6a9616aad9e75435df4ce6ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
-  "size": 8305,
-  "sha256": "556c2b4a72cc9f775320b3ad301f9614c6e8ea5b890bdc3e7725321bdf231cdf"
+  "size": 8321,
+  "sha256": "5bfb747c16f6256b7f91279b0a3fc0b5d6553ec61131351daeeceda698565f1f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/tool-output-awareness/SKILL.md",
@@ -9641,8 +9641,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
-  "size": 2583,
-  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+  "size": 2570,
+  "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/upgrade-path-testing/SKILL.md",
@@ -9746,8 +9746,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-WORKSPACE/AGENTS.md",
-  "size": 19032,
-  "sha256": "bd0bd590333c74f97d420d1863060632663fc00cf772a1e0fcf786d99167c622"
+  "size": 19029,
+  "sha256": "3b098a6ee7e239b1f60e2196837ea1967e6112a08bedb56b56e6cb8bf0000ae3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/OPTIONAL-PROJECT-TEMPLATE/CHANGELOG.txt",
@@ -9801,13 +9801,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-MAP.md",
-  "size": 1466,
-  "sha256": "3e3f1161fe656732f1ced70e4e960a1193c66071b2c1c94f162b86b74a213990"
+  "size": 1463,
+  "sha256": "1603d7b7ba06ad3f1364dce2e5c9f2a42d281f30699edd30d0cf49746b401040"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-PROVIDER-HOME/config.yaml",
-  "size": 9108,
-  "sha256": "19ddb5203f76b881c924936d270dbc0ce349a068a5413d4ca48cd2f6f76a0dfa"
+  "size": 9102,
+  "sha256": "a49c802e7eab06446b2c883ab53a6fd4e10e6bb345999ba389ac759a76f10bc1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -9826,8 +9826,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4840,
-  "sha256": "81ee59506dfaad2a9f155e6eb2cf8095415075164eefab68c5fcabb2012f2f96"
+  "size": 4834,
+  "sha256": "0b6526b0164912aa2a5e0a4e3cf00a8693f34cf5ebfe17dc919d4bf28d84c34d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -9921,8 +9921,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 10704,
-  "sha256": "5400f1bc5a55287d0957a7e700ae357c25ce343772622b0b11668995fb1665fe"
+  "size": 10713,
+  "sha256": "1acc191213afde3610df6a5a934b86b4427b8910f70ae0615921bbca20da3a60"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -10181,8 +10181,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 15813,
-  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
+  "size": 15827,
+  "sha256": "07180481e00c0861b98680dc5b66c6ca248117e3a1998c4c6d1cad7645035343"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -10381,8 +10381,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/SKILL.md",
-  "size": 6983,
-  "sha256": "2e93076a2014ec21ecf875ebdd1485ae055b88310450a047afd7ccc278e6c274"
+  "size": 6981,
+  "sha256": "30b610cfc5e4277d180b026dd594e9f50e22513dc33b7a14d86dc41b186bc0a8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/THIRD-PARTY-NOTICES.txt",
@@ -10396,8 +10396,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/SETUP-README.md",
-  "size": 3203,
-  "sha256": "373ff4c588099b677f5215eaf41efc643866f582386f77815fef107e141bc2fb"
+  "size": 3205,
+  "sha256": "85b183c5465d1d273636f62e0ce00d15492cf687faa97e2113a420282a64abdf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/houseCARL-Vortex-shim-setup.pdf",
@@ -10406,8 +10406,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/scripts/Setup-HouseCarl.ps1",
-  "size": 25775,
-  "sha256": "ce9e8a3a7d3189da4081d39b87948800255a8ebd5fa3fbaa6e24eb45eab14412"
+  "size": 25777,
+  "sha256": "c216fe56bf9e178c8c37fc4bf2478c11fc5e2bf0e205ffbd1d86512079f5019a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/invariant-driven-design/SKILL.md",
@@ -11591,8 +11591,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
-  "size": 4580,
-  "sha256": "7ccf0e6ab4e5f74e8d879b46ffd2119cf1f7c56a32c53e1581359d194a62183e"
+  "size": 4577,
+  "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -12421,13 +12421,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 7054,
-  "sha256": "2b0ebcc1a1512ea6baee21d80cac29dfbea507b80e32d9a864fef91718ea5f67"
+  "size": 7050,
+  "sha256": "917ee6e5be364b9312edc87822652718f1398f4f6a9616aad9e75435df4ce6ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
-  "size": 8305,
-  "sha256": "556c2b4a72cc9f775320b3ad301f9614c6e8ea5b890bdc3e7725321bdf231cdf"
+  "size": 8321,
+  "sha256": "5bfb747c16f6256b7f91279b0a3fc0b5d6553ec61131351daeeceda698565f1f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/tool-output-awareness/SKILL.md",
@@ -12441,8 +12441,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
-  "size": 2583,
-  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+  "size": 2570,
+  "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/upgrade-path-testing/SKILL.md",
@@ -12596,18 +12596,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/README.txt",
-  "size": 4342,
-  "sha256": "b03be9843b398841ec12c77865652ee8b21028a66b32f824fcd665b66f3dbfc9"
+  "size": 4320,
+  "sha256": "8eb9aced97e9f67a5a9a8378c3cdf38c87d91519c2c6df28bdc1fff738c5b758"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
-  "size": 9108,
-  "sha256": "19ddb5203f76b881c924936d270dbc0ce349a068a5413d4ca48cd2f6f76a0dfa"
+  "size": 9102,
+  "sha256": "a49c802e7eab06446b2c883ab53a6fd4e10e6bb345999ba389ac759a76f10bc1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-MAP.md",
-  "size": 1277,
-  "sha256": "72be6f5ae78d0e33c06d1c5d57ce32183dd1aaa1e9c6fae8da1c29b75f88a10e"
+  "size": 1274,
+  "sha256": "a0e5b9d0cff1baad464a1c789618a9b1f774ee520ca368c58cb1a376aa2eb2fe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-PROVIDER-HOME/AGENTS.md",
@@ -12636,8 +12636,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 4840,
-  "sha256": "81ee59506dfaad2a9f155e6eb2cf8095415075164eefab68c5fcabb2012f2f96"
+  "size": 4834,
+  "sha256": "0b6526b0164912aa2a5e0a4e3cf00a8693f34cf5ebfe17dc919d4bf28d84c34d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -12731,8 +12731,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
-  "size": 10704,
-  "sha256": "5400f1bc5a55287d0957a7e700ae357c25ce343772622b0b11668995fb1665fe"
+  "size": 10713,
+  "sha256": "1acc191213afde3610df6a5a934b86b4427b8910f70ae0615921bbca20da3a60"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/check-work/SKILL.md",
@@ -12991,8 +12991,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 15813,
-  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
+  "size": 15827,
+  "sha256": "07180481e00c0861b98680dc5b66c6ca248117e3a1998c4c6d1cad7645035343"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -13191,8 +13191,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/SKILL.md",
-  "size": 6983,
-  "sha256": "2e93076a2014ec21ecf875ebdd1485ae055b88310450a047afd7ccc278e6c274"
+  "size": 6981,
+  "sha256": "30b610cfc5e4277d180b026dd594e9f50e22513dc33b7a14d86dc41b186bc0a8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/THIRD-PARTY-NOTICES.txt",
@@ -13206,8 +13206,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/SETUP-README.md",
-  "size": 3203,
-  "sha256": "373ff4c588099b677f5215eaf41efc643866f582386f77815fef107e141bc2fb"
+  "size": 3205,
+  "sha256": "85b183c5465d1d273636f62e0ce00d15492cf687faa97e2113a420282a64abdf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/references/houseCARL-Vortex-shim-setup.pdf",
@@ -13216,8 +13216,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/housecarl/scripts/Setup-HouseCarl.ps1",
-  "size": 25775,
-  "sha256": "ce9e8a3a7d3189da4081d39b87948800255a8ebd5fa3fbaa6e24eb45eab14412"
+  "size": 25777,
+  "sha256": "c216fe56bf9e178c8c37fc4bf2478c11fc5e2bf0e205ffbd1d86512079f5019a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/invariant-driven-design/SKILL.md",
@@ -14401,8 +14401,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/SKILL.md",
-  "size": 4580,
-  "sha256": "7ccf0e6ab4e5f74e8d879b46ffd2119cf1f7c56a32c53e1581359d194a62183e"
+  "size": 4577,
+  "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
@@ -15231,13 +15231,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 7054,
-  "sha256": "2b0ebcc1a1512ea6baee21d80cac29dfbea507b80e32d9a864fef91718ea5f67"
+  "size": 7050,
+  "sha256": "917ee6e5be364b9312edc87822652718f1398f4f6a9616aad9e75435df4ce6ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
-  "size": 8305,
-  "sha256": "556c2b4a72cc9f775320b3ad301f9614c6e8ea5b890bdc3e7725321bdf231cdf"
+  "size": 8321,
+  "sha256": "5bfb747c16f6256b7f91279b0a3fc0b5d6553ec61131351daeeceda698565f1f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/tool-output-awareness/SKILL.md",
@@ -15251,8 +15251,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
-  "size": 2583,
-  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+  "size": 2570,
+  "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/upgrade-path-testing/SKILL.md",
@@ -15411,8 +15411,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/SETTINGS.md",
-  "size": 1831,
-  "sha256": "fa7742a18f84e89fde27c281368ae27a0c0b86f2deaeced2f579fa58233da8f9"
+  "size": 1825,
+  "sha256": "86fb351f74e840ab75ebd2b1fbd84d7c0b292c94d8675914f4c676a7b0f31ff4"
  },
  {
   "path": "2-OPTIONAL-MANUAL-OTHER-GAMES-MEGA-PACK/Other-Games-Modding-Skills-Mega-Pack-v2.1.0-MANUAL.zip",
@@ -15431,8 +15431,8 @@
  },
  {
   "path": "3-PREAMBLES/README.md",
-  "size": 4094,
-  "sha256": "f8eb5be3bdc4c4b3f46fec059333770ae6e01cb4ce5b69582b9005d97f2c7136"
+  "size": 4026,
+  "sha256": "9e824d54fcd6008668a0e1a5e79b32dc9d30b56bb1dc96e08379c4bfb4227f09"
  },
  {
   "path": "3-PREAMBLES/SOUL.md",
@@ -15445,34 +15445,39 @@
   "sha256": "a920aadb4234cea76b3bb0ebc8e3afc66865bce472f325c57f40acfc2cef32e8"
  },
  {
+  "path": "AIO-GUIDE.md",
+  "size": 3125,
+  "sha256": "94c85802009544eca582206edadd514ee7f1ee76058b7baf01123683fc735a2b"
+ },
+ {
   "path": "BOOTSTRAP.txt",
-  "size": 3832,
-  "sha256": "21b605558d6452ae02425016deefc6be6da682d264db264342708f6bd99d9043"
+  "size": 3824,
+  "sha256": "db4af0c3068508705399e7f0fd4b3ff4e59ea0b42f07489002466004c507140e"
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 23591,
-  "sha256": "e05466b8f79a0e9c877023b026f41c612ad87dcf2c6ef4469b6edae0c76b2f4d"
+  "size": 23765,
+  "sha256": "c9f7f46885296453123eee7dc5338a9d59befc86e66e9df79f553f3a191acaf2"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 1494,
-  "sha256": "916ffabcb0ef88c8ee78052dc786b7655079aa09cda6d8ea3bfa5d88169499b4"
+  "size": 1492,
+  "sha256": "a83b56927d95db5817a684319377dfdbab101af2561f63dcd92dfa833730ec94"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
-  "size": 21244,
-  "sha256": "13e6d6eb5d4a81ff94aed71b85b583ccc09018b7653f40685b786380bf4bd4bf"
+  "size": 21674,
+  "sha256": "8004d91600e9c81b4a9f4a3792dcad2ebf8ecf78dcc92baea1ad388b7c82ee97"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
-  "size": 1085,
-  "sha256": "a394a1f748254688783f3628490b264ac81e8200865eb57debfb62bd10b1ffbe"
+  "size": 1096,
+  "sha256": "5e93859bbe548581d0fca2f7d4d890c3e4747c937ad48d8e9c652d5232f34e89"
  },
  {
   "path": "BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md",
-  "size": 997,
-  "sha256": "38203fc36a6d40d3fc55848a555289dcd1836c65afcccc0202f1827be51a658b"
+  "size": 1011,
+  "sha256": "9c51b6bee0f09ca139e8fe9fbccbe5660b55f5dbb803bc5514729395421ee5d9"
  },
  {
   "path": "BUNDLED-TOOLS/capability-records/firecrawl-mcp.json",
@@ -17381,8 +17386,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/README.md",
-  "size": 14102,
-  "sha256": "7e031145406900db0585e7d0b2732aacc988dbb2fe168a23708752e6a60d44c0"
+  "size": 14099,
+  "sha256": "81cd0590ccdb2f1722239bb68a2e351c3bda77f032d3c38bff9bfeef7386b671"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/RELEASING.md",
@@ -18331,8 +18336,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 75811,
-  "sha256": "14fb0fb8f57285aa9d4f126f8dcbd1a0ad2076aab9bb366f864e13a5384ca556"
+  "size": 77139,
+  "sha256": "d6aa41f32a04a69c5738eeceb2662c796b422794d264b064f14f35e19120bcd2"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18406,8 +18411,13 @@
  },
  {
   "path": "GROK-MCP-TROUBLESHOOTING.md",
-  "size": 10645,
-  "sha256": "4ecf782736d914d41e1e6030f70161ddee013c830da477646a988eb61f995e54"
+  "size": 10659,
+  "sha256": "a20dddedda7a90b79b9ddd89ab5fa309b0c6a3c6fc1f59f2b0ed30c0a1b8e1a8"
+ },
+ {
+  "path": "INSTALL-AIO.ps1",
+  "size": 102172,
+  "sha256": "c48e9d116355d3879e0030180f59d9e77239846160c4c20a7c920f19940e5c8a"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -18416,18 +18426,13 @@
  },
  {
   "path": "INSTALL-REMOTE.ps1",
-  "size": 7194,
-  "sha256": "2a2e85dd2c605192401f279d8d1179eeb16017a00fd47b3646585fe5f08a74d8"
+  "size": 9030,
+  "sha256": "5d62574a100647d501615e7289f2a6870d2953e663c9ab95a815d6dcf651b21a"
  },
  {
-  "path": "INSTALL-V7-AIO.bat",
-  "size": 126,
-  "sha256": "850c9bb5534c34100d167470bd048dc329be4dcd6bdcce18108fdbcc4feb9f0a"
- },
- {
-  "path": "INSTALL-V7-AIO.ps1",
-  "size": 91755,
-  "sha256": "50c58dd004af404bd92a72c94511045d90ac41254efd9518c6ca76fa3744403d"
+  "path": "INSTALL-V8-AIO.bat",
+  "size": 124,
+  "sha256": "3150dd59eda4599ce247a84401f2d8c62768bcb7b08127217cd75d6b2656d5cf"
  },
  {
   "path": "LICENSE",
@@ -18441,8 +18446,8 @@
  },
  {
   "path": "PROMPTS/README.md",
-  "size": 386,
-  "sha256": "78bdcea74fb5a0dc92c4d944774c31cdacb893b35c38e5a154a7d0aeb753ad5d"
+  "size": 383,
+  "sha256": "c3f16af0e9c31c3a230ebc6aca612c7f85c5f1d6661bc7c07793792a8dbc0915"
  },
  {
   "path": "PROMPTS/SKYRIM-MODERNIZATION-MASTER-PROMPT.md",
@@ -18466,18 +18471,18 @@
  },
  {
   "path": "README.md",
-  "size": 45518,
-  "sha256": "8656bef1de23b2cc354cff1d8d480c1a8f8699a36208e4495deb0d3c9df4ee40"
+  "size": 46654,
+  "sha256": "0639631eb638740c21c165ae817c4cb1c364ec2c812e062e0158028a750afe56"
  },
  {
   "path": "START-HERE.bat",
-  "size": 714,
-  "sha256": "5f84955ff0330018ffdbc5cf573ce9e6a78917d89f0ff3c75febe7b4b9ed79fa"
+  "size": 709,
+  "sha256": "3ee5cd4c2d6c5929ecb92af976b690f5954ef12c44cf2a0c04f986b8e6e99ab9"
  },
  {
   "path": "START-HERE.txt",
-  "size": 8594,
-  "sha256": "8f985d2c1f7f2d99e652744f2cad0db7cf5c82f6151fa57cf09fcf8be1006dec"
+  "size": 8699,
+  "sha256": "81d9be6fc7cae9e2db82a19fff30ce1b3215beacc15196d4134abdfc5a906376"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18486,8 +18491,8 @@
  },
  {
   "path": "TESTS/Test-HarnessRealization.ps1",
-  "size": 15983,
-  "sha256": "ece614bacfcee8b9caa10509f631fba02ea2672519d97a1e5a4ec5fcaccdca97"
+  "size": 14435,
+  "sha256": "751264cddafd61197f81e95126cbb451e77cd0582e609cdae918fc34394a097b"
  },
  {
   "path": "TESTS/Test-HeadroomTaskCleanup.ps1",
@@ -18496,18 +18501,18 @@
  },
  {
   "path": "TESTS/Test-McpProfiles.ps1",
-  "size": 46636,
-  "sha256": "217d10ea0f8a3340de5547a5f6ea1793bf486f97eb2a2cf2c0c08f46be9086c7"
+  "size": 47675,
+  "sha256": "3933a85490e48bc8f2134cafc90479afd6744102cfcdbe497433047cbcd0435d"
+ },
+ {
+  "path": "TESTS/Test-Pack.ps1",
+  "size": 35465,
+  "sha256": "369280dce4eac36c82aa32b3fb9025e80af5a822aae0ea8ca8e75acf53235401"
  },
  {
   "path": "TESTS/Test-ProviderSkillSync.ps1",
-  "size": 3567,
-  "sha256": "14cb8ea85a69b66a9976252dd8892352757c3e7b37dcb67303481bfc8615fddc"
- },
- {
-  "path": "TESTS/Test-V7-Pack.ps1",
-  "size": 32764,
-  "sha256": "85886ea2121dc965ec36b142835f8735b304417a7d92922d17b0592ef9991987"
+  "size": 4570,
+  "sha256": "26791215cbbcc5fd0ca4d416b9734914e3a88476d31bea5ec0ec73b0ad34baa3"
  },
  {
   "path": "TESTS/evidence-scenarios/A-visual-defect/EXPECTED.md",
@@ -18666,13 +18671,13 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 103069,
-  "sha256": "46eedbccfc787036f9a5887fd642120e7e1e30c941b310d2f6488a74770e1a13"
+  "size": 105408,
+  "sha256": "32003d609c3352a702dbfaa7c7a3d056577485d07c2a6a0da901457167486005"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 12836,
-  "sha256": "b3d70e31f00f57f0d2f54ed549c1b50bdff6dc861833c9f2d51ffb6d3dd7c1ed"
+  "size": 13485,
+  "sha256": "6ea698cc8ef429889c36f12cba3aba99a3ecda37fbbe7969da8cec922f4b075f"
  },
  {
   "path": "TOOLS/Build-Release.ps1",
@@ -18681,23 +18686,23 @@
  },
  {
   "path": "TOOLS/Build-Toolbelt.ps1",
-  "size": 5704,
-  "sha256": "c3fb170f2bef4469864ce04e48bf54576ba510e48874dcb615d3129587ffa83b"
+  "size": 5732,
+  "sha256": "f16f59246289e1312bc2eb5967411706be2df7cd46df85e60711aaa6922c55d4"
  },
  {
   "path": "TOOLS/Ensure-Headroom-Grok.ps1",
-  "size": 18584,
-  "sha256": "069612c8e3c1d67e7e4b282b3006561ffbef0e959e8a0a450345b4aa63821ad6"
+  "size": 18590,
+  "sha256": "2182818d63ef067470d99578238ee56080bebd4f38ca5e4a57162ec4fab6ef49"
  },
  {
   "path": "TOOLS/Ensure-Provider-CLIs.ps1",
-  "size": 7215,
-  "sha256": "c95a8a46632386cd9b6b8f0a22e421f793b9f9730267458897b20726a8f77155"
+  "size": 7239,
+  "sha256": "45bb10ba73cf9f502a6dc7bec4031c7d7981aaaf3d649d430c6829ab884ede08"
  },
  {
   "path": "TOOLS/Ensure-Tools.ps1",
-  "size": 2103,
-  "sha256": "ef111afa22182920dc6cd70ec3f639a912923aa7cc851bab797887ff47d4220b"
+  "size": 2114,
+  "sha256": "3c66285189bf1df4b8a4812a8063ebd8625459ffaee04b9928c9325aaed346e4"
  },
  {
   "path": "TOOLS/Fix-Grok-Codebase-Memory-Direct.ps1",
@@ -18706,23 +18711,23 @@
  },
  {
   "path": "TOOLS/Install-Completeness-Gate.ps1",
-  "size": 16276,
-  "sha256": "1943c984f3d3e495343c957263dc0683a72aa65e65088fe92c2ef3af1244d3d0"
+  "size": 16308,
+  "sha256": "08aeaf1b28fdec8a881dd9ceaadbf1522c169918b409b8e4663e7eaafa7a9551"
  },
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
-  "size": 8516,
-  "sha256": "4c88659e02e2b14224121c796585d6f914bea6a1612679ff02285eaa40a3dc67"
+  "size": 8566,
+  "sha256": "6a73460c39be14b2a1f3dc9d3b9bdf192024c72b31a2ff28894eb81bbe2932c8"
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",
-  "size": 15696,
-  "sha256": "c2fd1fa159ad479c711260842e257df8e7e14139257af477003692a5082b9aff"
+  "size": 15702,
+  "sha256": "40db61d963c0f10a0de3b4554f58683a9646ea8c63c21801eebc5fc47fb51b95"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
-  "size": 2832,
-  "sha256": "7c25ba5c8b89c79dd1b7cd7a23a069301d6b70beca969938ea6c1b7f63a7d207"
+  "size": 2834,
+  "sha256": "a35f36f5e24acb5c1eabb3325e24162d9027f8782ec7df3984d030b6f77c47e2"
  },
  {
   "path": "TOOLS/Measure-McpSchemaCost.ps1",
@@ -18731,8 +18736,8 @@
  },
  {
   "path": "TOOLS/RECOMMENDED-INSTALLS.md",
-  "size": 1461,
-  "sha256": "702f283b99af710c1dd6d2fbf317f1740834b5c499556259c1d224ed80e633f5"
+  "size": 1463,
+  "sha256": "02acca9fa199cd02559491fbc0bf94bb992b1467f4fb5cf7a59d47a8d3cac34a"
  },
  {
   "path": "TOOLS/Repair-McpPaths.ps1",
@@ -18741,28 +18746,28 @@
  },
  {
   "path": "TOOLS/Set-McpProfile.ps1",
-  "size": 35894,
-  "sha256": "b8fec28faf3cd6ca16a83c0b88517be2988503b4cc30031c5a057214eaf0d3fe"
+  "size": 36402,
+  "sha256": "5d39ffce087f15640f6122726e5870bee62072ba686d1a84745ab62f907fabf0"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
-  "size": 8747,
-  "sha256": "0d271fb98cfd5aac0ac2b74796844fc0559e090ea0defe1210085722b0166691"
+  "size": 8759,
+  "sha256": "143ac615f4311051f26c8e98868564f5e17aa02d6309cd5f214a07a844d27b2b"
  },
  {
   "path": "TOOLS/Setup-HouseCarl.ps1",
-  "size": 27337,
-  "sha256": "c771f52ad0398214fec29dfaba193e4e1861db1409b3b0a25a5d3eaeb4662629"
+  "size": 27341,
+  "sha256": "4829441d988f4d5b24fc9b1989ffa212bf22cf5e51e2775e84814c6629f2a6b3"
  },
  {
   "path": "TOOLS/Test-Installed-State.ps1",
-  "size": 19049,
-  "sha256": "1b92737a7280e1f7d819623ce3f6a9fc5fe45c4150fd3c04c1abec4d513b8809"
+  "size": 19470,
+  "sha256": "3542156fa20ad9a1b7f747df7a5bbf838246b2ce73e969fba56906721025d7b1"
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
-  "size": 13619,
-  "sha256": "d23535d4aae6d5e647267b6abe675502bee88c6c9698071295e0d920036e8eea"
+  "size": 10856,
+  "sha256": "ad1d46cc6ad80bb18af03eb386012ea4faed2e99cc9f60db2f380305d67223fb"
  },
  {
   "path": "TOOLS/Test-VisionCanary.ps1",
@@ -18770,19 +18775,19 @@
   "sha256": "b78eba81cd6f208867c19b1bda647e3aad5f5ca22b685cad588b579fbf4e073a"
  },
  {
+  "path": "TOOLS/UABS-Common.ps1",
+  "size": 54810,
+  "sha256": "226200a12b413545f6e92f3c8659fc3bb29d4716d62ff1fb22cab4ef19fb0fa4"
+ },
+ {
+  "path": "TOOLS/UABS-Mcp-Write.ps1",
+  "size": 36710,
+  "sha256": "395fab09fe64c977b278e90c92f5c190d9a83ab3f4f69bc0b9559727aa914b2f"
+ },
+ {
   "path": "TOOLS/Update-From-GitHub.ps1",
-  "size": 2934,
-  "sha256": "7e5b57a2d8597765b4547b0394a54445fc85eb7e5b49e618f3b67b2e367d44ee"
- },
- {
-  "path": "TOOLS/V7-Common.ps1",
-  "size": 46167,
-  "sha256": "bd6e07a56c7fafaee9202efef6047520a7e1723e60d4963775b9fc344bd6f6de"
- },
- {
-  "path": "TOOLS/V7-Mcp-Write.ps1",
-  "size": 35881,
-  "sha256": "5b86cb3d9dc0c52580cda595cba65d5f63da8690a4945c69eb368a260736dab9"
+  "size": 3561,
+  "sha256": "be33b068d1a34420932aa2b6990e53a161339c238e47b079b359f7a69d43b9b7"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -18796,13 +18801,13 @@
  },
  {
   "path": "TOOLS/build_release.py",
-  "size": 10458,
-  "sha256": "bd621e99cef106d4e2c253fa656d8ffab1af3661e5565b4ee1b59b43162455d2"
+  "size": 10455,
+  "sha256": "7a1e585a38713b91b0f6e8aaf1502edf00003aad7eb62592e7b652def865eb70"
  },
  {
   "path": "TOOLS/discover_tools.ps1",
-  "size": 8493,
-  "sha256": "bc2d4d34437353b01dbba9aad3c8005b3ba2b9193b3dd5260c5cd1f63b65f448"
+  "size": 8509,
+  "sha256": "7254f61c59395812cf7221da504f416fd968aeb1f20ad3ec5f6343a3be9cd8b5"
  },
  {
   "path": "TOOLS/fanout_providers.py",
@@ -18811,8 +18816,8 @@
  },
  {
   "path": "TOOLS/generate_manifest.py",
-  "size": 2817,
-  "sha256": "aae5ea3b31a39446a7821d0c6b596879a2d4fa00d3a861a93c683a36de517830"
+  "size": 2862,
+  "sha256": "89a2edf215f06682e62fc862d793a983591749de36a485bdceff945885ff4331"
  },
  {
   "path": "TOOLS/hooks/assumption_gate.py",
@@ -18861,8 +18866,8 @@
  },
  {
   "path": "TOOLS/housecarl/README.md",
-  "size": 3290,
-  "sha256": "9739d5c980eb101a37aec7855daed67ed8cf96b76d90e5df31375ed72ef135a9"
+  "size": 3294,
+  "sha256": "df009cd86a7f33669ec94d86d2848bc31f22bc39d6029b529fc99e172532c3f5"
  },
  {
   "path": "TOOLS/housecarl/houseCARL-Vortex-shim-setup.pdf",
@@ -18871,8 +18876,13 @@
  },
  {
   "path": "TOOLS/install_live_skills.py",
-  "size": 6893,
-  "sha256": "44972a4243b7f6332c3e86740dfc3143240bced74384f6e123b62384c0d39ae9"
+  "size": 6897,
+  "sha256": "8683732e04b3515b6d54e2c65564e3dc195b2f7cb00000ed3604d4b763011fe5"
+ },
+ {
+  "path": "TOOLS/mcp_handshake.py",
+  "size": 5793,
+  "sha256": "d85301645e939c053889fe191af433e9e3e59c6b13e4379044d5b86095dc98f7"
  },
  {
   "path": "TOOLS/measure_mcp_capability.py",
@@ -18885,14 +18895,14 @@
   "sha256": "3fd63344e158a64dcfb02094d21fc0886f9be3b732e1ebcde5c451205fa219ed"
  },
  {
-  "path": "TOOLS/v7-registry-additions.json",
-  "size": 22501,
-  "sha256": "c075034ad9d414c25ca3a5a7b2a5f5d1b8156935c4b11453e62ddf7d10763678"
+  "path": "TOOLS/registry-additions.json",
+  "size": 22498,
+  "sha256": "e2cc549d677f1b19733e1a0fbf49f3dcea032ed59fc30924cfd4a28ee6ddee6c"
  },
  {
-  "path": "TOOLS/v7-registry-corrections.json",
-  "size": 6902,
-  "sha256": "d408fa0162ad4df01ee8645eab05c12fa6500ce97c3c50936b7442f4c9660bd1"
+  "path": "TOOLS/registry-corrections.json",
+  "size": 6899,
+  "sha256": "0218b3ee0c6f284c0a2a1000a0b2a5664b8feaf43383fe0a471f1dc3c817bda3"
  },
  {
   "path": "TOOLS/vision-canary/canary.json",
@@ -18905,19 +18915,14 @@
   "sha256": "b73f6ea89b90ac1f950b2661c20f344e1b2b24325ab51b7f123ad8e07e841338"
  },
  {
-  "path": "V7-AIO-GUIDE.md",
-  "size": 3098,
-  "sha256": "ffb6072e8ace077898cbd69bee47b65ce0855bac900f308adead4ffbcb067838"
- },
- {
   "path": "VALIDATION.json",
-  "size": 5124,
-  "sha256": "56c702905c2baace463dbd3fb427a5bd4e877fdda44e1f4196fcbd143db42777"
+  "size": 1342,
+  "sha256": "21929b576ff16e8ea3985c4360a58dcb1bc464f03e4167c018889eb5a14b7536"
  },
  {
   "path": "VERSION.txt",
-  "size": 8,
-  "sha256": "a5ff2e5238b3b23d5cdd4a5e65a1f9b66d9a31749ba2a905fd9b7dc7160289a1"
+  "size": 7,
+  "sha256": "f107779b09349b6c8c6e58b9d12f9b6d5d47a7c1bdcfc4878b479da3d4d56d57"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -18926,2741 +18931,2741 @@
  },
  {
   "path": "WINDOWS-PATH-MAP.md",
-  "size": 3107,
-  "sha256": "72df3841afe49f648c1bb81815d87808cb8470dd48eb9ae8cd86d17c1049a672"
+  "size": 3109,
+  "sha256": "b5951d9ab7f3c761a287a2e53974d62afd249c95ecec507555c6d7cf7630a553"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/adult-character-sheet/SKILL.md",
+  "path": "_CANONICAL-SKILLS/adult-character-sheet/SKILL.md",
   "size": 1723,
   "sha256": "804396404743f520bf821539bfef5a843c4f0c857568211608072926b2b05eef"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/adult-image-caption/SKILL.md",
+  "path": "_CANONICAL-SKILLS/adult-image-caption/SKILL.md",
   "size": 1711,
   "sha256": "b815073251bd278f2c5a966b0cdeef2720701765335ef408816d2e1f0038cfbd"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/adversarial-self-review/SKILL.md",
+  "path": "_CANONICAL-SKILLS/adversarial-self-review/SKILL.md",
   "size": 965,
   "sha256": "244174bf81bd498605cf713b46228821c7435504b94339ef702748e71cf166f0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ai-tooling-stack/SKILL.md",
-  "size": 4840,
-  "sha256": "81ee59506dfaad2a9f155e6eb2cf8095415075164eefab68c5fcabb2012f2f96"
+  "path": "_CANONICAL-SKILLS/ai-tooling-stack/SKILL.md",
+  "size": 4834,
+  "sha256": "0b6526b0164912aa2a5e0a4e3cf00a8693f34cf5ebfe17dc919d4bf28d84c34d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ambiguity-resolution/SKILL.md",
+  "path": "_CANONICAL-SKILLS/ambiguity-resolution/SKILL.md",
   "size": 997,
   "sha256": "6494f662fd568c24673152be3af9cab31e6162094fd9a939b00d9e4b7438dc10"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/api-compatibility/SKILL.md",
+  "path": "_CANONICAL-SKILLS/api-compatibility/SKILL.md",
   "size": 1096,
   "sha256": "f353513e15392bd9b327e35e5db83a8136ca2f6d01c6a536caddf4009951b394"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/artifact-proof/SKILL.md",
+  "path": "_CANONICAL-SKILLS/artifact-proof/SKILL.md",
   "size": 1075,
   "sha256": "a47d91d011b02aa797b20c79bbfdeddddb22c54ea5cf278d13db630e5e3f9770"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/artifact-provenance/SKILL.md",
+  "path": "_CANONICAL-SKILLS/artifact-provenance/SKILL.md",
   "size": 933,
   "sha256": "c7275699c2f74e6149f5faf260619cc2567299d3dc2f2fc8f5b709bc6e06e107"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/assumption-audit/SKILL.md",
+  "path": "_CANONICAL-SKILLS/assumption-audit/SKILL.md",
   "size": 1560,
   "sha256": "7461dcad58fae3afc1b9a09a24f5e92b17beadf9fa79570f8578cc88f8ecf410"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/automation-first/SKILL.md",
+  "path": "_CANONICAL-SKILLS/automation-first/SKILL.md",
   "size": 1119,
   "sha256": "10f1d65be6e0d2bae2fdfaf44064303a3c0bc4f062a3ec41b832414fe4f8bd54"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/biped-slot-reference/SKILL.md",
+  "path": "_CANONICAL-SKILLS/biped-slot-reference/SKILL.md",
   "size": 4191,
   "sha256": "5712e3446f4904116370882cefa94f964dab5111503f605d3b3d344fb50f0edc"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/biped-slot-reference/references/biped-slots.md",
+  "path": "_CANONICAL-SKILLS/biped-slot-reference/references/biped-slots.md",
   "size": 4873,
   "sha256": "89aacc6f0d5eae76e4cb10aae89c5be94d587a381a536ce81fb8041957e1eb05"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/brainstorming/SKILL.md",
+  "path": "_CANONICAL-SKILLS/brainstorming/SKILL.md",
   "size": 10047,
   "sha256": "4a54a4858b99807f3155ed1614b2f116e35ea5c1b788e793f565dd837fd3891f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/brainstorming/scripts/frame-template.html",
+  "path": "_CANONICAL-SKILLS/brainstorming/scripts/frame-template.html",
   "size": 8094,
   "sha256": "6a8a4e58bd6a44b904e2e3c57de774481d909204597e1498de53f1b2fecc4c4e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/brainstorming/scripts/helper.js",
+  "path": "_CANONICAL-SKILLS/brainstorming/scripts/helper.js",
   "size": 5615,
   "sha256": "43c6d69954a46ec34a2a262bcc62a9a7e83e839c739f199cb72646d397c686e3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/brainstorming/scripts/server.cjs",
+  "path": "_CANONICAL-SKILLS/brainstorming/scripts/server.cjs",
   "size": 25693,
   "sha256": "2d2961ea8d11f56c5f4c3a1a68d22709efa5d7601a2246d8c880774e7e9e8412"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/brainstorming/scripts/start-server.sh",
+  "path": "_CANONICAL-SKILLS/brainstorming/scripts/start-server.sh",
   "size": 6908,
   "sha256": "a4e5ae84275bcaacd2f84345afeabe59cf7b00ba080e123da7cc1fb226f12847"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/brainstorming/scripts/stop-server.sh",
+  "path": "_CANONICAL-SKILLS/brainstorming/scripts/stop-server.sh",
   "size": 3263,
   "sha256": "0b5ccbbd57f62d3ed88993f7940b5ee0e5c0fc9b21c550c623da4f6292e47daf"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/brainstorming/spec-document-reviewer-prompt.md",
+  "path": "_CANONICAL-SKILLS/brainstorming/spec-document-reviewer-prompt.md",
   "size": 1747,
   "sha256": "95a0a195de9d984be2fffa95bab16fc8c563bc296a9cfc5e9c29cb3ece0d7457"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/brainstorming/visual-companion.md",
+  "path": "_CANONICAL-SKILLS/brainstorming/visual-companion.md",
   "size": 13298,
   "sha256": "60cbad29b9dd7eaf08da020e301c498a72230b2e13c1813fa967a135ffcc1d71"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/bulk-record-jobs/SKILL.md",
+  "path": "_CANONICAL-SKILLS/bulk-record-jobs/SKILL.md",
   "size": 17529,
   "sha256": "af40488b9a27e394c16e78f393e1e1617fdcff1c1991001b344ddf44fac54fb3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/capability-profiles/SKILL.md",
+  "path": "_CANONICAL-SKILLS/capability-profiles/SKILL.md",
   "size": 10322,
   "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/capability-routing/SKILL.md",
-  "size": 10704,
-  "sha256": "5400f1bc5a55287d0957a7e700ae357c25ce343772622b0b11668995fb1665fe"
+  "path": "_CANONICAL-SKILLS/capability-routing/SKILL.md",
+  "size": 10713,
+  "sha256": "1acc191213afde3610df6a5a934b86b4427b8910f70ae0615921bbca20da3a60"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/check-work/SKILL.md",
+  "path": "_CANONICAL-SKILLS/check-work/SKILL.md",
   "size": 2780,
   "sha256": "268003c8fa66723bb17ad1e12270c64d3e49ed02533d5933ecaab83f8f1188e6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ci-convergence/SKILL.md",
+  "path": "_CANONICAL-SKILLS/ci-convergence/SKILL.md",
   "size": 1133,
   "sha256": "ee97f8a8628cdf067eb40ac164adb6c6f5b794efd8a623463cf1825a838d84bd"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/.gitignore",
+  "path": "_CANONICAL-SKILLS/code-review-skill/.gitignore",
   "size": 214,
   "sha256": "2fb77312eae6c85d1b47d6963caad43fbebbb84a28d802b219271ded2cd5e8cb"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/.hive/PROTOCOL.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/.hive/PROTOCOL.md",
   "size": 11995,
   "sha256": "c13150693b2b72459a15a2d5cc2960d3f1dfee31358e70e6e4e4fb89d1f72db7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/.hive/memory.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/.hive/memory.md",
   "size": 2331,
   "sha256": "fab5cbed0f671bd8b9dafc8b79cbb2ec2a112ff34862e93c9e335a884be32df8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/.hive/tasks.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/.hive/tasks.md",
   "size": 2514,
   "sha256": "9ad2fa7cab00c308b089fcb0a9ec9a0f14862f2cb1ea594ff902d36c50f9a955"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/.nojekyll",
+  "path": "_CANONICAL-SKILLS/code-review-skill/.nojekyll",
   "size": 0,
   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/CONTRIBUTING.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/CONTRIBUTING.md",
   "size": 10885,
   "sha256": "f82bbd08b368e589a03d7b90b3790153e50c2d19c41a202f4d7abecdd1085783"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/LICENSE",
+  "path": "_CANONICAL-SKILLS/code-review-skill/LICENSE",
   "size": 1092,
   "sha256": "12d21629d3b915784bc36a55e224603dd8e4589df4068eb2d81338825006a837"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/README.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/README.md",
   "size": 27506,
   "sha256": "c04686876d0eb07e2a5f5d8ccc2c4699fd28e146d88bf411f3ae760e945be135"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/SKILL.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/SKILL.md",
   "size": 11188,
   "sha256": "7091db9c57c5c87c60f109bbdfda57e1f1bcae633ecb5f7a61d1103cd456df10"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/assets/pr-review-template.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/assets/pr-review-template.md",
   "size": 3206,
   "sha256": "a440ec7aa749aeb3164f0a7ddded9a0ede40aa83786383e28d841cfb09f37eb3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/assets/review-checklist.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/assets/review-checklist.md",
   "size": 3210,
   "sha256": "e9866256d76f3476d85bdac361412eeb4311cf22ce6133a74ec7f0c7000af574"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/index.en.html",
+  "path": "_CANONICAL-SKILLS/code-review-skill/index.en.html",
   "size": 31202,
   "sha256": "0f75f55f64c1dbe5ae642e72ea30944d9897c7d8657cdcb99bb9870296d35cd0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/index.html",
+  "path": "_CANONICAL-SKILLS/code-review-skill/index.html",
   "size": 31040,
   "sha256": "b0c37007d42cfdd971fdfdd20f5d688a3e5c0c18198fb8ff6ced5246b0be9711"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/angular.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/angular.md",
   "size": 18437,
   "sha256": "ce9013d7b60c6f8a928f0616f656817aed289090da5e2cc960e5d59febb9dac1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/architecture-review-guide.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/architecture-review-guide.md",
   "size": 15291,
   "sha256": "8e0004f23fd72d3c016a08a682d9b2deafb208e08d8ff8b53fffa782c319cf08"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/c.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/c.md",
   "size": 20102,
   "sha256": "c153b752e298ba8e85ceaa13cfb0c5352b07251848c678ebd9da491aa78a4713"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/code-quality-universal.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/code-quality-universal.md",
   "size": 12006,
   "sha256": "32cfde463bc721a6d576f19cf1ca170a3b5db64f2c4b4323fb0568fc7c422ec4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/code-review-best-practices.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/code-review-best-practices.md",
   "size": 3795,
   "sha256": "8dcab3be4c30805bfd755aed84dd1bc70b639b6b57af17fd1bf1d69d9244ac8d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/common-bugs-checklist.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/common-bugs-checklist.md",
   "size": 12506,
   "sha256": "ab9275c454ffbe514ff3421c4eda26613337203d5d64f2ea33e02251e7983449"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/cpp.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/cpp.md",
   "size": 20713,
   "sha256": "8bf4da1da035ec0db5cc55deab021e6042b250b014d07c2d7505aa4bc1917a04"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/async-concurrency-patterns.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/async-concurrency-patterns.md",
   "size": 14089,
   "sha256": "70cd46106c863c0722dbc7ca034c684bda2af21ed213a1d7f7759819e49e2ee2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/error-handling-principles.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/error-handling-principles.md",
   "size": 12953,
   "sha256": "a2b2139bffa96482e1f14d7de94a9d4648749b1b1eb0925dbf3cd07a50f226bf"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/n-plus-one-queries.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/n-plus-one-queries.md",
   "size": 7916,
   "sha256": "015bb5d3291882f792d12858500bbf59e98a14d1a5d0700db5640dbf06386a1a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/sql-injection-prevention.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/sql-injection-prevention.md",
   "size": 8977,
   "sha256": "c54b67fd73e280e0db7e89199b57212e3627dc460e670c3cc6d144c8c6d1d7e5"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/xss-prevention.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/cross-cutting/xss-prevention.md",
   "size": 7800,
   "sha256": "2d9118e7498f27c63ecb3c78ff9c549ec135a6c9cc170f9989181e0d9fc1cb36"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/csharp.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/csharp.md",
   "size": 12697,
   "sha256": "4c7fcde3ae2d4ad14e1fe9d8af5c1baac669e536e0c5fb1e6da6bc109b837838"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/css-less-sass.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/css-less-sass.md",
   "size": 13431,
   "sha256": "22148c2ef86004f28c3c6af94d3d68ad4e19f92b86ef1010bc487cc0588f3bcc"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/django.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/django.md",
   "size": 28935,
   "sha256": "b7ffaf6da75ca3b16408c121ff173f02928c29a4dba0cd71509d569b26603196"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/fastapi.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/fastapi.md",
   "size": 26554,
   "sha256": "bf52fb055aceba62aaa16de6e946a7c4c55cb79f1d52c3d3468fe6c6949ca915"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/go.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/go.md",
   "size": 20527,
   "sha256": "c183c3ab9440f4f4ab6f2e6862648781042f5cd4de2ca505ee6a9af3acd528c4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/java.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/java.md",
   "size": 10484,
   "sha256": "07083e47b279f8a72bba16a7a5bfafe2af5c03ce14dbd048e0561eb84779edf9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/java8.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/java8.md",
   "size": 18894,
   "sha256": "ffa415e3d7f2ce70cefb631977a17454d43b69bf2d72a56108e867761ac8adb3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/kotlin.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/kotlin.md",
   "size": 29159,
   "sha256": "8bc062bf0a675471cb7ba1fe9becf3ab4f64861432b1aec3300b451017f95457"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/nestjs.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/nestjs.md",
   "size": 14766,
   "sha256": "786016c5b692ce0b5fa34d4db96160ca53b479c787059db68fb54daf46fb3a46"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/performance-review-guide.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/performance-review-guide.md",
   "size": 19616,
   "sha256": "5118a40ad85d53a3df459810abb18987806f4a1266a2f214646f42b98ce2f08d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/php.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/php.md",
   "size": 20146,
   "sha256": "2e40d0e04b9a37f5d42792b1ee401070a2b3decc726a711ba4200e5c03329b95"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/python.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/python.md",
   "size": 24595,
   "sha256": "e0df57bd897f2dd344a21791b04f739a00c7b93a32fc64ec505195048a2ef94c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/qt.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/qt.md",
   "size": 21483,
   "sha256": "922ed0fe1362bd0a0959e7be81f62c1cf9b77b4e9ad285e189db66fac7751b0e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/react.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/react.md",
   "size": 21979,
   "sha256": "119a2b0be6966d162fbd2be76d3d10c0fd09cdb3d8e76be6ec9d5ed901332bd9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/ruby.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/ruby.md",
   "size": 41867,
   "sha256": "4cd96f8d5062bea49c06eca7db790bf06d35ace42eced0d6d019d7e55254c2f2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/rust.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/rust.md",
   "size": 21471,
   "sha256": "1bb761f7aada1c597f0a4a7d857f3762673d7e017710402dc17b093fdd9fb569"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/security-review-guide.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/security-review-guide.md",
   "size": 13247,
   "sha256": "a0271fe590ff17cbf983477e82603fdc184943b70dd6a6805d7bc6390c7ae02c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/svelte.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/svelte.md",
   "size": 25984,
   "sha256": "519da3dc582688b6d71e30898b5944192ee4904d69e2aac08655226c585b42e6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/swift.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/swift.md",
   "size": 23803,
   "sha256": "c4d7f298265244f34f4a2a9d18116e2c047ee87ca20646ff6d5117802d5e537c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/typescript.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/typescript.md",
   "size": 24572,
   "sha256": "fca6e0e384c5542123a2781adc833599129e24d9881aa9ec7c802a42d8e13bf4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/vue.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/vue.md",
   "size": 20499,
   "sha256": "49686f8c59b2069f0b3b322a97555615ec071d991412d98a70b8425dbe94bdd4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/reference/zig.md",
+  "path": "_CANONICAL-SKILLS/code-review-skill/reference/zig.md",
   "size": 14845,
   "sha256": "9a5e9b727d206d91d687ec3cf3caf3ed85e1cbf92b2df5675f82476abe45e017"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/scripts/pr-analyzer.py",
+  "path": "_CANONICAL-SKILLS/code-review-skill/scripts/pr-analyzer.py",
   "size": 14214,
   "sha256": "cdaadc3f937f1c6a6fb4a5920904f3af4a88bee07032c997e20e1be0e8ef48c8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/code-review-skill/scripts/test_pr_analyzer.py",
+  "path": "_CANONICAL-SKILLS/code-review-skill/scripts/test_pr_analyzer.py",
   "size": 17910,
   "sha256": "c2f2204f369c7bdd8978ded74a2159312e1b72f64dc57cef0767c2f489d69aba"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/codebase-memory/SKILL.md",
-  "size": 15813,
-  "sha256": "638f5084306b8860fcec6daf6509fb305b832ab67f7f9ba26459d8a3ab745766"
+  "path": "_CANONICAL-SKILLS/codebase-memory/SKILL.md",
+  "size": 15827,
+  "sha256": "07180481e00c0861b98680dc5b66c6ca248117e3a1998c4c6d1cad7645035343"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/codeburn/SKILL.md",
+  "path": "_CANONICAL-SKILLS/codeburn/SKILL.md",
   "size": 1257,
   "sha256": "c27924c71b84baedf1211bbe9e12d9e136c1e573a03dc1e6dddd70a4874e7f48"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/coding-discipline/SKILL.md",
+  "path": "_CANONICAL-SKILLS/coding-discipline/SKILL.md",
   "size": 3699,
   "sha256": "6c84a108f7223565ee30dfac498d5f30ac0334b9632057d74f6baf2b2c29883e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/compatibility-matrix/SKILL.md",
+  "path": "_CANONICAL-SKILLS/compatibility-matrix/SKILL.md",
   "size": 974,
   "sha256": "e5fcf7bfce41683be4b6023578708b226560aa7cfc8b1752a54da632318df841"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/concurrency-safety/SKILL.md",
+  "path": "_CANONICAL-SKILLS/concurrency-safety/SKILL.md",
   "size": 1103,
   "sha256": "d28684986e548555ff762f93f71a63df7dd7c4a7ef1a5038ec5587488f2dcc3f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/condition-based-waiting/SKILL.md",
+  "path": "_CANONICAL-SKILLS/condition-based-waiting/SKILL.md",
   "size": 874,
   "sha256": "f5b7a3e1814fe0a06aa090d3f8dcda9d59c3a5eb156ab8832de88e19e38fe3b8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/config-preservation/SKILL.md",
+  "path": "_CANONICAL-SKILLS/config-preservation/SKILL.md",
   "size": 1076,
   "sha256": "d7fb57eb96fef8fc474cc3d93dfcb9666496722b4a2b8ffcb3f2988494fa6458"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/context-compaction-fidelity/SKILL.md",
+  "path": "_CANONICAL-SKILLS/context-compaction-fidelity/SKILL.md",
   "size": 1031,
   "sha256": "8e4da7569b41a5621142a4a27ad236fd4e083d5158891949391fa7bff0156f03"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/contradiction-detection/SKILL.md",
+  "path": "_CANONICAL-SKILLS/contradiction-detection/SKILL.md",
   "size": 986,
   "sha256": "e69a7d7f0175abfa4a17c50c217423f5b0612a198bfe23a45e8fa2a642056c8f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/data-integrity/SKILL.md",
+  "path": "_CANONICAL-SKILLS/data-integrity/SKILL.md",
   "size": 1028,
   "sha256": "ba7e0b2639fa6e78ac70e196f0873a7a440002a507155daab2b34e0427b5c5fa"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/defuddle/SKILL.md",
+  "path": "_CANONICAL-SKILLS/defuddle/SKILL.md",
   "size": 1123,
   "sha256": "10673a4dc70a0a057612d443243ab7a5aa4abdd4a0fadc3f6eec5fd71ad5a971"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dependency-capability-check/SKILL.md",
+  "path": "_CANONICAL-SKILLS/dependency-capability-check/SKILL.md",
   "size": 1126,
   "sha256": "2b87921b19a60bc7ba888290bfaeccd556ea175bcec799362676364ef5de34b6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/deterministic-selection/SKILL.md",
+  "path": "_CANONICAL-SKILLS/deterministic-selection/SKILL.md",
   "size": 1015,
   "sha256": "3d345b0cdc3b01ac2388685dfc0c778f6197d5ea2f7af417b594fe493c82de02"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dialogue-authoring/SKILL.md",
+  "path": "_CANONICAL-SKILLS/dialogue-authoring/SKILL.md",
   "size": 27626,
   "sha256": "c247e635a12a47a3bce771bfec3e168dbde162224e60fe06e7c9fb38aa65fe71"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dialogue-authoring/references/condition-functions.md",
+  "path": "_CANONICAL-SKILLS/dialogue-authoring/references/condition-functions.md",
   "size": 14633,
   "sha256": "825255d8dcba38759d6ca1bcf5bf02ef370842083fad0d241e0027f2e882281b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dialogue-authoring/references/dialogue-branch.md",
+  "path": "_CANONICAL-SKILLS/dialogue-authoring/references/dialogue-branch.md",
   "size": 4822,
   "sha256": "fa9bab00af29aec17b17034cf593e60be237f3e1f9a46997522da9c8a5a78277"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dialogue-authoring/references/dialogue-flow-model.md",
+  "path": "_CANONICAL-SKILLS/dialogue-authoring/references/dialogue-flow-model.md",
   "size": 7532,
   "sha256": "df4ccbd1960b54fe9c50cdf686f804f19c6593d482cd5c06a68fe871d94132c3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dialogue-authoring/references/quest-objectives-tab.md",
+  "path": "_CANONICAL-SKILLS/dialogue-authoring/references/quest-objectives-tab.md",
   "size": 5241,
   "sha256": "df9f1b0a254bcd528384a5555d56fd9c38cc4fea230c0058f0dc3fbdc50e7c56"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dialogue-authoring/references/seq-file-format.md",
+  "path": "_CANONICAL-SKILLS/dialogue-authoring/references/seq-file-format.md",
   "size": 3003,
   "sha256": "692d6fdce30084236c26cf519afe3ae67477521b7e1cc57ae06adb6f3fb27152"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dialogue-authoring/references/voice-file-naming.md",
+  "path": "_CANONICAL-SKILLS/dialogue-authoring/references/voice-file-naming.md",
   "size": 3838,
   "sha256": "0b51a16a594b0f6eade8161bd044853d91294ded213c171d2bffc84be4b933a2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/dispatching-parallel-agents/SKILL.md",
+  "path": "_CANONICAL-SKILLS/dispatching-parallel-agents/SKILL.md",
   "size": 6078,
   "sha256": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/edge-case-matrix/SKILL.md",
+  "path": "_CANONICAL-SKILLS/edge-case-matrix/SKILL.md",
   "size": 1036,
   "sha256": "f703dfdd088707a3758d6f24386f5472a033118374ca1061ba4e15e821f44081"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/environment-parity/SKILL.md",
+  "path": "_CANONICAL-SKILLS/environment-parity/SKILL.md",
   "size": 983,
   "sha256": "f0a3c45720011c89043e893eb42162c6da5bc82159db7e2d3ea6b4d594a66e83"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/error-taxonomy/SKILL.md",
+  "path": "_CANONICAL-SKILLS/error-taxonomy/SKILL.md",
   "size": 1044,
   "sha256": "46321896d89f90458111445654041df307d87e3a640485d3cb77a41e036fd8f2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/evidence-calibration/SKILL.md",
+  "path": "_CANONICAL-SKILLS/evidence-calibration/SKILL.md",
   "size": 1023,
   "sha256": "3af1679a565f7d45a399adee2fdb5618a89bd1cb5637d526c8a4f4a74108d988"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/executing-plans/SKILL.md",
+  "path": "_CANONICAL-SKILLS/executing-plans/SKILL.md",
   "size": 2305,
   "sha256": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/facegen-diagnostics/SKILL.md",
+  "path": "_CANONICAL-SKILLS/facegen-diagnostics/SKILL.md",
   "size": 25022,
   "sha256": "f4575130550d355abe91f9fd85d78da80a13a62ba47545dd2f98a8c662a53420"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/facegen-diagnostics/references/facegen-causes-and-fixes.md",
+  "path": "_CANONICAL-SKILLS/facegen-diagnostics/references/facegen-causes-and-fixes.md",
   "size": 42101,
   "sha256": "f4e1dd34396d48aedb9a51214f756f2e8239ef3c74d1cfaa7445f2f8b24f0afa"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/failure-injection-testing/SKILL.md",
+  "path": "_CANONICAL-SKILLS/failure-injection-testing/SKILL.md",
   "size": 986,
   "sha256": "b171a4dc672be17cfba6228b023bf72593281948fdcc0c6280c1a3d9480c5332"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/failure-recovery-loop/SKILL.md",
+  "path": "_CANONICAL-SKILLS/failure-recovery-loop/SKILL.md",
   "size": 1074,
   "sha256": "fbc29dbff9c1dc51804101800692a05f1e39623d0b0494a7339d8473ce2adec7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/fallback-degradation/SKILL.md",
+  "path": "_CANONICAL-SKILLS/fallback-degradation/SKILL.md",
   "size": 977,
   "sha256": "85221c54de78748920e9531fc7aa57ff549e1b9f0a5e93db96593297583e4539"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/fictional-adult-modding/SKILL.md",
+  "path": "_CANONICAL-SKILLS/fictional-adult-modding/SKILL.md",
   "size": 1985,
   "sha256": "aca767b7219018129b81ff33c42f903a256d50e2070bac59c5a1bdac9bf8014f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/finishing-a-development-branch/SKILL.md",
+  "path": "_CANONICAL-SKILLS/finishing-a-development-branch/SKILL.md",
   "size": 7022,
   "sha256": "d0ac8360ed9d59121776ef95c84bcb38e9747de0d7ae7e227dca81e437593b9b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/fresh-install-proof/SKILL.md",
+  "path": "_CANONICAL-SKILLS/fresh-install-proof/SKILL.md",
   "size": 1239,
   "sha256": "77b5562fa6fa91817dd06099bbb69e054141d08e86dfa1700384dd38051b8b3f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/headroom/SKILL.md",
+  "path": "_CANONICAL-SKILLS/headroom/SKILL.md",
   "size": 4246,
   "sha256": "03ca71d0b6f09f0cc40e56000d0d1f7f8138d49a598584dc960a0225fc15da78"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/.claude-plugin/plugin.json",
+  "path": "_CANONICAL-SKILLS/housecarl/.claude-plugin/plugin.json",
   "size": 1007,
   "sha256": "68da804be99cef9d40af724d1f4e6aef0601a57ff4f74c55f5bccc258d0d14b4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/.mcp.json",
+  "path": "_CANONICAL-SKILLS/housecarl/.mcp.json",
   "size": 308,
   "sha256": "6e4c677214f521dbe748b1119b04229fc670fab1797dc30fe3fc82c01ffb6c3b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/CHANGELOG.md",
+  "path": "_CANONICAL-SKILLS/housecarl/CHANGELOG.md",
   "size": 80235,
   "sha256": "d50b2f1f5f5f2fd18ef770ff8f46f275f49ee7d9bcc939c1401b08a5b1e205e2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/LICENSE",
+  "path": "_CANONICAL-SKILLS/housecarl/LICENSE",
   "size": 35823,
   "sha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/README.md",
+  "path": "_CANONICAL-SKILLS/housecarl/README.md",
   "size": 10398,
   "sha256": "7c40d56d040efaba6c44140189e8fc6d0952dace12193084bd2a1a9a0660d912"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/SKILL.md",
-  "size": 6983,
-  "sha256": "2e93076a2014ec21ecf875ebdd1485ae055b88310450a047afd7ccc278e6c274"
+  "path": "_CANONICAL-SKILLS/housecarl/SKILL.md",
+  "size": 6981,
+  "sha256": "30b610cfc5e4277d180b026dd594e9f50e22513dc33b7a14d86dc41b186bc0a8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/THIRD-PARTY-NOTICES.txt",
+  "path": "_CANONICAL-SKILLS/housecarl/THIRD-PARTY-NOTICES.txt",
   "size": 21373,
   "sha256": "37998c5067376f08ed494c78a5bebedc0a1c23240ec76713f2e3dd698893fe4e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/agents/openai.yaml",
+  "path": "_CANONICAL-SKILLS/housecarl/agents/openai.yaml",
   "size": 516,
   "sha256": "647369e1e853ffa5e1534a535a71a6cb008cec9d1e558ef228573b79521c6254"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/references/SETUP-README.md",
-  "size": 3203,
-  "sha256": "373ff4c588099b677f5215eaf41efc643866f582386f77815fef107e141bc2fb"
+  "path": "_CANONICAL-SKILLS/housecarl/references/SETUP-README.md",
+  "size": 3205,
+  "sha256": "85b183c5465d1d273636f62e0ce00d15492cf687faa97e2113a420282a64abdf"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/references/houseCARL-Vortex-shim-setup.pdf",
+  "path": "_CANONICAL-SKILLS/housecarl/references/houseCARL-Vortex-shim-setup.pdf",
   "size": 135158,
   "sha256": "27d0e37cffa1e337009952406ed231bbe49d52379ef0d82a3ef944c0b39943b1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/housecarl/scripts/Setup-HouseCarl.ps1",
-  "size": 25775,
-  "sha256": "ce9e8a3a7d3189da4081d39b87948800255a8ebd5fa3fbaa6e24eb45eab14412"
+  "path": "_CANONICAL-SKILLS/housecarl/scripts/Setup-HouseCarl.ps1",
+  "size": 25777,
+  "sha256": "c216fe56bf9e178c8c37fc4bf2478c11fc5e2bf0e205ffbd1d86512079f5019a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/invariant-driven-design/SKILL.md",
+  "path": "_CANONICAL-SKILLS/invariant-driven-design/SKILL.md",
   "size": 982,
   "sha256": "f5d7690577a2c09c9fa8c02de4d8a7195b23846c42f41d0febc28bf008fb08df"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/json-canvas/SKILL.md",
+  "path": "_CANONICAL-SKILLS/json-canvas/SKILL.md",
   "size": 7624,
   "sha256": "97d1ae0728955c4203922753d5656890e5e4dd371b8306ea11884f9b510f1b85"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/json-canvas/references/EXAMPLES.md",
+  "path": "_CANONICAL-SKILLS/json-canvas/references/EXAMPLES.md",
   "size": 6476,
   "sha256": "f5ce15a4b74643122396265e8c37c828874a4005794de2aee7030662968768eb"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/SKILL.md",
+  "path": "_CANONICAL-SKILLS/kid-authoring/SKILL.md",
   "size": 9053,
   "sha256": "6c04733ab37c656ee942074d6744b7809f40003c8a3ac97cd259706672d9cfc6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/KID-4.0.6-AUTHORITY.md",
+  "path": "_CANONICAL-SKILLS/kid-authoring/references/KID-4.0.6-AUTHORITY.md",
   "size": 689,
   "sha256": "a3f58ca209eadaa98247e37b59e0b2b8074ae2c9bc8b37c877cb218d4b9e61d2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/filters.md",
+  "path": "_CANONICAL-SKILLS/kid-authoring/references/filters.md",
   "size": 5545,
   "sha256": "b8d94eb283873b3d72415d046a5081e0dbc0db07ffcc9d357eb883c9968c89b1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/grammar-core.md",
+  "path": "_CANONICAL-SKILLS/kid-authoring/references/grammar-core.md",
   "size": 9272,
   "sha256": "f51a3b723406dfb588437962cb86dff632766cb67f3343a288427ab154840911"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/index.jsonl",
+  "path": "_CANONICAL-SKILLS/kid-authoring/references/index.jsonl",
   "size": 5317,
   "sha256": "76ff9b0ae286032b1a2a86894b8d510a94127761de9676ed483d14fbac7a5f01"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/traits.md",
+  "path": "_CANONICAL-SKILLS/kid-authoring/references/traits.md",
   "size": 4789,
   "sha256": "4f278fb5c38314d7e0588abc676f24116dc6e960c9a1b215e12b2826847a78b6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/types.md",
+  "path": "_CANONICAL-SKILLS/kid-authoring/references/types.md",
   "size": 2911,
   "sha256": "b3354143a1d17f8cd1532825cb4660d3cc4b763dd55840cbf35b551e6a02ec32"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/references/value-tables.md",
+  "path": "_CANONICAL-SKILLS/kid-authoring/references/value-tables.md",
   "size": 5573,
   "sha256": "500673a0034d7cc97a1f0a6737bebcbae788529e419a91ff269f7f95d727ff78"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/kid-authoring/scripts/validate_kid.py",
+  "path": "_CANONICAL-SKILLS/kid-authoring/scripts/validate_kid.py",
   "size": 1745,
   "sha256": "acc1bfa67419d286213b1c8f69f8b97e3bca6234b3ca26e28833ed1fe2fa45d0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/mantella-config/SKILL.md",
+  "path": "_CANONICAL-SKILLS/mantella-config/SKILL.md",
   "size": 2945,
   "sha256": "c48ecf8ceead509c4c3f8e6d58d7e473369292c5f6eee9a03957bf2ea20187a7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/migration-rollback/SKILL.md",
+  "path": "_CANONICAL-SKILLS/migration-rollback/SKILL.md",
   "size": 1047,
   "sha256": "0339f6c001469780e821c685fc6708c3f95ac1c0a38c8d2b57975135de819e1c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/minimal-reproducer/SKILL.md",
+  "path": "_CANONICAL-SKILLS/minimal-reproducer/SKILL.md",
   "size": 927,
   "sha256": "e669c2e9fe5c0cedc92997d55cd8c38f6dcaba9ac8ae67340c5b5337c355f6ca"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/mutagen-reference/SKILL.md",
+  "path": "_CANONICAL-SKILLS/mutagen-reference/SKILL.md",
   "size": 18409,
   "sha256": "127bad9754357ac68ad1c079348fa03f1c9500e8fab11d92676021850a2bb62e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/mutagen-reference/references/arms.jsonl",
+  "path": "_CANONICAL-SKILLS/mutagen-reference/references/arms.jsonl",
   "size": 492713,
   "sha256": "7ac75f50e2fbfd6524c4532c3699b4f9322bc65d2cd5c7d0d717a4a2a3306b51"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/mutagen-reference/references/enums.jsonl",
+  "path": "_CANONICAL-SKILLS/mutagen-reference/references/enums.jsonl",
   "size": 68071,
   "sha256": "19938ce1dc7548113e1466c18d4dd924b2157076c30e1d814649c6018abed56b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/mutagen-reference/references/index.jsonl",
+  "path": "_CANONICAL-SKILLS/mutagen-reference/references/index.jsonl",
   "size": 107291,
   "sha256": "5c6bba02160fc44d54f5a90d91d561388b7436923c0a125f4c6d50bebb4a1c78"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/mutagen-reference/references/polymorphic.jsonl",
+  "path": "_CANONICAL-SKILLS/mutagen-reference/references/polymorphic.jsonl",
   "size": 38976,
   "sha256": "415b567941a199999b6a6ef305ac2656608d84d7453e0ca729ea9d0a9629169f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/mutagen-reference/references/records.jsonl",
+  "path": "_CANONICAL-SKILLS/mutagen-reference/references/records.jsonl",
   "size": 272125,
   "sha256": "85e2323e1c66e1a97de9949d88b33cc20fdadf2f77fba30616b5c69272a2e66a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/mutagen-reference/references/structs.jsonl",
+  "path": "_CANONICAL-SKILLS/mutagen-reference/references/structs.jsonl",
   "size": 146575,
   "sha256": "0f865a357dfcbae21cf5b65719565da917dad131eb66ce95005d8b99819feb11"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/numerical-sanity-check/SKILL.md",
+  "path": "_CANONICAL-SKILLS/numerical-sanity-check/SKILL.md",
   "size": 1029,
   "sha256": "db5fb8a691b42b12ca74f99683b7a857530ef14ea321f1cc210d0a2d22b4a0ed"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/oar-authoring/SKILL.md",
+  "path": "_CANONICAL-SKILLS/oar-authoring/SKILL.md",
   "size": 10196,
   "sha256": "ebbff768560f00cf755728e7c0387dcb5168d1937bf5a882934f675e69c9a438"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/oar-authoring/references/index.jsonl",
+  "path": "_CANONICAL-SKILLS/oar-authoring/references/index.jsonl",
   "size": 4326,
   "sha256": "fae35e2cadc10dcbe04603e5de4d274c70a924896d46110844dd1360a64fc500"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/oar-authoring/references/oar-config-reference.md",
+  "path": "_CANONICAL-SKILLS/oar-authoring/references/oar-config-reference.md",
   "size": 23178,
   "sha256": "33c1a4523f9650ffdf87c6d3d86d6617d956e24c5d74d843ee34f73309a948b6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/observability-first/SKILL.md",
+  "path": "_CANONICAL-SKILLS/observability-first/SKILL.md",
   "size": 2426,
   "sha256": "229e2bd8222df300302812c9d1cc077c54407f316995fcc4feb12af068158ed7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/obsidian-bases/SKILL.md",
+  "path": "_CANONICAL-SKILLS/obsidian-bases/SKILL.md",
   "size": 13027,
   "sha256": "c0037f20926c7d8591cdd040365e4c0e4c0c4146386a506f28f241faee9a27d9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/obsidian-bases/references/FUNCTIONS_REFERENCE.md",
+  "path": "_CANONICAL-SKILLS/obsidian-bases/references/FUNCTIONS_REFERENCE.md",
   "size": 7538,
   "sha256": "208fd63aead9bca1975626fea52605e6ab9434dc0529d923feb36b18b8877d3b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/obsidian-cli/SKILL.md",
+  "path": "_CANONICAL-SKILLS/obsidian-cli/SKILL.md",
   "size": 3183,
   "sha256": "b54257cdc0e5d04488b35b0c797bfe427b24359f0848d3c73924dcacf8da6358"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/obsidian-markdown/SKILL.md",
+  "path": "_CANONICAL-SKILLS/obsidian-markdown/SKILL.md",
   "size": 5367,
   "sha256": "7ad72e1f0a9081ed325e76b6402ad5de50a00e63e2341fd403a92f147234a007"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/obsidian-markdown/references/CALLOUTS.md",
+  "path": "_CANONICAL-SKILLS/obsidian-markdown/references/CALLOUTS.md",
   "size": 1238,
   "sha256": "9912ec2e3f8711f65b8ceb82cc19cbffc5e6f8ccf2ab627e18926c522c383d8b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/obsidian-markdown/references/EMBEDS.md",
+  "path": "_CANONICAL-SKILLS/obsidian-markdown/references/EMBEDS.md",
   "size": 861,
   "sha256": "63b6205507e28fb58cf200bc348a2b139e50ae739743e2e6316732148973cb7a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/obsidian-markdown/references/PROPERTIES.md",
+  "path": "_CANONICAL-SKILLS/obsidian-markdown/references/PROPERTIES.md",
   "size": 1149,
   "sha256": "392953b5838c3ab3df135b5a914f100ae7b95e4501b6a2e5c8dc63da3ac7558b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/one-shot-completion/SKILL.md",
+  "path": "_CANONICAL-SKILLS/one-shot-completion/SKILL.md",
   "size": 1235,
   "sha256": "3cf8377f3832804f204d8d595d4eb869840d52a082ecf73798e72280f778d0c0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-optimization/SKILL.md",
+  "path": "_CANONICAL-SKILLS/papyrus-optimization/SKILL.md",
   "size": 12534,
   "sha256": "137bebd42527838e709cea0c315da2774ba0f554665f0c401458d3d2fc45bf5f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-optimization/references/papyrus-performance-reference.md",
+  "path": "_CANONICAL-SKILLS/papyrus-optimization/references/papyrus-performance-reference.md",
   "size": 24355,
   "sha256": "2cfc7ad52c30140aa26be25e7d3a328bbde617f6d89eedb0e3817975ec6f39d5"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/SKILL.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/SKILL.md",
   "size": 13771,
   "sha256": "e13bf4aa4cc8e59320862155dc4ae9cd4caa591c24d82ff49669c09eb8a4714c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/andrealphus.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/andrealphus.md",
   "size": 11648,
   "sha256": "9a6f45093132c26addd76f1e0c5cefda174efa2d8b85e6a2222737d875ebfaac"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/atweaks.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/atweaks.md",
   "size": 3001,
   "sha256": "03c4b41988d857dd9468376b808165ed9c84fc8f57491415950ce9264c575c2a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/clib.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/clib.md",
   "size": 160225,
   "sha256": "96b8170bff9aecbb885c8dedcefd0b1926894257c09871dfada2ff7249831afc"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/consoleutil.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/consoleutil.md",
   "size": 1502,
   "sha256": "b3a7e9272eaeabc1c464b5b857f021a8c5c8e930925c1e08919e39570c760cbb"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/cube.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/cube.md",
   "size": 1424,
   "sha256": "167e25219662f9bbc98cc68a5de1316f7d979a2578f4ac0ce0882948a95f4f80"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/currency-swapper.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/currency-swapper.md",
   "size": 2336,
   "sha256": "e88a8c2fef55b5494ad716ba08766178bc2ebef44425875dc50a670851722207"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/custom-skills.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/custom-skills.md",
   "size": 7512,
   "sha256": "f7e249765461b92ae1c7b655e9de2a6c98d3fc1e85e4309f16ff1adc7e8b605f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/dylbills.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/dylbills.md",
   "size": 311117,
   "sha256": "2ebe88fadae1ea63de1114b452040ee61f56522bca261d58a2df2e0acb2902b4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/dynamicwetness.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/dynamicwetness.md",
   "size": 6168,
   "sha256": "1c0981d201e745c9262c03ae3d8db0f79c48d98e348c98ffc34dfed27fa65d76"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/dynanimcast.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/dynanimcast.md",
   "size": 960,
   "sha256": "aa97b5aaa0b8a41b84901b6fab33ddec02f9dfb6a3d99ee0418ddaf9c9dfe545"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/dyndolod.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/dyndolod.md",
   "size": 3974,
   "sha256": "ab9e2bf07b942d0a6e10459dd937863b67caa0b54071190bb1ceba496011a0ff"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/experience.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/experience.md",
   "size": 2625,
   "sha256": "5b56a7a097e8765186ea47b307ab434f788b06781df603f6e68cf8f452fcbbc9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/fisses.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/fisses.md",
   "size": 8932,
   "sha256": "069d8f88886cb9690e1f5a9959ba9eff918ab76e2582e24578da5d8e907c8a54"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/fuzzyactorsearch.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/fuzzyactorsearch.md",
   "size": 777,
   "sha256": "b0976aa2aa20b8ec5be5c4149fa82f9fa64419e941373d856735b26534ea31ac"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/immequipdisp.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/immequipdisp.md",
   "size": 38996,
   "sha256": "ef52a9a158f8a00b608f3efc2e45f089242ad2235b211a03c4fea91965dd4e4f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/index.jsonl",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/index.jsonl",
   "size": 1448800,
   "sha256": "1bf454d1709df1cb10596e37fd45816283b8c08e046577edf4271083db01ea04"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/iniman.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/iniman.md",
   "size": 4032,
   "sha256": "464b8e761e17c454feadfe6c3b82548e01a258b051b18926052e8220bfeae928"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/inventoryfunctions.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/inventoryfunctions.md",
   "size": 13829,
   "sha256": "0f6be4b60913e43ba9346aca57e3579e140b9b410fb8f03bd79fa4123f69d736"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/jcontainers.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/jcontainers.md",
   "size": 72313,
   "sha256": "94467f851cd5f2061c132dc4a5b38c8eef3cf0e7994f100453b3a990b523cacd"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/libfire.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/libfire.md",
   "size": 21412,
   "sha256": "fc6024d0d2f35342d1cab91c15d5b5a5a5413bef1b28c069b6c6cce0a176dfde"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/libmathf.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/libmathf.md",
   "size": 9349,
   "sha256": "4bd52a6a39ba91b1391b21d0ac42e989c4997ba53b80e3efe5bebec295361b69"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/libturtleclub.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/libturtleclub.md",
   "size": 21424,
   "sha256": "8e3b38975487327d768eeabc9f593b9b5c9354153c8d25a5b85b36fd169ee3d1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/mcmhelper.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/mcmhelper.md",
   "size": 7334,
   "sha256": "19a097a4640b2d8f518ebdcaccab41b6503bf0b9b2bf624294b5fbbfc9143567"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/messagebox.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/messagebox.md",
   "size": 8785,
   "sha256": "a777908cd1b22619f2b9f0f91e469262746ab6ecfed29f4bf164699845a16563"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/morehud.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/morehud.md",
   "size": 2698,
   "sha256": "0c948031f469686d633478267022b475d4ac13a7a39bfe799be4940b7e47c919"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/morehudinv.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/morehudinv.md",
   "size": 2722,
   "sha256": "589a9b74cd5075db94bd628ceca7aefa34c5d97ac42b752e1a131edc85cb0087"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/ollama.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/ollama.md",
   "size": 1776,
   "sha256": "a8c68e3495d94cd6d671d015fea00c132aca380c859d855cdb011ea70347ca56"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/paper.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/paper.md",
   "size": 2142,
   "sha256": "06def2d8acb76e6556947690ee7fa7e3bf9150e47d801f575d1ccdfcb19eb7c3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/papyrusutil.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/papyrusutil.md",
   "size": 137032,
   "sha256": "68e1d550cbebb469be459abc75aaf76e05d6e463d1e1d2c4ad0e4df84d599572"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/perkentrypoint.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/perkentrypoint.md",
   "size": 3958,
   "sha256": "e89371a979e53a0f91e0b2df1b8595671455cbebff36561cf62fe330b96ac95d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/po3.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/po3.md",
   "size": 143192,
   "sha256": "c92a72bbc92dee79ae422d302768de0a459f78e3a16f3b644b71559b354f0966"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/rogue.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/rogue.md",
   "size": 745,
   "sha256": "89e17f08870b30789c29d7cfd6b3048f659b35ea9bcb1709a0a3a4028aa2284c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/scrab.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/scrab.md",
   "size": 28111,
   "sha256": "4a1eeda5e91e58cdd835849017cf508ae7b5f76fe9d3745624ce9a84c2bd4b4a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/shazdeh.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/shazdeh.md",
   "size": 6869,
   "sha256": "50f9e2f260a5a93cecceb8ff40d40c466a7957f518e98321a1261311da47feda"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/silent-biters.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/silent-biters.md",
   "size": 5493,
   "sha256": "f0ca2fc364c86f3d5e30d5a364cbeb0cf5923835106fcc54de14abb0fbdebfe1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/simplyknock.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/simplyknock.md",
   "size": 343,
   "sha256": "b638678b306bca3168f0f5fe4526824df656bd3e0141d6916b1186e3afe69a5c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ActiveMagicEffect.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ActiveMagicEffect.md",
   "size": 24715,
   "sha256": "4e1b2edb09d4a604dfd3bbe7cd131f8d6577b5cebdcc81bd8d535bdfc194cd44"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Actor.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Actor.md",
   "size": 51518,
   "sha256": "ea765921d3a9f164fd791ef1a7ff77b4b4bf753f05a29c7ceb4a97091eb45324"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ActorBase.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ActorBase.md",
   "size": 6593,
   "sha256": "72ff2b0464dba42018c551eeed2c2e0e3ab1c5eb16abc7cb50a9f7dc7ec26857"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ActorValueInfo.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ActorValueInfo.md",
   "size": 4482,
   "sha256": "35aa26a7e5dbb9a708607b2e3da15b4db2f439fad1fe8a1f4a9f20d5a1a88d76"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Alias.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Alias.md",
   "size": 12211,
   "sha256": "af4a811932c8cee5e6be73b57ceb9123966765e985f8a0b393253b1c368c8a3b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Ammo.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Ammo.md",
   "size": 397,
   "sha256": "a8d0dd70d4a16060f8633b62cab78bdb5b677c7e117baba02b869bbe03139440"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Apparatus.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Apparatus.md",
   "size": 330,
   "sha256": "f2250b3d348bd9f139071bf45a87dfe379ebbfb9a4fdbe8a9ac22654a2c6df87"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Armor.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Armor.md",
   "size": 7282,
   "sha256": "34c730503f146a743e4396de6e2f66d503941956b7a10bf61c1434b4ee3ae36e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ArmorAddon.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ArmorAddon.md",
   "size": 2885,
   "sha256": "1119e0b2bd3379dbcd4f1fbebecc2cde8d31b644b3387c43ef58c50d3f84c8a2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Art.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Art.md",
   "size": 322,
   "sha256": "7bb0c980cffc9a65dfc986cb84c0494dc5b3eb84cca1d43761b0ded0d6f487a8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Book.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Book.md",
   "size": 403,
   "sha256": "e09299213cca59b033aa36c7fd7c55a1613295ae9ad4e5c10969c936f7f22758"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Camera.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Camera.md",
   "size": 1489,
   "sha256": "dea36eec3e958cf34389ffcbbe2ef69f8e58f20a8b9bb55abd33fcdb9a158fe2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Cell.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Cell.md",
   "size": 2943,
   "sha256": "00c192245bd23de663980b962a45b08bcea293edba0115cb798adb45ac35e419"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ColorComponent.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ColorComponent.md",
   "size": 2508,
   "sha256": "af9ed756546f105a06a5144224a2eb431567861e5a5e15c6cac4385b3f3330e2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ColorForm.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ColorForm.md",
   "size": 478,
   "sha256": "dbc0986081fdce5c93aff8253be08d5ea38befe2177b4e39633d534838071315"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/CombatStyle.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/CombatStyle.md",
   "size": 6248,
   "sha256": "6d0d49aed4f7ef151a1d123524641f32295243c12a317839f764ad15fc2c6e09"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ConstructibleObject.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ConstructibleObject.md",
   "size": 1783,
   "sha256": "0e834640a8a5b1152a36d2b6b7eab480d02e0fe9addce65d6d2c2fd1d5fbc807"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/DefaultObjectManager.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/DefaultObjectManager.md",
   "size": 568,
   "sha256": "e8522e5396b3dcdffcd418a48bcc4f63deff42201d915bfe85fea8f7fda2df96"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Enchantment.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Enchantment.md",
   "size": 2422,
   "sha256": "805201af45a35d6a3fcad30c31aea8492a6545a9329ac3f78d2972aceb393160"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/EquipSlot.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/EquipSlot.md",
   "size": 396,
   "sha256": "9750684900a3a245ae765cbfe5c2712cac333f11af5123b9f64e5de8b1d02f0e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Faction.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Faction.md",
   "size": 8608,
   "sha256": "37b353a685caeaff027193f7b8e94186573d00bee693e4d417df64bbe386c4fc"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Flora.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Flora.md",
   "size": 648,
   "sha256": "4ea5f1f277efdbfdeb44689be5401514c66687e21aeeeffd8021176ab0e4acf5"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Form.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Form.md",
   "size": 15686,
   "sha256": "ce4915f0093d01d5a2961123b83ce1d400654661374458ae5fd6da0d60a18f4d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/FormList.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/FormList.md",
   "size": 1690,
   "sha256": "1500bebc9b646f79a138fc549c757355927417ba16591a8e70e60eefc02ce75b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/FormType.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/FormType.md",
   "size": 10760,
   "sha256": "b95cabd4c96b4068deb9ea831ed13399dcf958b43acef1bf7dbb43217bedde72"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Game.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Game.md",
   "size": 30361,
   "sha256": "d9dd6be9425f691418835fb9e6c1fa3a3acf83ea10ce0a0c91ad8634047bf900"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/GameData.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/GameData.md",
   "size": 3834,
   "sha256": "7506d4567a1a758510074f53a77cdfac0cb89bd63d77607be5396fd5e1ca285b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/HeadPart.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/HeadPart.md",
   "size": 1932,
   "sha256": "b1908b2570c84c53788b6ca6f726e4202a54e52462294b8bc271747d25235561"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Ingredient.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Ingredient.md",
   "size": 3078,
   "sha256": "4b3bd7c0931ef5090734d58afed4cdfec45fe2fd30012d3e9891caecdbd9ff96"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Input.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Input.md",
   "size": 2307,
   "sha256": "f0f2144a05fe81683c3e8ecb477b5229c5055e519a1cc29bebc508e2c348c915"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Keyword.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Keyword.md",
   "size": 1362,
   "sha256": "d90d7ac3c1b61b1b3308915ce460f39b1e9c96c8f04ef0f30047803de3cd7fb8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/LeveledActor.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/LeveledActor.md",
   "size": 1385,
   "sha256": "ba4b0478606452a83f2e6f328bb9119ee2381a40b07955d55281540883496b7f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/LeveledItem.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/LeveledItem.md",
   "size": 1846,
   "sha256": "3f3b0243d64294d6fa9afafe8127678b9e33490f8b09a3feb5597aef00fe29c4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/LeveledSpell.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/LeveledSpell.md",
   "size": 1265,
   "sha256": "cb38442f0bc6162688b417da20b485112a1b5bd2688493ed5861abeb9271aec9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Location.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Location.md",
   "size": 2874,
   "sha256": "646d5b77358ec0912bc1005321b512b95eff11c316f8c530aab3c3fe2e342b07"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/MagicEffect.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/MagicEffect.md",
   "size": 4785,
   "sha256": "50105c2cdce48356694e9a80be9910ce5fd9833d4d357ece91bc36d99aa546ae"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Math.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Math.md",
   "size": 4406,
   "sha256": "62d91cf255e0c0dce7fd356c0241de511cad4db8e08b37453db6bb4bc1fcc73d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ModEvent.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ModEvent.md",
   "size": 1905,
   "sha256": "2e554e6dc5b8ba9fac0af8fdf6de954d71fdcbc454cb032fed4a12e9fbe6bbba"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/NetImmerse.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/NetImmerse.md",
   "size": 10380,
   "sha256": "0a7df578067af342a40ac9a3f9ead472b1f870216f384ab0e293c0792327be55"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/ObjectReference.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/ObjectReference.md",
   "size": 44212,
   "sha256": "d317a0b93888e73c6d9ef92382020f92ca7f01da39a2fb8c6149f064ed6e1d1a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Outfit.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Outfit.md",
   "size": 319,
   "sha256": "2761c1207267b341bd0e94eea0084d8c95fd51ba008dfed2c318d4884b52dfd0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Perk.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Perk.md",
   "size": 3113,
   "sha256": "1b9d9d1150e9e29ee69e7478d7e986dc196a4bde56cb5131f7b4b500ad310bfa"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Potion.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Potion.md",
   "size": 2667,
   "sha256": "70e5a7072a59d1bc96510ecb2f2fab7f5409c5676a594a93b31d6aa15feefb5e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Quest.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Quest.md",
   "size": 13795,
   "sha256": "32ee7791e5728d9fcd1e439f5d5be80fb2b9856dc1cf3855dcd813fa83074b2f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Race.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Race.md",
   "size": 5534,
   "sha256": "0fb4f27f10a619ca3024e36d7be2ff418db093e22e8b5dfb0d5ef1136ac25c12"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/SKSE.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/SKSE.md",
   "size": 939,
   "sha256": "cf79ea011d6142efda818788bc0152fb86281a90f18b520b3a7d3b55abe4aa5c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Scroll.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Scroll.md",
   "size": 3029,
   "sha256": "1ed6b07aa687fe8573d1ed1e591b32267c1b575ffd3cdd3e4bbd1efba62f7f10"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Shout.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Shout.md",
   "size": 1189,
   "sha256": "9e42f24594e664ea93469d79e63c54b0b4621c518b1df595255775fa77a5245c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/SoulGem.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/SoulGem.md",
   "size": 227,
   "sha256": "458e8d73d68f16c25829a7178b11a169df1e7bb1d005b690c255a19a65c72c11"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Sound.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Sound.md",
   "size": 1297,
   "sha256": "02aae6b6fbf1b7a4ced29314249d69d27539c6474aa3f917fbaa5a1f503e756a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/SoundDescriptor.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/SoundDescriptor.md",
   "size": 1046,
   "sha256": "19838951bb9f0696288dd4f336dbc1c52820e0f13cb2b96fac832cf4c2f6a3a9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/SpawnerTask.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/SpawnerTask.md",
   "size": 1961,
   "sha256": "bc65d3c681e8b8c5f101eb03f1512f289d12f3e4a328aa6afae288edcd9e54c1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Spell.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Spell.md",
   "size": 4477,
   "sha256": "8f81afd2a89e74c3d7dc4839c0544b1746b7ffa4c3cdddd32fb61679affc941e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/StringUtil.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/StringUtil.md",
   "size": 2853,
   "sha256": "eeb76e0a915f98e913a7e6e3bf83a555da9caccbcff285a0ad1f35418cfc5247"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/TextureSet.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/TextureSet.md",
   "size": 634,
   "sha256": "d50ee56776704ecbd6f325bd6fbcd9781cc248bc16bde3d8d8ef09a5d2439043"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/TreeObject.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/TreeObject.md",
   "size": 593,
   "sha256": "382563f987bab41f306289ccd0287dd0be12bd80935869b8fb4b4a61dc2c2e86"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/UI.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/UI.md",
   "size": 6815,
   "sha256": "40f971a52dc9dbde69b333b85c78ee70787790639ddba697053451f66ab4864e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/UICallback.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/UICallback.md",
   "size": 2501,
   "sha256": "69c94fa7109e427f911f39e9a150444208e4784aedb820cc11971996eb39d3a6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Utility.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Utility.md",
   "size": 8045,
   "sha256": "2199e94b847e2dc605e9388c1768d485bba415c4efe8d1b7ba1c65633f2a230e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Weapon.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Weapon.md",
   "size": 5455,
   "sha256": "f154eaa082d91204cf123590ee65036f27ff2cbcdf8e9204cbb872ae98b6fb9c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/Weather.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/Weather.md",
   "size": 2331,
   "sha256": "74e5c9e2099007438c7214671006784b387d81c35dba4bbfd007910927ff05ac"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skse/WornObject.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skse/WornObject.md",
   "size": 5268,
   "sha256": "081efa0fe6539b503b70faab6c64de01ba6819b0c63a6e6cd61db6721fcb4dbf"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skyprompt.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skyprompt.md",
   "size": 1773,
   "sha256": "370ad6710e4c772b712cb38236a6409693714e245e8d96eabd28cc9396254255"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skyregex.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skyregex.md",
   "size": 2280,
   "sha256": "5caca1139b7db98d2c51069c340e88d91b8fbd2de683c4456eb3245218fc6d9f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/skyui-sdk.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/skyui-sdk.md",
   "size": 19349,
   "sha256": "95039baaba42e789c6b85099b2269af059b4beed65ab27548dcb920b6ed44ae9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/spellhotbar.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/spellhotbar.md",
   "size": 5873,
   "sha256": "106a644b580e7711518b232d0feeb251d5be3713f5432afaa550d54925229639"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/sppbridge.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/sppbridge.md",
   "size": 13843,
   "sha256": "d738b1742476569a234a8b0860cda078718c69ce89a4b16d893503c9b2490d28"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/steelfeathers.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/steelfeathers.md",
   "size": 3657,
   "sha256": "4bac2b446310e8f1e1b45d343cc2e5fb3392d2a209cbb219e8a63650502cb205"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/trashutil.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/trashutil.md",
   "size": 21053,
   "sha256": "0fb520a1cf4c98c1ee9e362659674fec57ec4fc25952d0935e6261e03f5d1935"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Action.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Action.md",
   "size": 80,
   "sha256": "21ff41808490678f4ac6eb4b084b04d9e5125ff4bbc5be66f6a822d4ed97a99e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Activator.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Activator.md",
   "size": 83,
   "sha256": "a576704fa748294aee2aba30bd09e2f3e900c026bd616305d6004417fe92366d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/ActiveMagicEffect.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/ActiveMagicEffect.md",
   "size": 19782,
   "sha256": "b72a7f76b73bf188c4a9601f6340e1252e0613acd770f4d2bcb01c40544e3a53"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Actor.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Actor.md",
   "size": 45899,
   "sha256": "9a6ee337ee34deafb6007131c23ae969ff640c53fefead1d3cd1a9558ce94881"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/ActorBase.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/ActorBase.md",
   "size": 1848,
   "sha256": "ac14d66953d46735da8b1546dbd3b0e7b2dd04dd1f47818cccfac7b0b732bf6b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Alias.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Alias.md",
   "size": 7367,
   "sha256": "ab6701228ed50f009b53b2c28f468b4790a34a9e6487749fbb22631957907e3e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Ammo.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Ammo.md",
   "size": 56,
   "sha256": "0e8fbd9ef00b76343b845f5825f280475145ba3549e0d033b129914486604005"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Apparatus.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Apparatus.md",
   "size": 89,
   "sha256": "aee5a0e31f2111eb7921d8773e7e79dc004aa96a5954dec97d250ddbb98e04cc"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Armor.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Armor.md",
   "size": 196,
   "sha256": "40b1fa70d9058fd79994be158748e8e656016f08f82ae1a50f2f6a6dee8e5a63"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/AssociationType.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/AssociationType.md",
   "size": 67,
   "sha256": "e004bcef15547e54eb10e7c3c605465e98e46166315ac6bd1b538156fbd5695e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Book.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Book.md",
   "size": 56,
   "sha256": "d43aa1b57c3485c76c970aa43154ad212d3909f350dff8752df62f9be6716c76"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Cell.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Cell.md",
   "size": 2148,
   "sha256": "326612a7fb5a113f7db336943d5c2b641800c06080e1738467f45f33771df05e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Class.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Class.md",
   "size": 57,
   "sha256": "78bfa9e4ba0463452a76b4df157d628a5e10a575747264d3b114424a0cb0e868"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/ConstructibleObject.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/ConstructibleObject.md",
   "size": 77,
   "sha256": "572c280f97c81c2853c055af3d1b923c7b73fde978a1059d235536b3bf424204"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Container.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Container.md",
   "size": 83,
   "sha256": "eac333dc144011b563f83ff2ffceaac7e9449b2ec14642484e64cd7cab96e49d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Debug.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Debug.md",
   "size": 6726,
   "sha256": "fbf2cec32573415a2124139780106a1e4464e80d78aedda79146ea57bb9e1064"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Door.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Door.md",
   "size": 78,
   "sha256": "6c6bd105b18522fba337795b6744397255d3700df14a85599d45555b6805e16f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/EffectShader.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/EffectShader.md",
   "size": 667,
   "sha256": "de1da03ce18a5f28aa40c590425b12d93f82fdf5439e0c6e79e0f1306b49827a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Enchantment.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Enchantment.md",
   "size": 195,
   "sha256": "6c21227933188d598c88d03b68d35c447c3c250a5f4cd0a232f2f80a2400fd44"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/EncounterZone.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/EncounterZone.md",
   "size": 65,
   "sha256": "a0bd090f878e7b9251bf7d96870367cb7270dbcd228926a01e902cd11fb54b27"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Explosion.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Explosion.md",
   "size": 83,
   "sha256": "c1f8838aafc99f608ee0c3c3f558bf1e19a72fac013bde357792b3642439b675"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Faction.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Faction.md",
   "size": 5154,
   "sha256": "06ee263ca298762c2ffbefac9408de53cdf327c56388c6075eadd94942539a87"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Flora.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Flora.md",
   "size": 84,
   "sha256": "c6cd8b6c93a926a266f65664923482a7c2a1122d7fffad04b7050f6ee03e03f4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Form.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Form.md",
   "size": 7807,
   "sha256": "dd7e8345ab1f454d136e5c2e0af8d7c5123d11a5527e93009bfd7a04beeadc09"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/FormList.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/FormList.md",
   "size": 1314,
   "sha256": "2658799a29f419f8982ed68f3fb0ce91d1373963f6c7e07fb04a36abf8c4d769"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Furniture.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Furniture.md",
   "size": 88,
   "sha256": "dee3503694fb5d51325eebd4516f4d035fca986cd4fa4ddaa173e0b0fe1c220e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Game.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Game.md",
   "size": 19715,
   "sha256": "a7ba4d1bb00395e80a5ae7156892b3b49cfa852e5f75d830d138fff24c90c20a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/GlobalVariable.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/GlobalVariable.md",
   "size": 855,
   "sha256": "c9149dabc2331355b7578a3a24ce986f85a41795189857d2bc3c54600f7294a2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Hazard.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Hazard.md",
   "size": 80,
   "sha256": "2ec119e1432e07c87e05461e98e3e4c717882214db0f94bbb404b0733247bbe1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Idle.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Idle.md",
   "size": 78,
   "sha256": "bb9c2570f26b0a0f519b9dc6ef9bf12180de8bfeae11ad473d6c26c1476ad592"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/ImageSpaceModifier.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/ImageSpaceModifier.md",
   "size": 1344,
   "sha256": "3edf27e81bfe1d01ad8bdbecd464583fb3c250bd6961ec09ce834e8c6da772dc"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/ImpactDataSet.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/ImpactDataSet.md",
   "size": 87,
   "sha256": "836673e47726ca93df33ff161f24df26dcb4b87366ee2748b39fa00cb91c3033"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Ingredient.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Ingredient.md",
   "size": 622,
   "sha256": "86f778624a07c2b3009f33b070bf41cc3599bf39d0d7d11b9da2dc4885289b6f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Key.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Key.md",
   "size": 61,
   "sha256": "65aae50e9fc9cf9f9ea518180461ca4b40c38cf0d537a6a1fd215b02bda9f745"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Keyword.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Keyword.md",
   "size": 961,
   "sha256": "22189ce41e0ade491da169123c4f6ba581d051eb785e70b94b8c11a0a76e90d6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/LeveledActor.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/LeveledActor.md",
   "size": 470,
   "sha256": "6578eee3d91468943c0c79b5916ac7e844595b4dfa89d3a3ab7e9c00a72a4c83"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/LeveledItem.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/LeveledItem.md",
   "size": 509,
   "sha256": "1923ebfac438d9c145228a74da9982526ed8b412ddc465069b02b1f0ee117f5e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/LeveledSpell.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/LeveledSpell.md",
   "size": 470,
   "sha256": "83410825f5a79ca842965d77dbe4b5682ab149c0df4a6ef9908ebcd6319edd2a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Light.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Light.md",
   "size": 196,
   "sha256": "19b87b2520962c69e98253fd96b4c65c9291210fe5dc68aad2f7a34b7d8311b5"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Location.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Location.md",
   "size": 2742,
   "sha256": "b3ba56c0a9b7406971c414af47cfc0dd3b623ccfded0f6b3295e6134d34ab0a6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/LocationAlias.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/LocationAlias.md",
   "size": 507,
   "sha256": "fc993f6e73a8a8d17879846d8537bd90dbb93a2f9ad2edfba555ab12663f3e9d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/LocationRefType.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/LocationRefType.md",
   "size": 70,
   "sha256": "dfb00bec55736dc61ac1f4e8f7e7e650c62dccf90243f12e94e41494dc0b60fd"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/MagicEffect.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/MagicEffect.md",
   "size": 209,
   "sha256": "2f843be5cbf528e76295cee01d5d150e3f757327e4e920eb35657cca0c617c7f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Math.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Math.md",
   "size": 3038,
   "sha256": "187a68280ff824cf42ca48255a40efd41ff2941e38fe7a2430aa80b860183bd0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Message.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Message.md",
   "size": 1463,
   "sha256": "8af53d8f755f0eec12ba962c312118b0dcb512e1fb03224b3b40e5f2d4eacbdf"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/MiscObject.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/MiscObject.md",
   "size": 62,
   "sha256": "2f69381b6353b09aac8551296672af5a491c819951cc768dc9a71579082b4e8a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/MusicType.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/MusicType.md",
   "size": 268,
   "sha256": "8aed1fca28b3f9e9e200f2341f199ea637c61696fb38ae7db6c608c2f210f4e6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/ObjectReference.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/ObjectReference.md",
   "size": 40478,
   "sha256": "bdcfd67f204c1e7bd0605b60913eb3b62398c628c9bc0dd9579d6e9e7cf024aa"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Outfit.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Outfit.md",
   "size": 80,
   "sha256": "6b6b4640b6f3a0b5c5157bd745e22df796940da170c71d2112a776c2e40638b1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Package.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Package.md",
   "size": 317,
   "sha256": "1a8fc01ce607672a2e1bb1d0aa941acff38564f7648dd5588bf160e132755285"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Perk.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Perk.md",
   "size": 78,
   "sha256": "38167d561501839ef271e80eb80d177756371d19b294347aeec6282e8dfcd1e9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Potion.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Potion.md",
   "size": 164,
   "sha256": "8fa2289bf36e145c0a613d75d691eafe5cc78434589bc988e185305fa4617617"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Projectile.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Projectile.md",
   "size": 84,
   "sha256": "79d6adb070a4754f8ca111af1a3ee229c70e9864ed1c0ea0f53d679dcc974aaf"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Quest.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Quest.md",
   "size": 12550,
   "sha256": "f9519191bd360592845d24f4f28beb993bd43a032841de32438df3d356d8789c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Race.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Race.md",
   "size": 56,
   "sha256": "0da5843dbe36ac25d3e1033bfeab635d24fc5eccdeab403b5bd369247975fd8f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/ReferenceAlias.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/ReferenceAlias.md",
   "size": 14252,
   "sha256": "f80a6c607baa4488e317d859b77e5ac8e3305ee4c5fdbb82758306d9e4ee183e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Scene.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Scene.md",
   "size": 728,
   "sha256": "e5818fab8d83685f691f9405d8a101f12cf82841a33ca76891e9724616c54a99"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Scroll.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Scroll.md",
   "size": 377,
   "sha256": "dccdb2e7afd3b526c117033ab0f2931c47d7ca914e773b63089695094bf7a089"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/ShaderParticleGeometry.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/ShaderParticleGeometry.md",
   "size": 491,
   "sha256": "cb2c7240fec0214d61e570970458cd31b1ec62e4ca6d7c372146a4a53789f296"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Shout.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Shout.md",
   "size": 57,
   "sha256": "9095a8e5c696d09d57648e6d27dbb65ae6df6d064d0d206ddf6f651bb8d20441"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/SoulGem.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/SoulGem.md",
   "size": 65,
   "sha256": "c9fadceb7a5d1fae376bd85776cf22fbd786b82c2e4f3bc079935089a6052796"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Sound.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Sound.md",
   "size": 1154,
   "sha256": "90a414930c110cf458d4a34df6f301480bb17af6226ab899fbc02feb82821fc7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/SoundCategory.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/SoundCategory.md",
   "size": 916,
   "sha256": "374b5d6290d5dd1f6060e2164398c0a232cdb049f65626ac0bb32d374f3aac38"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/SoundTrap.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/SoundTrap.md",
   "size": 459,
   "sha256": "eca4e07c05ba05e020cca6010065641b4202ca98f94f3d5dc2351c71dec1e4f0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Spell.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Spell.md",
   "size": 1496,
   "sha256": "ff45794c591cc3ba12dc86caeb5c9320d36a98c84d3e0930e27659c7ccabae13"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Static.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Static.md",
   "size": 58,
   "sha256": "89a70c11c3d7807f0fdc51dc46e208124b9c83df969651ed0522380d4f4447ff"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/TalkingActivator.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/TalkingActivator.md",
   "size": 73,
   "sha256": "b8f4a2c09e77390b4c4da504aeca9b9a157070014814bfc08b789d694c8e457a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/TextureSet.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/TextureSet.md",
   "size": 84,
   "sha256": "4d9b1c7eb08a32bc714eff804a8eaa6cb260dd78f12b21e3b4c6ea3cbfe521c9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Topic.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Topic.md",
   "size": 182,
   "sha256": "d06cbb74de80685f5326d207f87b1d58dd9d1f95554f3aa81ea8b03b4be604a6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/TopicInfo.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/TopicInfo.md",
   "size": 222,
   "sha256": "65a23f0c07b4ee165f54076c5df60ad0b85405857324c005c898a09b3eaf2062"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Utility.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Utility.md",
   "size": 4591,
   "sha256": "14bda8688f6769bda5847ecb4f3771b4d48c9d3d6b307e1e2231280eca427e4b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/VisualEffect.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/VisualEffect.md",
   "size": 725,
   "sha256": "5bff8217ccef0451ce94866ab6b915753b9471f07c860d0b572123e350f27a72"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/VoiceType.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/VoiceType.md",
   "size": 83,
   "sha256": "7056c2db9a708357e0711835c4525297c68421aee44ef2dfd6ff6600e56bb9d8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Weapon.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Weapon.md",
   "size": 348,
   "sha256": "609b2a9a449bd71e41230282f6029a133d2cc6cf50b536adc761358ff5ea0179"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/Weather.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/Weather.md",
   "size": 1694,
   "sha256": "253adda98c940567ed0d851af56de961a87cd8ba1def533433163eb823c35900"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/WordOfPower.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/WordOfPower.md",
   "size": 63,
   "sha256": "95e9663ca73763441543701ffe74cec0e97d7f47e71326329b5750142c3840ce"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/vanilla/WorldSpace.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/vanilla/WorldSpace.md",
   "size": 84,
   "sha256": "6c041190af501cec9a2fbdaee2b5acf866e85db0c08225c33a7bd3ac7370aaf2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/papyrus-reference/references/yasoultrapman.md",
+  "path": "_CANONICAL-SKILLS/papyrus-reference/references/yasoultrapman.md",
   "size": 553,
   "sha256": "3d58ca41ff98a4fee8a5d62e0a4dfe21e2cffb1d27547fd95ffacfc7ffac5a31"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/partial-success-accounting/SKILL.md",
+  "path": "_CANONICAL-SKILLS/partial-success-accounting/SKILL.md",
   "size": 934,
   "sha256": "5c454b9b95d1992c802ba5efd29f1e464a8d89fc66c8d0bd8002476c12d7e814"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/path-portability/SKILL.md",
+  "path": "_CANONICAL-SKILLS/path-portability/SKILL.md",
   "size": 1056,
   "sha256": "200767ff2d099f0a23e39c5ce3ec315ee107823b48292361764419263ac32f71"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/performance-evidence/SKILL.md",
+  "path": "_CANONICAL-SKILLS/performance-evidence/SKILL.md",
   "size": 1071,
   "sha256": "5a8b0256239b6d1640b92a706ed534bc867618a65952a96a4b98d32354e56e10"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ponytail-audit/SKILL.md",
+  "path": "_CANONICAL-SKILLS/ponytail-audit/SKILL.md",
   "size": 1652,
   "sha256": "5560b8e383dbe2ddfddc873a1e2bf2e586e23e0cd7d995537482b2315331f6d1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ponytail-debt/SKILL.md",
+  "path": "_CANONICAL-SKILLS/ponytail-debt/SKILL.md",
   "size": 1703,
   "sha256": "c84fba75f0ca12bfe83f9a78ea02fd125c5dd3f1fbb18124105a489937f284e6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ponytail-gain/SKILL.md",
+  "path": "_CANONICAL-SKILLS/ponytail-gain/SKILL.md",
   "size": 1973,
   "sha256": "24e01d1c9715cb136ba1c4f1e52a95940c0193558b876828e537736480d6408b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ponytail-help/SKILL.md",
+  "path": "_CANONICAL-SKILLS/ponytail-help/SKILL.md",
   "size": 2796,
   "sha256": "2264d1615117b02b0fd5a69ec84cd2757006471a78e4d6c22eed6d581c1d37a4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ponytail-review/SKILL.md",
+  "path": "_CANONICAL-SKILLS/ponytail-review/SKILL.md",
   "size": 2383,
   "sha256": "40df33b58fc6ef889b93585733feb9566b76e9586efa7f376785c1e995197ac0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/ponytail/SKILL.md",
+  "path": "_CANONICAL-SKILLS/ponytail/SKILL.md",
   "size": 6174,
   "sha256": "c30eedad18d118e5705919d44077a448b1841e293630a17d2e5ba473b09866d4"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/process-lifecycle-cleanup/SKILL.md",
+  "path": "_CANONICAL-SKILLS/process-lifecycle-cleanup/SKILL.md",
   "size": 941,
   "sha256": "d92c36d3c37eded033bea8688672d1bea1efc959a85cb2066effd6f855adc87e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/prompt-cache-discipline/SKILL.md",
+  "path": "_CANONICAL-SKILLS/prompt-cache-discipline/SKILL.md",
   "size": 1101,
   "sha256": "e765e93dde4cac9f155bc1dff15072dda0ab88b9eac864ef2c62df9f2f63e88d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/real-boundary-testing/SKILL.md",
+  "path": "_CANONICAL-SKILLS/real-boundary-testing/SKILL.md",
   "size": 1050,
   "sha256": "cb658ae0b6342acef3ecf371fde2f957c0f055a837091ca83bf8c20e6fbe69e1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/reasoning-economy/SKILL.md",
+  "path": "_CANONICAL-SKILLS/reasoning-economy/SKILL.md",
   "size": 1188,
   "sha256": "42dbdd1f1fce3a6b0a90641c1528ee2f4449c8bcba8cc113f4c74c89cca0f7ce"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/receiving-code-review/SKILL.md",
+  "path": "_CANONICAL-SKILLS/receiving-code-review/SKILL.md",
   "size": 6203,
   "sha256": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/regression-sweep/SKILL.md",
+  "path": "_CANONICAL-SKILLS/regression-sweep/SKILL.md",
   "size": 1162,
   "sha256": "405f26122070fbc36e68646445b6188c70643844f9ddd1c93cf7fde151983a58"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/release-checklist/SKILL.md",
-  "size": 4580,
-  "sha256": "7ccf0e6ab4e5f74e8d879b46ffd2119cf1f7c56a32c53e1581359d194a62183e"
+  "path": "_CANONICAL-SKILLS/release-checklist/SKILL.md",
+  "size": 4577,
+  "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/reproducible-builds/SKILL.md",
+  "path": "_CANONICAL-SKILLS/reproducible-builds/SKILL.md",
   "size": 1119,
   "sha256": "2531c402cb94aca0d3fc2e84fa5b4c4d328c5f88c7704e96cae54270423fa070"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/requesting-code-review/SKILL.md",
+  "path": "_CANONICAL-SKILLS/requesting-code-review/SKILL.md",
   "size": 2956,
   "sha256": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/requesting-code-review/code-reviewer.md",
+  "path": "_CANONICAL-SKILLS/requesting-code-review/code-reviewer.md",
   "size": 5213,
   "sha256": "b2f2ec7596925fe52dac158fdfbca19b3a7d779d619c481e6706a6c0001662d3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/requirements-traceability/SKILL.md",
+  "path": "_CANONICAL-SKILLS/requirements-traceability/SKILL.md",
   "size": 1074,
   "sha256": "35e1eced76a6e2e0bbc0276975bd865c7622f9483ac9841f9d4a9228e20ebdaa"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/research-verification/SKILL.md",
+  "path": "_CANONICAL-SKILLS/research-verification/SKILL.md",
   "size": 3336,
   "sha256": "6275529b4ae0abe2af3193d73d6bebc03f65eadedb91f0905b2662972252704c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/resource-budgeting/SKILL.md",
+  "path": "_CANONICAL-SKILLS/resource-budgeting/SKILL.md",
   "size": 989,
   "sha256": "3ac8ccf85a165852cecb8b847ac6a0e08bece2d808006ea76c244cac5a450f78"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/retry-idempotency/SKILL.md",
+  "path": "_CANONICAL-SKILLS/retry-idempotency/SKILL.md",
   "size": 1048,
   "sha256": "61db5bdbd46d3fbb4a347d059e3df08bec9fd77ade0f0b91d7761a86ded1d349"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/schema-evolution/SKILL.md",
+  "path": "_CANONICAL-SKILLS/schema-evolution/SKILL.md",
   "size": 953,
   "sha256": "98046458b1d358b1678eb46acb21f69df117bd80b98d2b2113790a5b3ff24630"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/secret-hygiene/SKILL.md",
+  "path": "_CANONICAL-SKILLS/secret-hygiene/SKILL.md",
   "size": 1803,
   "sha256": "dd4ce2df38eaa906b2c46c7280a52dc2ecf3e37272f7248a46b39795e90e5a82"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/security-boundaries/SKILL.md",
+  "path": "_CANONICAL-SKILLS/security-boundaries/SKILL.md",
   "size": 1204,
   "sha256": "8a5ebaa06890ef0263fbf43db31efa04617fa931a98ba5d2a8aa94fb0f7c72a6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/shell-boundary-safety/SKILL.md",
+  "path": "_CANONICAL-SKILLS/shell-boundary-safety/SKILL.md",
   "size": 1014,
   "sha256": "4171749622f05898f0f1655c8471d00c293fc1d04aae050d4dc227952744319d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/side-effect-safety/SKILL.md",
+  "path": "_CANONICAL-SKILLS/side-effect-safety/SKILL.md",
   "size": 1045,
   "sha256": "9c666c0b73f3ba52df201bffc810998b1688efa1a89a0d0b0bc2a0907abe81e8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/SKILL.md",
   "size": 12867,
   "sha256": "27b0a07c1516c01ed4bd3eaba3e3332ae848613b7d245f594c6baf11336a25e6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/event-sinks.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/event-sinks.md",
   "size": 31815,
   "sha256": "775cc2c02e3afff62b83d6ac9257e9d80ff20ec9e33341309c397b689cf89e6c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/hooking.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/hooking.md",
   "size": 33667,
   "sha256": "d447514342b51415c7692f1a46720e9e72414ffe6f77624ac881e9a589b3ee41"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/load-failures.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/load-failures.md",
   "size": 15638,
   "sha256": "e8790ade6054332db01cceb6104bf8dd5ad139c1a16ce2e925612a0dfd757d7f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/multi-runtime.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/multi-runtime.md",
   "size": 31565,
   "sha256": "be5f071c7118ecc15940d09a33c4ccb2c300dba2fb897548c76ca4c96b45b6d1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/native-papyrus-functions.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/native-papyrus-functions.md",
   "size": 34453,
   "sha256": "b557289e96995b10e377682374b6a582fa50094589b3322c0471734abc3935f2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/plugin-dissection.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/plugin-dissection.md",
   "size": 29741,
   "sha256": "d42a719cab53084cb7809571f912369fd6358ed88fd58cc98989ddc09b87d028"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/plugin-skeleton.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/plugin-skeleton.md",
   "size": 25133,
   "sha256": "1b77dbd9fc29c2720b11d528ce19a8f41302efda59411888676bdd3df57663bb"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/threading-and-persistence.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/threading-and-persistence.md",
   "size": 31693,
   "sha256": "3c23c3d589b70c5c58786edd37365253b0d0bb0a55246aaf87a10a2882d972ce"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skse-plugin-authoring/references/toolchain-setup.md",
+  "path": "_CANONICAL-SKILLS/skse-plugin-authoring/references/toolchain-setup.md",
   "size": 28294,
   "sha256": "b9164d6068376e80e01e2cfab7cf25b6a3e4e9116a1a9e0a124c2a4a1c6535ff"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/SKILL.md",
   "size": 9276,
   "sha256": "98a578c5ac700e4278a79f651fd7be050ad67200adbbd3d7a47320753a6cb1dc"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/grammar-core.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/grammar-core.md",
   "size": 15775,
   "sha256": "37de054f5d757f6e1139820433968f6850e6aa5eea2cd14fa6748b8a88a1928b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/index.jsonl",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/index.jsonl",
   "size": 5430,
   "sha256": "23c55a3823f30089caa0a65ecdef25539f438f7fffa64d3428385e90615d7fbb"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/alchemy-ingestible.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/alchemy-ingestible.md",
   "size": 1418,
   "sha256": "3f00b7be0e4eeae44603b51ef6fc49ebe5f6225b56720b3486bd281c423e0318"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/ammo.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/ammo.md",
   "size": 1521,
   "sha256": "2cc16cdf358e34f3f6e1f1e46b7da2c2b71e9132659bff8d1514bbce44cae8a9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/armor.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/armor.md",
   "size": 2995,
   "sha256": "44842743faedd79544b36e3f1f6d3a4f7381993d8e526771e2ccd93896cd331b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/book.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/book.md",
   "size": 1810,
   "sha256": "80367e0abd0f93c34cba97756f05d3887f0d03e80bbb8933f44e3ae88d6a9964"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/cell.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/cell.md",
   "size": 2211,
   "sha256": "3fd8aea22963472e6dbd1f349b9d41cd500e444518d7b38567f4e9a004d04ffd"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/constructible-object.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/constructible-object.md",
   "size": 2216,
   "sha256": "7a5c2669d1aaa6ce27c4b0e20ccd828ca00100b31b46ece88d19920547c8234c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/container.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/container.md",
   "size": 1518,
   "sha256": "73688a93b2d0492f0dbc4a318dbf99eeea89e9f26abf964c1c83d0e0e28e44af"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/enchantment.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/enchantment.md",
   "size": 1324,
   "sha256": "20e89b23cf4b13b2e824b8e2fc6324a3cb0df0f5725aa1dd256e4b5f509bda27"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/encounter-zone.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/encounter-zone.md",
   "size": 999,
   "sha256": "5dc975b6dec4dff257ac7046a5f44cfb73997aae2d569770038760a0ca97bb88"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/faction.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/faction.md",
   "size": 1266,
   "sha256": "7534658f82b8c40fb13e293be486152f42ddcfcf8e8cefdf14bf98dde3e75b4d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/formlist.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/formlist.md",
   "size": 988,
   "sha256": "43440713617ea47b46a3a450283cc06cd16466e627a85dabe70e3e5986873a3c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/ingredient.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/ingredient.md",
   "size": 1123,
   "sha256": "85b643256f53a6937f38c1d42985dede5bff28db391111470c1ccaf61c30d46e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/leveled-list.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/leveled-list.md",
   "size": 2463,
   "sha256": "6c7124e524cd097ef90c845869fde8b7d9f0eb261f2c0fe1e688a33db3d052ff"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/location.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/location.md",
   "size": 1146,
   "sha256": "e2e4a74ffc5c18f324e227e40222cd4263075f3b93592ecffd27164cc03d5dec"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/magic-effect.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/magic-effect.md",
   "size": 2951,
   "sha256": "2dd558dbc28b2e958328985bc1792ec8e59c4d1d816aea06acca91209eec9b09"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/misc.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/misc.md",
   "size": 899,
   "sha256": "c693c09b563c39a1fd985933feb1dd700ebaddc07c20429f3adc1bcb71d43f86"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/movement-type.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/movement-type.md",
   "size": 618,
   "sha256": "96c6480e7f75ef6b4aa02ac1aaf97bd9acf92bf5eac044e425d00c03ed4d6004"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/npc.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/npc.md",
   "size": 5905,
   "sha256": "03dd3b089c30bcfc67c9aea49b4d84ae090a0409ef71fc4569616632a8c500d1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/object-modification.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/object-modification.md",
   "size": 1479,
   "sha256": "24eb8b15a63a855dc3c8d26ae7d3ee4a4e7429ef16d33e04acd2e1ca872ffef2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/outfit.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/outfit.md",
   "size": 1082,
   "sha256": "86202979565b5175c0d51038c89749b4d9aa8f9e627ac2635bddb79fbce5b783"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/projectile.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/projectile.md",
   "size": 1100,
   "sha256": "c78c1dc70dc544250acf9a6e3112bd18c35cd50d0a19de918f931ce4340c3247"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/race-hook.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/race-hook.md",
   "size": 2349,
   "sha256": "9b1c7756582ba909e694c4594b71cb6236890ee2b4d4489947dd2172ec31afa9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/race.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/race.md",
   "size": 1724,
   "sha256": "ce11a8fd03a8ec02a2c07df8f583978e8ba2156905429cb6fcc113bd7a0b80ef"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/reference.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/reference.md",
   "size": 877,
   "sha256": "05c4d758e1a1944dce964ff776844d33b23de474c19b05ae3b3036927e5179cd"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/scroll.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/scroll.md",
   "size": 1835,
   "sha256": "2401e76d3947eb4e7d3ba68a8351f2b8dd2b95df9898abf9087e8c7f6d516b77"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/soul-gem.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/soul-gem.md",
   "size": 1163,
   "sha256": "a84403757a235d8592619a4019b1fdeed2306573a438fb6ee47a7f28b44486e9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/spell.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/spell.md",
   "size": 2133,
   "sha256": "58e897a2a020123fe7f81d1f75bbcfc33c18e5fadb190706fd27a7982a099b74"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/records/weapon.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/records/weapon.md",
   "size": 3428,
   "sha256": "ac7ef32166527342dba7aa747fe89e805831552ad082426a9f1df603a76009a7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skypatcher-authoring/references/value-tables.md",
+  "path": "_CANONICAL-SKILLS/skypatcher-authoring/references/value-tables.md",
   "size": 5698,
   "sha256": "eb339693c661ae73e72f5347bed1870affafb705591517688970adaed8144171"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-animation-behaviors/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-animation-behaviors/SKILL.md",
   "size": 2771,
   "sha256": "ebbf55b243fd640b1782e75c71aa0cd68c5cfe61551cf91123d6a73ee97bfb89"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-animation-behaviors/scripts/audit_missing_animations.py",
+  "path": "_CANONICAL-SKILLS/skyrim-animation-behaviors/scripts/audit_missing_animations.py",
   "size": 1651,
   "sha256": "0d713d5b725646d7de8ce582357a21ca11b1abd755e024a8a9f18e99b6664ec6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-assets-pbr/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-assets-pbr/SKILL.md",
   "size": 3671,
   "sha256": "b6f2235e9fc53023d4d52eff6ba1ccd9008e2e97e5dfffa6356a60035a55a616"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-assets-pbr/scripts/scan_assets.py",
+  "path": "_CANONICAL-SKILLS/skyrim-assets-pbr/scripts/scan_assets.py",
   "size": 897,
   "sha256": "3be02ce3a9f3867e91a7c9f9b3d71d3410c41e9b6acdd50f653f58594f971729"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-audio/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-audio/SKILL.md",
   "size": 6916,
   "sha256": "63c65fad789f043af1659bd6dc6336a082fd4c44edc37421aa9e817834d0c677"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-base-object-swapper/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-base-object-swapper/SKILL.md",
   "size": 1812,
   "sha256": "039c778bca0153b2c63e6f48482bd545fdbf8adb067367d4750dea6327f0e5a6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-base-object-swapper/references/BOS-3.4.1-AUTHORITY.md",
+  "path": "_CANONICAL-SKILLS/skyrim-base-object-swapper/references/BOS-3.4.1-AUTHORITY.md",
   "size": 591,
   "sha256": "36c6c5c690399f9832fac7ed74e3ddd0a7a87b8b95c0a0bbf04e93e17f672e82"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-base-object-swapper/scripts/audit_bos_configs.py",
+  "path": "_CANONICAL-SKILLS/skyrim-base-object-swapper/scripts/audit_bos_configs.py",
   "size": 3353,
   "sha256": "7cf7d7b39eb81cbe14c72a4ecfee1466d37184dae1b14c43faa3829fab547061"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-code-review/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-code-review/SKILL.md",
   "size": 2452,
   "sha256": "733f7384233b1c9cd6d7d95768b0dfe6338d9c317cf6cf59087b07833dcdd040"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-container-distribution/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-container-distribution/SKILL.md",
   "size": 3010,
   "sha256": "542c9c4010c8a5d78e458a01d3cd713e769d3e030a9da1b9089c953751cea61a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-container-distribution/references/CDF-SOURCE-LOCK.md",
+  "path": "_CANONICAL-SKILLS/skyrim-container-distribution/references/CDF-SOURCE-LOCK.md",
   "size": 770,
   "sha256": "c1421d7ceb8ea56120d0bbbaa54ef563db656d93d432d6d29b7bcbb684b5b4f1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-container-distribution/scripts/lint_cdf_json.py",
+  "path": "_CANONICAL-SKILLS/skyrim-container-distribution/scripts/lint_cdf_json.py",
   "size": 5304,
   "sha256": "33cf92ab551c09038023cb06b177cb94208e8d4443c9c13f1fc1cb0937c104c6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-crash-diagnostics/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-crash-diagnostics/SKILL.md",
   "size": 3508,
   "sha256": "a4dd93907a91741a38e4424a61f24870dce53b55428c9d5de89b30722ab5e608"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-distr-kid-validation/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-distr-kid-validation/SKILL.md",
   "size": 2505,
   "sha256": "d1e6ef9e807b22b4b7ceeb5cea8007ae4ee55ef31a88f78e60a0ae5df8316e7d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-distr-kid-validation/scripts/lint_framework_configs.py",
+  "path": "_CANONICAL-SKILLS/skyrim-distr-kid-validation/scripts/lint_framework_configs.py",
   "size": 17177,
   "sha256": "ccb7eb20a6ca178e83ca44e1574f24e3ea628ecd578fe0a05a761d24111a2a53"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-distr-kid-validation/scripts/verify_framework_truth.py",
+  "path": "_CANONICAL-SKILLS/skyrim-distr-kid-validation/scripts/verify_framework_truth.py",
   "size": 5194,
   "sha256": "1ca73bf26fc332dd73041a256ffd43702b8e40efb2c4cee317b7d0d289a5988b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-distribution-pipeline/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-distribution-pipeline/SKILL.md",
   "size": 3383,
   "sha256": "9dab12be609f584c127d2ac6fcf69c8991e2d8c1de75cde688c64e316738fe53"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-distribution-pipeline/references/official-sources.md",
+  "path": "_CANONICAL-SKILLS/skyrim-distribution-pipeline/references/official-sources.md",
   "size": 756,
   "sha256": "737fff7f2c3be55637db79724609c707c000d0af197fd0b7c1ce804c35d81730"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-distribution-pipeline/scripts/audit_configs.py",
+  "path": "_CANONICAL-SKILLS/skyrim-distribution-pipeline/scripts/audit_configs.py",
   "size": 2193,
   "sha256": "2a542b15e0e7603b72c7c5712d60fc7a1732d9fa1eda006f8f79f6353c5ca281"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-esp-vmad-renaming/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-esp-vmad-renaming/SKILL.md",
   "size": 3027,
   "sha256": "3a17fed321704678f9353074303ba8d13216c5f544c3d5f53580ad9ea84864dd"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-fomod-packaging/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-fomod-packaging/SKILL.md",
   "size": 3561,
   "sha256": "caf2917fd67875917a496e092cd8ff48853b444f11199d1b34174763259af12f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-fomod-packaging/assets/ModuleConfig.minimal.xml",
+  "path": "_CANONICAL-SKILLS/skyrim-fomod-packaging/assets/ModuleConfig.minimal.xml",
   "size": 775,
   "sha256": "cc7b4dad114f4a9810cd1103a1f9e7fcfe82b9113c3448a21998dfdba592d0da"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-fomod-packaging/scripts/validate_fomod.py",
+  "path": "_CANONICAL-SKILLS/skyrim-fomod-packaging/scripts/validate_fomod.py",
   "size": 1174,
   "sha256": "9f653eb33a4c6998e002df39862ed4c2be2a1aae1dd9978a4d447515b9d7b2fa"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-forge/AGENTS-SNIPPET.md",
+  "path": "_CANONICAL-SKILLS/skyrim-forge/AGENTS-SNIPPET.md",
   "size": 2255,
   "sha256": "a972ad06e237bca778293a810719875c74922d657b7b59638fc9b8b544cbbe74"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-forge/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-forge/SKILL.md",
   "size": 9012,
   "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-frameworks-index/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-frameworks-index/SKILL.md",
   "size": 3649,
   "sha256": "ef39a6640c520df62e46cc54bc5a1878edfe50de79fefd5d29dcae805a4e7e6c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-frameworks-index/references/FRAMEWORK-SOURCE-LOCK.json",
+  "path": "_CANONICAL-SKILLS/skyrim-frameworks-index/references/FRAMEWORK-SOURCE-LOCK.json",
   "size": 4257,
   "sha256": "a538868ea6446a4e34f71bd4175e4db8d9d218305cdbc409f3ca90dc1314a6c6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/SKILL.md",
   "size": 1799,
   "sha256": "2ed9c584cbc9e0cd972fa43b0d3fe8cb5ff8141c6557e2329f9294fb98c75226"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/references/ERROR-REGISTRY.json",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/references/ERROR-REGISTRY.json",
   "size": 127330,
   "sha256": "77b6be10e28955bb9309b114b149d18f67f12e1cd3d74ffac444aa2702b888c3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/references/GLOBAL-LESSONS.md",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/references/GLOBAL-LESSONS.md",
   "size": 7181,
   "sha256": "2d0bae22598b8b8e785c7750a0862e3dacd5f3a811af3ff94cf7a2c96d8eb201"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/references/MEMORY-PROMOTION-PROTOCOL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/references/MEMORY-PROMOTION-PROTOCOL.md",
   "size": 1283,
   "sha256": "b1c708dac0c553eb21ad4ed79aabd73a6483185dfc0f750c29c65f3c9fba0547"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/references/MODEL-FAILURE-PROFILES.md",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/references/MODEL-FAILURE-PROFILES.md",
   "size": 895,
   "sha256": "8a4def23332f9e06119509ba3216a728be3545da8dcc9b9799763e7bdb1f6e45"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/references/OFFICIAL-SOURCES.md",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/references/OFFICIAL-SOURCES.md",
   "size": 375,
   "sha256": "b66d3c57c71e7d71cadf7664845a683b417abad54c15d0ef1ee71619f4253db8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/references/PROVIDER-PROFILE.md",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/references/PROVIDER-PROFILE.md",
   "size": 433,
   "sha256": "57564a4adb491dcbbbbc43c63bd798593ab69e1f7eb11caf4a6d99736bd5a9c6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/references/README.md",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/references/README.md",
   "size": 260,
   "sha256": "0ead018236f78128bb5724441ad0315d94bb368f61e7f7f3ffe0387d4889ce99"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-memory/references/VALIDATION-CATALOG.md",
+  "path": "_CANONICAL-SKILLS/skyrim-memory/references/VALIDATION-CATALOG.md",
   "size": 2592,
   "sha256": "c0794a9958d3a6c3bb8597d9ff4183429f0fa980902d54b208a4966ab15de5ab"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-mod-development/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-mod-development/SKILL.md",
   "size": 3397,
   "sha256": "a46456d5e55fd4f1931590f45b6aef048e332b9b18d6fc0b4a0ca71bef5940b0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-mod-reworking/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-mod-reworking/SKILL.md",
   "size": 3777,
   "sha256": "0445bec36737d6fdffb07533c24084f0383f408d3f63e3b18808e180f9c82631"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-modding-facts/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-modding-facts/SKILL.md",
   "size": 3651,
   "sha256": "694324855124b74794560be4b84f44e09b68e9f0b9c67e367d4192f0acaccb08"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-modding-facts/references/official-sources.md",
+  "path": "_CANONICAL-SKILLS/skyrim-modding-facts/references/official-sources.md",
   "size": 847,
   "sha256": "2bec9634cc3735fe2482db14c082f8030fed74aa43a2b98e789f56d6c613b260"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-modding-facts/references/plugin-invariants.md",
+  "path": "_CANONICAL-SKILLS/skyrim-modding-facts/references/plugin-invariants.md",
   "size": 1914,
   "sha256": "c80be6feab27e1d6eb4167d7a48ff1c4cd75dff7fdc9fe8d25de5e88b10641b8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-nexus-publishing/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-nexus-publishing/SKILL.md",
   "size": 3116,
   "sha256": "8bb39127d2177851194bdc1b1df7b035201c32de687343ecfe4d409da8cd77b7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-nif/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-nif/SKILL.md",
   "size": 12665,
   "sha256": "577beaf545b97e523585480e4b81676d4501ea7fa6d8297c991d86d90918c487"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-papyrus-modding/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-papyrus-modding/SKILL.md",
   "size": 2949,
   "sha256": "8313220f2b070248b8e0dcb22052527289b1443c0473ab9668e78fc62860ed86"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-papyrus-modding/references/compiler-checklist.md",
+  "path": "_CANONICAL-SKILLS/skyrim-papyrus-modding/references/compiler-checklist.md",
   "size": 602,
   "sha256": "24110af4f9ecbffafcb56ee46732bb7e42840dbd116faa1042fd7228db0419e9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-papyrus-modding/references/jcontainers.md",
+  "path": "_CANONICAL-SKILLS/skyrim-papyrus-modding/references/jcontainers.md",
   "size": 496,
   "sha256": "0297e662a1a50e4b3710cdc1d4ef988d4fc6d10bd2d5ebe90b4f182976ef7db7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-papyrus-modding/references/papyrusutil.md",
+  "path": "_CANONICAL-SKILLS/skyrim-papyrus-modding/references/papyrusutil.md",
   "size": 517,
   "sha256": "87e1b59220120fbff6d53909cd447919728ed70b124604659a969129fc73481f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-papyrus-modding/references/runtime-data-storage-selection.md",
+  "path": "_CANONICAL-SKILLS/skyrim-papyrus-modding/references/runtime-data-storage-selection.md",
   "size": 548,
   "sha256": "d82118665bfae66210d22387bd226efeee29967cb5d7fa6ebd103a31bc2bbe1a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-papyrus-modding/scripts/compile_papyrus.ps1",
+  "path": "_CANONICAL-SKILLS/skyrim-papyrus-modding/scripts/compile_papyrus.ps1",
   "size": 810,
   "sha256": "06fa091d56c641fcd92b8719d786ba8841063058b9ec12bffa3ea03ed654468d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-plugin-authoring/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-plugin-authoring/SKILL.md",
   "size": 3780,
   "sha256": "4dc6bd1c9ac9cac888c8069e17cf2f4dceb7729bc01c008caafc1b7233febe2e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-plugin-authoring/references/plugin-invariants.md",
+  "path": "_CANONICAL-SKILLS/skyrim-plugin-authoring/references/plugin-invariants.md",
   "size": 1914,
   "sha256": "c80be6feab27e1d6eb4167d7a48ff1c4cd75dff7fdc9fe8d25de5e88b10641b8"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-plugin-authoring/scripts/audit_plugin_headers.py",
+  "path": "_CANONICAL-SKILLS/skyrim-plugin-authoring/scripts/audit_plugin_headers.py",
   "size": 9623,
   "sha256": "e795060b121a970bc442a6ff6a73a0d07c34c8692f808e980ce1942c922026ba"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-plugin-authoring/scripts/run_forge_audit.ps1",
+  "path": "_CANONICAL-SKILLS/skyrim-plugin-authoring/scripts/run_forge_audit.ps1",
   "size": 1977,
   "sha256": "017e4e80b5258c322428948ba8c36f7496140d7700d915e211a86d69957672a1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-plugin-authoring/scripts/test_plugin_header_fixtures.py",
+  "path": "_CANONICAL-SKILLS/skyrim-plugin-authoring/scripts/test_plugin_header_fixtures.py",
   "size": 1615,
   "sha256": "42db0128ee4cd01f000be698c875fc3fe78c7d1995c945e0a759d5663af192df"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-racemenu-followers/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-racemenu-followers/SKILL.md",
   "size": 3591,
   "sha256": "09aa678e9501281eabe8596039f1755088a99d85dbb50dbfd37c033a64dc6534"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-runtime-log-forensics/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-runtime-log-forensics/SKILL.md",
   "size": 4208,
   "sha256": "485c84412085d8ef256e85cae4a96a890d1de6e557e26f22623296928ba48e0c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-runtime-log-forensics/references/LOG-CASEBOOK.md",
+  "path": "_CANONICAL-SKILLS/skyrim-runtime-log-forensics/references/LOG-CASEBOOK.md",
   "size": 2365,
   "sha256": "de56a930c9e6bfad38dd7d42fb2e1007a6a5e8354e0b4a6dff3eb64520c6052b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-runtime-log-forensics/scripts/analyze_runtime_logs.py",
+  "path": "_CANONICAL-SKILLS/skyrim-runtime-log-forensics/scripts/analyze_runtime_logs.py",
   "size": 6233,
   "sha256": "0ca9d93ea904b1942cb20bd517ec9db4b537c97074c68501c9845aaff27fe867"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-runtime-patching/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-runtime-patching/SKILL.md",
   "size": 1443,
   "sha256": "9fa95cc0bafe19b38bd826ea9a39c08404f29c1dc56a095676a3c3a9ded20b34"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-runtime-patching/references/frameworks-guide-2026.md",
+  "path": "_CANONICAL-SKILLS/skyrim-runtime-patching/references/frameworks-guide-2026.md",
   "size": 945,
   "sha256": "e2f4d7b4512a86bc0232996fdb73af8a3c53b08dd05a04e295e6894b75d8799b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-runtime-patching/references/official-sources.md",
+  "path": "_CANONICAL-SKILLS/skyrim-runtime-patching/references/official-sources.md",
   "size": 756,
   "sha256": "737fff7f2c3be55637db79724609c707c000d0af197fd0b7c1ce804c35d81730"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-sexlab-to-ostim-modernization/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-sexlab-to-ostim-modernization/SKILL.md",
   "size": 3331,
   "sha256": "9d3842286bcfb68138db4dd1fe0e5dbb9631736176f5908b4abd909b5163805e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-ship-gate/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-ship-gate/SKILL.md",
   "size": 5622,
   "sha256": "aea1f5142b569ca4f96c02cfc1b63ab9008ccc04d2944edb079d8304131431bc"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-ship-gate/scripts/validate_release_tree.py",
+  "path": "_CANONICAL-SKILLS/skyrim-ship-gate/scripts/validate_release_tree.py",
   "size": 3603,
   "sha256": "e9f970b062ca8542ff441b9fa03814b5f6e8bbf2df2a2941d12566a367bb1b3e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-skse-commonlib/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-skse-commonlib/SKILL.md",
   "size": 4411,
   "sha256": "d5419b67ef5a3788a008d3259653bd976d7dc2f083e3a0112826d5e141267e7d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-skse-commonlib/references/primary-sources.md",
+  "path": "_CANONICAL-SKILLS/skyrim-skse-commonlib/references/primary-sources.md",
   "size": 409,
   "sha256": "03afd98b797438f7f6ba2e7d1a2fcfd15e8df1a665612667ca64f37de5400600"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-skse-commonlib/scripts/build_commonlib.ps1",
+  "path": "_CANONICAL-SKILLS/skyrim-skse-commonlib/scripts/build_commonlib.ps1",
   "size": 1357,
   "sha256": "ee526790801fe787f2640370c6b628fdeea6394d6f8f1775244be087d3edfdc0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-skypatcher/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-skypatcher/SKILL.md",
   "size": 2203,
   "sha256": "2108b52d1e46693a2f56b93274b3a00c9175a00c661d0ec629ed83eb728d5ec7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-skypatcher/scripts/validate_skypatcher_layout.py",
+  "path": "_CANONICAL-SKILLS/skyrim-skypatcher/scripts/validate_skypatcher_layout.py",
   "size": 1353,
   "sha256": "7672796c795edf065c5fa9a84907e7154c38f1f7ea8728bff004b3b680392109"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-tool-router/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-tool-router/SKILL.md",
   "size": 6716,
   "sha256": "bdcee76318fbd377db55d94a224a7a412b1e23d27132d1af2735fbbd7be42a0e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-versioned-workspace/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-versioned-workspace/SKILL.md",
   "size": 4897,
   "sha256": "5204fe69c6d39d97c43669793f22154bf3659aea378394400d32de4e383077d2"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-versioned-workspace/scripts/guard.py",
+  "path": "_CANONICAL-SKILLS/skyrim-versioned-workspace/scripts/guard.py",
   "size": 6832,
   "sha256": "ff1fc71d8504bc6fd9889b563b48609ebb4843e5b65cf714c24e3e22bd05136f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/skyrim-voiced-dialogue/SKILL.md",
+  "path": "_CANONICAL-SKILLS/skyrim-voiced-dialogue/SKILL.md",
   "size": 2914,
   "sha256": "e799074387e79448c1fe2072203209b13645af5d6e39bf716db0a1aec8d5871c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/source-of-truth/SKILL.md",
+  "path": "_CANONICAL-SKILLS/source-of-truth/SKILL.md",
   "size": 1050,
   "sha256": "6c6e8695a07a1c34701e4b7ae05afdb23cb04bdfba413d8c51c3048c5450142b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/SKILL.md",
+  "path": "_CANONICAL-SKILLS/spid-authoring/SKILL.md",
   "size": 9437,
   "sha256": "03927ee7610be77251fd0b0d5b68ed483a5f7bae27f0305bde1d94b0730c9a73"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/SPID-7.3.1-AUTHORITY.md",
+  "path": "_CANONICAL-SKILLS/spid-authoring/references/SPID-7.3.1-AUTHORITY.md",
   "size": 1066,
   "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/SPID-7.3.1-PARSER-AUTHORITY.md",
+  "path": "_CANONICAL-SKILLS/spid-authoring/references/SPID-7.3.1-PARSER-AUTHORITY.md",
   "size": 1066,
   "sha256": "0a373799e9d0b0e7a0e737fdd98f98a25bd9bb71f7034d676198e4b978057ec7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/filters.md",
+  "path": "_CANONICAL-SKILLS/spid-authoring/references/filters.md",
   "size": 7655,
   "sha256": "645a39fed3fdbaaf16f42d77e5087e3016f6fdfb644217a73d381d82c4499b1d"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/form-types.md",
+  "path": "_CANONICAL-SKILLS/spid-authoring/references/form-types.md",
   "size": 3460,
   "sha256": "f22b4bf80cadcbc2a64f14a612d1cbdd32f08a1bb5e5a8732d627baab591d68a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/grammar-core.md",
+  "path": "_CANONICAL-SKILLS/spid-authoring/references/grammar-core.md",
   "size": 11857,
   "sha256": "94d5a5ce05f3812b270a20f900323ab50e4728d6dc404fc1dc653748d917f70a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/index.jsonl",
+  "path": "_CANONICAL-SKILLS/spid-authoring/references/index.jsonl",
   "size": 4253,
   "sha256": "272441ca95055133c494f84f4388b62b8383fa2a61b8abef752eec043735ab56"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/references/value-tables.md",
+  "path": "_CANONICAL-SKILLS/spid-authoring/references/value-tables.md",
   "size": 4969,
   "sha256": "fd35087ecacd633418da493064026df2e3150a1a9c6dd9d055594d7e75e2511e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spid-authoring/scripts/validate_spid.py",
+  "path": "_CANONICAL-SKILLS/spid-authoring/scripts/validate_spid.py",
   "size": 2275,
   "sha256": "b341eb36f6a4b86e6b73ed0288ca80692777b0eb0c0a65c2876ab6e519ade851"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spookys-automod-toolkit/SKILL.md",
+  "path": "_CANONICAL-SKILLS/spookys-automod-toolkit/SKILL.md",
   "size": 2995,
   "sha256": "e3ce274c84d66620123e5310b33526453b4f32456a0d2a9a6bebbd677a25abf6"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spookys-automod-toolkit/references/README.md",
+  "path": "_CANONICAL-SKILLS/spookys-automod-toolkit/references/README.md",
   "size": 29360,
   "sha256": "3de5d4600aec18e9d7fc0536aa5d8d9fd988d8473fa539f20cd9d45a949bcadb"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spookys-automod-toolkit/references/llm-guide.md",
+  "path": "_CANONICAL-SKILLS/spookys-automod-toolkit/references/llm-guide.md",
   "size": 68591,
   "sha256": "fdc360965ce8e5e442819b45816b954f3ffa93ece6a8d26cf9d62fcb4459f076"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/spookys-automod-toolkit/references/llm-init-prompt.md",
+  "path": "_CANONICAL-SKILLS/spookys-automod-toolkit/references/llm-init-prompt.md",
   "size": 30177,
   "sha256": "47cce4cb5d27af6b35faaed5b4016ba23c36573ee4115fdbecce8f517204da7b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/state-resumption/SKILL.md",
+  "path": "_CANONICAL-SKILLS/state-resumption/SKILL.md",
   "size": 1036,
   "sha256": "fbb9c81afc2a8895b3294a3da4915f735881fb837a781e08ad60ceb8ab2ae345"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/subagent-driven-development/SKILL.md",
+  "path": "_CANONICAL-SKILLS/subagent-driven-development/SKILL.md",
   "size": 28077,
   "sha256": "349a08ad8b59b19b86c13a7d2f34a1a38719bf88257004a863eefefa8d9f9e40"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/subagent-driven-development/implementer-prompt.md",
+  "path": "_CANONICAL-SKILLS/subagent-driven-development/implementer-prompt.md",
   "size": 5717,
   "sha256": "946601616a6f76ab3f165ef98377390968f1ec124ecef87422bc3553404e0332"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/subagent-driven-development/re-review-prompt.md",
+  "path": "_CANONICAL-SKILLS/subagent-driven-development/re-review-prompt.md",
   "size": 4300,
   "sha256": "e1d8e0e65e58ccde6dc920843da9148d23e65aeb0f8932bcc30be1341a703c4c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/subagent-driven-development/scripts/review-package",
+  "path": "_CANONICAL-SKILLS/subagent-driven-development/scripts/review-package",
   "size": 1469,
   "sha256": "fac3d4bd7f94369e8037b9ead2a8a502dca6ab333902b560b9455dbb3c450ebe"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/subagent-driven-development/scripts/sdd-workspace",
+  "path": "_CANONICAL-SKILLS/subagent-driven-development/scripts/sdd-workspace",
   "size": 1586,
   "sha256": "95a09d9d3983ad1aafd093ca72b4587946dea885c6e302caa02a779a2f911c31"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/subagent-driven-development/scripts/task-brief",
+  "path": "_CANONICAL-SKILLS/subagent-driven-development/scripts/task-brief",
   "size": 1158,
   "sha256": "d6954ef7841c7da3d77373e6ff5118b3f2f2e998606fd95d33e6527851bce044"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/subagent-driven-development/task-reviewer-prompt.md",
+  "path": "_CANONICAL-SKILLS/subagent-driven-development/task-reviewer-prompt.md",
   "size": 7816,
   "sha256": "e3b4a1bfe7cd55ed0459e5ca9cdddb6ff086c345b99e9097036db6a18545729e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/supply-chain-verification/SKILL.md",
+  "path": "_CANONICAL-SKILLS/supply-chain-verification/SKILL.md",
   "size": 1048,
   "sha256": "0e302a9917a29e1d78d99c9f930761fea075695b8646ac60e322abe9306f83a3"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/CREATION-LOG.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/CREATION-LOG.md",
   "size": 4257,
   "sha256": "c24733a5b1821bd6bed1fc950261f0b9f4e90097e0bbb96459d8179713730789"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/SKILL.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/SKILL.md",
   "size": 9465,
   "sha256": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/condition-based-waiting-example.ts",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/condition-based-waiting-example.ts",
   "size": 5054,
   "sha256": "40ae5ebe497fdf310200e43fe986552546d0a22837c0d39e855db1cfd33eb88e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/condition-based-waiting.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/condition-based-waiting.md",
   "size": 3516,
   "sha256": "e89fec8400d6cd50f43407cec9fab50976ba4d55d0ec2eb51c0bd68036b54c26"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/defense-in-depth.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/defense-in-depth.md",
   "size": 3650,
   "sha256": "1e175fb86fc357e58c6aebf5441e481e1b7868b4380c0456b63a17eefbd18ba7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/find-polluter.sh",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/find-polluter.sh",
   "size": 1986,
   "sha256": "dd7b8f13c4cc2a24b33ff87b18da9248f3e1c80a085c3316224f69ff0fa5c43c"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/root-cause-tracing.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/root-cause-tracing.md",
   "size": 5316,
   "sha256": "6b0622269e098ca1399e123e553fd385f0b6412d88ef0e9c4f5a8ea9cf1cec7b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/test-academic.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/test-academic.md",
   "size": 653,
   "sha256": "fe2ba480d78ac0d686dc025f41c2a32a43d642bf533f91b0c6053a04d35d6486"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/test-pressure-1.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/test-pressure-1.md",
   "size": 1900,
   "sha256": "0b6a915db0054577819834c79be9eb614e97bddba10d73768e1fbe91cfed048a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/test-pressure-2.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/test-pressure-2.md",
   "size": 2283,
   "sha256": "b2030aeffba07050e8ad573ddf87486457c4a016a786bb326235bebd856f2016"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/systematic-debugging/test-pressure-3.md",
+  "path": "_CANONICAL-SKILLS/systematic-debugging/test-pressure-3.md",
   "size": 2692,
   "sha256": "96b50a52e2c7989c9cf20fb752c47c1e9a3a70dc362f8f7989f8f5b64dac7708"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/test-driven-development/SKILL.md",
+  "path": "_CANONICAL-SKILLS/test-driven-development/SKILL.md",
   "size": 9015,
   "sha256": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/test-driven-development/writing-good-tests.md",
+  "path": "_CANONICAL-SKILLS/test-driven-development/writing-good-tests.md",
   "size": 8268,
   "sha256": "51471c853306ff92ca8bb41dcaea05f31c0e46b03651f8f3c99754b7172f4ae1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/test-oracle-quality/SKILL.md",
+  "path": "_CANONICAL-SKILLS/test-oracle-quality/SKILL.md",
   "size": 1007,
   "sha256": "4132ae2c0cffcbda4cf3adbf37b4901901d57fa5e86f603c0e308b7a91694aed"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/token-efficiency/SKILL.md",
+  "path": "_CANONICAL-SKILLS/token-efficiency/SKILL.md",
   "size": 5782,
   "sha256": "e13369c6bc5fe9199a160dce6265078f07573ba8305f4873f6e8f95e1ee79137"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/tool-discovery/SKILL.md",
-  "size": 7054,
-  "sha256": "2b0ebcc1a1512ea6baee21d80cac29dfbea507b80e32d9a864fef91718ea5f67"
+  "path": "_CANONICAL-SKILLS/tool-discovery/SKILL.md",
+  "size": 7050,
+  "sha256": "917ee6e5be364b9312edc87822652718f1398f4f6a9616aad9e75435df4ce6ea"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/tool-discovery/scripts/discover_tools.ps1",
-  "size": 8305,
-  "sha256": "556c2b4a72cc9f775320b3ad301f9614c6e8ea5b890bdc3e7725321bdf231cdf"
+  "path": "_CANONICAL-SKILLS/tool-discovery/scripts/discover_tools.ps1",
+  "size": 8321,
+  "sha256": "5bfb747c16f6256b7f91279b0a3fc0b5d6553ec61131351daeeceda698565f1f"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/tool-output-awareness/SKILL.md",
+  "path": "_CANONICAL-SKILLS/tool-output-awareness/SKILL.md",
   "size": 12346,
   "sha256": "4c5b80b490655b9aae51d04a5f1da7fda6db737dc61a9b68511af8a638b1a093"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/transactional-updates/SKILL.md",
+  "path": "_CANONICAL-SKILLS/transactional-updates/SKILL.md",
   "size": 978,
   "sha256": "85907b4c239c24e1099c2aa1a3d10261f79512f9ea795f753f6783e19a04319b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/unrestraint-packs/SKILL.md",
-  "size": 2583,
-  "sha256": "9a77cb09eb87ece9825dcc1d48446879a5c47b70d81fca4abc4edc75b545a7eb"
+  "path": "_CANONICAL-SKILLS/unrestraint-packs/SKILL.md",
+  "size": 2566,
+  "sha256": "ddf58589ac70b476154b8f83267b5a70c54ded31d880dcf4d2382e2c1f6980f0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/upgrade-path-testing/SKILL.md",
+  "path": "_CANONICAL-SKILLS/upgrade-path-testing/SKILL.md",
   "size": 962,
   "sha256": "0c2b9ae5a66eb6a44358c3747c9709ecdd92892c05025c1a79b4410eaa227add"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/user-intent-lock/SKILL.md",
+  "path": "_CANONICAL-SKILLS/user-intent-lock/SKILL.md",
   "size": 998,
   "sha256": "207953ecdabff1713edd2ce02233d09182a020d94a8a6705cf435e637a02113e"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/using-git-worktrees/SKILL.md",
+  "path": "_CANONICAL-SKILLS/using-git-worktrees/SKILL.md",
   "size": 6813,
   "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/using-superpowers/SKILL.md",
+  "path": "_CANONICAL-SKILLS/using-superpowers/SKILL.md",
   "size": 3305,
   "sha256": "ad292e0ea6eb70f524cb41779e9f39f216de63b47d69d1350fde633e30585703"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/using-superpowers/references/antigravity-tools.md",
+  "path": "_CANONICAL-SKILLS/using-superpowers/references/antigravity-tools.md",
   "size": 1495,
   "sha256": "4880f6de3da4e32f9659ebe7a72b9e0ebfff04e028c2ed96173f86d0387a04c0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/using-superpowers/references/codex-tools.md",
+  "path": "_CANONICAL-SKILLS/using-superpowers/references/codex-tools.md",
   "size": 1774,
   "sha256": "d3f113a8ebbd748e8ba847b09b57b7685442775ca4ee194d693ce3663f8fac68"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/using-superpowers/references/gemini-tools.md",
+  "path": "_CANONICAL-SKILLS/using-superpowers/references/gemini-tools.md",
   "size": 4598,
   "sha256": "62b9157bcb0ee3c6784e3d0da0798ddfa5872f9e0c34bea48f3079dabea71965"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/using-superpowers/references/pi-tools.md",
+  "path": "_CANONICAL-SKILLS/using-superpowers/references/pi-tools.md",
   "size": 1242,
   "sha256": "703dbc83d23ecab9c6f388460c38abc482e9dee2fe6772a8c7a255152ad3a4d5"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/verification-before-completion/SKILL.md",
+  "path": "_CANONICAL-SKILLS/verification-before-completion/SKILL.md",
   "size": 4540,
   "sha256": "3257247a9dcbe0588170524933df63ba8856121c34972af2fe557e9dcf6b0cef"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/version-sync/SKILL.md",
+  "path": "_CANONICAL-SKILLS/version-sync/SKILL.md",
   "size": 1083,
   "sha256": "9c6b6a43d5d97fd73291ce5654124346ee3ce1405e3187f7084876a437618dd1"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/visual-verification/SKILL.md",
+  "path": "_CANONICAL-SKILLS/visual-verification/SKILL.md",
   "size": 5917,
   "sha256": "ee35b0b17d100e239fa862b48d74c310847547357925627736ccd2121da30cf9"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-plans/SKILL.md",
+  "path": "_CANONICAL-SKILLS/writing-plans/SKILL.md",
   "size": 6907,
   "sha256": "72190c88b2b5a67a96b91d66aa72b9161913e10e8769da3f28a226f4cc7b99d0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-plans/plan-document-reviewer-prompt.md",
+  "path": "_CANONICAL-SKILLS/writing-plans/plan-document-reviewer-prompt.md",
   "size": 1713,
   "sha256": "aa728b96aad603c8be28875a4305637f6c984aa81ffcadcb13e743202fa2a0c7"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-skills/SKILL.md",
+  "path": "_CANONICAL-SKILLS/writing-skills/SKILL.md",
   "size": 26360,
   "sha256": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-skills/anthropic-best-practices.md",
+  "path": "_CANONICAL-SKILLS/writing-skills/anthropic-best-practices.md",
   "size": 46197,
   "sha256": "217629b356c09c9bd11017c9788e8fc654ca1b32c92d4a51cd490e16dd65e59a"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-skills/examples/CLAUDE_MD_TESTING.md",
+  "path": "_CANONICAL-SKILLS/writing-skills/examples/CLAUDE_MD_TESTING.md",
   "size": 5423,
   "sha256": "0b379a3415e185d3c434b3ad283d8aa132f3022c2a4f210f168865b5986bcef0"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-skills/graphviz-conventions.dot",
+  "path": "_CANONICAL-SKILLS/writing-skills/graphviz-conventions.dot",
   "size": 5970,
   "sha256": "e2890a593c91370e384b42f2f67b1a6232c9e69dddea7891a0c1c46d7b20b694"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-skills/persuasion-principles.md",
+  "path": "_CANONICAL-SKILLS/writing-skills/persuasion-principles.md",
   "size": 5901,
   "sha256": "a51bc9bf75189ea73a27b3fb504a2fdfdb966fb1f7f1cdf03203230a216ccc03"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-skills/render-graphs.js",
+  "path": "_CANONICAL-SKILLS/writing-skills/render-graphs.js",
   "size": 4857,
   "sha256": "ccda971a87bb185f8febf81c56b556a20d026fa980c17b35fa3e8824fbb37852"
  },
  {
-  "path": "_V7-CANONICAL-SKILLS/writing-skills/testing-skills-with-subagents.md",
+  "path": "_CANONICAL-SKILLS/writing-skills/testing-skills-with-subagents.md",
   "size": 12558,
   "sha256": "c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade"
  },
@@ -22028,5 +22033,15 @@
   "path": "docs/history/V7.9.9.8-CHANGELOG.md",
   "size": 647,
   "sha256": "21d9acbcc43f11880bcc6bfc81882fb0045104e92eb6634715204497fc5c5c9d"
+ },
+ {
+  "path": "docs/history/V7.9.9.9-CHANGELOG.md",
+  "size": 872,
+  "sha256": "388e566c847f13284439714968c8ff59598cbd99ce99650acdd508d32c254cb0"
+ },
+ {
+  "path": "docs/history/V8.0.0-CHANGELOG.md",
+  "size": 1625,
+  "sha256": "e2a9909368da155accc341c4263b17a73fc4ef1275d2fdb65c6b71249ec1be19"
  }
 ]

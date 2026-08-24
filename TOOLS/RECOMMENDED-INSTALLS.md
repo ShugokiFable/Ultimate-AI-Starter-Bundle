@@ -1,4 +1,4 @@
-# Recommended installs (V5 AIO)
+# Recommended installs (UABS AIO)
 
 ## Easiest
 

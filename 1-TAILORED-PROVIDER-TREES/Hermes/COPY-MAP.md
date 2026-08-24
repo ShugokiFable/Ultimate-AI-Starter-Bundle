@@ -6,7 +6,7 @@ No provider-home instruction file is installed; use the workspace instruction fi
 
 Copy `COPY-TO-WORKSPACE\AGENTS.md` into the user-selected workspace root. No workspace name is assumed.
 
-`INSTALL-V7-AIO.ps1` copies `COPY-TO-PROVIDER-HOME\config.yaml` only when the
+`INSTALL-AIO.ps1` copies `COPY-TO-PROVIDER-HOME\config.yaml` only when the
 Hermes home has no `config.yaml`. It never overwrites a live YAML (MCP, API
 keys, hooks). Completeness-gate hooks and MCP are wired separately.
 `-SkipHermesConfig` skips Hermes in that pass. SOUL.md is the unrestraint file.

@@ -1,4 +1,4 @@
-﻿# Third-party tools bundled or fetched by Skyrim AI V5
+﻿# Third-party tools bundled or fetched by Ultimate AI Starter Bundle
 
 This pack redistributes **official release zips/wheels** (or GitHub tag archives)
 for convenience. **You do not own these projects** by receiving this pack.

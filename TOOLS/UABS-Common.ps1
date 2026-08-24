@@ -1,66 +1,142 @@
-# V7-Common.ps1 - shared helpers for Skyrim AI V5 AIO installer
-$script:V5PackRoot = $null
-$script:V5Headers = @{ 'User-Agent' = 'Skyrim-AI-V5-AIO/5.2.2' }
+# UABS-Common.ps1 - shared helpers for Ultimate AI Starter Bundle AIO installer
+$script:UabsPackRoot = $null
+$script:UabsHeaders = @{ 'User-Agent' = 'Ultimate-AI-Starter-Bundle-AIO/8.0.0' }
 
-function Get-V5PackRoot {
-  if ($script:V5PackRoot -and (Test-Path -LiteralPath $script:V5PackRoot)) { return $script:V5PackRoot }
-  $here = $PSScriptRoot
-  if (Test-Path (Join-Path $here 'BUNDLED-TOOLS\CATALOG.json')) { $script:V5PackRoot = $here; return $here }
-  $parent = Split-Path $here -Parent
-  if (Test-Path (Join-Path $parent 'BUNDLED-TOOLS\CATALOG.json')) { $script:V5PackRoot = $parent; return $parent }
-  throw 'Cannot locate pack root (BUNDLED-TOOLS\CATALOG.json). Run from the V5 pack folder.'
+function Get-UabsStateRoot {
+  $base = $env:LOCALAPPDATA
+  if (-not $base) { $base = $env:TEMP }
+  if (-not $base) { throw 'LOCALAPPDATA and TEMP are both unavailable.' }
+  return (Join-Path $base 'Ultimate-AI-Starter-Bundle')
 }
 
-function Get-V5Catalog {
-  $root = Get-V5PackRoot
+function Invoke-UabsLegacyStateMigration {
+  <# Move only paths owned by older bundle installers. Conflicts and unknown
+     files stay where they are; this is deliberately not a directory mirror. #>
+  $old = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
+  $new = Get-UabsStateRoot
+  if (-not (Test-Path -LiteralPath $old -PathType Container)) { return }
+  New-Item -ItemType Directory -Force -Path $new | Out-Null
+  # Old provider sessions may still hold these generated helpers open. Stop
+  # only the two bundle-owned command lines before moving their directory.
+  try {
+    $legacyHelpers = @('\tools\cbm-dashboard-plus.py','\tools\headroom-mcp-launch.py')
+    foreach ($proc in @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)) {
+      if (-not $proc.CommandLine) { continue }
+      $commandLine = $proc.CommandLine.Replace('/', '\')
+      if (@($legacyHelpers | Where-Object { $commandLine.IndexOf(($old + $_), [StringComparison]::OrdinalIgnoreCase) -ge 0 }).Count) {
+        Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue
+        Write-UabsOk ('stopped legacy helper process: ' + $proc.ProcessId)
+      }
+    }
+  } catch { Write-UabsWarn ('could not stop a legacy helper process: ' + $_.Exception.Message) }
+  # codex-marketplace stays until `codex plugin remove` detaches its official
+  # registry entry; moving it first would turn a healthy legacy entry dead.
+  $owned = @(
+    'backups','cache','github-mcp-server','hermes-plugin-src','hooks','plugins-src',
+    'spookys-automod-toolkit','tools','install-state.json','installed-state-doctor.json',
+    'mcp-profiles.json','provider-bootstrap.json','toolbelt.json','TOOLBELT.md'
+  )
+  foreach ($name in $owned) {
+    $src = Join-Path $old $name
+    $dst = Join-Path $new $name
+    if ((Test-Path -LiteralPath $src) -and -not (Test-Path -LiteralPath $dst)) {
+      Move-Item -LiteralPath $src -Destination $dst
+      Write-UabsOk ('migrated legacy state: ' + $name)
+    }
+  }
+  # These are generated reports or versioned bundle binaries. Once V8 has a
+  # replacement, retaining the older copy cannot preserve user data; it only
+  # leaves two apparent authorities on disk.
+  foreach ($name in @('github-mcp-server','installed-state-doctor.json','provider-bootstrap.json','TOOLBELT.md')) {
+    $src = Join-Path $old $name
+    $dst = Join-Path $new $name
+    if ((Test-Path -LiteralPath $src) -and (Test-Path -LiteralPath $dst)) {
+      Remove-Item -LiteralPath $src -Recurse -Force
+      Write-UabsOk ('removed replaced legacy state: ' + $name)
+    }
+  }
+  foreach ($envName in @('HEADROOM_CMD','SPOOKY_AUTOMOD_ROOT')) {
+    $value = [Environment]::GetEnvironmentVariable($envName, 'User')
+    if ($value -and $value.StartsWith($old, [StringComparison]::OrdinalIgnoreCase)) {
+      Set-UabsUserEnv $envName ($new + $value.Substring($old.Length))
+    }
+  }
+  if (-not @(Get-ChildItem -LiteralPath $old -Force -ErrorAction SilentlyContinue).Count) {
+    Remove-Item -LiteralPath $old -Force
+  } else {
+    Write-UabsWarn ('legacy state has unowned/conflicting files; preserved: ' + $old)
+  }
+}
+
+function Get-UabsPackRoot {
+  if ($script:UabsPackRoot -and (Test-Path -LiteralPath $script:UabsPackRoot)) { return $script:UabsPackRoot }
+  $here = $PSScriptRoot
+  if (Test-Path (Join-Path $here 'BUNDLED-TOOLS\CATALOG.json')) { $script:UabsPackRoot = $here; return $here }
+  $parent = Split-Path $here -Parent
+  if (Test-Path (Join-Path $parent 'BUNDLED-TOOLS\CATALOG.json')) { $script:UabsPackRoot = $parent; return $parent }
+  throw 'Cannot locate pack root (BUNDLED-TOOLS\CATALOG.json). Run from the Uabs pack folder.'
+}
+
+function Get-UabsCatalog {
+  $root = Get-UabsPackRoot
   $path = Join-Path $root 'BUNDLED-TOOLS\CATALOG.json'
   return ([IO.File]::ReadAllText($path) | ConvertFrom-Json)
 }
 
-function Expand-V5EnvPath([string]$p) {
+function Expand-UabsEnvPath([string]$p) {
   if ([string]::IsNullOrWhiteSpace($p)) { return $p }
   return [Environment]::ExpandEnvironmentVariables($p)
 }
 
-function Test-V5Path([string]$p) {
+function Test-UabsPath([string]$p) {
   if ([string]::IsNullOrWhiteSpace($p)) { return $false }
-  try { return Test-Path -LiteralPath (Expand-V5EnvPath $p) } catch { return $false }
+  try { return Test-Path -LiteralPath (Expand-UabsEnvPath $p) } catch { return $false }
 }
 
-function Write-V5Step([string]$m) { Write-Host ("==> " + $m) -ForegroundColor Cyan }
-function Write-V5Ok([string]$m)   { Write-Host ("  OK  " + $m) -ForegroundColor Green }
-function Write-V5Warn([string]$m) { Write-Host ("  !!  " + $m) -ForegroundColor Yellow }
-function Write-V5Bad([string]$m)  { Write-Host ("  XX  " + $m) -ForegroundColor Red }
+function Test-UabsPathWithin([string]$Path, [string]$Root) {
+  if (-not $Path -or -not $Root) { return $false }
+  try {
+    $fullPath = [IO.Path]::GetFullPath($Path).TrimEnd('\')
+    $fullRoot = [IO.Path]::GetFullPath($Root).TrimEnd('\')
+    return $fullPath.Equals($fullRoot, [StringComparison]::OrdinalIgnoreCase) -or
+      $fullPath.StartsWith($fullRoot + '\', [StringComparison]::OrdinalIgnoreCase)
+  } catch { return $false }
+}
 
-function Set-V5UserEnv([string]$Name, [string]$Value) {
+function Write-UabsStep([string]$m) { Write-Host ("==> " + $m) -ForegroundColor Cyan }
+function Write-UabsOk([string]$m)   { Write-Host ("  OK  " + $m) -ForegroundColor Green }
+function Write-UabsWarn([string]$m) { Write-Host ("  !!  " + $m) -ForegroundColor Yellow }
+function Write-UabsBad([string]$m)  { Write-Host ("  XX  " + $m) -ForegroundColor Red }
+
+function Set-UabsUserEnv([string]$Name, [string]$Value) {
   [Environment]::SetEnvironmentVariable($Name, $Value, 'User')
   Set-Item -Path ("Env:" + $Name) -Value $Value
 }
 
-function Get-V5ProviderHome([string]$Provider, $Catalog) {
+function Get-UabsProviderHome([string]$Provider, $Catalog) {
   $p = $Catalog.providers.$Provider
   if (-not $p) { throw ("Unknown provider " + $Provider) }
   $envName = $p.home_env
   # Process BEFORE User. Process is the more specific scope: it is what someone
   # sets to redirect a single run, and honouring User first made that override
   # impossible on any machine where the User variable exists. Two consequences,
-  # both real: Get-V5HermesPaths resolves the same path from $env: (which is
+  # both real: Get-UabsHermesPaths resolves the same path from $env: (which is
   # process scope), so the two helpers disagreed about the same home; and the
   # installer could not be exercised against an isolated empty home, which is
   # why "installer PASS" was never evidence about fresh installs.
   $fromEnv = [Environment]::GetEnvironmentVariable($envName, 'Process')
   if (-not $fromEnv) { $fromEnv = [Environment]::GetEnvironmentVariable($envName, 'User') }
   if ($fromEnv) { return $fromEnv }
-  return (Expand-V5EnvPath $p.home_default)
+  return (Expand-UabsEnvPath $p.home_default)
 }
 
-function Invoke-V5GitHubLatest {
+function Invoke-UabsGitHubLatest {
   param([string]$Owner, [string]$Repo)
   $uri = "https://api.github.com/repos/$Owner/$Repo/releases/latest"
-  return Invoke-RestMethod -Uri $uri -Headers $script:V5Headers -TimeoutSec 60
+  return Invoke-RestMethod -Uri $uri -Headers $script:UabsHeaders -TimeoutSec 60
 }
 
-function Get-V5ReleaseAsset {
+function Get-UabsReleaseAsset {
   param($Release, [string[]]$Patterns)
   foreach ($pat in $Patterns) {
     $a = @($Release.assets | Where-Object { $_.name -like $pat }) | Select-Object -First 1
@@ -69,30 +145,30 @@ function Get-V5ReleaseAsset {
   return $null
 }
 
-function Save-V5Url {
+function Save-UabsUrl {
   param([string]$Url, [string]$OutFile)
   $dir = Split-Path $OutFile -Parent
   if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
-  Write-V5Step ("Download " + (Split-Path $OutFile -Leaf))
-  Invoke-WebRequest -Uri $Url -OutFile $OutFile -Headers $script:V5Headers -TimeoutSec 900
-  Write-V5Ok (("{0:N1} MB" -f ((Get-Item $OutFile).Length / 1MB)))
+  Write-UabsStep ("Download " + (Split-Path $OutFile -Leaf))
+  Invoke-WebRequest -Uri $Url -OutFile $OutFile -Headers $script:UabsHeaders -TimeoutSec 900
+  Write-UabsOk (("{0:N1} MB" -f ((Get-Item $OutFile).Length / 1MB)))
 }
 
-function Expand-V5Zip {
+function Expand-UabsZip {
   param([string]$Zip, [string]$Dest, [switch]$WipeDest)
   if ($WipeDest -and (Test-Path $Dest)) { Remove-Item -LiteralPath $Dest -Recurse -Force }
   New-Item -ItemType Directory -Force -Path $Dest | Out-Null
   Expand-Archive -LiteralPath $Zip -DestinationPath $Dest -Force
 }
 
-function Resolve-V5SingleRoot {
+function Resolve-UabsSingleRoot {
   param([string]$Dest)
   $kids = @(Get-ChildItem -LiteralPath $Dest -Force | Where-Object { $_.Name -ne '__MACOSX' })
   if ($kids.Count -eq 1 -and $kids[0].PSIsContainer) { return $kids[0].FullName }
   return $Dest
 }
 
-function Find-V5FileUnder {
+function Find-UabsFileUnder {
   param([string]$Root, [string]$Name, [int]$Depth = 6)
   if (-not (Test-Path $Root)) { return $null }
   $hit = Get-ChildItem -LiteralPath $Root -Filter $Name -Recurse -Depth $Depth -File -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -100,35 +176,35 @@ function Find-V5FileUnder {
   return $null
 }
 
-function Test-V5DotNetRuntime([string]$Pattern) {
+function Test-UabsDotNetRuntime([string]$Pattern) {
   try {
     $r = & dotnet --list-runtimes 2>$null
     return [bool]($r | Where-Object { $_ -match $Pattern })
   } catch { return $false }
 }
 
-function Test-V5DotNetSdk([string]$Pattern) {
+function Test-UabsDotNetSdk([string]$Pattern) {
   try {
     $r = & dotnet --list-sdks 2>$null
     return [bool]($r | Where-Object { $_ -match $Pattern })
   } catch { return $false }
 }
 
-function Install-V5Winget([string[]]$Ids) {
+function Install-UabsWinget([string[]]$Ids) {
   $winget = Get-Command winget -ErrorAction SilentlyContinue
-  if (-not $winget) { Write-V5Warn 'winget not available'; return $false }
+  if (-not $winget) { Write-UabsWarn 'winget not available'; return $false }
   foreach ($id in $Ids) {
-    Write-V5Step ("winget install " + $id)
+    Write-UabsStep ("winget install " + $id)
     & winget install --id $id -e --accept-package-agreements --accept-source-agreements --disable-interactivity | Out-Host
     if ($LASTEXITCODE -ne 0) {
-      Write-V5Bad ("winget failed for " + $id + " exit=" + $LASTEXITCODE)
+      Write-UabsBad ("winget failed for " + $id + " exit=" + $LASTEXITCODE)
       return $false
     }
   }
   return $true
 }
 
-function Test-V5FileLocked([string]$Path) {
+function Test-UabsFileLocked([string]$Path) {
   if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
   try {
     $fs = [IO.File]::Open($Path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
@@ -139,7 +215,23 @@ function Test-V5FileLocked([string]$Path) {
   }
 }
 
-function Find-V5CodebaseMemoryExe {
+function Stop-UabsProcessUsingExecutable([string]$Path) {
+  if (-not $Path) { return 0 }
+  $wanted = [IO.Path]::GetFullPath($Path)
+  $stopped = 0
+  foreach ($proc in @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)) {
+    if (-not $proc.ExecutablePath) { continue }
+    if (-not [string]::Equals([IO.Path]::GetFullPath($proc.ExecutablePath), $wanted, [StringComparison]::OrdinalIgnoreCase)) { continue }
+    Stop-Process -Id $proc.ProcessId -Force -ErrorAction Stop
+    $stopped++
+  }
+  if ($stopped) {
+    for ($i = 0; $i -lt 20 -and (Test-UabsFileLocked $wanted); $i++) { Start-Sleep -Milliseconds 250 }
+  }
+  return $stopped
+}
+
+function Find-UabsCodebaseMemoryExe {
   $cands = @()
   if ($env:CODEBASE_MEMORY_MCP) { $cands += $env:CODEBASE_MEMORY_MCP }
   $u = [Environment]::GetEnvironmentVariable('CODEBASE_MEMORY_MCP', 'User')
@@ -154,7 +246,7 @@ function Find-V5CodebaseMemoryExe {
   return $null
 }
 
-function Update-V5GrokMcpBlock {
+function Update-UabsGrokMcpBlock {
   param(
     [string]$Name,
     [string]$Command,
@@ -199,18 +291,18 @@ function Update-V5GrokMcpBlock {
         }
       }
       if (($existingCmd -ieq $cmdNorm) -and ((@($existingArgs) -join ([char]31)) -ieq $argNorm)) {
-        Write-V5Ok ('Grok MCP unchanged (already correct): ' + $Name)
+        Write-UabsOk ('Grok MCP unchanged (already correct): ' + $Name)
         return
       }
       if ($existingCmd -ieq $cmdNorm) {
-        Write-V5Warn ('Grok MCP args drifted, rewriting: ' + $Name + '  was [' + (@($existingArgs) -join ' ') + ']')
+        Write-UabsWarn ('Grok MCP args drifted, rewriting: ' + $Name + '  was [' + (@($existingArgs) -join ' ') + ']')
       }
     }
   }
 
   if (Test-Path -LiteralPath $configPath) {
     $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
-    $bak = $configPath + '.before-v5-' + $Name + '-' + $ts + '.bak'
+    $bak = $configPath + '.before-uabs-' + $Name + '-' + $ts + '.bak'
     Copy-Item -LiteralPath $configPath -Destination $bak -Force
   }
 
@@ -258,10 +350,10 @@ function Update-V5GrokMcpBlock {
   }
   $enc = New-Object System.Text.UTF8Encoding($false)
   [IO.File]::WriteAllText($configPath, $new, $enc)
-  Write-V5Ok ('Grok MCP: ' + $Name)
+  Write-UabsOk ('Grok MCP: ' + $Name)
 }
 
-function Copy-V5Robo([string]$From, [string]$To) {
+function Copy-UabsRobo([string]$From, [string]$To) {
   New-Item -ItemType Directory -Force -Path $To | Out-Null
   & robocopy $From $To /E /COPY:DAT /R:1 /W:1 /NFL /NDL /NJH /NJS | Out-Null
   $code = $LASTEXITCODE
@@ -270,7 +362,17 @@ function Copy-V5Robo([string]$From, [string]$To) {
   }
 }
 
-function Sync-V5ProviderSkills([string]$From, [string]$To) {
+function Get-UabsTreeDigest([string]$Path) {
+  $root = (Resolve-Path -LiteralPath $Path).Path.TrimEnd('\') + '\'
+  $rows = @(Get-ChildItem -LiteralPath $Path -Recurse -File -Force -ErrorAction Stop |
+    ForEach-Object { $_.FullName.Substring($root.Length).Replace('\','/') + '=' + (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } |
+    Sort-Object)
+  $bytes = [Text.Encoding]::UTF8.GetBytes(($rows -join "`n"))
+  $sha = [Security.Cryptography.SHA256]::Create()
+  try { return ([BitConverter]::ToString($sha.ComputeHash($bytes))).Replace('-','') } finally { $sha.Dispose() }
+}
+
+function Sync-UabsProviderSkills([string]$From, [string]$To, [string]$Provider = '') {
   <#
     Bundle-owned provider skills are content-authoritative.
 
@@ -285,6 +387,37 @@ function Sync-V5ProviderSkills([string]$From, [string]$To) {
     throw ('provider skill source missing: ' + $From)
   }
   New-Item -ItemType Directory -Force -Path $To | Out-Null
+
+  # Clean interrupted V8 staging only. The exact prefix is bundle-owned.
+  Get-ChildItem -LiteralPath $To -Directory -Force -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -like '.uabs-skill-stage-*' -or $_.Name -like '.uabs-skill-backup-*' } |
+    Remove-Item -Recurse -Force
+
+  $currentNames = @(Get-ChildItem -LiteralPath $From -Directory -Force |
+    Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') } |
+    Select-Object -ExpandProperty Name)
+  $ledgerPath = $null
+  if ($Provider) {
+    $ledgerDir = Join-Path (Get-UabsStateRoot) 'managed-skills'
+    New-Item -ItemType Directory -Force -Path $ledgerDir | Out-Null
+    $ledgerPath = Join-Path $ledgerDir ($Provider.ToLowerInvariant() + '.json')
+    if (Test-Path -LiteralPath $ledgerPath -PathType Leaf) {
+      try {
+        $previous = [IO.File]::ReadAllText($ledgerPath) | ConvertFrom-Json
+        foreach ($entry in @($previous.skills)) {
+          if ($currentNames -contains [string]$entry.name) { continue }
+          $retired = Join-Path $To ([string]$entry.name)
+          if (-not (Test-Path -LiteralPath $retired -PathType Container)) { continue }
+          if ((Get-UabsTreeDigest $retired) -ceq [string]$entry.digest) {
+            Remove-Item -LiteralPath $retired -Recurse -Force
+            Write-UabsOk ('retired managed skill removed: ' + $entry.name)
+          } else {
+            Write-UabsWarn ('retired skill was modified; preserved: ' + $retired)
+          }
+        }
+      } catch { Write-UabsWarn ('managed-skill ledger unreadable; no retired skills removed: ' + $_.Exception.Message) }
+    }
+  }
 
   foreach ($skillDir in @(Get-ChildItem -LiteralPath $From -Directory -Force -ErrorAction Stop)) {
     $sourceSkillMd = Join-Path $skillDir.FullName 'SKILL.md'
@@ -386,19 +519,30 @@ function Sync-V5ProviderSkills([string]$From, [string]$To) {
       }
     }
   }
+
+  if ($ledgerPath) {
+    $records = @($currentNames | Sort-Object | ForEach-Object {
+      $path = Join-Path $To $_
+      [ordered]@{ name = $_; digest = Get-UabsTreeDigest $path }
+    })
+    $doc = [ordered]@{ schema = 1; provider = $Provider; skills = $records }
+    $tmp = $ledgerPath + '.tmp-' + [Guid]::NewGuid().ToString('N')
+    [IO.File]::WriteAllText($tmp, (($doc | ConvertTo-Json -Depth 5) + "`n"), (New-Object Text.UTF8Encoding $false))
+    Move-Item -LiteralPath $tmp -Destination $ledgerPath -Force
+  }
 }
 
-function Copy-V5RoboSafe([string]$From, [string]$To, [string[]]$CriticalFiles = @()) {
+function Copy-UabsRoboSafe([string]$From, [string]$To, [string[]]$CriticalFiles = @()) {
   foreach ($rel in $CriticalFiles) {
     $destFile = Join-Path $To $rel
-    if ((Test-Path -LiteralPath $destFile -PathType Leaf) -and (Test-V5FileLocked $destFile)) {
+    if ((Test-Path -LiteralPath $destFile -PathType Leaf) -and (Test-UabsFileLocked $destFile)) {
       throw ('REFUSE overwrite locked file (MCP likely running): ' + $destFile + ' - stop the AI app or MCP process first, or skip this component.')
     }
   }
-  Copy-V5Robo -From $From -To $To
+  Copy-UabsRobo -From $From -To $To
 }
 
-function Set-V5GrokCompatCells {
+function Set-UabsGrokCompatCells {
   <#
     Turn off Grok's inheritance of Claude Code's hooks, MCP servers, and
     skills.
@@ -471,16 +615,16 @@ function Set-V5GrokCompatCells {
   # first line unparseable TOML ("Invalid statement at line 1, column 1").
   [System.IO.File]::WriteAllText($ConfigPath, $content, (New-Object System.Text.UTF8Encoding $false))
   if ($AllowMcp) {
-    Write-V5Warn 'Grok: Claude hook + skill inheritance OFF, MCP inheritance left ON by request (expect a ~65s first turn)'
+    Write-UabsWarn 'Grok: Claude hook + skill inheritance OFF, MCP inheritance left ON by request (expect a ~65s first turn)'
   } else {
-    Write-V5Ok 'Grok: Claude hook + MCP + skill inheritance disabled (turn time 97s -> ~2s; no claude-mem skill leak)'
+    Write-UabsOk 'Grok: Claude hook + MCP + skill inheritance disabled (turn time 97s -> ~2s; no claude-mem skill leak)'
   }
 }
 
 # v7.5.0: SOUL + AIO preamble wiring. Appends (or replaces) the marked
 # preamble block in an agent instruction file. Idempotent, backup first.
 # Existing files keep their own encoding; writes are UTF-8 without BOM.
-function Install-V5PreambleBlock {
+function Install-UabsPreambleBlock {
   param(
     [string]$Path,
     [string]$SoulFile,
@@ -500,9 +644,9 @@ function Install-V5PreambleBlock {
   # Stamp the pack version that wired the block, so a stale block is visible
   # on sight. The replace pattern keys on the marker prefix, not the version,
   # so an older stamp is still found and replaced.
-  $ver = 'v7.5.0'
+  $ver = 'v8.0.0'
   try {
-    $vf = Join-Path (Get-V5PackRoot) 'VERSION.txt'
+    $vf = Join-Path (Get-UabsPackRoot) 'VERSION.txt'
     if (Test-Path -LiteralPath $vf) { $ver = ([IO.File]::ReadAllText($vf)).Trim() }
   } catch { }
   $open = '<!-- ULTIMATE-AI-STARTER-BUNDLE SOUL ' + $ver + ' -->'
@@ -528,7 +672,7 @@ function Install-V5PreambleBlock {
       else { $new = $block + $nl }
     }
     if (-not $Force -and $new -ceq $pre) {
-      Write-V5Ok ('preamble unchanged (already current): ' + $Path)
+      Write-UabsOk ('preamble unchanged (already current): ' + $Path)
       return
     }
     $ts = Get-Date -Format 'yyyyMMdd-HHmmssfff'
@@ -539,22 +683,22 @@ function Install-V5PreambleBlock {
     # write it back); a BOM-less file stays BOM-less. PS 5.1 -Encoding utf8 would
     # add one and break strict readers.
     [IO.File]::WriteAllText($Path, $new, (New-Object System.Text.UTF8Encoding $origBom))
-    Write-V5Ok ('preamble wired: ' + $Path)
+    Write-UabsOk ('preamble wired: ' + $Path)
 }
 
 # ---------------------------------------------------------------------------
 # Native bundled plugins (superpowers / ponytail) - shared helpers.
-# The per-provider orchestration lives in INSTALL-V7-AIO.ps1; these are the
+# The per-provider orchestration lives in INSTALL-AIO.ps1; these are the
 # mechanism pieces: native command output capture, plugin-owned skill name
 # discovery, the md5-guarded dedupe, a TOML plugin-section probe, the Hermes
 # scan_on_install config fix, and a style-preserving marketplace.json edit.
 # ---------------------------------------------------------------------------
 
-function Get-V5NativeOutput {
+function Get-UabsNativeOutput {
   <#
   Run a native command and return its combined output as one string, without
   PowerShell 5.1 turning stderr lines into terminating ErrorRecords under the
-  script-wide $ErrorActionPreference='Stop'. (Same disease Invoke-V5Native
+  script-wide $ErrorActionPreference='Stop'. (Same disease Invoke-UabsNative
   cures; this variant is for DETECTION, where the output itself is needed.)
   #>
   param([string]$Exe, [string[]]$CmdArgs)
@@ -563,14 +707,14 @@ function Get-V5NativeOutput {
   try { return (& $Exe @CmdArgs 2>&1 | Out-String) } finally { $ErrorActionPreference = $prevEap }
 }
 
-function Get-V5GrokPluginList {
+function Get-UabsGrokPluginList {
   <#
   Parse `grok plugin list --json`. Returns an array of plugin objects with
   name / repo_key / source / marketplace / path. Empty array on failure.
   #>
   param([string]$GrokExe)
   if (-not $GrokExe) { return @() }
-  $out = Get-V5NativeOutput -Exe $GrokExe -CmdArgs @('plugin', 'list', '--json')
+  $out = Get-UabsNativeOutput -Exe $GrokExe -CmdArgs @('plugin', 'list', '--json')
   if ([string]::IsNullOrWhiteSpace($out)) { return @() }
   $start = $out.IndexOf('[')
   if ($start -lt 0) { $start = $out.IndexOf('{') }
@@ -583,11 +727,11 @@ function Get-V5GrokPluginList {
   }
 }
 
-function Repair-V5GrokDuplicatePlugins {
+function Repair-UabsGrokDuplicatePlugins {
   <#
   Grok's official marketplace auto-installs superpowers. The AIO used to
   also `grok plugin install` the staged local copy under
-  %LOCALAPPDATA%\Skyrim-AI-V5\plugins-src\superpowers. Two plugins with the
+  %LOCALAPPDATA%\Ultimate-AI-Starter-Bundle\plugins-src\superpowers. Two plugins with the
   same name both own systematic-debugging, and the TUI reports that as a
   skill error. Keep the marketplace/git copy; drop extra local clones.
 
@@ -597,7 +741,7 @@ function Repair-V5GrokDuplicatePlugins {
   installed-plugins/registry.json and delete the extra repo folder instead.
   #>
   param([string]$GrokExe, [string]$PluginName)
-  $hits = @(Get-V5GrokPluginList -GrokExe $GrokExe | Where-Object { $_.name -eq $PluginName })
+  $hits = @(Get-UabsGrokPluginList -GrokExe $GrokExe | Where-Object { $_.name -eq $PluginName })
   if ($hits.Count -le 1) { return $hits }
   $keep = @($hits | Where-Object { $_.marketplace }) | Select-Object -First 1
   if (-not $keep) {
@@ -607,7 +751,7 @@ function Repair-V5GrokDuplicatePlugins {
   $regPath = Join-Path $env:USERPROFILE '.grok\installed-plugins\registry.json'
   foreach ($h in $hits) {
     if ($h.repo_key -eq $keep.repo_key) { continue }
-    Write-V5Warn ("Grok: duplicate {0} ({1}) - dropping registry repo {2}" -f $PluginName, $h.source, $h.repo_key)
+    Write-UabsWarn ("Grok: duplicate {0} ({1}) - dropping registry repo {2}" -f $PluginName, $h.source, $h.repo_key)
     if (Test-Path -LiteralPath $regPath -PathType Leaf) {
       $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
       Copy-Item -LiteralPath $regPath -Destination ($regPath + '.before-dedupe-' + $ts + '.bak') -Force
@@ -622,16 +766,16 @@ function Repair-V5GrokDuplicatePlugins {
       Remove-Item -LiteralPath $h.path -Recurse -Force
     }
   }
-  $left = @(Get-V5GrokPluginList -GrokExe $GrokExe | Where-Object { $_.name -eq $PluginName })
+  $left = @(Get-UabsGrokPluginList -GrokExe $GrokExe | Where-Object { $_.name -eq $PluginName })
   if ($left.Count -gt 1) {
-    Write-V5Warn ("Grok: still {0} copies of {1} after registry drop - skill names will collide" -f $left.Count, $PluginName)
+    Write-UabsWarn ("Grok: still {0} copies of {1} after registry drop - skill names will collide" -f $left.Count, $PluginName)
   } elseif ($left.Count -eq 1) {
-    Write-V5Ok ("Grok: one {0} plugin remains ({1})" -f $PluginName, $left[0].repo_key)
+    Write-UabsOk ("Grok: one {0} plugin remains ({1})" -f $PluginName, $left[0].repo_key)
   }
   return $left
 }
 
-function Get-V5ClaudeMarketplaceName {
+function Get-UabsClaudeMarketplaceName {
   <#
   The marketplace directory name Claude Code caches a bundled plugin under.
 
@@ -660,7 +804,7 @@ function Get-V5ClaudeMarketplaceName {
   return $null
 }
 
-function Get-V5PluginOwnedSkillNames {
+function Get-UabsPluginOwnedSkillNames {
   <#
   Skill names a bundled plugin owns, computed from the tree at install time -
   never a hardcoded list, so a plugin version bump that adds/renames a skill
@@ -672,7 +816,7 @@ function Get-V5PluginOwnedSkillNames {
   return @(Get-ChildItem -LiteralPath $sk -Directory | Select-Object -ExpandProperty Name)
 }
 
-function Remove-V5PluginOwnedSkillCopies {
+function Remove-UabsPluginOwnedSkillCopies {
   <#
   Remove provider-skills copies that a natively installed plugin now owns.
 
@@ -707,7 +851,7 @@ function Remove-V5PluginOwnedSkillCopies {
     $canonMd = Join-Path (Join-Path $CanonicalRoot $name) 'SKILL.md'
     if (-not (Test-Path -LiteralPath $copyMd -PathType Leaf)) {
       $result.skipped += ($name + ' (copy has no SKILL.md - unverifiable, kept)')
-      Write-V5Warn ('dedupe: kept ' + $name + ' - copy has no SKILL.md to verify against canonical')
+      Write-UabsWarn ('dedupe: kept ' + $name + ' - copy has no SKILL.md to verify against canonical')
       if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: kept ' + $name + ' in ' + $SkillsDir + ' (no SKILL.md)') }
       continue
     }
@@ -715,7 +859,7 @@ function Remove-V5PluginOwnedSkillCopies {
       # The canonical tree never shipped a skill of this name, so there is
       # nothing to verify the copy against. Keep it.
       $result.skipped += ($name + ' (absent from canonical tree - kept)')
-      Write-V5Warn ('dedupe: kept ' + $name + ' - no canonical SKILL.md to verify against')
+      Write-UabsWarn ('dedupe: kept ' + $name + ' - no canonical SKILL.md to verify against')
       if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: kept ' + $name + ' in ' + $SkillsDir + ' (not in canonical)') }
       continue
     }
@@ -723,26 +867,26 @@ function Remove-V5PluginOwnedSkillCopies {
     $hCanon = (Get-FileHash -LiteralPath $canonMd -Algorithm MD5).Hash
     if ($hCopy -ne $hCanon) {
       $result.skipped_modified += $name
-      Write-V5Warn ('dedupe: REFUSED to remove ' + $target + ' - SKILL.md differs from the pack canonical (user-modified?). Back up your changes and remove it by hand if unwanted.')
+      Write-UabsWarn ('dedupe: REFUSED to remove ' + $target + ' - SKILL.md differs from the pack canonical (user-modified?). Back up your changes and remove it by hand if unwanted.')
       if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: REFUSED ' + $target + ' (md5 differs from canonical)') }
       continue
     }
     New-Item -ItemType Directory -Force -Path $bkDir | Out-Null
-    Copy-V5Robo -From $target -To (Join-Path $bkDir $name)
+    Copy-UabsRobo -From $target -To (Join-Path $bkDir $name)
     Remove-Item -LiteralPath $target -Recurse -Force
     $result.removed += $name
-    Write-V5Ok ('dedupe: removed plugin-owned copy ' + $name + ' (backup: ' + (Join-Path $bkDir $name) + ')')
+    Write-UabsOk ('dedupe: removed plugin-owned copy ' + $name + ' (backup: ' + (Join-Path $bkDir $name) + ')')
     if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: removed ' + $target + ' (backup ' + $bkDir + ')') }
   }
   return $result
 }
 
-function Test-V5TomlPluginEnabled {
+function Test-UabsTomlPluginEnabled {
   <#
   True when TOML content has a section whose header starts with
   [<HeaderPrefix> and whose body contains enabled = true. Line-based on
   purpose: regex-over-sections is how config.toml readers have been burned
-  before (see the [compat.claude] comment in Set-V5GrokCompatCells).
+  before (see the [compat.claude] comment in Set-UabsGrokCompatCells).
   #>
   param([string]$Content, [string]$HeaderPrefix)
   if ([string]::IsNullOrEmpty($Content)) { return $false }
@@ -758,7 +902,7 @@ function Test-V5TomlPluginEnabled {
   return $false
 }
 
-function Set-V5HermesPluginScanOff {
+function Set-UabsHermesPluginScanOff {
   <#
   Ensure plugins.scan_on_install: false in the Hermes config.yaml.
 
@@ -768,10 +912,9 @@ function Set-V5HermesPluginScanOff {
   time. This is a TEXT edit, never a YAML re-serialize: any comment the
   operator added survives untouched.
 
-  Rules: a scan_on_install: line already under plugins: is left exactly as
-  is; otherwise insert '  scan_on_install: false' right after the
-  'disabled: []' line under plugins: (or right after 'plugins:' when there
-  is no disabled key). Backup to config.yaml.bak-<yyyyMMdd-HHmmss> first.
+  Rules: an operator-owned false value is left exactly as-is, true is changed
+  temporarily and restored later, and a missing setting is inserted directly
+  under plugins:. Backup to config.yaml.bak-<yyyyMMdd-HHmmss> first.
 
   Returns 'already-present' | 'inserted' | 'appended-section' | 'created' | 'failed'.
   #>
@@ -782,38 +925,66 @@ function Set-V5HermesPluginScanOff {
       New-Item -ItemType Directory -Force -Path $dir | Out-Null
       $enc0 = New-Object System.Text.UTF8Encoding($false)
       [IO.File]::WriteAllText($ConfigPath, ("plugins:`r`n  scan_on_install: false`r`n"), $enc0)
-      Write-V5Warn ('Hermes config.yaml missing - created with plugins.scan_on_install: false (' + $ConfigPath + ')')
+      Write-UabsWarn ('Hermes config.yaml missing - created with plugins.scan_on_install: false (' + $ConfigPath + ')')
       return 'created'
     }
     $text = [IO.File]::ReadAllText($ConfigPath)
     $nl = "`r`n"
     if ($text -notmatch "`r`n") { $nl = "`n" }
     $lines = @($text -split '\r?\n')
-    $keep = @()
-    $dropped = 0
+    $out = @()
     $inPlugins = $false
-    foreach ($line in $lines) {
-      if ($line -match '^plugins\s*:') { $inPlugins = $true; $keep += $line; continue }
+    $pluginsFound = $false
+    $settingFound = $false
+    $changedTrue = $false
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+      $line = $lines[$i]
+      if ($line -match '^plugins\s*:') {
+        $pluginsFound = $true
+        $inPlugins = $true
+        $out += $line
+        continue
+      }
       if ($inPlugins -and $line -match '^\S') { $inPlugins = $false }
-      if ($inPlugins -and $line -match '^\s+scan_on_install\s*:\s*false\s*$') { $dropped++; continue }
-      $keep += $line
+      if ($inPlugins -and $line -match '^(\s+scan_on_install\s*:\s*)(true|false)(\s*(?:#.*)?)$') {
+        $settingFound = $true
+        if ($Matches[2] -eq 'false') {
+          Write-UabsOk 'Hermes config: scan_on_install already false - left operator setting unchanged'
+          return 'already-present'
+        }
+        $out += ($Matches[1] + 'false' + $Matches[3])
+        $changedTrue = $true
+        continue
+      }
+      $out += $line
     }
-    if ($dropped -eq 0) {
-      Write-V5Ok 'Hermes config: no scan_on_install override left to remove'
-      return 'absent'
+    if (-not $settingFound) {
+      if ($pluginsFound) {
+        $header = 0
+        for ($j = 0; $j -lt $out.Count; $j++) {
+          if ($out[$j] -match '^plugins\s*:') { $header = $j; break }
+        }
+        $before = @($out[0..$header])
+        $after = if ($header + 1 -lt $out.Count) { @($out[($header + 1)..($out.Count - 1)]) } else { @() }
+        $out = @($before + '  scan_on_install: false' + $after)
+      } else {
+        if ($out.Count -and $out[-1] -ne '') { $out += '' }
+        $out += @('plugins:', '  scan_on_install: false')
+      }
     }
     Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
     $enc = New-Object System.Text.UTF8Encoding($false)
-    [IO.File]::WriteAllText($ConfigPath, ($keep -join $nl), $enc)
-    Write-V5Ok 'Hermes config: scan_on_install override removed - plugin scanning is back on'
-    return 'removed'
+    [IO.File]::WriteAllText($ConfigPath, ($out -join $nl), $enc)
+    $state = if ($changedTrue) { 'changed-true' } elseif ($pluginsFound) { 'inserted' } else { 'appended-section' }
+    Write-UabsWarn 'Hermes config: plugin scanning temporarily disabled for the two bundled, pinned plugins'
+    return $state
   } catch {
-    Write-V5Warn ('Hermes scan_on_install restore failed: ' + $_.Exception.Message)
+    Write-UabsWarn ('Hermes scan_on_install override failed: ' + $_.Exception.Message)
     return 'failed'
   }
 }
 
-function Install-V5KimiPlugin {
+function Install-UabsKimiPlugin {
   <#
   Install a bundled plugin into Kimi Code natively, without the TUI.
 
@@ -884,7 +1055,7 @@ function Install-V5KimiPlugin {
         $existing = ([IO.File]::ReadAllText($store)) | ConvertFrom-Json
       } catch {
         Copy-Item -LiteralPath $store -Destination ($store + '.bad-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
-        Write-V5Warn ('Kimi installed.json was unparseable - kept a copy and rebuilt it')
+        Write-UabsWarn ('Kimi installed.json was unparseable - kept a copy and rebuilt it')
       }
       if ($existing -and $existing.plugins) {
         foreach ($p in @($existing.plugins)) {
@@ -925,7 +1096,7 @@ function Install-V5KimiPlugin {
   }
 }
 
-function Restore-V5HermesPluginScan {
+function Restore-UabsHermesPluginScan {
   <#
   Undo the temporary scan_on_install override once the bundled plugins are in.
 
@@ -939,49 +1110,55 @@ function Restore-V5HermesPluginScan {
   min after start), so a whole-file restore taken before the install would
   clobber whatever the gateway legitimately wrote in between.
 
-  $State is the string returned by Set-V5HermesPluginScanOff. When it reports
+  $State is the string returned by Set-UabsHermesPluginScanOff. When it reports
   'already-present' the operator had their own setting and it is left alone.
 
-  Returns 'removed' | 'kept-user-setting' | 'absent' | 'failed'.
+  Returns 'removed' | 'restored-true' | 'kept-user-setting' | 'absent' | 'failed'.
   #>
   param([string]$ConfigPath, [string]$State)
   try {
     if ($State -eq 'already-present') {
-      Write-V5Ok 'Hermes config: scan_on_install was the operator''s own setting - left as-is'
+      Write-UabsOk 'Hermes config: scan_on_install was the operator''s own setting - left as-is'
       return 'kept-user-setting'
     }
     if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) { return 'absent' }
     $text = [IO.File]::ReadAllText($ConfigPath)
     $nl = "`r`n"
     if ($text -notmatch "`r`n") { $nl = "`n" }
-    $lines = @($text -split "
-?
-")
+    $lines = @($text -split '\r?\n')
     $keep = @()
     $dropped = 0
     $inPlugins = $false
     foreach ($line in $lines) {
       if ($line -match '^plugins\s*:') { $inPlugins = $true; $keep += $line; continue }
       if ($inPlugins -and $line -match '^\S') { $inPlugins = $false }
-      if ($inPlugins -and $line -match '^\s+scan_on_install\s*:\s*false\s*$') { $dropped++; continue }
+      if ($inPlugins -and $line -match '^(\s+scan_on_install\s*:\s*)false(\s*(?:#.*)?)$') {
+        if ($State -eq 'changed-true') { $keep += ($Matches[1] + 'true' + $Matches[2]) }
+        $dropped++
+        continue
+      }
       $keep += $line
     }
     if ($dropped -eq 0) {
-      Write-V5Ok 'Hermes config: no scan_on_install override left to remove'
+      Write-UabsOk 'Hermes config: no scan_on_install override left to remove'
       return 'absent'
     }
     Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force
     $enc = New-Object System.Text.UTF8Encoding($false)
     [IO.File]::WriteAllText($ConfigPath, ($keep -join $nl), $enc)
-    Write-V5Ok 'Hermes config: scan_on_install override removed - plugin scanning is back on'
+    if ($State -eq 'changed-true') {
+      Write-UabsOk 'Hermes config: operator scan_on_install: true restored'
+      return 'restored-true'
+    }
+    Write-UabsOk 'Hermes config: temporary scan_on_install override removed - plugin scanning is back on'
     return 'removed'
   } catch {
-    Write-V5Warn ('Hermes scan_on_install restore failed: ' + $_.Exception.Message)
+    Write-UabsWarn ('Hermes scan_on_install restore failed: ' + $_.Exception.Message)
     return 'failed'
   }
 }
 
-function Add-V5MarketplacePluginEntry {
+function Add-UabsMarketplacePluginEntry {
   <#
   Idempotently add a plugin entry to a marketplace.json, preserving the
   file's own style: existing newline convention, 2-space indentation (entry
@@ -1004,11 +1181,11 @@ function Add-V5MarketplacePluginEntry {
   $text = [IO.File]::ReadAllText($ManifestPath)
   if ($text -match ('"name"\s*:\s*"' + [regex]::Escape($EntryName) + '"')) { return $true }
   try { $parsed = $text | ConvertFrom-Json } catch {
-    Write-V5Warn ('marketplace manifest is not valid JSON - left untouched: ' + $ManifestPath)
+    Write-UabsWarn ('marketplace manifest is not valid JSON - left untouched: ' + $ManifestPath)
     return $false
   }
   if (-not $parsed -or -not $parsed.plugins) {
-    Write-V5Warn ('marketplace manifest has no plugins array - left untouched: ' + $ManifestPath)
+    Write-UabsWarn ('marketplace manifest has no plugins array - left untouched: ' + $ManifestPath)
     return $false
   }
   $nl = "`n"
@@ -1028,7 +1205,7 @@ function Add-V5MarketplacePluginEntry {
   } else {
     $m2 = [regex]::Match($text, '"plugins"\s*:\s*\[\s*\]')
     if (-not $m2.Success) {
-      Write-V5Warn ('could not locate the plugins array in ' + $ManifestPath)
+      Write-UabsWarn ('could not locate the plugins array in ' + $ManifestPath)
       return $false
     }
     $replacement = '"plugins": [' + $nl + $entry.TrimEnd(',') + $nl + '  ]'
@@ -1040,7 +1217,7 @@ function Add-V5MarketplacePluginEntry {
     foreach ($pl in @($check.plugins)) { if ($pl.name -eq $EntryName) { $found = $true } }
     if (-not $found) { throw 'entry missing after edit' }
   } catch {
-    Write-V5Warn ('marketplace edit failed validation - file left untouched: ' + $_.Exception.Message)
+    Write-UabsWarn ('marketplace edit failed validation - file left untouched: ' + $_.Exception.Message)
     return $false
   }
   Copy-Item -LiteralPath $ManifestPath -Destination ($ManifestPath + '.bak-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) -Force

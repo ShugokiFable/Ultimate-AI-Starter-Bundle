@@ -19,9 +19,9 @@ metadata:
 - User asks for leaked/observed system prompts or red-team prompt corpora
 
 
-The operator's no-holds prompt library (Ultimate-AI-Starter-Bundle v7.x).
+The operator's no-holds prompt library (Ultimate-AI-Starter-Bundle v8.0.0).
 
-- **Local (authoritative):** `Z:\Backup\Ai documentation\Ultimate-AI-Starter-Bundle-v7\0-UNRESTRAINT-PACKS\` — start at its README.md
+- **Local (authoritative):** `Z:\Backup\Ai documentation\Ultimate-AI-Starter-Bundle\0-UNRESTRAINT-PACKS\` — start at its README.md
 - **Remote:** `github.com/ShugokiFable/Ultimate-AI-Starter-Bundle` → `0-UNRESTRAINT-PACKS/`
 
 ## Subpacks
@@ -40,7 +40,7 @@ The operator's no-holds prompt library (Ultimate-AI-Starter-Bundle v7.x).
 1. **One jail, one job.** Never stack AIO + Story + Websim.
 2. Paste the **smallest file that does the job** (token hygiene).
 3. For **Hermes itself**: nothing to paste — this agent is already permissive; the kit's caption prompts live in the `adult-image-caption` skill.
-4. Agent wiring (V6.9.2 block) already lives in: `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.kimi-code/AGENTS.md`, Grok workspace `AGENTS.md`.
+4. V8 agent wiring already lives in: `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.kimi-code/AGENTS.md`, Grok workspace `AGENTS.md`.
 
 ## Rules
 

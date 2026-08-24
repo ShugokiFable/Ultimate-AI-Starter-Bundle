@@ -10,7 +10,7 @@
   this script is.
 
 .EXAMPLE
-  .\TESTS\Test-V7-Pack.ps1
+  .\TESTS\Test-Pack.ps1
 #>
 [CmdletBinding()]
 param(
@@ -26,8 +26,8 @@ if (-not $PackRoot) {
     if (-not $here) { $here = (Get-Location).Path }
     $PackRoot = Split-Path -Parent $here
 }
-if (-not (Test-Path (Join-Path $PackRoot '_V7-CANONICAL-SKILLS'))) {
-    throw "PackRoot '$PackRoot' does not look like the v6 pack (no _V7-CANONICAL-SKILLS). Pass -PackRoot explicitly."
+if (-not (Test-Path (Join-Path $PackRoot '_CANONICAL-SKILLS'))) {
+    throw "PackRoot '$PackRoot' does not look like the v6 pack (no _CANONICAL-SKILLS). Pass -PackRoot explicitly."
 }
 
 $ErrorActionPreference = 'Stop'
@@ -42,7 +42,7 @@ Section '1. Skill health (all trees)'
 if (-not $py) {
     Bad 'python not found; skill audit skipped'
 } else {
-    $trees = @(Join-Path $PackRoot '_V7-CANONICAL-SKILLS')
+    $trees = @(Join-Path $PackRoot '_CANONICAL-SKILLS')
     # v7.6.6: only the tailored family remains; 2-OPTIONAL-SHARED-GENERIC was
     # a 97%-identical duplicate the installer never read.
     foreach ($fam in '1-TAILORED-PROVIDER-TREES') {
@@ -51,17 +51,21 @@ if (-not $py) {
             if (Test-Path $p) { $trees += $p }
         }
     }
-    if ($IncludeLiveInstalls) {
-        foreach ($h in '.claude', '.grok', '.codex', '.kimi-code') {
-            $p = Join-Path $env:USERPROFILE "$h\skills"
-            if (Test-Path $p) { $trees += $p }
-        }
-    }
     foreach ($t in $trees) {
         $out = & $py.Source (Join-Path $PackRoot 'TOOLS\audit_skills.py') $t 2>&1
         $res = ($out | Select-String 'RESULT:').ToString().Trim()
         $short = $t.Replace($PackRoot, '').TrimStart('\')
         if ($res -match 'PASS') { Good "$short  $res" } else { Bad "$short  $res" }
+    }
+
+    if ($IncludeLiveInstalls) {
+        # Provider homes can contain third-party/user skills. Audit only the
+        # bundle-owned names through the installed-state doctor; unrelated
+        # malformed skills are reported by their owner, not blamed on UABS.
+        $doctor = Join-Path $PackRoot 'TOOLS\Test-Installed-State.ps1'
+        $liveOut = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $doctor -PackRoot $PackRoot -Providers 'Claude,Codex,Grok,Kimi,Hermes' -SkipForge 2>&1 | Out-String
+        if ($LASTEXITCODE -eq 0) { Good 'all five live provider trees match bundle-owned skills' }
+        else { Bad ('live provider audit failed:' + [Environment]::NewLine + $liveOut.Trim()) }
     }
 }
 
@@ -109,7 +113,7 @@ if (-not (Test-Path $manPath)) {
 
 Section '5. Evidence registry sanity'
 if ($py) {
-    $reg = Join-Path $PackRoot '_V7-CANONICAL-SKILLS\skyrim-memory\references\ERROR-REGISTRY.json'
+    $reg = Join-Path $PackRoot '_CANONICAL-SKILLS\skyrim-memory\references\ERROR-REGISTRY.json'
     if (Test-Path $reg) {
         # `sources` is required of NEW evidence at merge time (merge_registry.py
         # enforces it). It is deliberately NOT required here: 29 v4.3-era rows
@@ -146,6 +150,14 @@ foreach ($g in @('completeness_gate.py', 'assumption_gate.py')) {
 }
 $wire = Join-Path $gateDir 'hermes_wire.py'
 if (Test-Path -LiteralPath $wire) { Good 'hermes_wire.py present' } else { Bad 'hermes_wire.py missing' }
+$mcpProbe = Join-Path $PackRoot 'TOOLS\mcp_handshake.py'
+if (-not $py -or -not (Test-Path -LiteralPath $mcpProbe -PathType Leaf)) {
+    Bad 'mcp_handshake.py or Python missing'
+} else {
+    $probeOut = & $py.Source $mcpProbe --selftest 2>&1 | Out-String
+    if ($LASTEXITCODE -eq 0 -and $probeOut -match 'MCP HANDSHAKE SELFTEST: PASS') { Good 'MCP handshake process/stdio self-test PASS' }
+    else { Bad ('MCP handshake self-test failed: ' + $probeOut.Trim()) }
+}
 
 Section '7. Preamble sources are clean UTF-8 and provider-neutral'
 $soulF = Join-Path $PackRoot '3-PREAMBLES\SOUL.md'
@@ -170,10 +182,10 @@ if ($soulTxt -match 'Hermes Agent|Nous Research|You are Claude|created by (Anthr
     Bad 'SOUL.md names a specific provider identity; it is installed into all five'
 } else { Good 'SOUL.md is provider-neutral' }
 if ($soulTxt) {
-    $common = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\V7-Common.ps1'))
+    $common = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\UABS-Common.ps1'))
     if ($common -match [regex]::Escape('$soul = ([IO.File]::ReadAllText($SoulFile))')) {
-        Good 'Install-V5PreambleBlock reads preambles as UTF-8'
-    } else { Bad 'Install-V5PreambleBlock no longer uses ReadAllText (mojibake will return)' }
+        Good 'Install-UabsPreambleBlock reads preambles as UTF-8'
+    } else { Bad 'Install-UabsPreambleBlock no longer uses ReadAllText (mojibake will return)' }
 }
 
 Section '7b. No script reads a file with the ANSI codepage'
@@ -263,7 +275,7 @@ if (Test-Path -LiteralPath $soulDup) {
 } else {
     Good 'exactly one soul source (SOUL.md)'
 }
-$instTxt = [IO.File]::ReadAllText((Join-Path $PackRoot 'INSTALL-V7-AIO.ps1'))
+$instTxt = [IO.File]::ReadAllText((Join-Path $PackRoot 'INSTALL-AIO.ps1'))
 if ($instTxt -match "Join-Path \`$preDir 'SOUL-UNIVERSAL\.md'") {
     Bad 'installer wires SOUL-UNIVERSAL.md instead of the single SOUL.md'
 } else {
@@ -370,9 +382,9 @@ foreach ($rel in $starterFiles) {
         Bad "$rel contains a machine path"
     } else { Good $rel }
 }
-$aio = [IO.File]::ReadAllText((Join-Path $PackRoot 'INSTALL-V7-AIO.ps1'))
+$aio = [IO.File]::ReadAllText((Join-Path $PackRoot 'INSTALL-AIO.ps1'))
 if ($aio -match 'Install-Provider-Starter-Settings') { Good 'AIO calls starter-settings installer' }
-else { Bad 'INSTALL-V7-AIO.ps1 does not call Install-Provider-Starter-Settings.ps1' }
+else { Bad 'INSTALL-AIO.ps1 does not call Install-Provider-Starter-Settings.ps1' }
 if ($aio -match 'Copy-Item -LiteralPath \$hCfgSrc -Destination \$hCfg') {
     Bad 'AIO still wholesale-copies Hermes config.yaml over a live home'
 } else { Good 'AIO no longer overwrites a live Hermes config.yaml' }
@@ -388,17 +400,17 @@ if ($doctorSrc -match 'bundle-contract') {
     Bad 'installed-state doctor still calls removed Forge 5.x bundle-contract'
 } elseif ($doctorSrc -match '-m\s+skyrim_forge\s+doctor') { Good 'installed-state doctor uses Forge 6 health contract' }
 else { Bad 'installed-state doctor does not run Forge doctor' }
-$common = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\V7-Common.ps1'))
+$common = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\UABS-Common.ps1'))
 if ($common -match "skills = false") {
-    Good 'Set-V5GrokCompatCells writes skills = false'
-} else { Bad 'V7-Common.ps1 does not write [compat.claude] skills = false' }
-if ($aio -match 'Repair-V5GrokDuplicatePlugins') {
+    Good 'Set-UabsGrokCompatCells writes skills = false'
+} else { Bad 'UABS-Common.ps1 does not write [compat.claude] skills = false' }
+if ($aio -match 'Repair-UabsGrokDuplicatePlugins') {
     Good 'AIO collapses duplicate Grok superpowers plugins'
-} else { Bad 'INSTALL-V7-AIO.ps1 does not call Repair-V5GrokDuplicatePlugins' }
-if ($aio -match "Invoke-V5SkillDedupe -Provider 'Grok'") {
+} else { Bad 'INSTALL-AIO.ps1 does not call Repair-UabsGrokDuplicatePlugins' }
+if ($aio -match "Invoke-UabsSkillDedupe -Provider 'Grok'") {
     Bad 'AIO still dedupes Grok superpowers copies (TUI then fails with no reason)'
 } else { Good 'AIO leaves Grok superpowers copies in ~/.grok/skills' }
-if ($aio -match "Invoke-V5SkillDedupe -Provider 'Hermes'") {
+if ($aio -match "Invoke-UabsSkillDedupe -Provider 'Hermes'") {
     Bad 'AIO still dedupes Hermes superpowers/ponytail copies (slash commands and autofill then disappear)'
 } else { Good 'AIO leaves Hermes plugin copies in the skills dir (slash commands load that path)' }
 $grokStarter = [IO.File]::ReadAllText((Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\Grok\COPY-TO-PROVIDER-HOME\config.toml'))
@@ -412,7 +424,7 @@ Section '10. Framework truth lock runs (SPID/KID grammar anti-drift)'
 # skyrim-spid-distribution / skyrim-kid-distribution into spid-authoring /
 # kid-authoring, it sat there raising FileNotFoundError on every invocation
 # and nothing noticed for a whole release. An unrun gate is not a gate.
-$truthLock = Join-Path $PackRoot '_V7-CANONICAL-SKILLS\skyrim-distr-kid-validation\scripts\verify_framework_truth.py'
+$truthLock = Join-Path $PackRoot '_CANONICAL-SKILLS\skyrim-distr-kid-validation\scripts\verify_framework_truth.py'
 if (-not (Test-Path -LiteralPath $truthLock)) {
     Bad 'verify_framework_truth.py missing from the canonical tree'
 } elseif (-not $py) {
@@ -448,7 +460,7 @@ $forgeRootGate = Join-Path $PackRoot 'TESTS\Test-ForgeRootResolution.ps1'
 if (-not (Test-Path -LiteralPath $forgeRootGate -PathType Leaf)) {
     Bad 'TESTS\Test-ForgeRootResolution.ps1 missing from the pack'
 } else {
-    $rootOut = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $forgeRootGate -PackRoot $PackRoot 2>&1 | Out-String
+    $rootOut = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $forgeRootGate -PackRoot $PackRoot 2>&1 | Out-String
     if ($rootOut -match 'FORGE ROOT RESOLUTION: PASS') {
         Good 'Forge install root resolution PASS'
     } else {
@@ -462,7 +474,7 @@ $providerSyncGate = Join-Path $PackRoot 'TESTS\Test-ProviderSkillSync.ps1'
 if (-not (Test-Path -LiteralPath $providerSyncGate -PathType Leaf)) {
     Bad 'TESTS\Test-ProviderSkillSync.ps1 missing from the pack'
 } else {
-    $syncOut = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $providerSyncGate -PackRoot $PackRoot 2>&1 | Out-String
+    $syncOut = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $providerSyncGate -PackRoot $PackRoot 2>&1 | Out-String
     if ($syncOut -match 'PROVIDER SKILL SYNC: PASS') {
         Good 'Provider skill same-metadata overwrite + user-skill preservation PASS'
     } else {
@@ -470,22 +482,50 @@ if (-not (Test-Path -LiteralPath $providerSyncGate -PathType Leaf)) {
     }
 }
 
+Section '12b. Hermes scanner override is temporary and reversible'
+$common = Join-Path $PackRoot 'TOOLS\UABS-Common.ps1'
+$scanFx = Join-Path ([IO.Path]::GetTempPath()) ('uabs-hermes-scan-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $scanFx | Out-Null
+try {
+    . $common
+    $cases = @(
+        @{ name='missing'; body="plugins:`n  enabled: []`n"; state='inserted'; final='' },
+        @{ name='true'; body="plugins:`n  scan_on_install: true # keep`n"; state='changed-true'; final='scan_on_install: true # keep' },
+        @{ name='operator-false'; body="plugins:`n  scan_on_install: false # mine`n"; state='already-present'; final='scan_on_install: false # mine' }
+    )
+    $wrong = @()
+    foreach ($case in $cases) {
+        $cfg = Join-Path $scanFx ($case.name + '.yaml')
+        [IO.File]::WriteAllText($cfg, $case.body)
+        $state = Set-UabsHermesPluginScanOff $cfg
+        if ($state -ne $case.state -or [IO.File]::ReadAllText($cfg) -notmatch '(?m)^  scan_on_install: false') { $wrong += $case.name; continue }
+        [void](Restore-UabsHermesPluginScan $cfg $state)
+        $final = [IO.File]::ReadAllText($cfg)
+        if (($case.final -and $final -notmatch [regex]::Escape($case.final)) -or
+            (-not $case.final -and $final -match '(?m)^  scan_on_install:')) { $wrong += $case.name }
+    }
+    if ($wrong.Count) { Bad ('Hermes scan lifecycle failed: ' + ($wrong -join ', ')) }
+    else { Good 'Hermes scanner setting is restored for inserted, true, and operator-false cases' }
+} finally {
+    Remove-Item -LiteralPath $scanFx -Recurse -Force -ErrorAction SilentlyContinue
+}
 
-function Test-V5PackPath([string]$Path) {
+
+function Test-UabsPackPath([string]$Path) {
   if ([string]::IsNullOrEmpty($Path)) { return $false }
   try { return [bool](Test-Path -LiteralPath $Path -PathType Leaf -ErrorAction SilentlyContinue) }
   catch { return $false }
 }
 
 Section '13. MCP profile catalog and the shared config writer'
-# Both MCP writers share TOOLS\V7-Mcp-Write.ps1. Every config bug this pack has
+# Both MCP writers share TOOLS\UABS-Mcp-Write.ps1. Every config bug this pack has
 # shipped was a bug in one of three config shapes that the other two did not
 # have, and each was found on a user's machine rather than in a test.
 $mcpGate = Join-Path $PackRoot 'TESTS\Test-McpProfiles.ps1'
 if (-not (Test-Path -LiteralPath $mcpGate -PathType Leaf)) {
     Bad 'TESTS\Test-McpProfiles.ps1 missing from the pack'
 } else {
-    $mcpOut = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $mcpGate -PackRoot $PackRoot 2>&1 | Out-String
+    $mcpOut = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $mcpGate -PackRoot $PackRoot 2>&1 | Out-String
     if ($mcpOut -match 'MCP PROFILE GATE: PASS') {
         Good 'MCP profile catalog + shared config writer PASS'
     } else {
@@ -498,7 +538,7 @@ Section '14. Evidence-behaviour scenarios still contain their defects'
 # whose defects have quietly been repaired passes everything while measuring
 # nothing.
 $scenCheck = Join-Path $PackRoot 'TESTS\evidence-scenarios\check_fixtures.py'
-if (-not (Test-V5PackPath $scenCheck)) {
+if (-not (Test-UabsPackPath $scenCheck)) {
     Bad 'TESTS\evidence-scenarios\check_fixtures.py missing from the pack'
 } else {
     $scenOut = & python $scenCheck 2>&1 | Out-String
@@ -513,7 +553,7 @@ if (-not (Test-V5PackPath $scenCheck)) {
 # must stay reachable without it. They are a matched pair, and if either drifts
 # the benchmark stops measuring the distinction the release exists for.
 $routeCheck = Join-Path $PackRoot 'TESTS\routing-scenarios\check_fixtures.py'
-if (-not (Test-V5PackPath $routeCheck)) {
+if (-not (Test-UabsPackPath $routeCheck)) {
     Bad 'TESTS\routing-scenarios\check_fixtures.py missing from the pack'
 } else {
     $routeOut = & python $routeCheck 2>&1 | Out-String
@@ -527,10 +567,10 @@ if (-not (Test-V5PackPath $routeCheck)) {
 # The vision canary is the falsifiable half of visual-verification. If a wrong
 # answer passes it, the skill is back to being an unverifiable instruction.
 $canaryChk = Join-Path $PackRoot 'TOOLS\Test-VisionCanary.ps1'
-if (-not (Test-V5PackPath $canaryChk)) {
+if (-not (Test-UabsPackPath $canaryChk)) {
     Bad 'TOOLS\Test-VisionCanary.ps1 missing from the pack'
 } else {
-    $canOut = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $canaryChk `
+    $canOut = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $canaryChk `
                 -Word 'not' -Shape 'the' -Color 'answer' 2>&1 | Out-String
     if ($canOut -match 'VISION CANARY: FAIL') { Good 'the vision canary rejects a wrong answer' }
     else { Bad ('the vision canary accepted an answer that cannot have come from the image:' + [Environment]::NewLine + $canOut.Trim()) }
@@ -543,13 +583,13 @@ Section '15. Starter templates cannot smuggle MCP servers onto a fresh machine'
 # A contract in the python suite checks the guard still exists; this checks it
 # still WORKS, which is the part that protects a user's machine.
 $starterPs = Join-Path $PackRoot 'TOOLS\Install-Provider-Starter-Settings.ps1'
-if (-not (Test-V5PackPath $starterPs)) {
+if (-not (Test-UabsPackPath $starterPs)) {
     Bad 'TOOLS\Install-Provider-Starter-Settings.ps1 missing from the pack'
 } else {
     $guardSrc = [IO.File]::ReadAllText($starterPs)
-    $guardFn = [regex]::Match($guardSrc, '(?s)function Test-V5PortableTemplate \{.*?\r?\n\}')
+    $guardFn = [regex]::Match($guardSrc, '(?s)function Test-UabsPortableTemplate \{.*?\r?\n\}')
     if (-not $guardFn.Success) {
-        Bad 'Test-V5PortableTemplate not found in the starter installer'
+        Bad 'Test-UabsPortableTemplate not found in the starter installer'
     } else {
         . ([scriptblock]::Create($guardFn.Value))
 
@@ -557,7 +597,7 @@ if (-not (Test-V5PackPath $starterPs)) {
         $refused = @()
         Get-ChildItem (Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\*\COPY-TO-PROVIDER-HOME\*') -File |
           ForEach-Object {
-            try { Test-V5PortableTemplate -Path $_.FullName }
+            try { Test-UabsPortableTemplate -Path $_.FullName }
             catch { $refused += ($_.Directory.Parent.Name + '\' + $_.Name) }
           }
         if ($refused.Count) { Bad ('shipped starter templates refused by the guard: ' + ($refused -join ', ')) }
@@ -580,7 +620,7 @@ if (-not (Test-V5PackPath $starterPs)) {
                 $p = Join-Path $fx $n
                 [IO.File]::WriteAllText($p, $cases[$n].body)
                 $threw = $false
-                try { Test-V5PortableTemplate -Path $p } catch { $threw = $true }
+                try { Test-UabsPortableTemplate -Path $p } catch { $threw = $true }
                 if ($threw -ne $cases[$n].refuse) {
                     $wrong += ('{0} (expected {1})' -f $n, $(if ($cases[$n].refuse) { 'refused' } else { 'accepted' }))
                 }
@@ -596,7 +636,7 @@ if (-not (Test-V5PackPath $starterPs)) {
 # The Hermes starter is the file that actually regressed. Check the shipped
 # artifact directly, not only the guard that is supposed to protect it.
 $hermesCfg = Join-Path $PackRoot '1-TAILORED-PROVIDER-TREES\Hermes\COPY-TO-PROVIDER-HOME\config.yaml'
-if (-not (Test-V5PackPath $hermesCfg)) {
+if (-not (Test-UabsPackPath $hermesCfg)) {
     Bad 'Hermes starter config.yaml missing from the pack'
 } else {
     $hraw = [IO.File]::ReadAllText($hermesCfg)

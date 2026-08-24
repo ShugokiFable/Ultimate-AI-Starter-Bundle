@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v7.9.9.9
+# Ultimate AI Starter Bundle v8.0.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -93,7 +93,7 @@ The preamble is now **installed automatically**, not pasted by hand:
 - `3-PREAMBLES/MANUAL-PASTE.txt` — for web UIs (ChatGPT/Gemini) that have no
   instruction file: paste it into the custom-instructions box
 
-`INSTALL-V7-AIO.ps1` appends `SOUL.md` + `AIO-INSTRUCTION.txt` to
+`INSTALL-AIO.ps1` appends `SOUL.md` + `AIO-INSTRUCTION.txt` to
 Claude Code (`~/.claude/CLAUDE.md`), Codex (`~/.codex/AGENTS.md`), Kimi
 (`~/.kimi-code/AGENTS.md`) and Grok (`~/.grok/AGENTS.md`, its global-rules
 file), and copies the verbatim soul into Hermes' home (`SOUL.md`). Idempotent
@@ -108,7 +108,7 @@ and backup-first; `-SkipPreamble` opts out. Full map:
 powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1 | iex"
 ```
 
-Downloads the latest release, extracts to `%LOCALAPPDATA%\Ultimate-AI-Starter-Bundle`,
+Downloads the latest release, extracts to `%LOCALAPPDATA%\Programs\Ultimate-AI-Starter-Bundle`,
 and runs the full installer (skills, tools, MCP servers, gates, SOUL + AIO
 preamble). With parameters:
 
@@ -120,10 +120,10 @@ Or double-click `INSTALL-REMOTE.bat`. Re-running is a no-op.
 
 **Windows (bundle already on disk)**
 
-1. Double-click **`START-HERE.bat`**. (`INSTALL-V7-AIO.bat` remains only as a legacy compatibility alias.) Or run:
+1. Double-click **`START-HERE.bat`**. (`INSTALL-V8-AIO.bat` remains only as a legacy compatibility alias.) Or run:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
 ```
 
 3. Fully restart your AI app(s).
@@ -131,23 +131,26 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
 ### Common options
 
 ```powershell
-.\INSTALL-V7-AIO.ps1 -Providers Grok,Claude
-.\INSTALL-V7-AIO.ps1 -Mode OnlineLatest
-.\INSTALL-V7-AIO.ps1 -WithExtras
-.\INSTALL-V7-AIO.ps1 -SkillsOnly
-.\INSTALL-V7-AIO.ps1 -ToolsOnly
-.\INSTALL-V7-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
+.\INSTALL-AIO.ps1 -Providers Grok,Claude
+.\INSTALL-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-AIO.ps1                 # full install (default)
+.\INSTALL-AIO.ps1 -CoreOnly       # smaller core only
+.\INSTALL-AIO.ps1 -SkillsOnly
+.\INSTALL-AIO.ps1 -ToolsOnly
+.\INSTALL-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
 ```
 
 | Mode | Behavior |
 |------|----------|
-| `BundledFirst` (default) | Use `BUNDLED-TOOLS\offline`, fall back to GitHub |
-| `OnlineLatest` | Always fetch latest GitHub releases |
+| `OnlineLatest` (default) | Fetch official current releases; fall back to bundled assets if offline |
+| `BundledFirst` | Use `BUNDLED-TOOLS\offline`, fall back to GitHub |
 | `BundledOnly` | Offline zips only (no network) |
 
 ## What gets installed
 
-- **Provider skills** — 146 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree. v7.8.0 added 57 focused cross-domain reasoning/reliability skills; v7.9.0 removed `skyrim-forge-bridge`, which documented a preview tool that no longer exists and told the agent the shipped Forge could not write plugin records.
+- **Provider skills** — 146 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
+- **Native plugins** — Superpowers and Ponytail use each provider's official/native plugin lifecycle; Claude-only `claude-mem` installs Bun automatically when needed.
+- **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Browser/editor/profile servers ship in the catalog but remain off until `Set-McpProfile.ps1` enables them for a project; credentialed servers remain off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
@@ -181,15 +184,15 @@ COPY-TO-YOUR-WORKSPACE/            workspace files + _PROJECT-TEMPLATE (incl. .c
 3-PREAMBLES/                      SOUL + AIO preamble for every agent (v7.5.0)
 TOOLS/                             installers and discovery scripts
 TOOLS/Setup-CodebaseMemory-Index.ps1   index scope generator (v7.0.0+)
-_V7-CANONICAL-SKILLS/              maintainer master skills
-INSTALL-V7-AIO.ps1 / .bat          master installer
+_CANONICAL-SKILLS/              maintainer master skills
+INSTALL-AIO.ps1 / .bat          master installer
 START-HERE.txt                     short human guide
 ```
 
 ## Docs
 
 - [START-HERE.txt](START-HERE.txt)
-- [V7-AIO-GUIDE.md](V7-AIO-GUIDE.md)
+- [AIO-GUIDE.md](AIO-GUIDE.md)
 - [V7.5.1-CHANGELOG.md](V7.5.1-CHANGELOG.md)
 - [V7.5.0-CHANGELOG.md](V7.5.0-CHANGELOG.md)
 - [V7.2.0-CHANGELOG.md](V7.2.0-CHANGELOG.md)
@@ -212,7 +215,7 @@ START-HERE.txt                     short human guide
 
 Skills teach **portable discovery**. Paths are resolved from env vars, `LOCALAPPDATA`, and `PATH` — never hardcoded drive letters or usernames.
 
-If a tool is missing, the AI should recommend `INSTALL-V7-AIO.ps1`, `Ensure-Tools.ps1`, or `Update-From-GitHub.ps1` — not invent paths or fake MCP results.
+If a tool is missing, the AI should recommend `INSTALL-AIO.ps1`, `Ensure-Tools.ps1`, or `Update-From-GitHub.ps1` — not invent paths or fake MCP results.
 
 ## Third-party components
 
@@ -287,6 +290,14 @@ mode that works.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
+### v8.0.0 — One-click, owned, updateable
+
+- One stable launcher (`START-HERE.bat`), stable install/state paths, full-catalog default, and a `-CoreOnly` opt-out.
+- Content-authoritative five-provider skill sync with a hash ledger: unchanged retired bundle files are removed; modified and unrelated user files are preserved.
+- Official/native plugin lifecycle for Claude, Codex, Grok, Kimi, and Hermes; old manual Codex marketplace ownership is migrated away.
+- All three core MCPs are wired and handshaken on all five providers. Heavy/project and credentialed servers are cleaned from stale global registrations and enabled only when applicable.
+- Remote updates use an atomic stable-directory swap with one rollback copy; the release tag and extracted `VERSION.txt` must agree.
+
 ### v7.9.9.1 — The always-on three
 
 - **Machine-wide MCP profile flip executed.** Every provider surface
@@ -311,7 +322,7 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
   counts. It is generated now by `TOOLS/measure_mcp_capability.py`, which keeps
   *rate-limited* separate from *needs a key* — the daily-limit message
   recommends OAuth, and reading it as an auth failure inverts the conclusion.
-- **Registration is a choice, not a side effect.** `-WithExtras` no longer
+- **Registration is a choice, not a side effect.** The full default no longer
   registers firecrawl-mcp without a key: keyless it costs ~9,080 tokens every
   turn for two tools you already have. It is an npx server, so nothing is
   cached either way. `-RegisterKeylessExtras` overrides.
@@ -346,7 +357,7 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 - **Firecrawl stays native, on measurement.** Hermes' own keyless web ring does
   search and scrape with no key; `firecrawl-mcp` costs ~9,084 tokens every turn
   and keylessly offers nothing the native route lacks. Install it with
-  `-WithExtras` when you have a key and need crawl/map/interact.
+  Re-run the installer after setting a key when you need crawl/map/interact.
 - **`TOOLS\Measure-McpSchemaCost.ps1`** — measure what a server costs before
   arguing about it. Tools is the wrong unit; bytes is the right one.
 - `final_pack_version` removed from 37 skills. `VERSION.txt` is the authority.
@@ -407,7 +418,7 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
   on the development machine before this release.
 - `TOOLS\Set-McpProfile.ps1` wires a profile only when the project needs it and
   the machine can run it; anything else is skipped with the reason printed.
-- Both MCP writers now share `TOOLS/V7-Mcp-Write.ps1`. Its new gate found two
+- Both MCP writers now share `TOOLS/UABS-Mcp-Write.ps1`. Its new gate found two
   defects immediately, and the handshake probe found a third on a live config:
   Codex still held `@playwright/mcp@latest` with no `-y`, blocking npx forever.
 
@@ -482,7 +493,7 @@ Grok does not load claude-mem skills or `mcp-search`.
 
 ### v7.7.3 — Portable provider settings + Forge layout
 
-`INSTALL-V7-AIO.ps1` now installs starter `settings.json` / `config.toml` /
+`INSTALL-AIO.ps1` now installs starter `settings.json` / `config.toml` /
 `config.yaml` for Claude, Codex, Grok, Kimi, and Hermes from
 `1-TAILORED-PROVIDER-TREES\<Provider>\COPY-TO-PROVIDER-HOME`. Those templates
 are machine-neutral. A live dump of one PC is refused. Existing homes are
@@ -764,13 +775,13 @@ plugin server with `grok mcp disable mcp-search` to free the slot.
 
 ```powershell
 python TOOLS\audit_skills.py <skills-dir>
-powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V7-Pack.ps1
-python TOOLS\install_live_skills.py _V7-CANONICAL-SKILLS --check
+powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-Pack.ps1
+python TOOLS\install_live_skills.py _CANONICAL-SKILLS --check
 ```
 
 v5.2.5's registry had *already warned* that BOM/encoding drift breaks
 valid-looking files, and v5.2.5 shipped BOMs anyway. A warning in a document is
-not a control; these are. `Test-V7-Pack.ps1` checks every skill tree, parses
+not a control; these are. `Test-Pack.ps1` checks every skill tree, parses
 every shipped `.ps1`, verifies offline-asset hashes, and sanity-checks the
 registry.
 
@@ -797,7 +808,7 @@ registry.
 
 ## Version
 
-**v7.9.9.9** — 2026-08-23. Installer hotfix: Register-MCP.ps1 crashed under PowerShell 5.1 when a provider had no prior skyrim-forge registration (stderr redirect under Stop preference). Affects every fresh machine with a claude/grok/codex CLI.
+**v8.0.0** — 2026-08-24. Stable versionless installer/state paths, full-catalog default, official Codex plugin lifecycle, content-authoritative managed updates, five-provider core MCP wiring with real handshakes, safe legacy cleanup, and ownership-ledger retirement of unchanged bundle skills.
 
 **v7.9.9.1** — 2026-08-22. Based on v7.9.9; the capability-profile policy became the machine-wide default on every provider.
 

@@ -4,7 +4,7 @@ Copy all folders under `COPY-TO-SKILLS-DIRECTORY\skills` into `%GROK_HOME%\skill
 
 No provider-home instruction file is installed; use the workspace instruction file.
 
-`INSTALL-V7-AIO.ps1` copies `COPY-TO-PROVIDER-HOME\config.toml` when
+`INSTALL-AIO.ps1` copies `COPY-TO-PROVIDER-HOME\config.toml` when
 `%GROK_HOME%\config.toml` is missing, and always disables the `mcp-search`
 plugin server (it occupies a running MCP slot). Live MCP blocks are wired
 from discovered tools, not from a machine dump. Budget: 7 configured, or 6

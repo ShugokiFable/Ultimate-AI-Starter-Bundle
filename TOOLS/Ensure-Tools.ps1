@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-  Agent/user helper: detect missing V5 tools and install/repair from pack or GitHub.
+  Agent/user helper: detect missing Uabs tools and install/repair from pack or GitHub.
 #>
 [CmdletBinding()]
 param(
@@ -11,10 +11,10 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'V7-Common.ps1')
-$root = Get-V5PackRoot
+. (Join-Path $PSScriptRoot 'UABS-Common.ps1')
+$root = Get-UabsPackRoot
 
-Write-V5Step 'discover_tools'
+Write-UabsStep 'discover_tools'
 & powershell -NoProfile -File (Join-Path $PSScriptRoot 'discover_tools.ps1')
 
 if ($DiscoverOnly) { return }
@@ -35,16 +35,16 @@ if (-not (Get-Command headroom -EA SilentlyContinue) -and -not $env:HEADROOM_CMD
 if ($Components.Count -gt 0) { $need = [System.Collections.Generic.List[string]]$Components }
 
 if ($need.Count -eq 0) {
-  Write-V5Ok 'Core tools look present. Run Setup-HouseCarl.ps1 if instance/shim missing.'
+  Write-UabsOk 'Core tools look present. Run Setup-HouseCarl.ps1 if instance/shim missing.'
   $inst = [Environment]::GetEnvironmentVariable('SKYRIM_MO2_INSTANCE','User')
   if (-not $inst -or -not (Test-Path (Join-Path $inst 'ModOrganizer.ini'))) {
-    Write-V5Warn 'houseCARL instance unset — running Setup-HouseCarl.ps1'
+    Write-UabsWarn 'houseCARL instance unset — running Setup-HouseCarl.ps1'
     & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'Setup-HouseCarl.ps1')
   }
   return
 }
 
-Write-V5Step "Installing missing: $($need -join ', ')"
-& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'INSTALL-V7-AIO.ps1') `
+Write-UabsStep "Installing missing: $($need -join ', ')"
+& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root 'INSTALL-AIO.ps1') `
   -Mode $Mode -Components @($need) -ToolsOnly
 

@@ -1,6 +1,6 @@
 # 3-PREAMBLES — SOUL + AIO for every agent
 
-The universal preamble section (new in v7.5.0). One install wires the same
+The universal preamble section in v8.0.0. One install wires the same
 SOUL and the same operating contract into every supported agent, so a fresh
 machine comes up with the same agent behaviour as the operator's own setup.
 
@@ -12,16 +12,16 @@ machine comes up with the same agent behaviour as the operator's own setup.
 | `0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md` | The operating contract (`0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md`, unchanged). Finish-the-job, no yes-man, verify-don't-assume, adult fiction in scope. | Appended right after the SOUL block in the same files |
 | `MANUAL-PASTE.txt` | SOUL + the Fun-stuff-kit `AIO.txt` (chat/research jail) concatenated. For web UIs that have no instruction file. | ChatGPT / Gemini / any web chat custom-instructions box, pasted by hand |
 
-## What the installer wires (v7.5.0+)
+## What the V8 installer wires
 
-For every selected provider, `INSTALL-V7-AIO.ps1` appends a marked block:
+For every selected provider, `INSTALL-AIO.ps1` appends a marked block:
 
 ```text
-<!-- ============ ULTIMATE-AI-STARTER-BUNDLE SOUL v7.5.0 ============ -->
+<!-- ULTIMATE-AI-STARTER-BUNDLE SOUL v8.0.0 -->
 <SOUL.md content>
-<!-- ============ ULTIMATE-AI-STARTER-BUNDLE AIO ============ -->
+<!-- ULTIMATE-AI-STARTER-BUNDLE AIO (operating contract) -->
 <0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md content>
-<!-- ============ /ULTIMATE-AI-STARTER-BUNDLE ============ -->
+<!-- /ULTIMATE-AI-STARTER-BUNDLE SOUL -->
 ```
 
 | Provider | Instruction file | Notes |

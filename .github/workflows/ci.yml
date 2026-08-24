@@ -52,7 +52,7 @@ jobs:
       - name: Pack gate
         shell: powershell
         run: |
-          .\TESTS\Test-V7-Pack.ps1
+          .\TESTS\Test-Pack.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Release contracts

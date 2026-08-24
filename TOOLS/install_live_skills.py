@@ -143,7 +143,7 @@ def main():
         pending_a, pending_c = install(canon, dest, provider, True, [])[:2]
         backed_up = False
         if not check and (pending_a or pending_c):
-            backup = dest + '.bak-v7-' + stamp
+            backup = dest + '.bak-uabs-' + stamp
             if not os.path.exists(backup):
                 shutil.copytree(dest, backup, symlinks=True,
                                 ignore_dangling_symlinks=True)
@@ -158,7 +158,7 @@ def main():
             print('           ! %s' % msg)
         if not check:
             if backed_up:
-                print('           backup: %s' % os.path.basename(dest + '.bak-v7-' + stamp))
+                print('           backup: %s' % os.path.basename(dest + '.bak-uabs-' + stamp))
             else:
                 print('           backup: skipped (nothing changed)')
 

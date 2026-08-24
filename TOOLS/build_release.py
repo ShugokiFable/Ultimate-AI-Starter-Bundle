@@ -140,7 +140,7 @@ def verify(path:Path,root:Path)->None:
         with tempfile.TemporaryDirectory(prefix='UABS Unicode Ω Space ') as td:
             z.extractall(td)
             top=Path(td)/_prefix(root)
-            for rel in ('START-HERE.bat','INSTALL-V7-AIO.ps1','BUNDLED-TOOLS/CATALOG.json','VERSION.txt'):
+            for rel in ('START-HERE.bat','INSTALL-AIO.ps1','BUNDLED-TOOLS/CATALOG.json','VERSION.txt'):
                 if not (top/rel).is_file(): raise RuntimeError(f'extracted required file missing: {rel}')
             # Both variants must carry buildable Forge source. Check the EXTRACTED
             # tree, not the source: that is the copy the user actually receives.

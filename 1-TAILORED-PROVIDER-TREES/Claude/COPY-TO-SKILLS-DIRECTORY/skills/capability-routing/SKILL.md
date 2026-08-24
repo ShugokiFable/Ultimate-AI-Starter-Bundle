@@ -174,7 +174,7 @@ The routing decision for Hermes' web stack, since it shows the method:
 
 So the expensive surface duplicated a native capability Hermes already had, and
 the part that would justify it needs an account. Not registered by default; add
-it with `-WithExtras` when you have a key and need crawl/map/interact.
+re-run the full installer after setting a key when you need crawl/map/interact.
 
 ### Two traps this measurement walked into
 

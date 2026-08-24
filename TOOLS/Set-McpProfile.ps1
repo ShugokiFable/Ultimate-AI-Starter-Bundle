@@ -62,16 +62,16 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
-# Join-Path, not Join-V5Path: the helper lives in the file being sourced.
-. (Join-Path $PSScriptRoot 'V7-Mcp-Write.ps1')
+# Join-Path, not Join-UabsPath: the helper lives in the file being sourced.
+. (Join-Path $PSScriptRoot 'UABS-Mcp-Write.ps1')
 
 # Accept both -Providers Claude,Codex (one comma string, which is what
 # powershell.exe -File produces) and -Providers @('Claude','Codex').
 if ($Providers.Count -eq 1 -and $Providers[0] -match ',') { $Providers = $Providers[0] -split ',' }
 $Providers = @($Providers | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 
-$profilesPath = Join-V5Path $PackRoot 'BUNDLED-TOOLS\PROFILES.json'
-if (-not (Test-V5Path -LiteralPath $profilesPath -PathType Leaf)) {
+$profilesPath = Join-UabsPath $PackRoot 'BUNDLED-TOOLS\PROFILES.json'
+if (-not (Test-UabsPath -LiteralPath $profilesPath -PathType Leaf)) {
   throw "PROFILES.json not found at $profilesPath. Pass -PackRoot <pack root>."
 }
 
@@ -79,34 +79,34 @@ function Write-Head([string]$m) { Write-Host "==> $m" -ForegroundColor Cyan }
 function Write-Ok([string]$m)   { Write-Host "  OK  $m" -ForegroundColor Green }
 function Write-Skip([string]$m) { Write-Host "  --  $m" -ForegroundColor Yellow }
 
-function ConvertTo-V5Hashtable {
+function ConvertTo-UabsHashtable {
   <# Windows PowerShell 5.1 has no ConvertFrom-Json -AsHashtable, and the writer
      needs hashtables so it can ask .Contains() about optional keys. #>
   param($InputObject)
   if ($null -eq $InputObject) { return $null }
   if ($InputObject -is [System.Collections.IDictionary]) {
     $out = @{}
-    foreach ($k in $InputObject.Keys) { $out[$k] = ConvertTo-V5Hashtable $InputObject[$k] }
+    foreach ($k in $InputObject.Keys) { $out[$k] = ConvertTo-UabsHashtable $InputObject[$k] }
     return $out
   }
   if ($InputObject -is [string] -or $InputObject.GetType().IsValueType) { return $InputObject }
   if ($InputObject -is [System.Collections.IEnumerable]) {
-    return @(foreach ($item in $InputObject) { ConvertTo-V5Hashtable $item })
+    return @(foreach ($item in $InputObject) { ConvertTo-UabsHashtable $item })
   }
   if ($InputObject -is [System.Management.Automation.PSCustomObject]) {
     $out = @{}
-    foreach ($p in $InputObject.PSObject.Properties) { $out[$p.Name] = ConvertTo-V5Hashtable $p.Value }
+    foreach ($p in $InputObject.PSObject.Properties) { $out[$p.Name] = ConvertTo-UabsHashtable $p.Value }
     return $out
   }
   return $InputObject
 }
 
-$catalog = ConvertTo-V5Hashtable ([IO.File]::ReadAllText($profilesPath) | ConvertFrom-Json)
+$catalog = ConvertTo-UabsHashtable ([IO.File]::ReadAllText($profilesPath) | ConvertFrom-Json)
 $allProfiles = @($catalog['profiles'])
 
 # Profiles that were renamed. The old id has to keep resolving, or every stored
 # state, script and habit that names it breaks on upgrade.
-$script:V5ProfileAliases = @{ 'code-deep' = 'code-intel' }
+$script:UabsProfileAliases = @{ 'code-deep' = 'code-intel' }
 
 # Profiles this pack has WITHDRAWN. Deleting a profile definition does not
 # un-register its servers from the machines that enabled it: the entry keeps
@@ -114,17 +114,17 @@ $script:V5ProfileAliases = @{ 'code-deep' = 'code-intel' }
 # able to turn it off. Each one here is un-registered on the next run, using the
 # server ids the state recorded -- so a server the user configured themselves,
 # which is not in that state, is never touched.
-$script:V5RetiredProfiles = @{
+$script:UabsRetiredProfiles = @{
   'cloud' = 'Supabase: withdrawn in 7.9.7. It was the only profile here needing an account and a personal access token.'
 }
 
-function Resolve-V5ProfileId([string]$Id) {
-  if ($script:V5ProfileAliases.ContainsKey($Id)) { return $script:V5ProfileAliases[$Id] }
+function Resolve-UabsProfileId([string]$Id) {
+  if ($script:UabsProfileAliases.ContainsKey($Id)) { return $script:UabsProfileAliases[$Id] }
   return $Id
 }
 
-function Get-V5Profile([string]$Id) {
-  $wanted = Resolve-V5ProfileId $Id
+function Get-UabsProfile([string]$Id) {
+  $wanted = Resolve-UabsProfileId $Id
   $hit = @($allProfiles | Where-Object { $_['id'] -eq $wanted })
   if (-not $hit.Count) {
     throw ("Unknown profile '{0}'. Known: {1}" -f $Id, (($allProfiles | ForEach-Object { $_['id'] }) -join ', '))
@@ -132,7 +132,7 @@ function Get-V5Profile([string]$Id) {
   return $hit[0]
 }
 
-function Get-V5ProfileScope($ProfileDef, $Server) {
+function Get-UabsProfileScope($ProfileDef, $Server) {
   # A server may narrow its profile's scope but never widen it. The default is
   # 'project': a capability server that is useful everywhere belongs in the
   # always-on core, not here.
@@ -141,17 +141,17 @@ function Get-V5ProfileScope($ProfileDef, $Server) {
   return 'project'
 }
 
-function Test-V5ProfileDetected($ProfileDef, [string]$ProjectPath) {
+function Test-UabsProfileDetected($ProfileDef, [string]$ProjectPath) {
   <# Top level only, deliberately: a recursive scan of a large tree would be
      slow and would match a marker in some vendored dependency. #>
   if ([string]::IsNullOrEmpty($ProjectPath)) { return $false }
-  if (-not (Test-V5Path -LiteralPath $ProjectPath -PathType Container)) { return $false }
+  if (-not (Test-UabsPath -LiteralPath $ProjectPath -PathType Container)) { return $false }
   $d = $null
   if ($ProfileDef.Contains('detect')) { $d = $ProfileDef['detect'] }
   if (-not $d) { return $false }
   if ($d.Contains('files')) {
     foreach ($f in @($d['files'])) {
-      if (Test-V5Path -LiteralPath (Join-V5Path $ProjectPath $f)) { return $true }
+      if (Test-UabsPath -LiteralPath (Join-UabsPath $ProjectPath $f)) { return $true }
     }
   }
   if ($d.Contains('globs')) {
@@ -169,16 +169,16 @@ function Test-V5ProfileDetected($ProfileDef, [string]$ProjectPath) {
 # reach every one of them. An orphaned entry is a server that keeps starting
 # with nothing turning it off.
 
-$statePath = Join-V5Path $env:LOCALAPPDATA 'Skyrim-AI-V5\mcp-profiles.json'
+$statePath = Join-UabsPath $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\mcp-profiles.json'
 
-function New-V5ProfileState { @{ schema = 2; profiles = @{} } }
+function New-UabsProfileState { @{ schema = 2; profiles = @{} } }
 
-function Get-V5RawProfileState {
-  if (-not (Test-V5Path -LiteralPath $statePath -PathType Leaf)) { return @{} }
-  try { return ConvertTo-V5Hashtable ([IO.File]::ReadAllText($statePath) | ConvertFrom-Json) } catch { return @{} }
+function Get-UabsRawProfileState {
+  if (-not (Test-UabsPath -LiteralPath $statePath -PathType Leaf)) { return @{} }
+  try { return ConvertTo-UabsHashtable ([IO.File]::ReadAllText($statePath) | ConvertFrom-Json) } catch { return @{} }
 }
 
-function Convert-V5ProfileState {
+function Convert-UabsProfileState {
   <# Returns @{ State = <v2>; Stale = @(<entries written machine-wide by v1>) }.
 
      Every v1 entry was written machine-wide, whatever it claimed, so each one is
@@ -186,19 +186,19 @@ function Convert-V5ProfileState {
      project it was recorded against. Migrating the state file alone would leave
      Serena in every session with the state file saying it was project-scoped. #>
   param($Raw)
-  if (-not $Raw -or -not $Raw.Count) { return @{ State = (New-V5ProfileState); Stale = @() } }
+  if (-not $Raw -or -not $Raw.Count) { return @{ State = (New-UabsProfileState); Stale = @() } }
   if ($Raw.Contains('schema') -and [int]$Raw['schema'] -ge 2) {
-    $s = New-V5ProfileState
+    $s = New-UabsProfileState
     if ($Raw.Contains('profiles') -and $Raw['profiles']) { $s['profiles'] = $Raw['profiles'] }
     return @{ State = $s; Stale = @() }
   }
 
-  $state = New-V5ProfileState
+  $state = New-UabsProfileState
   $stale = @()
   foreach ($oldId in @($Raw.Keys)) {
     $entry = $Raw[$oldId]
     if ($entry -isnot [System.Collections.IDictionary]) { continue }
-    $newId = Resolve-V5ProfileId $oldId
+    $newId = Resolve-UabsProfileId $oldId
     $servers = @()
     if ($entry.Contains('servers')) { $servers = @($entry['servers']) }
     $projectPath = ''
@@ -216,21 +216,21 @@ function Convert-V5ProfileState {
   return @{ State = $state; Stale = $stale }
 }
 
-function Save-V5ProfileState($State) {
+function Save-UabsProfileState($State) {
   if ($CheckOnly) { return }
   $dir = Split-Path -Parent $statePath
-  if (-not (Test-V5Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+  if (-not (Test-UabsPath -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
   Set-Utf8NoBom -Path $statePath -Text (($State | ConvertTo-Json -Depth 10))
 }
 
-function Get-V5ProfileProjects($State, [string]$Id) {
+function Get-UabsProfileProjects($State, [string]$Id) {
   if (-not $State['profiles'].Contains($Id)) { return @() }
   $p = $State['profiles'][$Id]
   if (-not $p.Contains('projects') -or -not $p['projects']) { return @() }
   return @($p['projects'].Keys)
 }
 
-function Test-V5ProfileGlobal($State, [string]$Id) {
+function Test-UabsProfileGlobal($State, [string]$Id) {
   if (-not $State['profiles'].Contains($Id)) { return $false }
   return ($State['profiles'][$Id].Contains('global') -and $State['profiles'][$Id]['global'])
 }
@@ -242,8 +242,8 @@ function Get-ClaudeDeclared {
   # cell is on, and this pack writes mcps = false. Read INSIDE the provider
   # loop, not before it: Claude is written earlier in the same pass, so a
   # snapshot taken up front would never see what was just added.
-  $p = Join-V5Path $env:USERPROFILE '.claude.json'
-  if (-not (Test-V5Path -LiteralPath $p)) { return @() }
+  $p = Join-UabsPath $env:USERPROFILE '.claude.json'
+  if (-not (Test-UabsPath -LiteralPath $p)) { return @() }
   try {
     $cj = [IO.File]::ReadAllText($p) | ConvertFrom-Json
     if ($cj.mcpServers) { return @($cj.mcpServers.PSObject.Properties.Name) }
@@ -251,7 +251,7 @@ function Get-ClaudeDeclared {
   return @()
 }
 
-function Invoke-V5ProfileWrite {
+function Invoke-UabsProfileWrite {
   <# Writes (or removes) one group of servers and returns the providers that
      actually changed.
 
@@ -261,28 +261,32 @@ function Invoke-V5ProfileWrite {
      where the current version writes cannot reach it. #>
   param([object[]]$Servers, [string]$ProjectPath, [switch]$Remove, [switch]$Machine)
 
-  $ids = @($Servers | ForEach-Object { $_['id'] })
-  $machineTargets = Get-V5McpTargets
+  $machineTargets = Get-UabsMcpTargets
   $touched = @()
 
   foreach ($prov in $Providers) {
+    $providerServers = @($Servers | Where-Object {
+      -not $_.Contains('providers') -or -not $_['providers'] -or @($_['providers']) -contains $prov
+    })
+    if (-not $providerServers.Count) { continue }
+    $providerIds = @($providerServers | ForEach-Object { $_['id'] })
 
     # -- Hermes keeps its servers behind its own Python config API.
     if ($prov -eq 'Hermes') {
-      $hpaths = Get-V5HermesPaths
-      if (-not (Test-V5Path -LiteralPath $hpaths.Exe -PathType Leaf)) { Write-Skip 'Hermes  not installed'; continue }
+      $hpaths = Get-UabsHermesPaths
+      if (-not (Test-UabsPath -LiteralPath $hpaths.Exe -PathType Leaf)) { Write-Skip 'Hermes  not installed'; continue }
       if ($Remove) {
-        $done = @(Remove-V5McpHermes -Ids $ids -CheckOnly:$CheckOnly)
+        $done = @(Remove-UabsMcpHermes -Ids $providerIds -CheckOnly:$CheckOnly)
         if ($done.Count) { Write-Ok ("Hermes  removed {0}" -f ($done -join ', ')); $touched += 'Hermes' }
         continue
       }
       if (-not $Machine) {
-        Write-Skip ("Hermes  not written: {0}" -f (Get-V5ProviderNoProjectScope -Provider 'Hermes'))
+        Write-Skip ("Hermes  not written: {0}" -f (Get-UabsProviderNoProjectScope -Provider 'Hermes'))
         continue
       }
-      $done = @(Add-V5McpHermes -Servers $Servers -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath -Scope 'global')
+      $done = @(Add-UabsMcpHermes -Servers $providerServers -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath -Scope 'global')
       if ($done.Count) { Write-Ok ("Hermes  {0}  (machine-wide)" -f ($done -join ', ')); $touched += 'Hermes' }
-      elseif (@($Servers | Where-Object { -not (Test-V5HermesServerDeclared -Id $_['id']) }).Count -eq 0) {
+      elseif (@($providerServers | Where-Object { -not (Test-UabsHermesServerDeclared -Id $_['id']) }).Count -eq 0) {
         Write-Skip 'Hermes  already registered'; $touched += 'Hermes'
       } else { Write-Skip 'Hermes  no change' }
       continue
@@ -293,7 +297,7 @@ function Invoke-V5ProfileWrite {
     # the hashtable into a SwitchParameter and every .Path after it fails.
     $machineTarget = $machineTargets[$prov]
     if (-not $machineTarget) { Write-Skip ("{0} unknown provider" -f $prov); continue }
-    $project = Get-V5ProviderProjectTarget -Provider $prov -ProjectPath $ProjectPath
+    $project = Get-UabsProviderProjectTarget -Provider $prov -ProjectPath $ProjectPath
 
     # -- removal: sweep every place this pack has ever written the entry.
     if ($Remove) {
@@ -302,19 +306,19 @@ function Invoke-V5ProfileWrite {
       if ($project) { $sweep += $project }
       $sweep += @{ Style = $machineTarget.Style; Path = $machineTarget.Path; Section = $machineTarget.Section; ProjectKey = '' }
       foreach ($tgt in $sweep) {
-        if (-not (Test-V5Path -LiteralPath $tgt.Path -PathType Leaf)) { continue }
+        if (-not (Test-UabsPath -LiteralPath $tgt.Path -PathType Leaf)) { continue }
         if ($tgt.Style -eq 'json') {
-          $keys = if ($tgt.ProjectKey) { @(Get-V5ClaudeProjectKeys -ProjectPath $tgt.ProjectKey -ConfigPath $tgt.Path) } else { @('') }
+          $keys = if ($tgt.ProjectKey) { @(Get-UabsClaudeProjectKeys -ProjectPath $tgt.ProjectKey -ConfigPath $tgt.Path) } else { @('') }
           foreach ($k in $keys) {
-            $done += @(Remove-V5McpJson -Path $tgt.Path -Section $tgt.Section -Ids $ids -CheckOnly:$CheckOnly -ProjectKey $k)
+            $done += @(Remove-UabsMcpJson -Path $tgt.Path -Section $tgt.Section -Ids $providerIds -CheckOnly:$CheckOnly -ProjectKey $k)
           }
         } else {
-          $done += @(Remove-V5McpToml -Path $tgt.Path -Section $tgt.Section -Ids $ids -CheckOnly:$CheckOnly)
+          $done += @(Remove-UabsMcpToml -Path $tgt.Path -Section $tgt.Section -Ids $providerIds -CheckOnly:$CheckOnly)
         }
       }
       if ($machineTarget.Desktop) {
         $desktop = Get-ClaudeDesktopConfigPath
-        if ($desktop) { $done += @(Remove-V5McpJson -Path $desktop -Section 'mcpServers' -Ids $ids -CheckOnly:$CheckOnly) }
+        if ($desktop) { $done += @(Remove-UabsMcpJson -Path $desktop -Section 'mcpServers' -Ids $providerIds -CheckOnly:$CheckOnly) }
       }
       $done = @($done | Select-Object -Unique)
       if ($done.Count) { Write-Ok ("{0,-7} removed {1}" -f $prov, ($done -join ', ')); $touched += $prov }
@@ -324,7 +328,7 @@ function Invoke-V5ProfileWrite {
 
     # -- addition.
     if (-not $Machine -and -not $project) {
-      Write-Skip ("{0,-7} not written: {1}" -f $prov, (Get-V5ProviderNoProjectScope -Provider $prov))
+      Write-Skip ("{0,-7} not written: {1}" -f $prov, (Get-UabsProviderNoProjectScope -Provider $prov))
       Write-Host  ("          -Global registers it machine-wide instead, at the cost of every session's context.") -ForegroundColor DarkGray
       continue
     }
@@ -334,10 +338,10 @@ function Invoke-V5ProfileWrite {
     } else { $project }
     $scope = if ($Machine) { 'global' } else { 'project' }
 
-    $write = $Servers
+    $write = $providerServers
     if ($prov -eq 'Grok') {
       # Grok's Claude-compat cell, when this pack has not switched it off.
-      if (Test-V5GrokInheritsClaudeMcp) {
+      if (Test-UabsGrokInheritsClaudeMcp) {
         $claudeHas = @(Get-ClaudeDeclared)
         if ($claudeHas.Count) {
           $write = @($write | Where-Object {
@@ -352,26 +356,26 @@ function Invoke-V5ProfileWrite {
       # grok-cli wedges at eight servers RUNNING, and it runs the union of the
       # user file and the project file -- so the ceiling is counted over both.
       if ($write.Count) {
-        $write = @(Select-V5WithinGrokBudget -Servers $write -Budget $GrokMcpBudget -ProjectPath $ProjectPath)
+        $write = @(Select-UabsWithinGrokBudget -Servers $write -Budget $GrokMcpBudget -ProjectPath $ProjectPath)
       }
       if (-not $write.Count) { continue }
     }
 
     $parent = Split-Path -Parent $target.Path
-    if ($target.Style -eq 'json' -and -not (Test-V5Path -LiteralPath $parent)) {
+    if ($target.Style -eq 'json' -and -not (Test-UabsPath -LiteralPath $parent)) {
       Write-Skip ("{0,-7} not installed" -f $prov); continue
     }
 
     $done = @()
     if ($target.Style -eq 'json') {
-      $keys = if ($target.ProjectKey) { @(Get-V5ClaudeProjectKeys -ProjectPath $target.ProjectKey -ConfigPath $target.Path) } else { @('') }
+      $keys = if ($target.ProjectKey) { @(Get-UabsClaudeProjectKeys -ProjectPath $target.ProjectKey -ConfigPath $target.Path) } else { @('') }
       foreach ($k in $keys) {
-        $done += @(Add-V5McpJson -Path $target.Path -Section $target.Section -Servers $write -Provider $prov `
+        $done += @(Add-UabsMcpJson -Path $target.Path -Section $target.Section -Servers $write -Provider $prov `
                      -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath -ProjectKey $k -Scope $scope)
       }
       $done = @($done | Select-Object -Unique)
     } else {
-      $done = @(Add-V5McpToml -Path $target.Path -Section $target.Section -Servers $write -Provider $prov `
+      $done = @(Add-UabsMcpToml -Path $target.Path -Section $target.Section -Servers $write -Provider $prov `
                   -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath -GrokTimeout:($prov -eq 'Grok') -Scope $scope)
     }
     if ($done.Count) {
@@ -389,7 +393,7 @@ function Invoke-V5ProfileWrite {
       # run marks the profile off while the server is still wired, and -Disable
       # is then left with nothing to sweep.
       $missing = @($write | Where-Object {
-        -not (Test-V5ServerDeclared -Path $target.Path -Style $target.Style -Section $target.Section -Id $_['id'] -ProjectKey $target.ProjectKey)
+        -not (Test-UabsServerDeclared -Path $target.Path -Style $target.Style -Section $target.Section -Id $_['id'] -ProjectKey $target.ProjectKey)
       })
       if ($write.Count -and -not $missing.Count) { Write-Skip ("{0,-7} already registered" -f $prov); $touched += $prov }
       else { Write-Skip ("{0,-7} no change" -f $prov) }
@@ -400,7 +404,7 @@ function Invoke-V5ProfileWrite {
     if ($Machine -and $machineTarget.Desktop) {
       $desktop = Get-ClaudeDesktopConfigPath
       if ($desktop) {
-        [void](Add-V5McpJson -Path $desktop -Section 'mcpServers' -Servers $write -Provider $prov `
+        [void](Add-UabsMcpJson -Path $desktop -Section 'mcpServers' -Servers $write -Provider $prov `
                  -Refresh -CheckOnly:$CheckOnly -ProjectPath $ProjectPath -Scope 'global')
       }
     }
@@ -410,7 +414,7 @@ function Invoke-V5ProfileWrite {
   return @($touched | Select-Object -Unique)
 }
 
-function Invoke-V5AutoInstall {
+function Invoke-UabsAutoInstall {
   <# A printed command is a handoff, not an install. Where a requirement is a
      package this pack can fetch unattended, fetch it -- then re-check, because
      an install that reported success and produced nothing is still a failure.
@@ -421,14 +425,14 @@ function Invoke-V5AutoInstall {
   if (-not $Server.Contains('auto_install') -or -not $Server['auto_install']) { return $false }
   $spec = $Server['auto_install']
   if ($spec.Contains('requires_command') -and $spec['requires_command']) {
-    if (-not (Test-V5CommandAvailable -Command $spec['requires_command'] -ProjectPath $ProjectPath)) {
+    if (-not (Test-UabsCommandAvailable -Command $spec['requires_command'] -ProjectPath $ProjectPath)) {
       Write-Skip ("cannot auto-install {0}: {1} is not available" -f $Server['id'], $spec['requires_command'])
       return $false
     }
   }
   foreach ($step in @($spec['steps'])) {
-    $exe = Expand-V5Template -Text $step['command'] -ProjectPath $ProjectPath
-    $stepArgs = @(@($step['args']) | ForEach-Object { Expand-V5Template -Text ([string]$_) -ProjectPath $ProjectPath })
+    $exe = Expand-UabsTemplate -Text $step['command'] -ProjectPath $ProjectPath
+    $stepArgs = @(@($step['args']) | ForEach-Object { Expand-UabsTemplate -Text ([string]$_) -ProjectPath $ProjectPath })
     Write-Host ("      installing: {0} {1}" -f $exe, ($stepArgs -join ' ')) -ForegroundColor DarkGray
     if ($CheckOnly) { continue }
     # Redirecting a native command's stderr into the pipeline turns each line
@@ -452,22 +456,22 @@ function Invoke-V5AutoInstall {
 
 # ---- migration -------------------------------------------------------------
 
-$raw = Get-V5RawProfileState
-$converted = Convert-V5ProfileState -Raw $raw
+$raw = Get-UabsRawProfileState
+$converted = Convert-UabsProfileState -Raw $raw
 $state = $converted.State
 $stale = @($converted.Stale)
 
-function Invoke-V5RetiredProfileMigration {
+function Invoke-UabsRetiredProfileMigration {
   <# Un-register a profile this pack has withdrawn, wherever the state says this
      pack put it, then forget it. Only the recorded ids in the recorded scopes:
      an independently configured server of the same kind is not in the state file
      and stays exactly where its owner put it. #>
   param($State)
-  $retired = @($State['profiles'].Keys | Where-Object { $script:V5RetiredProfiles.ContainsKey($_) })
+  $retired = @($State['profiles'].Keys | Where-Object { $script:UabsRetiredProfiles.ContainsKey($_) })
   if (-not $retired.Count) { return }
   foreach ($id in $retired) {
     Write-Head ("Withdrawing {0}" -f $id)
-    Write-Host ("  {0}" -f $script:V5RetiredProfiles[$id]) -ForegroundColor DarkGray
+    Write-Host ("  {0}" -f $script:UabsRetiredProfiles[$id]) -ForegroundColor DarkGray
     $entry = $State['profiles'][$id]
 
     $scopes = @()
@@ -483,14 +487,14 @@ function Invoke-V5RetiredProfileMigration {
       # gone from the catalog, which is the whole reason this runs.
       $servers = @($ids | ForEach-Object { @{ id = $_; command = ''; args = @(); note = $_ } })
       if ($scope.Path) { Write-Host ("  project: {0}" -f $scope.Path) -ForegroundColor DarkGray }
-      [void](Invoke-V5ProfileWrite -Servers $servers -ProjectPath $scope.Path -Remove)
+      [void](Invoke-UabsProfileWrite -Servers $servers -ProjectPath $scope.Path -Remove)
     }
     if (-not $CheckOnly) { [void]$State['profiles'].Remove($id) }
   }
   Write-Host ''
 }
 
-function Invoke-V5StaleGlobalMigration {
+function Invoke-UabsStaleGlobalMigration {
   <# 7.9.5 registered every enabled profile machine-wide. Upgrading has to move
      those entries, not just rename them in a state file: drop the machine-wide
      registration, then put it back for the project the state recorded.
@@ -504,19 +508,19 @@ function Invoke-V5StaleGlobalMigration {
     $label = if ($e['old_id'] -ne $e['id']) { "{0} -> {1}" -f $e['old_id'], $e['id'] } else { $e['id'] }
     Write-Host ("  {0}: was machine-wide" -f $label)
     $p = $null
-    try { $p = Get-V5Profile $e['id'] } catch { Write-Skip ("  {0} is no longer in the catalog; leaving its entries alone" -f $e['id']); continue }
+    try { $p = Get-UabsProfile $e['id'] } catch { Write-Skip ("  {0} is no longer in the catalog; leaving its entries alone" -f $e['id']); continue }
     $known = @($p['servers'] | ForEach-Object { $_['id'] })
     $servers = @($p['servers'] | Where-Object { $e['servers'] -contains $_['id'] -or -not @($e['servers']).Count })
     if (-not $servers.Count) { continue }
     $unknown = @($e['servers'] | Where-Object { $known -notcontains $_ })
     if ($unknown.Count) { Write-Skip ("  not in the catalog any more, left alone: {0}" -f ($unknown -join ', ')) }
 
-    [void](Invoke-V5ProfileWrite -Servers $servers -ProjectPath $e['path'] -Remove)
+    [void](Invoke-UabsProfileWrite -Servers $servers -ProjectPath $e['path'] -Remove)
 
-    if ($e['path'] -and (Test-V5Path -LiteralPath $e['path'] -PathType Container)) {
-      $usable = @($servers | Where-Object { (Test-V5ServerRequirement -Server $_ -ProjectPath $e['path']).Ok })
+    if ($e['path'] -and (Test-UabsPath -LiteralPath $e['path'] -PathType Container)) {
+      $usable = @($servers | Where-Object { (Test-UabsServerRequirement -Server $_ -ProjectPath $e['path']).Ok })
       if ($usable.Count) {
-        $provs = @(Invoke-V5ProfileWrite -Servers $usable -ProjectPath $e['path'])
+        $provs = @(Invoke-UabsProfileWrite -Servers $usable -ProjectPath $e['path'])
         if ($state['profiles'].Contains($e['id']) -and $state['profiles'][$e['id']]['projects'].Contains($e['path'])) {
           $state['profiles'][$e['id']]['projects'][$e['path']]['providers'] = $provs
         }
@@ -542,8 +546,8 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
   Write-Host '  Profiles are enabled per project, never machine-wide by default.'
   Write-Host ''
   foreach ($p in $allProfiles) {
-    $projects = @(Get-V5ProfileProjects $state $p['id'])
-    $isGlobal = Test-V5ProfileGlobal $state $p['id']
+    $projects = @(Get-UabsProfileProjects $state $p['id'])
+    $isGlobal = Test-UabsProfileGlobal $state $p['id']
     $on = ($projects.Count -gt 0) -or $isGlobal
     $mark = if ($on) { '[on ]' } else { '[off]' }
     Write-Host ("{0} {1,-14} {2}" -f $mark, $p['id'], $p['title']) -ForegroundColor $(if ($on) { 'Green' } else { 'Gray' })
@@ -554,7 +558,7 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
     }
     if ($isGlobal) { Write-Host '       enabled MACHINE-WIDE (-Global): every session pays for it' -ForegroundColor Yellow }
     foreach ($s in @($p['servers'])) {
-      $req = Test-V5ServerRequirement -Server $s -ProjectPath $Path
+      $req = Test-UabsServerRequirement -Server $s -ProjectPath $Path
       $status = if ($req.Ok) { 'installed and ready' } else { $req.Reason }
       Write-Host ("       {0,-16} {1}" -f $s['id'], $status) -ForegroundColor $(if ($req.Ok) { 'DarkGray' } else { 'Yellow' })
       if (-not $req.Ok -and $s.Contains('install_hint') -and $s['install_hint']) {
@@ -567,11 +571,11 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
     Write-Host ("  not shipped: {0} -- {1}" -f $skipped['id'], $skipped['reason']) -ForegroundColor DarkGray
   }
   Write-Host ''
-  $retiredOn = @($state['profiles'].Keys | Where-Object { $script:V5RetiredProfiles.ContainsKey($_) })
+  $retiredOn = @($state['profiles'].Keys | Where-Object { $script:UabsRetiredProfiles.ContainsKey($_) })
   if ($retiredOn.Count) {
     Write-Host '  Withdrawn from this pack but still registered on this machine.' -ForegroundColor Yellow
     Write-Host '  Run -Auto or -Enable once to un-register them:' -ForegroundColor Yellow
-    foreach ($id in $retiredOn) { Write-Host ("    {0} -- {1}" -f $id, $script:V5RetiredProfiles[$id]) -ForegroundColor Yellow }
+    foreach ($id in $retiredOn) { Write-Host ("    {0} -- {1}" -f $id, $script:UabsRetiredProfiles[$id]) -ForegroundColor Yellow }
     Write-Host ''
   }
   if ($stale.Count) {
@@ -594,7 +598,7 @@ if (-not $Path -and -not $Global -and $PSCmdlet.ParameterSetName -ne 'Disable') 
   $Path = (Get-Location).Path
 }
 if ($Path) {
-  if (-not (Test-V5Path -LiteralPath $Path)) { throw "-Path does not exist: $Path" }
+  if (-not (Test-UabsPath -LiteralPath $Path)) { throw "-Path does not exist: $Path" }
   $Path = (Resolve-Path -LiteralPath $Path).Path.TrimEnd('\', '/')
 }
 
@@ -602,11 +606,11 @@ if ($PSCmdlet.ParameterSetName -eq 'Detect') {
   Write-Head "Detecting capability profiles for $Path"
   $any = $false
   foreach ($p in $allProfiles) {
-    if (-not (Test-V5ProfileDetected -ProfileDef $p -ProjectPath $Path)) { continue }
+    if (-not (Test-UabsProfileDetected -ProfileDef $p -ProjectPath $Path)) { continue }
     $any = $true
     Write-Host ("  {0,-14} {1}" -f $p['id'], $p['title'])
     foreach ($s in @($p['servers'])) {
-      $req = Test-V5ServerRequirement -Server $s -ProjectPath $Path
+      $req = Test-UabsServerRequirement -Server $s -ProjectPath $Path
       if ($req.Ok) { Write-Ok $s['id'] } else { Write-Skip ("{0}: {1}" -f $s['id'], $req.Reason) }
     }
   }
@@ -616,23 +620,23 @@ if ($PSCmdlet.ParameterSetName -eq 'Detect') {
 
 # ---- disable ---------------------------------------------------------------
 
-Invoke-V5StaleGlobalMigration -Entries $stale
-Invoke-V5RetiredProfileMigration -State $state
+Invoke-UabsStaleGlobalMigration -Entries $stale
+Invoke-UabsRetiredProfileMigration -State $state
 
 if ($PSCmdlet.ParameterSetName -eq 'Disable') {
   foreach ($rawId in $Disable) {
-    $p = Get-V5Profile $rawId
+    $p = Get-UabsProfile $rawId
     $id = $p['id']
     Write-Head ("Disabling {0}" -f $id)
 
     # With -Path, only that project. Without, every project it was enabled for,
     # plus a machine-wide registration if one was ever made -- an entry nothing
     # turns off is a server that keeps starting.
-    $targets = if ($Path) { @($Path) } else { @(Get-V5ProfileProjects $state $id) }
+    $targets = if ($Path) { @($Path) } else { @(Get-UabsProfileProjects $state $id) }
     if (-not $targets.Count) { $targets = @('') }
     foreach ($proj in $targets) {
       if ($proj) { Write-Host ("  project: {0}" -f $proj) -ForegroundColor DarkGray }
-      [void](Invoke-V5ProfileWrite -Servers @($p['servers']) -ProjectPath $proj -Remove)
+      [void](Invoke-UabsProfileWrite -Servers @($p['servers']) -ProjectPath $proj -Remove)
       if (-not $CheckOnly -and $state['profiles'].Contains($id) -and $proj) {
         [void]$state['profiles'][$id]['projects'].Remove($proj)
       }
@@ -644,7 +648,7 @@ if ($PSCmdlet.ParameterSetName -eq 'Disable') {
       }
     }
   }
-  Save-V5ProfileState $state
+  Save-UabsProfileState $state
   Write-Host ''
   Write-Host 'Restart each AI app for the change to take effect.' -ForegroundColor Yellow
   return
@@ -654,13 +658,13 @@ if ($PSCmdlet.ParameterSetName -eq 'Disable') {
 
 $wanted = @()
 if ($PSCmdlet.ParameterSetName -eq 'Enable') {
-  $wanted = @($Enable | ForEach-Object { (Get-V5Profile $_)['id'] } | Select-Object -Unique)
+  $wanted = @($Enable | ForEach-Object { (Get-UabsProfile $_)['id'] } | Select-Object -Unique)
 } else {
   Write-Head ("Auto-detecting capability profiles for {0}" -f $Path)
-  $wanted = @($allProfiles | Where-Object { Test-V5ProfileDetected -ProfileDef $_ -ProjectPath $Path } | ForEach-Object { $_['id'] })
+  $wanted = @($allProfiles | Where-Object { Test-UabsProfileDetected -ProfileDef $_ -ProjectPath $Path } | ForEach-Object { $_['id'] })
   if (-not $wanted.Count) {
     Write-Host '  no profile markers found; nothing to wire beyond the always-on core'
-    Save-V5ProfileState $state
+    Save-UabsProfileState $state
     return
   }
 }
@@ -668,7 +672,7 @@ if ($PSCmdlet.ParameterSetName -eq 'Enable') {
 if (-not $Path -and -not $Global) { throw 'Pass -Path <project directory>, or -Global to register machine-wide.' }
 
 foreach ($id in $wanted) {
-  $p = Get-V5Profile $id
+  $p = Get-UabsProfile $id
   Write-Head ("Enabling {0} -- {1}" -f $id, $p['title'])
   if ($Global) {
     Write-Host '      -Global: machine-wide. Every session on this box carries these tool schemas.' -ForegroundColor Yellow
@@ -676,17 +680,17 @@ foreach ($id in $wanted) {
 
   $usable = @()
   foreach ($s in @($p['servers'])) {
-    $req = Test-V5ServerRequirement -Server $s -ProjectPath $Path
+    $req = Test-UabsServerRequirement -Server $s -ProjectPath $Path
     if ($req.Ok) { $usable += $s; continue }
     Write-Skip ("{0}: {1}" -f $s['id'], $req.Reason)
-    if (Invoke-V5AutoInstall -Server $s -ProjectPath $Path) {
-      $req = Test-V5ServerRequirement -Server $s -ProjectPath $Path
+    if (Invoke-UabsAutoInstall -Server $s -ProjectPath $Path) {
+      $req = Test-UabsServerRequirement -Server $s -ProjectPath $Path
       if ($req.Ok) { Write-Ok ("{0}: installed" -f $s['id']); $usable += $s; continue }
       Write-Skip ("{0}: still unsatisfied after install -- {1}" -f $s['id'], $req.Reason)
     }
     foreach ($hintKey in @('install_hint', 'editor_side')) {
       if ($s.Contains($hintKey) -and $s[$hintKey]) {
-        $hint = Expand-V5Template -Text $s[$hintKey] -ProjectPath $Path
+        $hint = Expand-UabsTemplate -Text $s[$hintKey] -ProjectPath $Path
         if (-not $hint) { $hint = $s[$hintKey] }
         Write-Host ("      run: {0}" -f $hint) -ForegroundColor DarkGray
       }
@@ -700,21 +704,21 @@ foreach ($id in $wanted) {
   # Some servers cannot exist outside one project whatever the user asks for:
   # the Unity binary lives inside that project's Library folder, so a
   # machine-wide entry for it would be a path that is wrong everywhere else.
-  $forcedGlobal = @($usable | Where-Object { (Get-V5ProfileScope $p $_) -eq 'global' })
-  $group        = @($usable | Where-Object { (Get-V5ProfileScope $p $_) -ne 'global' })
+  $forcedGlobal = @($usable | Where-Object { (Get-UabsProfileScope $p $_) -eq 'global' })
+  $group        = @($usable | Where-Object { (Get-UabsProfileScope $p $_) -ne 'global' })
   if ($Global -and $group.Count) {
-    $bound = @($group | Where-Object { Test-V5ServerIsProjectBound -Server $_ })
+    $bound = @($group | Where-Object { Test-UabsServerIsProjectBound -Server $_ })
     if ($bound.Count) {
       Write-Skip ("not registrable machine-wide, its command is resolved inside one project: {0}" -f (@($bound | ForEach-Object { $_['id'] }) -join ', '))
-      $group = @($group | Where-Object { -not (Test-V5ServerIsProjectBound -Server $_) })
+      $group = @($group | Where-Object { -not (Test-UabsServerIsProjectBound -Server $_) })
     }
   }
   $written = @()
   if ($forcedGlobal.Count) {
-    $written += @(Invoke-V5ProfileWrite -Servers $forcedGlobal -ProjectPath $Path -Machine)
+    $written += @(Invoke-UabsProfileWrite -Servers $forcedGlobal -ProjectPath $Path -Machine)
   }
   if ($group.Count) {
-    $written += @(Invoke-V5ProfileWrite -Servers $group -ProjectPath $Path -Machine:($Global.IsPresent))
+    $written += @(Invoke-UabsProfileWrite -Servers $group -ProjectPath $Path -Machine:($Global.IsPresent))
   }
 
   # An editor-side step is not a failure -- the server registers fine and simply
@@ -722,7 +726,7 @@ foreach ($id in $wanted) {
   # the difference between "configured" and "working".
   foreach ($s in $usable) {
     if ($s.Contains('editor_side') -and $s['editor_side']) {
-      $hint = Expand-V5Template -Text $s['editor_side'] -ProjectPath $Path
+      $hint = Expand-UabsTemplate -Text $s['editor_side'] -ProjectPath $Path
       if (-not $hint) { $hint = $s['editor_side'] }
       Write-Host ("      editor side, not automatable from here: {0}" -f $hint) -ForegroundColor Yellow
     }
@@ -749,7 +753,7 @@ foreach ($id in $wanted) {
   if ($Path)   { $state['profiles'][$id]['projects'][$Path] = $record }
 }
 
-Save-V5ProfileState $state
+Save-UabsProfileState $state
 Write-Host ''
 Write-Host 'Restart each AI app for the change to take effect.' -ForegroundColor Yellow
 Write-Host ("Turn one back off with: Set-McpProfile.ps1 -Disable <id>") -ForegroundColor DarkGray

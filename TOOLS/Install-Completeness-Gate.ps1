@@ -97,10 +97,10 @@ $hooksSrc  = Join-Path $PackRoot 'TOOLS\hooks'
 $pluginSrc = Join-Path $hooksSrc 'plugin'
 $wireSrc   = Join-Path $hooksSrc 'hermes_wire.py'
 
-# Add-V5MarketplacePluginEntry lives in the installer's shared module. The
+# Add-UabsMarketplacePluginEntry lives in the installer's shared module. The
 # gate also runs standalone, so this load is optional - without it the
 # marketplace is still built, just with a warning instead of the entry.
-$v7Common = Join-Path $PackRoot 'TOOLS\V7-Common.ps1'
+$v7Common = Join-Path $PackRoot 'TOOLS\UABS-Common.ps1'
 if (Test-Path -LiteralPath $v7Common) { . $v7Common }
 
 # Every gate the pack ships, with the tools each one needs to see.
@@ -112,8 +112,8 @@ foreach ($g in $gates) {
   if (-not (Test-Path -LiteralPath (Join-Path $hooksSrc $g.Name))) { throw "$($g.Name) not found under $hooksSrc" }
 }
 
-$installRoot = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\hooks'
-$marketRoot  = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\codex-marketplace'
+$installRoot = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\hooks'
+$marketRoot  = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\codex-marketplace'
 
 $python = $null
 $candidates = @(

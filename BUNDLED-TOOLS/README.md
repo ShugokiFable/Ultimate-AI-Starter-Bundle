@@ -1,13 +1,13 @@
 ﻿# BUNDLED-TOOLS
 
-Offline snapshots + GitHub update path for Skyrim AI V5 AIO.
+Offline snapshots + GitHub update path for Ultimate AI Starter Bundle AIO.
 
 ## Quick install (new users)
 
 Double-click or run from pack root:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
 ```
 
 ## Layout

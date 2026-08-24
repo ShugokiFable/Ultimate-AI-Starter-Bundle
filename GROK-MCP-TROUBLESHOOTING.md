@@ -163,7 +163,7 @@ Superpowers skills (`systematic-debugging` is the TUI error), and lets
 claude-mem's `mcp-search` occupy a running slot even with `mcps = false`.
 
 Two installed plugins both named `superpowers` (official marketplace plus
-a local `%LOCALAPPDATA%\Skyrim-AI-V5\plugins-src` clone) also collide on
+a local `%LOCALAPPDATA%\Ultimate-AI-Starter-Bundle\plugins-src` clone) also collide on
 that skill. The AIO keeps one and uninstalls extras. Check with
 `grok plugin list --json`.
 

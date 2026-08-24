@@ -220,7 +220,7 @@ function Set-ProjectIgnore {
                 $alsoKeep += $best
                 if ($useCompiled) { $why = 'active carries no compiled-language source' }
                 else { $why = ("active is nearly empty (code={0})" -f $keepCode) }
-                Write-V5Warn ("{0}: {1} -> also keeping '{2}' ({3} files)" -f $name, $why, $best, $bestN)
+                Write-UabsWarn ("{0}: {1} -> also keeping '{2}' ({3} files)" -f $name, $why, $best, $bestN)
             }
         }
 
@@ -239,7 +239,7 @@ function Set-ProjectIgnore {
     $target = Join-Path $ProjectRoot '.cbmignore'
     if ($Apply) {
         Set-Content -LiteralPath $target -Value $lines -Encoding UTF8
-        Write-V5Ok ("{0}  (snapshots: {1} kept, {2} excluded)" -f $name, (1 + $alsoKeep.Count), $stale.Count)
+        Write-UabsOk ("{0}  (snapshots: {1} kept, {2} excluded)" -f $name, (1 + $alsoKeep.Count), $stale.Count)
     }
     else {
         Write-Host ("  WOULD WRITE  {0}  (snapshots: {1} kept, {2} excluded)" -f `
@@ -249,12 +249,12 @@ function Set-ProjectIgnore {
 
 # --- main -------------------------------------------------------------------
 
-. (Join-Path $PSScriptRoot 'V7-Common.ps1')
+. (Join-Path $PSScriptRoot 'UABS-Common.ps1')
 
 if (-not (Test-Path -LiteralPath $Path)) { throw "Path not found: $Path" }
 
-Write-V5Step ("codebase-memory index scope  ->  {0}" -f $Path)
-if (-not $Apply) { Write-V5Warn 'DRY RUN - no files written. Re-run with -Apply.' }
+Write-UabsStep ("codebase-memory index scope  ->  {0}" -f $Path)
+if (-not $Apply) { Write-UabsWarn 'DRY RUN - no files written. Re-run with -Apply.' }
 
 $targets = @()
 if ($Recurse) {
@@ -269,7 +269,7 @@ else {
 foreach ($t in $targets) { Set-ProjectIgnore -ProjectRoot $t }
 
 Write-Host ''
-Write-V5Step ("{0} project(s) processed" -f $targets.Count)
+Write-UabsStep ("{0} project(s) processed" -f $targets.Count)
 Write-Host '  Next: index_repository(repo_path=<root>, mode=moderate, name=<stable-slug>)'
 Write-Host '  Then: check node count against file count, and confirm languages with'
 Write-Host '        get_architecture(aspects=["languages"]).'

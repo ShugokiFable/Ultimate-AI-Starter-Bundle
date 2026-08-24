@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V7.9.9.9 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V8.0.0 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -23,19 +23,20 @@ Bundle already on disk - double-click the one canonical launcher:
 
 Or from PowerShell in this folder:
 
-    powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-V7-AIO.ps1
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
 
 Then FULLY restart your AI app(s).
 
 Options:
-    .\INSTALL-V7-AIO.ps1 -Providers Grok,Claude
-    .\INSTALL-V7-AIO.ps1 -Mode OnlineLatest
-    .\INSTALL-V7-AIO.ps1 -WithExtras
-    .\INSTALL-V7-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
-    .\INSTALL-V7-AIO.ps1 -SkipPreamble          (no SOUL/AIO wiring)
+    .\INSTALL-AIO.ps1 -Providers Grok,Claude
+    .\INSTALL-AIO.ps1 -Mode OnlineLatest
+    .\INSTALL-AIO.ps1                 # full install (default)
+    .\INSTALL-AIO.ps1 -CoreOnly       # smaller core only
+    .\INSTALL-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
+    .\INSTALL-AIO.ps1 -SkipPreamble          (no SOUL/AIO wiring)
 
 
-WHY V6 EXISTS (read this one bit)
+WHY V8 EXISTS (read this one bit)
 ---------------------------------
 v5.2.5 shipped 7 skills whose descriptions never loaded. A UTF-8 BOM sat before
 the opening "---" of each SKILL.md, so the YAML frontmatter never opened and the
@@ -58,7 +59,7 @@ Warnings are context-budget advice, not failures.
 
 Full pack self-test (skills + PowerShell parse + asset hashes + registry):
 
-    powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-V7-Pack.ps1
+    powershell -NoProfile -ExecutionPolicy Bypass -File .\TESTS\Test-Pack.ps1
     ... -IncludeLiveInstalls   (also audits your installed provider homes)
 
 
@@ -101,7 +102,8 @@ headroom wrap / GROK_MODELS_BASE_URL - the model shows as "unknown" and chat
     .\TOOLS\Ensure-Headroom-Grok.ps1 -Repair
     .\TOOLS\Ensure-Headroom-Grok.ps1 -CheckOnly
 
-claude-mem is Claude Code only (needs Bun). Not for Grok/Codex/Kimi/Hermes.
+claude-mem is Claude Code only. V8 installs Bun automatically when needed.
+It is not installed for Grok/Codex/Kimi/Hermes.
 
 
 MCP 2026-07-28
@@ -112,12 +114,12 @@ deprecated on a 12-month window. Every MCP server this pack wires is local
 stdio, so NOTHING here needs to change.
 
 
-AI PREAMBLE - INSTALLED AUTOMATICALLY (v7.5.0)
+AI PREAMBLE - INSTALLED AUTOMATICALLY (v8.0.0)
 ----------------------------------------------
 The installer wires the SOUL + AIO preamble into every agent:
 Claude Code (~/.claude/CLAUDE.md), Codex (~/.codex/AGENTS.md), Kimi
 (~/.kimi-code/AGENTS.md), Grok (~/.grok/AGENTS.md) and Hermes (home SOUL.md).
-Idempotent, backup-first. Opt out with INSTALL-V7-AIO.ps1 -SkipPreamble.
+Idempotent, backup-first. Opt out with INSTALL-AIO.ps1 -SkipPreamble.
 
 Web UIs (ChatGPT/Gemini) have no instruction file - paste
 
@@ -166,7 +168,7 @@ READ NEXT
   docs\history\V6.9.0-CHANGELOG.md  adult-fiction in scope; no jailbreak layer
   docs\history\V6.8.2-CHANGELOG.md  stop-assuming: assumption gate + verify-first
   docs\history\V6-CHANGELOG.md      what changed and why, with the evidence
-  V7-AIO-GUIDE.md      user + AI contract
+  AIO-GUIDE.md      user + AI contract
   README.md            layout
   WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md
 

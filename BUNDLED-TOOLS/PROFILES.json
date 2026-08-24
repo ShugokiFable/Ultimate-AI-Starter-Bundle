@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "catalog_version": "7.9.7",
-  "pack_version": "7.9.7",
+  "catalog_version": "8.0.0",
+  "pack_version": "8.0.0",
   "updated_utc": "2026-08-21T20:00:00Z",
-  "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 144 skill bodies are ~154,000 tokens while the description index an agent actually reads is ~5,500. There is no equivalent discount for MCP. So the servers here are NOT registered globally, and -- since 7.9.6 -- are not registered machine-wide either: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
+  "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 146 skill bodies are far larger than the description index an agent actually reads. There is no equivalent discount for MCP. So the servers here are NOT registered globally: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
   "reads": "TOOLS/Set-McpProfile.ps1",
-  "always_on_note": "The always-on core is context7 and github, in TOOLS/Add-Reasoning-MCPs.ps1, not here. Both earn a permanent slot: current documentation instead of recalled signatures, and the ability to verify a push rather than hope. sequential-thinking held the third slot until 7.9.7 and lost it on measurement -- one tool, but a 4,587-byte schema, ~1,146 tokens on every turn of every session, for a structured scratchpad rather than a capability. It is the 'reasoning' profile below now: nothing auto-enables it, and -Enable reasoning -Global turns it on. playwright-mcp, firecrawl-mcp and perplexity-mcp are -WithExtras components in CATALOG.json and are likewise not repeated here; registering a server twice is two handshakes for one name.",
+  "always_on_note": "The always-on core is context7, github, and headroom, in TOOLS/Add-Reasoning-MCPs.ps1, not here. They earn permanent slots for current documentation, verified repository state, and context inspection/compression. sequential-thinking is the opt-in reasoning profile after measurement showed its permanent schema cost. Playwright is in the web profile; Firecrawl and Perplexity register only when their keys exist.",
   "requires_forms": {
     "command": "A command that must resolve on PATH, or an absolute path that must exist as a file.",
     "any_path": "At least one of these paths must exist. Entries may contain environment variables and a single '*' wildcard per segment.",
@@ -36,6 +36,31 @@
         ]
       },
       "servers": [
+        {
+          "id": "playwright-mcp",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@playwright/mcp@0.0.79"
+          ],
+          "providers": [
+            "Codex",
+            "Grok",
+            "Kimi",
+            "Hermes"
+          ],
+          "extra_args_env": "PLAYWRIGHT_MCP_EXECUTABLE_PATH",
+          "extra_args_template": [
+            "--executable-path",
+            "{value}"
+          ],
+          "note": "drive a browser for testing and automation",
+          "key": null,
+          "requires": {
+            "command": "npx"
+          },
+          "requires_note": "Claude is excluded because it already has a browser pane. Set PLAYWRIGHT_MCP_EXECUTABLE_PATH before enabling to use Opera GX, Edge, Brave, or Vivaldi instead of the default Chrome channel."
+        },
         {
           "id": "serena",
           "command": "%USERPROFILE%\\.local\\bin\\serena.exe",

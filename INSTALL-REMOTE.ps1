@@ -4,9 +4,9 @@
 
 .DESCRIPTION
   For a FRESH machine with nothing installed. Downloads the latest (or a
-  pinned) release of the Ultimate AI Starter Bundle, extracts it under
-  %LOCALAPPDATA%\Ultimate-AI-Starter-Bundle, and runs the real installer
-  (INSTALL-V7-AIO.ps1) from the pack root.
+  pinned) release of the Ultimate AI Starter Bundle, atomically installs it at
+  %LOCALAPPDATA%\Programs\Ultimate-AI-Starter-Bundle, and runs the real installer
+  (INSTALL-AIO.ps1) from the pack root.
 
   One-liner (defaults = all five providers, latest release):
 
@@ -16,26 +16,27 @@
 
     powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ShugokiFable/Ultimate-AI-Starter-Bundle/main/INSTALL-REMOTE.ps1))) -Providers Claude,Grok"
 
-  Re-running is a no-op when the bundle is already present. Use -Force to
-  re-download anyway.
+  Re-running updates the stable install when the release tag changes. Use
+  -Force to refresh the same tag.
 
 .PARAMETER Tag
-  Release tag to fetch, e.g. 'v7.5.2'. Empty (default) = latest release.
+  Release tag to fetch, e.g. 'v8.0.0'. Empty (default) = latest release.
 
 .PARAMETER Providers
   Providers to install for (default: installer default = all five).
 
 .PARAMETER DestRoot
-  Where the bundle lives. Default: %LOCALAPPDATA%\Ultimate-AI-Starter-Bundle.
+  Where the bundle lives. Default:
+  %LOCALAPPDATA%\Programs\Ultimate-AI-Starter-Bundle.
 
 .PARAMETER Force
   Re-download even when a usable copy already exists at DestRoot.
 
 .PARAMETER SkipPreamble
-  Forwarded to INSTALL-V7-AIO.ps1 - do not wire the SOUL/AIO preamble blocks.
+  Forwarded to INSTALL-AIO.ps1 - do not wire the SOUL/AIO preamble blocks.
 
 .PARAMETER SkipHouseCarlSetup
-  Forwarded to INSTALL-V7-AIO.ps1 - skip houseCARL MO2/Vortex setup.
+  Forwarded to INSTALL-AIO.ps1 - skip houseCARL MO2/Vortex setup.
 
 .PARAMETER KeepZip
   Keep the downloaded release zip in %TEMP% instead of deleting it.
@@ -44,7 +45,7 @@
 param(
   [string]$Tag = '',
   [string[]]$Providers = @(),
-  [string]$DestRoot = (Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'),
+  [string]$DestRoot = (Join-Path $env:LOCALAPPDATA 'Programs\Ultimate-AI-Starter-Bundle'),
   [switch]$Force,
   [switch]$SkipPreamble,
   [switch]$SkipHouseCarlSetup,
@@ -86,11 +87,14 @@ if (-not $tag) {
   Ok "pinned tag: $tag"
 }
 
-# ---------- 2. Reuse existing copy ----------
-$dest = Join-Path $DestRoot $tag
+# ---------- 2. Reuse current stable copy ----------
+$dest = $DestRoot
 $catalog = Join-Path $dest 'BUNDLED-TOOLS\CATALOG.json'
-if (-not $Force -and (Test-Path -LiteralPath $catalog)) {
-  Ok ("bundle $tag already at $dest - reusing it (-Force to re-download)")
+$installedVersion = ''
+$versionFile = Join-Path $dest 'VERSION.txt'
+if (Test-Path -LiteralPath $versionFile -PathType Leaf) { $installedVersion = ([IO.File]::ReadAllText($versionFile)).Trim() }
+if (-not $Force -and (Test-Path -LiteralPath $catalog) -and $installedVersion -eq $tag) {
+  Ok ("bundle $tag already current at $dest - reusing it (-Force to refresh)")
 } else {
   # ---------- 3. Download ----------
   Step "Downloading $tag"
@@ -129,9 +133,29 @@ if (-not $Force -and (Test-Path -LiteralPath $catalog)) {
     if (-not (Test-Path (Join-Path $root 'BUNDLED-TOOLS\CATALOG.json'))) {
       Fail 'extracted archive does not look like the bundle (no BUNDLED-TOOLS\CATALOG.json)'
     }
-    New-Item -ItemType Directory -Force -Path $DestRoot | Out-Null
-    if (Test-Path -LiteralPath $dest) { Remove-Item -LiteralPath $dest -Recurse -Force }
-    Move-Item -LiteralPath $root -Destination $dest
+    $extractedVersionFile = Join-Path $root 'VERSION.txt'
+    if (-not (Test-Path -LiteralPath $extractedVersionFile -PathType Leaf)) { Fail 'extracted archive has no VERSION.txt' }
+    $extractedVersion = ([IO.File]::ReadAllText($extractedVersionFile)).Trim()
+    if ($extractedVersion -ne $tag) { Fail "archive version $extractedVersion does not match requested tag $tag" }
+
+    $destParent = Split-Path -Parent $dest
+    New-Item -ItemType Directory -Force -Path $destParent | Out-Null
+    $previous = $dest + '.previous'
+    if (Test-Path -LiteralPath $previous) {
+      if (-not (Test-Path -LiteralPath (Join-Path $previous 'BUNDLED-TOOLS\CATALOG.json'))) {
+        Fail "refusing to delete unrecognized rollback directory: $previous"
+      }
+      Remove-Item -LiteralPath $previous -Recurse -Force
+    }
+    if (Test-Path -LiteralPath $dest) { Move-Item -LiteralPath $dest -Destination $previous }
+    try {
+      Move-Item -LiteralPath $root -Destination $dest
+    } catch {
+      if ((Test-Path -LiteralPath $previous) -and -not (Test-Path -LiteralPath $dest)) {
+        Move-Item -LiteralPath $previous -Destination $dest
+      }
+      throw
+    }
     Ok ("bundle -> $dest")
   } finally {
     Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
@@ -140,7 +164,7 @@ if (-not $Force -and (Test-Path -LiteralPath $catalog)) {
 }
 
 # ---------- 5. Run the real installer ----------
-$installer = Join-Path $dest 'INSTALL-V7-AIO.ps1'
+$installer = Join-Path $dest 'INSTALL-AIO.ps1'
 if (-not (Test-Path -LiteralPath $installer)) { Fail "installer missing: $installer" }
 $args = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $installer)
 if ($Providers -and $Providers.Count -gt 0) { $args += '-Providers', ($Providers -join ',') }
@@ -150,9 +174,21 @@ Step "Running installer from $dest"
 & powershell @args
 if ($LASTEXITCODE -ne 0) { Fail ('installer exit code: ' + $LASTEXITCODE) }
 
+# V7 remote installs used version-named children inside the state directory.
+# Delete only children that carry the bundle catalog marker.
+$legacyRoot = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
+if (Test-Path -LiteralPath $legacyRoot -PathType Container) {
+  foreach ($legacy in @(Get-ChildItem -LiteralPath $legacyRoot -Directory -Force -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '^v\d' })) {
+    if (Test-Path -LiteralPath (Join-Path $legacy.FullName 'BUNDLED-TOOLS\CATALOG.json')) {
+      Remove-Item -LiteralPath $legacy.FullName -Recurse -Force
+      Ok ('removed obsolete version-stamped bundle: ' + $legacy.FullName)
+    }
+  }
+}
+
 Write-Host ''
 Write-Host '=====================================================' -ForegroundColor Green
 Write-Host ' DONE. Fully restart every AI app you use.' -ForegroundColor Green
 Write-Host ' Bundle: ' + $dest -ForegroundColor Green
-Write-Host ' Update later: cd to the bundle and run TOOLS\Update-From-GitHub.ps1' -ForegroundColor Green
+Write-Host ' Update later: run TOOLS\Update-From-GitHub.ps1' -ForegroundColor Green
 Write-Host '=====================================================' -ForegroundColor Green

@@ -1,4 +1,4 @@
-﻿# houseCARL automatic setup (V5)
+﻿# houseCARL automatic setup (Uabs)
 
 houseCARL reads an **MO2-shaped instance** (folder with `ModOrganizer.ini` + profile txt files + `mods\`).
 
@@ -56,7 +56,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Setup-HouseCarl.ps1
 | `HOUSECARL_MCP` | Path to MCP exe |
 | `SKYRIM_MO2_INSTANCE` | MO2 instance **or** Vortex shim root |
 | `HouseCarl__Mo2InstanceDir` | Same path — read by houseCARL server |
-| `%LOCALAPPDATA%\houseCARL-data\v5-setup-state.json` | Machine state for AIs |
+| `%LOCALAPPDATA%\houseCARL-data\uabs-setup-state.json` | Machine state for AIs |
 | Grok `%USERPROFILE%\.grok\config.toml` | `[mcp_servers.housecarl]` block (when `-WireGrok`) |
 
 Then **fully restart** the AI app.

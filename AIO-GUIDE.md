@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v6 — AIO guide (users + AIs)
+# Ultimate AI Starter Bundle v8 — AIO guide (users + AIs)
 
 ## What “AIO” means
 
@@ -19,7 +19,7 @@ then:           restart AI apps  →  ask a load-order question
 ```
 
 Both installers wire the SOUL + AIO preamble into every provider's
-instruction file automatically (v7.5.0). Web UIs without an instruction file
+instruction file automatically (v8.0.0). Web UIs without an instruction file
 get `3-PREAMBLES\MANUAL-PASTE.txt` pasted by hand.
 
 ## AI agent path (when something is missing)
@@ -28,7 +28,7 @@ get `3-PREAMBLES\MANUAL-PASTE.txt` pasted by hand.
 1. Load tool-discovery / ai-tooling-stack
 2. Run TOOLS\discover_tools.ps1  (or Ensure-Tools.ps1 -DiscoverOnly)
 3. If MISSING → run or recommend:
-     INSTALL-V7-AIO.ps1 -ToolsOnly -Components <ids>
+     INSTALL-AIO.ps1 -ToolsOnly -Components <ids>
      or TOOLS\Ensure-Tools.ps1
      or TOOLS\Update-From-GitHub.ps1 -Components <ids> -InstallAfter
 4. For houseCARL instance: TOOLS\Setup-HouseCarl.ps1
@@ -78,7 +78,7 @@ Refresh after LO changes: `Setup-HouseCarl.ps1 -RefreshOnly`.
 python TOOLS\hooks\completeness_gate.py --selftest
 python TOOLS\hooks\assumption_gate.py --selftest
 .\TOOLS\Build-Toolbelt.ps1
-Get-Content $env:LOCALAPPDATA\Skyrim-AI-V5\TOOLBELT.md
+Get-Content $env:LOCALAPPDATA\Ultimate-AI-Starter-Bundle\TOOLBELT.md
 ```
 
 The completeness gate refuses a half-finished release. The assumption gate
@@ -89,8 +89,8 @@ refuses a path nobody verified. Both fail open. Hermes is wired by asking
 
 ```powershell
 .\TOOLS\discover_tools.ps1
-Get-Content $env:LOCALAPPDATA\Skyrim-AI-V5\install-state.json
-Get-Content $env:LOCALAPPDATA\houseCARL-data\v5-setup-state.json
+Get-Content $env:LOCALAPPDATA\Ultimate-AI-Starter-Bundle\install-state.json
+Get-Content $env:LOCALAPPDATA\houseCARL-data\uabs-setup-state.json
 ```
 
 ## Licensing

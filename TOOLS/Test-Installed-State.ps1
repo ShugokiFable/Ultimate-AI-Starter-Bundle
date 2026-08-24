@@ -11,19 +11,19 @@ param(
 )
 $ErrorActionPreference='Stop'
 if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
-. (Join-Path $PackRoot 'TOOLS\V7-Common.ps1')
-# Join-Path, not Join-V5Path: the helper lives inside the file being sourced.
-# Needed for Test-V5ServerDeclared in the capability-state section -- without it
+. (Join-Path $PackRoot 'TOOLS\UABS-Common.ps1')
+# Join-Path, not Join-UabsPath: the helper lives inside the file being sourced.
+# Needed for Test-UabsServerDeclared in the capability-state section -- without it
 # every component reports "registered: none", which is a wrong answer rather
 # than a visible failure.
-. (Join-Path $PackRoot 'TOOLS\V7-Mcp-Write.ps1')
+. (Join-Path $PackRoot 'TOOLS\UABS-Mcp-Write.ps1')
 $Providers = @($Providers | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
-$catalog = Get-V5Catalog
+$catalog = Get-UabsCatalog
 $state = $null
 $errors = New-Object System.Collections.Generic.List[string]
 $warnings = New-Object System.Collections.Generic.List[string]
-function Err([string]$m){ [void]$errors.Add($m); Write-V5Bad $m }
-function Warn([string]$m){ [void]$warnings.Add($m); Write-V5Warn $m }
+function Err([string]$m){ [void]$errors.Add($m); Write-UabsBad $m }
+function Warn([string]$m){ [void]$warnings.Add($m); Write-UabsWarn $m }
 function Resolve-Exe([string]$Provider) {
   $cmd=Get-Command $Provider.ToLowerInvariant() -EA SilentlyContinue
   if($cmd){return $cmd.Source}
@@ -37,7 +37,7 @@ function Resolve-Exe([string]$Provider) {
   foreach($c in $cands){if($c -and (Test-Path -LiteralPath $c -PathType Leaf)){return $c}}
   return $null
 }
-Write-V5Step 'Final installed-state doctor'
+Write-UabsStep 'Final installed-state doctor'
 # VERSION.txt is the one source. The doctor used to restate 7.8.0 in four
 # places, so a release bump could leave the doctor failing a correct install.
 $packVersion = [IO.File]::ReadAllText((Join-Path $PackRoot 'VERSION.txt')).Trim()
@@ -47,7 +47,7 @@ $packBare = $packVersion.TrimStart('v','V')
 # doctor failed the release that shipped it, on a correct tree. A version format
 # is agreed by every check that reads it or by none of them.
 if ($packBare -notmatch '^\d+(\.\d+){2,}$') { Err "Pack VERSION.txt is not a dotted version of three or more parts: $packVersion" }
-$statePath=Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\install-state.json'
+$statePath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\install-state.json'
 if(-not(Test-Path -LiteralPath $statePath -PathType Leaf)){Err 'install-state.json is missing.'}
 else{
   try{
@@ -62,12 +62,18 @@ if(-not $SkipSkills){
   foreach($provider in $Providers){
     $exe=Resolve-Exe $provider
     if(-not $exe){Err "$provider executable missing after provider bootstrap.";continue}
-    & $exe --version *> $null
-    if($LASTEXITCODE -ne 0){Err "$provider executable failed --version."}
+    # Provider launchers can emit harmless warnings on stderr (Codex does when
+    # CODEX_HOME is under TEMP). Under Stop that becomes a terminating
+    # NativeCommandError before the exit code can be checked.
+    $prevEap=$ErrorActionPreference; $ErrorActionPreference='Continue'
+    & $exe --version 2>&1 | Out-Null
+    $versionExit=$LASTEXITCODE
+    $ErrorActionPreference=$prevEap
+    if($versionExit -ne 0){Err "$provider executable failed --version."}
 
     # PowerShell variable names are case-insensitive; $HOME is a read-only
     # automatic variable on Windows PowerShell 5.1. Never use $home as a local.
-    $providerHome=Get-V5ProviderHome -Provider $provider -Catalog $catalog
+    $providerHome=Get-UabsProviderHome -Provider $provider -Catalog $catalog
     if (-not $providerHome) { Err "$provider provider home could not be resolved."; continue }
     $destSkills=Join-Path $providerHome 'skills'
     $sourceSkills=Join-Path $PackRoot ("1-TAILORED-PROVIDER-TREES\$provider\COPY-TO-SKILLS-DIRECTORY\skills")
@@ -119,7 +125,7 @@ if(-not $SkipSkills){
       }
       Err "$provider missing bundled skill with no native-plugin ownership record: $skill"
     }
-    Write-V5Ok ("$provider bundled skills accounted: $verified exact file(s), $nativeOwned native-plugin-owned, $($expectedSkills.Count) expected.")
+    Write-UabsOk ("$provider bundled skills accounted: $verified exact file(s), $nativeOwned native-plugin-owned, $($expectedSkills.Count) expected.")
 
     # Codex budgets its skills index in CHARACTERS, scaled to the model's
     # context window, and degrades in two stages -- the first one silent:
@@ -164,14 +170,14 @@ if(-not $SkipSkills){
         Warn ("Codex skills index is $indexCount entries, $extraEntries of them not from this pack. Codex splits a character budget evenly across entries, so every description is truncated -- and this pack routes by description.")
         Warn ("  Shortening descriptions does NOT help: the allowance follows entry COUNT. Measured -- cutting every description to 60 chars gave no entry more room.")
         Warn ("  Fewer entries does: 146 skills render at ~88 chars each, 60 skills at ~183 untruncated. Candidates in ${destSkills}:")
-        Warn ("    - the OPTIONAL Other-Games mega-pack (70 skills). A manual extra; INSTALL-V7-AIO.ps1 never deploys it.")
+        Warn ("    - the OPTIONAL Other-Games mega-pack (70 skills). A manual extra; INSTALL-AIO.ps1 never deploys it.")
         Warn ("    - superseded duplicates such as skyrim-kid-distribution / skyrim-spid-distribution (now kid-authoring / spid-authoring)")
         Warn ("    - skills from Codex plugins you do not use; each costs a full entry")
         Warn ("  Reproduce any of this with: codex debug prompt-input")
       } elseif($indexCount -gt 100){
-        Write-V5Ok ("Codex skills index: $indexCount entries, essentially all from this pack. Descriptions are truncated to roughly 88 chars each -- structural at this skill count, and nothing here is removable without losing a skill.")
+        Write-UabsOk ("Codex skills index: $indexCount entries, essentially all from this pack. Descriptions are truncated to roughly 88 chars each -- structural at this skill count, and nothing here is removable without losing a skill.")
       } else {
-        Write-V5Ok ("Codex skills index: $indexCount entries -- inside the range where descriptions survive intact.")
+        Write-UabsOk ("Codex skills index: $indexCount entries -- inside the range where descriptions survive intact.")
       }
     }
   }
@@ -212,8 +218,8 @@ if(-not $SkipForge){
 # identical from the outside; they are opposite situations.
 $capabilityStates = @()
 $capRecordDir = Join-Path $PackRoot 'BUNDLED-TOOLS\capability-records'
-try { $capCatalog = Get-V5Catalog } catch { $capCatalog = $null }
-try { $mcpTargets = Get-V5McpTargets } catch { $mcpTargets = @{} }
+try { $capCatalog = Get-UabsCatalog } catch { $capCatalog = $null }
+try { $mcpTargets = Get-UabsMcpTargets } catch { $mcpTargets = @{} }
 if ($capCatalog) {
   foreach ($comp in @($capCatalog.components | Where-Object { $_.mcp })) {
     # $capState, not $state: $state holds the parsed install-state.json that
@@ -269,7 +275,7 @@ if ($capCatalog) {
     # guard a machine carrying a pre-7.9.9 registration printed "registered:
     # Claude,Codex,Grok,Kimi" and "registered only with a key" three lines apart.
 
-    # REGISTERED: which provider configs actually name it. Test-V5ServerDeclared
+    # REGISTERED: which provider configs actually name it. Test-UabsServerDeclared
     # takes a resolved config target, not a provider name -- calling it with
     # -Provider throws, and a swallowed throw here reports "registered: none"
     # for a machine where everything is registered. Resolve the target first,
@@ -277,12 +283,12 @@ if ($capCatalog) {
     foreach ($prov in @('Claude','Codex','Grok','Kimi','Hermes')) {
       try {
         if ($prov -eq 'Hermes') {
-          if (Test-V5HermesServerDeclared -Id $sid) { $capState.registered_for += $prov }
+          if (Test-UabsHermesServerDeclared -Id $sid) { $capState.registered_for += $prov }
           continue
         }
         $tgt = $mcpTargets[$prov]
         if (-not $tgt) { continue }
-        if (Test-V5ServerDeclared -Path $tgt.Path -Style $tgt.Style -Section $tgt.Section -Id $sid) {
+        if (Test-UabsServerDeclared -Path $tgt.Path -Style $tgt.Style -Section $tgt.Section -Id $sid) {
           $capState.registered_for += $prov
         }
       } catch { }
@@ -312,7 +318,7 @@ if ($capabilityStates.Count) {
     $kl  = if ($s.keyless_tools.Count) { "$($s.keyless_tools.Count) keyless" } else { 'keyless unmeasured' }
     $cost = if ($s.schema_bytes) { "$([math]::Round($s.schema_bytes/4)) tok/turn" } else { 'cost unmeasured' }
     $cred = if ($s.credentialled) { 'key set' } else { 'no key' }
-    Write-V5Ok ("{0,-16} registered: {1,-22} {2}, {3}, {4}" -f $s.component, $reg, $kl, $cred, $cost)
+    Write-UabsOk ("{0,-16} registered: {1,-22} {2}, {3}, {4}" -f $s.component, $reg, $kl, $cred, $cost)
     if ($s.not_registered_because) {
       Write-Host ("     " + $s.not_registered_because) -ForegroundColor DarkGray
     }
@@ -334,8 +340,8 @@ if ($capabilityStates.Count) {
 
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
 $report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);result=$doctorResult}
-$reportPath=Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\installed-state-doctor.json'
+$reportPath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\installed-state-doctor.json'
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
-if($errors.Count){Write-V5Bad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}
-Write-V5Ok ("Installed-state doctor PASS. Report: $reportPath")
+if($errors.Count){Write-UabsBad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}
+Write-UabsOk ("Installed-state doctor PASS. Report: $reportPath")
 exit 0

@@ -13,8 +13,8 @@
   bundle, per provider:
 
     - the native plugin is registered where that provider's loader reads it -
-      Kimi's installed.json, Grok's registry.json, Codex's config.toml plus
-      the marketplace manifest it points at, Claude's plugin cache -
+      Kimi's installed.json, Grok's registry.json, Codex's official plugin
+      inventory, Claude's plugin cache -
       not merely staged somewhere on disk;
     - Kimi's plugin declares sessionStart.skill, which is what makes
       Superpowers bootstrap itself on every session;
@@ -35,7 +35,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $PackRoot = Split-Path -Parent $PSScriptRoot
-. (Join-Path $PackRoot 'TOOLS\V7-Common.ps1')
+. (Join-Path $PackRoot 'TOOLS\UABS-Common.ps1')
 
 $script:Fail = 0
 $script:Pass = 0
@@ -70,7 +70,7 @@ Write-Host '=== Harness realization ===' -ForegroundColor Cyan
 
 foreach ($prov in $Providers) {
   $phome = $null
-  try { $phome = Get-V5ProviderHome -Provider $prov -Catalog $catalog } catch { }
+  try { $phome = Get-UabsProviderHome -Provider $prov -Catalog $catalog } catch { }
   if (-not $phome -or -not (Test-Path -LiteralPath $phome -PathType Container)) {
     Nap $prov 'provider home' 'not installed on this machine'
     continue
@@ -101,7 +101,7 @@ foreach ($prov in $Providers) {
 
     'Claude' {
       foreach ($id in @('superpowers', 'ponytail')) {
-        $mk = Get-V5ClaudeMarketplaceName -PluginRoot (Join-Path $pluginsRoot $id)
+        $mk = Get-UabsClaudeMarketplaceName -PluginRoot (Join-Path $pluginsRoot $id)
         if (-not $mk) { Nap $prov ("native " + $id) 'no Claude marketplace in bundle'; continue }
         $cache = Join-Path $phome ('plugins\cache\' + $mk + '\' + $id)
         if (Test-Path -LiteralPath $cache -PathType Container) {
@@ -173,52 +173,26 @@ foreach ($prov in $Providers) {
     }
 
     'Codex' {
-      # Codex resolves a plugin through three files that must AGREE, and the
-      # interesting failure is when they do not: config.toml enabling
-      # superpowers@ultimate-bundle while the marketplace manifest does not
-      # declare superpowers is a live, silent break. The gate installer
-      # rebuilds that marketplace from the pack on every run, and the pack
-      # manifest ships only completeness-gate.
-      $cfg = Join-Path $phome 'config.toml'
-      if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) {
-        Bad $prov 'native superpowers' 'config.toml missing'
-      } else {
-        $toml = [IO.File]::ReadAllText($cfg)
-        $mkSrc = $null
-        $sec = [regex]::Match($toml, '(?ms)^\[marketplaces\.ultimate-bundle\](.*?)(?=^\[|\z)')
-        if ($sec.Success) {
-          # Strip the surrounding quote in PowerShell rather than in the
-          # pattern - TOML accepts either quote style and a character class
-          # holding both is a good way to break this file.
-          $sm = [regex]::Match($sec.Groups[1].Value, '(?m)^\s*source\s*=\s*(.+?)\s*$')
-          if ($sm.Success) { $mkSrc = $sm.Groups[1].Value.Trim([char]39, [char]34) }
-        }
-        $enabled = Test-V5TomlPluginEnabled -Content $toml -HeaderPrefix 'plugins."superpowers@ultimate-bundle"'
-        if (-not $sec.Success) {
-          Bad $prov 'native superpowers' 'no [marketplaces.ultimate-bundle] in config.toml'
-        } elseif (-not $mkSrc) {
-          Bad $prov 'native superpowers' 'ultimate-bundle marketplace declares no source'
-        } elseif (-not (Test-Path -LiteralPath $mkSrc -PathType Container)) {
-          Bad $prov 'native superpowers' ('marketplace source does not exist: ' + $mkSrc)
-        } elseif (-not $enabled) {
-          Bad $prov 'native superpowers' 'superpowers@ultimate-bundle not enabled in config.toml'
-        } elseif (-not (Test-Path -LiteralPath (Join-Path $mkSrc 'superpowers\skills') -PathType Container)) {
-          Bad $prov 'native superpowers' 'marketplace has no superpowers\skills tree'
-        } else {
-          $mkFile = Join-Path $mkSrc '.claude-plugin\marketplace.json'
-          $declared = @()
-          if (Test-Path -LiteralPath $mkFile -PathType Leaf) {
-            try { $declared = @((([IO.File]::ReadAllText($mkFile)) | ConvertFrom-Json).plugins | ForEach-Object { $_.name }) } catch { }
-          }
-          if ($declared -notcontains 'superpowers') {
-            Bad $prov 'native superpowers' 'config.toml enables it but the marketplace manifest does not declare it'
-          } else {
-            Ok $prov 'native superpowers'
-            if (-not $pstateAll.ContainsKey($prov)) { $pstateAll[$prov] = @{} }
-            $pstateAll[$prov]['superpowers'] = $true
-          }
+      $cc = Get-Command codex -ErrorAction SilentlyContinue
+      if (-not $cc) { Nap $prov 'native plugins' 'codex CLI missing'; break }
+      $raw = Get-UabsNativeOutput -Exe $cc.Source -CmdArgs @('plugin','list','--json')
+      $inventory = $null
+      try { $inventory = ($raw | ConvertFrom-Json).installed } catch { }
+      foreach ($id in @('superpowers','ponytail')) {
+        $market = Get-UabsClaudeMarketplaceName -PluginRoot (Join-Path $pluginsRoot $id)
+        $pluginId = $id + '@' + $market
+        $hit = @($inventory | Where-Object { $_.pluginId -eq $pluginId }) | Select-Object -First 1
+        if (-not $hit) { Bad $prov ('native ' + $id) ('official inventory missing ' + $pluginId) }
+        elseif (-not $hit.enabled) { Bad $prov ('native ' + $id) ($pluginId + ' is disabled') }
+        else {
+          Ok $prov ('native ' + $id)
+          if (-not $pstateAll.ContainsKey($prov)) { $pstateAll[$prov] = @{} }
+          $pstateAll[$prov][$id] = $true
         }
       }
+      if (@($inventory | Where-Object { $_.marketplaceName -eq 'ultimate-bundle' }).Count) {
+        Bad $prov 'legacy marketplace retired' 'ultimate-bundle plugin inventory still present'
+      } else { Ok $prov 'legacy marketplace retired' }
     }
 
     'Grok' {
@@ -287,7 +261,7 @@ foreach ($prov in $Providers) {
     if ($keepCopies -contains $prov) {
       $absent = @()
       foreach ($id in @('superpowers', 'ponytail')) {
-        foreach ($n in (Get-V5PluginOwnedSkillNames -PluginRoot (Join-Path $pluginsRoot $id))) {
+        foreach ($n in (Get-UabsPluginOwnedSkillNames -PluginRoot (Join-Path $pluginsRoot $id))) {
           if (-not (Test-Path -LiteralPath (Join-Path $skillsDir $n) -PathType Container)) { $absent += $n }
         }
       }
@@ -303,7 +277,7 @@ foreach ($prov in $Providers) {
         $native = $null
         if ($pstateAll.ContainsKey($prov)) { $native = $pstateAll[$prov][$id] }
         if (-not $native) { $unknown += $id; continue }
-        foreach ($n in (Get-V5PluginOwnedSkillNames -PluginRoot (Join-Path $pluginsRoot $id))) {
+        foreach ($n in (Get-UabsPluginOwnedSkillNames -PluginRoot (Join-Path $pluginsRoot $id))) {
           if (Test-Path -LiteralPath (Join-Path $skillsDir $n) -PathType Container) { $dupes += $n }
         }
       }

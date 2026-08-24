@@ -38,20 +38,21 @@ param(
   [ValidateSet('Claude', 'Codex', 'Grok', 'Kimi', 'Hermes')][string]$Provider = 'Claude',
   [string]$Name,
   [string]$Path,
-  [int]$TimeoutSeconds = 60
+  [int]$TimeoutSeconds = 60,
+  [switch]$RequireMatch
 )
 
 $ErrorActionPreference = 'Stop'
-# Join-Path, not Join-V5Path: the helper lives in the file being sourced.
-. (Join-Path $PSScriptRoot 'V7-Mcp-Write.ps1')
+# Join-Path, not Join-UabsPath: the helper lives in the file being sourced.
+. (Join-Path $PSScriptRoot 'UABS-Mcp-Write.ps1')
 
 function Get-HermesServers {
   <# Hermes writes one predictable shape: two-space nesting under mcp_servers,
      a scalar `command`, and `args` as either [] or a block list. This reads
      that shape, not YAML in general -- anything unrecognised is skipped with a
      note rather than guessed at. #>
-  $paths = Get-V5HermesPaths
-  if (-not (Test-V5Path -LiteralPath $paths.Config -PathType Leaf)) {
+  $paths = Get-UabsHermesPaths
+  if (-not (Test-UabsPath -LiteralPath $paths.Config -PathType Leaf)) {
     throw "Hermes config not found at $($paths.Config)"
   }
   $lines = [IO.File]::ReadAllText($paths.Config) -split "`r?`n"
@@ -100,12 +101,12 @@ function Get-TomlString($Match) {
 
 function Get-ServersFromFile {
   param([string]$ConfigPath, [string]$Style, [string]$Section, [string]$ProjectKey, [string]$Scope = 'machine')
-  if (-not (Test-V5Path -LiteralPath $ConfigPath -PathType Leaf)) { return @() }
+  if (-not (Test-UabsPath -LiteralPath $ConfigPath -PathType Leaf)) { return @() }
   $text = [IO.File]::ReadAllText($ConfigPath)
   $out = @()
   if ($Style -eq 'json') {
     $doc = $text | ConvertFrom-Json
-    $json = Get-V5JsonScopeContainer -Json $doc -ProjectKey $ProjectKey
+    $json = Get-UabsJsonScopeContainer -Json $doc -ProjectKey $ProjectKey
     if ($null -eq $json) { return @() }
     if (-not $json.PSObject.Properties[$Section]) { return @() }
     foreach ($p in $json.($Section).PSObject.Properties) {
@@ -149,13 +150,13 @@ function Get-ServersFromConfig {
      one tool that can answer "is this server working" was blind to every
      capability profile, since those are registered per project. #>
   param([string]$Provider, [string]$ProjectPath)
-  $t = (Get-V5McpTargets)[$Provider]
-  if (-not (Test-V5Path -LiteralPath $t.Path -PathType Leaf)) {
+  $t = (Get-UabsMcpTargets)[$Provider]
+  if (-not (Test-UabsPath -LiteralPath $t.Path -PathType Leaf)) {
     throw "$Provider config not found at $($t.Path)"
   }
   $out = @(Get-ServersFromFile -ConfigPath $t.Path -Style $t.Style -Section $t.Section -ProjectKey '' -Scope 'machine')
   if ($ProjectPath) {
-    $proj = Get-V5ProviderProjectTarget -Provider $Provider -ProjectPath $ProjectPath
+    $proj = Get-UabsProviderProjectTarget -Provider $Provider -ProjectPath $ProjectPath
     if ($proj) {
       $names = @($out | ForEach-Object { $_.id })
       foreach ($s in @(Get-ServersFromFile -ConfigPath $proj.Path -Style $proj.Style -Section $proj.Section -ProjectKey $proj.ProjectKey -Scope 'project')) {
@@ -171,124 +172,46 @@ function Get-ServersFromConfig {
 
 function Invoke-McpHandshake {
   param([string]$Command, [string[]]$Arguments, [int]$TimeoutSeconds)
+  $python = (Get-Command python -ErrorAction Stop).Source
+  $probe = Join-UabsPath $PSScriptRoot 'mcp_handshake.py'
+  if (-not (Test-UabsPath -LiteralPath $probe -PathType Leaf)) { throw "MCP probe missing: $probe" }
 
-  # npx ships as npx.ps1/npx.cmd on Windows; Start-Process cannot execute a
-  # PowerShell script directly, and cmd.exe resolves the shim the same way the
-  # provider's own launcher does.
   $exe = $Command
   $argv = @($Arguments)
-  if ($Command -notmatch '[\\/]' -and $Command -notmatch '\.exe$') {
-    $exe = "$env:ComSpec"
-    $argv = @('/c', $Command) + @($Arguments)
+  if ($Command -eq 'npx') {
+    # Bypass npx.cmd's batch trampoline while preserving the exact package args.
+    $npxCmd = (Get-Command npx.cmd -ErrorAction Stop).Source
+    $nodeDir = Split-Path $npxCmd -Parent
+    $exe = Join-UabsPath $nodeDir 'node.exe'
+    if (-not (Test-UabsPath -LiteralPath $exe -PathType Leaf)) { $exe = (Get-Command node -ErrorAction Stop).Source }
+    $argv = @((Join-UabsPath $nodeDir 'node_modules\npm\bin\npx-cli.js')) + @($Arguments)
+  } elseif ($Command -notmatch '[\\/]' -and $Command -notmatch '\.exe$') {
+    $exe = $env:ComSpec
+    $argv = @('/d', '/s', '/c', $Command) + @($Arguments)
   }
 
-  $psi = New-Object System.Diagnostics.ProcessStartInfo
-  $psi.FileName = $exe
-  # Not ArgumentList: that is a .NET Core API and Windows PowerShell 5.1 runs on
-  # .NET Framework, where the property does not exist.
-  $psi.Arguments = (@($argv | ForEach-Object {
-    $a = [string]$_
-    if ($a -match '[\s"]') { '"' + ($a -replace '(\\*)"', '$1$1\"') + '"' } else { $a }
-  }) -join ' ')
-  $psi.RedirectStandardInput = $true
-  $psi.RedirectStandardOutput = $true
-  $psi.RedirectStandardError = $true
-  $psi.UseShellExecute = $false
-  $psi.CreateNoWindow = $true
-
-  $proc = [System.Diagnostics.Process]::Start($psi)
-  # A redirected pipe that nobody reads fills at about 4KB and blocks the
-  # writer. Serena logs ~20 startup lines to stderr and deadlocked there,
-  # producing a false "no initialize response" from a tool whose entire job is
-  # telling a real failure from a configuration mistake. Drain it, and keep the
-  # tail so a genuine failure can quote what the server said.
-  $errBuf = New-Object System.Text.StringBuilder
-  $errSub = Register-ObjectEvent -InputObject $proc -EventName ErrorDataReceived -MessageData $errBuf -Action {
-    if ($EventArgs.Data) { [void]$Event.MessageData.AppendLine($EventArgs.Data) }
-  }
-  $proc.BeginErrorReadLine()
-  try {
-    $send = {
-      param($obj)
-      $proc.StandardInput.WriteLine(($obj | ConvertTo-Json -Depth 10 -Compress))
-      $proc.StandardInput.Flush()
-    }
-    & $send @{
-      jsonrpc = '2.0'; id = 1; method = 'initialize'
-      params  = @{
-        protocolVersion = '2025-06-18'
-        capabilities    = @{}
-        clientInfo      = @{ name = 'uabs-handshake'; version = '1.0' }
-      }
-    }
-
-    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
-    $initResult = $null
-    $tools = $null
-    $sentList = $false
-
-    while ((Get-Date) -lt $deadline) {
-      $remaining = [int](($deadline - (Get-Date)).TotalMilliseconds)
-      if ($remaining -le 0) { break }
-      $lineTask = $proc.StandardOutput.ReadLineAsync()
-      if (-not $lineTask.Wait($remaining)) { break }
-      $line = $lineTask.Result
-      if ($null -eq $line) { break }
-      if (-not $line.TrimStart().StartsWith('{')) { continue }
-      try { $msg = $line | ConvertFrom-Json } catch { continue }
-      if ($msg.PSObject.Properties['error']) {
-        return @{ Ok = $false; Reason = ("server returned error: " + ($msg.error | ConvertTo-Json -Compress)) }
-      }
-      if ($msg.PSObject.Properties['id'] -and $msg.id -eq 1) {
-        $initResult = $msg.result
-        & $send @{ jsonrpc = '2.0'; method = 'notifications/initialized' }
-        & $send @{ jsonrpc = '2.0'; id = 2; method = 'tools/list'; params = @{} }
-        $sentList = $true
-        continue
-      }
-      if ($sentList -and $msg.PSObject.Properties['id'] -and $msg.id -eq 2) {
-        $tools = @($msg.result.tools)
-        break
-      }
-    }
-
-    if (-not $initResult) {
-      $tail = ($errBuf.ToString() -split "`r?`n" | Where-Object { $_ } | Select-Object -Last 3) -join ' | '
-      $why = "no initialize response within ${TimeoutSeconds}s"
-      if ($tail) { $why += "  [stderr: $tail]" }
-      return @{ Ok = $false; Reason = $why }
-    }
-    if ($null -eq $tools)  { return @{ Ok = $false; Reason = "initialized but never answered tools/list" } }
-    return @{
-      Ok        = $true
-      Protocol  = $initResult.protocolVersion
-      ServerName = $initResult.serverInfo.name
-      ToolCount = $tools.Count
-    }
-  } finally {
-    if ($errSub) { Unregister-Event -SourceIdentifier $errSub.Name -ErrorAction SilentlyContinue }
-    # Kill the TREE, not the process. .NET Framework has no
-    # Kill(entireProcessTree), and `cmd /c npx ...` means killing cmd leaves
-    # node running -- one orphan per check, holding the ports and locks the
-    # next check needs. This diagnostic reported ten healthy servers as broken
-    # before that was fixed.
-    if (-not $proc.HasExited) {
-      try {
-        & taskkill.exe /T /F /PID $proc.Id *> $null
-      } catch { }
-      try { if (-not $proc.WaitForExit(5000)) { $proc.Kill() } } catch { }
-    }
-    $proc.Dispose()
-  }
+  $spec = @{ command = $exe; args = $argv; timeout = $TimeoutSeconds } | ConvertTo-Json -Depth 4 -Compress
+  $encoded = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($spec))
+  $raw = @(& $python $probe --spec $encoded 2>&1)
+  $exitCode = $LASTEXITCODE
+  $json = @($raw | Where-Object { ([string]$_).TrimStart().StartsWith('{') } | Select-Object -Last 1)
+  if (-not $json.Count) { return @{ Ok = $false; Reason = 'MCP probe returned no JSON result' } }
+  $result = ([string]$json[0]) | ConvertFrom-Json
+  if ($exitCode -ne 0 -or -not $result.ok) { return @{ Ok = $false; Reason = $result.reason } }
+  return @{ Ok = $true; Protocol = $result.protocol; ServerName = $result.server_name; ToolCount = $result.tool_count }
 }
 
 if ($Path) {
-  if (-not (Test-V5Path -LiteralPath $Path -PathType Container)) { throw "-Path does not exist: $Path" }
+  if (-not (Test-UabsPath -LiteralPath $Path -PathType Container)) { throw "-Path does not exist: $Path" }
   $Path = (Resolve-Path -LiteralPath $Path).Path.TrimEnd('\', '/')
 }
 $servers = if ($Provider -eq 'Hermes') { @(Get-HermesServers) } else { @(Get-ServersFromConfig -Provider $Provider -ProjectPath $Path) }
 if ($Name) { $servers = @($servers | Where-Object { $_.id -eq $Name }) }
-if (-not $servers.Count) { Write-Host "No matching servers in the $Provider config."; exit 0 }
+if (-not $servers.Count) {
+  Write-Host "No matching servers in the $Provider config."
+  if ($RequireMatch) { exit 1 }
+  exit 0
+}
 
 Write-Host ("MCP handshake: {0} ({1} server(s))" -f $Provider, $servers.Count) -ForegroundColor Cyan
 if ($Path) { Write-Host ("  as a session opened in {0}" -f $Path) -ForegroundColor DarkGray }

@@ -3,7 +3,7 @@
   Install the MCP servers that most directly raise one-shot success.
 
 .DESCRIPTION
-  These two were chosen against a single question: what actually makes the
+  These three were chosen against a single question: what actually makes the
   first attempt correct, rather than making the agent feel more capable?
 
   context7      Live, versioned library and API documentation with citations.
@@ -24,6 +24,9 @@
                 Dependabot and security findings. Turns "push and hope" into
                 something the agent can verify it actually did.
 
+  headroom      Context inspection/compression tools. Registered for every
+                provider when the installed command is available.
+
   These two are always on because they apply to every task. Everything else
   this pack can wire is a capability profile in BUNDLED-TOOLS/PROFILES.json,
   registered by TOOLS\Set-McpProfile.ps1 only when a project needs it -- MCP
@@ -34,7 +37,7 @@
   ships Windows binaries rather than an npm package, so it is installed from the
   pack's SHA-pinned offline asset and registered by absolute path.
 
-  All config writing lives in TOOLS\V7-Mcp-Write.ps1, shared with
+  All config writing lives in TOOLS\UABS-Mcp-Write.ps1, shared with
   Set-McpProfile.ps1. Four providers keep MCP servers in three different shapes
   and every bug in this area has been a bug in one shape that the other three
   did not have; two scripts writing configs meant finding each one twice.
@@ -59,7 +62,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-. (Join-Path $PSScriptRoot 'V7-Mcp-Write.ps1')
+. (Join-Path $PSScriptRoot 'UABS-Mcp-Write.ps1')
 
 # Accept both -Providers Claude,Codex (comma string, e.g. via -File) and
 # -Providers @('Claude','Codex').
@@ -80,19 +83,19 @@ if (-not $hasNpx) {
 # Resolve the official GitHub MCP server, installed from the pack's offline
 # asset by the AIO's zip-extract path. Absent (component not installed, or a
 # skills-only run) means the entry is skipped, not guessed at.
-$ghExe = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5\github-mcp-server\github-mcp-server.exe'
+$ghExe = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\github-mcp-server\github-mcp-server.exe'
 
 # A machine installed before 7.9.7 still has sequential-thinking registered.
 # Say so, with the number and the command -- do not silently remove a server the
 # user may be relying on, and do not silently keep charging them for it either.
-function Show-V5SequentialThinkingNotice {
+function Show-UabsSequentialThinkingNotice {
   $found = @()
-  foreach ($t in (Get-V5McpTargets).GetEnumerator()) {
+  foreach ($t in (Get-UabsMcpTargets).GetEnumerator()) {
     if (-not (Test-Path -LiteralPath $t.Value.Path -PathType Leaf)) { continue }
     $text = [IO.File]::ReadAllText($t.Value.Path)
     if ($text -match 'server-sequential-thinking') { $found += $t.Key }
   }
-  $hp = Get-V5HermesPaths
+  $hp = Get-UabsHermesPaths
   if ((Test-Path -LiteralPath $hp.Config -PathType Leaf) -and
       ([IO.File]::ReadAllText($hp.Config) -match 'server-sequential-thinking')) { $found += 'Hermes' }
   if (-not $found.Count) { return }
@@ -131,6 +134,19 @@ $servers = @(
   }
 )
 
+$headroom = $null
+try { $headroom = (Get-Command headroom -ErrorAction SilentlyContinue).Source } catch { }
+if (-not $headroom) { $headroom = [Environment]::GetEnvironmentVariable('HEADROOM_CMD', 'User') }
+if ($headroom -and (Test-Path -LiteralPath $headroom -PathType Leaf)) {
+  $servers += @{
+    id      = 'headroom'
+    command = $headroom
+    args    = @('mcp','serve')
+    note    = 'context inspection and compression'
+    key     = $null
+  }
+}
+
 # A server whose command cannot run is worse than an absent one: the provider
 # shows no tools and says nothing about why. Drop those before writing configs.
 $servers = @($servers | Where-Object {
@@ -152,23 +168,23 @@ if (-not $servers) {
 $retiredLiterals = @('@modelcontextprotocol/server-github')
 $serverIds = @($servers | ForEach-Object { $_['id'] })
 
-$targets = Get-V5McpTargets
+$targets = Get-UabsMcpTargets
 
 foreach ($p in $Providers) {
   $p = $p.Trim()
   if (-not $p) { continue }
 
   if ($p -eq 'Hermes') {
-    $hpaths = Get-V5HermesPaths
+    $hpaths = Get-UabsHermesPaths
     if (-not (Test-Path -LiteralPath $hpaths.Exe -PathType Leaf)) { Write-Host 'Hermes  not installed, skipped'; continue }
     if (-not (Test-Path -LiteralPath $hpaths.Python -PathType Leaf)) { Write-Host 'Hermes  Python runtime missing, skipped'; continue }
-    if (Test-V5HermesRetired -Literals $retiredLiterals) {
-      $retired = @(Remove-V5McpHermes -Ids $serverIds -CheckOnly:$CheckOnly)
+    if (Test-UabsHermesRetired -Literals $retiredLiterals) {
+      $retired = @(Remove-UabsMcpHermes -Ids $serverIds -CheckOnly:$CheckOnly)
       if ($retired.Count) {
         Write-Host ("{0,-7} retired {1} (upstream package withdrawn, rewriting the core)" -f $p, ($retired -join ', ')) -ForegroundColor Yellow
       }
     }
-    $addedH = @(Add-V5McpHermes -Servers $servers -Refresh:$Refresh -CheckOnly:$CheckOnly)
+    $addedH = @(Add-UabsMcpHermes -Servers $servers -Refresh:$Refresh -CheckOnly:$CheckOnly)
     if ($addedH.Count) { Write-Host ("{0,-7} {1} -> Hermes config (noninteractive)" -f $p, ($addedH -join ', ')) }
     else { Write-Host ("{0,-7} nothing to add" -f $p) }
     continue
@@ -180,9 +196,9 @@ foreach ($p in $Providers) {
   if (-not (Test-Path -LiteralPath $providerHome)) { Write-Host ("{0,-7} not installed, skipped" -f $p); continue }
 
   if ($t.Style -eq 'json') {
-    $retired = @(Remove-V5McpJson -Path $t.Path -Section $t.Section -MatchLiterals $retiredLiterals -CheckOnly:$CheckOnly)
+    $retired = @(Remove-UabsMcpJson -Path $t.Path -Section $t.Section -MatchLiterals $retiredLiterals -CheckOnly:$CheckOnly)
     if ($retired.Count) { Write-Host ("{0,-7} retired {1} (upstream package withdrawn)" -f $p, ($retired -join ', ')) -ForegroundColor Yellow }
-    $added = @(Add-V5McpJson -Path $t.Path -Section $t.Section -Servers $servers -Provider $p -Refresh:$Refresh -CheckOnly:$CheckOnly)
+    $added = @(Add-UabsMcpJson -Path $t.Path -Section $t.Section -Servers $servers -Provider $p -Refresh:$Refresh -CheckOnly:$CheckOnly)
     if ($added.Count) { Write-Host ("{0,-7} {1} -> {2}" -f $p, ($added -join ', '), $t.Path) }
     else { Write-Host ("{0,-7} nothing to add" -f $p) }
 
@@ -191,15 +207,15 @@ foreach ($p in $Providers) {
       # Merge the same entries there so desktop-only users get the servers.
       $desktopCfg = Get-ClaudeDesktopConfigPath
       if ($desktopCfg) {
-        [void](Remove-V5McpJson -Path $desktopCfg -Section 'mcpServers' -MatchLiterals $retiredLiterals -CheckOnly:$CheckOnly)
-        $addedD = @(Add-V5McpJson -Path $desktopCfg -Section 'mcpServers' -Servers $servers -Provider $p -Refresh:$Refresh -CheckOnly:$CheckOnly)
+        [void](Remove-UabsMcpJson -Path $desktopCfg -Section 'mcpServers' -MatchLiterals $retiredLiterals -CheckOnly:$CheckOnly)
+        $addedD = @(Add-UabsMcpJson -Path $desktopCfg -Section 'mcpServers' -Servers $servers -Provider $p -Refresh:$Refresh -CheckOnly:$CheckOnly)
         if ($addedD.Count) { Write-Host ("{0,-7} {1} -> {2} (Claude Desktop app)" -f $p, ($addedD -join ', '), $desktopCfg) }
       }
     }
     continue
   }
 
-  $retired = @(Remove-V5McpToml -Path $t.Path -Section $t.Section -MatchLiterals $retiredLiterals -CheckOnly:$CheckOnly)
+  $retired = @(Remove-UabsMcpToml -Path $t.Path -Section $t.Section -MatchLiterals $retiredLiterals -CheckOnly:$CheckOnly)
   if ($retired.Count) { Write-Host ("{0,-7} retired {1} (upstream package withdrawn)" -f $p, ($retired -join ', ')) -ForegroundColor Yellow }
 
   # Grok can read ~/.claude.json, but only while its Claude-compat MCP cell is
@@ -208,7 +224,7 @@ foreach ($p in $Providers) {
   # Grok ended up with no github and no sequential-thinking.
   $tomlServers = $servers
   if ($p -eq 'Grok') {
-    if (Test-V5GrokInheritsClaudeMcp) {
+    if (Test-UabsGrokInheritsClaudeMcp) {
       $claudeJson = Join-Path $env:USERPROFILE '.claude.json'
       $claudeHas = @()
       if (Test-Path -LiteralPath $claudeJson) {
@@ -229,7 +245,7 @@ foreach ($p in $Providers) {
     $grokText = if (Test-Path -LiteralPath $t.Path) { [IO.File]::ReadAllText($t.Path) } else { '' }
     $newOnes = @($tomlServers | Where-Object { $grokText -notmatch [regex]::Escape("[$($t.Section).$($_['id'])]") })
     if ($newOnes.Count) {
-      $allowed = @(Select-V5WithinGrokBudget -Servers $newOnes)
+      $allowed = @(Select-UabsWithinGrokBudget -Servers $newOnes)
       $allowedIds = @($allowed | ForEach-Object { $_['id'] })
       $tomlServers = @($tomlServers | Where-Object {
         ($grokText -match [regex]::Escape("[$($t.Section).$($_['id'])]")) -or ($allowedIds -contains $_['id'])
@@ -239,7 +255,7 @@ foreach ($p in $Providers) {
 
   $added = @()
   if ($tomlServers.Count) {
-    $added = @(Add-V5McpToml -Path $t.Path -Section $t.Section -Servers $tomlServers -Provider $p -Refresh:$Refresh -CheckOnly:$CheckOnly -GrokTimeout:($p -eq 'Grok'))
+    $added = @(Add-UabsMcpToml -Path $t.Path -Section $t.Section -Servers $tomlServers -Provider $p -Refresh:$Refresh -CheckOnly:$CheckOnly -GrokTimeout:($p -eq 'Grok'))
   }
   if ($added.Count) { Write-Host ("{0,-7} {1} -> {2}" -f $p, ($added -join ', '), $t.Path) }
   else { Write-Host ("{0,-7} nothing to add" -f $p) }
@@ -251,7 +267,7 @@ Write-Host '  setx CONTEXT7_API_KEY "<key>"                 https://context7.com
 Write-Host '  setx GITHUB_PERSONAL_ACCESS_TOKEN "<token>"   github.com/settings/tokens'
 Write-Host 'Restart each AI app, then check /mcp.'
 Write-Host ''
-Show-V5SequentialThinkingNotice
+Show-UabsSequentialThinkingNotice
 Write-Host ''
 Write-Host 'Capability profiles (browser, Serena, Blender, Godot, Unity, reasoning) are'
 Write-Host 'off by default and wired for one project. See what applies to a project:'

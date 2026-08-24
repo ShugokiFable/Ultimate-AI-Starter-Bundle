@@ -4,7 +4,7 @@
 
 .DESCRIPTION
   Add-Reasoning-MCPs.ps1 and Set-McpProfile.ps1 both write provider configs
-  through TOOLS\V7-Mcp-Write.ps1. Every config-writing bug this pack has shipped
+  through TOOLS\UABS-Mcp-Write.ps1. Every config-writing bug this pack has shipped
   was a bug in one of the three config shapes that the other two did not have,
   and each was found on a user's machine rather than in a test:
 
@@ -24,7 +24,7 @@ param([string]$PackRoot)
 $ErrorActionPreference = 'Stop'
 if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
 
-. (Join-Path $PackRoot 'TOOLS\V7-Mcp-Write.ps1')
+. (Join-Path $PackRoot 'TOOLS\UABS-Mcp-Write.ps1')
 
 $script:fail = 0
 function Good($m) { Write-Host "  ok   $m" -ForegroundColor Green }
@@ -100,7 +100,7 @@ $jsonPath = Join-Path $sandbox 'claude.json'
 Set-Utf8NoBom -Path $jsonPath -Text '{"mcpServers":{"keepme":{"command":"x","args":[]}},"otherKey":123}'
 
 $oneArg = @{ id = 'blender'; command = 'uvx'; args = @('blender-mcp'); note = 'n'; key = $null }
-$added = @(Add-V5McpJson -Path $jsonPath -Section 'mcpServers' -Servers @($oneArg) -Provider 'Claude')
+$added = @(Add-UabsMcpJson -Path $jsonPath -Section 'mcpServers' -Servers @($oneArg) -Provider 'Claude')
 Is $added.Count 1 'adds a server'
 
 $read = [IO.File]::ReadAllText($jsonPath) | ConvertFrom-Json
@@ -112,10 +112,10 @@ else { Bad ("single-element args collapsed to {0}" -f $read.mcpServers.blender.a
 Is $read.otherKey 123 'unrelated top-level keys survive'
 Is $read.mcpServers.keepme.command 'x' 'unrelated servers survive'
 
-$again = @(Add-V5McpJson -Path $jsonPath -Section 'mcpServers' -Servers @($oneArg) -Provider 'Claude')
+$again = @(Add-UabsMcpJson -Path $jsonPath -Section 'mcpServers' -Servers @($oneArg) -Provider 'Claude')
 Is $again.Count 0 'a declared server is left alone without -Refresh'
 
-$dropped = @(Remove-V5McpJson -Path $jsonPath -Section 'mcpServers' -Ids @('blender'))
+$dropped = @(Remove-UabsMcpJson -Path $jsonPath -Section 'mcpServers' -Ids @('blender'))
 Is $dropped.Count 1 'removes by id'
 $read = [IO.File]::ReadAllText($jsonPath) | ConvertFrom-Json
 if ($read.mcpServers.PSObject.Properties.Name -contains 'blender') { Bad 'removed server is still declared' } else { Good 'removed server is gone' }
@@ -139,7 +139,7 @@ args = ["-y", "@modelcontextprotocol/server-github"]
 "@
 
 $winSrv = @{ id = 'serena'; command = 'C:\Users\x\.local\bin\serena.exe'; args = @('start-mcp-server', '--context', 'codex'); note = 'lsp'; key = $null }
-[void](Add-V5McpToml -Path $tomlPath -Section 'mcp_servers' -Servers @($winSrv) -Provider 'Codex')
+[void](Add-UabsMcpToml -Path $tomlPath -Section 'mcp_servers' -Servers @($winSrv) -Provider 'Codex')
 $text = [IO.File]::ReadAllText($tomlPath)
 
 # TOML escapes a backslash as exactly two. Four parses back to a doubled
@@ -149,7 +149,7 @@ else { Bad ("backslash escaping is wrong: " + (($text -split "`r?`n" | Where-Obj
 
 # The bug this whole gate exists for: `args = ["-y", ...]` contains a '[', so a
 # table matcher that ends at the next bracket never sees the package string.
-$retired = @(Remove-V5McpToml -Path $tomlPath -Section 'mcp_servers' -MatchLiterals @('@modelcontextprotocol/server-github'))
+$retired = @(Remove-UabsMcpToml -Path $tomlPath -Section 'mcp_servers' -MatchLiterals @('@modelcontextprotocol/server-github'))
 Is $retired.Count 1 'finds a retired literal past the bracket inside args'
 Is $retired[0] 'dead' 'names the right table'
 
@@ -172,7 +172,7 @@ TOKEN = "abc"
 command = "after"
 args = []
 "@
-$dropped = @(Remove-V5McpToml -Path $tomlPath -Section 'mcp_servers' -Ids @('withenv'))
+$dropped = @(Remove-UabsMcpToml -Path $tomlPath -Section 'mcp_servers' -Ids @('withenv'))
 $text = [IO.File]::ReadAllText($tomlPath)
 if ($text -match 'withenv') { Bad 'sub-table orphaned by parent removal' } else { Good 'sub-table removed with its parent' }
 if ($text -match '\[mcp_servers\.after\]') { Good 'the table after a removed family survived' } else { Bad 'removal ate the following table' }
@@ -183,39 +183,45 @@ $envVar = 'UABS_MCP_GATE_TOKEN'
 try {
   $keyed = @{ id = 'keyed'; command = 'npx'; args = @('-y', 'k@1.0.0'); note = 'n'; key = $envVar }
   Set-Utf8NoBom -Path $tomlPath -Text ''
-  [void](Add-V5McpToml -Path $tomlPath -Section 'mcp_servers' -Servers @($keyed) -Provider 'Codex')
+  [void](Add-UabsMcpToml -Path $tomlPath -Section 'mcp_servers' -Servers @($keyed) -Provider 'Codex')
   $text = [IO.File]::ReadAllText($tomlPath)
   if ($text -match '\[mcp_servers\.keyed\.env\]' -and $text -match 'secret-value') { Good 'a set key is written into an env sub-table' }
   else { Bad 'env sub-table missing for a set key' }
 } finally { [Environment]::SetEnvironmentVariable($envVar, $null) }
 
 Set-Utf8NoBom -Path $tomlPath -Text ''
-[void](Add-V5McpToml -Path $tomlPath -Section 'mcp_servers' -Servers @($keyed) -Provider 'Codex')
+[void](Add-UabsMcpToml -Path $tomlPath -Section 'mcp_servers' -Servers @($keyed) -Provider 'Codex')
 $text = [IO.File]::ReadAllText($tomlPath)
 if ($text -match '\.env\]') { Bad 'env sub-table written for an unset variable' } else { Good 'no env sub-table when the variable is unset' }
 
 # ------------------------------------------------------------ requirements ----
 Section 'requirement gating'
 
-Is (Expand-V5Template -Text '{project}\Library\x.exe' -ProjectPath 'C:\proj') 'C:\proj\Library\x.exe' '{project} expands'
-Is (Expand-V5Template -Text '{project}\x' -ProjectPath '') '' '{project} with no project resolves to empty'
+Is (Expand-UabsTemplate -Text '{project}\Library\x.exe' -ProjectPath 'C:\proj') 'C:\proj\Library\x.exe' '{project} expands'
+Is (Expand-UabsTemplate -Text '{project}\x' -ProjectPath '') '' '{project} with no project resolves to empty'
 
 $noCmd = @{ id = 'x'; command = 'q'; args = @(); note = 'n'; requires = @{ command = 'definitely-not-a-real-command-9f3a' } }
-$r = Test-V5ServerRequirement -Server $noCmd -ProjectPath ''
+$r = Test-UabsServerRequirement -Server $noCmd -ProjectPath ''
 Is $r.Ok $false 'a missing command fails the gate'
 if ($r.Reason -match 'definitely-not-a-real-command') { Good 'the reason names the missing command' } else { Bad "reason is not specific: $($r.Reason)" }
 
 $noEnv = @{ id = 'x'; command = 'q'; args = @(); note = 'n'; requires = @{ env = 'UABS_DEFINITELY_UNSET_9F3A' } }
-Is (Test-V5ServerRequirement -Server $noEnv -ProjectPath '').Ok $false 'an unset key variable fails the gate'
+Is (Test-UabsServerRequirement -Server $noEnv -ProjectPath '').Ok $false 'an unset key variable fails the gate'
 
 $noProj = @{ id = 'x'; command = 'q'; args = @(); note = 'n'; requires = @{ project_rel = 'Library\nope.exe' } }
-Is (Test-V5ServerRequirement -Server $noProj -ProjectPath $sandbox).Ok $false 'a missing project file fails the gate'
+Is (Test-UabsServerRequirement -Server $noProj -ProjectPath $sandbox).Ok $false 'a missing project file fails the gate'
 
 $ok = @{ id = 'x'; command = 'q'; args = @(); note = 'n' }
-Is (Test-V5ServerRequirement -Server $ok -ProjectPath '').Ok $true 'no requirements means ready'
+Is (Test-UabsServerRequirement -Server $ok -ProjectPath '').Ok $true 'no requirements means ready'
 
 # ----------------------------------------------------------------- Hermes ----
 Section 'Hermes'
+Is (ConvertTo-UabsJsonArray @('one')) '["one"]' 'one Hermes id stays a JSON array'
+Is (ConvertTo-UabsJsonArray @('one','two')) '["one","two"]' 'multiple Hermes ids stay a JSON array'
+$oneArgServer = @{ args=@('only'); key=$null }
+Is (ConvertTo-Json -InputObject (Resolve-UabsServerArgs -Server $oneArgServer -Provider 'Hermes') -Compress) '["only"]' 'one Hermes argument stays a flat JSON array'
+$twoArgServer = @{ args=@('one','two'); key=$null }
+Is (ConvertTo-Json -InputObject (Resolve-UabsServerArgs -Server $twoArgServer -Provider 'Hermes') -Compress) '["one","two"]' 'multiple Hermes arguments stay a flat JSON array'
 
 $fakeHermes = Join-Path $sandbox 'hermes'
 New-Item -ItemType Directory -Force -Path $fakeHermes | Out-Null
@@ -234,10 +240,10 @@ mcp_servers:
 "@
   # `mcp list` prints names, never commands, so it can never reveal a withdrawn
   # package. Reading the stored config can.
-  Is (Test-V5HermesRetired -Literals @('@modelcontextprotocol/server-github')) $true 'detects a retired package in the stored config'
-  Is (Test-V5HermesRetired -Literals @('something-else-entirely')) $false 'does not fire on an unrelated literal'
+  Is (Test-UabsHermesRetired -Literals @('@modelcontextprotocol/server-github')) $true 'detects a retired package in the stored config'
+  Is (Test-UabsHermesRetired -Literals @('something-else-entirely')) $false 'does not fire on an unrelated literal'
 
-  $targets = @(Remove-V5McpHermes -Ids @('github', 'context7') -CheckOnly)
+  $targets = @(Remove-UabsMcpHermes -Ids @('github', 'context7') -CheckOnly)
   Is ($targets -join ',') 'github' 'names only the ids actually declared'
 } finally {
   if ($null -eq $savedHome) { Remove-Item Env:HERMES_HOME -ErrorAction SilentlyContinue } else { $env:HERMES_HOME = $savedHome }
@@ -250,10 +256,10 @@ Section 'the same server under a different name'
 # configuration and blind to one case: the same package already declared under
 # another name. Adding by catalog id gave Hermes both `playwright` and
 # `playwright-mcp` -- two entries, two handshakes, one server each.
-Is (Get-V5NpxPackageBase -Arguments @('-y', '@playwright/mcp@0.0.79')) '@playwright/mcp' 'scoped package base, version dropped'
-Is (Get-V5NpxPackageBase -Arguments @('-y', 'firecrawl-mcp@3.24.0')) 'firecrawl-mcp' 'unscoped package base'
-Is (Get-V5NpxPackageBase -Arguments @('-y', 'shadcn@4.18.0', 'mcp')) 'shadcn' 'the first non-flag argument wins'
-Is (Get-V5NpxPackageBase -Arguments @()) '' 'no arguments means no package'
+Is (Get-UabsNpxPackageBase -Arguments @('-y', '@playwright/mcp@0.0.79')) '@playwright/mcp' 'scoped package base, version dropped'
+Is (Get-UabsNpxPackageBase -Arguments @('-y', 'firecrawl-mcp@3.24.0')) 'firecrawl-mcp' 'unscoped package base'
+Is (Get-UabsNpxPackageBase -Arguments @('-y', 'shadcn@4.18.0', 'mcp')) 'shadcn' 'the first non-flag argument wins'
+Is (Get-UabsNpxPackageBase -Arguments @()) '' 'no arguments means no package'
 
 $yaml = @"
 mcp_servers:
@@ -266,14 +272,14 @@ mcp_servers:
     command: x
     args: []
 "@
-Is (Find-V5ServerByPackage -ConfigText $yaml -PackageBase '@playwright/mcp') 'playwright' 'finds a YAML entry by package, whatever it is named'
-Is (Find-V5ServerByPackage -ConfigText $yaml -PackageBase 'firecrawl-mcp') '' 'does not invent a match'
+Is (Find-UabsServerByPackage -ConfigText $yaml -PackageBase '@playwright/mcp') 'playwright' 'finds a YAML entry by package, whatever it is named'
+Is (Find-UabsServerByPackage -ConfigText $yaml -PackageBase 'firecrawl-mcp') '' 'does not invent a match'
 
 # A pin change must still count as the same server, or every bump adds a copy.
-Is (Find-V5ServerByPackage -ConfigText $yaml -PackageBase (Get-V5NpxPackageBase -Arguments @('-y','@playwright/mcp@0.0.79'))) 'playwright' 'a different pin is still the same server'
+Is (Find-UabsServerByPackage -ConfigText $yaml -PackageBase (Get-UabsNpxPackageBase -Arguments @('-y','@playwright/mcp@0.0.79'))) 'playwright' 'a different pin is still the same server'
 
 $json = '{"mcpServers":{"web":{"command":"npx","args":["-y","@playwright/mcp@0.0.79"]},"other":{"command":"z","args":[]}}}'
-Is (Find-V5ServerByPackage -ConfigText $json -PackageBase '@playwright/mcp') 'web' 'finds a JSON entry by package'
+Is (Find-UabsServerByPackage -ConfigText $json -PackageBase '@playwright/mcp') 'web' 'finds a JSON entry by package'
 
 # ------------------------------------------------------------ Grok budget ----
 Section 'Grok inheritance and budget'
@@ -292,18 +298,18 @@ try {
   $env:USERPROFILE = $grokRoot
 
   Set-Utf8NoBom -Path $grokCfg -Text "[compat.claude]`r`nmcps = false`r`n"
-  Is (Test-V5GrokInheritsClaudeMcp) $false 'mcps = false means Grok inherits nothing'
+  Is (Test-UabsGrokInheritsClaudeMcp) $false 'mcps = false means Grok inherits nothing'
 
   Set-Utf8NoBom -Path $grokCfg -Text "[compat.claude]`r`nmcps = true`r`n"
-  Is (Test-V5GrokInheritsClaudeMcp) $true 'mcps = true means Grok does inherit'
+  Is (Test-UabsGrokInheritsClaudeMcp) $true 'mcps = true means Grok does inherit'
 
   # No flag at all is grok-cli's own default, which is inheritance on.
   Set-Utf8NoBom -Path $grokCfg -Text "[general]`r`ntheme = `"dark`"`r`n"
-  Is (Test-V5GrokInheritsClaudeMcp) $true 'no compat cell falls back to the CLI default'
+  Is (Test-UabsGrokInheritsClaudeMcp) $true 'no compat cell falls back to the CLI default'
 
   $body = "[mcp_servers.a]`r`ncommand = `"a`"`r`nargs = []`r`n[mcp_servers.b]`r`ncommand = `"b`"`r`nargs = []`r`n"
   Set-Utf8NoBom -Path $grokCfg -Text $body
-  Is (Get-V5GrokMcpCount) 2 'counts declared servers'
+  Is (Get-UabsGrokMcpCount) 2 'counts declared servers'
 
   # The budget used to be enforced for exactly one server by name while every
   # other path added freely. grok-cli wedges at eight running.
@@ -312,9 +318,9 @@ try {
     @{ id = 'y'; command = 'c'; args = @(); note = 'n' },
     @{ id = 'z'; command = 'c'; args = @(); note = 'n' }
   )
-  Is (@(Select-V5WithinGrokBudget -Servers $three -Budget 6)).Count 3 'all three fit under a budget of 6'
-  Is (@(Select-V5WithinGrokBudget -Servers $three -Budget 4)).Count 2 'only the ones that fit are added'
-  Is (@(Select-V5WithinGrokBudget -Servers $three -Budget 2)).Count 0 'nothing is added once the budget is spent'
+  Is (@(Select-UabsWithinGrokBudget -Servers $three -Budget 6)).Count 3 'all three fit under a budget of 6'
+  Is (@(Select-UabsWithinGrokBudget -Servers $three -Budget 4)).Count 2 'only the ones that fit are added'
+  Is (@(Select-UabsWithinGrokBudget -Servers $three -Budget 2)).Count 0 'nothing is added once the budget is spent'
 } finally {
   $env:USERPROFILE = $savedProfile
 }
@@ -377,7 +383,7 @@ $setProfile = Join-Path $PackRoot 'TOOLS\Set-McpProfile.ps1'
 if (-not (Test-Path -LiteralPath $setProfile -PathType Leaf)) {
   Bad 'TOOLS\Set-McpProfile.ps1 missing'
 } else {
-  $out = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $setProfile -List -PackRoot $PackRoot 2>&1 | Out-String
+  $out = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $setProfile -List -PackRoot $PackRoot 2>&1 | Out-String
   if ($LASTEXITCODE -eq 0) { Good '-List exits 0' } else { Bad "-List exited $LASTEXITCODE" }
   foreach ($needle in 'code-intel', 'engine-blender', 'not shipped', 'INSTALLED', 'ENABLED') {
     if ($out -match [regex]::Escape($needle)) { Good "-List reports $needle" } else { Bad "-List output has no $needle" }
@@ -387,23 +393,23 @@ if (-not (Test-Path -LiteralPath $setProfile -PathType Leaf)) {
 # Both writers must share one implementation. Two copies means every bug in
 # this file has to be found twice.
 $reasoning = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\Add-Reasoning-MCPs.ps1'))
-foreach ($needle in 'V7-Mcp-Write.ps1', 'Add-V5McpJson', 'Add-V5McpToml') {
+foreach ($needle in 'UABS-Mcp-Write.ps1', 'Add-UabsMcpJson', 'Add-UabsMcpToml') {
   if ($reasoning -match [regex]::Escape($needle)) { Good "Add-Reasoning-MCPs uses $needle" } else { Bad "Add-Reasoning-MCPs does not use $needle" }
 }
 if ($reasoning -match "'y'\s*\|\s*&\s*\`$hx mcp add") { Bad 'reasoning-MCP wiring still hides a Hermes interactive prompt' }
 else { Good 'no hidden interactive Hermes prompt' }
 
 
-function ConvertTo-V5TestHashtable($InputObject) {
+function ConvertTo-UabsTestHashtable($InputObject) {
   <# The writer takes hashtables so it can ask .Contains() about optional keys;
      ConvertFrom-Json on 5.1 produces PSCustomObjects. #>
   if ($null -eq $InputObject) { return $null }
   if ($InputObject -is [string] -or $InputObject.GetType().IsValueType) { return $InputObject }
   if ($InputObject -is [System.Collections.IEnumerable] -and $InputObject -isnot [System.Collections.IDictionary]) {
-    return @(foreach ($i in $InputObject) { ConvertTo-V5TestHashtable $i })
+    return @(foreach ($i in $InputObject) { ConvertTo-UabsTestHashtable $i })
   }
   $out = @{}
-  foreach ($p in $InputObject.PSObject.Properties) { $out[$p.Name] = ConvertTo-V5TestHashtable $p.Value }
+  foreach ($p in $InputObject.PSObject.Properties) { $out[$p.Name] = ConvertTo-UabsTestHashtable $p.Value }
   return $out
 }
 
@@ -417,10 +423,10 @@ Section 'profiles are wired for one project, not for the machine'
 # see that. This section drives the real front-end script against a fake
 # USERPROFILE and LOCALAPPDATA and reads the configs it produced.
 
-$psExe = Join-Path $PSHOME 'powershell.exe'
+$psExe = (Get-Command powershell.exe -ErrorAction Stop).Source
 $setProfileScript = Join-Path $PackRoot 'TOOLS\Set-McpProfile.ps1'
 
-function New-V5TestBox {
+function New-UabsTestBox {
   <# A machine: a home, a local-appdata, a code project and an unrelated one. #>
   $box = @{
     Root  = Join-Path $sandbox ('box-' + [guid]::NewGuid().ToString('N').Substring(0, 8))
@@ -446,7 +452,7 @@ function New-V5TestBox {
   return $box
 }
 
-function Invoke-V5Profile {
+function Invoke-UabsProfile {
   param($Box, [string[]]$Arguments)
   $saved = @{ U = $env:USERPROFILE; L = $env:LOCALAPPDATA; H = $env:HERMES_HOME; A = $env:APPDATA }
   try {
@@ -469,10 +475,10 @@ function Invoke-V5Profile {
   }
 }
 
-function Get-V5BoxClaude($Box) { [IO.File]::ReadAllText((Join-Path $Box.Home '.claude.json')) | ConvertFrom-Json }
-function Get-V5BoxText([string]$Path) { if (Test-Path -LiteralPath $Path -PathType Leaf) { [IO.File]::ReadAllText($Path) } else { '' } }
-function Test-V5BoxProjectServer($Box, [string]$Key, [string]$Id) {
-  $j = Get-V5BoxClaude $Box
+function Get-UabsBoxClaude($Box) { [IO.File]::ReadAllText((Join-Path $Box.Home '.claude.json')) | ConvertFrom-Json }
+function Get-UabsBoxText([string]$Path) { if (Test-Path -LiteralPath $Path -PathType Leaf) { [IO.File]::ReadAllText($Path) } else { '' } }
+function Test-UabsBoxProjectServer($Box, [string]$Key, [string]$Id) {
+  $j = Get-UabsBoxClaude $Box
   if (-not $j.projects -or ($j.projects.PSObject.Properties.Name -notcontains $Key)) { return $null }
   $p = $j.projects.$Key
   if (-not $p.mcpServers -or ($p.mcpServers.PSObject.Properties.Name -notcontains $Id)) { return $null }
@@ -480,11 +486,11 @@ function Test-V5BoxProjectServer($Box, [string]$Key, [string]$Id) {
 }
 
 # ---- a clean install enables nothing ---------------------------------------
-$box = New-V5TestBox
-$out = Invoke-V5Profile -Box $box -Arguments @('-List')
+$box = New-UabsTestBox
+$out = Invoke-UabsProfile -Box $box -Arguments @('-List')
 if ($out -match 'code-intel') { Good '-List names the renamed profile' } else { Bad "-List does not name code-intel: $out" }
 if ($out -notmatch 'code-deep') { Good '-List does not name the old id' } else { Bad '-List still names code-deep' }
-$claude = Get-V5BoxClaude $box
+$claude = Get-UabsBoxClaude $box
 if ($claude.mcpServers.PSObject.Properties.Name -notcontains 'serena') { Good 'a clean install leaves Serena unregistered machine-wide' }
 else { Bad 'Serena is registered machine-wide on a clean install' }
 
@@ -493,7 +499,7 @@ $before = @{}
 foreach ($f in @((Join-Path $box.Home '.claude.json'), (Join-Path $box.Home '.codex\config.toml'), (Join-Path $box.Home '.grok\config.toml'), (Join-Path $box.Home '.kimi-code\mcp.json'))) {
   $before[$f] = (Get-FileHash -LiteralPath $f -Algorithm MD5).Hash
 }
-[void](Invoke-V5Profile -Box $box -Arguments @('-Auto', '-Path', $box.Proj, '-CheckOnly'))
+[void](Invoke-UabsProfile -Box $box -Arguments @('-Auto', '-Path', $box.Proj, '-CheckOnly'))
 $changed = @($before.Keys | Where-Object { (Get-FileHash -LiteralPath $_ -Algorithm MD5).Hash -ne $before[$_] })
 if (-not $changed.Count) { Good '-CheckOnly changes no provider config' }
 else { Bad ("-CheckOnly wrote to: {0}" -f ($changed -join ', ')) }
@@ -501,9 +507,9 @@ if (-not (Test-Path -LiteralPath (Join-Path $box.Proj '.grok\config.toml'))) { G
 else { Bad '-CheckOnly created the project grok config' }
 
 # ---- -Auto on a detected project -------------------------------------------
-$out = Invoke-V5Profile -Box $box -Arguments @('-Auto', '-Path', $box.Proj)
+$out = Invoke-UabsProfile -Box $box -Arguments @('-Auto', '-Path', $box.Proj)
 
-$entry = Test-V5BoxProjectServer $box $box.Proj 'serena'
+$entry = Test-UabsBoxProjectServer $box $box.Proj 'serena'
 if ($entry) { Good 'Serena is registered for the detected project (Claude)' } else { Bad "Serena missing from projects['$($box.Proj)'] -- $out" }
 if ($entry -and (@($entry.args) -contains '--project') -and (@($entry.args) -contains $box.Proj)) { Good 'Serena is told which project' }
 else { Bad ("Serena did not get --project <path>: {0}" -f (@($entry.args) -join ' ')) }
@@ -512,44 +518,44 @@ else { Bad 'Claude did not get its own Serena context' }
 if ($entry -and (@($entry.args) -notcontains '--project-from-cwd')) { Good 'a project registration does not also guess from the cwd' }
 else { Bad 'both --project and --project-from-cwd were written' }
 
-$claude = Get-V5BoxClaude $box
+$claude = Get-UabsBoxClaude $box
 if ($claude.mcpServers.PSObject.Properties.Name -notcontains 'serena') { Good 'enabling for a project does not register Serena machine-wide' }
 else { Bad 'enabling for a project registered Serena machine-wide -- the 7.9.5 defect' }
 if ($claude.mcpServers.PSObject.Properties.Name -contains 'context7') { Good 'the always-on core is left alone' }
 else { Bad 'writing a profile removed an always-on server' }
 
-$grokProject = Get-V5BoxText (Join-Path $box.Proj '.grok\config.toml')
+$grokProject = Get-UabsBoxText (Join-Path $box.Proj '.grok\config.toml')
 if ($grokProject -match '\[mcp_servers\.serena\]') { Good 'Grok gets the project config file it actually supports' }
 else { Bad 'Grok project config has no serena entry' }
 if ($grokProject -match '"grok"') { Good 'Grok gets the grok context' } else { Bad 'Grok did not get its own Serena context' }
-if ((Get-V5BoxText (Join-Path $box.Home '.grok\config.toml')) -notmatch 'serena') { Good 'nothing went into the machine-wide Grok config' }
+if ((Get-UabsBoxText (Join-Path $box.Home '.grok\config.toml')) -notmatch 'serena') { Good 'nothing went into the machine-wide Grok config' }
 else { Bad 'Serena reached the machine-wide Grok config' }
 
 # Codex, Kimi and Hermes have no project-scoped MCP config. Skipping them with
 # the reason printed is the point; writing them machine-wide behind a
 # "project-scoped" comment is the bug.
-if ((Get-V5BoxText (Join-Path $box.Home '.codex\config.toml')) -notmatch 'serena') { Good 'Codex is not written machine-wide by a project enable' }
+if ((Get-UabsBoxText (Join-Path $box.Home '.codex\config.toml')) -notmatch 'serena') { Good 'Codex is not written machine-wide by a project enable' }
 else { Bad 'Serena reached the machine-wide Codex config' }
-if ((Get-V5BoxText (Join-Path $box.Home '.kimi-code\mcp.json')) -notmatch 'serena') { Good 'Kimi is not written machine-wide by a project enable' }
+if ((Get-UabsBoxText (Join-Path $box.Home '.kimi-code\mcp.json')) -notmatch 'serena') { Good 'Kimi is not written machine-wide by a project enable' }
 else { Bad 'Serena reached the machine-wide Kimi config' }
 if ($out -match 'no project-scoped MCP config') { Good 'the providers that cannot be scoped say so' }
 else { Bad "a provider was skipped without a reason: $out" }
-if ((Get-V5BoxText (Join-Path $box.Home '.codex\config.toml')) -match 'keepme') { Good 'an unrelated Codex server is untouched' }
+if ((Get-UabsBoxText (Join-Path $box.Home '.codex\config.toml')) -match 'keepme') { Good 'an unrelated Codex server is untouched' }
 else { Bad 'writing a profile removed an unrelated Codex server' }
 
 # ---- an unrelated project sees nothing --------------------------------------
-if (-not (Test-V5BoxProjectServer $box $box.Other 'serena')) { Good 'an unrelated project has no Serena entry' }
+if (-not (Test-UabsBoxProjectServer $box $box.Other 'serena')) { Good 'an unrelated project has no Serena entry' }
 else { Bad 'Serena leaked into an unrelated project' }
 if (-not (Test-Path -LiteralPath (Join-Path $box.Other '.grok\config.toml'))) { Good 'an unrelated project gets no grok config' }
 else { Bad 'a grok config appeared in an unrelated project' }
-$out = Invoke-V5Profile -Box $box -Arguments @('-Auto', '-Path', $box.Other)
+$out = Invoke-UabsProfile -Box $box -Arguments @('-Auto', '-Path', $box.Other)
 if ($out -match 'no profile markers found') { Good 'a project with no markers wires nothing' }
 else { Bad "an unmarked project matched a profile: $out" }
 
 # ---- repeated runs -----------------------------------------------------------
 $grokBefore = (Get-FileHash -LiteralPath (Join-Path $box.Proj '.grok\config.toml') -Algorithm MD5).Hash
-$out = Invoke-V5Profile -Box $box -Arguments @('-Auto', '-Path', $box.Proj)
-$grokText = Get-V5BoxText (Join-Path $box.Proj '.grok\config.toml')
+$out = Invoke-UabsProfile -Box $box -Arguments @('-Auto', '-Path', $box.Proj)
+$grokText = Get-UabsBoxText (Join-Path $box.Proj '.grok\config.toml')
 Is (@([regex]::Matches($grokText, '\[mcp_servers\.serena\]')).Count) 1 'a second run does not duplicate the TOML entry'
 if ((Get-FileHash -LiteralPath (Join-Path $box.Proj '.grok\config.toml') -Algorithm MD5).Hash -eq $grokBefore) { Good 'an identical re-run rewrites nothing' }
 else { Bad 'an identical re-run rewrote the project config' }
@@ -558,29 +564,29 @@ $baks = @(Get-ChildItem -LiteralPath (Join-Path $box.Proj '.grok') -Filter '*.ba
 if (-not $baks.Count) { Good 'no backup litter in the project directory' } else { Bad ("{0} .bak file(s) left in the project" -f $baks.Count) }
 if ($out -match 'already registered') { Good 'a re-run reports the profile as still registered' }
 else { Bad "a re-run lost track of the registration: $out" }
-$claudeServers = @((Get-V5BoxClaude $box).projects.$($box.Proj).mcpServers.PSObject.Properties.Name)
+$claudeServers = @((Get-UabsBoxClaude $box).projects.$($box.Proj).mcpServers.PSObject.Properties.Name)
 Is (@($claudeServers | Where-Object { $_ -eq 'serena' }).Count) 1 'a second run does not duplicate the JSON entry'
 
 # ---- -Disable ----------------------------------------------------------------
 # No -Path: every project the profile was enabled for. The cwd is not a default
 # for turning something off -- that swept a directory nobody asked about and
 # left the real registration in place.
-$out = Invoke-V5Profile -Box $box -Arguments @('-Disable', 'code-intel')
-if (-not (Test-V5BoxProjectServer $box $box.Proj 'serena')) { Good '-Disable with no -Path reaches the project it was enabled for' }
+$out = Invoke-UabsProfile -Box $box -Arguments @('-Disable', 'code-intel')
+if (-not (Test-UabsBoxProjectServer $box $box.Proj 'serena')) { Good '-Disable with no -Path reaches the project it was enabled for' }
 else { Bad '-Disable left the Claude project entry behind' }
-if ((Get-V5BoxText (Join-Path $box.Proj '.grok\config.toml')) -notmatch '\[mcp_servers\.serena\]') { Good '-Disable reaches the Grok project file' }
+if ((Get-UabsBoxText (Join-Path $box.Proj '.grok\config.toml')) -notmatch '\[mcp_servers\.serena\]') { Good '-Disable reaches the Grok project file' }
 else { Bad '-Disable left the Grok project entry behind' }
-if ((Get-V5BoxClaude $box).mcpServers.PSObject.Properties.Name -contains 'context7') { Good '-Disable leaves unrelated servers alone' }
+if ((Get-UabsBoxClaude $box).mcpServers.PSObject.Properties.Name -contains 'context7') { Good '-Disable leaves unrelated servers alone' }
 else { Bad '-Disable removed an unrelated server' }
 # The old id has to keep working, or every habit and script that names it breaks.
-$out = Invoke-V5Profile -Box $box -Arguments @('-Disable', 'code-deep')
+$out = Invoke-UabsProfile -Box $box -Arguments @('-Disable', 'code-deep')
 if ($out -match 'Disabling code-intel') { Good 'the old profile id still resolves' }
 else { Bad "the old profile id no longer resolves: $out" }
 
 # ---- -Global is an opt-in, and says what it costs ---------------------------
-$gbox = New-V5TestBox
-$out = Invoke-V5Profile -Box $gbox -Arguments @('-Enable', 'code-intel', '-Global')
-$g = (Get-V5BoxClaude $gbox).mcpServers
+$gbox = New-UabsTestBox
+$out = Invoke-UabsProfile -Box $gbox -Arguments @('-Enable', 'code-intel', '-Global')
+$g = (Get-UabsBoxClaude $gbox).mcpServers
 if ($g.PSObject.Properties.Name -contains 'serena') { Good '-Global does register machine-wide' } else { Bad "-Global registered nothing: $out" }
 # A baked absolute path in a machine-wide entry activates that one project in
 # every unrelated session. Serena's own flag for this is --project-from-cwd.
@@ -588,7 +594,7 @@ if (@($g.serena.args) -contains '--project-from-cwd') { Good '-Global follows th
 else { Bad ("machine-wide Serena did not get --project-from-cwd: {0}" -f (@($g.serena.args) -join ' ')) }
 if (@($g.serena.args) -notcontains '--project') { Good '-Global does not bake an absolute project path' }
 else { Bad 'a machine-wide entry baked one project path' }
-if ((Get-V5BoxText (Join-Path $gbox.Home '.codex\config.toml')) -match 'serena') { Good '-Global reaches the providers that have no project scope' }
+if ((Get-UabsBoxText (Join-Path $gbox.Home '.codex\config.toml')) -match 'serena') { Good '-Global reaches the providers that have no project scope' }
 else { Bad '-Global did not reach Codex' }
 if ($out -match 'machine-wide') { Good '-Global says what it costs' } else { Bad '-Global did not warn' }
 
@@ -597,49 +603,49 @@ if ($out -match 'machine-wide') { Good '-Global says what it costs' } else { Bad
 $cat = [IO.File]::ReadAllText((Join-Path $PackRoot 'BUNDLED-TOOLS\PROFILES.json')) | ConvertFrom-Json
 $unity = @($cat.profiles | Where-Object { $_.id -eq 'engine-unity' }).servers[0]
 $serenaDef = @($cat.profiles | Where-Object { $_.id -eq 'code-intel' }).servers[0]
-Is (Test-V5ServerIsProjectBound -Server (ConvertTo-V5TestHashtable $unity)) $true 'a {project} command is project-bound'
-Is (Test-V5ServerIsProjectBound -Server (ConvertTo-V5TestHashtable $serenaDef)) $false 'Serena is not project-bound by its command'
+Is (Test-UabsServerIsProjectBound -Server (ConvertTo-UabsTestHashtable $unity)) $true 'a {project} command is project-bound'
+Is (Test-UabsServerIsProjectBound -Server (ConvertTo-UabsTestHashtable $serenaDef)) $false 'Serena is not project-bound by its command'
 
 # ---- migrating a 7.9.5 machine ----------------------------------------------
 # The upgrade has to MOVE those entries, not just rename them in a state file.
-$mbox = New-V5TestBox
-$cj = Get-V5BoxClaude $mbox
+$mbox = New-UabsTestBox
+$cj = Get-UabsBoxClaude $mbox
 $cj.mcpServers | Add-Member -NotePropertyName 'serena' -NotePropertyValue ([pscustomobject]@{ command = 'serena.exe'; args = @('start-mcp-server') })
 Set-Utf8NoBom -Path (Join-Path $mbox.Home '.claude.json') -Text ($cj | ConvertTo-Json -Depth 20)
 Set-Utf8NoBom -Path (Join-Path $mbox.Home '.codex\config.toml') -Text (
   "[mcp_servers.keepme]`r`ncommand = `"keep`"`r`nargs = []`r`n`r`n[mcp_servers.serena]`r`ncommand = `"serena.exe`"`r`nargs = []`r`n")
-New-Item -ItemType Directory -Force -Path (Join-Path $mbox.Local 'Skyrim-AI-V5') | Out-Null
-Set-Utf8NoBom -Path (Join-Path $mbox.Local 'Skyrim-AI-V5\mcp-profiles.json') -Text (
+New-Item -ItemType Directory -Force -Path (Join-Path $mbox.Local 'Ultimate-AI-Starter-Bundle') | Out-Null
+Set-Utf8NoBom -Path (Join-Path $mbox.Local 'Ultimate-AI-Starter-Bundle\mcp-profiles.json') -Text (
   '{"code-deep":{"enabled_utc":"2026-08-21T00:00:00Z","servers":["serena"],"path":' + ($mbox.Proj | ConvertTo-Json) + '}}')
 
-$out = Invoke-V5Profile -Box $mbox -Arguments @('-Auto', '-Path', $mbox.Proj)
-$claude = Get-V5BoxClaude $mbox
+$out = Invoke-UabsProfile -Box $mbox -Arguments @('-Auto', '-Path', $mbox.Proj)
+$claude = Get-UabsBoxClaude $mbox
 if ($claude.mcpServers.PSObject.Properties.Name -notcontains 'serena') { Good 'the upgrade drops the machine-wide Claude registration' }
 else { Bad 'Serena is still registered machine-wide after upgrading' }
-if ((Get-V5BoxText (Join-Path $mbox.Home '.codex\config.toml')) -notmatch 'serena') { Good 'the upgrade drops the machine-wide Codex registration' }
+if ((Get-UabsBoxText (Join-Path $mbox.Home '.codex\config.toml')) -notmatch 'serena') { Good 'the upgrade drops the machine-wide Codex registration' }
 else { Bad 'Serena is still in the machine-wide Codex config after upgrading' }
-if ((Get-V5BoxText (Join-Path $mbox.Home '.codex\config.toml')) -match 'keepme') { Good 'the upgrade leaves unrelated Codex servers alone' }
+if ((Get-UabsBoxText (Join-Path $mbox.Home '.codex\config.toml')) -match 'keepme') { Good 'the upgrade leaves unrelated Codex servers alone' }
 else { Bad 'the upgrade removed an unrelated Codex server' }
-if (Test-V5BoxProjectServer $mbox $mbox.Proj 'serena') { Good 'the upgrade re-enables it for the project it was recorded against' }
+if (Test-UabsBoxProjectServer $mbox $mbox.Proj 'serena') { Good 'the upgrade re-enables it for the project it was recorded against' }
 else { Bad "the upgrade lost the registration entirely: $out" }
-$stateText = Get-V5BoxText (Join-Path $mbox.Local 'Skyrim-AI-V5\mcp-profiles.json')
+$stateText = Get-UabsBoxText (Join-Path $mbox.Local 'Ultimate-AI-Starter-Bundle\mcp-profiles.json')
 if ($stateText -match 'code-intel') { Good 'state carries the new profile id' } else { Bad 'state has no code-intel entry' }
 if ($stateText -notmatch 'code-deep') { Good 'state no longer carries the old id' } else { Bad 'state still carries code-deep' }
 if ($stateText -match '"schema"') { Good 'state is written in the new shape' } else { Bad 'state was not migrated' }
 
 # A machine whose recorded project no longer exists must not re-register blind.
-$dbox = New-V5TestBox
-New-Item -ItemType Directory -Force -Path (Join-Path $dbox.Local 'Skyrim-AI-V5') | Out-Null
+$dbox = New-UabsTestBox
+New-Item -ItemType Directory -Force -Path (Join-Path $dbox.Local 'Ultimate-AI-Starter-Bundle') | Out-Null
 # Not a hardcoded drive letter: this pack's own rule, and CI proved why -- a
 # path on Z:\ made Test-Path raise "Cannot find drive" on a runner that has no
 # Z:, and $ErrorActionPreference = 'Stop' turned that into a dead gate.
 $goneProject = Join-Path $dbox.Root 'was-a-project'
-Set-Utf8NoBom -Path (Join-Path $dbox.Local 'Skyrim-AI-V5\mcp-profiles.json') -Text (
+Set-Utf8NoBom -Path (Join-Path $dbox.Local 'Ultimate-AI-Starter-Bundle\mcp-profiles.json') -Text (
   '{"code-deep":{"enabled_utc":"2026-08-21T00:00:00Z","servers":["serena"],"path":' + ($goneProject | ConvertTo-Json) + '}}')
-$out = Invoke-V5Profile -Box $dbox -Arguments @('-Auto', '-Path', $dbox.Other)
+$out = Invoke-UabsProfile -Box $dbox -Arguments @('-Auto', '-Path', $dbox.Other)
 if ($out -match 'recorded project is gone') { Good 'a vanished project is reported, not re-registered' }
 else { Bad "a vanished recorded project was handled silently: $out" }
-if ((Get-V5BoxClaude $dbox).mcpServers.PSObject.Properties.Name -notcontains 'serena') { Good 'a vanished project does not fall back to machine-wide' }
+if ((Get-UabsBoxClaude $dbox).mcpServers.PSObject.Properties.Name -notcontains 'serena') { Good 'a vanished project does not fall back to machine-wide' }
 else { Bad 'a vanished project fell back to a machine-wide registration' }
 
 # The drive itself being gone is the harder case: Test-Path raises "Cannot find
@@ -653,22 +659,22 @@ $taken = @(Get-PSDrive -PSProvider FileSystem -ErrorAction SilentlyContinue | Fo
 $freeLetter = @([char[]]'QVWXY' | Where-Object { $taken -notcontains ([string]$_) } | Select-Object -First 1)[0]
 if (-not $freeLetter) { Bad 'no free drive letter to test the unmounted case with'; $freeLetter = 'Q' }
 $unmounted = ('{0}:\definitely-not-mounted\project' -f $freeLetter)
-Is (Test-V5Path -LiteralPath $unmounted -PathType Container) $false 'an unmounted drive answers no instead of throwing'
-Is (Test-V5Path -LiteralPath '' -PathType Leaf) $false 'an empty path answers no instead of throwing'
-$ubox = New-V5TestBox
-New-Item -ItemType Directory -Force -Path (Join-Path $ubox.Local 'Skyrim-AI-V5') | Out-Null
-Set-Utf8NoBom -Path (Join-Path $ubox.Local 'Skyrim-AI-V5\mcp-profiles.json') -Text (
+Is (Test-UabsPath -LiteralPath $unmounted -PathType Container) $false 'an unmounted drive answers no instead of throwing'
+Is (Test-UabsPath -LiteralPath '' -PathType Leaf) $false 'an empty path answers no instead of throwing'
+$ubox = New-UabsTestBox
+New-Item -ItemType Directory -Force -Path (Join-Path $ubox.Local 'Ultimate-AI-Starter-Bundle') | Out-Null
+Set-Utf8NoBom -Path (Join-Path $ubox.Local 'Ultimate-AI-Starter-Bundle\mcp-profiles.json') -Text (
   '{"code-deep":{"enabled_utc":"2026-08-21T00:00:00Z","servers":["serena"],"path":' + ($unmounted | ConvertTo-Json) + '}}')
 # -Auto is the path that reaches it: migration asks whether the recorded
 # project still exists before deciding to re-register it there.
-$out = Invoke-V5Profile -Box $ubox -Arguments @('-Auto', '-Path', $ubox.Other)
+$out = Invoke-UabsProfile -Box $ubox -Arguments @('-Auto', '-Path', $ubox.Other)
 if ($out -match 'recorded project is gone') { Good 'a state entry on an unmounted drive is reported, not fatal' }
 else { Bad ("a project on an unmounted drive broke the run: " + $out) }
 
 # ---- the Grok budget counts the project file too -----------------------------
 # grok-cli runs the union of ~/.grok/config.toml and <project>/.grok/config.toml,
 # so a ceiling counted over only the user file is a ceiling that does not hold.
-$bbox = New-V5TestBox
+$bbox = New-UabsTestBox
 $savedU = $env:USERPROFILE
 try {
   $env:USERPROFILE = $bbox.Home
@@ -676,11 +682,11 @@ try {
     "[mcp_servers.a]`r`ncommand = `"a`"`r`nargs = []`r`n[mcp_servers.b]`r`ncommand = `"b`"`r`nargs = []`r`n")
   New-Item -ItemType Directory -Force -Path (Join-Path $bbox.Proj '.grok') | Out-Null
   Set-Utf8NoBom -Path (Join-Path $bbox.Proj '.grok\config.toml') -Text "[mcp_servers.c]`r`ncommand = `"c`"`r`nargs = []`r`n"
-  Is (Get-V5GrokMcpCount) 2 'the user config alone counts two'
-  Is (Get-V5GrokMcpCount -ProjectPath $bbox.Proj) 3 'the project config counts toward the ceiling'
+  Is (Get-UabsGrokMcpCount) 2 'the user config alone counts two'
+  Is (Get-UabsGrokMcpCount -ProjectPath $bbox.Proj) 3 'the project config counts toward the ceiling'
   # The same server declared in both files is one server running, not two.
   Set-Utf8NoBom -Path (Join-Path $bbox.Proj '.grok\config.toml') -Text "[mcp_servers.b]`r`ncommand = `"b`"`r`nargs = []`r`n"
-  Is (Get-V5GrokMcpCount -ProjectPath $bbox.Proj) 2 'a server declared in both files is counted once'
+  Is (Get-UabsGrokMcpCount -ProjectPath $bbox.Proj) 2 'a server declared in both files is counted once'
 } finally { $env:USERPROFILE = $savedU }
 
 
@@ -691,23 +697,23 @@ Section 'a withdrawn profile, and the one that is deliberately machine-wide'
 # machines that enabled it: the entry keeps starting and keeps costing its tool
 # schemas, with nothing left in the catalog able to turn it off. Supabase was
 # withdrawn in 7.9.7, so this is that path.
-$wbox = New-V5TestBox
-$cj = Get-V5BoxClaude $wbox
+$wbox = New-UabsTestBox
+$cj = Get-UabsBoxClaude $wbox
 $cj.mcpServers | Add-Member -NotePropertyName 'supabase' -NotePropertyValue ([pscustomobject]@{ command = 'npx'; args = @('-y', '@supabase/mcp-server-supabase@0.11.0') })
 # ...and one the USER configured, under a different name, which must survive.
 $cj.mcpServers | Add-Member -NotePropertyName 'my-own-supabase' -NotePropertyValue ([pscustomobject]@{ command = 'npx'; args = @('-y', '@supabase/mcp-server-supabase@0.11.0') })
 Set-Utf8NoBom -Path (Join-Path $wbox.Home '.claude.json') -Text ($cj | ConvertTo-Json -Depth 20)
-New-Item -ItemType Directory -Force -Path (Join-Path $wbox.Local 'Skyrim-AI-V5') | Out-Null
-Set-Utf8NoBom -Path (Join-Path $wbox.Local 'Skyrim-AI-V5\mcp-profiles.json') -Text (
+New-Item -ItemType Directory -Force -Path (Join-Path $wbox.Local 'Ultimate-AI-Starter-Bundle') | Out-Null
+Set-Utf8NoBom -Path (Join-Path $wbox.Local 'Ultimate-AI-Starter-Bundle\mcp-profiles.json') -Text (
   '{"schema":2,"profiles":{"cloud":{"global":{"enabled_utc":"2026-08-21T00:00:00Z","servers":["supabase"],"providers":["Claude"]}}}}')
 
-$out = Invoke-V5Profile -Box $wbox -Arguments @('-Auto', '-Path', $wbox.Proj)
-$after = (Get-V5BoxClaude $wbox).mcpServers.PSObject.Properties.Name
+$out = Invoke-UabsProfile -Box $wbox -Arguments @('-Auto', '-Path', $wbox.Proj)
+$after = (Get-UabsBoxClaude $wbox).mcpServers.PSObject.Properties.Name
 if ($after -notcontains 'supabase') { Good 'a withdrawn profile is un-registered, not just forgotten' }
 else { Bad ("the withdrawn Supabase entry survived: " + $out) }
 if ($after -contains 'my-own-supabase') { Good 'a server the user configured themselves is untouched' }
 else { Bad 'the migration removed a server this pack never created' }
-$stateAfter = Get-V5BoxText (Join-Path $wbox.Local 'Skyrim-AI-V5\mcp-profiles.json')
+$stateAfter = Get-UabsBoxText (Join-Path $wbox.Local 'Ultimate-AI-Starter-Bundle\mcp-profiles.json')
 if ($stateAfter -notmatch '"cloud"') { Good 'the withdrawn profile leaves the state file' }
 else { Bad 'the withdrawn profile is still in state' }
 
@@ -715,20 +721,20 @@ else { Bad 'the withdrawn profile is still in state' }
 # detection markers precisely so that -Auto can never turn it on: a thinking aid
 # is not a property of a project, and ~1,146 tokens a turn is not something to
 # acquire by accident.
-$rbox = New-V5TestBox
-$out = Invoke-V5Profile -Box $rbox -Arguments @('-Auto', '-Path', $rbox.Proj)
-$rClaude = Get-V5BoxClaude $rbox
+$rbox = New-UabsTestBox
+$out = Invoke-UabsProfile -Box $rbox -Arguments @('-Auto', '-Path', $rbox.Proj)
+$rClaude = Get-UabsBoxClaude $rbox
 if ($rClaude.mcpServers.PSObject.Properties.Name -notcontains 'sequential-thinking') { Good '-Auto never enables the reasoning profile' }
 else { Bad '-Auto enabled a machine-wide profile from a project marker' }
-if (-not (Test-V5BoxProjectServer $rbox $rbox.Proj 'sequential-thinking')) { Good 'and it does not arrive project-scoped either' }
+if (-not (Test-UabsBoxProjectServer $rbox $rbox.Proj 'sequential-thinking')) { Good 'and it does not arrive project-scoped either' }
 else { Bad 'the reasoning profile was written into a project scope' }
 
-$out = Invoke-V5Profile -Box $rbox -Arguments @('-Enable', 'reasoning', '-Global')
-$rClaude = Get-V5BoxClaude $rbox
+$out = Invoke-UabsProfile -Box $rbox -Arguments @('-Enable', 'reasoning', '-Global')
+$rClaude = Get-UabsBoxClaude $rbox
 if ($rClaude.mcpServers.PSObject.Properties.Name -contains 'sequential-thinking') { Good 'an explicit -Enable reasoning -Global does register it' }
 else { Bad ("-Enable reasoning -Global registered nothing: " + $out) }
-$out = Invoke-V5Profile -Box $rbox -Arguments @('-Disable', 'reasoning')
-$rClaude = Get-V5BoxClaude $rbox
+$out = Invoke-UabsProfile -Box $rbox -Arguments @('-Disable', 'reasoning')
+$rClaude = Get-UabsBoxClaude $rbox
 if ($rClaude.mcpServers.PSObject.Properties.Name -notcontains 'sequential-thinking') { Good '-Disable reasoning gives the context back' }
 else { Bad '-Disable left the machine-wide reasoning server behind' }
 
@@ -742,11 +748,11 @@ $canaryImg = Join-Path $PackRoot 'TOOLS\vision-canary\vision-canary.png'
 $canaryMeta = Join-Path $PackRoot 'TOOLS\vision-canary\canary.json'
 $canaryChk = Join-Path $PackRoot 'TOOLS\Test-VisionCanary.ps1'
 foreach ($p in @($canaryImg, $canaryMeta, $canaryChk)) {
-  if (Test-V5Path -LiteralPath $p -PathType Leaf) { Good ("ships " + (Split-Path -Leaf $p)) } else { Bad ("missing " + $p) }
+  if (Test-UabsPath -LiteralPath $p -PathType Leaf) { Good ("ships " + (Split-Path -Leaf $p)) } else { Bad ("missing " + $p) }
 }
-if (Test-V5Path -LiteralPath $canaryChk -PathType Leaf) {
+if (Test-UabsPath -LiteralPath $canaryChk -PathType Leaf) {
   # A wrong answer must fail, or the check proves nothing.
-  $wrong = & (Join-Path $PSHOME 'powershell.exe') -NoProfile -ExecutionPolicy Bypass -File $canaryChk `
+  $wrong = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $canaryChk `
              -Word 'definitely' -Shape 'not' -Color 'right' -CanaryRoot (Split-Path -Parent $canaryImg) 2>&1 | Out-String
   if ($LASTEXITCODE -ne 0 -and $wrong -match 'FAIL') { Good 'a wrong answer fails the canary' }
   else { Bad 'the canary passes an answer that cannot have come from the image' }

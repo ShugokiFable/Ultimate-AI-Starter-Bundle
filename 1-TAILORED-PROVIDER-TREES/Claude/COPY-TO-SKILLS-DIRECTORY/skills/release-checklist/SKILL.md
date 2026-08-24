@@ -51,7 +51,7 @@ verifier — a manifest that "looks fine" but was never verified is not proof.
 
 ## 4. Run the local gate
 
-    powershell -NoProfile -ExecutionPolicy Bypass -File TESTS/Test-V7-Pack.ps1
+    powershell -NoProfile -ExecutionPolicy Bypass -File TESTS/Test-Pack.ps1
 
 A local PASS is necessary but NOT sufficient — see step 5.
 

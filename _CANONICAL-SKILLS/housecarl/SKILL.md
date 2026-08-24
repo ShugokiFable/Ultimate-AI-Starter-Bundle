@@ -107,7 +107,7 @@ housecarl\scripts\Setup-HouseCarl.ps1
 4. **MO2:** sets instance path.
 5. **Vortex:** creates `%LOCALAPPDATA%\houseCARL-Shim` per `references/houseCARL-Vortex-shim-setup.pdf` (also in pack `TOOLS\housecarl\`).
 6. Sets user env: `HOUSECARL_MCP`, `SKYRIM_MO2_INSTANCE`, `HouseCarl__Mo2InstanceDir`.
-7. Wires Grok MCP block when present; writes Codex hint; writes `%LOCALAPPDATA%\houseCARL-data\v5-setup-state.json`.
+7. Wires Grok MCP block when present; writes Codex hint; writes `%LOCALAPPDATA%\houseCARL-data\uabs-setup-state.json`.
 8. User must **fully restart** the AI app.
 
 ### Refresh (Vortex)
@@ -138,14 +138,14 @@ Still prefer official `houseCARL-Setup.exe` for the plugin. Set plugin **MO2 ins
 
 ---
 
-## V5 AIO installer (pack)
+## UABS AIO installer (pack)
 
 New users and missing-tool recovery:
 
 ```powershell
 # Pack root
-.\INSTALL-V7-AIO.ps1
-.\INSTALL-V7-AIO.ps1 -Mode OnlineLatest
+.\INSTALL-AIO.ps1
+.\INSTALL-AIO.ps1 -Mode OnlineLatest
 .\TOOLS\Ensure-Tools.ps1
 .\TOOLS\Update-From-GitHub.ps1
 ```

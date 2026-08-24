@@ -47,19 +47,19 @@ def main():
     # copy must equal VERSION.txt exactly either way.
     check("README.md", r"^# Ultimate AI Starter Bundle v((?:[0-9]+\.)+[0-9]+)", bare)
     check("START-HERE.txt", r"^Ultimate AI Starter Bundle V((?:[0-9]+\.)+[0-9]+)", bare)
-    check("INSTALL-V7-AIO.ps1",
+    check("INSTALL-AIO.ps1",
           r"Ultimate AI Starter Bundle v((?:[0-9]+\.)+[0-9]+) - ALL-IN-ONE INSTALLER", bare,
-          "INSTALL-V7-AIO.ps1 (banner)")
-    check("INSTALL-V7-AIO.ps1", r"version = '((?:[0-9]+\.)+[0-9]+)'", bare,
-          "INSTALL-V7-AIO.ps1 (state)")
+          "INSTALL-AIO.ps1 (banner)")
+    check("INSTALL-AIO.ps1", r"version = '((?:[0-9]+\.)+[0-9]+)'", bare,
+          "INSTALL-AIO.ps1 (state)")
     # The two console titles are the first thing a fresh user sees. Nothing
     # checked them before 7.9.0, so both sat at v7.8.0 for the whole release.
     check("START-HERE.bat",
           r"^title Ultimate AI Starter Bundle v((?:[0-9]+\.)+[0-9]+)", bare,
           "START-HERE.bat (title)")
-    check("INSTALL-V7-AIO.bat",
+    check("INSTALL-V8-AIO.bat",
           r"^title Ultimate AI Starter Bundle v((?:[0-9]+\.)+[0-9]+)", bare,
-          "INSTALL-V7-AIO.bat (title)")
+          "INSTALL-V8-AIO.bat (title)")
 
     try:
         catalog = json.loads(read("BUNDLED-TOOLS/CATALOG.json"))

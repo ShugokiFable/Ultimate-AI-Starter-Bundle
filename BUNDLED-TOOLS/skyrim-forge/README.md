@@ -6,7 +6,7 @@
 > Forge never returned, so a fresh install of bundle 7.8.0 could not
 > complete. One repository means one commit can test both halves.
 > You do not install this directory by hand -- the bundle's
-> `INSTALL-V7-AIO` does it.
+> `START-HERE.bat` does it.
 
 Skyrim Forge is a local, safety-first engineering workbench and MCP server for Skyrim Special Edition and Anniversary Edition mod development.
 
@@ -45,7 +45,7 @@ tools. The installed version is in `VERSION.txt`. The installer migrates an
 existing version-stamped install onto the versionless name rather than leaving
 two copies behind.
 
-Choose the install root with `INSTALL-V7-AIO.ps1 -ForgeRoot 'S:\Apps\Skyrim Tools'`
+Choose the install root with `INSTALL-AIO.ps1 -ForgeRoot 'S:\Apps\Skyrim Tools'`
 (or set `SKYRIM_FORGE_ROOT`). Without either it goes to
 `%LOCALAPPDATA%\Skyrim-Tools\Skyrim-Forge`, which needs no admin rights and
 makes no assumption about your drive letters.

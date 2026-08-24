@@ -289,12 +289,12 @@ function Register-HeadroomMcp([string]$Hr) {
       return
     }
   }
-  $packCommon = Join-Path $PSScriptRoot 'V7-Common.ps1'
+  $packCommon = Join-Path $PSScriptRoot 'UABS-Common.ps1'
   if (Test-Path -LiteralPath $packCommon) {
     . $packCommon
-    Update-V5GrokMcpBlock -Name 'headroom' -Command $Hr -ArgList @('mcp','serve') -Startup 60 -Tool 600 -SkipIfPresent
+    Update-UabsGrokMcpBlock -Name 'headroom' -Command $Hr -ArgList @('mcp','serve') -Startup 60 -Tool 600 -SkipIfPresent
   } else {
-    Warn 'V7-Common.ps1 not beside this script; add [mcp_servers.headroom] to ~/.grok/config.toml manually'
+    Warn 'UABS-Common.ps1 not beside this script; add [mcp_servers.headroom] to ~/.grok/config.toml manually'
   }
 }
 

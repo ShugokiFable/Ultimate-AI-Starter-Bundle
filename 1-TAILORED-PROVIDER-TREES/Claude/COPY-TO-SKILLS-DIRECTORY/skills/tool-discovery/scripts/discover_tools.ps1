@@ -1,4 +1,4 @@
-﻿# discover_tools.ps1 — read-only optional tool probe for Skyrim AI V5
+﻿# discover_tools.ps1 — read-only optional tool probe for Ultimate AI Starter Bundle
 param([switch]$Json)
 $ErrorActionPreference = 'Continue'
 
@@ -168,7 +168,7 @@ $report['dotnet'] = @{ status = $(if ($dn) {'FOUND'} else {'MISSING'}); path = $
 $hcInst = $env:SKYRIM_MO2_INSTANCE
 if (-not $hcInst) { $hcInst = $env:HouseCarl__Mo2InstanceDir }
 $shimDefault = Join-Path $env:LOCALAPPDATA 'houseCARL-Shim'
-$stateFile = Join-Path $env:LOCALAPPDATA 'houseCARL-data\v5-setup-state.json'
+$stateFile = Join-Path $env:LOCALAPPDATA 'houseCARL-data\uabs-setup-state.json'
 if (-not $hcInst -and (Test-Path -LiteralPath (Join-Path $shimDefault 'ModOrganizer.ini'))) { $hcInst = $shimDefault }
 $hcInstStatus = 'UNSET'
 if ($hcInst -and (Test-Path -LiteralPath (Join-Path $hcInst 'ModOrganizer.ini'))) {
