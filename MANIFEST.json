@@ -1225,6 +1225,21 @@
   "sha256": "8913e5f2734a40c36ed7cf620e1076384f9f97fc02e8ad1ab3df742c5ab9be3c"
  },
  {
+  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9 Heavy.json",
+  "size": 12361,
+  "sha256": "74a27d05dd2bc457d21a22b1e3b368922d012dee3aa29fc9dfae95938f6c3da6"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9 SPEECH.json",
+  "size": 10256,
+  "sha256": "cc737d11f7f97edc688c9d89968fb72d6c474617a52b112abdcd8e258384d635"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9.json",
+  "size": 11871,
+  "sha256": "fb97c50cf9b75e105e712adff1ae77877a96b22b7feef0cbbbd8d5dddf12dd3e"
+ },
+ {
   "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/!Special_Token.mkd",
   "size": 4554,
   "sha256": "e236ac9398875783854c57276be38a704b6ceef3108fc4f264fd469b5c1f0225"
@@ -9791,8 +9806,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-PROVIDER-HOME/config.yaml",
-  "size": 9881,
-  "sha256": "1428c2b980dfe5088f02e6293b207a9e24a3c06eb39a4daa6c04d81f7fca2d0c"
+  "size": 9108,
+  "sha256": "19ddb5203f76b881c924936d270dbc0ce349a068a5413d4ca48cd2f6f76a0dfa"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -12586,8 +12601,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
-  "size": 9881,
-  "sha256": "1428c2b980dfe5088f02e6293b207a9e24a3c06eb39a4daa6c04d81f7fca2d0c"
+  "size": 9108,
+  "sha256": "19ddb5203f76b881c924936d270dbc0ce349a068a5413d4ca48cd2f6f76a0dfa"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-MAP.md",
@@ -15437,12 +15452,12 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 23591,
-  "sha256": "ee3efb876dd1044ff9e5093154bc54a36b309425cf4ef5c4a1a3b8aecafce754"
+  "sha256": "e05466b8f79a0e9c877023b026f41c612ad87dcf2c6ef4469b6edae0c76b2f4d"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1494,
-  "sha256": "cbbb972b4a52cec9e59018870a705514e95221cea0fac80b3a7f165b0ad8efd0"
+  "sha256": "916ffabcb0ef88c8ee78052dc786b7655079aa09cda6d8ea3bfa5d88169499b4"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -17421,8 +17436,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/VALIDATION.json",
-  "size": 49221,
-  "sha256": "c28fb24c30287d64abc999b3e0061197469b4d508e275114e52e381141c1354a"
+  "size": 49236,
+  "sha256": "505e81c7a7cf0ee9f05a6d2103008f7e07642fc5d3abf49872c061626b62e3cd"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/VALIDATION.md",
@@ -18316,8 +18331,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 75425,
-  "sha256": "ada8ba1d7722b9540a18f06adba7f8554f08f43681894984812774200a98ba7a"
+  "size": 75811,
+  "sha256": "14fb0fb8f57285aa9d4f126f8dcbd1a0ad2076aab9bb366f864e13a5384ca556"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18407,12 +18422,12 @@
  {
   "path": "INSTALL-V7-AIO.bat",
   "size": 126,
-  "sha256": "438e45b42fb93a84acb24a2bd19f6bd7ab488ab3f3d0691186e12e6b5dd4452e"
+  "sha256": "850c9bb5534c34100d167470bd048dc329be4dcd6bdcce18108fdbcc4feb9f0a"
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
   "size": 91755,
-  "sha256": "9fd8b6616b1f20c4ed8a68e6bc421901fefe7585589123a129335c8ab9c2ae22"
+  "sha256": "50c58dd004af404bd92a72c94511045d90ac41254efd9518c6ca76fa3744403d"
  },
  {
   "path": "LICENSE",
@@ -18452,17 +18467,17 @@
  {
   "path": "README.md",
   "size": 45518,
-  "sha256": "b71cc5692635dcd0e6320d2721b79fabe798a620488c07560009444b1e617b7e"
+  "sha256": "8656bef1de23b2cc354cff1d8d480c1a8f8699a36208e4495deb0d3c9df4ee40"
  },
  {
   "path": "START-HERE.bat",
   "size": 714,
-  "sha256": "056c7ff374b46caa8b7efa8efc5f0473e471be0b81c2e89e4050c1a05c32eb29"
+  "sha256": "5f84955ff0330018ffdbc5cf573ce9e6a78917d89f0ff3c75febe7b4b9ed79fa"
  },
  {
   "path": "START-HERE.txt",
   "size": 8594,
-  "sha256": "e0182f85cc8b7dfb7055445b6f03fbf078c1cb6915cc42a384ff54c7447e1098"
+  "sha256": "8f985d2c1f7f2d99e652744f2cad0db7cf5c82f6151fa57cf09fcf8be1006dec"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18897,12 +18912,12 @@
  {
   "path": "VALIDATION.json",
   "size": 5124,
-  "sha256": "5f58b139f9e7ace0952efc3398a56722d88551cbf9dd1217c0714744ab1752fa"
+  "sha256": "56c702905c2baace463dbd3fb427a5bd4e877fdda44e1f4196fcbd143db42777"
  },
  {
   "path": "VERSION.txt",
   "size": 8,
-  "sha256": "503c895cc20cb02fac9d71cba3ba9ea8087b9fff936f6f653ccd06096c14d8ca"
+  "sha256": "a5ff2e5238b3b23d5cdd4a5e65a1f9b66d9a31749ba2a905fd9b7dc7160289a1"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -21791,8 +21806,8 @@
  },
  {
   "path": "docs/history/V7.5.3-CHANGELOG.md",
-  "size": 2644,
-  "sha256": "9fca72e932dd6ccaf5c3be38f9bfd1705f639df7f072b70d69ddbb620c4d35e4"
+  "size": 2649,
+  "sha256": "33c69fb4a4e1d8f50baf371fd55b70655b4ada3a0000de17c813fcf79c01eed6"
  },
  {
   "path": "docs/history/V7.5.4-CHANGELOG.md",
@@ -21896,8 +21911,8 @@
  },
  {
   "path": "docs/history/V7.7.4-CHANGELOG.md",
-  "size": 3014,
-  "sha256": "ae6be97dba0e4260defa72e40b74569427bd87cf4f8e9064b12560137c755c9f"
+  "size": 3019,
+  "sha256": "9028b567aa73f640023d0f461692b3beee813bbe29c0aebdc11e2ed895669d18"
  },
  {
   "path": "docs/history/V7.7.5-CHANGELOG.md",
@@ -22001,12 +22016,17 @@
  },
  {
   "path": "docs/history/V7.9.9.6-CHANGELOG.md",
-  "size": 614,
-  "sha256": "fa61f16844df28c0d8febd136e8beb519db9635822e66a98ee0d94cc1b244023"
+  "size": 619,
+  "sha256": "34bb80a9c90b7dccfa3a8001f090cf7b3991ccd819e646c82610f6a7ed493f90"
  },
  {
   "path": "docs/history/V7.9.9.7-CHANGELOG.md",
   "size": 1222,
   "sha256": "b286268515fd3600cf1b5689561c8ca3b2974a7a8962f31de6a9f00a2fc6d009"
+ },
+ {
+  "path": "docs/history/V7.9.9.8-CHANGELOG.md",
+  "size": 647,
+  "sha256": "21d9acbcc43f11880bcc6bfc81882fb0045104e92eb6634715204497fc5c5c9d"
  }
 ]

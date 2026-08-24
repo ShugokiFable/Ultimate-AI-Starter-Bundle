@@ -17,19 +17,6 @@ model:
     nemotron-ultra: openrouter/nvidia/nemotron-3-ultra-550b-a55b:free
     dots-3-nofree: openrouter/dots-studio/dots-3-note-preview
     nemotron-ultra-nofree: openrouter/nvidia/nemotron-3-ultra-550b-a55b
-providers:
-  openrouter-extra:
-    name: OpenRouter Extras
-    api: https://openrouter.ai/api/v1
-    key_env: OPENROUTER_API_KEY
-    transport: chat_completions
-    discover_models: false
-    default_model: dots-studio/dots-3-note-preview:free
-    models:
-      dots-studio/dots-3-note-preview:free: dots-3 free
-      dots-studio/dots-3-note-preview: dots-3
-      nvidia/nemotron-3-ultra-550b-a55b:free: nemotron ultra free
-      nvidia/nemotron-3-ultra-550b-a55b: nemotron ultra
 database:
   journal_mode: wal
 runtime:

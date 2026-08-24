@@ -1,3 +1,11 @@
+## 7.9.9.9
+
+Removed the static `openrouter-extra` provider block from the starter template.
+Native OpenRouter discovery serves all current models (dots-3-note-preview,
+nemotron-3-ultra, etc.) in the normal model list; the pinned 4-model dropdown
+was a relic that gated users out of live discovery. Also: maintainer-config
+incident remediation (file removed from all git history).
+
 ## 7.9.9.8
 
 Correction to the v7.9.9.7 audit: restored `WooJuice V9`, `WooJuice V9 Heavy`,
