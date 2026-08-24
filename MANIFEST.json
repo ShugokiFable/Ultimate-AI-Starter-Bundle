@@ -9806,8 +9806,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-PROVIDER-HOME/config.yaml",
-  "size": 9102,
-  "sha256": "a49c802e7eab06446b2c883ab53a6fd4e10e6bb345999ba389ac759a76f10bc1"
+  "size": 7454,
+  "sha256": "9e1d25bd51a9352f552f7c5e7d6725186e46fc8312ac948498f53b0469fddd01"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -12601,8 +12601,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
-  "size": 9102,
-  "sha256": "a49c802e7eab06446b2c883ab53a6fd4e10e6bb345999ba389ac759a76f10bc1"
+  "size": 7454,
+  "sha256": "9e1d25bd51a9352f552f7c5e7d6725186e46fc8312ac948498f53b0469fddd01"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-MAP.md",
@@ -18671,8 +18671,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 113733,
-  "sha256": "fdfc08df23352933f44df6629472d91de4f559b0b6ef8df6a1b62d63b2b1b189"
+  "size": 113890,
+  "sha256": "f0ba8433300fa0803c43e96e14d822b87308c53e4987778764ad6e7b73c20151"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -22066,7 +22066,7 @@
  },
  {
   "path": "docs/history/V8.0.3-CHANGELOG.md",
-  "size": 915,
-  "sha256": "2d72f0e96d4ae5627487373448e85ba5e270aa150c86a916e628d755f716a2c1"
+  "size": 1445,
+  "sha256": "c8efadd71778714f73a9182afa8c9693d9f0491a4c43ff011873b3848d7d9c12"
  }
 ]
