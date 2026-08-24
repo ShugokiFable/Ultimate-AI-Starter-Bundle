@@ -17406,8 +17406,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/SBOM.spdx.json",
-  "size": 96091,
-  "sha256": "d946e4fbd38d5742a89c36023d7f75110f623f600fede69f98eb0b4f8ceb1068"
+  "size": 96090,
+  "sha256": "e2f051f9a70c3df6c119d1ae7dd511b74a558a77f0cf07a3c427c87ae038b650"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/SECURITY.md",
