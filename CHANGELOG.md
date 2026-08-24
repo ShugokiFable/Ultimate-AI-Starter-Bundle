@@ -3,6 +3,7 @@
 - Hermes now receives the same marked SOUL + canonical AIO contract as every other provider instead of being reset to the short base soul.
 - Removing the retired `openrouter-extra` provider now also migrates resumable Hermes session overrides in `state.db`, with a targeted rollback record, so old chats cannot fail agent initialization after the YAML is cleaned.
 - Hermes' missing-only compression threshold default is now 200,000 tokens.
+- Hermes' normal `openrouter` picker now uses OpenRouter's full live tool-capable catalog instead of Hermes' upstream curated allowlist, and remains uncapped on picker surfaces. The compatibility shim lives outside Hermes' tracked Git source so ordinary `hermes update` operations do not reset it.
 
 ## 8.0.2
 
@@ -29,9 +30,9 @@
 ## 7.9.9.9
 
 Removed the static `openrouter-extra` provider block from the starter template.
-Native OpenRouter discovery serves all current models (dots-3-note-preview,
-nemotron-3-ultra, etc.) in the normal model list; the pinned 4-model dropdown
-was a relic that gated users out of live discovery. Also: maintainer-config
+This restored the normal `openrouter` provider, but Hermes' own curated picker
+still hid most live models; the complete live-catalog correction is recorded
+under Unreleased above. Also: maintainer-config
 incident remediation (file removed from all git history).
 
 ## 7.9.9.8

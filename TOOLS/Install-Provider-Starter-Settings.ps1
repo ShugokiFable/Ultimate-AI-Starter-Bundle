@@ -292,6 +292,51 @@ os.replace(tmp, path)
   }
 }
 
+function Install-UabsHermesOpenRouterCatalogShim {
+  param([string]$Dest)
+  if (-not (Test-Path -LiteralPath $Dest -PathType Leaf)) { return }
+  $hermesRoot = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent'
+  $python = Join-Path $hermesRoot 'venv\Scripts\python.exe'
+  $sitePackages = Join-Path $hermesRoot 'venv\Lib\site-packages'
+  $src = Join-Path $PackRoot 'TOOLS\uabs_hermes_openrouter_catalog.py'
+  if (-not (Test-Path -LiteralPath $python -PathType Leaf) -or
+      -not (Test-Path -LiteralPath $sitePackages -PathType Container) -or
+      -not (Test-Path -LiteralPath $src -PathType Leaf)) {
+    Write-UabsWarn 'Hermes full OpenRouter discovery shim skipped; official Hermes venv or bundle source is missing'
+    return
+  }
+
+  $moduleDest = Join-Path $sitePackages 'uabs_hermes_openrouter_catalog.py'
+  $pthDest = Join-Path $sitePackages 'uabs_hermes_openrouter_catalog.pth'
+  $enc = New-Object System.Text.UTF8Encoding($false)
+  $moduleTmp = $moduleDest + '.tmp'
+  $pthTmp = $pthDest + '.tmp'
+  $hadModule = Test-Path -LiteralPath $moduleDest -PathType Leaf
+  $hadPth = Test-Path -LiteralPath $pthDest -PathType Leaf
+  $oldModule = if ($hadModule) { [IO.File]::ReadAllBytes($moduleDest) } else { $null }
+  $oldPth = if ($hadPth) { [IO.File]::ReadAllBytes($pthDest) } else { $null }
+  try {
+    [IO.File]::WriteAllBytes($moduleTmp, [IO.File]::ReadAllBytes($src))
+    [IO.File]::WriteAllText($pthTmp, 'import uabs_hermes_openrouter_catalog; uabs_hermes_openrouter_catalog.install()' + [Environment]::NewLine, $enc)
+    Move-Item -LiteralPath $moduleTmp -Destination $moduleDest -Force
+    Move-Item -LiteralPath $pthTmp -Destination $pthDest -Force
+
+    $probe = (& $python -c "import hermes_cli.models as m; print(bool(getattr(m.fetch_openrouter_models, '_uabs_live_catalog', False))); m.clear_provider_models_cache('openrouter')" 2>&1 | Out-String).Trim()
+    if ($LASTEXITCODE -ne 0 -or $probe -notmatch '(?m)^True$') {
+      throw ('Hermes full OpenRouter discovery shim verification failed: ' + $probe)
+    }
+    Write-UabsOk 'Hermes: live tool-capable OpenRouter catalog enabled; curated allowlist and picker cap bypassed'
+  } catch {
+    if ($hadModule) { [IO.File]::WriteAllBytes($moduleDest, $oldModule) }
+    else { Remove-Item -LiteralPath $moduleDest -Force -ErrorAction SilentlyContinue }
+    if ($hadPth) { [IO.File]::WriteAllBytes($pthDest, $oldPth) }
+    else { Remove-Item -LiteralPath $pthDest -Force -ErrorAction SilentlyContinue }
+    throw
+  } finally {
+    Remove-Item -LiteralPath $moduleTmp,$pthTmp -Force -ErrorAction SilentlyContinue
+  }
+}
+
 function Ensure-UabsGrokMcpSearchDisabled {
   param([string]$Dest)
   if (-not (Test-Path -LiteralPath $Dest -PathType Leaf)) { return }
@@ -359,6 +404,7 @@ foreach ($prov in $Providers) {
         $dest = Join-Path $provHome 'config.yaml'
         Copy-UabsStarterIfMissing -Src $src -Dest $dest -Label Hermes
         Remove-UabsHermesLegacyOpenRouterExtra -Dest $dest
+        Install-UabsHermesOpenRouterCatalogShim -Dest $dest
         Merge-UabsHermesEfficiencyDefaults -Dest $dest
       }
     }

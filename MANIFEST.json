@@ -18336,8 +18336,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 78542,
-  "sha256": "a471a26b3f4beab65463c8e57359b7c742f7b434d220ca12b74062f0db812d5e"
+  "size": 78814,
+  "sha256": "360c91751c152907dac1629971bee4ac38ff700091b16f6fe9936ed828e40622"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18671,8 +18671,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 112219,
-  "sha256": "87c8b46b5a42da4ceb8edb1051dcbafd40cf3b7ba4e82ead4452fbaf8ca9d0dc"
+  "size": 113733,
+  "sha256": "fdfc08df23352933f44df6629472d91de4f559b0b6ef8df6a1b62d63b2b1b189"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18716,8 +18716,8 @@
  },
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
-  "size": 15571,
-  "sha256": "1d89ffe263825161ab2eda4108ce9ea777679d8df02c1bd838bd52e3f665cec1"
+  "size": 18206,
+  "sha256": "e31b1e5363b070515a0e66c1c24c19cbc92561337bffecf58e86f30e7687631e"
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",

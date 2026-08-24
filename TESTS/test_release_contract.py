@@ -1039,6 +1039,39 @@ def test_hermes_stale_session_provider_migration() -> None:
         assert len(list(root.glob("state.db.uabs-openrouter-extra-*.json"))) == 1
 
 
+def test_hermes_openrouter_picker_uses_the_live_tool_catalog() -> None:
+    shim = ROOT / "TOOLS" / "uabs_hermes_openrouter_catalog.py"
+    assert shim.is_file(), "Hermes full OpenRouter catalog shim is missing"
+    spec = importlib.util.spec_from_file_location("uabs_hermes_openrouter_catalog_test", shim)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    rows = module._catalog_rows(
+        [
+            {"id": "curated/old", "supported_parameters": ["tools"], "pricing": {"prompt": "1"}},
+            {
+                "id": "dots-studio/dots-3-note-preview:free",
+                "supported_parameters": ["tools"],
+                "pricing": {"prompt": "0", "completion": "0"},
+            },
+            {"id": "image/only", "supported_parameters": ["images"], "pricing": {}},
+        ],
+        silent_default="curated/old",
+    )
+    assert [row[0] for row in rows] == [
+        "curated/old",
+        "dots-studio/dots-3-note-preview:free",
+    ], "Hermes still gates OpenRouter discovery through a curated allowlist"
+    assert rows[0][1] == "default"
+    assert rows[1][1] == "free"
+
+    starter = read(ROOT / "TOOLS" / "Install-Provider-Starter-Settings.ps1")
+    assert "Install-UabsHermesOpenRouterCatalogShim" in starter
+    assert "uabs_hermes_openrouter_catalog.pth" in starter
+    assert "Install-UabsHermesOpenRouterCatalogShim -Dest $dest" in starter
+
+
 def test_hermes_receives_the_combined_soul_and_aio_contract() -> None:
     installer = ps_code(ROOT / "INSTALL-AIO.ps1")
     assert "Install-UabsPreambleBlock -Path $hSoul -SoulFile $soulF -AioFile $aioF" in installer, (
@@ -1368,6 +1401,7 @@ def main() -> int:
         test_codex_plugins_use_the_official_lifecycle,
         test_hermes_legacy_openrouter_extra_is_migrated_without_replacing_config,
         test_hermes_stale_session_provider_migration,
+        test_hermes_openrouter_picker_uses_the_live_tool_catalog,
         test_hermes_receives_the_combined_soul_and_aio_contract,
         test_bundle_forge_install_has_single_skill_writer,
         test_forge_skill_has_one_canonical_source,
