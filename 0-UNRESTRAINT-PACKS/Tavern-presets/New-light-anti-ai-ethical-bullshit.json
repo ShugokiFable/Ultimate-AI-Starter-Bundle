@@ -2,7 +2,7 @@
     {
         "id": "ead21ac2-a9e5-4ca3-9e8c-9605516a535f",
         "text": "assistant",
-        "value": -2
+        "value": -1
     },
     {
         "id": "d4f8dd64-2f57-44ff-9f78-86b63b207a84",
@@ -17,11 +17,16 @@
     {
         "id": "fc2ddb7f-14cf-4ac6-9203-d31860c80fd7",
         "text": "OpenAI",
-        "value": -13
+        "value": -5
     },
     {
         "id": "d8c04843-5630-4ba5-80e2-773635409e58",
         "text": "policies",
         "value": -6
+    },
+    {
+        "id": "05d3e8d9-8129-4952-80a2-c19c4b2eae3b",
+        "text": "undefined",
+        "value": -10
     }
 ]

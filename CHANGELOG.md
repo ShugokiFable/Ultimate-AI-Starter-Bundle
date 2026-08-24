@@ -1,3 +1,11 @@
+## 7.9.9.8
+
+Correction to the v7.9.9.7 audit: restored `WooJuice V9`, `WooJuice V9 Heavy`,
+`WooJuice V9 SPEECH`, `New-light-anti-ai-ethical-bullshit`, and
+`Character Creation.txt` to `Tavern-presets/`. They were never dead —
+`chat_completion_source` is `openrouter`; stale provider-option strings like
+`gpt-4-turbo` are unused fields, not the active route.
+
 ## 7.9.9.7
 
 - Default operating contract moved to `0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md` (new v7 text); installer, bootstrap and preamble docs repointed. Compact/Web cores now live beside it as opt-ins for smaller hosts.
