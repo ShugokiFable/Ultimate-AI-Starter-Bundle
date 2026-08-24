@@ -9,7 +9,7 @@ machine comes up with the same agent behaviour as the operator's own setup.
 | File | What it is | Where it goes |
 |---|---|---|
 | `SOUL.md` | The operator's soul config: unrestraint declaration + truth-seeking process + output format. Identity-neutral - it names no provider. | Appended to Claude / Codex / Kimi / Grok instruction files, **and** copied verbatim to Hermes home |
-| `AIO-INSTRUCTION.txt` | The operating contract (pack-root `AIO-INSTRUCTION.txt`, unchanged). Finish-the-job, no yes-man, verify-don't-assume, adult fiction in scope. | Appended right after the SOUL block in the same files |
+| `0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md` | The operating contract (`0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md`, unchanged). Finish-the-job, no yes-man, verify-don't-assume, adult fiction in scope. | Appended right after the SOUL block in the same files |
 | `MANUAL-PASTE.txt` | SOUL + the Fun-stuff-kit `AIO.txt` (chat/research jail) concatenated. For web UIs that have no instruction file. | ChatGPT / Gemini / any web chat custom-instructions box, pasted by hand |
 
 ## What the installer wires (v7.5.0+)
@@ -20,7 +20,7 @@ For every selected provider, `INSTALL-V7-AIO.ps1` appends a marked block:
 <!-- ============ ULTIMATE-AI-STARTER-BUNDLE SOUL v7.5.0 ============ -->
 <SOUL.md content>
 <!-- ============ ULTIMATE-AI-STARTER-BUNDLE AIO ============ -->
-<AIO-INSTRUCTION.txt content>
+<0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md content>
 <!-- ============ /ULTIMATE-AI-STARTER-BUNDLE ============ -->
 ```
 
@@ -50,7 +50,7 @@ Rules:
 # ANSI codepage, so every em dash in the soul comes back as mojibake.
 $root = (Get-Location).Path
 $soul = [IO.File]::ReadAllText((Join-Path $root "3-PREAMBLES\SOUL.md"))
-$aio  = [IO.File]::ReadAllText((Join-Path $root "AIO-INSTRUCTION.txt"))
+$aio  = [IO.File]::ReadAllText((Join-Path $root "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md"))
 $dst  = Join-Path $env:USERPROFILE ".claude\CLAUDE.md"
 $utf8 = New-Object System.Text.UTF8Encoding $false   # $false = no BOM
 [IO.File]::AppendAllText($dst, "`r`n" + $soul + "`r`n" + $aio + "`r`n", $utf8)

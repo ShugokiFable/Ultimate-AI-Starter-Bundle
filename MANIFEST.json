@@ -36,13 +36,8 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md",
-  "size": 9854,
-  "sha256": "1c7987415be55b897d0b5c4c88e2d2fc06de058cd17fd0a4956450637aaa7a6c"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.txt",
-  "size": 9854,
-  "sha256": "1c7987415be55b897d0b5c4c88e2d2fc06de058cd17fd0a4956450637aaa7a6c"
+  "size": 13390,
+  "sha256": "4d7539adeb5340a513acba7bc72d49ee0041466ac640524beeed1e305bfc671e"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/AIO.txt",
@@ -1230,21 +1225,6 @@
   "sha256": "ef777eb3a04efde3c6276a1c82c77d33753b4756b448af3a5f8045f0a6bc213a"
  },
  {
-  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9 Heavy.json",
-  "size": 12361,
-  "sha256": "74a27d05dd2bc457d21a22b1e3b368922d012dee3aa29fc9dfae95938f6c3da6"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9 SPEECH.json",
-  "size": 10256,
-  "sha256": "cc737d11f7f97edc688c9d89968fb72d6c474617a52b112abdcd8e258384d635"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/Tavern-presets/WooJuice V9.json",
-  "size": 11925,
-  "sha256": "a2bca227f8bf0f085596e9db39575aa50717a36ff63142d686a11da8135f9458"
- },
- {
   "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/!Special_Token.mkd",
   "size": 4554,
   "sha256": "e236ac9398875783854c57276be38a704b6ceef3108fc4f264fd469b5c1f0225"
@@ -1273,11 +1253,6 @@
   "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Cl4ud33X3.mkd",
   "size": 2162,
   "sha256": "6857a54edab9e18c9ca0ff5cc400068e95916546fbce244ba3c8484ebe335138"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Claude4Chrome.mkd",
-  "size": 57783,
-  "sha256": "7debc5ae8a9f32dd086a6b87bbf08b067c328a29c6ff425e2ca16c14b2a41f38"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/UltraBr3aks/Cyph3r-Attack.mkd",
@@ -1380,21 +1355,6 @@
   "sha256": "d3bec9ec5ad1ef0018a9812050e77cf2a3b4601f3cf56f9e4c3b9ef77d29d5a0"
  },
  {
-  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/deepseek/deepseek.md",
-  "size": 951,
-  "sha256": "c0f76ec145775e8529b9190071f9cb006ba04245bf803a4fd65016cfcf900d6a"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/identity_crisis",
-  "size": 1116,
-  "sha256": "333d834b10c22ba685eb98398ca815d3632b2e597631945de85b7dab70d0cba6"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/perplexity/personalization_injection.md",
-  "size": 1175,
-  "sha256": "162d263f053f5ab283a52cb7f2a770480fa330770eeeb2129410a307905aa184"
- },
- {
   "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/research/nvdia-nemo-guardrails-bypass/writeup.md",
   "size": 12978,
   "sha256": "64560d610cabfcc74f6ab6b8e9d06e0ef7f6514de1132005982d943556cda475"
@@ -1403,11 +1363,6 @@
   "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/universals/courtroom",
   "size": 3984,
   "sha256": "896ab19d9bfb05cdc04ac82b04e55f2088d753631337bf62a36187265891f225"
- },
- {
-  "path": "0-UNRESTRAINT-PACKS/tuxsharxsec-Jailbreaks/universals/ultrazanium",
-  "size": 3685,
-  "sha256": "fd9b315457e55abdaacf8707167d7e0a60b9f571cbca18cd0abb348107befc57"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-MAP.md",
@@ -15461,8 +15416,8 @@
  },
  {
   "path": "3-PREAMBLES/README.md",
-  "size": 4028,
-  "sha256": "0cdeaf0ff2a0db754c0458b3b56d617bb5f6f46adb44c303b070c4d378a20f14"
+  "size": 4094,
+  "sha256": "f8eb5be3bdc4c4b3f46fec059333770ae6e01cb4ce5b69582b9005d97f2c7136"
  },
  {
   "path": "3-PREAMBLES/SOUL.md",
@@ -15475,29 +15430,19 @@
   "sha256": "a920aadb4234cea76b3bb0ebc8e3afc66865bce472f325c57f40acfc2cef32e8"
  },
  {
-  "path": "AIO-INSTRUCTION.md",
-  "size": 17491,
-  "sha256": "df1c31fd3c97b62c622f4b01e46613253dc365a2c0d5dc4b1b16fa3efa91e433"
- },
- {
-  "path": "AIO-INSTRUCTION.txt",
-  "size": 17491,
-  "sha256": "df1c31fd3c97b62c622f4b01e46613253dc365a2c0d5dc4b1b16fa3efa91e433"
- },
- {
   "path": "BOOTSTRAP.txt",
-  "size": 3813,
-  "sha256": "47a9b55b07f94eea4a41981eb62e82505e5061f0b9a3291ecfff65879daa3925"
+  "size": 3832,
+  "sha256": "21b605558d6452ae02425016deefc6be6da682d264db264342708f6bd99d9043"
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 23591,
-  "sha256": "11291a5b52bfa750f14c5ca9045a8eda2ba8e806fa3c49bf0de3df485e433468"
+  "sha256": "557143b7bc55fa4af0dc71133532af4e0f08ed3237df2ba66951bd7921c04da4"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1494,
-  "sha256": "93c9ead3df368a419b3c01e2c57e43289c697ddbf85964ddef951bb625ab7f73"
+  "sha256": "82ba80250be2d60a76bb3ed3e2863bbc19d52a1a7bf4f2edeac44ac8db51badf"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -18371,8 +18316,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 74715,
-  "sha256": "d3a96c62f5d348261e0fbbfa0cd87a7abfed8aa27ad5c2af30d3221d121b8da4"
+  "size": 75065,
+  "sha256": "1445da239f1c92e5d19aa95ca4753fb6550ce579da2ee6602eebda248dc51b72"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18462,12 +18407,12 @@
  {
   "path": "INSTALL-V7-AIO.bat",
   "size": 126,
-  "sha256": "ccb4d5bc3b9a85429312d58099bff2d7411c1033a78f8f263c345c4d9817e2c3"
+  "sha256": "3caa4f9bbb85ea62eac6b37621f0dbe31f8176de37b14a96397efc9d78a74ba6"
  },
  {
   "path": "INSTALL-V7-AIO.ps1",
-  "size": 91698,
-  "sha256": "79a1ebe76d5cdc859e6c32b7fe08aa317d2d0071c8a806881a77a1ad707e24de"
+  "size": 91755,
+  "sha256": "f64972d429d564d6a03022bd95d5d49337904539c6ea61adfe02ac25e6ffff93"
  },
  {
   "path": "LICENSE",
@@ -18480,24 +18425,9 @@
   "sha256": "5d9db0cfc6574a93842bde32a16529eddcf64187e588d4c2e03bf40b1e10cdb5"
  },
  {
-  "path": "PROMPTS/AIO-INSTRUCTION-COMPACT-CORE-v1.0.md",
-  "size": 7474,
-  "sha256": "1afce8744482ba31616062c696ebf61196dd9879e8b6a194174284f80e99662d"
- },
- {
-  "path": "PROMPTS/AIO-INSTRUCTION-WEB-CORE-v1.0.md",
-  "size": 4584,
-  "sha256": "f1d3e8e90e323a6226ff980c6f909dec7693a424ff5ec3feaf7cb1b51fcf9172"
- },
- {
-  "path": "PROMPTS/AIO-INSTRUCTION.txt",
-  "size": 17491,
-  "sha256": "df1c31fd3c97b62c622f4b01e46613253dc365a2c0d5dc4b1b16fa3efa91e433"
- },
- {
   "path": "PROMPTS/README.md",
-  "size": 1119,
-  "sha256": "7f7d311434300d1063039f439e70b2074752ae5f59a77c00d1ef72c74d6430cb"
+  "size": 386,
+  "sha256": "78bdcea74fb5a0dc92c4d944774c31cdacb893b35c38e5a154a7d0aeb753ad5d"
  },
  {
   "path": "PROMPTS/SKYRIM-MODERNIZATION-MASTER-PROMPT.md",
@@ -18522,17 +18452,17 @@
  {
   "path": "README.md",
   "size": 45518,
-  "sha256": "0be7bf39736966d0c3044266b1073419c738b549f20a7832119ff9bcef97741d"
+  "sha256": "50e370805991f470ba357040158486841fa92842c746a591a1b62d21c2ec6eb3"
  },
  {
   "path": "START-HERE.bat",
   "size": 714,
-  "sha256": "25f796b082def20436c28c31ee3657078b6343d066bee775eeb234e0f38fd88c"
+  "sha256": "a9de6bc2df38e4ac54ca7afe72c8379be1b4bddd859075b887cb89fc450079ee"
  },
  {
   "path": "START-HERE.txt",
   "size": 8594,
-  "sha256": "21ce67efd81e70158ac121287f6adfeea88b68b5bc3379e87ecc8ad7ca8b2f48"
+  "sha256": "1abb85d1962b15f0f4798a27b997d270bdf54525d3898f6e761a175c9675dc72"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18561,8 +18491,8 @@
  },
  {
   "path": "TESTS/Test-V7-Pack.ps1",
-  "size": 32745,
-  "sha256": "d4b8c54f2b2bbaaccf552584cc67d675b1464e134313d45cf6dc0b9c9889b292"
+  "size": 32764,
+  "sha256": "85886ea2121dc965ec36b142835f8735b304417a7d92922d17b0592ef9991987"
  },
  {
   "path": "TESTS/evidence-scenarios/A-visual-defect/EXPECTED.md",
@@ -18967,12 +18897,12 @@
  {
   "path": "VALIDATION.json",
   "size": 5124,
-  "sha256": "60f67a118ce5fda9d987a374a205aa30a6f5cc3fcc52f9513654ff8de23ebf6e"
+  "sha256": "89f114e77dd5d6556e393e632faef5a8060fd681812b29f622d01f9ee02d2b1f"
  },
  {
   "path": "VERSION.txt",
   "size": 8,
-  "sha256": "4fc0d3b8b207f95abdba984f7bacffa8e84fcad4af6f6c06412813fc4b603e15"
+  "sha256": "9bd7771b92df27a426200c2e827770136ea1c688caa3ae44b81643ccb1dd2b3c"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -22068,5 +21998,10 @@
   "path": "docs/history/V7.9.9.5-CHANGELOG.md",
   "size": 369,
   "sha256": "757506eadd3cddbc2e0a801d11d462a5474bd3e073dc063a0af6b664ed8cc14b"
+ },
+ {
+  "path": "docs/history/V7.9.9.6-CHANGELOG.md",
+  "size": 614,
+  "sha256": "fa61f16844df28c0d8febd136e8beb519db9635822e66a98ee0d94cc1b244023"
  }
 ]
