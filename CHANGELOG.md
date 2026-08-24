@@ -1,3 +1,8 @@
+## Unreleased
+
+- Codex online installs now prefer an independently updatable CLI and migrate the bundle-owned Superpowers offline bridge to its upstream Git marketplace, so Marketplace Upgrade works; bundled local Git remains the offline fallback.
+- Existing Hermes configs now remove only the legacy bundle-created `openrouter-extra` custom provider, preserving every other setting while leaving native OpenRouter model discovery enabled.
+
 ## 8.0.1
 
 - Refined canonical AIO defaults and Hermes starter behavior. `INSTALL-AIO.ps1` continues to consume the canonical full AIO source when wiring provider preambles, so all selected providers receive the updated instructions without overwriting existing user settings. 146 canonical skills total.

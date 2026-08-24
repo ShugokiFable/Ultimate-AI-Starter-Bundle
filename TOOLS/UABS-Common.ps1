@@ -9,6 +9,36 @@ function Get-UabsStateRoot {
   return (Join-Path $base 'Ultimate-AI-Starter-Bundle')
 }
 
+function Get-UabsCodexCli {
+  <# Prefer an independently updatable Codex CLI over Hermes' private copy.
+     The desktop AppX resource appears on PATH but Windows does not permit
+     launching it out-of-process, so it is not a CLI candidate. #>
+  $commands = @(
+    @(Get-Command codex -All -ErrorAction SilentlyContinue)
+    @(Get-Command codex.exe -All -ErrorAction SilentlyContinue)
+    @(Get-Command codex.cmd -All -ErrorAction SilentlyContinue)
+  )
+  $seen = @{}
+  $preferred = @()
+  $fallback = @()
+  $hermesNode = Join-Path $env:LOCALAPPDATA 'hermes\node'
+  foreach ($command in $commands) {
+    $source = [string]$command.Source
+    if (-not $source) { $source = [string]$command.Path }
+    if (-not $source -or $seen.ContainsKey($source.ToLowerInvariant())) { continue }
+    if ($source -match '(?i)\\WindowsApps\\OpenAI\.Codex_') { continue }
+    $seen[$source.ToLowerInvariant()] = $true
+    $candidate = [pscustomobject]@{ Source = $source }
+    if (Test-UabsPathWithin -Path $source -Root $hermesNode) { $fallback += $candidate }
+    else { $preferred += $candidate }
+  }
+  foreach ($candidate in @($preferred + $fallback)) {
+    $version = Get-UabsNativeOutput -Exe $candidate.Source -CmdArgs @('--version')
+    if ($version -match '(?m)^codex-cli\s+\d') { return $candidate }
+  }
+  return $null
+}
+
 function Invoke-UabsLegacyStateMigration {
   <# Move only paths owned by older bundle installers. Conflicts and unknown
      files stay where they are; this is deliberately not a directory mirror. #>

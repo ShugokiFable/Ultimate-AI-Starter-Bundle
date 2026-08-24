@@ -18336,8 +18336,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 77650,
-  "sha256": "6f279f056c76a4b5a0e323d61468301ca34bbe658b77f28087c973b0e381eebb"
+  "size": 78091,
+  "sha256": "13821a7ed7d3d137c634e5fab9da0d4ab8e9c184e8500371e1cd374b34a1c236"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18416,8 +18416,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 101530,
-  "sha256": "a9e8ab2016632e5f94dfeeef42a0e4ff08fa1be4574ef58d4f4222f2c9c09d37"
+  "size": 104231,
+  "sha256": "c3ed007503c34a67b6cda4da6adf4b82be20d03465e2e94877f47da5ecefa58f"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -18671,8 +18671,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 107785,
-  "sha256": "4d66c7ec3c88ab62e2a6d3bb64d6d3a4893171dcd8ff7aed1a8bbdf3d9e3213d"
+  "size": 108878,
+  "sha256": "9c68f536573ae96596d3f42b900283e31962f8f8cee1bed610f16232ce7f67ac"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18716,8 +18716,8 @@
  },
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
-  "size": 11267,
-  "sha256": "1f395bd78aac3b046962a33864d56ab932a4c885607262bc7bc191d5e3e109c4"
+  "size": 14788,
+  "sha256": "fd6ebf245be3ebf53aa4f1354f04e2c7fd34e33d003f806f8293aec5112b943c"
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",
@@ -18776,8 +18776,8 @@
  },
  {
   "path": "TOOLS/UABS-Common.ps1",
-  "size": 54810,
-  "sha256": "226200a12b413545f6e92f3c8659fc3bb29d4716d62ff1fb22cab4ef19fb0fa4"
+  "size": 56124,
+  "sha256": "39760df7f707f28950a617eebcca05b2bfbcebfa6896fd968ce1f0947c993a28"
  },
  {
   "path": "TOOLS/UABS-Mcp-Write.ps1",
@@ -22043,5 +22043,10 @@
   "path": "docs/history/V8.0.0-CHANGELOG.md",
   "size": 2452,
   "sha256": "8864920e5307dfb7c1d5fc26e929db9e06daf0720a94b0fbbba06f0a1b74194b"
+ },
+ {
+  "path": "docs/history/V8.0.1-CHANGELOG.md",
+  "size": 438,
+  "sha256": "4a862d42264ccd216fe80dd9bc1c4dec9af1f159e172f371309521a205b3a348"
  }
 ]

@@ -959,6 +959,24 @@ def test_codex_plugins_use_the_official_lifecycle() -> None:
         "AIO still hand-writes the legacy Codex plugin TOML"
     )
     assert "pluginId" in aio, "Codex inventory parser reads the wrong JSON field"
+    assert "$codexCli = Get-UabsCodexCli" in aio, (
+        "AIO cannot prefer an independently updatable Codex CLI over Hermes' private shim"
+    )
+    common = read(ROOT / "TOOLS" / "UABS-Common.ps1")
+    assert "\\\\WindowsApps\\\\OpenAI\\.Codex_" in common
+    assert "https://github.com/obra/superpowers.git" in aio
+    assert "migrated ' + $marketName + ' to its upgradeable upstream Git marketplace" in aio
+
+
+def test_hermes_legacy_openrouter_extra_is_migrated_without_replacing_config() -> None:
+    starter = read(ROOT / "TOOLS" / "Install-Provider-Starter-Settings.ps1")
+    assert "function Remove-UabsHermesLegacyOpenRouterExtra" in starter
+    assert "p.get(\"name\") == \"openrouter-extra\"" in starter
+    assert 'for section in ("providers", "custom_providers")' in starter
+    assert "cfg.pop(section, None)" in starter
+    assert "Remove-UabsHermesLegacyOpenRouterExtra -Dest $dest" in starter
+    assert "from ruamel.yaml import YAML" in starter
+    assert "os.replace(tmp, path)" in starter
 
 
 def test_bundle_forge_install_has_single_skill_writer() -> None:
@@ -1278,6 +1296,7 @@ def main() -> int:
         test_every_v5_helper_called_actually_exists,
         test_provider_skill_sync_is_content_authoritative,
         test_codex_plugins_use_the_official_lifecycle,
+        test_hermes_legacy_openrouter_extra_is_migrated_without_replacing_config,
         test_bundle_forge_install_has_single_skill_writer,
         test_forge_skill_has_one_canonical_source,
         test_forge_install_checked_commands_are_quiet_but_diagnostic,

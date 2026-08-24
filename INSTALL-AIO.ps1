@@ -677,7 +677,7 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
       }
 
       'Codex' {
-        $codexCli = Get-Command codex -ErrorAction SilentlyContinue
+        $codexCli = Get-UabsCodexCli
         if (-not $codexCli) {
           foreach ($pluginId in @('superpowers','ponytail')) {
             $pstate.plugins[$pluginId] = New-UabsPluginStateEntry -Reason 'codex CLI not found; copied skills stay'
@@ -721,6 +721,11 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
           $entry = New-UabsPluginStateEntry
           $pstate.plugins[$pluginId] = $entry
           $srcRoot = Join-Path $plugins $pluginId
+          $upstreamUrl = @{
+            superpowers = 'https://github.com/obra/superpowers.git'
+            ponytail    = 'https://github.com/DietrichGebert/ponytail.git'
+          }[$pluginId]
+          $preferOnline = ($Mode -ne 'BundledOnly') -and $upstreamUrl
           $marketName = Get-UabsClaudeMarketplaceName -PluginRoot $srcRoot
           if (-not $marketName) {
             $entry.reason = 'bundled marketplace manifest missing; copied skills stay'
@@ -733,6 +738,39 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
             $marketEntry = @($marketDoc.marketplaces | Where-Object { $_.name -eq $marketName } | Select-Object -First 1)
             if ($marketEntry.Count) { $marketEntry = $marketEntry[0] } else { $marketEntry = $null }
           } catch { }
+          # V8.0.0's offline bridge was valid but deliberately had no remote,
+          # so Codex correctly disabled Marketplace -> Upgrade. Online modes
+          # migrate only our owned bridge to the upstream Git marketplace;
+          # BundledOnly and failed network attempts keep the offline source.
+          if ($marketEntry -and $preferOnline -and
+              $marketEntry.marketplaceSource.sourceType -ne 'git' -and
+              $marketEntry.root -and (Test-UabsPathWithin $marketEntry.root (Get-UabsStateRoot))) {
+            $oldRoot = [string]$marketEntry.root
+            $oldNativeId = $pluginId + '@' + $marketName
+            if (@(Get-UabsCodexInstalledPluginIds) -contains $oldNativeId) {
+              [void](Invoke-UabsNative $codexCli.Source @('plugin','remove',$oldNativeId,'--json'))
+            }
+            $removed = Invoke-UabsNative $codexCli.Source @('plugin','marketplace','remove',$marketName,'--json')
+            $migrated = $false
+            if ($removed) {
+              $migrated = Invoke-UabsNative $codexCli.Source @('plugin','marketplace','add',$upstreamUrl,'--json')
+            }
+            if ($migrated) {
+              $marketRaw = Get-UabsNativeOutput -Exe $codexCli.Source -CmdArgs @('plugin','marketplace','list','--json')
+              try {
+                $marketDoc = $marketRaw | ConvertFrom-Json
+                $marketEntry = @($marketDoc.marketplaces | Where-Object { $_.name -eq $marketName } | Select-Object -First 1)[0]
+              } catch { $marketEntry = $null }
+              if (Test-Path -LiteralPath $oldRoot -PathType Container) {
+                Remove-Item -LiteralPath $oldRoot -Recurse -Force
+              }
+              Write-UabsOk ('Codex: migrated ' + $marketName + ' to its upgradeable upstream Git marketplace')
+            } else {
+              [void](Invoke-UabsNative $codexCli.Source @('plugin','marketplace','add',$oldRoot,'--json'))
+              $marketEntry = [pscustomobject]@{ root = $oldRoot; marketplaceSource = [pscustomobject]@{ sourceType = 'local' } }
+              Write-UabsWarn ('Codex: upstream marketplace unavailable for ' + $marketName + '; kept the bundled offline source')
+            }
+          }
           if ($marketEntry) {
             if ($marketEntry.marketplaceSource.sourceType -eq 'git') {
               [void](Invoke-UabsNative $codexCli.Source @('plugin','marketplace','upgrade',$marketName,'--json'))
@@ -768,6 +806,9 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
             # even when the marketplace itself was added from a local path.
             # Release ZIPs contain no .git directory, so build a small owned
             # local repo and make the Agent Plugins manifest point at itself.
+            if ($preferOnline -and (Invoke-UabsNative $codexCli.Source @('plugin','marketplace','add',$upstreamUrl,'--json'))) {
+              Write-UabsOk ('Codex: added upgradeable upstream marketplace ' + $marketName)
+            } else {
             $gitExe = Get-Command git -ErrorAction SilentlyContinue
             if (-not $gitExe) {
               $entry.reason = 'git missing; official Codex plugin install needs a Git source; copied skills stay'
@@ -795,6 +836,7 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
             if (-not (Invoke-UabsNative $codexCli.Source @('plugin','marketplace','add',$codexSource,'--json'))) {
               $entry.reason = 'official marketplace add failed; copied skills stay'
               continue
+            }
             }
           }
           $nativeId = $pluginId + '@' + $marketName
