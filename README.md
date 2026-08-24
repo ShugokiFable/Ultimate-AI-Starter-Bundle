@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.0.0
+# Ultimate AI Starter Bundle v8.0.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -290,6 +290,10 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v8.0.1 — Refined AIO defaults
+
+- Refines the shipped full, compact, and web AIO sources plus Hermes starter defaults. The one-click installer continues to wire the canonical full AIO source into every selected provider without replacing existing user settings.
 
 ### v8.0.0 — One-click, owned, updateable
 
@@ -811,6 +815,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.0.1** — 2026-08-24. Refined canonical AIO and Hermes starter defaults; the one-click installer continues to wire the full AIO source into every selected provider while preserving existing user settings.
 
 **v8.0.0** — 2026-08-24. Stable versionless installer/state paths, full-catalog default, official Codex plugin lifecycle, content-authoritative managed updates, five-provider core MCP wiring with real handshakes, safe legacy cleanup, and ownership-ledger retirement of unchanged bundle skills.
 

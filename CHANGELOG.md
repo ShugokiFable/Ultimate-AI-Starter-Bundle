@@ -1,3 +1,7 @@
+## 8.0.1
+
+- Refined canonical AIO defaults and Hermes starter behavior. `INSTALL-AIO.ps1` continues to consume the canonical full AIO source when wiring provider preambles, so all selected providers receive the updated instructions without overwriting existing user settings. 146 canonical skills total.
+
 ## 8.0.0
 
 - Made `START-HERE.bat` the stable one-click entry; `INSTALL-V8-AIO.bat` is an alias and internal paths are versionless.
