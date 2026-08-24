@@ -1521,22 +1521,6 @@ if (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
 # ---------- MCP wire (Grok) ----------
 if (-not $SkipGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Providers -contains 'Grok')) {
   Write-UabsStep "Wiring Grok MCP servers"
-  $hc = [Environment]::GetEnvironmentVariable('HOUSECARL_MCP','User')
-  if (-not $hc) { $hc = $env:HOUSECARL_MCP }
-  if ($hc -and (Test-Path $hc)) {
-    Update-UabsGrokMcpBlock -Name 'housecarl' -Command $hc -Startup 120 -Tool 6000 -EnvMap @{ HouseCarl__Mo2InstanceDir = '%SKYRIM_MO2_INSTANCE%'; SKYRIM_MO2_INSTANCE = '%SKYRIM_MO2_INSTANCE%' } -SkipIfPresent
-  }
-  $cm = Find-UabsCodebaseMemoryExe
-  if (-not $cm) {
-    $cm = [Environment]::GetEnvironmentVariable('CODEBASE_MEMORY_MCP','User')
-    if (-not $cm) { $cm = $env:CODEBASE_MEMORY_MCP }
-  }
-  if ($cm -and (Test-Path $cm)) {
-    $programs = Join-Path $env:LOCALAPPDATA 'Programs\codebase-memory-mcp\codebase-memory-mcp.exe'
-    if (Test-Path -LiteralPath $programs) { $cm = $programs }
-    Set-UabsUserEnv 'CODEBASE_MEMORY_MCP' $cm
-    Update-UabsGrokMcpBlock -Name 'codebase-memory-mcp' -Command $cm -Startup 90 -Tool 6000 -SkipIfPresent
-  }
   $hr = $null
   try { $hr = (Get-Command headroom -EA SilentlyContinue).Source } catch {}
   if (-not $hr) { $hr = [Environment]::GetEnvironmentVariable('HEADROOM_CMD','User') }
@@ -1546,41 +1530,7 @@ if (-not $SkipGrokMcp -and -not $SkipMcpWire -and -not $SkillsOnly -and ($Provid
     # might be bare command name
     Update-UabsGrokMcpBlock -Name 'headroom' -Command 'headroom' -ArgList @('mcp','serve') -Startup 60 -Tool 600 -SkipIfPresent
   }
-  # Forge if INSTALLATION.json exists in grok skills.
-  # Budget check FIRST. The four servers above use -SkipIfPresent, so they only
-  # ever re-confirm what is already wired; Forge is the one that can add a NEW
-  # server, and adding it blind is how Grok reached 7 configured (8 running with
-  # a plugin-provided server) and wedged. Warning after the fact does not help
-  # anyone: refuse the add and say what to do instead.
-  $forgeInst = Join-Path (Get-UabsProviderHome Grok $catalog) 'skills\skyrim-forge\INSTALLATION.json'
-  $grokCfgNow = Join-Path $env:USERPROFILE '.grok\config.toml'
-  $grokNow = 0
-  if (Test-Path -LiteralPath $grokCfgNow) {
-    $grokNow = ([regex]::Matches(([IO.File]::ReadAllText($grokCfgNow)), '(?m)^[ 	]*\[mcp_servers\.[A-Za-z0-9_-]+\][ 	
-]*$')).Count
-  }
-  $forgeAlready = $grokNow -gt 0 -and ([IO.File]::ReadAllText($grokCfgNow)) -match '(?m)^[ 	]*\[mcp_servers\.skyrim-forge\]'
-  if ((Test-Path $forgeInst) -and -not $forgeAlready -and $grokNow -ge $GrokMcpBudget) {
-    Write-UabsWarn ("Grok already has $grokNow MCP servers (budget $GrokMcpBudget); skyrim-forge NOT added.")
-    Write-UabsWarn ('  Eight RUNNING servers wedge grok-cli 1.0.4 and enabled Claude plugins add servers')
-    Write-UabsWarn ('  that never appear in config.toml. To take Forge on Grok, comment out a server in')
-    Write-UabsWarn ('  ~/.grok/config.toml first, or re-run with -GrokMcpBudget 7 if no plugin adds one.')
-  }
-  elseif (Test-Path $forgeInst) {
-    try {
-      $j = [IO.File]::ReadAllText($forgeInst) | ConvertFrom-Json
-      if ($j.mcp -and $j.mcp.Count -ge 1) {
-        $cmd = $j.mcp[0]
-        $args = @()
-        if ($j.mcp.Count -gt 1) { $args = @($j.mcp[1..($j.mcp.Count-1)]) }
-        Update-UabsGrokMcpBlock -Name 'skyrim-forge' -Command $cmd -ArgList $args -Startup 120 -Tool 6000
-      }
-    } catch { Write-UabsWarn "Forge MCP wire skipped: $_" }
-  } elseif (Test-Path -LiteralPath (Join-Path $PackRoot 'BUNDLED-TOOLS\skyrim-forge\VERSION.txt') -PathType Leaf) {
-    Write-UabsOk 'Skyrim Forge MCP deferred to bundled Forge installer'
-  } else {
-    Write-UabsWarn "Skyrim Forge not configured (optional). Set SKYRIM_FORGE_ROOT or skill INSTALLATION.json"
-  }
+  Write-UabsOk 'Skyrim MCPs stay out of the global Grok config; game profiles own activation'
 }
 elseif (-not $SkillsOnly -and ($Providers -contains 'Grok')) {
   Write-UabsWarn 'Grok MCP wiring skipped (-SkipGrokMcp).'
@@ -1642,7 +1592,7 @@ if (-not $SkipHouseCarlSetup -and -not $SkillsOnly) {
   if (Test-Path $setup) {
     Write-UabsStep "houseCARL MO2/Vortex setup"
     try {
-      & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $setup
+      & $setup -WireGrok:$false -WireCodex:$false
       $installed['housecarl-setup'] = @{ status='ran' }
     } catch {
       Write-UabsWarn "Setup-HouseCarl: $($_.Exception.Message)"
@@ -1655,8 +1605,8 @@ if (-not $SkipHouseCarlSetup -and -not $SkillsOnly) {
 # Forge's source lives in this repository at BUNDLED-TOOLS\skyrim-forge, so
 # what installs is whatever this commit contains -- there is no separately
 # released archive to drift. The installer resolves ONE versionless install
-# root (migrating a version-stamped install onto it), wires selected providers,
-# and then proves the result runs with `forge doctor`.
+# root (migrating a version-stamped install onto it), refreshes provider skill
+# descriptors without global MCP registration, and proves `forge doctor`.
 #
 # No -BundleVersion is passed any more. 7.8.0 negotiated a compatibility range
 # with a separately released Forge and read a field back that Forge has never
@@ -1672,6 +1622,48 @@ if (-not $ToolsOnly -and -not $SkillsOnly) {
   & (Get-Command powershell.exe -ErrorAction Stop).Source @forgeArgs
   if ($LASTEXITCODE -ne 0) { throw "Skyrim Forge installation failed with exit code $LASTEXITCODE." }
   $installed['skyrim-forge'] = @{ status='installed'; version=$forgeSourceVersion; root=$env:SKYRIM_FORGE_ROOT }
+
+  # Earlier bundles owned these machine-wide entries. Keep the tools and
+  # skills installed, but migrate their schemas out of unrelated sessions.
+  $cleaned = @(Remove-UabsGlobalMcpRegistration -Ids @('skyrim-forge','housecarl','codebase-memory-mcp') -FromProviders $Providers)
+  $installed['game-mcp-global-migration'] = @{ status='profile-only'; removed_from=$cleaned }
+}
+
+# Discover separately installed game Forges without baking this maintainer's
+# drive letter into a shipped provider config. Existing valid choices win.
+function Set-UabsDiscoveredGameForgeRoot {
+  param([string]$Variable, [string]$Marker, [string[]]$RelativeCandidates)
+  $root = [Environment]::GetEnvironmentVariable($Variable, 'User')
+  if (-not $root) { $root = [Environment]::GetEnvironmentVariable($Variable, 'Process') }
+  if ($root -and (Test-Path -LiteralPath (Join-Path $root $Marker) -PathType Leaf)) {
+    Set-Item -Path ("Env:" + $Variable) -Value $root
+    return $root
+  }
+  $bases = @($env:LOCALAPPDATA)
+  foreach ($letter in @('C','D','E','F','G','H','S','T','Z')) {
+    $drive = "${letter}:\"
+    if (Test-Path -LiteralPath $drive) { $bases += $drive }
+  }
+  foreach ($base in @($bases | Where-Object { $_ } | Select-Object -Unique)) {
+    foreach ($relative in $RelativeCandidates) {
+      $candidate = Join-Path $base $relative
+      if (-not (Test-Path -LiteralPath (Join-Path $candidate $Marker) -PathType Leaf)) { continue }
+      Set-UabsUserEnv $Variable $candidate
+      Set-Item -Path ("Env:" + $Variable) -Value $candidate
+      Write-UabsOk ("{0} discovered: {1}" -f $Variable, $candidate)
+      return $candidate
+    }
+  }
+  return $null
+}
+
+$robloxForge = Set-UabsDiscoveredGameForgeRoot -Variable 'ROBLOX_FORGE_ROOT' -Marker 'mcp_server\server.py' -RelativeCandidates @('RobloxForge','Apps\Roblox Tools\RobloxForge')
+$saintsForge = Set-UabsDiscoveredGameForgeRoot -Variable 'SAINTSROW_FORGE_ROOT' -Marker 'mcp_server\server.py' -RelativeCandidates @('SaintsRowForge','Apps\Saints Row Tools\SaintsRowForge')
+$installed['roblox-forge-discovery'] = @{ status=$(if($robloxForge){'found'}else{'not-installed'}); root=$robloxForge }
+$installed['saints-row-forge-discovery'] = @{ status=$(if($saintsForge){'found'}else{'not-installed'}); root=$saintsForge }
+
+if ($WorkspaceRoot) {
+  & (Join-Path $PackRoot 'TOOLS\Set-McpProfile.ps1') -Auto -Path $WorkspaceRoot -Providers $Providers
 }
 
 # ---------- Discover + state ----------
@@ -1819,13 +1811,13 @@ Write-Host "=====================================================" -ForegroundCo
 Write-Host ""
 Write-Host 'NEXT STEPS:' -ForegroundColor Yellow
 Write-Host '  1. FULLY restart every AI app you use (Grok / Claude / Codex / ...).'
-Write-Host '  2. Grok: run /mcp and confirm housecarl, codebase-memory-mcp, headroom.'
+Write-Host '  2. Run /mcp and confirm the always-on core: context7, github, headroom.'
 Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANCE path.'
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
 Write-Host '  6. Core MCP handshakes passed during install. Re-check any provider with:'
 Write-Host '     TOOLS\Test-McpHandshake.ps1 -Provider Claude'
-Write-Host '     Capability profiles (browser, Serena, Blender, Godot, Unity, reasoning) are off'
+Write-Host '     Capability profiles (code memory, games, browser, Serena, Blender, Godot, Unity, reasoning) are off'
 Write-Host '     until a project needs them, and are then wired for THAT project only:'
 Write-Host '     TOOLS\Set-McpProfile.ps1 -List | -Auto -Path <project> | -Disable <id>'
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'

@@ -16,7 +16,7 @@
   "profiles": [
     {
       "id": "code-intel",
-      "title": "Language-server-accurate code navigation and editing",
+      "title": "Repository graph plus language-server-accurate navigation and editing",
       "scope": "project",
       "why": "Serena drives real language servers, so find-symbol, find-referencing-symbols and replace-symbol-body answer from the compiler's view of the code rather than from a text match. It overlaps codebase-memory-mcp deliberately: that one answers 'where is this in the graph', Serena answers 'what exactly does this symbol resolve to, and rewrite its body'. Worth the context on a real codebase, not worth it on a two-file mod -- which is why it is wired for that codebase and nowhere else. Named code-intel, not code-deep: it was renamed in 7.9.6 and has nothing to do with any package of a similar name.",
       "detect": {
@@ -37,29 +37,15 @@
       },
       "servers": [
         {
-          "id": "playwright-mcp",
-          "command": "npx",
-          "args": [
-            "-y",
-            "@playwright/mcp@0.0.79"
-          ],
-          "providers": [
-            "Codex",
-            "Grok",
-            "Kimi",
-            "Hermes"
-          ],
-          "extra_args_env": "PLAYWRIGHT_MCP_EXECUTABLE_PATH",
-          "extra_args_template": [
-            "--executable-path",
-            "{value}"
-          ],
-          "note": "drive a browser for testing and automation",
+          "id": "codebase-memory-mcp",
+          "command": "%CODEBASE_MEMORY_MCP%",
+          "args": [],
+          "note": "persistent code graph for repository structure and relationships",
           "key": null,
           "requires": {
-            "command": "npx"
-          },
-          "requires_note": "Claude is excluded because it already has a browser pane. Set PLAYWRIGHT_MCP_EXECUTABLE_PATH before enabling to use Opera GX, Edge, Brave, or Vivaldi instead of the default Chrome channel."
+            "command": "%CODEBASE_MEMORY_MCP%",
+            "env": "CODEBASE_MEMORY_MCP"
+          }
         },
         {
           "id": "serena",
@@ -155,6 +141,31 @@
       },
       "servers": [
         {
+          "id": "playwright-mcp",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@playwright/mcp@0.0.79"
+          ],
+          "providers": [
+            "Codex",
+            "Grok",
+            "Kimi",
+            "Hermes"
+          ],
+          "extra_args_env": "PLAYWRIGHT_MCP_EXECUTABLE_PATH",
+          "extra_args_template": [
+            "--executable-path",
+            "{value}"
+          ],
+          "note": "drive a browser for testing and automation",
+          "key": null,
+          "requires": {
+            "command": "npx"
+          },
+          "requires_note": "Claude is excluded because it already has a browser pane. Set PLAYWRIGHT_MCP_EXECUTABLE_PATH before enabling to use Opera GX, Edge, Brave, or Vivaldi instead of the default Chrome channel."
+        },
+        {
           "id": "chrome-devtools",
           "command": "npx",
           "args": [
@@ -191,6 +202,152 @@
             "project_rel": "components.json"
           },
           "requires_note": "The server resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only."
+        }
+      ]
+    },
+    {
+      "id": "game-skyrim",
+      "title": "Skyrim mod engineering (Skyrim Forge)",
+      "scope": "project",
+      "why": "Skyrim Forge exposes a large typed tool surface for plugins, Papyrus, frameworks, assets, packaging and release gates. Keep the product and skill installed everywhere, but connect its MCP only inside a Skyrim mod project; providers without project-scoped MCP config use the same Forge CLI through the skyrim-forge skill.",
+      "detect": {
+        "files": [
+          "meta.ini",
+          "fomod/info.xml",
+          "fomod/ModuleConfig.xml"
+        ],
+        "globs": [
+          "*.esp",
+          "*.esm",
+          "*.esl",
+          "*.psc"
+        ]
+      },
+      "servers": [
+        {
+          "id": "skyrim-forge",
+          "command": "%SKYRIM_FORGE_ROOT%\\.venv\\Scripts\\python.exe",
+          "args": [
+            "-m",
+            "skyrim_forge",
+            "mcp"
+          ],
+          "note": "typed Skyrim mod engineering and release gates",
+          "key": null,
+          "requires": {
+            "command": "%SKYRIM_FORGE_ROOT%\\.venv\\Scripts\\python.exe",
+            "env": "SKYRIM_FORGE_ROOT"
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-skyrim-load-order",
+      "title": "Skyrim installed load order (houseCARL)",
+      "scope": "project",
+      "why": "houseCARL is useful against a real MO2 instance or the bundle's Vortex shim, not in every Skyrim source repository. Its broad load-order and patching schemas activate only when the opened directory is an actual manager instance/shim.",
+      "detect": {
+        "files": [
+          "ModOrganizer.ini",
+          "HOUSECARL-SHIM.txt"
+        ],
+        "globs": []
+      },
+      "servers": [
+        {
+          "id": "housecarl",
+          "command": "%HOUSECARL_MCP%",
+          "args": [],
+          "note": "inspect and patch the active Skyrim load order",
+          "key": null,
+          "env_passthrough": [
+            "SKYRIM_MO2_INSTANCE",
+            "HouseCarl__Mo2InstanceDir"
+          ],
+          "requires": {
+            "command": "%HOUSECARL_MCP%",
+            "env": "SKYRIM_MO2_INSTANCE"
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-roblox",
+      "title": "Roblox project engineering (Roblox Forge)",
+      "scope": "project",
+      "why": "Roblox Forge's eleven tools are useful for a Roblox filesystem project and waste schema context elsewhere. The bundle discovers an existing official checkout and activates it only for Rojo, Rokit, place, or model markers.",
+      "detect": {
+        "files": [
+          "default.project.json",
+          "rokit.toml",
+          "aftman.toml"
+        ],
+        "globs": [
+          "*.rbxl",
+          "*.rbxlx",
+          "*.rbxm",
+          "*.rbxmx"
+        ]
+      },
+      "servers": [
+        {
+          "id": "robloxforge",
+          "command": "python",
+          "args": [
+            "%ROBLOX_FORGE_ROOT%\\mcp_server\\server.py"
+          ],
+          "note": "Roblox project analysis, planning, review and receipts",
+          "key": null,
+          "requires": {
+            "command": "python",
+            "env": "ROBLOX_FORGE_ROOT",
+            "any_path": [
+              "%ROBLOX_FORGE_ROOT%\\mcp_server\\server.py"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-saints-row",
+      "title": "Saints Row mod engineering (Saints Row Forge)",
+      "scope": "project",
+      "why": "Saints Row Forge is a game-specific local server. Its MCP activates only when project.json identifies a supported Saints Row game or when a top-level game asset marker exists; other sessions keep using zero schemas from it.",
+      "detect": {
+        "files": [],
+        "globs": [
+          "*.xtbl",
+          "*.asm_pc",
+          "*.str2_pc",
+          "*.vpp_pc"
+        ],
+        "json": [
+          {
+            "path": "project.json",
+            "property": "game",
+            "equals": [
+              "srtt",
+              "sriv"
+            ]
+          }
+        ]
+      },
+      "servers": [
+        {
+          "id": "saints-row-forge",
+          "command": "python",
+          "args": [
+            "%SAINTSROW_FORGE_ROOT%\\mcp_server\\server.py"
+          ],
+          "note": "Saints Row assets, XTBL, projects, builds and dependency checks",
+          "key": null,
+          "requires": {
+            "command": "python",
+            "env": "SAINTSROW_FORGE_ROOT",
+            "any_path": [
+              "%SAINTSROW_FORGE_ROOT%\\mcp_server\\server.py"
+            ]
+          }
         }
       ]
     },

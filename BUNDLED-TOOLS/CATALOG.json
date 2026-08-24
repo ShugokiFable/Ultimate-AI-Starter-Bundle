@@ -72,12 +72,14 @@
       "mcp": true,
       "offline_asset": "codebase-memory-mcp-windows-amd64.zip",
       "kind": "mcp-binary",
+      "profile": "code-intel",
+      "auto_register": false,
       "asset_match": [
         "codebase-memory-mcp-windows-amd64.zip"
       ],
       "install": "zip-extract",
       "exe_rel": "codebase-memory-mcp.exe",
-      "scope_note": " NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default.",
+      "scope_note": "Installed globally, enabled only through the project-scoped code-intel profile. NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default.",
       "server_id": "codebase-memory-mcp"
     },
     {

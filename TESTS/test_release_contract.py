@@ -1034,9 +1034,41 @@ def test_double_click_launcher_keeps_success_visible() -> None:
 
 def test_grok_forge_wiring_does_not_warn_before_bundled_forge_install() -> None:
     installer = read(ROOT / "INSTALL-AIO.ps1")
-    assert "Skyrim Forge MCP deferred to bundled Forge installer" in installer, (
-        "Grok wiring still emits a false 'Skyrim Forge not configured' warning before the bundled Forge component runs"
+    assert "game-mcp-global-migration" in installer, (
+        "AIO does not migrate old bundle-owned Skyrim MCP registrations out of global configs"
     )
+    assert "Remove-UabsGlobalMcpRegistration -Ids @('skyrim-forge','housecarl','codebase-memory-mcp')" in installer
+    assert "Update-UabsGrokMcpBlock -Name 'skyrim-forge'" not in installer, (
+        "AIO still re-registers Skyrim Forge machine-wide after declaring it profile-only"
+    )
+    assert "Update-UabsGrokMcpBlock -Name 'codebase-memory-mcp'" not in installer, (
+        "AIO still re-registers codebase-memory machine-wide after declaring it profile-only"
+    )
+
+
+def test_aio_prompt_cache_ci_and_game_profile_contract() -> None:
+    prompt = read(ROOT / "0-UNRESTRAINT-PACKS" / "AIO-INSTRUCTION.md")
+    for needle in ("prompt-cache locality", "cached-input tokens", "Installed is not enabled",
+                   "exact commit SHA", "terminal successful state"):
+        assert needle in prompt, f"AIO prompt lost its efficiency/release contract: {needle}"
+    assert "affects your score" not in prompt, (
+        "the operating contract still uses a coercive score threat instead of a precise blocker rule"
+    )
+
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    by_id = {p["id"]: p for p in profiles["profiles"]}
+    for pid in ("game-skyrim", "game-skyrim-load-order", "game-roblox", "game-saints-row"):
+        assert pid in by_id, f"missing game-scoped profile {pid}"
+        assert by_id[pid].get("scope") == "project"
+    saints = by_id["game-saints-row"]["detect"]
+    assert saints.get("json"), "Saints Row detection fell back to every generic project.json"
+    router = read(ROOT / "TOOLS" / "Set-McpProfile.ps1")
+    assert "$d.Contains('json')" in router and "ConvertFrom-Json" in router
+
+    starter = read(ROOT / "TOOLS" / "Install-Provider-Starter-Settings.ps1")
+    for needle in ("Merge-UabsHermesEfficiencyDefaults", "config get", "config set",
+                   "prompt_caching.cache_ttl", "existing values preserved"):
+        assert needle in starter, f"Hermes reset repair lost {needle}"
 
 
 
@@ -1253,6 +1285,7 @@ def main() -> int:
         test_hermes_forge_probe_bypasses_cli_startup_and_hook_prompts,
         test_double_click_launcher_keeps_success_visible,
         test_grok_forge_wiring_does_not_warn_before_bundled_forge_install,
+        test_aio_prompt_cache_ci_and_game_profile_contract,
     ]
     failed = []
     for fn in tests:
@@ -1498,10 +1531,16 @@ def test_docs_do_not_contradict_the_profile_scope() -> None:
         assert note, f"{comp['id']} carries a profile with no scope_note"
 
     declared = {p["id"] for p in profiles["profiles"]}
+    profile_servers = {p["id"]: {s["id"] for s in p["servers"]} for p in profiles["profiles"]}
     for comp in catalog["components"]:
         if comp.get("profile"):
             assert comp["profile"] in declared, (
                 f"{comp['id']} names profile {comp['profile']}, which PROFILES.json does not declare"
+            )
+            server_id = comp.get("server_id") or comp["id"]
+            aliases = {server_id, re.sub(r"-mcp$", "", server_id)}
+            assert aliases & profile_servers[comp["profile"]], (
+                f"{comp['id']} says it belongs to {comp['profile']}, but server {server_id} is wired elsewhere"
             )
 
     skill = read(ROOT / "_CANONICAL-SKILLS" / "capability-profiles" / "SKILL.md")

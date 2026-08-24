@@ -159,6 +159,17 @@ function Test-UabsProfileDetected($ProfileDef, [string]$ProjectPath) {
       if (Get-ChildItem -LiteralPath $ProjectPath -Filter $g -File -ErrorAction SilentlyContinue | Select-Object -First 1) { return $true }
     }
   }
+  if ($d.Contains('json')) {
+    foreach ($probe in @($d['json'])) {
+      $file = Join-UabsPath $ProjectPath $probe['path']
+      if (-not (Test-UabsPath -LiteralPath $file -PathType Leaf)) { continue }
+      try {
+        $obj = [IO.File]::ReadAllText($file) | ConvertFrom-Json
+        $prop = $obj.PSObject.Properties[[string]$probe['property']]
+        if ($prop -and @($probe['equals']) -contains [string]$prop.Value) { return $true }
+      } catch { }
+    }
+  }
   return $false
 }
 

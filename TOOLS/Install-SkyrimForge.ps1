@@ -249,7 +249,13 @@ foreach ($provider in $Providers) {
   } else {
     & (Join-Path $target 'Install-Forge-Skill.ps1') -Provider $provider
   }
-  & (Join-Path $target 'Register-MCP.ps1') -Provider $provider -Yes -ReportPath (Join-Path $target ("REGISTER-$provider.json"))
+  if (-not $BundleOwnsProviderSkills) {
+    & (Join-Path $target 'Register-MCP.ps1') -Provider $provider -Yes -ReportPath (Join-Path $target ("REGISTER-$provider.json"))
+  }
+}
+
+if ($BundleOwnsProviderSkills) {
+  Write-Host '  OK  Skyrim Forge installed but not registered globally; the bundle game-skyrim profile owns MCP activation' -ForegroundColor Green
 }
 
 # ---- Prove it actually runs ---------------------------------------------

@@ -1,6 +1,6 @@
 ---
 name: capability-profiles
-description: Use when a task needs a capability the connected MCP servers do not cover (browser debugging, symbol-level code navigation, Blender, Godot, Unity), when deciding whether to add an MCP server, when a server is configured but shows no tools, when a session feels slow and MCP tool schemas are the suspected cause, or when choosing the smallest capability that can produce the evidence a task actually needs.
+description: Use when a task needs a capability the connected MCP servers do not cover (game-specific Forge tools, browser debugging, symbol-level code navigation, Blender, Godot, Unity), when deciding whether to add an MCP server, when a server is configured but shows no tools, when a session feels slow and MCP tool schemas are the suspected cause, or when choosing the smallest capability that can produce the evidence a task actually needs.
 ---
 
 # Capability profiles
@@ -76,7 +76,11 @@ wrong unit, bytes is the right one.** Measure before arguing about it —
 
 | profile | gives you | needs |
 |---|---|---|
-| `code-intel` | Serena: LSP-accurate find-symbol, find-referencing-symbols, symbol-level edits | uv (auto-installs) |
+| `game-skyrim` | Skyrim Forge typed mod engineering | installed bundled Forge |
+| `game-skyrim-load-order` | houseCARL against a real MO2 instance/Vortex shim | `HOUSECARL_MCP` + instance env |
+| `game-roblox` | Roblox Forge analysis, planning, review, receipts | discovered Roblox Forge checkout |
+| `game-saints-row` | Saints Row assets, XTBL, builds, dependency checks | discovered Saints Row Forge checkout |
+| `code-intel` | codebase-memory graph + Serena LSP symbol navigation/edits | installed graph server; uv for Serena |
 | `web` | Chrome DevTools: console, network, performance traces, live DOM; shadcn registry | Google Chrome |
 | `engine-blender` | live Blender scene control | Blender + its addon running |
 | `engine-godot` | run projects, read scene trees, capture runtime errors | `GODOT_PATH` |
@@ -115,7 +119,9 @@ router exists to avoid:
 | Kimi | none found; it reads `%USERPROFILE%\.kimi-code\mcp.json`. |
 | Hermes | none. One config file, no scope option. |
 
-For the last three the server is skipped and the reason is printed.
+For the last three the MCP server is skipped and the reason is printed. The
+matching game skill can still run an installed Forge through its CLI, so the
+capability remains available without paying its schemas in every session.
 `-Global` is the explicit opt-in, and it registers machine-wide — Serena then
 gets `--project-from-cwd` rather than one baked path, so it follows the session
 instead of activating one project everywhere.
@@ -148,8 +154,8 @@ what a session opened there would actually pay. Measured on the development
 machine for this pack's own repository:
 
 ```
-machine-wide only              188 tool schemas every turn
-+ code-intel for this project  209   (serena [project]  21 tools)
+machine-wide before profiles   188 tool schemas every turn
++ code-intel for one project   209   (serena [project]  21 tools)
 ```
 
 Those 21 are paid by that project and by nothing else. For the "wrong project"
@@ -167,6 +173,8 @@ one that answers this question, not the set that looks related:
 | symbol-level refactor in a real codebase | `code-intel` |
 | "which API does this library have now" | `research-verification` — installed `--help`, upstream, Context7. No Blender, no DevTools. |
 | Blender / Godot / Unity work | that engine's profile, plus a render or capture if you can see it |
+| Skyrim mod project | `game-skyrim`; use `game-skyrim-load-order` only against an actual MO2 instance/Vortex shim |
+| Roblox / Saints Row project | the matching game profile when project markers match; otherwise its installed CLI/skill |
 | Skyrim crash | the crash log and the Skyrim diagnostic skills. Only reach outward if a version fact is genuinely unresolved. |
 
 Do not enable Chrome DevTools to edit a README. Do not enable `shadcn` because a

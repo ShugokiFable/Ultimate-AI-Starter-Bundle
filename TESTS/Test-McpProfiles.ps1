@@ -388,6 +388,22 @@ if (-not (Test-Path -LiteralPath $setProfile -PathType Leaf)) {
   foreach ($needle in 'code-intel', 'engine-blender', 'not shipped', 'INSTALLED', 'ENABLED') {
     if ($out -match [regex]::Escape($needle)) { Good "-List reports $needle" } else { Bad "-List output has no $needle" }
   }
+
+  $robloxProject = Join-Path $sandbox 'detect-roblox'
+  New-Item -ItemType Directory -Force -Path $robloxProject | Out-Null
+  Set-Utf8NoBom -Path (Join-Path $robloxProject 'default.project.json') -Text '{"name":"test"}'
+  $detected = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $setProfile -Detect -Path $robloxProject -PackRoot $PackRoot 2>&1 | Out-String
+  if ($detected -match 'game-roblox') { Good 'Roblox marker selects only its game profile' } else { Bad 'Roblox marker did not select game-roblox' }
+
+  $saintsProject = Join-Path $sandbox 'detect-saints-row'
+  New-Item -ItemType Directory -Force -Path $saintsProject | Out-Null
+  Set-Utf8NoBom -Path (Join-Path $saintsProject 'project.json') -Text '{"game":"sriv"}'
+  $detected = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $setProfile -Detect -Path $saintsProject -PackRoot $PackRoot 2>&1 | Out-String
+  if ($detected -match 'game-saints-row') { Good 'Saints Row JSON marker selects its game profile' } else { Bad 'Saints Row JSON marker did not select game-saints-row' }
+
+  Set-Utf8NoBom -Path (Join-Path $saintsProject 'project.json') -Text '{"game":"unrelated"}'
+  $detected = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $setProfile -Detect -Path $saintsProject -PackRoot $PackRoot 2>&1 | Out-String
+  if ($detected -notmatch 'game-saints-row') { Good 'generic project.json does not enable Saints Row tools' } else { Bad 'generic project.json falsely selected game-saints-row' }
 }
 
 # Both writers must share one implementation. Two copies means every bug in

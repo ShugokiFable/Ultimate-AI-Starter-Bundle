@@ -134,6 +134,63 @@ function Copy-UabsStarterIfMissing {
   Write-UabsOk ("{0} starter {1} installed: {2}" -f $Label, (Split-Path -Leaf $Dest), $Dest)
 }
 
+function Merge-UabsHermesEfficiencyDefaults {
+  param([string]$Dest)
+  if (-not (Test-Path -LiteralPath $Dest -PathType Leaf)) { return }
+  $exe = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'
+  if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) {
+    Write-UabsWarn 'Hermes config exists but the official CLI is unavailable; efficiency defaults were not merged'
+    return
+  }
+
+  # Fill only absent keys through Hermes' own config API. This repairs an
+  # upstream reset without replacing the user's model, credentials, plugins,
+  # MCP entries, or deliberate values.
+  $defaults = [ordered]@{
+    'agent.verbose'                           = 'false'
+    'compression.enabled'                     = 'true'
+    'compression.threshold_tokens'            = '120000'
+    'compression.target_ratio'                = '0.30'
+    'compression.protect_last_n'              = '20'
+    'compression.min_tail_user_messages'      = '3'
+    'compression.proactive_prune_tokens'      = '80000'
+    'compression.proactive_prune_min_reclaim_tokens' = '32768'
+    'compression.micro_compact'               = 'false'
+    'compression.abort_on_summary_failure'    = 'true'
+    'compression.idle_compact_after_seconds'  = '0'
+    'prompt_caching.cache_ttl'                 = '1h'
+    'mcp.auto_reload_on_config_change'         = 'false'
+    'openrouter.response_cache'                = 'true'
+    'openrouter.response_cache_ttl'            = '300'
+    'auxiliary.transient_retries'              = '1'
+  }
+
+  $missing = @()
+  foreach ($key in $defaults.Keys) {
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try { $probe = (& $exe config get $key --json 2>&1 | Out-String); $code = $LASTEXITCODE }
+    finally { $ErrorActionPreference = $prevEap }
+    if ($code -eq 0) { continue }
+    if ($probe -notmatch 'Config key not set') {
+      Write-UabsWarn ("Hermes config read failed for {0}; preserved as-is" -f $key)
+      continue
+    }
+    $missing += $key
+  }
+  if (-not $missing.Count) { Write-UabsOk 'Hermes efficiency/cache defaults already present'; return }
+
+  Backup-UabsFile -Path $Dest
+  foreach ($key in $missing) {
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try { & $exe config set $key $defaults[$key] 2>&1 | ForEach-Object { Write-Host ('     ' + $_) }; $code = $LASTEXITCODE }
+    finally { $ErrorActionPreference = $prevEap }
+    if ($code -ne 0) { throw "Hermes rejected efficiency default ${key}." }
+  }
+  Write-UabsOk ("Hermes filled {0} missing efficiency/cache setting(s); existing values preserved" -f $missing.Count)
+}
+
 function Ensure-UabsGrokMcpSearchDisabled {
   param([string]$Dest)
   if (-not (Test-Path -LiteralPath $Dest -PathType Leaf)) { return }
@@ -198,7 +255,9 @@ foreach ($prov in $Providers) {
       if ($SkipHermes) { Write-UabsOk 'Hermes starter config skipped'; continue }
       $src = Join-Path $srcRoot 'config.yaml'
       if (Test-Path -LiteralPath $src) {
-        Copy-UabsStarterIfMissing -Src $src -Dest (Join-Path $provHome 'config.yaml') -Label Hermes
+        $dest = Join-Path $provHome 'config.yaml'
+        Copy-UabsStarterIfMissing -Src $src -Dest $dest -Label Hermes
+        Merge-UabsHermesEfficiencyDefaults -Dest $dest
       }
     }
   }

@@ -36,8 +36,8 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md",
-  "size": 10642,
-  "sha256": "ee662f6efa63a1ea214d3526381f3af8c26f32087354d569b5be975ecb2b8f6f"
+  "size": 11978,
+  "sha256": "359465638e9da4cf074044431d0256011a948033ebd49dcf041e8b49a89687e6"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/AIO.txt",
@@ -1501,8 +1501,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10322,
-  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
+  "size": 11160,
+  "sha256": "c9573e5f36891f22170590c449a008d12815e32c95fe18ddecd966c46fe1c988"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -4316,8 +4316,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10322,
-  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
+  "size": 11160,
+  "sha256": "c9573e5f36891f22170590c449a008d12815e32c95fe18ddecd966c46fe1c988"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -7116,8 +7116,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10322,
-  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
+  "size": 11160,
+  "sha256": "c9573e5f36891f22170590c449a008d12815e32c95fe18ddecd966c46fe1c988"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -9916,8 +9916,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10322,
-  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
+  "size": 11160,
+  "sha256": "c9573e5f36891f22170590c449a008d12815e32c95fe18ddecd966c46fe1c988"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -12726,8 +12726,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 10322,
-  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
+  "size": 11160,
+  "sha256": "c9573e5f36891f22170590c449a008d12815e32c95fe18ddecd966c46fe1c988"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -15456,8 +15456,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 23765,
-  "sha256": "c9f7f46885296453123eee7dc5338a9d59befc86e66e9df79f553f3a191acaf2"
+  "size": 23905,
+  "sha256": "3090c98b565c18457cfd08f5e7008126110602ee1b6863eee07f1cc1b687ecfd"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -15466,8 +15466,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
-  "size": 21674,
-  "sha256": "8004d91600e9c81b4a9f4a3792dcad2ebf8ecf78dcc92baea1ad388b7c82ee97"
+  "size": 26623,
+  "sha256": "7fb7361e229fa1379981edbc05c5b59f558b496774dbde4016d937eb1ea5bdaf"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -18416,8 +18416,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 102172,
-  "sha256": "c48e9d116355d3879e0030180f59d9e77239846160c4c20a7c920f19940e5c8a"
+  "size": 101530,
+  "sha256": "207174e4f6d7fcf664553032ec34d196ab2dd7f67c66569c4629c77753e7bd7e"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -18471,8 +18471,8 @@
  },
  {
   "path": "README.md",
-  "size": 46654,
-  "sha256": "0639631eb638740c21c165ae817c4cb1c364ec2c812e062e0158028a750afe56"
+  "size": 47506,
+  "sha256": "d052bf6af5554f24901e2aee7be0495336c9abdaa115ade1b168d4df65eed0f3"
  },
  {
   "path": "START-HERE.bat",
@@ -18501,8 +18501,8 @@
  },
  {
   "path": "TESTS/Test-McpProfiles.ps1",
-  "size": 47675,
-  "sha256": "3933a85490e48bc8f2134cafc90479afd6744102cfcdbe497433047cbcd0435d"
+  "size": 49275,
+  "sha256": "7a73db9dca2e8b6dc1dd8097e85e5f326c18d4ccfba39182029fbc4ce535baaa"
  },
  {
   "path": "TESTS/Test-Pack.ps1",
@@ -18671,8 +18671,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 105408,
-  "sha256": "32003d609c3352a702dbfaa7c7a3d056577485d07c2a6a0da901457167486005"
+  "size": 107785,
+  "sha256": "4d66c7ec3c88ab62e2a6d3bb64d6d3a4893171dcd8ff7aed1a8bbdf3d9e3213d"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18716,13 +18716,13 @@
  },
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
-  "size": 8566,
-  "sha256": "6a73460c39be14b2a1f3dc9d3b9bdf192024c72b31a2ff28894eb81bbe2932c8"
+  "size": 11267,
+  "sha256": "6425cfb504cdd09e690849f66e8be44085bd987e7a56a1127336f813f1f77090"
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",
-  "size": 15702,
-  "sha256": "40db61d963c0f10a0de3b4554f58683a9646ea8c63c21801eebc5fc47fb51b95"
+  "size": 15931,
+  "sha256": "3d22fc67dc6fad1bc13b90530053b215affae2000249d74e01c865b64b72f015"
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
@@ -18746,8 +18746,8 @@
  },
  {
   "path": "TOOLS/Set-McpProfile.ps1",
-  "size": 36402,
-  "sha256": "5d39ffce087f15640f6122726e5870bee62072ba686d1a84745ab62f907fabf0"
+  "size": 36870,
+  "sha256": "4398b412558304aec454c77d1d3fbf975661e071e3d587c226779efd204e6699"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
@@ -19041,8 +19041,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/capability-profiles/SKILL.md",
-  "size": 10322,
-  "sha256": "fdbf45a76546566e2efdc09da70789567f93ba89025ba716964cf12db5b28ae6"
+  "size": 11160,
+  "sha256": "c9573e5f36891f22170590c449a008d12815e32c95fe18ddecd966c46fe1c988"
  },
  {
   "path": "_CANONICAL-SKILLS/capability-routing/SKILL.md",
@@ -22041,7 +22041,7 @@
  },
  {
   "path": "docs/history/V8.0.0-CHANGELOG.md",
-  "size": 1625,
-  "sha256": "e2a9909368da155accc341c4263b17a73fc4ef1275d2fdb65c6b71249ec1be19"
+  "size": 2331,
+  "sha256": "00bdad2d8e0807225429b288ae40888f6a9dbe06d5c6b43487b1f341295e1d1e"
  }
 ]

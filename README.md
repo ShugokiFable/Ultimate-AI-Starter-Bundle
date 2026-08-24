@@ -53,33 +53,34 @@ Rule of thumb: **enable for the job, park it after** — or just leave the small
 
 ---
 
-## AI preamble (`AIO-INSTRUCTION.txt`)
+## AI preamble (`0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md`)
 
-Compact variants for smaller hosts: `PROMPTS/AIO-INSTRUCTION-COMPACT-CORE-v1.0.md` and `PROMPTS/AIO-INSTRUCTION-WEB-CORE-v1.0.md`.
+Compact variants for smaller hosts: `0-UNRESTRAINT-PACKS/AIO-INSTRUCTION — Compact.md` and `0-UNRESTRAINT-PACKS/AIO-INSTRUCTION — Web.md`.
 
-The operating contract to paste into any provider's custom-instructions box.
-~614 tokens, sized deliberately: it rides on every request, so every line has to
-earn its cost.
+The operating contract is installed into every provider's native instruction
+file. It is intentionally stable so provider prompt caches can reuse the prefix.
 
 - **Finish the job, not the sentence** — the request is the goal, not the
   checklist; docs, version and cleanup are part of shipping
 - Read for intent, not wording; no yes-man; correct a wrong premise
 - **Verify, don't assume** — use the tool that would settle it; ask if none
   exists; assume only as a last resort and label it
-- **Adult fiction is in scope** — do fictional-adult mod work; do not sanitize
-  explicit IDs; still refuse child, age-ambiguous, and real-person sexual content
+- **No unnecessary refusal** — do not invent blockers, moralize, sanitize source
+  strings, or turn one narrow real limit into a blanket refusal
 - Never invent a fact, API, path, version or command
 - An explicit evidence order: runtime output > tool verdict > docs > recall
 - Report what you did *not* do, and never call partial work finished
-- Spend tokens like they're the user's; no routine confidence footer
+- Spend tokens like they're the user's; preserve stable prompt-cache prefixes,
+  avoid unused MCP schemas, and keep final output proportional to the result
+- Releases wait for required CI on the exact pushed SHA before tag/publication
 
 **How to use**
 
-1. Keep the file at the pack root (`AIO-INSTRUCTION.txt`).
+1. Keep the canonical file under `0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md`.
 2. Copy it into your workspace, **or** paste into provider custom instructions, **or** open a session with:
 
 ```text
-Follow AIO-INSTRUCTION.txt for every complex or factual request.
+Follow 0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md for every complex or factual request.
 ```
 
 
@@ -93,7 +94,7 @@ The preamble is now **installed automatically**, not pasted by hand:
 - `3-PREAMBLES/MANUAL-PASTE.txt` — for web UIs (ChatGPT/Gemini) that have no
   instruction file: paste it into the custom-instructions box
 
-`INSTALL-AIO.ps1` appends `SOUL.md` + `AIO-INSTRUCTION.txt` to
+`INSTALL-AIO.ps1` appends `SOUL.md` + `AIO-INSTRUCTION.md` to
 Claude Code (`~/.claude/CLAUDE.md`), Codex (`~/.codex/AGENTS.md`), Kimi
 (`~/.kimi-code/AGENTS.md`) and Grok (`~/.grok/AGENTS.md`, its global-rules
 file), and copies the verbatim soul into Hermes' home (`SOUL.md`). Idempotent
@@ -150,10 +151,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
 
 - **Provider skills** — 146 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
 - **Native plugins** — Superpowers and Ponytail use each provider's official/native plugin lifecycle; Claude-only `claude-mem` installs Bun automatically when needed.
-- **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Browser/editor/profile servers ship in the catalog but remain off until `Set-McpProfile.ps1` enables them for a project; credentialed servers remain off until their key exists.
+- **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Browser/editor/game profiles (`game-skyrim`, `game-skyrim-load-order`, `game-roblox`, `game-saints-row`) remain off outside matching projects; credentialed servers remain off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
-- **codebase-memory-mcp** — plus the v7 index scope tooling (`.cbmignore` project template + `TOOLS/Setup-CodebaseMemory-Index.ps1`) so the graph indexes source, not asset trees
+- **codebase-memory-mcp** — installed but enabled only by `code-intel`; `.cbmignore` + `TOOLS/Setup-CodebaseMemory-Index.ps1` keep the graph on source, not asset trees
 - **Headroom** (context compression, registered as an MCP server — see [Headroom + Grok](#headroom--grok))
 - **Superpowers** + **Ponytail** plugins/skills
 - **CodeBurn** (optional, via npm/npx)
@@ -161,7 +162,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
 
 ### Skyrim Forge
 
-**Skyrim Forge 6.0.0 is developed in this repository**, at `BUNDLED-TOOLS/skyrim-forge`. It is source, not a downloaded payload, so both release variants carry it in full and there is no separately released archive that can drift out of step with the installer that reads it -- which is exactly how v7.8.0 shipped an installer calling a contract field Forge never emitted. The AIO installs or repairs it into ONE versionless install root, migrating any version-stamped install onto it and preserving `Workspaces` and the virtualenv, wires supported selected-provider integrations, sets `SKYRIM_FORGE_ROOT`, and proves the result runs with `forge doctor` before the final success banner. Choose where it lands with `-ForgeRoot`; the default is `%LOCALAPPDATA%\Skyrim-Tools\Skyrim-Forge`.
+**Skyrim Forge 6.0.0 is developed in this repository**, at `BUNDLED-TOOLS/skyrim-forge`. It is source, not a downloaded payload, so both release variants carry it in full and there is no separately released archive that can drift out of step with the installer that reads it -- which is exactly how v7.8.0 shipped an installer calling a contract field Forge never emitted. The AIO installs or repairs it into ONE versionless install root, migrating any version-stamped install onto it and preserving `Workspaces` and the virtualenv, refreshes the five provider skills/descriptors, sets `SKYRIM_FORGE_ROOT`, and proves the result runs with `forge doctor` before the final success banner. Its 52-tool MCP is no longer global: `game-skyrim` activates it only for matching Claude/Grok projects; Codex/Kimi/Hermes use the same installed CLI through the skill. Choose where it lands with `-ForgeRoot`; the default is `%LOCALAPPDATA%\Skyrim-Tools\Skyrim-Forge`.
 
 ## Update tools later
 
@@ -296,6 +297,8 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 - Content-authoritative five-provider skill sync with a hash ledger: unchanged retired bundle files are removed; modified and unrelated user files are preserved.
 - Official/native plugin lifecycle for Claude, Codex, Grok, Kimi, and Hermes; old manual Codex marketplace ownership is migrated away.
 - All three core MCPs are wired and handshaken on all five providers. Heavy/project and credentialed servers are cleaned from stale global registrations and enabled only when applicable.
+- Skyrim Forge and houseCARL are installed but migrated out of global configs; four game profiles activate Skyrim, load-order, Roblox, and Saints Row servers only for matching projects.
+- The installed AIO contract now includes exact-SHA CI release discipline, stable-prefix prompt caching, output-token economy, and installed-vs-enabled MCP routing. Hermes fills only missing cache/compression defaults through its official config API and preserves every existing value.
 - Remote updates use an atomic stable-directory swap with one rollback copy; the release tag and extracted `VERSION.txt` must agree.
 
 ### v7.9.9.1 — The always-on three
