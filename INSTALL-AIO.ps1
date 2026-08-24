@@ -1021,24 +1021,12 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
   $aioF  = Join-Path $PackRoot '0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md'
   foreach ($prov in $Providers) {
     if ($prov -eq 'Hermes') {
-      # Hermes reads SOUL.md from its home - copy the verbatim soul
+      # Hermes reads SOUL.md from its home. Use the same marked SOUL + AIO
+      # writer as every other provider; the old raw-copy branch reset Hermes
+      # to the short base soul and skipped the operating contract entirely.
       $hhome = Get-UabsProviderHome -Provider Hermes -Catalog $catalog
       $hSoul = Join-Path $hhome 'SOUL.md'
-      if (Test-Path -LiteralPath $hSoul) {
-        $same = (Get-FileHash -LiteralPath $hSoul -Algorithm SHA256).Hash -eq
-                (Get-FileHash -LiteralPath $soulF -Algorithm SHA256).Hash
-        if (-not $same) {
-          Copy-Item -LiteralPath $hSoul -Destination ($hSoul + '.before-soul-' + (Get-Date -Format 'yyyyMMdd-HHmmssfff') + '.bak') -Force
-          Copy-Item -LiteralPath $soulF -Destination $hSoul -Force
-          Write-UabsOk ("Hermes soul updated: " + $hSoul)
-        } else {
-          Write-UabsOk ('Hermes soul already current: ' + $hSoul)
-        }
-      } else {
-        New-Item -ItemType Directory -Force -Path $hhome | Out-Null
-        Copy-Item -LiteralPath $soulF -Destination $hSoul -Force
-        Write-UabsOk ("Hermes soul installed: " + $hSoul)
-      }
+      Install-UabsPreambleBlock -Path $hSoul -SoulFile $soulF -AioFile $aioF -Force:$ForcePreamble
       continue
     }
     $pmeta = $catalog.providers.$prov

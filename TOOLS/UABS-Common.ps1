@@ -692,6 +692,10 @@ function Install-UabsPreambleBlock {
       $pb = [IO.File]::ReadAllBytes($Path)
       $origBom = ($pb.Length -ge 3 -and $pb[0] -eq 0xEF -and $pb[1] -eq 0xBB -and $pb[2] -eq 0xBF)
     }
+    # Hermes used to receive the bare SOUL source instead of the marked SOUL +
+    # AIO block. That exact byte-owned legacy form is safe to replace; any
+    # operator-authored content is still preserved and the block is appended.
+    if ($pre.Trim() -ceq $soul) { $pre = '' }
     $pat = '(?ms)^[ \t]*<!--[ \t]*ULTIMATE-AI-STARTER-BUNDLE SOUL.*?^[ \t]*<!--[ \t]*/ULTIMATE-AI-STARTER-BUNDLE SOUL[ \t]*-->[ \t]*\r?\n?'
 
     $new = ''

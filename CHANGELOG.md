@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Hermes now receives the same marked SOUL + canonical AIO contract as every other provider instead of being reset to the short base soul.
+- Removing the retired `openrouter-extra` provider now also migrates resumable Hermes session overrides in `state.db`, with a targeted rollback record, so old chats cannot fail agent initialization after the YAML is cleaned.
+
 ## 8.0.2
 
 - Codex online installs now prefer an independently updatable CLI and migrate the bundle-owned Superpowers offline bridge to its upstream Git marketplace, so Marketplace Upgrade works; bundled local Git remains the offline fallback.

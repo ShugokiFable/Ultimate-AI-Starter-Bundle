@@ -18336,8 +18336,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 78101,
-  "sha256": "96b373fe7ab92d4cf7e8d7fa266c21e210dae591da3c755178166d81c77e43f8"
+  "size": 78466,
+  "sha256": "9e8ed0b17ddc3ed92e2e35d81ca6c4a8ceb636de64187edad0f18c3dc998555b"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18416,8 +18416,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 104231,
-  "sha256": "aaca7c1126e8ccbcb01e30b2c2cf2b2783ee3532462c7cf8322a7f4c639486b9"
+  "size": 103699,
+  "sha256": "6dd047fa0cde12e2f0f6b92756638aeb550bbc4d54dfa3ebacd5e1111f98ca47"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -18506,8 +18506,8 @@
  },
  {
   "path": "TESTS/Test-Pack.ps1",
-  "size": 35465,
-  "sha256": "369280dce4eac36c82aa32b3fb9025e80af5a822aae0ea8ca8e75acf53235401"
+  "size": 36551,
+  "sha256": "fd420aa5d893023350dc84a10b7c3d0e6ca8f4e5819767561597ff254b0b14b4"
  },
  {
   "path": "TESTS/Test-ProviderSkillSync.ps1",
@@ -18671,8 +18671,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 108878,
-  "sha256": "9c68f536573ae96596d3f42b900283e31962f8f8cee1bed610f16232ce7f67ac"
+  "size": 112219,
+  "sha256": "87c8b46b5a42da4ceb8edb1051dcbafd40cf3b7ba4e82ead4452fbaf8ca9d0dc"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18716,8 +18716,8 @@
  },
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
-  "size": 14788,
-  "sha256": "fd6ebf245be3ebf53aa4f1354f04e2c7fd34e33d003f806f8293aec5112b943c"
+  "size": 15571,
+  "sha256": "3ffd4fe2a3533c69ce3dc00e574aab876fce2591f30ec89e58bbb232219e36a0"
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",
@@ -18776,8 +18776,8 @@
  },
  {
   "path": "TOOLS/UABS-Common.ps1",
-  "size": 56124,
-  "sha256": "39760df7f707f28950a617eebcca05b2bfbcebfa6896fd968ce1f0947c993a28"
+  "size": 56402,
+  "sha256": "a6491fa3cf302ece6bd90223a66138973c0b32a6dc4d48da602c7023ae8c4ae4"
  },
  {
   "path": "TOOLS/UABS-Mcp-Write.ps1",
@@ -22048,5 +22048,10 @@
   "path": "docs/history/V8.0.1-CHANGELOG.md",
   "size": 438,
   "sha256": "4a862d42264ccd216fe80dd9bc1c4dec9af1f159e172f371309521a205b3a348"
+ },
+ {
+  "path": "docs/history/V8.0.2-CHANGELOG.md",
+  "size": 723,
+  "sha256": "298a8f07d9c81dc203e5553adb6e106237db3d57fe3538cc6dd9d8402ffed292"
  }
 ]

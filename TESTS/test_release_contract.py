@@ -13,6 +13,7 @@ from __future__ import annotations
 import io
 import json
 import re
+import sqlite3
 import subprocess
 import sys
 import zipfile
@@ -977,6 +978,75 @@ def test_hermes_legacy_openrouter_extra_is_migrated_without_replacing_config() -
     assert "Remove-UabsHermesLegacyOpenRouterExtra -Dest $dest" in starter
     assert "from ruamel.yaml import YAML" in starter
     assert "os.replace(tmp, path)" in starter
+    assert "migrate_hermes_state_provider.py" in starter
+
+
+def test_hermes_stale_session_provider_migration() -> None:
+    migration = ROOT / "TOOLS" / "migrate_hermes_state_provider.py"
+    assert migration.is_file(), "Hermes state.db provider migration is missing"
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        db_path = root / "state.db"
+        db = sqlite3.connect(db_path)
+        db.execute(
+            "create table sessions (id text primary key, model_config text, billing_provider text)"
+        )
+        db.executemany(
+            "insert into sessions values (?, ?, ?)",
+            (
+                ("legacy", json.dumps({"model": "demo/model", "provider": "openrouter-extra"}), "openrouter-extra"),
+                ("legacy-prefixed", json.dumps({"model": "demo/model", "provider": "custom:openrouter-extra"}), "custom"),
+                ("current", json.dumps({"model": "demo/model", "provider": "openrouter"}), "openrouter"),
+            ),
+        )
+        db.commit()
+        db.close()
+
+        first = subprocess.run(
+            [sys.executable, str(migration), str(db_path)],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        assert first.returncode == 0, first.stderr or first.stdout
+        db = sqlite3.connect(db_path)
+        rows = {
+            row[0]: (json.loads(row[1]), row[2])
+            for row in db.execute("select id, model_config, billing_provider from sessions")
+        }
+        db.close()
+        assert rows["legacy"] == ({"model": "demo/model", "provider": "openrouter"}, "openrouter")
+        assert rows["legacy-prefixed"] == ({"model": "demo/model", "provider": "openrouter"}, "custom")
+        assert rows["current"] == ({"model": "demo/model", "provider": "openrouter"}, "openrouter")
+        backups = list(root.glob("state.db.uabs-openrouter-extra-*.json"))
+        assert len(backups) == 1, "migration did not leave one targeted rollback record"
+        rollback = json.loads(backups[0].read_text(encoding="utf-8"))
+        assert all("model_config" not in row for row in rollback["rows"]), (
+            "targeted rollback copied the whole session config instead of only the changed fields"
+        )
+        assert {row["provider"] for row in rollback["rows"]} == {
+            "openrouter-extra", "custom:openrouter-extra"
+        }
+
+        second = subprocess.run(
+            [sys.executable, str(migration), str(db_path)],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        assert second.returncode == 0, second.stderr or second.stdout
+        assert "migrated=0" in second.stdout
+        assert len(list(root.glob("state.db.uabs-openrouter-extra-*.json"))) == 1
+
+
+def test_hermes_receives_the_combined_soul_and_aio_contract() -> None:
+    installer = ps_code(ROOT / "INSTALL-AIO.ps1")
+    assert "Install-UabsPreambleBlock -Path $hSoul -SoulFile $soulF -AioFile $aioF" in installer, (
+        "Hermes still bypasses the shared SOUL + AIO preamble writer"
+    )
+    assert "Copy-Item -LiteralPath $soulF -Destination $hSoul" not in installer, (
+        "Hermes still resets SOUL.md to the short base soul"
+    )
 
 
 def test_bundle_forge_install_has_single_skill_writer() -> None:
@@ -1297,6 +1367,8 @@ def main() -> int:
         test_provider_skill_sync_is_content_authoritative,
         test_codex_plugins_use_the_official_lifecycle,
         test_hermes_legacy_openrouter_extra_is_migrated_without_replacing_config,
+        test_hermes_stale_session_provider_migration,
+        test_hermes_receives_the_combined_soul_and_aio_contract,
         test_bundle_forge_install_has_single_skill_writer,
         test_forge_skill_has_one_canonical_source,
         test_forge_install_checked_commands_are_quiet_but_diagnostic,

@@ -196,36 +196,38 @@ function Remove-UabsHermesLegacyOpenRouterExtra {
   if (-not (Test-Path -LiteralPath $Dest -PathType Leaf)) { return }
   $exe = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'
   $python = Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\python.exe'
-  if (-not (Test-Path -LiteralPath $exe -PathType Leaf) -or
-      -not (Test-Path -LiteralPath $python -PathType Leaf)) {
+  if (-not (Test-Path -LiteralPath $python -PathType Leaf)) {
     Write-UabsWarn 'Hermes CLI unavailable; legacy openrouter-extra migration skipped'
     return
   }
   $legacyFound = $false
-  foreach ($key in @('providers', 'custom_providers')) {
-    $prevEap = $ErrorActionPreference
-    $ErrorActionPreference = 'Continue'
-    try { $raw = (& $exe config get $key --json 2>&1 | Out-String); $code = $LASTEXITCODE }
-    finally { $ErrorActionPreference = $prevEap }
-    if ($code -ne 0) {
-      if ($raw -notmatch 'Config key not set') {
-        Write-UabsWarn ("Hermes {0} inventory could not be read; preserved as-is" -f $key)
+  if (Test-Path -LiteralPath $exe -PathType Leaf) {
+    foreach ($key in @('providers', 'custom_providers')) {
+      $prevEap = $ErrorActionPreference
+      $ErrorActionPreference = 'Continue'
+      try { $raw = (& $exe config get $key --json 2>&1 | Out-String); $code = $LASTEXITCODE }
+      finally { $ErrorActionPreference = $prevEap }
+      if ($code -ne 0) {
+        if ($raw -notmatch 'Config key not set') {
+          Write-UabsWarn ("Hermes {0} inventory could not be read; preserved as-is" -f $key)
+          return
+        }
+        continue
+      }
+      try { [void]($raw | ConvertFrom-Json) } catch {
+        Write-UabsWarn ("Hermes {0} inventory was not valid JSON; preserved as-is" -f $key)
         return
       }
-      continue
+      if ($raw -match '"name"\s*:\s*"openrouter-extra"' -or
+          $raw -match '"openrouter-extra"\s*:') { $legacyFound = $true }
     }
-    try { [void]($raw | ConvertFrom-Json) } catch {
-      Write-UabsWarn ("Hermes {0} inventory was not valid JSON; preserved as-is" -f $key)
-      return
-    }
-    if ($raw -match '"name"\s*:\s*"openrouter-extra"' -or
-        $raw -match '"openrouter-extra"\s*:') { $legacyFound = $true }
+  } else {
+    Write-UabsWarn 'Hermes CLI unavailable; config inventory preserved while resumable sessions are repaired'
   }
-  if (-not $legacyFound) { return }
-
-  Backup-UabsFile -Path $Dest
-  $tmp = Join-Path ([IO.Path]::GetTempPath()) ('uabs-hermes-provider-' + [guid]::NewGuid().ToString('N') + '.py')
-  $script = @'
+  if ($legacyFound) {
+    Backup-UabsFile -Path $Dest
+    $tmp = Join-Path ([IO.Path]::GetTempPath()) ('uabs-hermes-provider-' + [guid]::NewGuid().ToString('N') + '.py')
+    $script = @'
 import copy
 import os
 import sys
@@ -266,15 +268,27 @@ for section in ("providers", "custom_providers"):
         raise SystemExit(2)
 os.replace(tmp, path)
 '@
-  try {
-    $enc = New-Object System.Text.UTF8Encoding($false)
-    [IO.File]::WriteAllText($tmp, $script, $enc)
-    & $python $tmp $Dest
-    if ($LASTEXITCODE -ne 0) { throw 'Hermes rejected the legacy provider migration' }
-    Write-UabsOk 'Hermes: removed legacy openrouter-extra; native OpenRouter model discovery remains enabled'
-  } finally {
-    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
-    Remove-Item -LiteralPath ($Dest + '.uabs-provider.tmp') -Force -ErrorAction SilentlyContinue
+    try {
+      $enc = New-Object System.Text.UTF8Encoding($false)
+      [IO.File]::WriteAllText($tmp, $script, $enc)
+      & $python $tmp $Dest
+      if ($LASTEXITCODE -ne 0) { throw 'Hermes rejected the legacy provider migration' }
+      Write-UabsOk 'Hermes: removed legacy openrouter-extra; native OpenRouter model discovery remains enabled'
+    } finally {
+      Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+      Remove-Item -LiteralPath ($Dest + '.uabs-provider.tmp') -Force -ErrorAction SilentlyContinue
+    }
+  }
+
+  $stateDb = Join-Path (Split-Path $Dest -Parent) 'state.db'
+  $stateMigration = Join-Path $PackRoot 'TOOLS\migrate_hermes_state_provider.py'
+  if ((Test-Path -LiteralPath $stateDb -PathType Leaf) -and
+      (Test-Path -LiteralPath $stateMigration -PathType Leaf)) {
+    $stateResult = (& $python $stateMigration $stateDb 2>&1 | Out-String).Trim()
+    if ($LASTEXITCODE -ne 0) { throw ('Hermes resumable-session provider migration failed: ' + $stateResult) }
+    if ($stateResult -notmatch 'migrated=0') {
+      Write-UabsOk ('Hermes resumable sessions migrated to native OpenRouter: ' + $stateResult)
+    }
   }
 }
 

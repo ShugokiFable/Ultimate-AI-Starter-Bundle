@@ -186,6 +186,25 @@ if ($soulTxt) {
     if ($common -match [regex]::Escape('$soul = ([IO.File]::ReadAllText($SoulFile))')) {
         Good 'Install-UabsPreambleBlock reads preambles as UTF-8'
     } else { Bad 'Install-UabsPreambleBlock no longer uses ReadAllText (mojibake will return)' }
+
+    $probeRoot = Join-Path ([IO.Path]::GetTempPath()) ('uabs-preamble-' + [guid]::NewGuid().ToString('N'))
+    try {
+        New-Item -ItemType Directory -Path $probeRoot | Out-Null
+        $probeSoul = Join-Path $probeRoot 'SOUL.md'
+        [IO.File]::WriteAllText($probeSoul, $soulTxt, (New-Object Text.UTF8Encoding $false))
+        . (Join-Path $PackRoot 'TOOLS\UABS-Common.ps1')
+        Install-UabsPreambleBlock -Path $probeSoul -SoulFile $soulF -AioFile $aioF
+        $wired = [IO.File]::ReadAllText($probeSoul)
+        $soulCopies = ([regex]::Matches($wired, [regex]::Escape($soulTxt.Trim()))).Count
+        $aioTxt = [IO.File]::ReadAllText($aioF).Trim()
+        if ($soulCopies -eq 1 -and $wired.Contains($aioTxt)) {
+            Good 'legacy Hermes base soul upgrades to one combined SOUL + AIO block'
+        } else {
+            Bad ('legacy Hermes soul migration produced soul copies=' + $soulCopies + ', aio=' + $wired.Contains($aioTxt))
+        }
+    } finally {
+        if (Test-Path -LiteralPath $probeRoot) { Remove-Item -LiteralPath $probeRoot -Recurse -Force }
+    }
 }
 
 Section '7b. No script reads a file with the ANSI codepage'
