@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 8.0.3
+
 - Hermes now receives the same marked SOUL + canonical AIO contract as every other provider instead of being reset to the short base soul.
 - Removing the retired `openrouter-extra` provider now also migrates resumable Hermes session overrides in `state.db`, with a targeted rollback record, so old chats cannot fail agent initialization after the YAML is cleaned.
 - Hermes' missing-only compression threshold default is now 200,000 tokens.

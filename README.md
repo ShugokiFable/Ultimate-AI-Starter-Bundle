@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.0.2
+# Ultimate AI Starter Bundle v8.0.3
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -290,6 +290,11 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v8.0.3 — Complete Hermes OpenRouter catalog
+
+- Hermes receives the canonical marked SOUL + AIO contract, migrates stale `openrouter-extra` session overrides, and defaults missing compression settings without replacing user values.
+- The normal `openrouter` picker now exposes OpenRouter's full live tool-capable catalog instead of Hermes' curated allowlist, including newly listed free models.
 
 ### v8.0.2 — Updateable plugins and clean Hermes discovery
 
@@ -820,6 +825,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.0.3** — 2026-08-24. Completes the Hermes repair: canonical SOUL + AIO, stale-session migration, efficient missing-only defaults, and the full live tool-capable OpenRouter model catalog through the normal `openrouter` provider.
 
 **v8.0.2** — 2026-08-24. Restores upstream Codex marketplace upgrades and safely removes the legacy Hermes `openrouter-extra` provider while preserving native OpenRouter discovery and unrelated user settings.
 
