@@ -1,3 +1,8 @@
+## 7.9.9.7
+
+- Default operating contract moved to `0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md` (new v7 text); installer, bootstrap and preamble docs repointed. Compact/Web cores now live beside it as opt-ins for smaller hosts.
+- Unrestraint packs audited against current-generation models; stale entries pruned (see docs/history/V7.9.9.7-CHANGELOG.md).
+
 ## 7.9.9.6
 
 - Hermes provider tree: refreshed `config.yaml` to current tuned setup (model aliases, auxiliary free-model routing, loop guardrails, MCP board incl. roblox-studio/robloxforge ON, ponytail/superpowers plugins); synced `COPY-TO-PROVIDER-HOME` copy

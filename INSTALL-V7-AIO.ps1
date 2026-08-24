@@ -99,7 +99,7 @@ param(
   # keyless_skip_reason in CATALOG.json for the measured numbers.
   [switch]$RegisterKeylessExtras,
   # SOUL + AIO preamble wiring (v7.5.0). On by default: appends the marked
-  # preamble block (SOUL.md + AIO-INSTRUCTION.txt) to every selected
+  # preamble block (SOUL.md + 0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md) to every selected
   # provider's instruction file and copies the same SOUL.md into Hermes'
   # home. -SkipPreamble opts out; -ForcePreamble rewrites an identical block.
   [switch]$SkipPreamble,
@@ -219,7 +219,7 @@ function Invoke-V5Native {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v7.9.9.6 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v7.9.9.7 - ALL-IN-ONE INSTALLER (keeps existing tool installs)" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -852,7 +852,7 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
   # unrestraint block), which left the two files identical. Keeping a second
   # copy only invites them to drift apart again.
   $soulF = Join-Path $preDir 'SOUL.md'
-  $aioF  = Join-Path $PackRoot 'AIO-INSTRUCTION.txt'
+  $aioF  = Join-Path $PackRoot '0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md'
   foreach ($prov in $Providers) {
     if ($prov -eq 'Hermes') {
       # Hermes reads SOUL.md from its home - copy the verbatim soul
@@ -880,7 +880,7 @@ if (-not $ToolsOnly -and -not $SkipPreamble) {
     if (-not $instName) { $instName = 'AGENTS.md' }
     $target = Join-Path (Get-V5ProviderHome -Provider $prov -Catalog $catalog) $instName
     if (-not (Test-Path -LiteralPath $soulF) -or -not (Test-Path -LiteralPath $aioF)) {
-      Write-V5Warn ("$prov preamble skipped: 3-PREAMBLES or AIO-INSTRUCTION.txt missing")
+      Write-V5Warn ("$prov preamble skipped: 3-PREAMBLES or 0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md missing")
       continue
     }
     try {
@@ -1555,7 +1555,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Skyrim-AI-V5'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 $state = @{
-  version = '7.9.9.6'
+  version = '7.9.9.7'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
   providers = $Providers

@@ -149,7 +149,7 @@ if (Test-Path -LiteralPath $wire) { Good 'hermes_wire.py present' } else { Bad '
 
 Section '7. Preamble sources are clean UTF-8 and provider-neutral'
 $soulF = Join-Path $PackRoot '3-PREAMBLES\SOUL.md'
-$aioF  = Join-Path $PackRoot 'AIO-INSTRUCTION.txt'
+$aioF  = Join-Path $PackRoot '0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md'
 foreach ($f in @($soulF, $aioF)) {
     if (-not (Test-Path -LiteralPath $f)) { Bad "missing $(Split-Path $f -Leaf)"; continue }
     $txt = [IO.File]::ReadAllText($f)
