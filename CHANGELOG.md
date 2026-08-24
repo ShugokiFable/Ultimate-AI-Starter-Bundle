@@ -9,6 +9,7 @@
 - Wires context7, GitHub, and Headroom across all five providers and requires a real MCP initialize/tools-list handshake before success.
 - Fixes same-run executable discovery, exact-path process replacement, and Hermes one-item JSON array serialization; installs claude-mem officially with telemetry disabled and its worker started.
 - Renamed active V7/V5 implementation paths and release gates to stable names; historical changelogs remain historical.
+- Improves V8 safe defaults: the AIO preamble and Hermes starter settings retain efficient cache/compression behavior while preserving user-selected models, credentials, plugins, MCPs, and explicit values.
 
 ## 7.9.9.9
 

@@ -36,8 +36,8 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md",
-  "size": 11978,
-  "sha256": "359465638e9da4cf074044431d0256011a948033ebd49dcf041e8b49a89687e6"
+  "size": 12726,
+  "sha256": "75604ccc111191f9dbc599b8bf0ea74a841d7a67682f0830f987528b75e2954e"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/AIO.txt",
@@ -18336,8 +18336,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 77139,
-  "sha256": "d6aa41f32a04a69c5738eeceb2662c796b422794d264b064f14f35e19120bcd2"
+  "size": 77345,
+  "sha256": "055aa6f0eb03cf395349aed74e62b37389f171485f3110c6fe9c1444c8d84577"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18471,8 +18471,8 @@
  },
  {
   "path": "README.md",
-  "size": 47506,
-  "sha256": "d052bf6af5554f24901e2aee7be0495336c9abdaa115ade1b168d4df65eed0f3"
+  "size": 47610,
+  "sha256": "f95f0c1d1bf2e05426f6a08e398d5df29cdfe7e0d7cd688f948df1fb273a36fe"
  },
  {
   "path": "START-HERE.bat",
@@ -18717,7 +18717,7 @@
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
   "size": 11267,
-  "sha256": "6425cfb504cdd09e690849f66e8be44085bd987e7a56a1127336f813f1f77090"
+  "sha256": "1f395bd78aac3b046962a33864d56ab932a4c885607262bc7bc191d5e3e109c4"
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",
@@ -22041,7 +22041,7 @@
  },
  {
   "path": "docs/history/V8.0.0-CHANGELOG.md",
-  "size": 2331,
-  "sha256": "00bdad2d8e0807225429b288ae40888f6a9dbe06d5c6b43487b1f341295e1d1e"
+  "size": 2452,
+  "sha256": "8864920e5307dfb7c1d5fc26e929db9e06daf0720a94b0fbbba06f0a1b74194b"
  }
 ]

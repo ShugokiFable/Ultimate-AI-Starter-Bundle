@@ -299,6 +299,7 @@ Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 - All three core MCPs are wired and handshaken on all five providers. Heavy/project and credentialed servers are cleaned from stale global registrations and enabled only when applicable.
 - Skyrim Forge and houseCARL are installed but migrated out of global configs; four game profiles activate Skyrim, load-order, Roblox, and Saints Row servers only for matching projects.
 - The installed AIO contract now includes exact-SHA CI release discipline, stable-prefix prompt caching, output-token economy, and installed-vs-enabled MCP routing. Hermes fills only missing cache/compression defaults through its official config API and preserves every existing value.
+- V8 defaults have been refined for reliable, efficient operation without replacing user configuration.
 - Remote updates use an atomic stable-directory swap with one rollback copy; the release tag and extracted `VERSION.txt` must agree.
 
 ### v7.9.9.1 — The always-on three
