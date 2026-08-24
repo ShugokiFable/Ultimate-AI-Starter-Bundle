@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 8.0.2
+
 - Codex online installs now prefer an independently updatable CLI and migrate the bundle-owned Superpowers offline bridge to its upstream Git marketplace, so Marketplace Upgrade works; bundled local Git remains the offline fallback.
 - Existing Hermes configs now remove only the legacy bundle-created `openrouter-extra` custom provider, preserving every other setting while leaving native OpenRouter model discovery enabled.
 

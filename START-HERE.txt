@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V8.0.1 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V8.0.2 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -114,7 +114,7 @@ deprecated on a 12-month window. Every MCP server this pack wires is local
 stdio, so NOTHING here needs to change.
 
 
-AI PREAMBLE - INSTALLED AUTOMATICALLY (v8.0.1)
+AI PREAMBLE - INSTALLED AUTOMATICALLY (v8.0.2)
 ----------------------------------------------
 The installer wires the SOUL + AIO preamble into every agent:
 Claude Code (~/.claude/CLAUDE.md), Codex (~/.codex/AGENTS.md), Kimi

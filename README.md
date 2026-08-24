@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.0.1
+# Ultimate AI Starter Bundle v8.0.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -290,6 +290,11 @@ mode that works.
 ## What's new
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
+
+### v8.0.2 — Updateable plugins and clean Hermes discovery
+
+- Online Codex installs migrate bundle-owned local marketplaces to their upstream Git sources, restoring normal Marketplace Upgrade behavior while retaining bundled offline fallback.
+- Existing Hermes configs remove only the legacy bundle-created `openrouter-extra` provider and keep native OpenRouter model discovery enabled.
 
 ### v8.0.1 — Refined AIO defaults
 
@@ -815,6 +820,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.0.2** — 2026-08-24. Restores upstream Codex marketplace upgrades and safely removes the legacy Hermes `openrouter-extra` provider while preserving native OpenRouter discovery and unrelated user settings.
 
 **v8.0.1** — 2026-08-24. Refined canonical AIO and Hermes starter defaults; the one-click installer continues to wire the full AIO source into every selected provider while preserving existing user settings.
 
