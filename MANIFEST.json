@@ -18336,8 +18336,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 78466,
-  "sha256": "9e8ed0b17ddc3ed92e2e35d81ca6c4a8ceb636de64187edad0f18c3dc998555b"
+  "size": 78542,
+  "sha256": "a471a26b3f4beab65463c8e57359b7c742f7b434d220ca12b74062f0db812d5e"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18717,7 +18717,7 @@
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
   "size": 15571,
-  "sha256": "3ffd4fe2a3533c69ce3dc00e574aab876fce2591f30ec89e58bbb232219e36a0"
+  "sha256": "1d89ffe263825161ab2eda4108ce9ea777679d8df02c1bd838bd52e3f665cec1"
  },
  {
   "path": "TOOLS/Install-SkyrimForge.ps1",
@@ -18893,6 +18893,11 @@
   "path": "TOOLS/merge_registry.py",
   "size": 2405,
   "sha256": "3fd63344e158a64dcfb02094d21fc0886f9be3b732e1ebcde5c451205fa219ed"
+ },
+ {
+  "path": "TOOLS/migrate_hermes_state_provider.py",
+  "size": 4019,
+  "sha256": "d6e93f2cbf59e4353c097f1a0345a5a451a5a3633793beb3b5cf4ebe975b7a57"
  },
  {
   "path": "TOOLS/registry-additions.json",

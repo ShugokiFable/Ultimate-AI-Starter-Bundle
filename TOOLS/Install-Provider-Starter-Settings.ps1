@@ -149,7 +149,7 @@ function Merge-UabsHermesEfficiencyDefaults {
   $defaults = [ordered]@{
     'agent.verbose'                           = 'false'
     'compression.enabled'                     = 'true'
-    'compression.threshold_tokens'            = '220000'
+    'compression.threshold_tokens'            = '200000'
     'compression.target_ratio'                = '0.30'
     'compression.protect_last_n'              = '20'
     'compression.min_tail_user_messages'      = '3'
