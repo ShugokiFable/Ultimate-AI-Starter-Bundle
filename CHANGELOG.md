@@ -1,3 +1,33 @@
+## 8.3.0
+
+- **Leftovers are cleaned automatically.** The installer copied skills in and
+  never removed one the pack stopped shipping, so a machine installed against v7
+  still carried the v7 names. Measured: seven retired skills across three
+  provider trees, twenty-one directories, each offered to the agent next to the
+  skill that replaced it - `skyrim-kid-distribution` documenting an older KID
+  dialect alongside `kid-authoring`. Backups had no ceiling either: 217 files,
+  2.1 MB, 86 of them Grok config backups. `TOOLS\Clean-StaleState.ps1` removes
+  both, runs at the end of every successful install, and is **dry-run by
+  default** when run by hand. `-SkipCleanup` opts out.
+- Deletion is limited to what this pack created: a retired skill goes only if
+  its name is in the new `BUNDLED-TOOLS/RETIRED-SKILLS.json` AND absent from the
+  canonical tree AND the directory has a `SKILL.md`. Backups keep the newest 3
+  per family, logs the newest 5. Plugin skills, the optional mega-pack and a
+  user's own files are reported, never touched.
+- **Routing knows what a tool costs.** `ai-tooling-stack` routed on capability
+  alone, treating a free CLI and a ~41,768 token/turn MCP server as equals.
+  Every Skyrim Forge MCP tool has a CLI twin (0 standing tokens); houseCARL has
+  no CLI, which is what its schema buys. Forge CLI first; houseCARL for what
+  wins in the LIVE load order. The skill also corrects the intuitive version of
+  this: preferring a cheaper server you have already registered saves nothing,
+  because both schemas are in context every turn regardless of what is called.
+- **The encoding gate was watching four file types.** It checked scripts only,
+  so everything the pack COPIES onto a machine was unguarded - including
+  `AIO-INSTRUCTION.txt`, which had already been mojibake-corrupted once in
+  v7.5.6. Five deployed artifacts are now pure ASCII and the gate checks each by
+  name, plus a repo-wide sweep for U+FFFD. Skill prose, banners and vendored
+  content keep their characters: a `.md` an agent reads has no encoding problem.
+
 ## 8.2.0
 
 - **Hermes registers a tool budget, not just a server.** Hermes filters MCP

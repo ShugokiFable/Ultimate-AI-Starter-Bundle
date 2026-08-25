@@ -141,7 +141,13 @@ param(
   # would replace their `hermes mcp configure housecarl` choice every time.
   #   Full 45 tools ~41,768 tok/turn | Lean 42 ~31,369 (-25%) | ReadOnly 27 ~17,604 (-58%)
   [ValidateSet('', 'Full', 'Lean', 'ReadOnly')]
-  [string]$SkyrimToolset = ''
+  [string]$SkyrimToolset = '',
+  # Leftovers this pack created and never removed: skills it stopped shipping,
+  # and its own .bak / log files, which had no ceiling. Cleaned every install so
+  # a machine converges on the current tree instead of accumulating every
+  # version it has ever seen. -SkipCleanup opts out; the tool is also runnable
+  # on its own (TOOLS\Clean-StaleState.ps1, dry-run by default).
+  [switch]$SkipCleanup
 )
 
 if (-not $CoreOnly) {
@@ -316,7 +322,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.2.0 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.3.0 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1770,7 +1776,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
   $state = @{
-  version = '8.2.0'
+  version = '8.3.0'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -1922,6 +1928,24 @@ if ($doctorExitCode -ne 0) {
   throw "Final installed-state doctor failed with exit code $doctorExitCode. Doctor tail: $doctorTail"
 }
 
+# Leftovers, last: only a run that got this far has a current tree to converge
+# on, and a failed install must keep every log and backup for diagnosis.
+if (-not $SkipCleanup -and -not $ToolsOnly) {
+  $cleanTool = Join-Path $PackRoot 'TOOLS\Clean-StaleState.ps1'
+  if (Test-Path -LiteralPath $cleanTool -PathType Leaf) {
+    try {
+      $cleanArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $cleanTool, '-Apply', '-PackRoot', $PackRoot)
+      if ($SkillsOnly) { $cleanArgs += '-SkipSkills' }
+      & (Get-Command powershell.exe -ErrorAction Stop).Source @cleanArgs
+      $installed['stale-state-cleanup'] = @{ status = 'applied' }
+    } catch {
+      # Never fail an otherwise-good install over housekeeping.
+      Write-UabsWarn ('Leftover cleanup: ' + $_.Exception.Message)
+      $installed['stale-state-cleanup'] = @{ status = 'failed'; error = $_.Exception.Message }
+    }
+  }
+}
+
 $state.status = 'complete'
 $state.completed_utc = [DateTime]::UtcNow.ToString('o')
 $state | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stateDir 'install-state.json') -Encoding UTF8
@@ -1958,6 +1982,8 @@ Write-Host '     TOOLS\Set-McpProfile.ps1 -List | -Auto -Path <project> | -Disab
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Hermes: run hermes --accept-hooks once if it asks for hook trust.'
+Write-Host '  9. Leftovers from older versions are removed automatically each install.'
+Write-Host '     See what would go without deleting: TOOLS\Clean-StaleState.ps1'
 Write-Host '     Native MCP profiles when installed: hermes (core), roblox (official Studio MCP), skyrim (houseCARL).'
 Write-Host '     Audit/migrate: TOOLS\Migrate-HermesProfiles.ps1 [-Apply]'
 Write-Host '     houseCARL costs ~41,768 tokens/turn at full size. The skyrim profile registers a'

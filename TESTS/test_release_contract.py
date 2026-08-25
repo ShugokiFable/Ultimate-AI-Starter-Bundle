@@ -673,6 +673,109 @@ def test_tool_budget_is_applied_without_overwriting_a_user_choice() -> None:
     )
 
 
+def test_retired_skills_are_declared_and_cannot_delete_a_live_skill() -> None:
+    """The installer copied skills in and never removed what left the tree.
+
+    Measured at v8.2.0 on a real machine: seven retired skills present in three
+    provider trees, twenty-one directories, each offered to the agent NEXT TO
+    the skill that replaced it. `skyrim-kid-distribution` and `kid-authoring`
+    both claimed to own KID syntax and the retired one documented the older
+    dialect -- so this is wrong answers, not clutter.
+    """
+    retired_path = ROOT / "BUNDLED-TOOLS" / "RETIRED-SKILLS.json"
+    assert retired_path.is_file(), "RETIRED-SKILLS.json is missing; the installer cannot clean up after itself"
+    data = json.loads(read(retired_path))
+    entries = data["retired"]
+    assert entries, "the retired list is empty; regenerate with TOOLS/generate_retired_skills.py"
+
+    canonical = {p.name for p in (ROOT / "_CANONICAL-SKILLS").iterdir() if p.is_dir()}
+    names = [e["name"] for e in entries]
+    assert len(names) == len(set(names)), "duplicate entry in the retired list"
+
+    # The one failure that would be unrecoverable: a live skill on the delete
+    # list. Every run of the installer would remove a skill it just installed.
+    overlap = sorted(set(names) & canonical)
+    assert not overlap, (
+        f"these names are BOTH shipped and marked retired, so the cleanup would "
+        f"delete skills the installer just wrote: {overlap}"
+    )
+    assert data.get("current_skill_count") == len(canonical), (
+        "RETIRED-SKILLS.json was generated against a different tree; "
+        "re-run TOOLS/generate_retired_skills.py"
+    )
+    # A successor, where one exists, must actually exist.
+    for entry in entries:
+        successor = entry.get("superseded_by")
+        if successor:
+            assert successor in canonical, (
+                f"{entry['name']} points at successor {successor!r}, which is not a shipped skill"
+            )
+
+
+def test_cleanup_is_dry_run_by_default_and_scoped_to_pack_files() -> None:
+    """A tool that deletes must default to showing, and must only own its own mess."""
+    body = read(ROOT / "TOOLS" / "Clean-StaleState.ps1")
+    installer = read(ROOT / "INSTALL-AIO.ps1")
+
+    assert "[switch]$Apply" in body, "the cleanup no longer has an -Apply switch"
+    # Without this, running the script to LOOK at the plan deletes the files.
+    assert "if (-not $Apply) {" in body, "the cleanup no longer short-circuits before deleting"
+    assert "Re-run with -Apply" in body, "the dry run no longer says how to proceed"
+
+    # Deletion targets must be pack-owned names, never a bare directory sweep.
+    assert "RETIRED-SKILLS.json" in body, "the cleanup no longer reads the declared retired list"
+    assert "$canonical.ContainsKey($name)" in body, (
+        "the cleanup no longer refuses to delete a name that is in the canonical "
+        "tree; a stale retired list could then remove a live skill"
+    )
+    assert "'SKILL.md'" in body, (
+        "the cleanup no longer requires a SKILL.md before removing a directory, "
+        "so an unrelated folder sharing a retired name would be deleted"
+    )
+    for pattern in ("config.toml.*bak*", "settings.json.bak*", "install-*.log", "'dedupe-*'"):
+        assert pattern in body, f"the cleanup no longer prunes {pattern}"
+    # By far the largest family and the one added last: the plugin dedupe wrote
+    # a full skill-tree snapshot on EVERY install. Measured at 160 directories
+    # and 52 MB, against 2.1 MB for every .bak file put together.
+    assert "Group-Object { ($_.Name -split '-')[1] }" in body, (
+        "dedupe snapshots are no longer grouped per provider, so keeping N "
+        "would keep N across all providers instead of N for each"
+    )
+
+    # Retention must be bounded but never zero-by-accident.
+    assert "$KeepBackups = 3" in body and "$KeepLogs = 5" in body, "retention defaults changed silently"
+    assert "ValidateRange(1, 200)" in body, "log retention can be set to zero, deleting the evidence of the run that deleted it"
+
+    # And the installer has to actually call it, or nothing self-maintains.
+    assert "Clean-StaleState.ps1" in installer, "the installer never runs the cleanup"
+    assert "'-Apply', '-PackRoot', $PackRoot" in installer, "the installer runs the cleanup as a dry run, so nothing is ever removed"
+    assert "[switch]$SkipCleanup" in installer, "-SkipCleanup opt-out is gone"
+
+
+def test_tool_routing_prefers_the_free_cli_over_the_expensive_mcp() -> None:
+    """Capability-only routing treats a free CLI and a 41k-token MCP as equals.
+
+    Every Skyrim Forge MCP tool has a CLI twin, and a CLI costs nothing until it
+    runs. houseCARL has no CLI at all, so its schema is the price of the one
+    thing nothing else can do: what wins in the LIVE load order.
+    """
+    skill = read(ROOT / "_CANONICAL-SKILLS" / "ai-tooling-stack" / "SKILL.md")
+
+    assert "0 tokens" in skill, "the tool table no longer states that a CLI has no standing cost"
+    assert "41,768" in skill and "4,372" in skill, "the measured costs left the routing skill"
+    assert "MCP only -- no CLI" in skill, (
+        "the skill no longer says houseCARL has no CLI, which is the entire "
+        "reason its schema is worth paying for"
+    )
+    # The correction that makes the rest of it true.
+    assert "Preferring a cheaper server you have" in skill, (
+        "the skill no longer corrects 'prefer the cheaper MCP': preferring "
+        "around a registered server saves nothing, because both schemas are in "
+        "context every turn regardless of which one is called"
+    )
+    assert "not registering" in skill, "the skill no longer says where the saving actually comes from"
+
+
 def test_forge_source_is_complete_and_buildable() -> None:
     """Forge ships as source in this repository, not as a released archive.
 
@@ -934,7 +1037,12 @@ def test_v8_active_surface_uses_versionless_names() -> None:
             continue
         rel = path.relative_to(ROOT).as_posix()
         if rel.startswith("docs/history/") or rel == "CHANGELOG.md" or rel in (
-            "TOOLS/UABS-Common.ps1", "TESTS/test_release_contract.py"
+            "TOOLS/UABS-Common.ps1", "TESTS/test_release_contract.py",
+            # Reads this repository's OWN history to derive which skills were
+            # retired, so it must name the canonical roots those skills lived
+            # under. Naming a historical path in order to search it is not the
+            # same as depending on it at install time.
+            "TOOLS/generate_retired_skills.py",
         ):
             continue
         body = path.read_text(encoding="utf-8", errors="replace")
@@ -1666,6 +1774,9 @@ def main() -> int:
         test_claude_mem_is_opt_in,
         test_hermes_tool_budget_is_data_and_internally_consistent,
         test_tool_budget_is_applied_without_overwriting_a_user_choice,
+        test_retired_skills_are_declared_and_cannot_delete_a_live_skill,
+        test_cleanup_is_dry_run_by_default_and_scoped_to_pack_files,
+        test_tool_routing_prefers_the_free_cli_over_the_expensive_mcp,
         test_every_defined_contract_is_actually_run,
         test_hermes_native_profile_migration_contract,
         test_same_version_forge_hotfix_refreshes_shipped_content,

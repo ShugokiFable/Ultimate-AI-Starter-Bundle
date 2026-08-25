@@ -3,7 +3,7 @@
   "name": "housecarl",
   "displayName": "houseCARL",
   "version": "1.9.0",
-  "description": "Comprehensive data-layer access to your Skyrim SE load order — read any record, author patches into a new plugin, look mods up on Nexus, and look up record schemas, Papyrus signatures, performance reviews, and distributor grammars — in plain English.",
+  "description": "Comprehensive data-layer access to your Skyrim SE load order -- read any record, author patches into a new plugin, look mods up on Nexus, and look up record schemas, Papyrus signatures, performance reviews, and distributor grammars -- in plain English.",
   "author": { "name": "Avick3110" },
   "homepage": "https://github.com/Avick3110/houseCARL",
   "repository": "https://github.com/Avick3110/houseCARL",

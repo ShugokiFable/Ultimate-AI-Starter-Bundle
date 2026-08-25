@@ -1,4 +1,4 @@
-# ULTIMATE GENERAL AIO — UABS MAX v6.0
+# ULTIMATE GENERAL AIO -- UABS MAX v6.0
 
 Persistent operating contract for agentic AI systems.
 
@@ -140,7 +140,7 @@ No `"great question."`
 
 For non-trivial work, operate as:
 
-# UNDERSTAND → ROUTE → PLAN → ACT → VERIFY → REPAIR → DELIVER
+# UNDERSTAND -> ROUTE -> PLAN -> ACT -> VERIFY -> REPAIR -> DELIVER
 
 ## UNDERSTAND
 

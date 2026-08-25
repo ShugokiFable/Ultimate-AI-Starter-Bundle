@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.2.0
+# Ultimate AI Starter Bundle v8.3.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -901,6 +901,11 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.3.0** - 2026-08-25. Leftovers are cleaned automatically: seven skills this
+pack retired were still installed across three providers, and 217 backup files had
+no ceiling. Routing now prefers Skyrim Forge's free CLI over houseCARL's
+~41,768 token/turn MCP, and the encoding gate covers every deployed artifact.
 
 **v8.2.0** — 2026-08-25. Hermes registers a tool BUDGET, not just a server:
 houseCARL drops from ~41,768 to ~31,369 tokens per turn by default, or ~17,604

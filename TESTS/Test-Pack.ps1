@@ -96,6 +96,57 @@ Get-ChildItem -Path $PackRoot -Recurse -Include *.ps1, *.psm1, *.bat, *.cmd -Fil
     }
 if ($risk -eq 0) { Good 'no at-risk scripts' }
 
+# Scripts were the only thing checked until v8.3.0. Everything the pack COPIES
+# onto a machine was unguarded, and AIO-INSTRUCTION.txt had already been
+# corrupted that way once (v7.5.6 cleaned em dashes that had become mojibake in
+# exactly that file). These are deployed artifacts, round-tripped by tools whose
+# default encoding is the system codepage, so they must stay pure ASCII.
+$deployed = @(
+    'COPY-TO-YOUR-WORKSPACE\AIO-INSTRUCTION.txt'
+    '3-PREAMBLES\MANUAL-PASTE.txt'
+    '1-TAILORED-PROVIDER-TREES\Hermes\config.yaml'
+    '1-TAILORED-PROVIDER-TREES\Hermes\COPY-TO-PROVIDER-HOME\config.yaml'
+    '_CANONICAL-SKILLS\housecarl\.claude-plugin\plugin.json'
+    'START-HERE.txt'
+    'START-HERE.bat'
+    'INSTALL-REMOTE.bat'
+    'BOOTSTRAP.txt'
+    'VERSION.txt'
+)
+$deployRisk = 0
+foreach ($rel in $deployed) {
+    $full = Join-Path $PackRoot $rel
+    if (-not (Test-Path -LiteralPath $full -PathType Leaf)) {
+        $deployRisk++; Bad "deployed artifact missing: $rel"; continue
+    }
+    $bytes = [System.IO.File]::ReadAllBytes($full)
+    $offset = if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) { 3 } else { 0 }
+    $nonAscii = 0
+    for ($i = $offset; $i -lt $bytes.Length; $i++) { if ($bytes[$i] -gt 127) { $nonAscii++ } }
+    if ($nonAscii -gt 0) {
+        $deployRisk++
+        Bad "$rel : $nonAscii non-ASCII byte(s) in a file this pack copies onto a machine"
+    }
+}
+if ($deployRisk -eq 0) { Good 'every deployed artifact is pure ASCII' }
+
+# Mojibake anywhere is corruption, never intent. Two tools legitimately CONTAIN
+# these sequences because they detect them; everything else is a bug.
+$mojiAllow = @('audit_skills.py', 'build_canonical_skills.py', 'Test-Pack.ps1', 'test_release_contract.py')
+$mojiRisk = 0
+Get-ChildItem -Path $PackRoot -Recurse -Include *.md, *.txt, *.ps1, *.psm1, *.json, *.yaml, *.yml -File |
+    Where-Object { $_.FullName -notlike '*BUNDLED-TOOLS*' -and $_.FullName -notlike '*\.git\*' -and
+                   $_.FullName -notlike '*docs\history*' -and $_.Name -ne 'README.md' -and
+                   $mojiAllow -notcontains $_.Name } |
+    ForEach-Object {
+        $text = [IO.File]::ReadAllText($_.FullName)
+        if ($text -match [char]0xFFFD) {
+            $mojiRisk++
+            Bad ($_.FullName.Substring($PackRoot.Length).TrimStart('\') + ' contains U+FFFD (decoding already failed on this file)')
+        }
+    }
+if ($mojiRisk -eq 0) { Good 'no replacement characters in shipped text' }
+
 Section '4. Offline assets match OFFLINE-MANIFEST.json'
 $manPath = Join-Path $PackRoot 'BUNDLED-TOOLS\OFFLINE-MANIFEST.json'
 if (-not (Test-Path $manPath)) {

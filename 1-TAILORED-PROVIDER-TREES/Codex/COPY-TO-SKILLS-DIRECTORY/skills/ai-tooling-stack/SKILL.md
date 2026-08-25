@@ -29,13 +29,67 @@ This skill is the **cross-tool index**. Exact syntax lives in specialist skills.
 | **Ponytail** | Minimal-diff / anti-over-engineering mode | `ponytail` + family | Bundled skill text works; plugin optional |
 | **CodeBurn** | Local AI token/cost analytics | `codeburn` | Optional `npx codeburn` |
 
+## What each tool COSTS (read before the cheat-sheet)
+
+An MCP server's tool schemas are serialized into the prompt on **every turn of
+every session**, whether you call it or not. A CLI costs **nothing** until you
+run it, and then only the command and its output. That difference dwarfs any
+preference between two tools that can both do the job.
+
+Measured with `TOOLS\Measure-McpSchemaCost.ps1` (real `initialize` ->
+`tools/list`), houseCARL 1.9.0 and Skyrim Forge 6.0.0:
+
+| tool | surface | standing cost |
+|---|---|---|
+| **Skyrim Forge** | 52 subcommands, **CLI** (`forge <cmd>`) | **0 tokens** |
+| Skyrim Forge as MCP | the same 52 tools | ~4,372 tokens/turn |
+| **Spooky's AutoMod** | CLI with `--json` | **0 tokens** |
+| **houseCARL** | 45 tools, **MCP only -- no CLI** | ~41,768 tokens/turn (Full) |
+| houseCARL `Lean` | 42 tools | ~31,369 tokens/turn |
+| houseCARL `ReadOnly` | 27 tools | ~17,604 tokens/turn |
+
+**Forge has SEVEN more tools than houseCARL and, run as a CLI, costs nothing.**
+Every Forge MCP tool has a CLI twin: `forge plugin-build`, `forge record-query`,
+`forge papyrus-compile`, `forge fomod-build`, `forge release-build`,
+`forge lint`, `forge doctor`. Check `forge --help` before assuming otherwise.
+
+### The rule
+
+1. **Can Forge's CLI do it? Use the CLI.** Free, and it is the typed,
+   validated path this pack prefers anyway.
+2. **Can Spooky's CLI do it? Use the CLI.** Same reason.
+3. **Only houseCARL answers "what wins in MY load order".** Live MO2 truth,
+   conflict trees, VFS asset resolution and keyless Nexus lookup have no CLI
+   anywhere. That is what its schema is being paid for -- use it for that, and
+   route the rest to a CLI.
+
+### Two mistakes this table exists to prevent
+
+- **"Prefer the cheaper MCP server."** Preferring a cheaper server you have
+  already registered saves nothing: you pay both schemas every turn regardless
+  of which one gets called. The saving comes from **not registering** the
+  expensive one, or from registering fewer of its tools -- never from
+  preferring around it at call time.
+- **"Fewer tools means cheaper."** Ranking by tool count puts Forge (52) ahead
+  of houseCARL (45) as the thing to cut. That is backwards by an order of
+  magnitude. Count bytes; see `capability-profiles`.
+
+On Hermes specifically, MCP is billed per token on your own key, and Hermes is
+the one provider that can register a **subset** of a server's tools
+(`tools.include` / `tools.exclude`). The `skyrim` profile ships houseCARL's
+`Lean` set; `TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset ReadOnly -Apply`
+takes it to 27 tools when the session is diagnosis rather than authoring.
+
 ## Decision cheat-sheet
 
 | User need | Prefer |
 |---|---|
-| "What wins this FormID in MY list?" | houseCARL |
-| "Typed release / FOMOD / nexus policy / doctor" | Forge |
-| "Create ESL + quest + compile papyrus from CLI" | Spooky (or Forge if capability ready) |
+| "What wins this FormID in MY list?" | houseCARL - nothing else can answer it |
+| "Typed release / FOMOD / nexus policy / doctor" | Forge **CLI** (`forge release-build`, `forge doctor`) |
+| "Create ESL + quest + compile papyrus from CLI" | Spooky, or Forge CLI - both free |
+| "Read a record / query a plugin off disk" | Forge CLI `record-query` / `plugin-info` before houseCARL |
+| "Build or validate a patch plugin from a plan" | Forge CLI `plugin-build` / `plugin-plan-validate` |
+| "Edit what the LIVE load order resolves to" | houseCARL - Forge has no view of MO2 |
 | "SPID/KID/SkyPatcher line syntax" | `*-authoring` / dedicated V4 syntax skills — never invent |
 | "Who calls this function in the repo?" | codebase-memory |
 | "Context is huge / compress this log" | headroom |
