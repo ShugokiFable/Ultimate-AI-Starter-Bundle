@@ -268,6 +268,141 @@ function Write-UabsLedger([string]$BackupPath, [string]$Status) {
   }
 }
 
+# ---------------------------------------------------------------------------
+# Profile preferences (v8.5.0)
+#
+# `hermes profile create --clone-from default` copies default ONCE. Nothing
+# re-converged the copies, so roblox and skyrim were still running the fallback
+# chain from their creation day while default had moved on. A fallback chain is
+# only consulted when the primary is already failing, so a stale one is invisible
+# until the moment it has to work.
+#
+# Ordered best-first. All four are :free variants, so a failover costs nothing;
+# the two 1M-context models sit above the 256K ones because a failover mid-task
+# must not truncate the context that survived.
+$script:UabsFallbackChain = @(
+  @{ provider = 'openrouter'; model = 'poolside/laguna-s-2.1:free' }
+  @{ provider = 'openrouter'; model = 'thinkingmachines/inkling:free' }
+  @{ provider = 'openrouter'; model = 'thinkingmachines/inkling-small:free' }
+  @{ provider = 'openrouter'; model = 'poolside/laguna-xs-2.1:free' }
+)
+
+# Chains THIS PACK shipped before. A profile still carrying one of these has
+# never been touched by its owner, so migrating it forward is safe. Anything
+# else is a deliberate choice and is left exactly as it is.
+$script:UabsSupersededChains = @(
+  'dots-studio/dots-3-note-preview:free|openrouter/free'
+  'dots-studio/dots-3-note-preview:free'
+  'openrouter/free'
+)
+
+# Aliases for the escalation ladder, so a model can be switched by name instead
+# of by pasting a slug. Every id below was verified against the live
+# openrouter.ai/api/v1/models list; none is written from memory.
+$script:UabsModelAliases = [ordered]@{
+  'flash'        = 'openrouter/deepseek/deepseek-v4-flash-0731'
+  'flash-vision' = 'openrouter/deepseek/deepseek-v4-flash-vision-exp'
+  'muse'         = 'openrouter/meta/muse-spark-1.2-contributor'
+  'v4-pro'       = 'openrouter/deepseek/deepseek-v4-pro-0813'
+  'ox'           = 'openrouter/stealth/ox-alpha'
+  'gemini-flash' = 'openrouter/google/gemini-3.7-flash'
+  'glm'          = 'openrouter/z-ai/glm-5.3'
+  'grok'         = 'openrouter/x-ai/grok-4.6'
+  'sol'          = 'openrouter/openai/gpt-5.6-sol'
+  'opus'         = 'openrouter/anthropic/claude-opus-5'
+}
+
+$script:Prefs = @{}
+
+function Get-UabsFallbackSignature($Chain) {
+  if (-not $Chain) { return '' }
+  $models = @()
+  foreach ($entry in @($Chain)) {
+    $plain = ConvertTo-UabsPlain $entry
+    if ($plain -is [System.Collections.IDictionary] -and $plain.Contains('model')) {
+      $models += [string]$plain['model']
+    } elseif ($plain) {
+      $models += [string]$plain
+    }
+  }
+  return ($models -join '|')
+}
+
+function Get-UabsProfilePrefs([string]$Profile) {
+  $out = @{ fallback = @(); aliases = @{} }
+  $fb = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'fallback_providers', '--json') -AllowMissing
+  if ($fb.Code -eq 0) {
+    $json = @($fb.Output | ForEach-Object { [string]$_ } |
+      Where-Object { $_.Trim().StartsWith('[') }) | Select-Object -Last 1
+    # No @() wrapper: ConvertTo-UabsPlain returns `,$items` so an array survives
+    # being returned intact. Re-wrapping it nests the whole chain one level deep,
+    # and every entry then reads as Object[] instead of a server hashtable.
+    if ($json) { $out.fallback = ConvertTo-UabsPlain ($json | ConvertFrom-Json) }
+  }
+  $al = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'model.aliases', '--json') -AllowMissing
+  if ($al.Code -eq 0) {
+    $json = @($al.Output | ForEach-Object { [string]$_ } |
+      Where-Object { $_.Trim().StartsWith('{') }) | Select-Object -Last 1
+    if ($json) { $out.aliases = ConvertTo-UabsPlain ($json | ConvertFrom-Json) }
+  }
+  return $out
+}
+
+function Ensure-UabsProfilePrefs([string]$Profile) {
+  $current = Get-UabsProfilePrefs $Profile
+  $wanted = @{}
+
+  $signature = Get-UabsFallbackSignature $current.fallback
+  $target = Get-UabsFallbackSignature $script:UabsFallbackChain
+  if ($signature -eq $target) {
+    Add-UabsLedger 'untouched' "$Profile fallback chain already current"
+  } elseif (-not $signature -or ($script:UabsSupersededChains -contains $signature)) {
+    $why = if (-not $signature) { 'no fallback chain configured' }
+           else { "superseded pack default ($signature)" }
+    Add-UabsPlan -Kind 'SetPrefs' -Profile $Profile -Id 'fallback_providers' `
+      -Key 'fallback_providers' -Value $script:UabsFallbackChain -Detail $why
+    $wanted['fallback_providers'] = $script:UabsFallbackChain
+  } else {
+    # Not ours to overwrite. Say so rather than silently leaving it.
+    Add-UabsLedger 'kept' "$Profile fallback chain is a user choice ($signature)"
+  }
+
+  $missing = [ordered]@{}
+  foreach ($key in $script:UabsModelAliases.Keys) {
+    if (-not ($current.aliases -and $current.aliases.Contains($key))) {
+      $missing[$key] = $script:UabsModelAliases[$key]
+    }
+  }
+  if ($missing.Count) {
+    Add-UabsPlan -Kind 'SetPrefs' -Profile $Profile -Id 'model.aliases' `
+      -Key 'model.aliases' -Value $missing `
+      -Detail ("add " + $missing.Count + " missing alias(es): " + (@($missing.Keys) -join ', '))
+    $wanted['aliases'] = $missing
+  } else {
+    Add-UabsLedger 'untouched' "$Profile model aliases already complete"
+  }
+
+  if ($wanted.Count) { $script:Prefs[$Profile] = $wanted }
+}
+
+$script:UabsHermesPrefsScript = @'
+import json, os
+from hermes_cli.config import load_config, save_config
+cfg = load_config()
+prefs = json.loads(os.environ["UABS_HERMES_PREFS_JSON"])
+if "fallback_providers" in prefs:
+    cfg["fallback_providers"] = prefs["fallback_providers"]
+aliases = prefs.get("aliases") or {}
+if aliases:
+    model = dict(cfg.get("model") or {})
+    merged = dict(model.get("aliases") or {})
+    for key, value in aliases.items():
+        merged.setdefault(key, value)   # never overwrite a user's own alias
+    model["aliases"] = merged
+    cfg["model"] = model
+save_config(cfg)
+'@
+
 $script:UabsHermesMapScript = @'
 import json, os
 from hermes_cli.config import load_config, save_config
@@ -494,6 +629,11 @@ try {
     }
   }
 
+  # Must be planned BEFORE the no-op check: MCP topology can already be correct
+  # while fallbacks and aliases have drifted, and that combination is exactly
+  # what a cloned profile looks like months later.
+  foreach ($profile in $managedProfiles) { Ensure-UabsProfilePrefs $profile }
+
   if (-not $script:Plan.Count) {
     Write-Host 'Hermes profiles already match the target architecture; no files changed.' -ForegroundColor Green
     Write-UabsLedger -BackupPath '' -Status 'no-op'
@@ -526,6 +666,11 @@ try {
       Invoke-UabsHermesConfig -Script $script:UabsHermesMapScript -EnvVars @{
         UABS_HERMES_MCP_MAP_JSON = (ConvertTo-Json -InputObject $maps[$profile] -Depth 20 -Compress)
       }
+      if ($script:Prefs.ContainsKey($profile)) {
+        Invoke-UabsHermesConfig -Script $script:UabsHermesPrefsScript -EnvVars @{
+          UABS_HERMES_PREFS_JSON = (ConvertTo-Json -InputObject $script:Prefs[$profile] -Depth 20 -Compress)
+        }
+      }
     }
     $env:HERMES_HOME = $HermesHome
 
@@ -552,6 +697,21 @@ try {
       $robloxActual = Get-UabsMcpMap 'roblox'
       if ($robloxActual['Roblox_Studio']['command'] -ne 'cmd.exe' -or @($robloxActual['Roblox_Studio']['args'])[1] -ne $robloxBat) {
         throw 'Verification failed: Roblox profile does not use the official stable mcp.bat launcher.'
+      }
+    }
+    foreach ($profile in $script:Prefs.Keys) {
+      $after = Get-UabsProfilePrefs $profile
+      if ($script:Prefs[$profile].ContainsKey('fallback_providers')) {
+        $want = Get-UabsFallbackSignature $script:UabsFallbackChain
+        $got = Get-UabsFallbackSignature $after.fallback
+        if ($got -ne $want) {
+          throw "Verification failed: $profile fallback chain is '$got', expected '$want'."
+        }
+      }
+      foreach ($key in $script:Prefs[$profile]['aliases'].Keys) {
+        if (-not ($after.aliases -and $after.aliases.Contains($key))) {
+          throw "Verification failed: $profile is missing alias '$key'."
+        }
       }
     }
     $defaultActual = Get-UabsMcpMap 'default'

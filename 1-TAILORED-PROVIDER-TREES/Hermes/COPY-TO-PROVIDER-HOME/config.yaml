@@ -5,10 +5,34 @@ model:
   provider: openrouter
   base_url: https://openrouter.ai/api/v1
   aliases:
-    dots-3: openrouter/dots-studio/dots-3-note-preview:free
-    nemotron-ultra: openrouter/nvidia/nemotron-3-ultra-550b-a55b:free
-    dots-3-nofree: openrouter/dots-studio/dots-3-note-preview
-    nemotron-ultra-nofree: openrouter/nvidia/nemotron-3-ultra-550b-a55b
+    # Escalation ladder. Every id verified against openrouter.ai/api/v1/models;
+    # none is written from memory. Switch with `hermes model <alias>`.
+    flash: openrouter/deepseek/deepseek-v4-flash-0731
+    flash-vision: openrouter/deepseek/deepseek-v4-flash-vision-exp
+    muse: openrouter/meta/muse-spark-1.2-contributor
+    v4-pro: openrouter/deepseek/deepseek-v4-pro-0813
+    ox: openrouter/stealth/ox-alpha
+    gemini-flash: openrouter/google/gemini-3.7-flash
+    glm: openrouter/z-ai/glm-5.3
+    grok: openrouter/x-ai/grok-4.6
+    sol: openrouter/openai/gpt-5.6-sol
+    opus: openrouter/anthropic/claude-opus-5
+# Automatic failover when the primary is unavailable (429 rate limit, 529
+# overload, 503, or a connection failure). All four are :free variants, so a
+# failover costs nothing.
+#
+# Ordered best-first. Note that laguna-s is TEXT-ONLY: if a vision task fails
+# over to it, images are dropped. inkling (second) accepts text, image, and
+# audio, which is why it sits directly behind.
+fallback_providers:
+  - provider: openrouter
+    model: poolside/laguna-s-2.1:free
+  - provider: openrouter
+    model: thinkingmachines/inkling:free
+  - provider: openrouter
+    model: thinkingmachines/inkling-small:free
+  - provider: openrouter
+    model: poolside/laguna-xs-2.1:free
 database:
   journal_mode: wal
 runtime:
@@ -97,13 +121,17 @@ openrouter:
 auxiliary:
   transient_retries: 1
   vision:
+    # Must be multimodal. laguna-s is text-only and would silently drop images.
     provider: openrouter
-    model: dots-studio/dots-3-note-preview:free
+    model: thinkingmachines/inkling:free
   web_extract:
     provider: openrouter
-    model: dots-studio/dots-3-note-preview:free
+    model: poolside/laguna-s-2.1:free
   compression:
     provider: openrouter
+    # NOT a free model on purpose: compression ingests up to the 160000-token
+    # threshold, and laguna-s tops out at 262K context. Flash-0731 has 1.3M and
+    # costs ~$0.006 per compression -- cheaper than one truncated summary.
     model: deepseek/deepseek-v4-flash-0731
     timeout: 180
     extra_body:
@@ -113,20 +141,20 @@ auxiliary:
     reasoning_effort: none
   skills_hub:
     provider: openrouter
-    model: dots-studio/dots-3-note-preview:free
+    model: poolside/laguna-s-2.1:free
   approval:
     provider: openrouter
-    model: dots-studio/dots-3-note-preview:free
+    model: poolside/laguna-s-2.1:free
   mcp:
     provider: openrouter
-    model: dots-studio/dots-3-note-preview:free
+    model: poolside/laguna-s-2.1:free
   title_generation:
     enabled: false
     provider: openrouter
-    model: dots-studio/dots-3-note-preview:free
+    model: poolside/laguna-s-2.1:free
   curator:
     provider: openrouter
-    model: dots-studio/dots-3-note-preview:free
+    model: poolside/laguna-s-2.1:free
   background_review:
     enabled: false
 display:

@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.4.0
+# Ultimate AI Starter Bundle v8.5.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -208,6 +208,81 @@ hermes -p skyrim mcp configure housecarl    # or pick tools by hand
 A filter you set by hand survives re-installs. `TOOLS\Test-Installed-State.ps1`
 prints what each profile currently costs, and refuses to guess a figure for a
 selection nobody has measured.
+
+### Hermes: which model to actually run
+
+Hermes is BYOK — you pay per token, so model choice is a cost decision every
+turn, not a preference. The strategy that works: **do the work on something
+cheap, escalate only when the cheap one is actually failing.**
+
+Prices are per 1M tokens, pulled from `openrouter.ai/api/v1/models`. Every slug
+below was verified against that live list — none is written from memory.
+
+| Tier | Model | In | Out | Context | Use it for |
+|---|---|---|---|---|---|
+| 🆓 free | `thinkingmachines/inkling:free` | $0 | $0 | 1M | multimodal, no cost |
+| 🆓 free | `poolside/laguna-s-2.1:free` | $0 | $0 | 262K | text only |
+| 💸 daily | `deepseek/deepseek-v4-flash-0731` | $0.04 | $0.08 | 1.3M | **most work** |
+| 💸 daily | `meta/muse-spark-1.2-contributor` | $0.10 | $0.20 | 1M | daily alternative |
+| 💸 daily | `deepseek/deepseek-v4-flash-vision-exp` | $0.22 | $0.66 | 1M | when the task has images |
+| ⚡ medium | `deepseek/deepseek-v4-pro-0813` | $1.12 | $3.37 | 1M | Flash's bigger sibling |
+| ⚡ medium | `google/gemini-3.7-flash` | $0.38 | $1.88 | 1M | harder planning |
+| ⚡ medium | `z-ai/glm-5.3` | $1.40 | $4.40 | 1M | harder planning |
+| 🔥 big | `x-ai/grok-4.6` | $2.00 | $6.00 | 500K | when medium stalls |
+| 👑 max | `openai/gpt-5.6-sol` | $2.00 | $10.00 | 1.05M | escalation only |
+| 👑 max | `anthropic/claude-opus-5` | $5.00 | $25.00 | 1M | escalation only |
+
+**Run Flash 0731 by default.** Gemini or GLM when planning gets hard. Grok, Sol
+or Opus only when you have already watched something cheaper fail — at $25/1M
+out, an afternoon of agent work on Opus costs more than a month of subscription.
+**If you use a frontier model heavily, buy the subscription.** The API is for
+occasional escalation, not for hours of coding.
+
+Also worth watching: `upstage/solar-pro4` at $0.03/$0.12 — currently the
+cheapest thing on the board, but that is a promotional price, so re-check it
+before you build a habit on it.
+
+Switch by alias instead of pasting slugs; the installer wires these into every
+Hermes profile:
+
+```
+hermes model flash          # deepseek-v4-flash-0731        (daily driver)
+hermes model muse           # meta/muse-spark-1.2-contributor
+hermes model flash-vision   # deepseek-v4-flash-vision-exp  (images)
+hermes model ox             # stealth/ox-alpha              (free, multimodal)
+hermes model gemini-flash   # google/gemini-3.7-flash
+hermes model v4-pro         # deepseek-v4-pro-0813
+hermes model glm            # z-ai/glm-5.3
+hermes model grok           # x-ai/grok-4.6
+hermes model sol            # openai/gpt-5.6-sol
+hermes model opus           # anthropic/claude-opus-5
+```
+
+**Fallbacks are set, not assumed.** The starter ships a four-deep free chain, so
+a 429/529/503 fails over instead of failing:
+
+```
+poolside/laguna-s-2.1:free -> thinkingmachines/inkling:free
+  -> thinkingmachines/inkling-small:free -> poolside/laguna-xs-2.1:free
+```
+
+`laguna-s` is text-only; `inkling` sits directly behind it because it takes
+text, image and audio. If a vision task fails over to the first entry, images
+are dropped — that is the trade for a free chain.
+
+`hermes profile create --clone-from default` copies these **once**. Nothing used
+to re-converge the copies, so a `roblox` or `skyrim` profile kept the chain from
+the day it was cloned — invisible until the moment failover actually mattered.
+The migration now converges fallbacks and aliases across every profile:
+
+```powershell
+.\TOOLS\Migrate-HermesProfiles.ps1            # show what has drifted
+.\TOOLS\Migrate-HermesProfiles.ps1 -Apply
+```
+
+It replaces a chain only when it is missing, empty, or byte-equal to one this
+pack used to ship. A chain you chose is reported and left alone. Aliases are
+additive — an alias you already defined keeps your value.
 
 ### claude-mem is opt-in
 
@@ -901,6 +976,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.5.0** - 2026-08-25. A cloned Hermes profile drifted and nothing re-converged it. `profile create --clone-from default` copies once, and the migration managed only `mcp_servers` — so `roblox` and `skyrim` were still running the fallback chain from the day they were cloned while `default` had moved on. A fallback chain is only consulted when the primary is already failing, so a stale one is invisible until the moment it matters. The migration now converges fallbacks and aliases across every profile, replacing a chain only when it is absent, empty, or one this pack itself shipped. The starter previously shipped **no** fallback chain at all; it now ships a four-deep free one, and the README documents the cost ladder with prices verified against the live OpenRouter model list.
 
 **v8.4.0** - 2026-08-25. Codex was routing on skill names alone: its index renders into a fixed ~22.3 KB block split across every entry, and at 255 entries every description was cut to 16 characters. The 73-skill Other-Games mega-pack -- which lived in four provider trees and no repository -- is now 8 canonical skills with every game carried verbatim into tier-3 references. 255 entries at 16 chars to 196 at 40, with all 73 games kept.
 

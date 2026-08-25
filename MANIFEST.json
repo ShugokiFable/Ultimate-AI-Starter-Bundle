@@ -11636,8 +11636,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-PROVIDER-HOME/config.yaml",
-  "size": 7214,
-  "sha256": "dd5aaf5912f381dbb998b33b75b54e5e2d8a71d8033959f74749605efe7454cb"
+  "size": 8480,
+  "sha256": "230070de1134d3560caf07ca2dd214477aa70b41c3724897762d51ccdead9b14"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -15041,8 +15041,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/config.yaml",
-  "size": 7214,
-  "sha256": "dd5aaf5912f381dbb998b33b75b54e5e2d8a71d8033959f74749605efe7454cb"
+  "size": 8480,
+  "sha256": "230070de1134d3560caf07ca2dd214477aa70b41c3724897762d51ccdead9b14"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-MAP.md",
@@ -18507,12 +18507,12 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 27492,
-  "sha256": "90237a504c45feec468e6bf0822f410cd687eee4c4ce614e3daedcbf5862dd4c"
+  "sha256": "8c72b1a8b5c72ed960d66efc08ed2e0b35197f3defbf1a1ebd3e31e286cebdfd"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1492,
-  "sha256": "70055247282077cbd8a94d3bea0363b9a355b53a97e3b1aebc1391656e01044b"
+  "sha256": "4a91c6045f8182958028610611e2d6159ebcf687e4100c14a6292a1205922e88"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -21396,8 +21396,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 88582,
-  "sha256": "04b886a2da692390e450b572bcc138091edad372ddcfb6600422855106635e45"
+  "size": 90737,
+  "sha256": "4c3b2b966ab8c80b113664e3706a9582b9d651a6ce8ea4721552c416380969fc"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -21472,7 +21472,7 @@
  {
   "path": "INSTALL-AIO.ps1",
   "size": 111891,
-  "sha256": "d07094bc5e8481550d35544af589ae374891fc47096019685c2b6a9c90ef884a"
+  "sha256": "f10c90c2bca482a271502cedda764c8f9342eb9e4a92399a83b4b9e8795a0227"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -21521,8 +21521,8 @@
  },
  {
   "path": "README.md",
-  "size": 54792,
-  "sha256": "fe83667cbe7726443ddf45e6c58041cc54cdad1d548161c8e08839f0efde351f"
+  "size": 59382,
+  "sha256": "82df4d32cf535f557a3c90d5f9a6765dac0f6df4ccc1fbe600e6cb16443c363c"
  },
  {
   "path": "SECURITY.md",
@@ -21532,12 +21532,12 @@
  {
   "path": "START-HERE.bat",
   "size": 709,
-  "sha256": "3dc7bbc067f108be7390ff42302ea0f5ff4f9f01f2ec5d8dcbf749a497558d1a"
+  "sha256": "8522a0d53d170066acb41672219f18d65c96066732448cd71b66cbb16bdd6644"
  },
  {
   "path": "START-HERE.txt",
   "size": 9681,
-  "sha256": "5a143ba834d454efef79e28ffd36aebe5d63d9e07131a8aad4c5f694e048ea82"
+  "sha256": "1bee93e19d54b9d666a82ea1393001abbee72731a4b4988ee8b4f909b8def9af"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -21731,8 +21731,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 149011,
-  "sha256": "f5c69bdcf1fae7143ca382ca7a936f1ad0637f9985ae8261bc4fd2cce339eaa1"
+  "size": 156062,
+  "sha256": "603ce2661422b9437b8c2e917140c1f1a2048f87cbb59154823c13882d0211d8"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -21801,8 +21801,8 @@
  },
  {
   "path": "TOOLS/Migrate-HermesProfiles.ps1",
-  "size": 29782,
-  "sha256": "857241bb4d13e27adaf1585f7b0f2d8d8e274c4ec84610e762b1d1f8b98e3a43"
+  "size": 36838,
+  "sha256": "e8b406465c0e8ce2618c42b363d33aa88eff61504c2c48cee5618210331e7ff1"
  },
  {
   "path": "TOOLS/RECOMMENDED-INSTALLS.md",
@@ -22002,12 +22002,12 @@
  {
   "path": "VALIDATION.json",
   "size": 1342,
-  "sha256": "7c48a0579e2fdb8afc60c589f9a4e8f0cecfe84b857436cdb677544c214e8d00"
+  "sha256": "b945d75bd86440c70fb22dbc3770ca77e53e23f6e1e5c0092190bde62567e44c"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "c3a5f26696489698131302c946b5e7f9adaa4cc62152a9a96d0bf45af539d6fc"
+  "sha256": "260f4da0be76d81354b681707abbae52a3c5af2703e8e5e9db5698152b8df7d0"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -25778,5 +25778,10 @@
   "path": "docs/history/V8.4.0-CHANGELOG.md",
   "size": 8101,
   "sha256": "2dff11b96f27af7938502b0013a6470824a77f8b1eb7587f3a22c05f9f36cf8a"
+ },
+ {
+  "path": "docs/history/V8.5.0-CHANGELOG.md",
+  "size": 6208,
+  "sha256": "cf20b4bde7583a006863671936b5c0b91ee333d38c16680686cf8e33a782aa14"
  }
 ]

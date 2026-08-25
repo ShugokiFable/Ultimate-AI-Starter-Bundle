@@ -1,3 +1,37 @@
+## 8.5.0
+
+- 159 canonical skills, unchanged.
+- **A cloned Hermes profile drifted and nothing re-converged it.**
+  `hermes profile create --clone-from default` copies default ONCE. The
+  migration managed `mcp_servers` and nothing else, so measured at v8.4.0:
+  `default` carried the current four-deep free fallback chain while `roblox`
+  and `skyrim` were still on the chain from the day they were cloned. A
+  fallback chain is only consulted when the primary is already failing, so a
+  stale one is invisible until the exact moment it has to work.
+- The migration now converges `fallback_providers` and `model.aliases` across
+  every profile, planned BEFORE the no-op check -- correct MCP topology was
+  masking drifted preferences and reporting "already match".
+- Two different rules, because the risks differ. A fallback chain is REPLACED
+  only when absent, empty, or byte-equal to a chain this pack itself shipped;
+  a chain you chose is reported and left alone. Aliases are ADDITIVE via
+  `setdefault`, so an alias you already defined keeps your value. Both are
+  read back and verified after writing.
+- **The starter shipped no fallback chain at all** -- only a commented-out
+  example -- so a BYOK user had no failover until they wrote one by hand. It
+  now ships a four-deep free chain, ordered with the multimodal entry directly
+  behind the text-only first pick so a vision task that fails over still has
+  somewhere to land.
+- Ten model aliases for the escalation ladder (`hermes model flash`, `glm`,
+  `grok`, `sol`, `opus`, ...). Every model id was verified against the live
+  `openrouter.ai/api/v1/models` list, including input modalities: the vision
+  auxiliary cannot point at a text-only model, and a contract enforces it.
+- README documents the cost ladder with real per-1M prices, and a contract
+  fails if the README advertises an alias the starter does not ship or the
+  starter ships one the README never explains.
+- `auxiliary.compression` deliberately stays on a PAID model: it ingests up to
+  the 160000-token threshold, and the free first-choice tops out at 262K
+  context. ~$0.006 per compression beats one truncated summary.
+
 ## 8.4.0
 
 - 159 canonical skills total, up from 146: the 73-skill mega-pack consolidated
