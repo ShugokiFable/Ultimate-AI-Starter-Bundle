@@ -1,4 +1,4 @@
-Ultimate AI Starter Bundle V8.0.3 - ALL-IN-ONE STARTER
+Ultimate AI Starter Bundle V8.0.4 - ALL-IN-ONE STARTER
 ======================================================
 
 Not just Skyrim. A full multi-provider AI starter bundle: skills, MCP tools,
@@ -132,7 +132,8 @@ process, no yes-man, verify-don't-assume).
 
 
 READ NEXT
----------
+----------
+    docs\history\V8.0.4-CHANGELOG.md  Hermes install-time MCP preservation: app closed during install, relaunched after config is final
     docs\history\V7.9.8.5-CHANGELOG.md  cbm dashboard zeros: upstream #1663 + workaround; point-release versions pass the gate
   docs\history\V7.7.9-CHANGELOG.md  AIO keeps existing tool installs; Hermes compression tuned
   docs\history\V7.7.8-CHANGELOG.md  skill tree dedupe: dead modules pruned; KID/SPID owners consolidated

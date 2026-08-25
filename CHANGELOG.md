@@ -1,4 +1,6 @@
-## Unreleased
+## 8.0.4
+
+- Fix: installs no longer lose Hermes MCP entries (context7, github, headroom) when the Hermes desktop app is open during install. The app's stale in-memory config was rewriting `mcp_servers: {}` over the freshly written entries on its next save. The installer now closes Hermes.exe alongside the gateway and relaunches it after config.yaml is final.
 
 ## 8.0.3
 

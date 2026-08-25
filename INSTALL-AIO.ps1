@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Ultimate AI Starter Bundle V8 - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
+  Ultimate AI Starter Bundle V8.0.4 - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
 
 .DESCRIPTION
   New users: run this once from the pack root.
@@ -268,7 +268,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.0.3 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.0.4 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
@@ -573,6 +573,19 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
         if ($gatewayWasRunning) {
           if (-not (Invoke-UabsNative $hermesExe @('gateway', 'stop'))) { throw 'Hermes gateway could not be stopped for plugin refresh' }
           Write-UabsOk 'Hermes gateway stopped for native plugin refresh'
+        }
+        # Hermes desktop (Hermes.exe) loads config.yaml once at startup and
+        # persists ITS in-memory copy on later saves. Left running, it rewrites
+        # the file from pre-install state and silently wipes every mcp_servers
+        # entry this install adds (same stale-config class as the gateway).
+        # Stop it alongside the gateway; relaunched at the end of the script
+        # once config.yaml is final.
+        $hermesDesktop = Get-Process -Name 'Hermes' -ErrorAction SilentlyContinue
+        if ($hermesDesktop) {
+          $script:UabsHermesDesktopExe = ($hermesDesktop | Select-Object -First 1).Path
+          Write-UabsWarn ('Hermes desktop is running - closing it for the install so its stale config cannot wipe the MCP entries (it will be relaunched when done)')
+          $hermesDesktop | Stop-Process -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Milliseconds 500
         }
         # The scanner refuses both bundled plugins (false-positive 'traversal'
         # findings; --force does not override) - disarm scan-at-install first.
@@ -1706,7 +1719,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
   $state = @{
-  version = '8.0.3'
+  version = '8.0.4'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -1832,6 +1845,18 @@ if ($doctorExitCode -ne 0) {
 $state.status = 'complete'
 $state.completed_utc = [DateTime]::UtcNow.ToString('o')
 $state | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stateDir 'install-state.json') -Encoding UTF8
+
+# Relaunch Hermes desktop only after every config write is done, so it starts
+# with the complete MCP board instead of a stale pre-install copy.
+if ($script:UabsHermesDesktopExe) {
+  if (Test-Path -LiteralPath $script:UabsHermesDesktopExe -PathType Leaf) {
+    Start-Process -FilePath $script:UabsHermesDesktopExe
+    Write-UabsOk 'Hermes desktop relaunched with the final config'
+  } else {
+    Write-UabsWarn ('Hermes desktop was closed for the install but its exe is gone (' + $script:UabsHermesDesktopExe + ') - relaunch it manually')
+  }
+  $script:UabsHermesDesktopExe = $null
+}
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Green

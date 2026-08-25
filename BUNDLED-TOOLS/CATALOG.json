@@ -559,7 +559,7 @@
       "scope_note": "There is no machine-wide Unity MCP server. The executable is generated inside the project's Library folder by the Unity package, so the entry is project-scoped by construction and its command is the resolved absolute path for that one project. Until the package is installed the exe does not exist, and the profile refuses rather than writing a path that is not there."
     }
   ],
-  "pack_version": "8.0.3",
+  "pack_version": "8.0.4",
   "updated_utc": "2026-08-24",
   "providers": {
     "Grok": {

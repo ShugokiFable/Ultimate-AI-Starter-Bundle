@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.0.3
+# Ultimate AI Starter Bundle v8.0.4
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -288,6 +288,10 @@ automatic traffic compression, and for a subscription account it is the only
 mode that works.
 
 ## What's new
+
+### v8.0.4 — Hermes install-time MCP preservation
+
+* **Fix:** installing with the Hermes desktop app open no longer wipes the `mcp_servers` block (context7, github, headroom). The app held a stale in-memory config from before the install and overwrote the freshly written entries on its next save. The installer now closes Hermes.exe alongside the gateway service and relaunches it only after `config.yaml` is final.
 
 Recent releases first; full detail in `docs/history/V<ver>-CHANGELOG.md`.
 
@@ -825,6 +829,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.0.4** — 2026-08-24. Hermes install-time MCP preservation: the installer closes the desktop app during install and relaunches it after config is final, so the always-on MCP trio (context7, github, headroom) survives installs instead of being wiped by the app's stale in-memory config.
 
 **v8.0.3** — 2026-08-24. Completes the Hermes repair: canonical SOUL + AIO, stale-session migration, efficient missing-only defaults, and the full live tool-capable OpenRouter model catalog through the normal `openrouter` provider.
 

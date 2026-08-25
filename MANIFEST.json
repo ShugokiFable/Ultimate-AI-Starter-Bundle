@@ -36,8 +36,8 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md",
-  "size": 12559,
-  "sha256": "4d5da704656bf8344766805c722954fbf729f06e229d5aab405774c45177ab9f"
+  "size": 12644,
+  "sha256": "307df69c3ac8be94d3a5840b0605830e6593302df9acef2b773b5660ffa313c7"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/AIO.txt",
@@ -18336,8 +18336,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 78824,
-  "sha256": "b33b1671b1462e77cb9bc86b79da0db361437c43e21aa7d4c76839d396708ff2"
+  "size": 79171,
+  "sha256": "91bdbe931c324b401dacb6ab96a9986caba5e3397d9224d67c1de56ec139c0e2"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18416,8 +18416,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 103699,
-  "sha256": "32256c88def941765d990517a5f9d04e3b179f8528d148929673b8f97500a083"
+  "size": 105206,
+  "sha256": "9b983d78c9a43c7b23decfe04ee8ddf466aeeaf844f047c52a4e72fe170ed340"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -18471,8 +18471,8 @@
  },
  {
   "path": "README.md",
-  "size": 49327,
-  "sha256": "7d8a38e64b5b8317a389d5f010824a6a9bddd4dfbdec4987021364d00d078c78"
+  "size": 50039,
+  "sha256": "a038dcdc971063c88d251ae30d284270ea28890cb168077abacd11b30ab60646"
  },
  {
   "path": "START-HERE.bat",
@@ -18481,8 +18481,8 @@
  },
  {
   "path": "START-HERE.txt",
-  "size": 8699,
-  "sha256": "dc7a5bf9eff18f2bb196ee942551a1b9309311913c8e5065863789d99b9e7f66"
+  "size": 8836,
+  "sha256": "cbca0e4cb907eff476ac713cf316ad6800bdcb3817467afeb9a94a60c0a25b36"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18927,12 +18927,12 @@
  {
   "path": "VALIDATION.json",
   "size": 1342,
-  "sha256": "3951b24726abca2baa0777a61123b214f7b40df8d3cc827d8f666da2fb937afe"
+  "sha256": "a8f87d10ff898b7367b706cf8f9e213a5c8355e96ccbf8809bbb937e20450adb"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "84e31f527da74d730f6c72bfe62ba619f59b003e2437db3ed04b639b64f161fb"
+  "sha256": "1fb046035f0047973ae7afa11caf7342407d66091f5406f9aaa8a53374a43941"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
