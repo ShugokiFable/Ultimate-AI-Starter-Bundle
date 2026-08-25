@@ -57,9 +57,6 @@ def main():
     check("START-HERE.bat",
           r"^title Ultimate AI Starter Bundle v((?:[0-9]+\.)+[0-9]+)", bare,
           "START-HERE.bat (title)")
-    check("INSTALL-V8-AIO.bat",
-          r"^title Ultimate AI Starter Bundle v((?:[0-9]+\.)+[0-9]+)", bare,
-          "INSTALL-V8-AIO.bat (title)")
 
     try:
         catalog = json.loads(read("BUNDLED-TOOLS/CATALOG.json"))

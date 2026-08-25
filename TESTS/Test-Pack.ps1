@@ -667,6 +667,22 @@ if (-not (Test-UabsPackPath $hermesCfg)) {
     else { Good 'a fresh Hermes install inherits no MCP servers from the template' }
 }
 
+Section '16. One-click install wires what is installed, not what is wanted'
+# Through v8.0.4 a plain run assumed all five providers and the bootstrap then
+# DOWNLOADED the missing ones. A detector decides that now, so it is exercised
+# against a real filesystem rather than trusted because the source reads right.
+$detectGate = Join-Path $PackRoot 'TESTS\Test-ProviderDetection.ps1'
+if (-not (Test-UabsPackPath $detectGate)) {
+    Bad 'TESTS\Test-ProviderDetection.ps1 missing from the pack'
+} else {
+    $detectOut = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $detectGate -PackRoot $PackRoot 2>&1 | Out-String
+    if ($detectOut -match 'PROVIDER DETECTION GATE: PASS') {
+        Good 'provider auto-detection PASS'
+    } else {
+        Bad ('provider detection gate failed:' + [Environment]::NewLine + ($detectOut.Trim()))
+    }
+}
+
 Write-Host ''
 if ($fail -eq 0) {
     Write-Host "PACK GATE: PASS" -ForegroundColor Green

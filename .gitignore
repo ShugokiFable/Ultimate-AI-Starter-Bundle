@@ -19,6 +19,7 @@ BUNDLED-TOOLS/cache/
 
 # Python / node local junk if someone runs tools in-tree
 __pycache__/
+.pytest_cache/
 *.pyc
 node_modules/
 .venv/

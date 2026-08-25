@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.0.4
+# Ultimate AI Starter Bundle v8.1.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -25,7 +25,9 @@ The 146 **skills** are the opposite deal: they all sit installed and cost nearly
 
 ### What's ON after install
 
-Exactly three servers, everywhere: `context7` (library docs), `github` (repo access — zero-config for new users), `headroom` (context compression). Total: ~3,700 tokens/turn. Everything else is **parked**: installed, harmless, invisible, free.
+Exactly three servers in every default profile: `context7` (library docs), `github` (repo access — zero-config for new users), `headroom` (context compression). Total: ~3,700 tokens/turn. Everything else is **parked**: installed, harmless, invisible, free.
+
+When the matching local tool is installed, Hermes also gets native named profiles without loading them into default: `roblox` adds the official Roblox Studio MCP; `skyrim` connects houseCARL while Skyrim Forge and Spooky's AutoMod remain available through their routed skills/CLIs. Forge MCP compatibility is explicit.
 
 ### There is NO auto-disable. No timer. No expiry.
 
@@ -34,6 +36,8 @@ If your AI enables something to do a job — say, the Roblox Studio server durin
 ```powershell
 # Hermes (then restart the app)
 hermes config set mcp_servers.<name>.enabled false   # true to re-enable
+hermes -p roblox mcp list                            # isolated Roblox profile
+hermes -p skyrim mcp list                            # isolated Skyrim profile
 
 # Claude Code
 claude mcp remove <name>          # claude mcp add ... to bring it back
@@ -47,6 +51,7 @@ Not sure what's on, or what a task actually needs?
 ```powershell
 powershell -ExecutionPolicy Bypass -File TOOLS\Set-McpProfile.ps1 -List            # see profiles & state
 powershell -ExecutionPolicy Bypass -File TOOLS\Set-McpProfile.ps1 -Auto -Path C:\code\my-app   # enable just what THIS project needs
+powershell -ExecutionPolicy Bypass -File TOOLS\Migrate-HermesProfiles.ps1          # dry-run Hermes topology
 ```
 
 Rule of thumb: **enable for the job, park it after** — or just leave the small stuff on and never think about it again. The pack's agents know this too: the `capability-profiles` skill tells them to flip servers on and off themselves as tasks come and go.
@@ -121,7 +126,7 @@ Or double-click `INSTALL-REMOTE.bat`. Re-running is a no-op.
 
 **Windows (bundle already on disk)**
 
-1. Double-click **`START-HERE.bat`**. (`INSTALL-V8-AIO.bat` remains only as a legacy compatibility alias.) Or run:
+1. Double-click **`START-HERE.bat`**. That is the whole install. Or run:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
@@ -147,11 +152,54 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
 | `BundledFirst` | Use `BUNDLED-TOOLS\offline`, fall back to GitHub |
 | `BundledOnly` | Offline zips only (no network) |
 
+### There are exactly two .bat files, and they do different things
+
+| File | Use it when |
+|---|---|
+| **`START-HERE.bat`** | You already have this folder. Double-click it. This is the install. |
+| `INSTALL-REMOTE.bat` | You have nothing yet. It downloads the latest release, then runs `START-HERE.bat` for you. |
+
+Nothing else needs running. v8.1.0 deleted `INSTALL-V8-AIO.bat`, which called
+`START-HERE.bat` and did nothing else -- a second name for one action, and a
+sixth place the version had to be restated by hand every release.
+
+### It wires the providers you have
+
+A plain run detects which provider CLIs are actually installed and configures
+those. Through v8.0.4 it assumed all five and then **downloaded the missing
+ones**, so a machine with only Claude Code finished a "one-click install"
+carrying Codex, Grok, Kimi and Hermes.
+
+```powershell
+.\INSTALL-AIO.ps1                        # detect and wire what is installed
+.\INSTALL-AIO.ps1 -AllProviders          # fresh machine: install all five
+.\INSTALL-AIO.ps1 -Providers Claude,Grok # exactly these
+```
+
+Detection is executable presence, not a config folder: uninstalling Kimi
+actually removes it from future runs, and a leftover `~/.kimi-code` no longer
+counts as an install. A genuinely empty machine detects nothing and falls back
+to installing all five, because that is the only outcome that leaves it usable.
+
+**The rule this follows:** bundle defaults optimize for a new user's
+reliability; the per-machine result optimizes for the capabilities actually
+present on that machine.
+
+### claude-mem is opt-in
+
+Every other component installs unattended. claude-mem pulls in the Bun runtime,
+runs a background worker daemon, and needs a Claude Code restart before its
+tools appear -- three surprises for one double-click, so it moved behind a flag:
+
+```powershell
+.\INSTALL-AIO.ps1 -WithClaudeMem
+```
+
 ## What gets installed
 
 - **Provider skills** — 146 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
 - **Native plugins** — Superpowers and Ponytail use each provider's official/native plugin lifecycle; Claude-only `claude-mem` installs Bun automatically when needed.
-- **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Browser/editor/game profiles (`game-skyrim`, `game-skyrim-load-order`, `game-roblox`, `game-saints-row`) remain off outside matching projects; credentialed servers remain off until their key exists.
+- **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Hermes isolates the official Studio MCP in `roblox` and houseCARL in `skyrim`; the remaining browser/editor/game profiles stay off outside matching projects, and credentialed servers stay off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
 - **codebase-memory-mcp** — installed but enabled only by `code-intel`; `.cbmignore` + `TOOLS/Setup-CodebaseMemory-Index.ps1` keep the graph on source, not asset trees
@@ -829,6 +877,12 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.1.0** — 2026-08-25. One click installs what you have: the installer detects
+which provider CLIs are present instead of assuming five and downloading the
+rest. claude-mem is opt-in (`-WithClaudeMem`), the duplicate launcher is gone,
+and Hermes gains native `default`/`roblox`/`skyrim` profiles through a
+backup-first, idempotent migration.
 
 **v8.0.4** — 2026-08-24. Hermes install-time MCP preservation: the installer closes the desktop app during install and relaunches it after config is final, so the always-on MCP trio (context7, github, headroom) survives installs instead of being wiped by the app's stale in-memory config.
 

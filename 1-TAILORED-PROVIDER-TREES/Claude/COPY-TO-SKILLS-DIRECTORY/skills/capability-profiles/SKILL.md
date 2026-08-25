@@ -31,14 +31,31 @@ That is the budget. Spend it on what the task uses.
 `TOOLS\Measure-McpSchemaCost.ps1`, real `initialize` → `tools/list`:
 
 ```
-firecrawl            25 tools   36,337 bytes   ~9,084 tokens/turn
+houseCARL 1.9.0      45 tools  167,118 bytes  ~41,780 tokens/turn
+firecrawl 3.24.0     25 tools   36,321 bytes   ~9,080 tokens/turn
+skyrim-forge 6.0.0   52 tools   17,488 bytes   ~4,372 tokens/turn
 context7              2 tools    5,124 bytes   ~1,281 tokens/turn
 sequential-thinking   1 tool     4,590 bytes   ~1,148 tokens/turn
 ```
 
-One tool cost as much as two. Twenty-five cost more than the rest of the
-always-on core put together. A tool count tells you almost nothing about what a
-server charges you.
+Read the first and third rows together. **Skyrim Forge has SEVEN more tools
+than houseCARL and costs a tenth of the context.** Ranking these by tool count
+puts Forge first in line to be cut, which is backwards by an order of
+magnitude. houseCARL's schemas carry deep nested record objects — three tools
+(`bulk_create`, `create_record`, `bulk_apply`) are 41,596 bytes between them,
+more than the whole of Forge — while Forge's are typed and narrow at ~336 bytes
+each.
+
+One tool cost as much as two. A tool count tells you almost nothing about what
+a server charges you.
+
+houseCARL at ~41,780 tokens is roughly **21% of a 200k context window gone
+before the first user message**. That is not an argument for removing it: live
+MO2 load-order truth, conflict trees and keyless Nexus lookup have no cheaper
+substitute, and guessing at load order is the failure this pack exists to
+prevent. It is an argument for *scope* — it belongs in the `skyrim` profile and
+Hermes' `skyrim` home, never in the always-on core. Numbers:
+`BUNDLED-TOOLS/capability-records/game-mcp-schema-cost.json`.
 
 ## Installed is not enabled
 
@@ -59,7 +76,9 @@ is not a reason to expect `find_symbol` in this session.
 `context7`, `github`, and `headroom` are wired globally because they apply to
 every task: current API docs instead of recalled signatures, verified pushes
 instead of hoped-for ones, and context compression that pays for itself.
-Everything else is a profile, and every profile is **project-scoped**.
+Everything else is a profile. The general router uses project scope; Hermes
+uses its native named homes for `roblox` and `skyrim` because it has profiles
+but no project-path MCP scope.
 
 `sequential-thinking` was the third until 7.9.7 measured it: 1 tool, but a
 4,590-byte schema — ~1,148 tokens on every turn of every session, as much as
@@ -88,6 +107,13 @@ wrong unit, bytes is the right one.** Measure before arguing about it —
 
 `code-intel` was called `code-deep` before 7.9.6. The old id still resolves.
 
+Hermes has a smaller native topology: `default` is the always-on three,
+`roblox` adds the official Roblox Studio MCP, and `skyrim` adds houseCARL.
+The Skyrim toolset still includes all three specialists: houseCARL through the
+profile MCP, Skyrim Forge through its skill/CLI, and Spooky's AutoMod through
+the routed specialist skills/CLI. Forge's MCP is opt-in compatibility, not a
+default profile member.
+
 The `cloud` profile (Supabase) was withdrawn in 7.9.7: it was the only profile
 here that needed an account and a personal access token, against this pack's
 default of free, local, keyless and no signup. A machine that had it enabled
@@ -99,6 +125,8 @@ TOOLS\Set-McpProfile.ps1 -List                    # what exists, what is ready, 
 TOOLS\Set-McpProfile.ps1 -Detect -Path <project>  # what this project implies
 TOOLS\Set-McpProfile.ps1 -Auto   -Path <project>  # detect and wire, for that project only
 TOOLS\Set-McpProfile.ps1 -Disable code-intel      # give the context back, everywhere it was on
+TOOLS\Migrate-HermesProfiles.ps1                  # dry-run native Hermes topology
+TOOLS\Migrate-HermesProfiles.ps1 -Apply           # backup, migrate, verify
 ```
 
 `-Auto` writes a profile only when the project shows its markers **and** the
@@ -117,9 +145,9 @@ router exists to avoid:
 | Grok | `<project>\.grok\config.toml` — `grok mcp add -s project`. This one *is* a file in the project. |
 | Codex | none. A project `.codex/config.toml` is ignored. |
 | Kimi | none found; it reads `%USERPROFILE%\.kimi-code\mcp.json`. |
-| Hermes | none. One config file, no scope option. |
+| Hermes | native named homes/configs (`default`, `roblox`, `skyrim`), selected with `-p` or the generated aliases; no project-path scope. |
 
-For the last three the MCP server is skipped and the reason is printed. The
+For Codex and Kimi the MCP server is skipped and the reason is printed. The
 matching game skill can still run an installed Forge through its CLI, so the
 capability remains available without paying its schemas in every session.
 `-Global` is the explicit opt-in, and it registers machine-wide — Serena then
@@ -173,8 +201,9 @@ one that answers this question, not the set that looks related:
 | symbol-level refactor in a real codebase | `code-intel` |
 | "which API does this library have now" | `research-verification` — installed `--help`, upstream, Context7. No Blender, no DevTools. |
 | Blender / Godot / Unity work | that engine's profile, plus a render or capture if you can see it |
-| Skyrim mod project | `game-skyrim`; use `game-skyrim-load-order` only against an actual MO2 instance/Vortex shim |
-| Roblox / Saints Row project | the matching game profile when project markers match; otherwise its installed CLI/skill |
+| Skyrim mod project | Hermes `skyrim` for houseCARL evidence; use Skyrim Forge and Spooky through their routed skills/CLIs unless Forge MCP compatibility is explicitly needed |
+| Roblox project | Hermes `roblox` for the official Studio bridge; use RobloxForge through its skill/CLI |
+| Saints Row project | `game-saints-row` when markers match; otherwise its installed CLI/skill |
 | Skyrim crash | the crash log and the Skyrim diagnostic skills. Only reach outward if a version fact is genuinely unresolved. |
 
 Do not enable Chrome DevTools to edit a README. Do not enable `shadcn` because a

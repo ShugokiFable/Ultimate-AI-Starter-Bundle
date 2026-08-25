@@ -1,3 +1,38 @@
+## 8.1.0
+
+- **One click installs what you have.** A plain run detects which provider CLIs
+  are actually present and configures those. Through v8.0.4 it assumed all five
+  and the bootstrap then DOWNLOADED the missing ones, so a machine with only
+  Claude Code finished with Codex, Grok, Kimi and Hermes installed unasked.
+  Detection is executable presence, so uninstalling a provider removes it from
+  future runs; a leftover `~/.kimi-code` no longer counts. An empty machine
+  detects nothing and falls back to all five. `-AllProviders` forces the old
+  behavior; `-Providers Grok,Claude` now works through `START-HERE.bat` too
+  (`ValidateSet` could not survive `powershell -File` splitting).
+- **claude-mem is opt-in** (`-WithClaudeMem`). It is the only component that is
+  not unattended: it installs the Bun runtime, starts a background worker
+  daemon, and needs a Claude Code restart before its tools appear.
+- **One launcher.** `INSTALL-V8-AIO.bat` did nothing but call `START-HERE.bat`,
+  and cost a hand-maintained version string every release. Deleted. The two
+  remaining `.bat` files are documented side by side: `START-HERE.bat` installs
+  from this folder, `INSTALL-REMOTE.bat` downloads the release first.
+- **Hermes native profiles.** Hermes 0.20.5 has first-class named profiles;
+  the pack's docs still claimed it had one config and none.
+  `TOOLS\Migrate-HermesProfiles.ps1` owns `default` (context7/GitHub/Headroom),
+  `roblox` (+ the official Studio MCP) and `skyrim` (+ houseCARL). Forge MCPs
+  are not members of any of them - Skyrim Forge and Spooky stay reachable
+  through their skills/CLIs, with `-WithForgeCompatibility` as the explicit
+  opt-in. Backup-first with hash-verified rollback, preserves unknown user MCP
+  entries, creates a game profile only when its capability is installed, and is
+  a no-op on the second run.
+- Hermes compression: trigger raised to 160000 and target to 0.25 (the tuning
+  already in production), while `proactive_prune_tokens` is restored to 80000.
+  Disabling it defers the work to a full compression, which invalidates strictly
+  more prompt cache and summarizes reasoning rather than oversized tool results.
+- Fixed: two release contracts were defined but absent from the list CI
+  iterates, including the one guarding the Hermes profile migration. Both are
+  registered and a falsifiable guard now compares the module against the list.
+
 ## 8.0.4
 
 - Fix: installs no longer lose Hermes MCP entries (context7, github, headroom) when the Hermes desktop app is open during install. The app's stale in-memory config was rewriting `mcp_servers: {}` over the freshly written entries on its next save. The installer now closes Hermes.exe alongside the gateway and relaunches it after config.yaml is final.

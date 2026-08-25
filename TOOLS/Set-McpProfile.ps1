@@ -25,11 +25,13 @@
     Grok     <project>\.grok\config.toml
     Codex    no project-scoped MCP config exists
     Kimi     no project-scoped MCP config exists
-    Hermes   no project-scoped MCP config exists
+    Hermes   native named profiles, not path-scoped project config
 
-  The last three are skipped with the reason printed rather than registered
+  Codex and Kimi are skipped with the reason printed rather than registered
   machine-wide behind a comment that says "project-scoped". -Global is the
-  explicit opt-in, and it says what it costs.
+  explicit opt-in, and it says what it costs. Hermes' default/roblox/skyrim
+  topology is owned separately by Migrate-HermesProfiles.ps1; Forge MCPs stay
+  out of those native profiles unless compatibility is explicitly requested.
 
   A profile whose requirements are not met is skipped with the reason printed,
   never written as a config entry that fails on first call. A provider that

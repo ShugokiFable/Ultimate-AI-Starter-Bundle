@@ -62,8 +62,15 @@
 #>
 [CmdletBinding()]
 param(
-  [ValidateSet('Claude','Codex','Grok','Kimi','Hermes')]
-  [string[]]$Providers = @('Claude','Codex','Grok','Kimi','Hermes'),
+  # Empty = auto-detect. Through v8.0.4 this defaulted to all five, and the
+  # provider bootstrap then DOWNLOADED the ones that were missing: a machine
+  # with only Claude finished the install carrying four vendor CLIs nobody
+  # asked for. Now a plain run wires the providers you already have.
+  # -AllProviders restores the install-everything behavior for a fresh box.
+  # Accepts 'Grok,Claude' as one token because START-HERE.bat forwards through
+  # powershell -File, which does not split arrays.
+  [string[]]$Providers = @(),
+  [switch]$AllProviders,
   [ValidateSet('BundledFirst','OnlineLatest','BundledOnly')]
   [string]$Mode = 'OnlineLatest',
   [string[]]$Components = @('housecarl','spooky','codebase-memory','headroom','superpowers','ponytail','codeburn','github-mcp-server'),
@@ -91,10 +98,15 @@ param(
   # enabled plugin contributes a server.
   [int]$GrokMcpBudget = 6,
   # Compatibility alias. V8 installs extras by default; -CoreOnly opts out.
-  #   code-review-skill  obsidian-skills  claude-mem
+  #   code-review-skill  obsidian-skills
   #   playwright-mcp     firecrawl-mcp    perplexity-mcp
   [switch]$WithExtras,
   [switch]$CoreOnly,
+  # claude-mem is opt-in as of v8.1.0. It is the only component that is not
+  # one-click: it pulls in the Bun runtime, runs a background worker daemon,
+  # and needs a Claude Code restart before its tools appear. Good software,
+  # but three surprises for someone who double-clicked one .bat.
+  [switch]$WithClaudeMem,
   # Register an optional-key MCP server even when its keyless surface is a
   # fraction of what it charges in schema. Off by default: see
   # keyless_skip_reason in CATALOG.json for the measured numbers.
@@ -127,10 +139,11 @@ param(
 
 if (-not $CoreOnly) {
   $Components = @($Components) + @(
-    'code-review-skill', 'obsidian-skills', 'claude-mem',
+    'code-review-skill', 'obsidian-skills',
     'playwright-mcp', 'firecrawl-mcp', 'perplexity-mcp'
   ) | Select-Object -Unique
 }
+if ($WithClaudeMem) { $Components = @($Components) + @('claude-mem') | Select-Object -Unique }
 
 $ErrorActionPreference = 'Stop'
 $PackRoot = $PSScriptRoot
@@ -192,6 +205,34 @@ if (-not (Test-Path (Join-Path $PackRoot 'BUNDLED-TOOLS\CATALOG.json'))) {
 . (Join-Path $PackRoot 'TOOLS\UABS-Common.ps1')
 . (Join-Path $PackRoot 'TOOLS\UABS-Mcp-Write.ps1')
 $script:UabsPackRoot = $PackRoot
+
+# ---------- Which providers this run touches ----------
+# powershell -File collapses -Providers Grok,Claude into ONE string, so split
+# before validating. ValidateSet cannot do that, which is why it is gone.
+$script:UabsAllProviders = @('Claude','Codex','Grok','Kimi','Hermes')
+$Providers = @($Providers | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+foreach ($requested in $Providers) {
+  if ($script:UabsAllProviders -notcontains $requested) {
+    throw ("Unknown provider '$requested'. Valid: " + ($script:UabsAllProviders -join ', '))
+  }
+}
+$script:UabsProviderSource = 'explicit'
+if ($AllProviders) {
+  if ($Providers.Count) { throw 'Use -Providers or -AllProviders, not both.' }
+  $Providers = $script:UabsAllProviders
+  $script:UabsProviderSource = 'all (-AllProviders)'
+} elseif (-not $Providers.Count) {
+  $Providers = @(Get-UabsInstalledProviders -Candidates $script:UabsAllProviders)
+  $script:UabsProviderSource = 'auto-detected'
+  if (-not $Providers.Count) {
+    # A genuinely fresh machine has nothing to detect. Bootstrapping all five
+    # is the only outcome that leaves the box usable, and it is what someone
+    # who ran an installer on an empty profile actually asked for.
+    $Providers = $script:UabsAllProviders
+    $script:UabsProviderSource = 'none detected - bootstrapping all'
+  }
+}
+$script:UabsSkippedProviders = @($script:UabsAllProviders | Where-Object { $Providers -notcontains $_ })
 Invoke-UabsLegacyStateMigration
 $catalog = Get-UabsCatalog
 $offline = Join-Path $PackRoot 'BUNDLED-TOOLS\offline'
@@ -268,8 +309,11 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.0.4 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
-Write-Host " Mode=$Mode  Providers=$($Providers -join ',')" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.1.0 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
+if ($script:UabsSkippedProviders.Count) {
+  Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
+}
 Write-Host "=====================================================" -ForegroundColor Magenta
 Write-Host ""
 
@@ -1719,7 +1763,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
   $state = @{
-  version = '8.0.4'
+  version = '8.1.0'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -1753,6 +1797,33 @@ if (-not $ToolsOnly) {
       L 'reasoning MCP servers wired'
     } catch {
       Write-UabsWarn ('Reasoning MCPs: ' + $_.Exception.Message)
+    }
+  }
+
+  $hermesProfiles = Join-Path $PackRoot 'TOOLS\Migrate-HermesProfiles.ps1'
+  if (-not $SkillsOnly -and -not $SkipMcpWire -and ($Providers -contains 'Hermes') -and (Test-Path -LiteralPath $hermesProfiles)) {
+    try {
+      # The migrator refuses to run while Hermes.exe is up, because the desktop
+      # app persists its stale in-memory config on the next save and would undo
+      # the migration (the v8.0.4 defect, in a new place). The install already
+      # closes it -- but only inside the plugin block, which -SkipNativePlugins
+      # and an absent Hermes CLI both skip. Without this the migration became a
+      # warning on exactly the runs that skipped that block, and the profile
+      # topology silently never landed.
+      $hermesUp = Get-Process -Name 'Hermes' -ErrorAction SilentlyContinue
+      if ($hermesUp) {
+        if (-not $script:UabsHermesDesktopExe) {
+          $script:UabsHermesDesktopExe = ($hermesUp | Select-Object -First 1).Path
+        }
+        Write-UabsWarn 'Hermes desktop is running - closing it so the profile migration cannot be overwritten (relaunched when the install finishes)'
+        $hermesUp | Stop-Process -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Milliseconds 500
+      }
+      & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $hermesProfiles -Apply
+      $installed['hermes-native-profiles'] = @{ status='evaluated'; profiles=@('default','roblox','skyrim') }
+      L 'Hermes native profiles evaluated'
+    } catch {
+      Write-UabsWarn ('Hermes native profiles: ' + $_.Exception.Message)
     }
   }
 
@@ -1878,6 +1949,8 @@ Write-Host '     TOOLS\Set-McpProfile.ps1 -List | -Auto -Path <project> | -Disab
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Hermes: run hermes --accept-hooks once if it asks for hook trust.'
+Write-Host '     Native MCP profiles when installed: hermes (core), roblox (official Studio MCP), skyrim (houseCARL).'
+Write-Host '     Audit/migrate: TOOLS\Migrate-HermesProfiles.ps1 [-Apply]'
 Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'
 Write-Host 'Missing tools: run TOOLS\Ensure-Tools.ps1 or INSTALL-AIO.ps1 - do not invent paths.'

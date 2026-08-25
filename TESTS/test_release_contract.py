@@ -216,11 +216,12 @@ def test_bootstrap() -> None:
     assert "set \"exitcode=%errorlevel%\"" in txt
     assert "exit /b %exitcode%" in txt
 
-    compat = read(ROOT / "INSTALL-V8-AIO.bat").lower()
-    assert 'call "%~dp0start-here.bat" %*' in compat
-    assert "install-v7-aio.ps1" not in compat
-    assert "exit /b %errorlevel%" in compat
-    assert "skyrim ai v5" not in compat
+    # START-HERE.bat is the ONLY local launcher. v8.1.0 deleted
+    # INSTALL-V8-AIO.bat, which called it and nothing else: a second name for
+    # one action, and a sixth place the version had to be restated by hand.
+    assert not (ROOT / "INSTALL-V8-AIO.bat").exists(), (
+        "the version-stamped launcher alias is back; one action needs one name"
+    )
 
     ps = read(ROOT / "INSTALL-AIO.ps1")
     assert VERSION in ps
@@ -342,14 +343,24 @@ def test_hermes_cost_contract() -> None:
         ):
             assert token in cfg, f"{path}: missing Hermes quality/closure setting {token}"
 
-        # Fixed 120k trigger on the 1M-window default, preserving ~36k of recent
-        # tail and multiple true user turns. Avoid tiny rewrites that destroy a
-        # warm provider cache prefix; prune only when the reclaim is material.
-        assert re.search(r"(?m)^\s*threshold_tokens:\s*120000\s*$", cfg), path
-        assert re.search(r"(?m)^\s*target_ratio:\s*0\.30\s*$", cfg), path
+        # Fixed 160k trigger on the 1M-window default (threshold_tokens is a CAP
+        # on context_length * threshold -- agent_init.py passes it as
+        # threshold_tokens_cap), preserving ~36k of recent tail and multiple
+        # true user turns. Avoid tiny rewrites that destroy a warm provider
+        # cache prefix; prune only when the reclaim is material.
+        assert re.search(r"(?m)^\s*threshold_tokens:\s*160000\s*$", cfg), path
+        assert re.search(r"(?m)^\s*target_ratio:\s*0\.25\s*$", cfg), path
         assert re.search(r"(?m)^\s*protect_last_n:\s*20\s*$", cfg), path
         assert re.search(r"(?m)^\s*min_tail_user_messages:\s*3\s*$", cfg), path
         assert re.search(r"(?m)^\s*max_attempts:\s*4\s*$", cfg), path
+        # Proactive tool-result pruning must stay ON. It is the only mechanism
+        # operating between 80k and the 160k full-compression trigger: it
+        # replaces individual oversized tool results (>=12,000 chars) and
+        # nothing else, gated on reclaiming >=32,768 tokens plus a regrowth
+        # rearm so it fires episodically rather than every turn. Setting it to
+        # 0 does not save prompt cache -- it defers the work to a FULL
+        # compression, which rewrites the entire middle window (a strictly
+        # larger cache invalidation) and summarizes reasoning, not just blobs.
         assert re.search(r"(?m)^\s*proactive_prune_tokens:\s*80000\s*$", cfg), path
         assert re.search(r"(?m)^\s*proactive_prune_min_reclaim_tokens:\s*32768\s*$", cfg), path
         assert re.search(r"(?m)^\s*micro_compact:\s*false\s*$", cfg), path
@@ -358,7 +369,6 @@ def test_hermes_cost_contract() -> None:
         assert re.search(r"(?m)^\s*transient_retries:\s*1\s*$", cfg), path
         assert re.search(r"(?m)^\s*cost_threshold_usd:\s*0\.01\s*$", cfg), path
         assert re.search(r"(?ms)^  background_review:\s*\n\s+enabled:\s*false\s*$", cfg), path
-
         # Context compression is important enough to use the strong paid main
         # model, but summarization itself is mechanical: disable reasoning tokens.
         aux_start = cfg.index("auxiliary:")
@@ -379,6 +389,158 @@ def test_hermes_cost_contract() -> None:
     # cheaper than replaying a 120K uncached input once. Prefer maximum supported
     # reasoning to reduce repair turns, while keeping the summarizer non-thinking.
     assert parent.read_bytes() == installed.read_bytes(), "Hermes reference config and actual installer source drifted"
+
+
+def test_hermes_native_profile_migration_contract() -> None:
+    body = read(ROOT / "TOOLS" / "Migrate-HermesProfiles.ps1")
+    installer = read(ROOT / "INSTALL-AIO.ps1")
+
+    for token in (
+        "profile', 'create'",
+        "'--clone-from', 'default'",
+        "backup-manifest.json",
+        "Get-FileHash",
+        "Restore-UabsBackup",
+        "Invoke-UabsHermesConfig",
+        "if (-not $script:Plan.Count)",
+        "Roblox\\mcp.bat",
+        "command = 'cmd.exe'",
+        "HOUSECARL_MCP",
+        "SKYRIM_MO2_INSTANCE",
+        "SPOOKY_AUTOMOD_ROOT",
+        "WithForgeCompatibility",
+        "unowned/user-specific",
+    ):
+        assert token in body, f"Hermes native-profile migration lost {token!r}"
+
+    assert "default = @('context7', 'github', 'headroom')" in body
+    assert "roblox = @('context7', 'github', 'headroom', 'Roblox_Studio')" in body
+    assert "skyrim = @('context7', 'github', 'headroom', 'housecarl')" in body
+    assert "Migrate-HermesProfiles.ps1" in installer and "-File $hermesProfiles -Apply" in installer
+    # The migrator refuses while Hermes.exe is up. The install closes the
+    # desktop app inside the PLUGIN block, which -SkipNativePlugins skips, so
+    # the migration call site has to close it too or the topology silently
+    # never lands on those runs.
+    call_site = installer[installer.index("$hermesProfiles = Join-Path"):]
+    call_site = call_site[:call_site.index("-File $hermesProfiles -Apply")]
+    assert "Get-Process -Name 'Hermes'" in call_site, (
+        "the Hermes profile migration no longer closes a running desktop app; "
+        "it will degrade to a warning whenever the plugin block is skipped"
+    )
+    assert "$script:UabsHermesDesktopExe" in call_site, (
+        "the migration closes Hermes without recording it for relaunch"
+    )
+    assert "config', 'set'" not in body, "PowerShell 5.1 corrupts nested Hermes JSON passed through config set"
+
+
+def test_one_click_install_touches_only_installed_providers() -> None:
+    """A plain double-click must not download provider CLIs nobody asked for.
+
+    Through v8.0.4 -Providers defaulted to all five and Ensure-Provider-CLIs.ps1
+    then fetched each missing one from its vendor script. Someone whose machine
+    had only Claude finished a "one-click install" carrying Codex, Grok, Kimi
+    and Hermes, and a provider they had deliberately uninstalled reappeared on
+    the next run. Auto-detection is now the default; -AllProviders is the
+    explicit way back.
+    """
+    aio = read(ROOT / "INSTALL-AIO.ps1")
+    common = read(ROOT / "TOOLS" / "UABS-Common.ps1")
+
+    assert re.search(r"(?m)^\s*\[string\[\]\]\$Providers\s*=\s*@\(\s*\)\s*,", aio), (
+        "-Providers no longer defaults to empty; a hardcoded default list is "
+        "what made the installer bootstrap providers the user does not use"
+    )
+    assert "Get-UabsInstalledProviders" in aio, "the installer no longer asks what is installed"
+    assert "[switch]$AllProviders" in aio, "-AllProviders opt-in is gone"
+    assert "none detected - bootstrapping all" in aio, (
+        "an empty detection must fall back to all five, or a genuinely fresh "
+        "machine installs nothing and the run still reports success"
+    )
+    # ValidateSet cannot survive `powershell -File`, which collapses
+    # `-Providers Grok,Claude` into one string. START-HERE.bat forwards through
+    # -File, so the comma form has to be split by hand before validating.
+    assert "ValidateSet('Claude','Codex','Grok','Kimi','Hermes')]" not in aio.replace(" ", ""), (
+        "ValidateSet is back on -Providers; it rejects the comma form that "
+        "START-HERE.bat produces"
+    )
+    assert "$_ -split ','" in aio, "the comma form is no longer split before validation"
+
+    assert "function Get-UabsInstalledProviders" in common
+    assert "function Resolve-UabsProviderExe" in common
+    # Executable presence only. A ~/.kimi-code or ~/.codex directory survives an
+    # uninstall; treating it as an install re-wires a removed provider forever.
+    detector = common[common.index("function Get-UabsInstalledProviders"):]
+    assert "Resolve-UabsProviderExe" in detector, "the detector no longer resolves an executable"
+
+    gate = ROOT / "TESTS" / "Test-ProviderDetection.ps1"
+    assert gate.is_file(), "the provider-detection behavior gate is missing"
+    assert "Test-ProviderDetection.ps1" in read(ROOT / "TESTS" / "Test-Pack.ps1"), (
+        "the detection gate exists but the pack gate never runs it"
+    )
+
+
+def test_claude_mem_is_opt_in() -> None:
+    """The one component that is not one-click must not ride the default path.
+
+    claude-mem installs the Bun runtime, starts a background worker daemon and
+    needs a Claude Code restart before its tools appear. Three surprises for
+    someone who double-clicked one .bat, so it moved behind -WithClaudeMem.
+    """
+    aio = read(ROOT / "INSTALL-AIO.ps1")
+    extras = aio[aio.index("if (-not $CoreOnly) {"):]
+    extras = extras[:extras.index("}")]
+    assert "claude-mem" not in extras, (
+        "claude-mem is back in the default extras; it pulls in Bun and a "
+        "background daemon, which is not a one-click install"
+    )
+    assert "[switch]$WithClaudeMem" in aio, "-WithClaudeMem opt-in is missing"
+    assert "if ($WithClaudeMem)" in aio, "-WithClaudeMem is declared but never honoured"
+    # Bun is only fetched for claude-mem, so the opt-out has to remove that too.
+    bun = aio[aio.index("$Components -contains 'claude-mem'"):]
+    assert "Oven-sh.Bun" in bun[:1200], (
+        "the Bun install is no longer gated on claude-mem being requested"
+    )
+
+
+def test_every_defined_contract_is_actually_run() -> None:
+    """A contract that is defined but not listed reports nothing, forever.
+
+    CI runs this file as a script, and the script iterates an explicit
+    `tests = [...]` list rather than collecting by name. Two contracts sat
+    outside that list -- including the one written to guard the Hermes profile
+    migration in the same change that added it. They passed under pytest and
+    were invisible in CI, which is the worst of both: a green tick for a check
+    nobody was running.
+
+    Reading `globals()` is deliberate. Parsing the source for `def test_` would
+    be a second opinion about what exists; the module namespace IS what exists.
+    """
+    module = globals()
+    defined = {
+        name for name, value in module.items()
+        if name.startswith("test_") and callable(value)
+        and getattr(value, "__module__", None) == __name__
+        and name != "test_every_defined_contract_is_actually_run"
+    }
+    source = read(Path(__file__))
+    # findall + [-1], not index(): the literal "    tests = [" also appears in
+    # THIS function's own source, which is earlier in the file. Anchoring on
+    # the first occurrence sliced the guard itself, found zero registered
+    # names, and reported every contract in the suite as an orphan.
+    blocks = re.findall(r"(?ms)^    tests = \[\n(.*?)^    \]", source)
+    assert blocks, "the explicit `tests` list is gone; CI runs nothing"
+    registered = set(re.findall(r"(test_\w+),", blocks[-1]))
+    registered.discard("test_every_defined_contract_is_actually_run")
+
+    orphans = sorted(defined - registered)
+    assert not orphans, (
+        "defined but never run by CI (add to the `tests` list): " + ", ".join(orphans)
+    )
+    ghosts = sorted(registered - defined)
+    assert not ghosts, (
+        "listed but not defined; the script run would crash: " + ", ".join(ghosts)
+    )
+
 
 def test_forge_source_is_complete_and_buildable() -> None:
     """Forge ships as source in this repository, not as a released archive.
@@ -708,10 +870,9 @@ def test_version_sources() -> None:
         p.isdigit() for p in BARE.split(".")), f"VERSION.txt is not vX.Y.Z(.W): {VERSION!r}"
     assert VERSION.lower() in read(ROOT / "README.md").splitlines()[0].lower()
     assert VERSION.upper() in read(ROOT / "START-HERE.txt").splitlines()[0].upper()
-    for rel in ("START-HERE.bat", "INSTALL-V8-AIO.bat"):
-        # Not covered by check_versions.py before 7.9.0: both title lines sat
-        # at v7.8.0 through the whole release.
-        assert VERSION.lower() in read(ROOT / rel).lower(), f"{rel} title is version-stale"
+    # Not covered by check_versions.py before 7.9.0: the title line sat at
+    # v7.8.0 through a whole release.
+    assert VERSION.lower() in read(ROOT / "START-HERE.bat").lower(), "START-HERE.bat title is version-stale"
     cat = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
     assert cat["pack_version"] in (BARE, VERSION)
     assert cat.get("catalog_version") == BARE, "catalog schema/release version drift"
@@ -895,13 +1056,11 @@ def test_every_v5_helper_called_actually_exists() -> None:
 
 def test_local_launcher_failure_is_persistent_and_diagnosable() -> None:
     start = read(ROOT / "START-HERE.bat").lower()
-    compat = read(ROOT / "INSTALL-V8-AIO.bat").lower()
     ps = read(ROOT / "INSTALL-AIO.ps1")
 
-    # START-HERE is the one canonical local launcher. The V8 BAT is an alias.
+    # START-HERE is the one and only canonical local launcher.
     assert 'install-aio.ps1' in start
-    assert 'call "%~dp0start-here.bat" %*' in compat
-    assert 'install-v7-aio.ps1' not in compat
+    assert 'install-v7-aio.ps1' not in start
 
     # A double-click failure must remain visible, while CI/automation can opt out.
     assert 'pause' in start
@@ -1372,6 +1531,11 @@ def main() -> int:
         test_provider_bootstrap_contract,
         test_gate_and_remote_fail_closed,
         test_hermes_cost_contract,
+        test_one_click_install_touches_only_installed_providers,
+        test_claude_mem_is_opt_in,
+        test_every_defined_contract_is_actually_run,
+        test_hermes_native_profile_migration_contract,
+        test_same_version_forge_hotfix_refreshes_shipped_content,
         test_forge_source_is_complete_and_buildable,
         test_offline_manifest_complete,
         test_capability_profiles_are_not_registered_globally,
@@ -1870,7 +2034,7 @@ def test_hermes_readme_matches_the_shipped_starter() -> None:
     for key, claim in (
         ("reasoning_effort", "reasoning_effort: max"),
         ("max_turns", "max_turns: null"),
-        ("threshold_tokens", "threshold_tokens: 120000"),
+        ("threshold_tokens", "threshold_tokens: 160000"),
     ):
         assert claim in cfg, f"starter no longer sets {claim!r}"
         value = claim.split(": ", 1)[1]
@@ -2039,7 +2203,19 @@ def test_capability_claims_match_the_measured_record() -> None:
 
     for record_path in sorted(records.glob("*.json")):
         record = json.loads(read(record_path))
-        cid = record["component"]
+        # The directory holds more than one record shape: keyless-capability
+        # records from measure_mcp_capability.py carry "component", while
+        # schema-cost records from Measure-McpSchemaCost.ps1 describe several
+        # servers at once and have no single component. Select by shape rather
+        # than assuming every file in the folder answers the same question.
+        cid = record.get("component")
+        if cid is None:
+            assert record.get("record"), (
+                f"{record_path.name}: neither a capability record (no 'component') "
+                "nor a typed record (no 'record'); an untyped file here will be "
+                "read as whichever shape the next reader assumes"
+            )
+            continue
         entry = entries.get(cid)
         if entry is None:
             continue

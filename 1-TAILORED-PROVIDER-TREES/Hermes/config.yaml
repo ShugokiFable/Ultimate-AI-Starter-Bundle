@@ -70,8 +70,8 @@ compression:
   enabled: true
   progress_notices: true
   threshold: 0.50
-  threshold_tokens: 120000
-  target_ratio: 0.30
+  threshold_tokens: 160000
+  target_ratio: 0.25
   tail_mode: lean
   protect_last_n: 20
   min_tail_user_messages: 3

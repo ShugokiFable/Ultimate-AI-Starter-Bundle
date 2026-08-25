@@ -507,7 +507,7 @@
     "Grok": "<project>\\.grok\\config.toml, the `project` scope of `grok mcp add -s project` (verified against grok 1.0.5). This one IS a file inside the project, because it is the only project mechanism grok-cli has.",
     "Codex": "None. `codex mcp add` has no scope flag and a project-local .codex/config.toml is ignored -- verified against codex-cli 0.147.0 by putting one there and reading `codex mcp list`. Capability servers are therefore not written for Codex unless -Global is passed.",
     "Kimi": "None found. kimi-code reads %USERPROFILE%\\.kimi-code\\mcp.json; a project-local .kimi-code\\mcp.json was not picked up by `kimi doctor`. Not written unless -Global.",
-    "Hermes": "None. `hermes mcp add` has no scope option and the config is a single file under the Hermes home. Not written unless -Global."
+    "Hermes": "Hermes has native named profiles, each with its own home/config, but no project-path MCP scope. TOOLS/Migrate-HermesProfiles.ps1 owns the default/roblox/skyrim topology; this path-based router skips Hermes unless -Global is explicit."
   },
   "arg_forms": {
     "args": "Base arguments. May contain %ENVVAR% and {project}.",

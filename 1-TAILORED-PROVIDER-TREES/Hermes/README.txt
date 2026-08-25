@@ -7,17 +7,18 @@ said "Empty mcp_servers" while the starter shipped five live servers, and
 nothing was watching.
 
 - DeepSeek V4 Flash, reasoning_effort=max, max_turns=null (unlimited)
-- Compression at 120000 tokens, lean tail
+- Compression at 160000 tokens, lean tail (proactive tool-result prune from 80000)
 - mcp_servers: {} -- empty, and it stays empty
 - No username, no drive letter, no completeness-gate command line
 
 WHY IT IS EMPTY
 
-MCP registration is owned by INSTALL-AIO.ps1 (the always-on core) and
-TOOLS\Set-McpProfile.ps1 (capability profiles). Those read what is actually
-installed on this machine and pick the scope each server belongs in. A
-template cannot know any of that, and the copy is whole-file: anything left
-here becomes a fresh-install default that outranks the bundle's own decisions.
+MCP registration is owned by INSTALL-AIO.ps1 (the always-on core),
+TOOLS\Migrate-HermesProfiles.ps1 (native default/roblox/skyrim profiles), and
+TOOLS\Set-McpProfile.ps1 (the remaining capability router). Those read what is
+actually installed and pick the scope each server belongs in. A template
+cannot know any of that, and the copy is whole-file: anything left here becomes
+a fresh-install default that outranks the bundle's own decisions.
 
 Install-Provider-Starter-Settings.ps1 now refuses any starter template that
 declares live MCP entries or an unpinned @latest package, in YAML, TOML or

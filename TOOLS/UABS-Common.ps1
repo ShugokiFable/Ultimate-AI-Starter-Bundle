@@ -1259,3 +1259,37 @@ function Add-UabsMarketplacePluginEntry {
   [IO.File]::WriteAllText($ManifestPath, $new, $enc)
   return $true
 }
+
+<# Resolve a provider CLI without installing anything.
+
+   Shared so INSTALL-AIO.ps1's auto-detection and Ensure-Provider-CLIs.ps1's
+   bootstrap agree on what "installed" means. They disagreed before v8.1.0:
+   the installer assumed all five providers were wanted and the bootstrap then
+   downloaded the missing ones, so a machine with only Claude ended up with
+   four vendor CLIs nobody asked for. #>
+function Resolve-UabsProviderExe {
+  param([Parameter(Mandatory)][string]$Provider)
+  $cmd = Get-Command $Provider.ToLowerInvariant() -ErrorAction SilentlyContinue
+  if ($cmd) { return $cmd.Source }
+  $candidates = switch ($Provider) {
+    'Claude' { @((Join-Path $env:USERPROFILE '.local\bin\claude.exe')) }
+    'Codex'  { @((Join-Path $env:USERPROFILE '.local\bin\codex.exe'), (Join-Path $env:LOCALAPPDATA 'OpenAI\Codex\bin\codex.exe')) }
+    'Grok'   { @((Join-Path $env:USERPROFILE '.grok\bin\grok.exe')) }
+    'Kimi'   { @((Join-Path $env:USERPROFILE '.local\bin\kimi.exe'), (Join-Path $env:USERPROFILE '.kimi-code\bin\kimi.exe')) }
+    'Hermes' { @((Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\hermes.exe'), (Join-Path $env:LOCALAPPDATA 'hermes\bin\hermes.exe')) }
+    default  { @() }
+  }
+  foreach ($candidate in $candidates) {
+    if ($candidate -and (Test-Path -LiteralPath $candidate -PathType Leaf)) { return $candidate }
+  }
+  return $null
+}
+
+# Providers whose CLI is actually on this machine. Executable presence only:
+# a leftover ~/.kimi-code or ~/.codex directory survives an uninstall, and
+# treating a stale config folder as an install would keep re-wiring a provider
+# the user deliberately removed.
+function Get-UabsInstalledProviders {
+  param([string[]]$Candidates = @('Claude','Codex','Grok','Kimi','Hermes'))
+  return @($Candidates | Where-Object { Resolve-UabsProviderExe -Provider $_ })
+}
