@@ -338,8 +338,101 @@ if ($capabilityStates.Count) {
   }
 }
 
+# ---- Hermes profile tool budgets -------------------------------------------
+# Hermes filters MCP servers at the individual-TOOL level (tools.include /
+# tools.exclude, enforced at registration), which no other provider here can do.
+# It is also completely invisible: `hermes mcp test` reports what the SERVER
+# advertises, not what Hermes registers. Show what each profile actually costs.
+$hermesBudgets = @()
+$hermesHomeRoot = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCALAPPDATA 'hermes' }
+if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $hermesHomeRoot 'config.yaml') -PathType Leaf)) {
+  $budgetCatalog = @{}
+  if ($capCatalog) {
+    foreach ($comp in @($capCatalog.components | Where-Object { $_.mcp_tool_budget })) {
+      $budgetCatalog[[string]$comp.id] = $comp.mcp_tool_budget
+    }
+  }
+  foreach ($profileName in @('default', 'roblox', 'skyrim')) {
+    $profileCfg = if ($profileName -eq 'default') {
+      Join-Path $hermesHomeRoot 'config.yaml'
+    } else {
+      Join-Path $hermesHomeRoot ('profiles\' + $profileName + '\config.yaml')
+    }
+    if (-not (Test-Path -LiteralPath $profileCfg -PathType Leaf)) { continue }
+    $yaml = [IO.File]::ReadAllText($profileCfg)
+    foreach ($sid in $budgetCatalog.Keys) {
+      # Cheap YAML slice rather than a parser: take the server's block and look
+      # for a tools: filter inside it. PS 5.1 has no YAML reader and adding one
+      # to a doctor that must never fail on a malformed config is not worth it.
+      $blockMatch = [regex]::Match($yaml, "(?ms)^  " + [regex]::Escape($sid) + ":\r?\n(.*?)(?=^  \S|^\S|\Z)")
+      if (-not $blockMatch.Success) { continue }
+      $block = $blockMatch.Groups[1].Value
+      $budget = $budgetCatalog[$sid]
+      $allTools = [int]$budget.all_tools
+      $names = @([regex]::Matches($block, "(?m)^\s+-\s+(" + [regex]::Escape($sid) + "_\S+)\s*$") |
+                 ForEach-Object { $_.Groups[1].Value })
+      $mode = 'Full'
+      if ($block -match '(?m)^\s+include:\s*$') { $mode = 'include' }
+      elseif ($block -match '(?m)^\s+exclude:\s*$') { $mode = 'exclude' }
+
+      # Match the live filter against the DECLARED sets and report that set's
+      # recorded measurement. Never compute one from a per-tool average: the
+      # sets exist precisely because schema size is wildly uneven (three of
+      # houseCARL's 45 tools are a quarter of its bytes), so an average is not
+      # an approximation, it is a wrong answer with a confident format.
+      $setName = $null; $tokens = $null; $activeTools = $null
+      if ($mode -eq 'Full') {
+        $setName = 'Full'; $tokens = [int]$budget.all_tokens_per_turn; $activeTools = $allTools
+      } else {
+        $sorted = @($names | Sort-Object)
+        foreach ($candidate in $budget.sets.PSObject.Properties) {
+          $set = $candidate.Value
+          $declared = @(if ($mode -eq 'include') { $set.include } else { $set.exclude }) | Where-Object { $_ }
+          if (-not $declared.Count) { continue }
+          if ((@($declared | Sort-Object) -join '|') -eq ($sorted -join '|')) {
+            $setName = $candidate.Name
+            $tokens = [int]$set.tokens_per_turn
+            $activeTools = [int]$set.tools
+            break
+          }
+        }
+        if (-not $setName) {
+          # A hand-picked selection. Report the shape, refuse to price it.
+          $setName = 'custom'
+          $activeTools = if ($mode -eq 'include') { $names.Count } else { $allTools - $names.Count }
+        }
+      }
+      $hermesBudgets += [ordered]@{
+        profile = $profileName; server = $sid; filter = $mode; set = $setName
+        tools_active = $activeTools; tools_total = $allTools
+        approx_tokens_per_turn = $tokens
+        full_tokens_per_turn = [int]$budget.all_tokens_per_turn
+      }
+    }
+  }
+}
+if ($hermesBudgets.Count) {
+  Write-Host ''
+  Write-UabsStep 'Hermes profile tool budgets'
+  foreach ($b in $hermesBudgets) {
+    $cost = if ($null -ne $b.approx_tokens_per_turn) { "~$($b.approx_tokens_per_turn) tok/turn" } else { 'cost unmeasured' }
+    $line = "{0,-8} {1,-12} {2}/{3} tools  {4}" -f $b.profile, $b.server, $b.tools_active, $b.tools_total, $cost
+    if ($b.set -eq 'Full') {
+      Write-UabsWarn ($line + '  (no filter)')
+      Write-Host ('     Every tool registered. Cheaper: TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset ReadOnly -Apply') -ForegroundColor DarkGray
+    } elseif ($b.set -eq 'custom') {
+      Write-UabsOk ($line + '  (hand-picked selection)')
+      Write-Host ('     This combination has not been measured, so no token figure is shown. Measure it: TOOLS\Measure-McpSchemaCost.ps1') -ForegroundColor DarkGray
+    } else {
+      Write-UabsOk ($line + ("  [{0}] full is ~{1}, saving ~{2}" -f $b.set, $b.full_tokens_per_turn, ($b.full_tokens_per_turn - $b.approx_tokens_per_turn)))
+    }
+  }
+  Write-Host '     Figures are the recorded per-set measurement, not a per-tool average: schema size is very uneven.' -ForegroundColor DarkGray
+  Write-Host '     Change the set: hermes -p skyrim mcp configure housecarl  (interactive, survives re-installs)' -ForegroundColor DarkGray
+}
+
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
-$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);result=$doctorResult}
+$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);result=$doctorResult}
 $reportPath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\installed-state-doctor.json'
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
 if($errors.Count){Write-UabsBad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}

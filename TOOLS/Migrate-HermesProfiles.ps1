@@ -24,6 +24,15 @@
 param(
   [switch]$Apply,
   [switch]$WithForgeCompatibility,
+  # How much of houseCARL to register in the skyrim profile. Measured, 1.9.0:
+  #   Full      45 tools  167,072 bytes  ~41,768 tok/turn
+  #   Lean      42 tools  125,476 bytes  ~31,369 tok/turn   -25%  (default)
+  #   ReadOnly  27 tools   70,418 bytes  ~17,604 tok/turn   -58%
+  # Hermes enforces mcp_servers.<name>.tools.include/exclude at REGISTRATION,
+  # so a filtered tool's schema never reaches the model. The sets live in
+  # BUNDLED-TOOLS/CATALOG.json, not here.
+  [ValidateSet('Full', 'Lean', 'ReadOnly')]
+  [string]$SkyrimToolset = 'Lean',
   [string]$HermesHome,
   [string]$HermesExe
 )
@@ -155,6 +164,11 @@ function Ensure-UabsServer([string]$Profile, [hashtable]$Map, [string]$Id, [hash
   foreach ($field in $Desired.Keys) {
     # A deliberate user timeout remains valid; only fill it when absent.
     if ($field -eq 'connect_timeout' -and $entry.ContainsKey($field)) { continue }
+    # A tool filter is the user's editing surface: `hermes mcp configure
+    # <name>` writes tools.include, and re-normalizing it every install would
+    # silently undo their choice on the next run. Fill it when absent, never
+    # overwrite. -SkyrimToolset passed explicitly overrides (see $forceToolset).
+    if ($field -eq 'tools' -and $entry.ContainsKey($field) -and -not $script:ForceToolset) { continue }
     if (-not $entry.ContainsKey($field) -or -not (Test-UabsValueEqual $entry[$field] $Desired[$field])) {
       Add-UabsPlan -Kind 'SetLeaf' -Profile $Profile -Id $Id -Key "mcp_servers.$Id.$field" -Value $Desired[$field] -Detail "normalize $field"
       $entry[$field] = Copy-UabsValue $Desired[$field]
@@ -330,6 +344,34 @@ try {
     command = 'cmd.exe'; args = @('/c', $robloxBat); enabled = $true; connect_timeout = 30
   }
 
+  # The tool budget is DATA. Reading it here rather than hardcoding names keeps
+  # the measured numbers and the applied filter in one place, and makes the next
+  # oversized server a catalog change.
+  $script:ForceToolset = $PSBoundParameters.ContainsKey('SkyrimToolset')
+  $toolsFilter = $null
+  $toolsetNote = ''
+  $catalogPath = Join-Path (Split-Path -Parent $PSScriptRoot) 'BUNDLED-TOOLS\CATALOG.json'
+  if (-not (Test-Path -LiteralPath $catalogPath -PathType Leaf)) {
+    # Say so. Silently registering all 45 tools because a data file was not
+    # found is a ~10,000 token/turn difference the user never asked for.
+    Write-Warning "CATALOG.json not found at $catalogPath - no tool budget applied; every tool will be registered."
+  }
+  if (Test-Path -LiteralPath $catalogPath -PathType Leaf) {
+    $catalog = [IO.File]::ReadAllText($catalogPath) | ConvertFrom-Json
+    $carlComp = @($catalog.components | Where-Object { $_.id -eq 'housecarl' }) | Select-Object -First 1
+    $budget = if ($carlComp) { $carlComp.mcp_tool_budget } else { $null }
+    $chosen = if ($budget -and $budget.sets) { $budget.sets.$SkyrimToolset } else { $null }
+    if ($chosen) {
+      $inc = @($chosen.include | Where-Object { $_ })
+      $exc = @($chosen.exclude | Where-Object { $_ })
+      if ($inc.Count) { $toolsFilter = @{ include = $inc } }
+      elseif ($exc.Count) { $toolsFilter = @{ exclude = $exc } }
+      $toolsetNote = "$SkyrimToolset ($($chosen.tools)/$($budget.all_tools) tools, ~$($chosen.tokens_per_turn) tok/turn, -$($chosen.saving_pct)%)"
+    } else {
+      Write-Warning "CATALOG.json declares no mcp_tool_budget set '$SkyrimToolset' for housecarl; registering every tool."
+    }
+  }
+
   $houseCarlSpec = @{
     command = $houseCarl; args = @(); enabled = $true; connect_timeout = 30
     env = @{ SKYRIM_MO2_INSTANCE = $mo2; HouseCarl__Mo2InstanceDir = $mo2 }
@@ -352,6 +394,33 @@ try {
     Normalize-UabsAliases 'roblox' $maps['roblox'] 'Roblox_Studio' @('roblox-studio', 'roblox_studio') 'roblox'
   }
   if ($skyrimAvailable) {
+    if ($toolsFilter) {
+      # Do not re-apply a budget the user deliberately deleted. The provider
+      # auto-detection in v8.1.0 exists because "the installer keeps putting
+      # back what I removed" is the worst kind of helpful.
+      $stateFile = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\hermes-profile-migration.json'
+      $priorToolset = $null
+      if (Test-Path -LiteralPath $stateFile -PathType Leaf) {
+        try { $priorToolset = ([IO.File]::ReadAllText($stateFile) | ConvertFrom-Json).skyrim_toolset } catch { }
+      }
+      $entryHasFilter = $maps['skyrim'].ContainsKey('housecarl') -and
+        (ConvertTo-UabsPlain $maps['skyrim']['housecarl']).ContainsKey('tools')
+      if ($priorToolset -and -not $entryHasFilter -and -not $script:ForceToolset) {
+        Add-UabsLedger 'untouched' "skyrim MCP 'housecarl' tool budget (previously applied and since removed by hand)"
+      } else {
+        $houseCarlSpec['tools'] = $toolsFilter
+        Add-UabsLedger 'migrated' "skyrim MCP 'housecarl' tool budget: $toolsetNote"
+      }
+    } elseif ($script:ForceToolset -and $maps['skyrim'].ContainsKey('housecarl') -and
+              (ConvertTo-UabsPlain $maps['skyrim']['housecarl']).ContainsKey('tools')) {
+      # -SkyrimToolset Full means "register every tool", which requires REMOVING
+      # the filter. Ensure-UabsServer only writes fields present in the desired
+      # spec, so leaving `tools` out of the spec keeps the old filter installed
+      # and the run reports "already matches" while Full is not in effect.
+      Add-UabsPlan -Kind 'RemoveLeaf' -Profile 'skyrim' -Id 'housecarl' -Key 'mcp_servers.housecarl.tools' -Value $null -Detail 'remove the tool budget (-SkyrimToolset Full)'
+      [void]$maps['skyrim']['housecarl'].Remove('tools')
+      Add-UabsLedger 'removed' "skyrim MCP 'housecarl' tool budget (Full: all $(if ($budget) { $budget.all_tools } else { '' }) tools registered)"
+    }
     Ensure-UabsServer 'skyrim' $maps['skyrim'] 'housecarl' $houseCarlSpec 'housecarl'
     Normalize-UabsAliases 'skyrim' $maps['skyrim'] 'housecarl' @('houseCARL', 'house-carl') 'housecarl'
   }
@@ -496,6 +565,7 @@ try {
     $state = [ordered]@{
       schema = 1; migration = 'hermes-profile-topology-v1'; applied_utc = [DateTime]::UtcNow.ToString('o')
       hermes_home = $HermesHome; backup = $backup; forge_compatibility = [bool]$WithForgeCompatibility
+      skyrim_toolset = $(if ($toolsFilter) { $SkyrimToolset } else { $null })
     }
     [IO.File]::WriteAllText((Join-Path $stateDir 'hermes-profile-migration.json'), (($state | ConvertTo-Json -Depth 5) + "`n"), (New-Object Text.UTF8Encoding($false)))
     Write-UabsLedger -BackupPath $backup -Status 'applied'

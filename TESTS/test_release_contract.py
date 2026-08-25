@@ -416,13 +416,17 @@ def test_hermes_native_profile_migration_contract() -> None:
     assert "default = @('context7', 'github', 'headroom')" in body
     assert "roblox = @('context7', 'github', 'headroom', 'Roblox_Studio')" in body
     assert "skyrim = @('context7', 'github', 'headroom', 'housecarl')" in body
-    assert "Migrate-HermesProfiles.ps1" in installer and "-File $hermesProfiles -Apply" in installer
+    assert "Migrate-HermesProfiles.ps1" in installer, "the installer no longer runs the profile migration"
+    assert "'-File', $hermesProfiles, '-Apply'" in installer, (
+        "the installer no longer applies the migration; a dry run writes nothing "
+        "and the profile topology never lands"
+    )
     # The migrator refuses while Hermes.exe is up. The install closes the
     # desktop app inside the PLUGIN block, which -SkipNativePlugins skips, so
     # the migration call site has to close it too or the topology silently
     # never lands on those runs.
     call_site = installer[installer.index("$hermesProfiles = Join-Path"):]
-    call_site = call_site[:call_site.index("-File $hermesProfiles -Apply")]
+    call_site = call_site[:call_site.index("'-File', $hermesProfiles, '-Apply'")]
     assert "Get-Process -Name 'Hermes'" in call_site, (
         "the Hermes profile migration no longer closes a running desktop app; "
         "it will degrade to a warning whenever the plugin block is skipped"
@@ -539,6 +543,133 @@ def test_every_defined_contract_is_actually_run() -> None:
     ghosts = sorted(registered - defined)
     assert not ghosts, (
         "listed but not defined; the script run would crash: " + ", ".join(ghosts)
+    )
+
+
+def test_hermes_tool_budget_is_data_and_internally_consistent() -> None:
+    """houseCARL is the most expensive server in the pack; its budget is data.
+
+    45 tools, 167,072 bytes, ~41,768 tokens on EVERY turn -- about 21% of a 200k
+    window before the first user message, and billed on a BYOK provider. Hermes
+    can filter at the individual-tool level, so the skyrim profile registers a
+    subset. The subsets live in CATALOG.json so the numbers can be re-measured
+    and checked, and so the next oversized server is a data change.
+    """
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    carl = next(c for c in catalog["components"] if c.get("id") == "housecarl")
+    budget = carl.get("mcp_tool_budget")
+    assert budget, "houseCARL no longer declares an mcp_tool_budget"
+
+    all_tools = budget["all_tools"]
+    assert budget["all_schema_bytes"] // 4 == budget["all_tokens_per_turn"], (
+        "recorded token figure does not follow from the recorded byte figure"
+    )
+
+    # ONE basis for one measurement. Measure-McpSchemaCost reports both a
+    # serialized-array total (167,118) and a set of per-tool byte counts that
+    # sum to 46 bytes less (167,072). Subset costs can only be built from the
+    # per-tool sum, so that is the basis everywhere -- and both figures were
+    # briefly in flight, in the release that exists to stop restated numbers
+    # drifting. The capability record and the catalog must agree.
+    record = json.loads(read(ROOT / "BUNDLED-TOOLS" / "capability-records" / "game-mcp-schema-cost.json"))
+    carl_record = next(s for s in record["servers"] if s["id"] == "housecarl")
+    assert carl_record["schema_bytes"] == budget["all_schema_bytes"], (
+        "the capability record says %s bytes and CATALOG.json says %s for the same "
+        "measurement" % (carl_record["schema_bytes"], budget["all_schema_bytes"])
+    )
+    assert carl_record["approx_tokens_per_turn"] == budget["all_tokens_per_turn"], (
+        "the capability record and the catalog disagree on houseCARL's per-turn cost"
+    )
+    assert carl_record["tools_total"] == all_tools
+
+    sets = budget["sets"]
+    for name in ("Full", "Lean", "ReadOnly"):
+        assert name in sets, f"tool budget lost the {name!r} set"
+        assert sets[name].get("why"), f"{name}: a set with no stated reason is a magic number"
+
+    assert sets["Full"]["tools"] == all_tools
+    assert not sets["Full"].get("include") and not sets["Full"].get("exclude"), (
+        "Full must carry no filter; it means 'register everything'"
+    )
+
+    # Lean is exclusion-based on purpose: a houseCARL update that adds tools
+    # keeps them, instead of silently dropping them from an allowlist.
+    lean = sets["Lean"]
+    assert lean.get("exclude") and not lean.get("include"), (
+        "Lean must exclude rather than include, so new upstream tools are not "
+        "silently dropped by a stale allowlist"
+    )
+    assert lean["tools"] == all_tools - len(lean["exclude"]), "Lean tool count does not follow from its exclude list"
+
+    # ReadOnly is inclusion-based on purpose: a new WRITE tool must not appear
+    # in a set whose whole promise is that nothing writes.
+    ro = sets["ReadOnly"]
+    assert ro.get("include") and not ro.get("exclude"), (
+        "ReadOnly must be an allowlist, or an upstream update can add a write "
+        "tool to the set that promises not to write"
+    )
+    assert ro["tools"] == len(ro["include"]), "ReadOnly tool count does not match its include list"
+    assert len(set(ro["include"])) == len(ro["include"]), "duplicate entry in the ReadOnly allowlist"
+    for banned in ("_create", "_bulk_apply", "_set_field", "_remove_", "_merge_", "_compact_"):
+        offenders = [n for n in ro["include"] if banned in n]
+        assert not offenders, f"ReadOnly includes a write tool: {offenders}"
+
+    for name in ("Lean", "ReadOnly"):
+        s = sets[name]
+        assert s["tokens_per_turn"] < budget["all_tokens_per_turn"], f"{name} does not save anything"
+        assert s["schema_bytes"] // 4 == s["tokens_per_turn"], f"{name}: tokens do not follow from bytes"
+        expected_pct = round(100 * (budget["all_schema_bytes"] - s["schema_bytes"]) / budget["all_schema_bytes"])
+        assert s["saving_pct"] == expected_pct, (
+            f"{name}: stated saving {s['saving_pct']}% but the recorded bytes give {expected_pct}%"
+        )
+
+
+def test_tool_budget_is_applied_without_overwriting_a_user_choice() -> None:
+    """The filter is the user's editing surface. Fill it; never replace it.
+
+    `hermes mcp configure <server>` writes tools.include by hand. Re-normalizing
+    it on every install is the "puts back what I removed" behavior that provider
+    auto-detection exists to end.
+    """
+    mig = read(ROOT / "TOOLS" / "Migrate-HermesProfiles.ps1")
+    aio = read(ROOT / "INSTALL-AIO.ps1")
+    doctor = read(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+
+    assert "mcp_tool_budget" in mig, "the migrator no longer reads the budget from the catalog"
+    assert "housecarl_bulk_create" not in mig, (
+        "tool names are hardcoded in the migrator again; they belong in CATALOG.json "
+        "next to the measurement that justifies them"
+    )
+    assert "$field -eq 'tools' -and $entry.ContainsKey($field)" in mig, (
+        "the migrator no longer preserves an existing tool filter"
+    )
+    assert "$script:ForceToolset" in mig, "-SkyrimToolset no longer overrides the preserve rule"
+    assert "$PSBoundParameters.ContainsKey('SkyrimToolset')" in mig, (
+        "the override fires on the default value too, so every run overwrites a hand-edited filter"
+    )
+    # Full means register everything, which requires REMOVING the filter.
+    # Ensure-UabsServer only writes fields present in the spec, so omitting
+    # `tools` leaves the old filter installed and the run reports no changes.
+    assert "RemoveLeaf" in mig, (
+        "-SkyrimToolset Full no longer removes an installed filter; it would report "
+        "'already matches' while the previous set is still in effect"
+    )
+
+    assert "if ($SkyrimToolset) { $profileArgs +=" in aio, (
+        "the installer forwards -SkyrimToolset unconditionally; passing it on every "
+        "run sets ForceToolset and replaces the user's own filter each install"
+    )
+
+    # A doctor that estimates is worse than one that says nothing: three of
+    # houseCARL's 45 tools are a quarter of its bytes, so a per-tool average is
+    # not an approximation, it is a wrong number in a confident format.
+    assert "hermes_tool_budgets" in doctor, "the doctor no longer reports what a profile costs"
+    assert "$budget.all_schema_bytes / $allTools" not in doctor, (
+        "the doctor is averaging schema bytes across tools again; it reported "
+        "~38,983 tok/turn for a set that measures 31,369"
+    )
+    assert "cost unmeasured" in doctor, (
+        "the doctor no longer refuses to price a hand-picked selection"
     )
 
 
@@ -1533,6 +1664,8 @@ def main() -> int:
         test_hermes_cost_contract,
         test_one_click_install_touches_only_installed_providers,
         test_claude_mem_is_opt_in,
+        test_hermes_tool_budget_is_data_and_internally_consistent,
+        test_tool_budget_is_applied_without_overwriting_a_user_choice,
         test_every_defined_contract_is_actually_run,
         test_hermes_native_profile_migration_contract,
         test_same_version_forge_hotfix_refreshes_shipped_content,

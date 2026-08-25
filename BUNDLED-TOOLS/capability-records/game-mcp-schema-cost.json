@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "record": "mcp-schema-cost",
-  "measured_utc": "2026-08-25T12:20:00Z",
+  "measured_utc": "2026-08-25T17:20:00Z",
   "measured_with": "TOOLS/Measure-McpSchemaCost.ps1",
   "why": "Tool COUNT is the wrong unit and this pair proves it: the server with MORE tools costs 9.6x LESS. Every connected server's tool schemas are serialized into context on every turn, so the number that matters is bytes of schema, not how many entries the /mcp list shows.",
   "servers": [
@@ -9,9 +9,10 @@
       "id": "housecarl",
       "version": "1.9.0",
       "tools_total": 45,
-      "schema_bytes": 167118,
-      "approx_tokens_per_turn": 41780,
-      "bytes_per_tool_avg": 3714,
+      "schema_bytes": 167072,
+      "schema_bytes_note": "Sum of the 45 per-tool byte counts. Measure-McpSchemaCost.ps1 also reports the serialized tools ARRAY at 167,118 -- 46 bytes more, the JSON framing between entries. Subset costs (see CATALOG.json mcp_tool_budget) can only be derived by summing per-tool bytes, so the sum is the basis every figure in this pack uses. Quoting both is how a restated number drifts.",
+      "approx_tokens_per_turn": 41768,
+      "bytes_per_tool_avg": 3713,
       "largest_tools": [
         { "name": "housecarl_bulk_create", "bytes": 14655 },
         { "name": "housecarl_create_record", "bytes": 14548 },

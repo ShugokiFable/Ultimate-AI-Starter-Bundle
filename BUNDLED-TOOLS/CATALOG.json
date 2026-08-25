@@ -27,7 +27,74 @@
         "*houseCARL*.zip"
       ],
       "install": "zip-extract",
-      "exe_rel": "server\\housecarl-mcp.exe"
+      "exe_rel": "server\\housecarl-mcp.exe",
+      "mcp_tool_budget": {
+        "measured_utc": "2026-08-25T17:20:00Z",
+        "measured_with": "TOOLS/Measure-McpSchemaCost.ps1",
+        "mechanism": "Hermes mcp_servers.<name>.tools.include (allowlist) / tools.exclude (blocklist), enforced at tool REGISTRATION (tools/mcp_tool.py, both the live-discovery and schema-cache paths), so a filtered tool's schema never reaches the model. fnmatch globs are supported. Claude/Codex/Grok/Kimi have no equivalent; there the whole server is the unit.",
+        "all_tools": 45,
+        "all_schema_bytes": 167072,
+        "all_tokens_per_turn": 41768,
+        "sets": {
+          "Full": {
+            "include": [],
+            "tools": 45,
+            "schema_bytes": 167072,
+            "tokens_per_turn": 41768,
+            "saving_pct": 0,
+            "why": "No filter. Every tool registered. Use when authoring records in bulk and diagnosing in the same session."
+          },
+          "Lean": {
+            "exclude": [
+              "housecarl_bulk_create",
+              "housecarl_create_record",
+              "housecarl_bulk_apply"
+            ],
+            "tools": 42,
+            "schema_bytes": 125476,
+            "tokens_per_turn": 31369,
+            "saving_pct": 25,
+            "why": "Drops only the three tools whose parameter schemas carry full nested record objects: bulk_create (14,655 B), create_record (14,548 B) and bulk_apply (12,393 B) are 41,596 bytes between them -- a quarter of the server, and more than the whole of Skyrim Forge. They are dedicated bulk-authoring entry points, so a diagnosis or patch-reading session pays for them and never calls them. This is the shipped default because it costs no capability a normal session uses."
+          },
+          "ReadOnly": {
+            "include": [
+              "housecarl_resolve",
+              "housecarl_read_record",
+              "housecarl_batch_record_detail",
+              "housecarl_diff_record",
+              "housecarl_cross_plugin_query",
+              "housecarl_read_plugin_file",
+              "housecarl_load_order_status",
+              "housecarl_check_errors",
+              "housecarl_asset_status",
+              "housecarl_update_status",
+              "housecarl_validate_scripts",
+              "housecarl_validate_dialogue",
+              "housecarl_native_pairing_audit",
+              "housecarl_skse_inventory",
+              "housecarl_skse_config_audit",
+              "housecarl_skypatcher_read",
+              "housecarl_nif_inspect",
+              "housecarl_decompile_script",
+              "housecarl_bsa_list",
+              "housecarl_bsa_extract",
+              "housecarl_nexus_search",
+              "housecarl_nexus_mod",
+              "housecarl_nexus_check_updates",
+              "housecarl_nexus_identify",
+              "housecarl_nexus_graphql",
+              "housecarl_set_mo2_instance",
+              "housecarl_set_tool_path"
+            ],
+            "tools": 27,
+            "schema_bytes": 70418,
+            "tokens_per_turn": 17604,
+            "saving_pct": 58,
+            "why": "Everything that reads, diagnoses, validates or looks up, and nothing that writes. Keeps load-order truth, conflict trees, cross-plugin queries, script/dialogue validation, the SKSE audit and the whole keyless Nexus surface. Drops the 18 write tools. Use for diagnosis, load-order work and Nexus research."
+          }
+        },
+        "restore": "hermes -p skyrim mcp configure housecarl  (interactive checklist, rewrites tools.include). Re-running the migrator will not undo a hand-edited filter."
+      }
     },
     {
       "github": {
@@ -258,7 +325,7 @@
         "session-memory"
       ],
       "offline_asset": null,
-      "scope_note": "CLAUDE CODE ONLY. Never install for Grok/Codex/Kimi/Hermes. Cross-session CONVERSATION memory (what was done, when, why) \u2014 does NOT replace codebase-memory-mcp (code structure graph) or skyrim-memory (verified Skyrim facts). Requires Bun on PATH (worker uses bun:sqlite). Worker port 37777. If red MCP errors: install Bun from https://bun.sh then restart Claude Code.",
+      "scope_note": "CLAUDE CODE ONLY. Never install for Grok/Codex/Kimi/Hermes. Cross-session CONVERSATION memory (what was done, when, why) — does NOT replace codebase-memory-mcp (code structure graph) or skyrim-memory (verified Skyrim facts). Requires Bun on PATH (worker uses bun:sqlite). Worker port 37777. If red MCP errors: install Bun from https://bun.sh then restart Claude Code.",
       "runtime_note": "Bun required for worker daemon (https://bun.sh). The AIO installs Bun when missing, disables claude-mem's default anonymous telemetry, and starts the worker before reporting success."
     },
     {
@@ -559,7 +626,7 @@
       "scope_note": "There is no machine-wide Unity MCP server. The executable is generated inside the project's Library folder by the Unity package, so the entry is project-scoped by construction and its command is the resolved absolute path for that one project. Until the package is installed the exe does not exist, and the profile refuses rather than writing a path that is not there."
     }
   ],
-  "pack_version": "8.1.0",
+  "pack_version": "8.2.0",
   "updated_utc": "2026-08-24",
   "providers": {
     "Grok": {
@@ -635,7 +702,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "8.1.0",
+  "catalog_version": "8.2.0",
   "updated": "2026-08-24",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

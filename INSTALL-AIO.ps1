@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Ultimate AI Starter Bundle V8.0.4 - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
+  Ultimate AI Starter Bundle - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
 
 .DESCRIPTION
   New users: run this once from the pack root.
@@ -134,7 +134,14 @@ param(
   # Fresh-machine default: install missing provider CLIs from each vendor's official Windows installer.
   [switch]$SkipProviderBootstrap,
   # Default install proves each always-on MCP with initialize + tools/list.
-  [switch]$SkipMcpHandshake
+  [switch]$SkipMcpHandshake,
+  # How much of houseCARL the Hermes 'skyrim' profile registers. Empty = leave
+  # it to Migrate-HermesProfiles.ps1's own default (Lean) AND do not override a
+  # filter the user set by hand -- passing the switch through on every install
+  # would replace their `hermes mcp configure housecarl` choice every time.
+  #   Full 45 tools ~41,768 tok/turn | Lean 42 ~31,369 (-25%) | ReadOnly 27 ~17,604 (-58%)
+  [ValidateSet('', 'Full', 'Lean', 'ReadOnly')]
+  [string]$SkyrimToolset = ''
 )
 
 if (-not $CoreOnly) {
@@ -309,7 +316,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.1.0 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.2.0 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1763,7 +1770,7 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
   $state = @{
-  version = '8.1.0'
+  version = '8.2.0'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -1819,8 +1826,10 @@ if (-not $ToolsOnly) {
         $hermesUp | Stop-Process -Force -ErrorAction SilentlyContinue
         Start-Sleep -Milliseconds 500
       }
-      & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $hermesProfiles -Apply
-      $installed['hermes-native-profiles'] = @{ status='evaluated'; profiles=@('default','roblox','skyrim') }
+      $profileArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $hermesProfiles, '-Apply')
+      if ($SkyrimToolset) { $profileArgs += @('-SkyrimToolset', $SkyrimToolset) }
+      & (Get-Command powershell.exe -ErrorAction Stop).Source @profileArgs
+      $installed['hermes-native-profiles'] = @{ status='evaluated'; profiles=@('default','roblox','skyrim'); skyrim_toolset=$(if ($SkyrimToolset) { $SkyrimToolset } else { 'default (Lean)' }) }
       L 'Hermes native profiles evaluated'
     } catch {
       Write-UabsWarn ('Hermes native profiles: ' + $_.Exception.Message)
@@ -1951,6 +1960,8 @@ Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PRE
 Write-Host '  8. Hermes: run hermes --accept-hooks once if it asks for hook trust.'
 Write-Host '     Native MCP profiles when installed: hermes (core), roblox (official Studio MCP), skyrim (houseCARL).'
 Write-Host '     Audit/migrate: TOOLS\Migrate-HermesProfiles.ps1 [-Apply]'
+Write-Host '     houseCARL costs ~41,768 tokens/turn at full size. The skyrim profile registers a'
+Write-Host '     Lean subset (~31,369, -25%). Cheaper: -SkyrimToolset ReadOnly (~17,604, -58%).'
 Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'
 Write-Host 'Missing tools: run TOOLS\Ensure-Tools.ps1 or INSTALL-AIO.ps1 - do not invent paths.'

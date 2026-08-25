@@ -8,6 +8,10 @@ nothing was watching.
 
 - DeepSeek V4 Flash, reasoning_effort=max, max_turns=null (unlimited)
 - Compression at 160000 tokens, lean tail (proactive tool-result prune from 80000)
+- Profiles: default (context7/github/headroom), roblox (+ Studio MCP),
+  skyrim (+ houseCARL, Lean tool set: 42 of 45 tools, ~31,369 tok/turn
+  instead of ~41,768). Cheaper still: Migrate-HermesProfiles.ps1
+  -SkyrimToolset ReadOnly -Apply (27 tools, ~17,604, -58%)
 - mcp_servers: {} -- empty, and it stays empty
 - No username, no drive letter, no completeness-gate command line
 

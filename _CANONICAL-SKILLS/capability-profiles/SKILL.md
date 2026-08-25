@@ -31,7 +31,7 @@ That is the budget. Spend it on what the task uses.
 `TOOLS\Measure-McpSchemaCost.ps1`, real `initialize` → `tools/list`:
 
 ```
-houseCARL 1.9.0      45 tools  167,118 bytes  ~41,780 tokens/turn
+houseCARL 1.9.0      45 tools  167,072 bytes  ~41,768 tokens/turn
 firecrawl 3.24.0     25 tools   36,321 bytes   ~9,080 tokens/turn
 skyrim-forge 6.0.0   52 tools   17,488 bytes   ~4,372 tokens/turn
 context7              2 tools    5,124 bytes   ~1,281 tokens/turn
@@ -49,13 +49,64 @@ each.
 One tool cost as much as two. A tool count tells you almost nothing about what
 a server charges you.
 
-houseCARL at ~41,780 tokens is roughly **21% of a 200k context window gone
+houseCARL at ~41,768 tokens is roughly **21% of a 200k context window gone
 before the first user message**. That is not an argument for removing it: live
 MO2 load-order truth, conflict trees and keyless Nexus lookup have no cheaper
 substitute, and guessing at load order is the failure this pack exists to
 prevent. It is an argument for *scope* — it belongs in the `skyrim` profile and
 Hermes' `skyrim` home, never in the always-on core. Numbers:
 `BUNDLED-TOOLS/capability-records/game-mcp-schema-cost.json`.
+
+### The unit below a server: individual tools
+
+**Hermes can filter a server down to named tools; the others cannot.**
+
+```yaml
+mcp_servers:
+  housecarl:
+    tools:
+      exclude: [housecarl_bulk_create, housecarl_create_record, housecarl_bulk_apply]
+      # or include: [...] for a strict allowlist. fnmatch globs work in both.
+```
+
+Enforced at tool **registration** (`tools/mcp_tool.py`, on both the live
+discovery and schema-cache paths), so a filtered tool's schema never reaches the
+model. `hermes mcp configure <server>` writes this interactively.
+
+Two facts that decide which form to use:
+
+| | behaviour when the server adds a tool upstream | use for |
+|---|---|---|
+| `exclude` | the new tool IS registered | trimming a few known-huge tools |
+| `include` | the new tool is NOT registered | a set with a promise to keep, e.g. "nothing writes" |
+
+Measured on houseCARL 1.9.0, and shipped as named sets in `CATALOG.json`:
+
+```
+Full      45 tools  167,072 bytes  ~41,768 tok/turn
+Lean      42 tools  125,476 bytes  ~31,369 tok/turn   -25%   (default)
+ReadOnly  27 tools   70,418 bytes  ~17,604 tok/turn   -58%
+```
+
+Lean drops three tools and 25% of the cost, because schema size is wildly
+uneven: `bulk_create`, `create_record` and `bulk_apply` carry full nested record
+objects and are 41,596 bytes between them.
+
+**Never estimate a filtered cost by averaging.** `active_tools × (bytes ÷
+tools)` gives ~38,983 for the Lean set, which measures 31,369 — a 3.7× error in
+the saving, presented as a number. Measure the filtered set, or say unmeasured.
+
+```powershell
+TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset ReadOnly -Apply   # -58%
+TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset Full -Apply       # remove the filter
+hermes -p skyrim mcp configure housecarl                          # pick by hand
+```
+
+A hand-picked filter survives re-installs: the migrator fills the field when it
+is absent and never overwrites it, unless `-SkyrimToolset` is passed explicitly.
+
+For Claude, Codex, Grok and Kimi the whole server is still the unit. There, the
+answer is a project-scoped profile, not a smaller server.
 
 ## Installed is not enabled
 

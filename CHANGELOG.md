@@ -1,3 +1,31 @@
+## 8.2.0
+
+- **Hermes registers a tool budget, not just a server.** Hermes filters MCP
+  servers at the individual-TOOL level (`tools.include` / `tools.exclude`,
+  fnmatch globs, enforced at registration so a filtered schema never reaches the
+  model). No other provider here can do that, and on BYOK it is the only cost
+  lever that works every turn. houseCARL measured 45 tools / 167,072 bytes /
+  ~41,768 tokens per turn - about 21% of a 200k window before the first user
+  message. Three tools carry 25% of that. The `skyrim` profile now installs a
+  **Lean** set: 42 tools, ~31,369 tok/turn. `-SkyrimToolset ReadOnly` gets 27
+  tools and ~17,604 (-58%); `-SkyrimToolset Full` restores everything. Sets are
+  declared in `CATALOG.json` with their measurements, not hardcoded.
+- `Lean` excludes and `ReadOnly` includes, deliberately: an upstream update
+  should add new tools to Lean, and must never be able to add a write tool to a
+  set whose promise is that nothing writes. A contract asserts both.
+- **A hand-set filter survives re-installs.** `hermes mcp configure <server>`
+  writes `tools.include`; the migrator fills that field when absent and never
+  overwrites it. `-SkyrimToolset` passed explicitly overrides.
+- **The doctor prints what each Hermes profile costs** - previously invisible,
+  since `hermes mcp test` reports what the SERVER advertises, not what Hermes
+  registers. It reports the recorded per-set measurement and refuses to price a
+  hand-picked selection rather than estimating from a per-tool average (which
+  was wrong by 3.7x on the Lean set, because schema size is very uneven).
+- Fixed: `-SkyrimToolset Full` reported "already matches" while the previous
+  filter was still installed - `Ensure-UabsServer` only writes fields present in
+  the spec, so Full now plans an explicit removal.
+- `INSTALL-AIO.ps1`'s `.SYNOPSIS` was stale at V8.0.4 and unchecked; versionless now.
+
 ## 8.1.0
 
 - **One click installs what you have.** A plain run detects which provider CLIs

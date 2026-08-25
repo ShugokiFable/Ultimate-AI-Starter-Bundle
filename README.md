@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.1.0
+# Ultimate AI Starter Bundle v8.2.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -184,6 +184,30 @@ to installing all five, because that is the only outcome that leaves it usable.
 **The rule this follows:** bundle defaults optimize for a new user's
 reliability; the per-machine result optimizes for the capabilities actually
 present on that machine.
+
+### Hermes: trim a server to the tools you use
+
+Hermes filters MCP servers at the individual-tool level — `tools.include` /
+`tools.exclude`, enforced at registration, so a filtered tool's schema never
+reaches the model. No other provider here can do that. On a BYOK provider it is
+also the only cost lever that works on every turn.
+
+houseCARL, measured:
+
+```
+Full      45 tools  ~41,768 tokens on every turn
+Lean      42 tools  ~31,369   -25%   ← what the skyrim profile installs
+ReadOnly  27 tools  ~17,604   -58%   ← reads, diagnoses, Nexus; nothing writes
+```
+
+```powershell
+.\TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset ReadOnly -Apply
+hermes -p skyrim mcp configure housecarl    # or pick tools by hand
+```
+
+A filter you set by hand survives re-installs. `TOOLS\Test-Installed-State.ps1`
+prints what each profile currently costs, and refuses to guess a figure for a
+selection nobody has measured.
 
 ### claude-mem is opt-in
 
@@ -877,6 +901,11 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.2.0** — 2026-08-25. Hermes registers a tool BUDGET, not just a server:
+houseCARL drops from ~41,768 to ~31,369 tokens per turn by default, or ~17,604
+with `-SkyrimToolset ReadOnly`. The doctor prints what each profile costs and
+refuses to guess a figure for a selection nobody measured.
 
 **v8.1.0** — 2026-08-25. One click installs what you have: the installer detects
 which provider CLIs are present instead of assuming five and downloading the
