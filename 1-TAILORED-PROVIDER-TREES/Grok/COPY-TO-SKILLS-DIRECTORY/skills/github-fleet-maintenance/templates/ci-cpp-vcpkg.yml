@@ -1,0 +1,61 @@
+# Reusable GitHub Actions CI for C++ CMake+vcpkg repos.
+# Copy into <repo>/.github/workflows/ci.yml, then edit:
+#   - branches (default branch!), preset names, job names, compiler matrix.
+# Proven pattern: vcpkg binary caching, presets-driven builds,
+# per-preset matrix jobs so one broken target doesn't mask others.
+name: CI
+
+on:
+  push:
+    branches: [main]          # EDIT: repo default branch
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # EDIT: copy the repo's real configurePresets from CMakePresets.json
+          - { os: windows-latest, preset: release, triplet: x64-windows }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Binary cache makes repeat builds minutes faster; key on vcpkg.json + triplet
+      - name: Restore vcpkg binary cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/vcpkg/archives
+          key: vcpkg-${{ runner.os }}-${{ matrix.triplet }}-${{ hashFiles('**/vcpkg*.json') }}
+          restore-keys: vcpkg-${{ runner.os }}-${{ matrix.triplet }}-
+
+      - uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
+          vcpkgGitCommitId: '<EDIT: pin from repo, or omit if vendored>'
+
+      - uses: lukka/run-cmake@v10
+        with:
+          configurePreset: ${{ matrix.preset }}
+          buildPreset: ${{ matrix.preset }}
+
+      # EDIT: optional smoke test / artifact upload
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-${{ matrix.os }}-${{ matrix.preset }}
+          path: |
+            out/build/${{ matrix.preset }}/*.exe
+            out/build/${{ matrix.preset }}/*.dll
+          if-no-files-found: ignore

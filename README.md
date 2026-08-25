@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.3.0
+# Ultimate AI Starter Bundle v8.4.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -21,7 +21,7 @@ One distinction explains almost everything about how this pack behaves:
 | **INSTALLED** | The tool exists on disk | Disk space only. **Zero** effect on your AI chats. |
 | **ENABLED** | Registered in a provider's config | Its tool descriptions ride along inside **every message you send, in every chat, forever** — related to your task or not. |
 
-The 146 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, the heaviest server (houseCARL) burns ~17,000 tokens *every single turn*, and enabling the entire catalog would cost ~40,000+ tokens/turn before you've typed a word. That's why the installer enables almost nothing.
+The 159 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, the heaviest server (houseCARL) burns ~17,000 tokens *every single turn*, and enabling the entire catalog would cost ~40,000+ tokens/turn before you've typed a word. That's why the installer enables almost nothing.
 
 ### What's ON after install
 
@@ -221,7 +221,7 @@ tools appear -- three surprises for one double-click, so it moved behind a flag:
 
 ## What gets installed
 
-- **Provider skills** — 146 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
+- **Provider skills** — 159 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
 - **Native plugins** — Superpowers and Ponytail use each provider's official/native plugin lifecycle; Claude-only `claude-mem` installs Bun automatically when needed.
 - **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Hermes isolates the official Studio MCP in `roblox` and houseCARL in `skyrim`; the remaining browser/editor/game profiles stay off outside matching projects, and credentialed servers stay off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
@@ -901,6 +901,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.4.0** - 2026-08-25. Codex was routing on skill names alone: its index renders into a fixed ~22.3 KB block split across every entry, and at 255 entries every description was cut to 16 characters. The 73-skill Other-Games mega-pack -- which lived in four provider trees and no repository -- is now 8 canonical skills with every game carried verbatim into tier-3 references. 255 entries at 16 chars to 196 at 40, with all 73 games kept.
 
 **v8.3.0** - 2026-08-25. Leftovers are cleaned automatically: seven skills this
 pack retired were still installed across three providers, and 217 backup files had

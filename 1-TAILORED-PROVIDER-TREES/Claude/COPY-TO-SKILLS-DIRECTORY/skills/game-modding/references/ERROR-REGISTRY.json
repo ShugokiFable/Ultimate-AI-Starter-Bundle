@@ -1,0 +1,331 @@
+{
+  "schema_version": "2.0.0",
+  "generated": "2026-07-20",
+  "scope": "multi-game modding",
+  "entries": [
+    {
+      "id": "GEN-001",
+      "title": "Current version edited in place",
+      "symptom": "Rollback and clean comparison are lost.",
+      "root_cause": "No version snapshot before editing.",
+      "prevention": [
+        "Run version gate",
+        "Never overwrite parent"
+      ],
+      "evidence_status": "workflow-control"
+    },
+    {
+      "id": "GEN-002",
+      "title": "Changelog reconstructed afterward",
+      "symptom": "Changed files and failed attempts are missing.",
+      "root_cause": "Changelog was not started first.",
+      "prevention": [
+        "Start entry during snapshot",
+        "Update each milestone"
+      ],
+      "evidence_status": "workflow-control"
+    },
+    {
+      "id": "GEN-003",
+      "title": "Framework version guessed",
+      "symptom": "Stale API compile/load failure.",
+      "root_cause": "Examples replaced exact evidence.",
+      "prevention": [
+        "Pin versions",
+        "Inspect upstream and installed files"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "GEN-004",
+      "title": "Mono and IL2CPP mixed",
+      "symptom": "Unity plugin fails to load.",
+      "root_cause": "Runtime backend was not detected.",
+      "prevention": [
+        "Detect runtime",
+        "Use matching toolchain"
+      ],
+      "evidence_status": "framework-control"
+    },
+    {
+      "id": "GEN-005",
+      "title": "Hook or identifier invented",
+      "symptom": "Crash, corruption, or dead hook.",
+      "root_cause": "Plausible token used without evidence.",
+      "prevention": [
+        "Use exact SDK/source/signature evidence",
+        "Fail closed"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "GEN-006",
+      "title": "Bulk patch false positives",
+      "symptom": "Unrelated targets are modified.",
+      "root_cause": "No expansion audit.",
+      "prevention": [
+        "Generate deterministically",
+        "Parse all",
+        "Audit representative targets"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "GEN-007",
+      "title": "Wrong archive root",
+      "symptom": "Manager accepts archive but loader misses it.",
+      "root_cause": "Staging checked, final ZIP not checked.",
+      "prevention": [
+        "Validate final ZIP",
+        "Test clean install"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "GEN-008",
+      "title": "Client/server mismatch",
+      "symptom": "Desync or disconnect.",
+      "root_cause": "Network symmetry unclassified.",
+      "prevention": [
+        "Label client/server/both",
+        "Test dedicated server"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "GEN-009",
+      "title": "Save compatibility assumed",
+      "symptom": "Save failure or retained broken data.",
+      "root_cause": "No migration/uninstall test.",
+      "prevention": [
+        "Document policy",
+        "Test new/existing saves"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "GEN-010",
+      "title": "Stale cooked assets",
+      "symptom": "Invisible assets or crash.",
+      "root_cause": "Engine/cooker compatibility assumed.",
+      "prevention": [
+        "Preserve raw source",
+        "Recook correctly"
+      ],
+      "evidence_status": "engine-control"
+    },
+    {
+      "id": "GEN-011",
+      "title": "Loader success treated as feature success",
+      "symptom": "Mod loads but behavior is wrong.",
+      "root_cause": "Discovery mistaken for semantics.",
+      "prevention": [
+        "Test player-facing behavior",
+        "Separate gates"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "GEN-012",
+      "title": "Parallel writers collide",
+      "symptom": "Conflicting changes and bad merge.",
+      "root_cause": "Work was not truly independent.",
+      "prevention": [
+        "One writer per coupled artifact",
+        "Parallel research/review only"
+      ],
+      "evidence_status": "workflow-control"
+    },
+    {
+      "id": "GEN-013",
+      "title": "Deployed files become source",
+      "symptom": "Provenance and rebuildability lost.",
+      "root_cause": "Game/staging edited directly.",
+      "prevention": [
+        "Use source workspace",
+        "Deployment read-only"
+      ],
+      "evidence_status": "workflow-control"
+    },
+    {
+      "id": "GEN-014",
+      "title": "Optional integrations regress",
+      "symptom": "Adapters disappear or crash.",
+      "root_cause": "Only core dependency path tested.",
+      "prevention": [
+        "Inventory integrations",
+        "Test matrix"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "GEN-015",
+      "title": "Build pass becomes release claim",
+      "symptom": "Untested archive called finished.",
+      "root_cause": "Evidence promoted beyond scope.",
+      "prevention": [
+        "Evidence ladder",
+        "Ship gate"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "MC-001",
+      "title": "Forge, NeoForge, Fabric, or Quilt APIs mixed",
+      "symptom": "Compile errors, metadata rejection, or runtime class failure.",
+      "root_cause": "Related loader ecosystems were treated as interchangeable.",
+      "prevention": [
+        "Resolve loader first",
+        "Use target loader docs and source",
+        "Separate platform modules"
+      ],
+      "evidence_status": "framework-control"
+    },
+    {
+      "id": "MC-002",
+      "title": "Mappings namespace mismatch",
+      "symptom": "Mixin remap failure, missing symbols, or wrong target descriptors.",
+      "root_cause": "Yarn, official, Parchment, intermediary, and runtime names were mixed.",
+      "prevention": [
+        "Record mapping namespace",
+        "Use matching Gradle/remap tooling"
+      ],
+      "evidence_status": "framework-control"
+    },
+    {
+      "id": "MC-003",
+      "title": "Client class loaded on dedicated server",
+      "symptom": "Server startup crashes with rendering or client package classes.",
+      "root_cause": "Side separation was not enforced.",
+      "prevention": [
+        "Dedicated server test",
+        "Keep client entrypoints/source sets isolated"
+      ],
+      "evidence_status": "runtime-pattern"
+    },
+    {
+      "id": "MC-004",
+      "title": "Mixin target drift",
+      "symptom": "Injection failure or subtly wrong behavior after a game update.",
+      "root_cause": "Target descriptor, locals, ordinal, or bytecode shape changed.",
+      "prevention": [
+        "Reinspect exact bytecode",
+        "Use require/expect carefully",
+        "Test conflicts"
+      ],
+      "evidence_status": "framework-control"
+    },
+    {
+      "id": "MC-005",
+      "title": "Optional library became a hard dependency",
+      "symptom": "Core mod fails when a recipe viewer, config UI, or accessory API is absent.",
+      "root_cause": "Adapter classes were loaded unconditionally.",
+      "prevention": [
+        "Isolate integration entrypoints",
+        "Test dependency absent/present"
+      ],
+      "evidence_status": "cross-game-pattern"
+    },
+    {
+      "id": "MC-006",
+      "title": "Persistent data migration omitted",
+      "symptom": "World/player data resets, corrupts, or desyncs after update.",
+      "root_cause": "Codec/component/capability/attachment schema changed without migration.",
+      "prevention": [
+        "Version serialized data",
+        "Test old worlds and death/dimension transfer"
+      ],
+      "evidence_status": "runtime-pattern"
+    },
+    {
+      "id": "MC-007",
+      "title": "Generated data stale or hand-edited",
+      "symptom": "Missing recipes, tags, models, loot, or worldgen resources.",
+      "root_cause": "Generated output diverged from generator source.",
+      "prevention": [
+        "Regenerate cleanly",
+        "Diff generated output",
+        "Do not patch output by hand"
+      ],
+      "evidence_status": "workflow-control"
+    },
+    {
+      "id": "MC-008",
+      "title": "Modpack script copied across Minecraft generations",
+      "symptom": "Unknown events, wrappers, recipe schemas, or startup failures.",
+      "root_cause": "KubeJS/CraftTweaker API generation was not pinned.",
+      "prevention": [
+        "Use exact framework docs",
+        "Validate script phases and dedicated server"
+      ],
+      "evidence_status": "framework-control"
+    },
+    {
+      "id": "PARADOX-001",
+      "title": "replace_path erases unrelated content",
+      "symptom": "Vanilla or other mod definitions disappear.",
+      "root_cause": "A total directory replacement was used for an additive change.",
+      "prevention": [
+        "Prefer unique additive files",
+        "Audit replace_path scope"
+      ],
+      "evidence_status": "runtime-pattern"
+    },
+    {
+      "id": "PARADOX-002",
+      "title": "Trigger or effect copied from another Paradox game",
+      "symptom": "Script database errors or dead content.",
+      "root_cause": "Clausewitz/Jomini similarity was mistaken for identical vocabularies.",
+      "prevention": [
+        "Use game-specific wiki and logs",
+        "Validate exact scopes"
+      ],
+      "evidence_status": "framework-control"
+    },
+    {
+      "id": "RW-001",
+      "title": "RimWorld version folder or About.xml mismatch",
+      "symptom": "Mod is marked incompatible or loads wrong assemblies.",
+      "root_cause": "Supported versions and folder routing were not updated.",
+      "prevention": [
+        "Validate About.xml",
+        "Test every supported version folder"
+      ],
+      "evidence_status": "framework-control"
+    },
+    {
+      "id": "RW-002",
+      "title": "Harmony target or Scribe data changed",
+      "symptom": "Startup patch failure or save corruption.",
+      "root_cause": "Method signature or serialization contract drifted.",
+      "prevention": [
+        "Inspect exact assemblies",
+        "Migrate save data",
+        "Test old saves"
+      ],
+      "evidence_status": "runtime-pattern"
+    },
+    {
+      "id": "FACTORIO-001",
+      "title": "Data stage and control stage confused",
+      "symptom": "Prototype or runtime API unavailable.",
+      "root_cause": "Factorio execution stages were treated as one Lua environment.",
+      "prevention": [
+        "Route code by stage",
+        "Use versioned API docs"
+      ],
+      "evidence_status": "framework-control"
+    },
+    {
+      "id": "TML-001",
+      "title": "Terraria release assumed compatible with stable tModLoader",
+      "symptom": "Mod project targets APIs unavailable in the stable loader.",
+      "root_cause": "Terraria and tModLoader version lines were conflated.",
+      "prevention": [
+        "Pin tModLoader branch",
+        "Use matching docs and references"
+      ],
+      "evidence_status": "framework-control"
+    }
+  ]
+}

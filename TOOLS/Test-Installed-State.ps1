@@ -127,57 +127,75 @@ if(-not $SkipSkills){
     }
     Write-UabsOk ("$provider bundled skills accounted: $verified exact file(s), $nativeOwned native-plugin-owned, $($expectedSkills.Count) expected.")
 
-    # Codex budgets its skills index in CHARACTERS, scaled to the model's
-    # context window, and degrades in two stages -- the first one silent:
+    # Codex renders its skills index into a FIXED block of roughly 22.3 KB and
+    # splits it across every entry. Each entry costs its name plus its file path
+    # BEFORE it describes anything, so at high entry counts almost the whole
+    # budget is paths and the descriptions collapse.
     #
-    #   over budget      every description is truncated to a per-entry
-    #                    allowance. The list still looks complete.
-    #   far over budget  descriptions removed and entries dropped outright
-    #                    ("Exceeded skills context budget..."), the message
-    #                    7.9.7 caught.
+    # Measured with `codex debug prompt-input` against throwaway CODEX_HOMEs,
+    # one variable changed per run:
     #
-    # Measured with `codex debug prompt-input` against throwaway CODEX_HOMEs:
-    # 146 bundle skills alone render at ~88 visible chars per description (142
-    # of the 146 are written longer than that); 60 skills render at ~183 with
-    # nothing truncated. Cutting every raw description to 60 chars did NOT give
-    # anyone more room -- the rendered total just shrank. The allowance follows
-    # entry COUNT, so shortening descriptions is not the lever, and this pack
-    # routes by description.
+    #   entries   median visible description
+    #   151       80 chars
+    #   166       68
+    #   181       56
+    #   196       40      <- v8.4.0 canonical tree + typical plugins
+    #   223       32
+    #   255       16      <- v8.3.0 on the maintainer's machine
     #
-    # The doctor cannot raise the budget. It can stop the silent stage being
-    # invisible and name the levers that actually move it.
+    # At 16 chars every description reads like "Use when buildin" and Codex is
+    # routing on skill NAMES alone. Shortening descriptions does NOT help: the
+    # allowance follows entry COUNT, and cutting every description to 60 chars
+    # measurably gave no entry more room.
+    #
+    # Codex indexes EVERY root, not just this pack's: its own system skills plus
+    # one set per installed plugin. Counting only $destSkills understated the
+    # real index by 37 entries on the maintainer's machine, which is how a 255
+    # entry index got reported as 219 and passed.
     if($provider -eq 'Codex'){
-      $indexCount=0
-      foreach($d in @(Get-ChildItem -LiteralPath $destSkills -Directory -ErrorAction SilentlyContinue)){
-        $file=Join-Path $d.FullName 'SKILL.md'
-        if(-not(Test-Path -LiteralPath $file -PathType Leaf)){continue}
-        $head=''
-        try{ $head=(Get-Content -LiteralPath $file -TotalCount 40 -ErrorAction Stop) -join "`n" }catch{ continue }
-        $m=[regex]::Match($head,'(?ms)^description:[ 	]*(?<d>.*?)(?=^[A-Za-z_-]+:|^---)')
-        if(-not $m.Success){continue}
-        $indexCount++
+      $roots = @($destSkills)
+      $roots += (Join-Path $destSkills '.system')
+      $pluginCache = Join-Path (Split-Path -Parent $destSkills) 'plugins\cache'
+      if(Test-Path -LiteralPath $pluginCache -PathType Container){
+        $roots += @(Get-ChildItem -LiteralPath $pluginCache -Directory -Recurse -Filter 'skills' -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName })
       }
-      # ~100 entries is roughly where descriptions stop being truncated. Past
-      # that the per-entry allowance shrinks in proportion to the count.
-      # Whether to WARN depends on whether anything is removable, not on the
-      # raw count. This pack ships 146 skills, so a bare "> 100" fired on every
-      # correct install and then advised deleting an optional mega-pack, stale
-      # duplicates and unused plugins -- none of which exist on a clean one.
-      # Telling a user to remove things that are not there is noise, and noise
-      # is how a real warning gets ignored.
-      $extraEntries = $indexCount - $expectedSkills.Count
-      if($extraEntries -gt 10){
-        Warn ("Codex skills index is $indexCount entries, $extraEntries of them not from this pack. Codex splits a character budget evenly across entries, so every description is truncated -- and this pack routes by description.")
-        Warn ("  Shortening descriptions does NOT help: the allowance follows entry COUNT. Measured -- cutting every description to 60 chars gave no entry more room.")
-        Warn ("  Fewer entries does: 146 skills render at ~88 chars each, 60 skills at ~183 untruncated. Candidates in ${destSkills}:")
-        Warn ("    - the OPTIONAL Other-Games mega-pack (70 skills). A manual extra; INSTALL-AIO.ps1 never deploys it.")
-        Warn ("    - superseded duplicates such as skyrim-kid-distribution / skyrim-spid-distribution (now kid-authoring / spid-authoring)")
-        Warn ("    - skills from Codex plugins you do not use; each costs a full entry")
-        Warn ("  Reproduce any of this with: codex debug prompt-input")
-      } elseif($indexCount -gt 100){
-        Write-UabsOk ("Codex skills index: $indexCount entries, essentially all from this pack. Descriptions are truncated to roughly 88 chars each -- structural at this skill count, and nothing here is removable without losing a skill.")
+      $indexCount = 0
+      $packCount = 0
+      foreach($root in $roots){
+        if(-not(Test-Path -LiteralPath $root -PathType Container)){ continue }
+        foreach($d in @(Get-ChildItem -LiteralPath $root -Directory -ErrorAction SilentlyContinue)){
+          $file = Join-Path $d.FullName 'SKILL.md'
+          if(-not(Test-Path -LiteralPath $file -PathType Leaf)){ continue }
+          $head = ''
+          try{ $head = (Get-Content -LiteralPath $file -TotalCount 40 -ErrorAction Stop) -join "`n" }catch{ continue }
+          if(-not [regex]::IsMatch($head,'(?ms)^description:[ \t]*(?<d>.*?)(?=^[A-Za-z_-]+:|^---)')){ continue }
+          $indexCount++
+          if($root -eq $destSkills){ $packCount++ }
+        }
+      }
+      # Report the nearest MEASURED point, never an interpolation. An invented
+      # number in the shape of a measurement is worse than no number.
+      $curve = @(
+        @{ n = 151; d = 80 }, @{ n = 166; d = 68 }, @{ n = 181; d = 56 },
+        @{ n = 196; d = 40 }, @{ n = 223; d = 32 }, @{ n = 255; d = 16 }
+      )
+      $near = $curve[0]
+      foreach($p in $curve){ if([math]::Abs($p.n - $indexCount) -lt [math]::Abs($near.n - $indexCount)){ $near = $p } }
+      $foreign = $indexCount - $packCount
+      $detail = "Codex skills index: $indexCount entries ($packCount from this pack, $foreign from Codex itself and installed plugins). Nearest measured point: $($near.n) entries renders ~$($near.d) visible chars per description."
+
+      if($indexCount -ge 220){
+        Warn $detail
+        Warn "  At this count descriptions collapse to roughly 16 chars ('Use when buildin') and Codex routes on skill NAMES alone."
+        Warn "  Shortening descriptions does NOT help -- the allowance follows entry COUNT. What does:"
+        Warn "    - run the installer; TOOLS\Clean-StaleState.ps1 removes retired and absorbed skills automatically"
+        Warn "    - remove Codex plugins you do not use; each contributes its whole skill set"
+        Warn "  Reproduce with: codex debug prompt-input"
+      } elseif($indexCount -gt 200){
+        Warn $detail
+        Warn "  Descriptions are short but still carry their leading clause. Removing unused plugins is the only lever left that does not cost a skill."
       } else {
-        Write-UabsOk ("Codex skills index: $indexCount entries -- inside the range where descriptions survive intact.")
+        Write-UabsOk $detail
       }
     }
   }

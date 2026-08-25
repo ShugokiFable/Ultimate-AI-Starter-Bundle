@@ -1445,6 +1445,21 @@
   "sha256": "10f1d65be6e0d2bae2fdfaf44064303a3c0bc4f062a3ec41b832414fe4f8bd54"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/SKILL.md",
+  "size": 697,
+  "sha256": "f2984b5a2e6bc6cbd715d58b62372396a4ff06be8945a078b713f757efec6718"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/fallout4.md",
+  "size": 2263,
+  "sha256": "22d2f6ed770bb68e4cc5e617baa8afb631a4be7eccd4ad726833049391d0cc95"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/starfield.md",
+  "size": 2171,
+  "sha256": "31ac87a68733937bf5b6f946a275cabf24414ea87d8ff4396f8c233b4d2d028f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
   "size": 4191,
   "sha256": "5712e3446f4904116370882cefa94f964dab5111503f605d3b3d344fb50f0edc"
@@ -1498,6 +1513,16 @@
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/bulk-record-jobs/SKILL.md",
   "size": 17529,
   "sha256": "af40488b9a27e394c16e78f393e1e1617fdcff1c1991001b344ddf44fac54fb3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/SKILL.md",
+  "size": 3201,
+  "sha256": "b808bbf03ce18f6b5984c3607ba288d2a1a7daa2335b638d905be3360c2a6306"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/references/native-c-game-harness-notes.md",
+  "size": 2897,
+  "sha256": "75e51569f8e9e1bc14a16fbe889d5d6b47be4e7e814a8c9afa8b86f99ffbde51"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
@@ -1935,6 +1960,226 @@
   "sha256": "77b5562fa6fa91817dd06099bbb69e054141d08e86dfa1700384dd38051b8b3f"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/SKILL.md",
+  "size": 3692,
+  "sha256": "073c41efee0f45cc8447071df2a478c0dc73839c3b5d5ad3c5f2db933b9e1321"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/ERROR-REGISTRY.json",
+  "size": 10908,
+  "sha256": "d565b9cad11d74bb2b2af599b7b6ec9cabe966c6ed9179ac1d48e6d159e444ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/FRAMEWORK-MATRIX.md",
+  "size": 1670,
+  "sha256": "02e1ae1bac66412668551e6b76e6c49199b66bfa4cdb72219f3592fddda5f01e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/GLOBAL-LESSONS.md",
+  "size": 1251,
+  "sha256": "09e64478b713c0aa149a63434a6c19717ea10f7b7f26b93b5fd944a6d1f611e1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/MODDING-LAWS.md",
+  "size": 2263,
+  "sha256": "51e4c51f47aec18d70870efc8e14462bc8f854c4687194ae0697cec728ce5985"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/OFFICIAL-SOURCES.md",
+  "size": 1816,
+  "sha256": "7ed23887ba36d79f405f2131e9fa6365bd7499529051cdab42e0a21c6c879818"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/arma3.md",
+  "size": 346,
+  "sha256": "f409f3a8783017b430c81528b355e97d72c06509f90d69af8ac46ed167578afd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/baldurs-gate3.md",
+  "size": 2133,
+  "sha256": "8227e279f0db5384c1a6e95d8a538e89c885e452eb78373ceec69bfb0fc2c096"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/bannerlord.md",
+  "size": 2159,
+  "sha256": "b1e36b5c16347f0ad94ab618efdf822036e4f9851e832dba6be8550575ecbb9d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/barotrauma.md",
+  "size": 379,
+  "sha256": "78d7f08fedc252cf8fd04675a6c485ed9528f6e5ab02f95f4a4e535cdba7d2a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/beamng.md",
+  "size": 325,
+  "sha256": "ddff7e5d3762b1f6336a14e8e3d15395287b3764b3b6d403aa6ae3b4649ea425"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cities-skylines2.md",
+  "size": 511,
+  "sha256": "6d90a5b320ee8c6dc0fefa8739d1e2d0d0b3a2119d1f2fff878cd3fdb33bd559"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cyberpunk2077.md",
+  "size": 2574,
+  "sha256": "9b31094503812ca916457b42efb3a224ed0cb0766f3c78dd38e1a4f14b28592c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dayz.md",
+  "size": 407,
+  "sha256": "3abc46c998b996e410964031ae1dde96553e45636bf088722de243f722b2ffc3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/divinity-original-sin2.md",
+  "size": 345,
+  "sha256": "45d2efee9e1a57c1a3e97b39bd690b7b9a72e81b32806b0bade6847da8e6c2eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dont-starve-together.md",
+  "size": 370,
+  "sha256": "955158e000f98ac3abc0d33ab88bc8e5d0efcdf14299574494ab2bcaf823d279"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/factorio.md",
+  "size": 514,
+  "sha256": "284f3af0b9fd5befb1b7582f6a8c9eec59e8aa646790cb74d31094d22c9414a8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-assets.md",
+  "size": 1079,
+  "sha256": "4e8ea88fdfda1bf577e5cc8f6fff54a7e9b62a62cddb56ea5717e86ce0be9320"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-code-review.md",
+  "size": 1175,
+  "sha256": "c87ec784f1fd0b819840018c200ee01650b11dedd6c6f3306f887b6422084cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-crash-diagnostics.md",
+  "size": 1185,
+  "sha256": "b972a6fb8964e900af4796242f08b56b272d01ddf564399cae46d0dfddcf9c41"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-development.md",
+  "size": 2564,
+  "sha256": "50bf053f00b278891881c9681fc81ba89bf3dd58c7a8775004e85962f220e219"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-facts.md",
+  "size": 1227,
+  "sha256": "7e012700c032f62b5eb177c26a674e18488175ec991373bc39639ecbed29aba6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-load-order-compatibility.md",
+  "size": 1049,
+  "sha256": "e62cc57d945cfc0bc68cb3d8107ebc9dea6c26baa428037f2975bd1c2e35e330"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-memory.md",
+  "size": 1429,
+  "sha256": "97b04cfb5054e45f7e68d7ab2734d25e98d050ccb7f034765ba9b0267b4ec323"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-native-plugin.md",
+  "size": 1187,
+  "sha256": "88ad50221ddc934c34533ce2df00ee90bc09fdcac65d9b15ffa5bade4228a119"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-packaging.md",
+  "size": 1034,
+  "sha256": "f6a8e9cf52a75ea1dba2aa3a738ba5732d886fa3fe8e44a7e84e491a1bffb444"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-performance-profiling.md",
+  "size": 1039,
+  "sha256": "2018ac39ffabda4ad33b5c60dc7e79032434508859f20ff947c04180725ecbe6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-reworking.md",
+  "size": 2292,
+  "sha256": "7deb5455be2fa41416921cdeeafa2bc3f17c9fa472a80d9a28b3c3b1f3a2b543"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-runtime-patching.md",
+  "size": 1039,
+  "sha256": "a09d21c026351b122f270502bbd496ecfd75279060cc8db4e4804cd6446b9210"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-ship-gate.md",
+  "size": 1263,
+  "sha256": "03a22b7bcf06eeda0487eddd27f55b99bf219b41f9b5a47b9cbe566a8c124ffc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-unknown-game-fallback.md",
+  "size": 1264,
+  "sha256": "ef749567c257f1daa608ee141c58e30e9925b82e4e20554ca98e22fbe72097eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-versioned-workspace.md",
+  "size": 1427,
+  "sha256": "f176cca52d7814fa937eda0054a741ce3c36ff6bec8f3cb89b771c13acffba23"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/garrys-mod.md",
+  "size": 295,
+  "sha256": "1d5d9f05da9ba5279d247075f89d586337ac2a33282a716c55829bec46493a31"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/new_version.py",
+  "size": 3491,
+  "sha256": "be88223a9aa12594c718e183680968101a7efbb9e00ed579bed3ecea0952e4a7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/no-mans-sky.md",
+  "size": 371,
+  "sha256": "a7d11b19f51607971baf83a2ab53842e77f2358258783203bf1b00f73227ea99"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/noita.md",
+  "size": 346,
+  "sha256": "826bd036cab312941682ebc50506d73484317abc7797108339f454121c7778f9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/project-zomboid.md",
+  "size": 430,
+  "sha256": "918ddc4d6af954db51129b780807f33de79a8b780b865b51b43660225f95f0da"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/slay-the-spire.md",
+  "size": 340,
+  "sha256": "4b50082ece665a9b21ca207ce09b5e7f967ff8eae6e16c8521d076ab10fe2955"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/space-engineers.md",
+  "size": 365,
+  "sha256": "347886d51f921ea66cf5f675151b25cc9bf10af33ba6143e3a48089f8d66ff77"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/terraria-tmodloader.md",
+  "size": 475,
+  "sha256": "cb6e251d8721c664ec4be660fdacd95894b20cc4d993ea0b304e462d55afc56f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/validate_project.py",
+  "size": 1872,
+  "sha256": "58e6eedd48ddf0c1552480c7904c2d3e124ca23501dce24e2b46e7da24e453d6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/witcher3-redkit.md",
+  "size": 2181,
+  "sha256": "f84af6a5792c1b63a5d46d4f01b05917a2758aa4c13895e1974a60b62cfede42"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/SKILL.md",
+  "size": 6580,
+  "sha256": "55655337438e126c7a40912b06f81dd66c2b1993aad5f9c26e71feb4cecc8dcd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/templates/ci-cpp-vcpkg.yml",
+  "size": 1932,
+  "sha256": "3584781acb3ea4e31c2453f6bcc2f827d1be7f13c3fd6c42476bf05edc4b6f60"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/headroom/SKILL.md",
   "size": 4246,
   "sha256": "03ca71d0b6f09f0cc40e56000d0d1f7f8138d49a598584dc960a0225fc15da78"
@@ -2060,9 +2305,139 @@
   "sha256": "c48ecf8ceead509c4c3f8e6d58d7e473369292c5f6eee9a03957bf2ea20187a7"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/SKILL.md",
+  "size": 3846,
+  "sha256": "c4d230b02a597cb89aae4e2e53d844ede23ea33d84d8f5b092079b5bccb135fe"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-mcp-upgrade.md",
+  "size": 2938,
+  "sha256": "e1787b2c7ae0aebe16c6de508f0e7564747a8c69bdd832d013209a325ed274c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-ops.md",
+  "size": 1933,
+  "sha256": "8f66e875f21a14df24bca921ca00fa30791d63dae1923dabfb4a01bb9895aeb5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
+  "size": 2956,
+  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
+  "size": 4292,
+  "sha256": "ead08b1b047aa5a086ebb0e12c260d6aea2a8e37170607e48ba6c0f1b7ed9179"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/hermes-empty-replies.md",
+  "size": 2154,
+  "sha256": "76e6b413a01b9d867778fee629cf1110bb7821e7bf17c0a9ba324068d2b4a28a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
+  "size": 2662,
+  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
+  "size": 6011,
+  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
+  "size": 2929,
+  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
+  "size": 2693,
+  "sha256": "c87d38ced1a626ec71cada670d604cae2fa82266af8cb37aca74bb397eb49a82"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/skyrimforge-verification.md",
+  "size": 3962,
+  "sha256": "2bc152187789d50b2b678b1ee9ea9c8e9ef0d59712551a5ae56254f67d865a7f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/migration-rollback/SKILL.md",
   "size": 1047,
   "sha256": "0339f6c001469780e821c685fc6708c3f95ac1c0a38c8d2b57975135de819e1c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/SKILL.md",
+  "size": 1578,
+  "sha256": "fee82f20c9d415078c43493ea7e894ca4241ec572d87a8a5ce1896969164265c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/ECOSYSTEM-CATALOG.md",
+  "size": 1302,
+  "sha256": "ed5dc404681239abbc14843da9965637ea7118981a3d62083ad0330b5e0f1580"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/OVERVIEW.md",
+  "size": 2168,
+  "sha256": "81717b21a0040679db3de3aa5d71044d2d8ecf76eedd13a6df31c322b0549056"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/PORTING-CHECKLIST.md",
+  "size": 609,
+  "sha256": "a1ad3cdb03d7bba3448a99f27f96f09c1973856948d6adc36727e66fa969c1ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-content-datagen-worldgen.md",
+  "size": 742,
+  "sha256": "cf142352bee3d4922e4fe7d6003e64b57cb03b255c24e44d9166e05fc2a0deb8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-data-components-attachments.md",
+  "size": 846,
+  "sha256": "736cda78a289d8b0d687ba18e710fac272f20cea8066c88fa1942e0049f18020"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-fabric-quilt.md",
+  "size": 749,
+  "sha256": "3c7f06e003d38b91ae56ee07bb2a7279d079868873046b08fc5f9ce40ad1d62d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-forge-neoforge.md",
+  "size": 789,
+  "sha256": "5ca9f4e70c7573826ff9961d22564317981caaf99c3c6b8fe0ead0ff91a985b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-library-api-integrations.md",
+  "size": 1419,
+  "sha256": "760e6bc748347b7c2858f13b5c86e98c37a430d1d061a67599da16f5826da84a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-mixins-access-control.md",
+  "size": 719,
+  "sha256": "57fcae92c37f9dd961d02057e27370da20a5fef7205b0983cd2fdc5ada4fd8a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-modpack-scripting.md",
+  "size": 609,
+  "sha256": "b2c7fd43450ceae2ac2c3a8e2fa9b40a4babaf1a239de41d9def733fe126d963"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-multiloader-architectury.md",
+  "size": 692,
+  "sha256": "fd279021835496ebb87599ad29387b439eb0d897b2fade087d9676e9aec7f6e3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-networking-persistence.md",
+  "size": 507,
+  "sha256": "d90d66480f923ea9b97c3573bb94f2e8d1ddb46a1037cb5176d5b7039a74f5a5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-rendering-animation.md",
+  "size": 662,
+  "sha256": "8f56d4f4c8469dddd1c3777f5cf8d4ac9439bd180fdf22d27dae1fca6c0eedff"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-testing-porting-release.md",
+  "size": 613,
+  "sha256": "fd9b9d8752a03c8ddc72045cdf36235f7a8baab3176373283e8be33e95ee8273"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/minimal-reproducer/SKILL.md",
@@ -3100,6 +3475,41 @@
   "sha256": "3d58ca41ff98a4fee8a5d62e0a4dfe21e2cffb1d27547fd95ffacfc7ffac5a31"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/SKILL.md",
+  "size": 942,
+  "sha256": "37a10e40fed8f0cffada7cd2e988662b0a97d554587cfe47d15bf5bd05d8d78a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/OVERVIEW.md",
+  "size": 981,
+  "sha256": "60db5a6accdacf937d9b27ac49ba54268e82b96ecbd713f3bddc6fa26d934b6e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/ck3.md",
+  "size": 492,
+  "sha256": "f0ae99350a3af22170acb95823f63bef2ba0e00f8d42b78e254dda5f40abb78f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/eu4.md",
+  "size": 471,
+  "sha256": "2f56b8542c995cd9a85584d9d67ee3be980064c1fa7f0422af59138883ab9450"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/hoi4.md",
+  "size": 487,
+  "sha256": "0a693f473a613d3cffc375dcfc43a934fbc82b9a3112fc8e3c84a83159197529"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/stellaris.md",
+  "size": 605,
+  "sha256": "4d54c9d1af73121607939fdcdbc5118a48678470017958255efc58cfa675e5cc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/victoria3.md",
+  "size": 488,
+  "sha256": "d2d85003d2b4a3eeaa79379a9a201ecefe81623c40daa2d7a030aaf2a2a35a6e"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/partial-success-accounting/SKILL.md",
   "size": 934,
   "sha256": "5c454b9b95d1992c802ba5efd29f1e464a8d89fc66c8d0bd8002476c12d7e814"
@@ -3180,6 +3590,11 @@
   "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/references/docs-heavy-repo-sweep.md",
+  "size": 2726,
+  "sha256": "b2437913a9a5ccbdd42bd3cbe410446701f679222f301995797cce43ef6e16af"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
   "size": 1119,
   "sha256": "2531c402cb94aca0d3fc2e84fa5b4c4d328c5f88c7704e96cae54270423fa070"
@@ -3213,6 +3628,96 @@
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/retry-idempotency/SKILL.md",
   "size": 1048,
   "sha256": "61db5bdbd46d3fbb4a347d059e3df08bec9fd77ade0f0b91d7761a86ded1d349"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/SKILL.md",
+  "size": 3316,
+  "sha256": "6f21a80a11ee7dca91785af0851b833ecacdc738f49c820d855843e310252de4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/api-docs-lookup.md",
+  "size": 953,
+  "sha256": "8ee2e42a9ca5cded7c32c92853bdac62a2a16dd2bf5a4af039bf7fda2465a76e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/architecture.md",
+  "size": 2222,
+  "sha256": "2d1dfd06960e1ca23b147d31d8379266aac24924184dd7ce25c0712f95609307"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assets.md",
+  "size": 1230,
+  "sha256": "b76868b86e4d2b06a4a3f290ea8e80fd758771f6878d8f64b1cd4d743cfda71b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assistant-skills.md",
+  "size": 1392,
+  "sha256": "a3ae2692fc3481d4350e53e12715e1b5f6c43c292783f5f480f3776df679bc28"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/development-loop.md",
+  "size": 2065,
+  "sha256": "821e03bed8304b8e97e1e7e592c32336f723c038c5714f021754e7e70f9ba981"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/game-design.md",
+  "size": 980,
+  "sha256": "d1eb1c4078ece0204cdd644d5442ad853aa466c03e4beb2590280b7d562bd288"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/performance.md",
+  "size": 1473,
+  "sha256": "aa0bdbf07cac40d4bfa0cd92fe83149dfa8809bd3b9846eba76d0db9383d7746"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/persistence.md",
+  "size": 1938,
+  "sha256": "bc7851dea4c8317fd72f39af1b743b16fec87e61d838d2e681c02842ec4a3af6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/security-networking.md",
+  "size": 2434,
+  "sha256": "3493d5346efa8c39a93dbf70644837eb905953aabe692a8fec184c3c40561122"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/sharp-edges.md",
+  "size": 1891,
+  "sha256": "709453e2d1fa7e06d65f1e65308bc3fa2b7cc9ee293b0df95ba190cbea3ff4cf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/studio-mcp.md",
+  "size": 2905,
+  "sha256": "16d28b9ac59bd6c8a6f3c56ce97d19626b0f87f060377fdd467df627e9e98203"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/testing-debugging.md",
+  "size": 2203,
+  "sha256": "6c14d832a0f37f0f621638f2e267e04e7ef15d403a90fcd488b889ca71cd99bb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/tooling.md",
+  "size": 1391,
+  "sha256": "a78157b4425baad11790d8003818b5fe59f37e0c22fa1b9708642eabb714a31f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/ui-mobile.md",
+  "size": 1615,
+  "sha256": "ea25522f1f24afadd2d08b64a6b92979a7a356017725bbb49bf5e0f4a44e772d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/SKILL.md",
+  "size": 5946,
+  "sha256": "5ed1d22753b12a06453189948b684a53d201cdfc823e4d270daefcc9625890de"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/formats.md",
+  "size": 3527,
+  "sha256": "90a1380c6acd8454760d81f0d3fbce77d456d47209054f683abcdf480b66d446"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/srforge-project.md",
+  "size": 2290,
+  "sha256": "6a1431ab34979eaecac409648a71be27c56b1932228906fdb8aaeb2e1a3863f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/schema-evolution/SKILL.md",
@@ -4025,6 +4530,86 @@
   "sha256": "85907b4c239c24e1099c2aa1a3d10261f79512f9ea795f753f6783e19a04319b"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/SKILL.md",
+  "size": 1262,
+  "sha256": "00bd45a1d7012f6c3dd42618fc266077f94c269f1d84e8db87fb72903c31eb52"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/OVERVIEW.md",
+  "size": 2239,
+  "sha256": "42f3681a90f37f3881e43aecd118d6e974b89c38bd2fc7753cdffbceb4ab4427"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/dotnet-harmony-patching.md",
+  "size": 2129,
+  "sha256": "9db38102a78410eee959d30952dcc5279194bf32b3e1930b2c2f07b8f866f276"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/kerbal-space-program.md",
+  "size": 537,
+  "sha256": "23641795d3e82d627db3da65850d7d8b888c635b2e3944b6812c57573de646f1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/lethal-company.md",
+  "size": 416,
+  "sha256": "9b4f2293d0ed6593cb1d85afcf6d42e2d407c73eaa97176684213fab1048a997"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/oxygen-not-included.md",
+  "size": 419,
+  "sha256": "9d230a8dbe1c820496e071e80e88b857dba8e255175ec5b202fd1ac84b1d3964"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/rimworld-harmony.md",
+  "size": 1119,
+  "sha256": "6dfb054357aac1e3d39c32e66463b814c6d26b777a7318d49bfc0b5c979ddbd8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/risk-of-rain2.md",
+  "size": 2158,
+  "sha256": "69d9fd0ba4079a8c3f0595129a6a197908f0d80073334ec15dfd10a6a4edd212"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/stardew-valley.md",
+  "size": 2122,
+  "sha256": "797ccda6656f16b35c648064c7df676719b54755c7b2d9aa45a893dcdbfabca9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/subnautica-nautilus.md",
+  "size": 355,
+  "sha256": "d734e234228aa76427a6f806feefd8c2d365b3bc7e7e5c7a8839e1c6edade11b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/valheim-jotunn.md",
+  "size": 347,
+  "sha256": "7e58e38b1dfca32d904e5a88411beeebb8fa7bb62fa9639673843f19756f0c19"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/SKILL.md",
+  "size": 839,
+  "sha256": "60d36adfdb41801f02ad2029c80eba15822e18725151ff8cc3d2ee843d760d87"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/OVERVIEW.md",
+  "size": 2188,
+  "sha256": "b2e5bbb5788ad3ecfddbbeec05c3608bb7dcca9e235469fd213e2cbe820c7bc8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/palworld.md",
+  "size": 2279,
+  "sha256": "8084d7c0f0815706c5d5a9110afe97947f4b29eae73da821cc5a5389734fb562"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/satisfactory-sml.md",
+  "size": 2191,
+  "sha256": "acd8f759a36e99c581487be592f452a11e79bec68a9a1c34efcf030fd8196a79"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/xcom2.md",
+  "size": 422,
+  "sha256": "b9abdba9966bca340cb3bbcb303862cafdef7537a0d861dc3e5cbfe8ea816e7b"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
   "size": 2570,
   "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
@@ -4083,6 +4668,31 @@
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/visual-verification/SKILL.md",
   "size": 5917,
   "sha256": "ee35b0b17d100e239fa862b48d74c310847547357925627736ccd2121da30cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/win64-native-builds/SKILL.md",
+  "size": 3306,
+  "sha256": "02fec2b4ece06b2c07d402a437e2586427ae5dfdc730493db3e5470f144cc40d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/SKILL.md",
+  "size": 4285,
+  "sha256": "fd1ad32b36cfb04f623b6a2001be7429ad1a9258c7f06d9211698cb5bb4df066"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/git-push-recovery.md",
+  "size": 2263,
+  "sha256": "786971f34ffacabb7c22b7aedbf8948c09358fe87e78a967dba11473ef6703b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
+  "size": 4120,
+  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
+  "size": 2825,
+  "sha256": "f14daa75bb81f60f7fdbcecdd4d9ecf16e01b9fce356c0e21dc228ca60ec5939"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/writing-plans/SKILL.md",
@@ -4260,6 +4870,21 @@
   "sha256": "10f1d65be6e0d2bae2fdfaf44064303a3c0bc4f062a3ec41b832414fe4f8bd54"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/SKILL.md",
+  "size": 697,
+  "sha256": "f2984b5a2e6bc6cbd715d58b62372396a4ff06be8945a078b713f757efec6718"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/fallout4.md",
+  "size": 2263,
+  "sha256": "22d2f6ed770bb68e4cc5e617baa8afb631a4be7eccd4ad726833049391d0cc95"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/starfield.md",
+  "size": 2171,
+  "sha256": "31ac87a68733937bf5b6f946a275cabf24414ea87d8ff4396f8c233b4d2d028f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
   "size": 4191,
   "sha256": "5712e3446f4904116370882cefa94f964dab5111503f605d3b3d344fb50f0edc"
@@ -4313,6 +4938,16 @@
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/bulk-record-jobs/SKILL.md",
   "size": 17529,
   "sha256": "af40488b9a27e394c16e78f393e1e1617fdcff1c1991001b344ddf44fac54fb3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/SKILL.md",
+  "size": 3201,
+  "sha256": "b808bbf03ce18f6b5984c3607ba288d2a1a7daa2335b638d905be3360c2a6306"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/references/native-c-game-harness-notes.md",
+  "size": 2897,
+  "sha256": "75e51569f8e9e1bc14a16fbe889d5d6b47be4e7e814a8c9afa8b86f99ffbde51"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
@@ -4750,6 +5385,226 @@
   "sha256": "77b5562fa6fa91817dd06099bbb69e054141d08e86dfa1700384dd38051b8b3f"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/SKILL.md",
+  "size": 3692,
+  "sha256": "073c41efee0f45cc8447071df2a478c0dc73839c3b5d5ad3c5f2db933b9e1321"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/ERROR-REGISTRY.json",
+  "size": 10908,
+  "sha256": "d565b9cad11d74bb2b2af599b7b6ec9cabe966c6ed9179ac1d48e6d159e444ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/FRAMEWORK-MATRIX.md",
+  "size": 1670,
+  "sha256": "02e1ae1bac66412668551e6b76e6c49199b66bfa4cdb72219f3592fddda5f01e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/GLOBAL-LESSONS.md",
+  "size": 1251,
+  "sha256": "09e64478b713c0aa149a63434a6c19717ea10f7b7f26b93b5fd944a6d1f611e1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/MODDING-LAWS.md",
+  "size": 2263,
+  "sha256": "51e4c51f47aec18d70870efc8e14462bc8f854c4687194ae0697cec728ce5985"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/OFFICIAL-SOURCES.md",
+  "size": 1816,
+  "sha256": "7ed23887ba36d79f405f2131e9fa6365bd7499529051cdab42e0a21c6c879818"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/arma3.md",
+  "size": 346,
+  "sha256": "f409f3a8783017b430c81528b355e97d72c06509f90d69af8ac46ed167578afd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/baldurs-gate3.md",
+  "size": 2133,
+  "sha256": "8227e279f0db5384c1a6e95d8a538e89c885e452eb78373ceec69bfb0fc2c096"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/bannerlord.md",
+  "size": 2159,
+  "sha256": "b1e36b5c16347f0ad94ab618efdf822036e4f9851e832dba6be8550575ecbb9d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/barotrauma.md",
+  "size": 379,
+  "sha256": "78d7f08fedc252cf8fd04675a6c485ed9528f6e5ab02f95f4a4e535cdba7d2a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/beamng.md",
+  "size": 325,
+  "sha256": "ddff7e5d3762b1f6336a14e8e3d15395287b3764b3b6d403aa6ae3b4649ea425"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cities-skylines2.md",
+  "size": 511,
+  "sha256": "6d90a5b320ee8c6dc0fefa8739d1e2d0d0b3a2119d1f2fff878cd3fdb33bd559"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cyberpunk2077.md",
+  "size": 2574,
+  "sha256": "9b31094503812ca916457b42efb3a224ed0cb0766f3c78dd38e1a4f14b28592c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dayz.md",
+  "size": 407,
+  "sha256": "3abc46c998b996e410964031ae1dde96553e45636bf088722de243f722b2ffc3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/divinity-original-sin2.md",
+  "size": 345,
+  "sha256": "45d2efee9e1a57c1a3e97b39bd690b7b9a72e81b32806b0bade6847da8e6c2eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dont-starve-together.md",
+  "size": 370,
+  "sha256": "955158e000f98ac3abc0d33ab88bc8e5d0efcdf14299574494ab2bcaf823d279"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/factorio.md",
+  "size": 514,
+  "sha256": "284f3af0b9fd5befb1b7582f6a8c9eec59e8aa646790cb74d31094d22c9414a8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-assets.md",
+  "size": 1079,
+  "sha256": "4e8ea88fdfda1bf577e5cc8f6fff54a7e9b62a62cddb56ea5717e86ce0be9320"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-code-review.md",
+  "size": 1175,
+  "sha256": "c87ec784f1fd0b819840018c200ee01650b11dedd6c6f3306f887b6422084cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-crash-diagnostics.md",
+  "size": 1185,
+  "sha256": "b972a6fb8964e900af4796242f08b56b272d01ddf564399cae46d0dfddcf9c41"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-development.md",
+  "size": 2564,
+  "sha256": "50bf053f00b278891881c9681fc81ba89bf3dd58c7a8775004e85962f220e219"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-facts.md",
+  "size": 1227,
+  "sha256": "7e012700c032f62b5eb177c26a674e18488175ec991373bc39639ecbed29aba6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-load-order-compatibility.md",
+  "size": 1049,
+  "sha256": "e62cc57d945cfc0bc68cb3d8107ebc9dea6c26baa428037f2975bd1c2e35e330"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-memory.md",
+  "size": 1429,
+  "sha256": "97b04cfb5054e45f7e68d7ab2734d25e98d050ccb7f034765ba9b0267b4ec323"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-native-plugin.md",
+  "size": 1187,
+  "sha256": "88ad50221ddc934c34533ce2df00ee90bc09fdcac65d9b15ffa5bade4228a119"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-packaging.md",
+  "size": 1034,
+  "sha256": "f6a8e9cf52a75ea1dba2aa3a738ba5732d886fa3fe8e44a7e84e491a1bffb444"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-performance-profiling.md",
+  "size": 1039,
+  "sha256": "2018ac39ffabda4ad33b5c60dc7e79032434508859f20ff947c04180725ecbe6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-reworking.md",
+  "size": 2292,
+  "sha256": "7deb5455be2fa41416921cdeeafa2bc3f17c9fa472a80d9a28b3c3b1f3a2b543"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-runtime-patching.md",
+  "size": 1039,
+  "sha256": "a09d21c026351b122f270502bbd496ecfd75279060cc8db4e4804cd6446b9210"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-ship-gate.md",
+  "size": 1263,
+  "sha256": "03a22b7bcf06eeda0487eddd27f55b99bf219b41f9b5a47b9cbe566a8c124ffc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-unknown-game-fallback.md",
+  "size": 1264,
+  "sha256": "ef749567c257f1daa608ee141c58e30e9925b82e4e20554ca98e22fbe72097eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-versioned-workspace.md",
+  "size": 1427,
+  "sha256": "f176cca52d7814fa937eda0054a741ce3c36ff6bec8f3cb89b771c13acffba23"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/garrys-mod.md",
+  "size": 295,
+  "sha256": "1d5d9f05da9ba5279d247075f89d586337ac2a33282a716c55829bec46493a31"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/new_version.py",
+  "size": 3491,
+  "sha256": "be88223a9aa12594c718e183680968101a7efbb9e00ed579bed3ecea0952e4a7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/no-mans-sky.md",
+  "size": 371,
+  "sha256": "a7d11b19f51607971baf83a2ab53842e77f2358258783203bf1b00f73227ea99"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/noita.md",
+  "size": 346,
+  "sha256": "826bd036cab312941682ebc50506d73484317abc7797108339f454121c7778f9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/project-zomboid.md",
+  "size": 430,
+  "sha256": "918ddc4d6af954db51129b780807f33de79a8b780b865b51b43660225f95f0da"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/slay-the-spire.md",
+  "size": 340,
+  "sha256": "4b50082ece665a9b21ca207ce09b5e7f967ff8eae6e16c8521d076ab10fe2955"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/space-engineers.md",
+  "size": 365,
+  "sha256": "347886d51f921ea66cf5f675151b25cc9bf10af33ba6143e3a48089f8d66ff77"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/terraria-tmodloader.md",
+  "size": 475,
+  "sha256": "cb6e251d8721c664ec4be660fdacd95894b20cc4d993ea0b304e462d55afc56f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/validate_project.py",
+  "size": 1872,
+  "sha256": "58e6eedd48ddf0c1552480c7904c2d3e124ca23501dce24e2b46e7da24e453d6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/witcher3-redkit.md",
+  "size": 2181,
+  "sha256": "f84af6a5792c1b63a5d46d4f01b05917a2758aa4c13895e1974a60b62cfede42"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/SKILL.md",
+  "size": 6580,
+  "sha256": "55655337438e126c7a40912b06f81dd66c2b1993aad5f9c26e71feb4cecc8dcd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/templates/ci-cpp-vcpkg.yml",
+  "size": 1932,
+  "sha256": "3584781acb3ea4e31c2453f6bcc2f827d1be7f13c3fd6c42476bf05edc4b6f60"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/headroom/SKILL.md",
   "size": 4246,
   "sha256": "03ca71d0b6f09f0cc40e56000d0d1f7f8138d49a598584dc960a0225fc15da78"
@@ -4875,9 +5730,139 @@
   "sha256": "da661be61dc9f92a0ac4648f3af2a639c25403a2390e385d3012b97b2a410952"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/SKILL.md",
+  "size": 3846,
+  "sha256": "c4d230b02a597cb89aae4e2e53d844ede23ea33d84d8f5b092079b5bccb135fe"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-mcp-upgrade.md",
+  "size": 2938,
+  "sha256": "e1787b2c7ae0aebe16c6de508f0e7564747a8c69bdd832d013209a325ed274c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-ops.md",
+  "size": 1933,
+  "sha256": "8f66e875f21a14df24bca921ca00fa30791d63dae1923dabfb4a01bb9895aeb5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
+  "size": 2956,
+  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
+  "size": 4292,
+  "sha256": "ead08b1b047aa5a086ebb0e12c260d6aea2a8e37170607e48ba6c0f1b7ed9179"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/hermes-empty-replies.md",
+  "size": 2154,
+  "sha256": "76e6b413a01b9d867778fee629cf1110bb7821e7bf17c0a9ba324068d2b4a28a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
+  "size": 2662,
+  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
+  "size": 6011,
+  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
+  "size": 2929,
+  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
+  "size": 2693,
+  "sha256": "c87d38ced1a626ec71cada670d604cae2fa82266af8cb37aca74bb397eb49a82"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/skyrimforge-verification.md",
+  "size": 3962,
+  "sha256": "2bc152187789d50b2b678b1ee9ea9c8e9ef0d59712551a5ae56254f67d865a7f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/migration-rollback/SKILL.md",
   "size": 1047,
   "sha256": "0339f6c001469780e821c685fc6708c3f95ac1c0a38c8d2b57975135de819e1c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/SKILL.md",
+  "size": 1578,
+  "sha256": "fee82f20c9d415078c43493ea7e894ca4241ec572d87a8a5ce1896969164265c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/ECOSYSTEM-CATALOG.md",
+  "size": 1302,
+  "sha256": "ed5dc404681239abbc14843da9965637ea7118981a3d62083ad0330b5e0f1580"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/OVERVIEW.md",
+  "size": 2168,
+  "sha256": "81717b21a0040679db3de3aa5d71044d2d8ecf76eedd13a6df31c322b0549056"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/PORTING-CHECKLIST.md",
+  "size": 609,
+  "sha256": "a1ad3cdb03d7bba3448a99f27f96f09c1973856948d6adc36727e66fa969c1ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-content-datagen-worldgen.md",
+  "size": 742,
+  "sha256": "cf142352bee3d4922e4fe7d6003e64b57cb03b255c24e44d9166e05fc2a0deb8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-data-components-attachments.md",
+  "size": 846,
+  "sha256": "736cda78a289d8b0d687ba18e710fac272f20cea8066c88fa1942e0049f18020"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-fabric-quilt.md",
+  "size": 749,
+  "sha256": "3c7f06e003d38b91ae56ee07bb2a7279d079868873046b08fc5f9ce40ad1d62d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-forge-neoforge.md",
+  "size": 789,
+  "sha256": "5ca9f4e70c7573826ff9961d22564317981caaf99c3c6b8fe0ead0ff91a985b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-library-api-integrations.md",
+  "size": 1419,
+  "sha256": "760e6bc748347b7c2858f13b5c86e98c37a430d1d061a67599da16f5826da84a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-mixins-access-control.md",
+  "size": 719,
+  "sha256": "57fcae92c37f9dd961d02057e27370da20a5fef7205b0983cd2fdc5ada4fd8a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-modpack-scripting.md",
+  "size": 609,
+  "sha256": "b2c7fd43450ceae2ac2c3a8e2fa9b40a4babaf1a239de41d9def733fe126d963"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-multiloader-architectury.md",
+  "size": 692,
+  "sha256": "fd279021835496ebb87599ad29387b439eb0d897b2fade087d9676e9aec7f6e3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-networking-persistence.md",
+  "size": 507,
+  "sha256": "d90d66480f923ea9b97c3573bb94f2e8d1ddb46a1037cb5176d5b7039a74f5a5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-rendering-animation.md",
+  "size": 662,
+  "sha256": "8f56d4f4c8469dddd1c3777f5cf8d4ac9439bd180fdf22d27dae1fca6c0eedff"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-testing-porting-release.md",
+  "size": 613,
+  "sha256": "fd9b9d8752a03c8ddc72045cdf36235f7a8baab3176373283e8be33e95ee8273"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/minimal-reproducer/SKILL.md",
@@ -5915,6 +6900,41 @@
   "sha256": "3d58ca41ff98a4fee8a5d62e0a4dfe21e2cffb1d27547fd95ffacfc7ffac5a31"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/SKILL.md",
+  "size": 942,
+  "sha256": "37a10e40fed8f0cffada7cd2e988662b0a97d554587cfe47d15bf5bd05d8d78a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/OVERVIEW.md",
+  "size": 981,
+  "sha256": "60db5a6accdacf937d9b27ac49ba54268e82b96ecbd713f3bddc6fa26d934b6e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/ck3.md",
+  "size": 492,
+  "sha256": "f0ae99350a3af22170acb95823f63bef2ba0e00f8d42b78e254dda5f40abb78f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/eu4.md",
+  "size": 471,
+  "sha256": "2f56b8542c995cd9a85584d9d67ee3be980064c1fa7f0422af59138883ab9450"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/hoi4.md",
+  "size": 487,
+  "sha256": "0a693f473a613d3cffc375dcfc43a934fbc82b9a3112fc8e3c84a83159197529"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/stellaris.md",
+  "size": 605,
+  "sha256": "4d54c9d1af73121607939fdcdbc5118a48678470017958255efc58cfa675e5cc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/victoria3.md",
+  "size": 488,
+  "sha256": "d2d85003d2b4a3eeaa79379a9a201ecefe81623c40daa2d7a030aaf2a2a35a6e"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/partial-success-accounting/SKILL.md",
   "size": 934,
   "sha256": "5c454b9b95d1992c802ba5efd29f1e464a8d89fc66c8d0bd8002476c12d7e814"
@@ -5995,6 +7015,11 @@
   "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/references/docs-heavy-repo-sweep.md",
+  "size": 2726,
+  "sha256": "b2437913a9a5ccbdd42bd3cbe410446701f679222f301995797cce43ef6e16af"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
   "size": 1119,
   "sha256": "2531c402cb94aca0d3fc2e84fa5b4c4d328c5f88c7704e96cae54270423fa070"
@@ -6028,6 +7053,96 @@
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/retry-idempotency/SKILL.md",
   "size": 1048,
   "sha256": "61db5bdbd46d3fbb4a347d059e3df08bec9fd77ade0f0b91d7761a86ded1d349"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/SKILL.md",
+  "size": 3316,
+  "sha256": "6f21a80a11ee7dca91785af0851b833ecacdc738f49c820d855843e310252de4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/api-docs-lookup.md",
+  "size": 953,
+  "sha256": "8ee2e42a9ca5cded7c32c92853bdac62a2a16dd2bf5a4af039bf7fda2465a76e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/architecture.md",
+  "size": 2222,
+  "sha256": "2d1dfd06960e1ca23b147d31d8379266aac24924184dd7ce25c0712f95609307"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assets.md",
+  "size": 1230,
+  "sha256": "b76868b86e4d2b06a4a3f290ea8e80fd758771f6878d8f64b1cd4d743cfda71b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assistant-skills.md",
+  "size": 1392,
+  "sha256": "a3ae2692fc3481d4350e53e12715e1b5f6c43c292783f5f480f3776df679bc28"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/development-loop.md",
+  "size": 2065,
+  "sha256": "821e03bed8304b8e97e1e7e592c32336f723c038c5714f021754e7e70f9ba981"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/game-design.md",
+  "size": 980,
+  "sha256": "d1eb1c4078ece0204cdd644d5442ad853aa466c03e4beb2590280b7d562bd288"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/performance.md",
+  "size": 1473,
+  "sha256": "aa0bdbf07cac40d4bfa0cd92fe83149dfa8809bd3b9846eba76d0db9383d7746"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/persistence.md",
+  "size": 1938,
+  "sha256": "bc7851dea4c8317fd72f39af1b743b16fec87e61d838d2e681c02842ec4a3af6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/security-networking.md",
+  "size": 2434,
+  "sha256": "3493d5346efa8c39a93dbf70644837eb905953aabe692a8fec184c3c40561122"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/sharp-edges.md",
+  "size": 1891,
+  "sha256": "709453e2d1fa7e06d65f1e65308bc3fa2b7cc9ee293b0df95ba190cbea3ff4cf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/studio-mcp.md",
+  "size": 2905,
+  "sha256": "16d28b9ac59bd6c8a6f3c56ce97d19626b0f87f060377fdd467df627e9e98203"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/testing-debugging.md",
+  "size": 2203,
+  "sha256": "6c14d832a0f37f0f621638f2e267e04e7ef15d403a90fcd488b889ca71cd99bb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/tooling.md",
+  "size": 1391,
+  "sha256": "a78157b4425baad11790d8003818b5fe59f37e0c22fa1b9708642eabb714a31f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/ui-mobile.md",
+  "size": 1615,
+  "sha256": "ea25522f1f24afadd2d08b64a6b92979a7a356017725bbb49bf5e0f4a44e772d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/SKILL.md",
+  "size": 5946,
+  "sha256": "5ed1d22753b12a06453189948b684a53d201cdfc823e4d270daefcc9625890de"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/formats.md",
+  "size": 3527,
+  "sha256": "90a1380c6acd8454760d81f0d3fbce77d456d47209054f683abcdf480b66d446"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/srforge-project.md",
+  "size": 2290,
+  "sha256": "6a1431ab34979eaecac409648a71be27c56b1932228906fdb8aaeb2e1a3863f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/schema-evolution/SKILL.md",
@@ -6840,6 +7955,86 @@
   "sha256": "85907b4c239c24e1099c2aa1a3d10261f79512f9ea795f753f6783e19a04319b"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/SKILL.md",
+  "size": 1262,
+  "sha256": "00bd45a1d7012f6c3dd42618fc266077f94c269f1d84e8db87fb72903c31eb52"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/OVERVIEW.md",
+  "size": 2239,
+  "sha256": "42f3681a90f37f3881e43aecd118d6e974b89c38bd2fc7753cdffbceb4ab4427"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/dotnet-harmony-patching.md",
+  "size": 2129,
+  "sha256": "9db38102a78410eee959d30952dcc5279194bf32b3e1930b2c2f07b8f866f276"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/kerbal-space-program.md",
+  "size": 537,
+  "sha256": "23641795d3e82d627db3da65850d7d8b888c635b2e3944b6812c57573de646f1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/lethal-company.md",
+  "size": 416,
+  "sha256": "9b4f2293d0ed6593cb1d85afcf6d42e2d407c73eaa97176684213fab1048a997"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/oxygen-not-included.md",
+  "size": 419,
+  "sha256": "9d230a8dbe1c820496e071e80e88b857dba8e255175ec5b202fd1ac84b1d3964"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/rimworld-harmony.md",
+  "size": 1119,
+  "sha256": "6dfb054357aac1e3d39c32e66463b814c6d26b777a7318d49bfc0b5c979ddbd8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/risk-of-rain2.md",
+  "size": 2158,
+  "sha256": "69d9fd0ba4079a8c3f0595129a6a197908f0d80073334ec15dfd10a6a4edd212"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/stardew-valley.md",
+  "size": 2122,
+  "sha256": "797ccda6656f16b35c648064c7df676719b54755c7b2d9aa45a893dcdbfabca9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/subnautica-nautilus.md",
+  "size": 355,
+  "sha256": "d734e234228aa76427a6f806feefd8c2d365b3bc7e7e5c7a8839e1c6edade11b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/valheim-jotunn.md",
+  "size": 347,
+  "sha256": "7e58e38b1dfca32d904e5a88411beeebb8fa7bb62fa9639673843f19756f0c19"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/SKILL.md",
+  "size": 839,
+  "sha256": "60d36adfdb41801f02ad2029c80eba15822e18725151ff8cc3d2ee843d760d87"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/OVERVIEW.md",
+  "size": 2188,
+  "sha256": "b2e5bbb5788ad3ecfddbbeec05c3608bb7dcca9e235469fd213e2cbe820c7bc8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/palworld.md",
+  "size": 2279,
+  "sha256": "8084d7c0f0815706c5d5a9110afe97947f4b29eae73da821cc5a5389734fb562"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/satisfactory-sml.md",
+  "size": 2191,
+  "sha256": "acd8f759a36e99c581487be592f452a11e79bec68a9a1c34efcf030fd8196a79"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/xcom2.md",
+  "size": 422,
+  "sha256": "b9abdba9966bca340cb3bbcb303862cafdef7537a0d861dc3e5cbfe8ea816e7b"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
   "size": 2570,
   "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
@@ -6898,6 +8093,31 @@
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/visual-verification/SKILL.md",
   "size": 5917,
   "sha256": "ee35b0b17d100e239fa862b48d74c310847547357925627736ccd2121da30cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/win64-native-builds/SKILL.md",
+  "size": 3306,
+  "sha256": "02fec2b4ece06b2c07d402a437e2586427ae5dfdc730493db3e5470f144cc40d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/SKILL.md",
+  "size": 4285,
+  "sha256": "fd1ad32b36cfb04f623b6a2001be7429ad1a9258c7f06d9211698cb5bb4df066"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/git-push-recovery.md",
+  "size": 2263,
+  "sha256": "786971f34ffacabb7c22b7aedbf8948c09358fe87e78a967dba11473ef6703b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
+  "size": 4120,
+  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
+  "size": 2825,
+  "sha256": "f14daa75bb81f60f7fdbcecdd4d9ecf16e01b9fce356c0e21dc228ca60ec5939"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/writing-plans/SKILL.md",
@@ -7060,6 +8280,21 @@
   "sha256": "10f1d65be6e0d2bae2fdfaf44064303a3c0bc4f062a3ec41b832414fe4f8bd54"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/SKILL.md",
+  "size": 697,
+  "sha256": "f2984b5a2e6bc6cbd715d58b62372396a4ff06be8945a078b713f757efec6718"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/fallout4.md",
+  "size": 2263,
+  "sha256": "22d2f6ed770bb68e4cc5e617baa8afb631a4be7eccd4ad726833049391d0cc95"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/starfield.md",
+  "size": 2171,
+  "sha256": "31ac87a68733937bf5b6f946a275cabf24414ea87d8ff4396f8c233b4d2d028f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
   "size": 4191,
   "sha256": "5712e3446f4904116370882cefa94f964dab5111503f605d3b3d344fb50f0edc"
@@ -7113,6 +8348,16 @@
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/bulk-record-jobs/SKILL.md",
   "size": 17529,
   "sha256": "af40488b9a27e394c16e78f393e1e1617fdcff1c1991001b344ddf44fac54fb3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/SKILL.md",
+  "size": 3201,
+  "sha256": "b808bbf03ce18f6b5984c3607ba288d2a1a7daa2335b638d905be3360c2a6306"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/references/native-c-game-harness-notes.md",
+  "size": 2897,
+  "sha256": "75e51569f8e9e1bc14a16fbe889d5d6b47be4e7e814a8c9afa8b86f99ffbde51"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
@@ -7550,6 +8795,226 @@
   "sha256": "77b5562fa6fa91817dd06099bbb69e054141d08e86dfa1700384dd38051b8b3f"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/SKILL.md",
+  "size": 3692,
+  "sha256": "073c41efee0f45cc8447071df2a478c0dc73839c3b5d5ad3c5f2db933b9e1321"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/ERROR-REGISTRY.json",
+  "size": 10908,
+  "sha256": "d565b9cad11d74bb2b2af599b7b6ec9cabe966c6ed9179ac1d48e6d159e444ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/FRAMEWORK-MATRIX.md",
+  "size": 1670,
+  "sha256": "02e1ae1bac66412668551e6b76e6c49199b66bfa4cdb72219f3592fddda5f01e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/GLOBAL-LESSONS.md",
+  "size": 1251,
+  "sha256": "09e64478b713c0aa149a63434a6c19717ea10f7b7f26b93b5fd944a6d1f611e1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/MODDING-LAWS.md",
+  "size": 2263,
+  "sha256": "51e4c51f47aec18d70870efc8e14462bc8f854c4687194ae0697cec728ce5985"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/OFFICIAL-SOURCES.md",
+  "size": 1816,
+  "sha256": "7ed23887ba36d79f405f2131e9fa6365bd7499529051cdab42e0a21c6c879818"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/arma3.md",
+  "size": 346,
+  "sha256": "f409f3a8783017b430c81528b355e97d72c06509f90d69af8ac46ed167578afd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/baldurs-gate3.md",
+  "size": 2133,
+  "sha256": "8227e279f0db5384c1a6e95d8a538e89c885e452eb78373ceec69bfb0fc2c096"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/bannerlord.md",
+  "size": 2159,
+  "sha256": "b1e36b5c16347f0ad94ab618efdf822036e4f9851e832dba6be8550575ecbb9d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/barotrauma.md",
+  "size": 379,
+  "sha256": "78d7f08fedc252cf8fd04675a6c485ed9528f6e5ab02f95f4a4e535cdba7d2a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/beamng.md",
+  "size": 325,
+  "sha256": "ddff7e5d3762b1f6336a14e8e3d15395287b3764b3b6d403aa6ae3b4649ea425"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cities-skylines2.md",
+  "size": 511,
+  "sha256": "6d90a5b320ee8c6dc0fefa8739d1e2d0d0b3a2119d1f2fff878cd3fdb33bd559"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cyberpunk2077.md",
+  "size": 2574,
+  "sha256": "9b31094503812ca916457b42efb3a224ed0cb0766f3c78dd38e1a4f14b28592c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dayz.md",
+  "size": 407,
+  "sha256": "3abc46c998b996e410964031ae1dde96553e45636bf088722de243f722b2ffc3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/divinity-original-sin2.md",
+  "size": 345,
+  "sha256": "45d2efee9e1a57c1a3e97b39bd690b7b9a72e81b32806b0bade6847da8e6c2eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dont-starve-together.md",
+  "size": 370,
+  "sha256": "955158e000f98ac3abc0d33ab88bc8e5d0efcdf14299574494ab2bcaf823d279"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/factorio.md",
+  "size": 514,
+  "sha256": "284f3af0b9fd5befb1b7582f6a8c9eec59e8aa646790cb74d31094d22c9414a8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-assets.md",
+  "size": 1079,
+  "sha256": "4e8ea88fdfda1bf577e5cc8f6fff54a7e9b62a62cddb56ea5717e86ce0be9320"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-code-review.md",
+  "size": 1175,
+  "sha256": "c87ec784f1fd0b819840018c200ee01650b11dedd6c6f3306f887b6422084cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-crash-diagnostics.md",
+  "size": 1185,
+  "sha256": "b972a6fb8964e900af4796242f08b56b272d01ddf564399cae46d0dfddcf9c41"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-development.md",
+  "size": 2564,
+  "sha256": "50bf053f00b278891881c9681fc81ba89bf3dd58c7a8775004e85962f220e219"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-facts.md",
+  "size": 1227,
+  "sha256": "7e012700c032f62b5eb177c26a674e18488175ec991373bc39639ecbed29aba6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-load-order-compatibility.md",
+  "size": 1049,
+  "sha256": "e62cc57d945cfc0bc68cb3d8107ebc9dea6c26baa428037f2975bd1c2e35e330"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-memory.md",
+  "size": 1429,
+  "sha256": "97b04cfb5054e45f7e68d7ab2734d25e98d050ccb7f034765ba9b0267b4ec323"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-native-plugin.md",
+  "size": 1187,
+  "sha256": "88ad50221ddc934c34533ce2df00ee90bc09fdcac65d9b15ffa5bade4228a119"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-packaging.md",
+  "size": 1034,
+  "sha256": "f6a8e9cf52a75ea1dba2aa3a738ba5732d886fa3fe8e44a7e84e491a1bffb444"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-performance-profiling.md",
+  "size": 1039,
+  "sha256": "2018ac39ffabda4ad33b5c60dc7e79032434508859f20ff947c04180725ecbe6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-reworking.md",
+  "size": 2292,
+  "sha256": "7deb5455be2fa41416921cdeeafa2bc3f17c9fa472a80d9a28b3c3b1f3a2b543"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-runtime-patching.md",
+  "size": 1039,
+  "sha256": "a09d21c026351b122f270502bbd496ecfd75279060cc8db4e4804cd6446b9210"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-ship-gate.md",
+  "size": 1263,
+  "sha256": "03a22b7bcf06eeda0487eddd27f55b99bf219b41f9b5a47b9cbe566a8c124ffc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-unknown-game-fallback.md",
+  "size": 1264,
+  "sha256": "ef749567c257f1daa608ee141c58e30e9925b82e4e20554ca98e22fbe72097eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-versioned-workspace.md",
+  "size": 1427,
+  "sha256": "f176cca52d7814fa937eda0054a741ce3c36ff6bec8f3cb89b771c13acffba23"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/garrys-mod.md",
+  "size": 295,
+  "sha256": "1d5d9f05da9ba5279d247075f89d586337ac2a33282a716c55829bec46493a31"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/new_version.py",
+  "size": 3491,
+  "sha256": "be88223a9aa12594c718e183680968101a7efbb9e00ed579bed3ecea0952e4a7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/no-mans-sky.md",
+  "size": 371,
+  "sha256": "a7d11b19f51607971baf83a2ab53842e77f2358258783203bf1b00f73227ea99"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/noita.md",
+  "size": 346,
+  "sha256": "826bd036cab312941682ebc50506d73484317abc7797108339f454121c7778f9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/project-zomboid.md",
+  "size": 430,
+  "sha256": "918ddc4d6af954db51129b780807f33de79a8b780b865b51b43660225f95f0da"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/slay-the-spire.md",
+  "size": 340,
+  "sha256": "4b50082ece665a9b21ca207ce09b5e7f967ff8eae6e16c8521d076ab10fe2955"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/space-engineers.md",
+  "size": 365,
+  "sha256": "347886d51f921ea66cf5f675151b25cc9bf10af33ba6143e3a48089f8d66ff77"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/terraria-tmodloader.md",
+  "size": 475,
+  "sha256": "cb6e251d8721c664ec4be660fdacd95894b20cc4d993ea0b304e462d55afc56f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/validate_project.py",
+  "size": 1872,
+  "sha256": "58e6eedd48ddf0c1552480c7904c2d3e124ca23501dce24e2b46e7da24e453d6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/witcher3-redkit.md",
+  "size": 2181,
+  "sha256": "f84af6a5792c1b63a5d46d4f01b05917a2758aa4c13895e1974a60b62cfede42"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/SKILL.md",
+  "size": 6580,
+  "sha256": "55655337438e126c7a40912b06f81dd66c2b1993aad5f9c26e71feb4cecc8dcd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/templates/ci-cpp-vcpkg.yml",
+  "size": 1932,
+  "sha256": "3584781acb3ea4e31c2453f6bcc2f827d1be7f13c3fd6c42476bf05edc4b6f60"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/headroom/SKILL.md",
   "size": 4246,
   "sha256": "03ca71d0b6f09f0cc40e56000d0d1f7f8138d49a598584dc960a0225fc15da78"
@@ -7675,9 +9140,139 @@
   "sha256": "420f64d454cc62d7fe870cd2064c9ce3cd2287a8e90f87ed775eb0f3c0ac0ce3"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/SKILL.md",
+  "size": 3846,
+  "sha256": "c4d230b02a597cb89aae4e2e53d844ede23ea33d84d8f5b092079b5bccb135fe"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-mcp-upgrade.md",
+  "size": 2938,
+  "sha256": "e1787b2c7ae0aebe16c6de508f0e7564747a8c69bdd832d013209a325ed274c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-ops.md",
+  "size": 1933,
+  "sha256": "8f66e875f21a14df24bca921ca00fa30791d63dae1923dabfb4a01bb9895aeb5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
+  "size": 2956,
+  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
+  "size": 4292,
+  "sha256": "ead08b1b047aa5a086ebb0e12c260d6aea2a8e37170607e48ba6c0f1b7ed9179"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/hermes-empty-replies.md",
+  "size": 2154,
+  "sha256": "76e6b413a01b9d867778fee629cf1110bb7821e7bf17c0a9ba324068d2b4a28a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
+  "size": 2662,
+  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
+  "size": 6011,
+  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
+  "size": 2929,
+  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
+  "size": 2693,
+  "sha256": "c87d38ced1a626ec71cada670d604cae2fa82266af8cb37aca74bb397eb49a82"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/skyrimforge-verification.md",
+  "size": 3962,
+  "sha256": "2bc152187789d50b2b678b1ee9ea9c8e9ef0d59712551a5ae56254f67d865a7f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/migration-rollback/SKILL.md",
   "size": 1047,
   "sha256": "0339f6c001469780e821c685fc6708c3f95ac1c0a38c8d2b57975135de819e1c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/SKILL.md",
+  "size": 1578,
+  "sha256": "fee82f20c9d415078c43493ea7e894ca4241ec572d87a8a5ce1896969164265c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/ECOSYSTEM-CATALOG.md",
+  "size": 1302,
+  "sha256": "ed5dc404681239abbc14843da9965637ea7118981a3d62083ad0330b5e0f1580"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/OVERVIEW.md",
+  "size": 2168,
+  "sha256": "81717b21a0040679db3de3aa5d71044d2d8ecf76eedd13a6df31c322b0549056"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/PORTING-CHECKLIST.md",
+  "size": 609,
+  "sha256": "a1ad3cdb03d7bba3448a99f27f96f09c1973856948d6adc36727e66fa969c1ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-content-datagen-worldgen.md",
+  "size": 742,
+  "sha256": "cf142352bee3d4922e4fe7d6003e64b57cb03b255c24e44d9166e05fc2a0deb8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-data-components-attachments.md",
+  "size": 846,
+  "sha256": "736cda78a289d8b0d687ba18e710fac272f20cea8066c88fa1942e0049f18020"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-fabric-quilt.md",
+  "size": 749,
+  "sha256": "3c7f06e003d38b91ae56ee07bb2a7279d079868873046b08fc5f9ce40ad1d62d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-forge-neoforge.md",
+  "size": 789,
+  "sha256": "5ca9f4e70c7573826ff9961d22564317981caaf99c3c6b8fe0ead0ff91a985b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-library-api-integrations.md",
+  "size": 1419,
+  "sha256": "760e6bc748347b7c2858f13b5c86e98c37a430d1d061a67599da16f5826da84a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-mixins-access-control.md",
+  "size": 719,
+  "sha256": "57fcae92c37f9dd961d02057e27370da20a5fef7205b0983cd2fdc5ada4fd8a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-modpack-scripting.md",
+  "size": 609,
+  "sha256": "b2c7fd43450ceae2ac2c3a8e2fa9b40a4babaf1a239de41d9def733fe126d963"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-multiloader-architectury.md",
+  "size": 692,
+  "sha256": "fd279021835496ebb87599ad29387b439eb0d897b2fade087d9676e9aec7f6e3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-networking-persistence.md",
+  "size": 507,
+  "sha256": "d90d66480f923ea9b97c3573bb94f2e8d1ddb46a1037cb5176d5b7039a74f5a5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-rendering-animation.md",
+  "size": 662,
+  "sha256": "8f56d4f4c8469dddd1c3777f5cf8d4ac9439bd180fdf22d27dae1fca6c0eedff"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-testing-porting-release.md",
+  "size": 613,
+  "sha256": "fd9b9d8752a03c8ddc72045cdf36235f7a8baab3176373283e8be33e95ee8273"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/minimal-reproducer/SKILL.md",
@@ -8715,6 +10310,41 @@
   "sha256": "3d58ca41ff98a4fee8a5d62e0a4dfe21e2cffb1d27547fd95ffacfc7ffac5a31"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/SKILL.md",
+  "size": 942,
+  "sha256": "37a10e40fed8f0cffada7cd2e988662b0a97d554587cfe47d15bf5bd05d8d78a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/OVERVIEW.md",
+  "size": 981,
+  "sha256": "60db5a6accdacf937d9b27ac49ba54268e82b96ecbd713f3bddc6fa26d934b6e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/ck3.md",
+  "size": 492,
+  "sha256": "f0ae99350a3af22170acb95823f63bef2ba0e00f8d42b78e254dda5f40abb78f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/eu4.md",
+  "size": 471,
+  "sha256": "2f56b8542c995cd9a85584d9d67ee3be980064c1fa7f0422af59138883ab9450"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/hoi4.md",
+  "size": 487,
+  "sha256": "0a693f473a613d3cffc375dcfc43a934fbc82b9a3112fc8e3c84a83159197529"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/stellaris.md",
+  "size": 605,
+  "sha256": "4d54c9d1af73121607939fdcdbc5118a48678470017958255efc58cfa675e5cc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/victoria3.md",
+  "size": 488,
+  "sha256": "d2d85003d2b4a3eeaa79379a9a201ecefe81623c40daa2d7a030aaf2a2a35a6e"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/partial-success-accounting/SKILL.md",
   "size": 934,
   "sha256": "5c454b9b95d1992c802ba5efd29f1e464a8d89fc66c8d0bd8002476c12d7e814"
@@ -8795,6 +10425,11 @@
   "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/references/docs-heavy-repo-sweep.md",
+  "size": 2726,
+  "sha256": "b2437913a9a5ccbdd42bd3cbe410446701f679222f301995797cce43ef6e16af"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
   "size": 1119,
   "sha256": "2531c402cb94aca0d3fc2e84fa5b4c4d328c5f88c7704e96cae54270423fa070"
@@ -8828,6 +10463,96 @@
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/retry-idempotency/SKILL.md",
   "size": 1048,
   "sha256": "61db5bdbd46d3fbb4a347d059e3df08bec9fd77ade0f0b91d7761a86ded1d349"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/SKILL.md",
+  "size": 3316,
+  "sha256": "6f21a80a11ee7dca91785af0851b833ecacdc738f49c820d855843e310252de4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/api-docs-lookup.md",
+  "size": 953,
+  "sha256": "8ee2e42a9ca5cded7c32c92853bdac62a2a16dd2bf5a4af039bf7fda2465a76e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/architecture.md",
+  "size": 2222,
+  "sha256": "2d1dfd06960e1ca23b147d31d8379266aac24924184dd7ce25c0712f95609307"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assets.md",
+  "size": 1230,
+  "sha256": "b76868b86e4d2b06a4a3f290ea8e80fd758771f6878d8f64b1cd4d743cfda71b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assistant-skills.md",
+  "size": 1392,
+  "sha256": "a3ae2692fc3481d4350e53e12715e1b5f6c43c292783f5f480f3776df679bc28"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/development-loop.md",
+  "size": 2065,
+  "sha256": "821e03bed8304b8e97e1e7e592c32336f723c038c5714f021754e7e70f9ba981"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/game-design.md",
+  "size": 980,
+  "sha256": "d1eb1c4078ece0204cdd644d5442ad853aa466c03e4beb2590280b7d562bd288"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/performance.md",
+  "size": 1473,
+  "sha256": "aa0bdbf07cac40d4bfa0cd92fe83149dfa8809bd3b9846eba76d0db9383d7746"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/persistence.md",
+  "size": 1938,
+  "sha256": "bc7851dea4c8317fd72f39af1b743b16fec87e61d838d2e681c02842ec4a3af6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/security-networking.md",
+  "size": 2434,
+  "sha256": "3493d5346efa8c39a93dbf70644837eb905953aabe692a8fec184c3c40561122"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/sharp-edges.md",
+  "size": 1891,
+  "sha256": "709453e2d1fa7e06d65f1e65308bc3fa2b7cc9ee293b0df95ba190cbea3ff4cf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/studio-mcp.md",
+  "size": 2905,
+  "sha256": "16d28b9ac59bd6c8a6f3c56ce97d19626b0f87f060377fdd467df627e9e98203"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/testing-debugging.md",
+  "size": 2203,
+  "sha256": "6c14d832a0f37f0f621638f2e267e04e7ef15d403a90fcd488b889ca71cd99bb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/tooling.md",
+  "size": 1391,
+  "sha256": "a78157b4425baad11790d8003818b5fe59f37e0c22fa1b9708642eabb714a31f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/ui-mobile.md",
+  "size": 1615,
+  "sha256": "ea25522f1f24afadd2d08b64a6b92979a7a356017725bbb49bf5e0f4a44e772d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/SKILL.md",
+  "size": 5946,
+  "sha256": "5ed1d22753b12a06453189948b684a53d201cdfc823e4d270daefcc9625890de"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/formats.md",
+  "size": 3527,
+  "sha256": "90a1380c6acd8454760d81f0d3fbce77d456d47209054f683abcdf480b66d446"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/srforge-project.md",
+  "size": 2290,
+  "sha256": "6a1431ab34979eaecac409648a71be27c56b1932228906fdb8aaeb2e1a3863f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/schema-evolution/SKILL.md",
@@ -9640,6 +11365,86 @@
   "sha256": "85907b4c239c24e1099c2aa1a3d10261f79512f9ea795f753f6783e19a04319b"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/SKILL.md",
+  "size": 1262,
+  "sha256": "00bd45a1d7012f6c3dd42618fc266077f94c269f1d84e8db87fb72903c31eb52"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/OVERVIEW.md",
+  "size": 2239,
+  "sha256": "42f3681a90f37f3881e43aecd118d6e974b89c38bd2fc7753cdffbceb4ab4427"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/dotnet-harmony-patching.md",
+  "size": 2129,
+  "sha256": "9db38102a78410eee959d30952dcc5279194bf32b3e1930b2c2f07b8f866f276"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/kerbal-space-program.md",
+  "size": 537,
+  "sha256": "23641795d3e82d627db3da65850d7d8b888c635b2e3944b6812c57573de646f1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/lethal-company.md",
+  "size": 416,
+  "sha256": "9b4f2293d0ed6593cb1d85afcf6d42e2d407c73eaa97176684213fab1048a997"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/oxygen-not-included.md",
+  "size": 419,
+  "sha256": "9d230a8dbe1c820496e071e80e88b857dba8e255175ec5b202fd1ac84b1d3964"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/rimworld-harmony.md",
+  "size": 1119,
+  "sha256": "6dfb054357aac1e3d39c32e66463b814c6d26b777a7318d49bfc0b5c979ddbd8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/risk-of-rain2.md",
+  "size": 2158,
+  "sha256": "69d9fd0ba4079a8c3f0595129a6a197908f0d80073334ec15dfd10a6a4edd212"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/stardew-valley.md",
+  "size": 2122,
+  "sha256": "797ccda6656f16b35c648064c7df676719b54755c7b2d9aa45a893dcdbfabca9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/subnautica-nautilus.md",
+  "size": 355,
+  "sha256": "d734e234228aa76427a6f806feefd8c2d365b3bc7e7e5c7a8839e1c6edade11b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/valheim-jotunn.md",
+  "size": 347,
+  "sha256": "7e58e38b1dfca32d904e5a88411beeebb8fa7bb62fa9639673843f19756f0c19"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/SKILL.md",
+  "size": 839,
+  "sha256": "60d36adfdb41801f02ad2029c80eba15822e18725151ff8cc3d2ee843d760d87"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/OVERVIEW.md",
+  "size": 2188,
+  "sha256": "b2e5bbb5788ad3ecfddbbeec05c3608bb7dcca9e235469fd213e2cbe820c7bc8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/palworld.md",
+  "size": 2279,
+  "sha256": "8084d7c0f0815706c5d5a9110afe97947f4b29eae73da821cc5a5389734fb562"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/satisfactory-sml.md",
+  "size": 2191,
+  "sha256": "acd8f759a36e99c581487be592f452a11e79bec68a9a1c34efcf030fd8196a79"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/xcom2.md",
+  "size": 422,
+  "sha256": "b9abdba9966bca340cb3bbcb303862cafdef7537a0d861dc3e5cbfe8ea816e7b"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
   "size": 2570,
   "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
@@ -9698,6 +11503,31 @@
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/visual-verification/SKILL.md",
   "size": 5917,
   "sha256": "ee35b0b17d100e239fa862b48d74c310847547357925627736ccd2121da30cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/win64-native-builds/SKILL.md",
+  "size": 3306,
+  "sha256": "02fec2b4ece06b2c07d402a437e2586427ae5dfdc730493db3e5470f144cc40d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/SKILL.md",
+  "size": 4285,
+  "sha256": "fd1ad32b36cfb04f623b6a2001be7429ad1a9258c7f06d9211698cb5bb4df066"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/git-push-recovery.md",
+  "size": 2263,
+  "sha256": "786971f34ffacabb7c22b7aedbf8948c09358fe87e78a967dba11473ef6703b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
+  "size": 4120,
+  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
+  "size": 2825,
+  "sha256": "f14daa75bb81f60f7fdbcecdd4d9ecf16e01b9fce356c0e21dc228ca60ec5939"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/writing-plans/SKILL.md",
@@ -9860,6 +11690,21 @@
   "sha256": "10f1d65be6e0d2bae2fdfaf44064303a3c0bc4f062a3ec41b832414fe4f8bd54"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/SKILL.md",
+  "size": 697,
+  "sha256": "f2984b5a2e6bc6cbd715d58b62372396a4ff06be8945a078b713f757efec6718"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/fallout4.md",
+  "size": 2263,
+  "sha256": "22d2f6ed770bb68e4cc5e617baa8afb631a4be7eccd4ad726833049391d0cc95"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/starfield.md",
+  "size": 2171,
+  "sha256": "31ac87a68733937bf5b6f946a275cabf24414ea87d8ff4396f8c233b4d2d028f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
   "size": 4191,
   "sha256": "5712e3446f4904116370882cefa94f964dab5111503f605d3b3d344fb50f0edc"
@@ -9913,6 +11758,16 @@
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/bulk-record-jobs/SKILL.md",
   "size": 17529,
   "sha256": "af40488b9a27e394c16e78f393e1e1617fdcff1c1991001b344ddf44fac54fb3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/SKILL.md",
+  "size": 3201,
+  "sha256": "b808bbf03ce18f6b5984c3607ba288d2a1a7daa2335b638d905be3360c2a6306"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/references/native-c-game-harness-notes.md",
+  "size": 2897,
+  "sha256": "75e51569f8e9e1bc14a16fbe889d5d6b47be4e7e814a8c9afa8b86f99ffbde51"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
@@ -10350,6 +12205,226 @@
   "sha256": "77b5562fa6fa91817dd06099bbb69e054141d08e86dfa1700384dd38051b8b3f"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/SKILL.md",
+  "size": 3692,
+  "sha256": "073c41efee0f45cc8447071df2a478c0dc73839c3b5d5ad3c5f2db933b9e1321"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/ERROR-REGISTRY.json",
+  "size": 10908,
+  "sha256": "d565b9cad11d74bb2b2af599b7b6ec9cabe966c6ed9179ac1d48e6d159e444ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/FRAMEWORK-MATRIX.md",
+  "size": 1670,
+  "sha256": "02e1ae1bac66412668551e6b76e6c49199b66bfa4cdb72219f3592fddda5f01e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/GLOBAL-LESSONS.md",
+  "size": 1251,
+  "sha256": "09e64478b713c0aa149a63434a6c19717ea10f7b7f26b93b5fd944a6d1f611e1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/MODDING-LAWS.md",
+  "size": 2263,
+  "sha256": "51e4c51f47aec18d70870efc8e14462bc8f854c4687194ae0697cec728ce5985"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/OFFICIAL-SOURCES.md",
+  "size": 1816,
+  "sha256": "7ed23887ba36d79f405f2131e9fa6365bd7499529051cdab42e0a21c6c879818"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/arma3.md",
+  "size": 346,
+  "sha256": "f409f3a8783017b430c81528b355e97d72c06509f90d69af8ac46ed167578afd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/baldurs-gate3.md",
+  "size": 2133,
+  "sha256": "8227e279f0db5384c1a6e95d8a538e89c885e452eb78373ceec69bfb0fc2c096"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/bannerlord.md",
+  "size": 2159,
+  "sha256": "b1e36b5c16347f0ad94ab618efdf822036e4f9851e832dba6be8550575ecbb9d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/barotrauma.md",
+  "size": 379,
+  "sha256": "78d7f08fedc252cf8fd04675a6c485ed9528f6e5ab02f95f4a4e535cdba7d2a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/beamng.md",
+  "size": 325,
+  "sha256": "ddff7e5d3762b1f6336a14e8e3d15395287b3764b3b6d403aa6ae3b4649ea425"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cities-skylines2.md",
+  "size": 511,
+  "sha256": "6d90a5b320ee8c6dc0fefa8739d1e2d0d0b3a2119d1f2fff878cd3fdb33bd559"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cyberpunk2077.md",
+  "size": 2574,
+  "sha256": "9b31094503812ca916457b42efb3a224ed0cb0766f3c78dd38e1a4f14b28592c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dayz.md",
+  "size": 407,
+  "sha256": "3abc46c998b996e410964031ae1dde96553e45636bf088722de243f722b2ffc3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/divinity-original-sin2.md",
+  "size": 345,
+  "sha256": "45d2efee9e1a57c1a3e97b39bd690b7b9a72e81b32806b0bade6847da8e6c2eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dont-starve-together.md",
+  "size": 370,
+  "sha256": "955158e000f98ac3abc0d33ab88bc8e5d0efcdf14299574494ab2bcaf823d279"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/factorio.md",
+  "size": 514,
+  "sha256": "284f3af0b9fd5befb1b7582f6a8c9eec59e8aa646790cb74d31094d22c9414a8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-assets.md",
+  "size": 1079,
+  "sha256": "4e8ea88fdfda1bf577e5cc8f6fff54a7e9b62a62cddb56ea5717e86ce0be9320"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-code-review.md",
+  "size": 1175,
+  "sha256": "c87ec784f1fd0b819840018c200ee01650b11dedd6c6f3306f887b6422084cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-crash-diagnostics.md",
+  "size": 1185,
+  "sha256": "b972a6fb8964e900af4796242f08b56b272d01ddf564399cae46d0dfddcf9c41"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-development.md",
+  "size": 2564,
+  "sha256": "50bf053f00b278891881c9681fc81ba89bf3dd58c7a8775004e85962f220e219"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-facts.md",
+  "size": 1227,
+  "sha256": "7e012700c032f62b5eb177c26a674e18488175ec991373bc39639ecbed29aba6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-load-order-compatibility.md",
+  "size": 1049,
+  "sha256": "e62cc57d945cfc0bc68cb3d8107ebc9dea6c26baa428037f2975bd1c2e35e330"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-memory.md",
+  "size": 1429,
+  "sha256": "97b04cfb5054e45f7e68d7ab2734d25e98d050ccb7f034765ba9b0267b4ec323"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-native-plugin.md",
+  "size": 1187,
+  "sha256": "88ad50221ddc934c34533ce2df00ee90bc09fdcac65d9b15ffa5bade4228a119"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-packaging.md",
+  "size": 1034,
+  "sha256": "f6a8e9cf52a75ea1dba2aa3a738ba5732d886fa3fe8e44a7e84e491a1bffb444"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-performance-profiling.md",
+  "size": 1039,
+  "sha256": "2018ac39ffabda4ad33b5c60dc7e79032434508859f20ff947c04180725ecbe6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-reworking.md",
+  "size": 2292,
+  "sha256": "7deb5455be2fa41416921cdeeafa2bc3f17c9fa472a80d9a28b3c3b1f3a2b543"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-runtime-patching.md",
+  "size": 1039,
+  "sha256": "a09d21c026351b122f270502bbd496ecfd75279060cc8db4e4804cd6446b9210"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-ship-gate.md",
+  "size": 1263,
+  "sha256": "03a22b7bcf06eeda0487eddd27f55b99bf219b41f9b5a47b9cbe566a8c124ffc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-unknown-game-fallback.md",
+  "size": 1264,
+  "sha256": "ef749567c257f1daa608ee141c58e30e9925b82e4e20554ca98e22fbe72097eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-versioned-workspace.md",
+  "size": 1427,
+  "sha256": "f176cca52d7814fa937eda0054a741ce3c36ff6bec8f3cb89b771c13acffba23"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/garrys-mod.md",
+  "size": 295,
+  "sha256": "1d5d9f05da9ba5279d247075f89d586337ac2a33282a716c55829bec46493a31"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/new_version.py",
+  "size": 3491,
+  "sha256": "be88223a9aa12594c718e183680968101a7efbb9e00ed579bed3ecea0952e4a7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/no-mans-sky.md",
+  "size": 371,
+  "sha256": "a7d11b19f51607971baf83a2ab53842e77f2358258783203bf1b00f73227ea99"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/noita.md",
+  "size": 346,
+  "sha256": "826bd036cab312941682ebc50506d73484317abc7797108339f454121c7778f9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/project-zomboid.md",
+  "size": 430,
+  "sha256": "918ddc4d6af954db51129b780807f33de79a8b780b865b51b43660225f95f0da"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/slay-the-spire.md",
+  "size": 340,
+  "sha256": "4b50082ece665a9b21ca207ce09b5e7f967ff8eae6e16c8521d076ab10fe2955"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/space-engineers.md",
+  "size": 365,
+  "sha256": "347886d51f921ea66cf5f675151b25cc9bf10af33ba6143e3a48089f8d66ff77"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/terraria-tmodloader.md",
+  "size": 475,
+  "sha256": "cb6e251d8721c664ec4be660fdacd95894b20cc4d993ea0b304e462d55afc56f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/validate_project.py",
+  "size": 1872,
+  "sha256": "58e6eedd48ddf0c1552480c7904c2d3e124ca23501dce24e2b46e7da24e453d6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/witcher3-redkit.md",
+  "size": 2181,
+  "sha256": "f84af6a5792c1b63a5d46d4f01b05917a2758aa4c13895e1974a60b62cfede42"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/SKILL.md",
+  "size": 6580,
+  "sha256": "55655337438e126c7a40912b06f81dd66c2b1993aad5f9c26e71feb4cecc8dcd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/templates/ci-cpp-vcpkg.yml",
+  "size": 1932,
+  "sha256": "3584781acb3ea4e31c2453f6bcc2f827d1be7f13c3fd6c42476bf05edc4b6f60"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/headroom/SKILL.md",
   "size": 4246,
   "sha256": "03ca71d0b6f09f0cc40e56000d0d1f7f8138d49a598584dc960a0225fc15da78"
@@ -10475,9 +12550,139 @@
   "sha256": "ae682e41de5eb197900643999093a7c759278ca0e2f6433f8ac3805f800f34d2"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/SKILL.md",
+  "size": 3846,
+  "sha256": "c4d230b02a597cb89aae4e2e53d844ede23ea33d84d8f5b092079b5bccb135fe"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-mcp-upgrade.md",
+  "size": 2938,
+  "sha256": "e1787b2c7ae0aebe16c6de508f0e7564747a8c69bdd832d013209a325ed274c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-ops.md",
+  "size": 1933,
+  "sha256": "8f66e875f21a14df24bca921ca00fa30791d63dae1923dabfb4a01bb9895aeb5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
+  "size": 2956,
+  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
+  "size": 4292,
+  "sha256": "ead08b1b047aa5a086ebb0e12c260d6aea2a8e37170607e48ba6c0f1b7ed9179"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/hermes-empty-replies.md",
+  "size": 2154,
+  "sha256": "76e6b413a01b9d867778fee629cf1110bb7821e7bf17c0a9ba324068d2b4a28a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
+  "size": 2662,
+  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
+  "size": 6011,
+  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
+  "size": 2929,
+  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
+  "size": 2693,
+  "sha256": "c87d38ced1a626ec71cada670d604cae2fa82266af8cb37aca74bb397eb49a82"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/skyrimforge-verification.md",
+  "size": 3962,
+  "sha256": "2bc152187789d50b2b678b1ee9ea9c8e9ef0d59712551a5ae56254f67d865a7f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/migration-rollback/SKILL.md",
   "size": 1047,
   "sha256": "0339f6c001469780e821c685fc6708c3f95ac1c0a38c8d2b57975135de819e1c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/SKILL.md",
+  "size": 1578,
+  "sha256": "fee82f20c9d415078c43493ea7e894ca4241ec572d87a8a5ce1896969164265c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/ECOSYSTEM-CATALOG.md",
+  "size": 1302,
+  "sha256": "ed5dc404681239abbc14843da9965637ea7118981a3d62083ad0330b5e0f1580"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/OVERVIEW.md",
+  "size": 2168,
+  "sha256": "81717b21a0040679db3de3aa5d71044d2d8ecf76eedd13a6df31c322b0549056"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/PORTING-CHECKLIST.md",
+  "size": 609,
+  "sha256": "a1ad3cdb03d7bba3448a99f27f96f09c1973856948d6adc36727e66fa969c1ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-content-datagen-worldgen.md",
+  "size": 742,
+  "sha256": "cf142352bee3d4922e4fe7d6003e64b57cb03b255c24e44d9166e05fc2a0deb8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-data-components-attachments.md",
+  "size": 846,
+  "sha256": "736cda78a289d8b0d687ba18e710fac272f20cea8066c88fa1942e0049f18020"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-fabric-quilt.md",
+  "size": 749,
+  "sha256": "3c7f06e003d38b91ae56ee07bb2a7279d079868873046b08fc5f9ce40ad1d62d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-forge-neoforge.md",
+  "size": 789,
+  "sha256": "5ca9f4e70c7573826ff9961d22564317981caaf99c3c6b8fe0ead0ff91a985b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-library-api-integrations.md",
+  "size": 1419,
+  "sha256": "760e6bc748347b7c2858f13b5c86e98c37a430d1d061a67599da16f5826da84a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-mixins-access-control.md",
+  "size": 719,
+  "sha256": "57fcae92c37f9dd961d02057e27370da20a5fef7205b0983cd2fdc5ada4fd8a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-modpack-scripting.md",
+  "size": 609,
+  "sha256": "b2c7fd43450ceae2ac2c3a8e2fa9b40a4babaf1a239de41d9def733fe126d963"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-multiloader-architectury.md",
+  "size": 692,
+  "sha256": "fd279021835496ebb87599ad29387b439eb0d897b2fade087d9676e9aec7f6e3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-networking-persistence.md",
+  "size": 507,
+  "sha256": "d90d66480f923ea9b97c3573bb94f2e8d1ddb46a1037cb5176d5b7039a74f5a5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-rendering-animation.md",
+  "size": 662,
+  "sha256": "8f56d4f4c8469dddd1c3777f5cf8d4ac9439bd180fdf22d27dae1fca6c0eedff"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-testing-porting-release.md",
+  "size": 613,
+  "sha256": "fd9b9d8752a03c8ddc72045cdf36235f7a8baab3176373283e8be33e95ee8273"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/minimal-reproducer/SKILL.md",
@@ -11515,6 +13720,41 @@
   "sha256": "3d58ca41ff98a4fee8a5d62e0a4dfe21e2cffb1d27547fd95ffacfc7ffac5a31"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/SKILL.md",
+  "size": 942,
+  "sha256": "37a10e40fed8f0cffada7cd2e988662b0a97d554587cfe47d15bf5bd05d8d78a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/OVERVIEW.md",
+  "size": 981,
+  "sha256": "60db5a6accdacf937d9b27ac49ba54268e82b96ecbd713f3bddc6fa26d934b6e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/ck3.md",
+  "size": 492,
+  "sha256": "f0ae99350a3af22170acb95823f63bef2ba0e00f8d42b78e254dda5f40abb78f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/eu4.md",
+  "size": 471,
+  "sha256": "2f56b8542c995cd9a85584d9d67ee3be980064c1fa7f0422af59138883ab9450"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/hoi4.md",
+  "size": 487,
+  "sha256": "0a693f473a613d3cffc375dcfc43a934fbc82b9a3112fc8e3c84a83159197529"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/stellaris.md",
+  "size": 605,
+  "sha256": "4d54c9d1af73121607939fdcdbc5118a48678470017958255efc58cfa675e5cc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/victoria3.md",
+  "size": 488,
+  "sha256": "d2d85003d2b4a3eeaa79379a9a201ecefe81623c40daa2d7a030aaf2a2a35a6e"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/partial-success-accounting/SKILL.md",
   "size": 934,
   "sha256": "5c454b9b95d1992c802ba5efd29f1e464a8d89fc66c8d0bd8002476c12d7e814"
@@ -11595,6 +13835,11 @@
   "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/references/docs-heavy-repo-sweep.md",
+  "size": 2726,
+  "sha256": "b2437913a9a5ccbdd42bd3cbe410446701f679222f301995797cce43ef6e16af"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
   "size": 1119,
   "sha256": "2531c402cb94aca0d3fc2e84fa5b4c4d328c5f88c7704e96cae54270423fa070"
@@ -11628,6 +13873,96 @@
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/retry-idempotency/SKILL.md",
   "size": 1048,
   "sha256": "61db5bdbd46d3fbb4a347d059e3df08bec9fd77ade0f0b91d7761a86ded1d349"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/SKILL.md",
+  "size": 3316,
+  "sha256": "6f21a80a11ee7dca91785af0851b833ecacdc738f49c820d855843e310252de4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/api-docs-lookup.md",
+  "size": 953,
+  "sha256": "8ee2e42a9ca5cded7c32c92853bdac62a2a16dd2bf5a4af039bf7fda2465a76e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/architecture.md",
+  "size": 2222,
+  "sha256": "2d1dfd06960e1ca23b147d31d8379266aac24924184dd7ce25c0712f95609307"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assets.md",
+  "size": 1230,
+  "sha256": "b76868b86e4d2b06a4a3f290ea8e80fd758771f6878d8f64b1cd4d743cfda71b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assistant-skills.md",
+  "size": 1392,
+  "sha256": "a3ae2692fc3481d4350e53e12715e1b5f6c43c292783f5f480f3776df679bc28"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/development-loop.md",
+  "size": 2065,
+  "sha256": "821e03bed8304b8e97e1e7e592c32336f723c038c5714f021754e7e70f9ba981"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/game-design.md",
+  "size": 980,
+  "sha256": "d1eb1c4078ece0204cdd644d5442ad853aa466c03e4beb2590280b7d562bd288"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/performance.md",
+  "size": 1473,
+  "sha256": "aa0bdbf07cac40d4bfa0cd92fe83149dfa8809bd3b9846eba76d0db9383d7746"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/persistence.md",
+  "size": 1938,
+  "sha256": "bc7851dea4c8317fd72f39af1b743b16fec87e61d838d2e681c02842ec4a3af6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/security-networking.md",
+  "size": 2434,
+  "sha256": "3493d5346efa8c39a93dbf70644837eb905953aabe692a8fec184c3c40561122"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/sharp-edges.md",
+  "size": 1891,
+  "sha256": "709453e2d1fa7e06d65f1e65308bc3fa2b7cc9ee293b0df95ba190cbea3ff4cf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/studio-mcp.md",
+  "size": 2905,
+  "sha256": "16d28b9ac59bd6c8a6f3c56ce97d19626b0f87f060377fdd467df627e9e98203"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/testing-debugging.md",
+  "size": 2203,
+  "sha256": "6c14d832a0f37f0f621638f2e267e04e7ef15d403a90fcd488b889ca71cd99bb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/tooling.md",
+  "size": 1391,
+  "sha256": "a78157b4425baad11790d8003818b5fe59f37e0c22fa1b9708642eabb714a31f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/ui-mobile.md",
+  "size": 1615,
+  "sha256": "ea25522f1f24afadd2d08b64a6b92979a7a356017725bbb49bf5e0f4a44e772d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/SKILL.md",
+  "size": 5946,
+  "sha256": "5ed1d22753b12a06453189948b684a53d201cdfc823e4d270daefcc9625890de"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/formats.md",
+  "size": 3527,
+  "sha256": "90a1380c6acd8454760d81f0d3fbce77d456d47209054f683abcdf480b66d446"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/srforge-project.md",
+  "size": 2290,
+  "sha256": "6a1431ab34979eaecac409648a71be27c56b1932228906fdb8aaeb2e1a3863f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/schema-evolution/SKILL.md",
@@ -12440,6 +14775,86 @@
   "sha256": "85907b4c239c24e1099c2aa1a3d10261f79512f9ea795f753f6783e19a04319b"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/SKILL.md",
+  "size": 1262,
+  "sha256": "00bd45a1d7012f6c3dd42618fc266077f94c269f1d84e8db87fb72903c31eb52"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/OVERVIEW.md",
+  "size": 2239,
+  "sha256": "42f3681a90f37f3881e43aecd118d6e974b89c38bd2fc7753cdffbceb4ab4427"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/dotnet-harmony-patching.md",
+  "size": 2129,
+  "sha256": "9db38102a78410eee959d30952dcc5279194bf32b3e1930b2c2f07b8f866f276"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/kerbal-space-program.md",
+  "size": 537,
+  "sha256": "23641795d3e82d627db3da65850d7d8b888c635b2e3944b6812c57573de646f1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/lethal-company.md",
+  "size": 416,
+  "sha256": "9b4f2293d0ed6593cb1d85afcf6d42e2d407c73eaa97176684213fab1048a997"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/oxygen-not-included.md",
+  "size": 419,
+  "sha256": "9d230a8dbe1c820496e071e80e88b857dba8e255175ec5b202fd1ac84b1d3964"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/rimworld-harmony.md",
+  "size": 1119,
+  "sha256": "6dfb054357aac1e3d39c32e66463b814c6d26b777a7318d49bfc0b5c979ddbd8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/risk-of-rain2.md",
+  "size": 2158,
+  "sha256": "69d9fd0ba4079a8c3f0595129a6a197908f0d80073334ec15dfd10a6a4edd212"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/stardew-valley.md",
+  "size": 2122,
+  "sha256": "797ccda6656f16b35c648064c7df676719b54755c7b2d9aa45a893dcdbfabca9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/subnautica-nautilus.md",
+  "size": 355,
+  "sha256": "d734e234228aa76427a6f806feefd8c2d365b3bc7e7e5c7a8839e1c6edade11b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/valheim-jotunn.md",
+  "size": 347,
+  "sha256": "7e58e38b1dfca32d904e5a88411beeebb8fa7bb62fa9639673843f19756f0c19"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/SKILL.md",
+  "size": 839,
+  "sha256": "60d36adfdb41801f02ad2029c80eba15822e18725151ff8cc3d2ee843d760d87"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/OVERVIEW.md",
+  "size": 2188,
+  "sha256": "b2e5bbb5788ad3ecfddbbeec05c3608bb7dcca9e235469fd213e2cbe820c7bc8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/palworld.md",
+  "size": 2279,
+  "sha256": "8084d7c0f0815706c5d5a9110afe97947f4b29eae73da821cc5a5389734fb562"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/satisfactory-sml.md",
+  "size": 2191,
+  "sha256": "acd8f759a36e99c581487be592f452a11e79bec68a9a1c34efcf030fd8196a79"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/xcom2.md",
+  "size": 422,
+  "sha256": "b9abdba9966bca340cb3bbcb303862cafdef7537a0d861dc3e5cbfe8ea816e7b"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
   "size": 2570,
   "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
@@ -12498,6 +14913,31 @@
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/visual-verification/SKILL.md",
   "size": 5917,
   "sha256": "ee35b0b17d100e239fa862b48d74c310847547357925627736ccd2121da30cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/win64-native-builds/SKILL.md",
+  "size": 3306,
+  "sha256": "02fec2b4ece06b2c07d402a437e2586427ae5dfdc730493db3e5470f144cc40d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/SKILL.md",
+  "size": 4285,
+  "sha256": "fd1ad32b36cfb04f623b6a2001be7429ad1a9258c7f06d9211698cb5bb4df066"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/git-push-recovery.md",
+  "size": 2263,
+  "sha256": "786971f34ffacabb7c22b7aedbf8948c09358fe87e78a967dba11473ef6703b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
+  "size": 4120,
+  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
+  "size": 2825,
+  "sha256": "f14daa75bb81f60f7fdbcecdd4d9ecf16e01b9fce356c0e21dc228ca60ec5939"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/writing-plans/SKILL.md",
@@ -12670,6 +15110,21 @@
   "sha256": "10f1d65be6e0d2bae2fdfaf44064303a3c0bc4f062a3ec41b832414fe4f8bd54"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/SKILL.md",
+  "size": 697,
+  "sha256": "f2984b5a2e6bc6cbd715d58b62372396a4ff06be8945a078b713f757efec6718"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/fallout4.md",
+  "size": 2263,
+  "sha256": "22d2f6ed770bb68e4cc5e617baa8afb631a4be7eccd4ad726833049391d0cc95"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/bethesda-creation-modding/references/starfield.md",
+  "size": 2171,
+  "sha256": "31ac87a68733937bf5b6f946a275cabf24414ea87d8ff4396f8c233b4d2d028f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/biped-slot-reference/SKILL.md",
   "size": 4191,
   "sha256": "5712e3446f4904116370882cefa94f964dab5111503f605d3b3d344fb50f0edc"
@@ -12723,6 +15178,16 @@
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/bulk-record-jobs/SKILL.md",
   "size": 17529,
   "sha256": "af40488b9a27e394c16e78f393e1e1617fdcff1c1991001b344ddf44fac54fb3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/SKILL.md",
+  "size": 3201,
+  "sha256": "b808bbf03ce18f6b5984c3607ba288d2a1a7daa2335b638d905be3360c2a6306"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/c-game-regression-testing/references/native-c-game-harness-notes.md",
+  "size": 2897,
+  "sha256": "75e51569f8e9e1bc14a16fbe889d5d6b47be4e7e814a8c9afa8b86f99ffbde51"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
@@ -13160,6 +15625,226 @@
   "sha256": "77b5562fa6fa91817dd06099bbb69e054141d08e86dfa1700384dd38051b8b3f"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/SKILL.md",
+  "size": 3692,
+  "sha256": "073c41efee0f45cc8447071df2a478c0dc73839c3b5d5ad3c5f2db933b9e1321"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/ERROR-REGISTRY.json",
+  "size": 10908,
+  "sha256": "d565b9cad11d74bb2b2af599b7b6ec9cabe966c6ed9179ac1d48e6d159e444ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/FRAMEWORK-MATRIX.md",
+  "size": 1670,
+  "sha256": "02e1ae1bac66412668551e6b76e6c49199b66bfa4cdb72219f3592fddda5f01e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/GLOBAL-LESSONS.md",
+  "size": 1251,
+  "sha256": "09e64478b713c0aa149a63434a6c19717ea10f7b7f26b93b5fd944a6d1f611e1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/MODDING-LAWS.md",
+  "size": 2263,
+  "sha256": "51e4c51f47aec18d70870efc8e14462bc8f854c4687194ae0697cec728ce5985"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/OFFICIAL-SOURCES.md",
+  "size": 1816,
+  "sha256": "7ed23887ba36d79f405f2131e9fa6365bd7499529051cdab42e0a21c6c879818"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/arma3.md",
+  "size": 346,
+  "sha256": "f409f3a8783017b430c81528b355e97d72c06509f90d69af8ac46ed167578afd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/baldurs-gate3.md",
+  "size": 2133,
+  "sha256": "8227e279f0db5384c1a6e95d8a538e89c885e452eb78373ceec69bfb0fc2c096"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/bannerlord.md",
+  "size": 2159,
+  "sha256": "b1e36b5c16347f0ad94ab618efdf822036e4f9851e832dba6be8550575ecbb9d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/barotrauma.md",
+  "size": 379,
+  "sha256": "78d7f08fedc252cf8fd04675a6c485ed9528f6e5ab02f95f4a4e535cdba7d2a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/beamng.md",
+  "size": 325,
+  "sha256": "ddff7e5d3762b1f6336a14e8e3d15395287b3764b3b6d403aa6ae3b4649ea425"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cities-skylines2.md",
+  "size": 511,
+  "sha256": "6d90a5b320ee8c6dc0fefa8739d1e2d0d0b3a2119d1f2fff878cd3fdb33bd559"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/cyberpunk2077.md",
+  "size": 2574,
+  "sha256": "9b31094503812ca916457b42efb3a224ed0cb0766f3c78dd38e1a4f14b28592c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dayz.md",
+  "size": 407,
+  "sha256": "3abc46c998b996e410964031ae1dde96553e45636bf088722de243f722b2ffc3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/divinity-original-sin2.md",
+  "size": 345,
+  "sha256": "45d2efee9e1a57c1a3e97b39bd690b7b9a72e81b32806b0bade6847da8e6c2eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/dont-starve-together.md",
+  "size": 370,
+  "sha256": "955158e000f98ac3abc0d33ab88bc8e5d0efcdf14299574494ab2bcaf823d279"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/factorio.md",
+  "size": 514,
+  "sha256": "284f3af0b9fd5befb1b7582f6a8c9eec59e8aa646790cb74d31094d22c9414a8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-assets.md",
+  "size": 1079,
+  "sha256": "4e8ea88fdfda1bf577e5cc8f6fff54a7e9b62a62cddb56ea5717e86ce0be9320"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-code-review.md",
+  "size": 1175,
+  "sha256": "c87ec784f1fd0b819840018c200ee01650b11dedd6c6f3306f887b6422084cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-crash-diagnostics.md",
+  "size": 1185,
+  "sha256": "b972a6fb8964e900af4796242f08b56b272d01ddf564399cae46d0dfddcf9c41"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-development.md",
+  "size": 2564,
+  "sha256": "50bf053f00b278891881c9681fc81ba89bf3dd58c7a8775004e85962f220e219"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-facts.md",
+  "size": 1227,
+  "sha256": "7e012700c032f62b5eb177c26a674e18488175ec991373bc39639ecbed29aba6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-load-order-compatibility.md",
+  "size": 1049,
+  "sha256": "e62cc57d945cfc0bc68cb3d8107ebc9dea6c26baa428037f2975bd1c2e35e330"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-memory.md",
+  "size": 1429,
+  "sha256": "97b04cfb5054e45f7e68d7ab2734d25e98d050ccb7f034765ba9b0267b4ec323"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-native-plugin.md",
+  "size": 1187,
+  "sha256": "88ad50221ddc934c34533ce2df00ee90bc09fdcac65d9b15ffa5bade4228a119"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-packaging.md",
+  "size": 1034,
+  "sha256": "f6a8e9cf52a75ea1dba2aa3a738ba5732d886fa3fe8e44a7e84e491a1bffb444"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-performance-profiling.md",
+  "size": 1039,
+  "sha256": "2018ac39ffabda4ad33b5c60dc7e79032434508859f20ff947c04180725ecbe6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-reworking.md",
+  "size": 2292,
+  "sha256": "7deb5455be2fa41416921cdeeafa2bc3f17c9fa472a80d9a28b3c3b1f3a2b543"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-runtime-patching.md",
+  "size": 1039,
+  "sha256": "a09d21c026351b122f270502bbd496ecfd75279060cc8db4e4804cd6446b9210"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-ship-gate.md",
+  "size": 1263,
+  "sha256": "03a22b7bcf06eeda0487eddd27f55b99bf219b41f9b5a47b9cbe566a8c124ffc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-unknown-game-fallback.md",
+  "size": 1264,
+  "sha256": "ef749567c257f1daa608ee141c58e30e9925b82e4e20554ca98e22fbe72097eb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/game-mod-versioned-workspace.md",
+  "size": 1427,
+  "sha256": "f176cca52d7814fa937eda0054a741ce3c36ff6bec8f3cb89b771c13acffba23"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/garrys-mod.md",
+  "size": 295,
+  "sha256": "1d5d9f05da9ba5279d247075f89d586337ac2a33282a716c55829bec46493a31"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/new_version.py",
+  "size": 3491,
+  "sha256": "be88223a9aa12594c718e183680968101a7efbb9e00ed579bed3ecea0952e4a7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/no-mans-sky.md",
+  "size": 371,
+  "sha256": "a7d11b19f51607971baf83a2ab53842e77f2358258783203bf1b00f73227ea99"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/noita.md",
+  "size": 346,
+  "sha256": "826bd036cab312941682ebc50506d73484317abc7797108339f454121c7778f9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/project-zomboid.md",
+  "size": 430,
+  "sha256": "918ddc4d6af954db51129b780807f33de79a8b780b865b51b43660225f95f0da"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/slay-the-spire.md",
+  "size": 340,
+  "sha256": "4b50082ece665a9b21ca207ce09b5e7f967ff8eae6e16c8521d076ab10fe2955"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/space-engineers.md",
+  "size": 365,
+  "sha256": "347886d51f921ea66cf5f675151b25cc9bf10af33ba6143e3a48089f8d66ff77"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/terraria-tmodloader.md",
+  "size": 475,
+  "sha256": "cb6e251d8721c664ec4be660fdacd95894b20cc4d993ea0b304e462d55afc56f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/validate_project.py",
+  "size": 1872,
+  "sha256": "58e6eedd48ddf0c1552480c7904c2d3e124ca23501dce24e2b46e7da24e453d6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/game-modding/references/witcher3-redkit.md",
+  "size": 2181,
+  "sha256": "f84af6a5792c1b63a5d46d4f01b05917a2758aa4c13895e1974a60b62cfede42"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/SKILL.md",
+  "size": 6580,
+  "sha256": "55655337438e126c7a40912b06f81dd66c2b1993aad5f9c26e71feb4cecc8dcd"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/github-fleet-maintenance/templates/ci-cpp-vcpkg.yml",
+  "size": 1932,
+  "sha256": "3584781acb3ea4e31c2453f6bcc2f827d1be7f13c3fd6c42476bf05edc4b6f60"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/headroom/SKILL.md",
   "size": 4246,
   "sha256": "03ca71d0b6f09f0cc40e56000d0d1f7f8138d49a598584dc960a0225fc15da78"
@@ -13285,9 +15970,139 @@
   "sha256": "b6de91a5a13588b47e92ea6854779aad5c35e9ebcebc37c5dac6a2ca9a53a5b4"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/SKILL.md",
+  "size": 3846,
+  "sha256": "c4d230b02a597cb89aae4e2e53d844ede23ea33d84d8f5b092079b5bccb135fe"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-mcp-upgrade.md",
+  "size": 2938,
+  "sha256": "e1787b2c7ae0aebe16c6de508f0e7564747a8c69bdd832d013209a325ed274c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/codebase-memory-ops.md",
+  "size": 1933,
+  "sha256": "8f66e875f21a14df24bca921ca00fa30791d63dae1923dabfb4a01bb9895aeb5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
+  "size": 2956,
+  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
+  "size": 4292,
+  "sha256": "ead08b1b047aa5a086ebb0e12c260d6aea2a8e37170607e48ba6c0f1b7ed9179"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/hermes-empty-replies.md",
+  "size": 2154,
+  "sha256": "76e6b413a01b9d867778fee629cf1110bb7821e7bf17c0a9ba324068d2b4a28a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
+  "size": 2662,
+  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
+  "size": 6011,
+  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
+  "size": 2929,
+  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
+  "size": 2693,
+  "sha256": "c87d38ced1a626ec71cada670d604cae2fa82266af8cb37aca74bb397eb49a82"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/skyrimforge-verification.md",
+  "size": 3962,
+  "sha256": "2bc152187789d50b2b678b1ee9ea9c8e9ef0d59712551a5ae56254f67d865a7f"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/migration-rollback/SKILL.md",
   "size": 1047,
   "sha256": "0339f6c001469780e821c685fc6708c3f95ac1c0a38c8d2b57975135de819e1c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/SKILL.md",
+  "size": 1578,
+  "sha256": "fee82f20c9d415078c43493ea7e894ca4241ec572d87a8a5ce1896969164265c"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/ECOSYSTEM-CATALOG.md",
+  "size": 1302,
+  "sha256": "ed5dc404681239abbc14843da9965637ea7118981a3d62083ad0330b5e0f1580"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/OVERVIEW.md",
+  "size": 2168,
+  "sha256": "81717b21a0040679db3de3aa5d71044d2d8ecf76eedd13a6df31c322b0549056"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/PORTING-CHECKLIST.md",
+  "size": 609,
+  "sha256": "a1ad3cdb03d7bba3448a99f27f96f09c1973856948d6adc36727e66fa969c1ef"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-content-datagen-worldgen.md",
+  "size": 742,
+  "sha256": "cf142352bee3d4922e4fe7d6003e64b57cb03b255c24e44d9166e05fc2a0deb8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-data-components-attachments.md",
+  "size": 846,
+  "sha256": "736cda78a289d8b0d687ba18e710fac272f20cea8066c88fa1942e0049f18020"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-fabric-quilt.md",
+  "size": 749,
+  "sha256": "3c7f06e003d38b91ae56ee07bb2a7279d079868873046b08fc5f9ce40ad1d62d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-forge-neoforge.md",
+  "size": 789,
+  "sha256": "5ca9f4e70c7573826ff9961d22564317981caaf99c3c6b8fe0ead0ff91a985b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-library-api-integrations.md",
+  "size": 1419,
+  "sha256": "760e6bc748347b7c2858f13b5c86e98c37a430d1d061a67599da16f5826da84a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-mixins-access-control.md",
+  "size": 719,
+  "sha256": "57fcae92c37f9dd961d02057e27370da20a5fef7205b0983cd2fdc5ada4fd8a1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-modpack-scripting.md",
+  "size": 609,
+  "sha256": "b2c7fd43450ceae2ac2c3a8e2fa9b40a4babaf1a239de41d9def733fe126d963"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-multiloader-architectury.md",
+  "size": 692,
+  "sha256": "fd279021835496ebb87599ad29387b439eb0d897b2fade087d9676e9aec7f6e3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-networking-persistence.md",
+  "size": 507,
+  "sha256": "d90d66480f923ea9b97c3573bb94f2e8d1ddb46a1037cb5176d5b7039a74f5a5"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-rendering-animation.md",
+  "size": 662,
+  "sha256": "8f56d4f4c8469dddd1c3777f5cf8d4ac9439bd180fdf22d27dae1fca6c0eedff"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minecraft-modding/references/minecraft-testing-porting-release.md",
+  "size": 613,
+  "sha256": "fd9b9d8752a03c8ddc72045cdf36235f7a8baab3176373283e8be33e95ee8273"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/minimal-reproducer/SKILL.md",
@@ -14325,6 +17140,41 @@
   "sha256": "3d58ca41ff98a4fee8a5d62e0a4dfe21e2cffb1d27547fd95ffacfc7ffac5a31"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/SKILL.md",
+  "size": 942,
+  "sha256": "37a10e40fed8f0cffada7cd2e988662b0a97d554587cfe47d15bf5bd05d8d78a"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/OVERVIEW.md",
+  "size": 981,
+  "sha256": "60db5a6accdacf937d9b27ac49ba54268e82b96ecbd713f3bddc6fa26d934b6e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/ck3.md",
+  "size": 492,
+  "sha256": "f0ae99350a3af22170acb95823f63bef2ba0e00f8d42b78e254dda5f40abb78f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/eu4.md",
+  "size": 471,
+  "sha256": "2f56b8542c995cd9a85584d9d67ee3be980064c1fa7f0422af59138883ab9450"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/hoi4.md",
+  "size": 487,
+  "sha256": "0a693f473a613d3cffc375dcfc43a934fbc82b9a3112fc8e3c84a83159197529"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/stellaris.md",
+  "size": 605,
+  "sha256": "4d54c9d1af73121607939fdcdbc5118a48678470017958255efc58cfa675e5cc"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/paradox-modding/references/victoria3.md",
+  "size": 488,
+  "sha256": "d2d85003d2b4a3eeaa79379a9a201ecefe81623c40daa2d7a030aaf2a2a35a6e"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/partial-success-accounting/SKILL.md",
   "size": 934,
   "sha256": "5c454b9b95d1992c802ba5efd29f1e464a8d89fc66c8d0bd8002476c12d7e814"
@@ -14405,6 +17255,11 @@
   "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/release-checklist/references/docs-heavy-repo-sweep.md",
+  "size": 2726,
+  "sha256": "b2437913a9a5ccbdd42bd3cbe410446701f679222f301995797cce43ef6e16af"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/reproducible-builds/SKILL.md",
   "size": 1119,
   "sha256": "2531c402cb94aca0d3fc2e84fa5b4c4d328c5f88c7704e96cae54270423fa070"
@@ -14438,6 +17293,96 @@
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/retry-idempotency/SKILL.md",
   "size": 1048,
   "sha256": "61db5bdbd46d3fbb4a347d059e3df08bec9fd77ade0f0b91d7761a86ded1d349"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/SKILL.md",
+  "size": 3316,
+  "sha256": "6f21a80a11ee7dca91785af0851b833ecacdc738f49c820d855843e310252de4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/api-docs-lookup.md",
+  "size": 953,
+  "sha256": "8ee2e42a9ca5cded7c32c92853bdac62a2a16dd2bf5a4af039bf7fda2465a76e"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/architecture.md",
+  "size": 2222,
+  "sha256": "2d1dfd06960e1ca23b147d31d8379266aac24924184dd7ce25c0712f95609307"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assets.md",
+  "size": 1230,
+  "sha256": "b76868b86e4d2b06a4a3f290ea8e80fd758771f6878d8f64b1cd4d743cfda71b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/assistant-skills.md",
+  "size": 1392,
+  "sha256": "a3ae2692fc3481d4350e53e12715e1b5f6c43c292783f5f480f3776df679bc28"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/development-loop.md",
+  "size": 2065,
+  "sha256": "821e03bed8304b8e97e1e7e592c32336f723c038c5714f021754e7e70f9ba981"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/game-design.md",
+  "size": 980,
+  "sha256": "d1eb1c4078ece0204cdd644d5442ad853aa466c03e4beb2590280b7d562bd288"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/performance.md",
+  "size": 1473,
+  "sha256": "aa0bdbf07cac40d4bfa0cd92fe83149dfa8809bd3b9846eba76d0db9383d7746"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/persistence.md",
+  "size": 1938,
+  "sha256": "bc7851dea4c8317fd72f39af1b743b16fec87e61d838d2e681c02842ec4a3af6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/security-networking.md",
+  "size": 2434,
+  "sha256": "3493d5346efa8c39a93dbf70644837eb905953aabe692a8fec184c3c40561122"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/sharp-edges.md",
+  "size": 1891,
+  "sha256": "709453e2d1fa7e06d65f1e65308bc3fa2b7cc9ee293b0df95ba190cbea3ff4cf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/studio-mcp.md",
+  "size": 2905,
+  "sha256": "16d28b9ac59bd6c8a6f3c56ce97d19626b0f87f060377fdd467df627e9e98203"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/testing-debugging.md",
+  "size": 2203,
+  "sha256": "6c14d832a0f37f0f621638f2e267e04e7ef15d403a90fcd488b889ca71cd99bb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/tooling.md",
+  "size": 1391,
+  "sha256": "a78157b4425baad11790d8003818b5fe59f37e0c22fa1b9708642eabb714a31f"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/roblox-game-development/references/ui-mobile.md",
+  "size": 1615,
+  "sha256": "ea25522f1f24afadd2d08b64a6b92979a7a356017725bbb49bf5e0f4a44e772d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/SKILL.md",
+  "size": 5946,
+  "sha256": "5ed1d22753b12a06453189948b684a53d201cdfc823e4d270daefcc9625890de"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/formats.md",
+  "size": 3527,
+  "sha256": "90a1380c6acd8454760d81f0d3fbce77d456d47209054f683abcdf480b66d446"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/saints-row-modding/references/srforge-project.md",
+  "size": 2290,
+  "sha256": "6a1431ab34979eaecac409648a71be27c56b1932228906fdb8aaeb2e1a3863f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/schema-evolution/SKILL.md",
@@ -15250,6 +18195,86 @@
   "sha256": "85907b4c239c24e1099c2aa1a3d10261f79512f9ea795f753f6783e19a04319b"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/SKILL.md",
+  "size": 1262,
+  "sha256": "00bd45a1d7012f6c3dd42618fc266077f94c269f1d84e8db87fb72903c31eb52"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/OVERVIEW.md",
+  "size": 2239,
+  "sha256": "42f3681a90f37f3881e43aecd118d6e974b89c38bd2fc7753cdffbceb4ab4427"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/dotnet-harmony-patching.md",
+  "size": 2129,
+  "sha256": "9db38102a78410eee959d30952dcc5279194bf32b3e1930b2c2f07b8f866f276"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/kerbal-space-program.md",
+  "size": 537,
+  "sha256": "23641795d3e82d627db3da65850d7d8b888c635b2e3944b6812c57573de646f1"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/lethal-company.md",
+  "size": 416,
+  "sha256": "9b4f2293d0ed6593cb1d85afcf6d42e2d407c73eaa97176684213fab1048a997"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/oxygen-not-included.md",
+  "size": 419,
+  "sha256": "9d230a8dbe1c820496e071e80e88b857dba8e255175ec5b202fd1ac84b1d3964"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/rimworld-harmony.md",
+  "size": 1119,
+  "sha256": "6dfb054357aac1e3d39c32e66463b814c6d26b777a7318d49bfc0b5c979ddbd8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/risk-of-rain2.md",
+  "size": 2158,
+  "sha256": "69d9fd0ba4079a8c3f0595129a6a197908f0d80073334ec15dfd10a6a4edd212"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/stardew-valley.md",
+  "size": 2122,
+  "sha256": "797ccda6656f16b35c648064c7df676719b54755c7b2d9aa45a893dcdbfabca9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/subnautica-nautilus.md",
+  "size": 355,
+  "sha256": "d734e234228aa76427a6f806feefd8c2d365b3bc7e7e5c7a8839e1c6edade11b"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unity-mod-frameworks/references/valheim-jotunn.md",
+  "size": 347,
+  "sha256": "7e58e38b1dfca32d904e5a88411beeebb8fa7bb62fa9639673843f19756f0c19"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/SKILL.md",
+  "size": 839,
+  "sha256": "60d36adfdb41801f02ad2029c80eba15822e18725151ff8cc3d2ee843d760d87"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/OVERVIEW.md",
+  "size": 2188,
+  "sha256": "b2e5bbb5788ad3ecfddbbeec05c3608bb7dcca9e235469fd213e2cbe820c7bc8"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/palworld.md",
+  "size": 2279,
+  "sha256": "8084d7c0f0815706c5d5a9110afe97947f4b29eae73da821cc5a5389734fb562"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/satisfactory-sml.md",
+  "size": 2191,
+  "sha256": "acd8f759a36e99c581487be592f452a11e79bec68a9a1c34efcf030fd8196a79"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unreal-mod-frameworks/references/xcom2.md",
+  "size": 422,
+  "sha256": "b9abdba9966bca340cb3bbcb303862cafdef7537a0d861dc3e5cbfe8ea816e7b"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/unrestraint-packs/SKILL.md",
   "size": 2570,
   "sha256": "3ede73c1956acf050826b8c7f7870ed17dffd545226c599b378f788f6d7133f0"
@@ -15308,6 +18333,31 @@
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/visual-verification/SKILL.md",
   "size": 5917,
   "sha256": "ee35b0b17d100e239fa862b48d74c310847547357925627736ccd2121da30cf9"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/win64-native-builds/SKILL.md",
+  "size": 3306,
+  "sha256": "02fec2b4ece06b2c07d402a437e2586427ae5dfdc730493db3e5470f144cc40d"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/SKILL.md",
+  "size": 4285,
+  "sha256": "fd1ad32b36cfb04f623b6a2001be7429ad1a9258c7f06d9211698cb5bb4df066"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/git-push-recovery.md",
+  "size": 2263,
+  "sha256": "786971f34ffacabb7c22b7aedbf8948c09358fe87e78a967dba11473ef6703b6"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
+  "size": 4120,
+  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
+  "size": 2825,
+  "sha256": "f14daa75bb81f60f7fdbcecdd4d9ecf16e01b9fce356c0e21dc228ca60ec5939"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/writing-plans/SKILL.md",
@@ -15457,12 +18507,12 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 27492,
-  "sha256": "1655f2918910955f61d4c058429d752be2e5a30ebbbd8a59e40847fcb677c80d"
+  "sha256": "90237a504c45feec468e6bf0822f410cd687eee4c4ce614e3daedcbf5862dd4c"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1492,
-  "sha256": "21f61c89dfd5dcaed32224005b774310ee1e21a9e7f712edeca90907ebf76383"
+  "sha256": "70055247282077cbd8a94d3bea0363b9a355b53a97e3b1aebc1391656e01044b"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -15476,8 +18526,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/RETIRED-SKILLS.json",
-  "size": 1176,
-  "sha256": "3782dcd59dd6bf71dcc45032eb7ac97ff114ccb0cf8934babf8a24e91525fda2"
+  "size": 8153,
+  "sha256": "6e9749b567db6edf6be3a340844b9d0606819d8c30ca30e9d3ce9ad241cecf28"
  },
  {
   "path": "BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md",
@@ -18346,8 +21396,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 85551,
-  "sha256": "665d432ff845daef13863357cbb88956195526d866d7a9fc179854d0876df3f3"
+  "size": 88582,
+  "sha256": "04b886a2da692390e450b572bcc138091edad372ddcfb6600422855106635e45"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -18422,7 +21472,7 @@
  {
   "path": "INSTALL-AIO.ps1",
   "size": 111891,
-  "sha256": "436786d5594247c6f3252947a96a06c5a6d7a43471fa5c4ec0e841b791b48f10"
+  "sha256": "d07094bc5e8481550d35544af589ae374891fc47096019685c2b6a9c90ef884a"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -18471,8 +21521,8 @@
  },
  {
   "path": "README.md",
-  "size": 54352,
-  "sha256": "d1c77a288dc19ad841d37ae87d00da8f2d6c938f2885f73c4b596fd455ff4061"
+  "size": 54792,
+  "sha256": "fe83667cbe7726443ddf45e6c58041cc54cdad1d548161c8e08839f0efde351f"
  },
  {
   "path": "SECURITY.md",
@@ -18482,12 +21532,12 @@
  {
   "path": "START-HERE.bat",
   "size": 709,
-  "sha256": "8b710dca09f4d612663afee2086bd7c19b4d4aea0e630aa4f34878c1ffab68e4"
+  "sha256": "3dc7bbc067f108be7390ff42302ea0f5ff4f9f01f2ec5d8dcbf749a497558d1a"
  },
  {
   "path": "START-HERE.txt",
   "size": 9681,
-  "sha256": "ba378c4736a4855be7837fd3d90e9c3c09fc99a97bfda524c6b3504437a32ab9"
+  "sha256": "5a143ba834d454efef79e28ffd36aebe5d63d9e07131a8aad4c5f694e048ea82"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -18681,8 +21731,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 136633,
-  "sha256": "ff17d69dffebc4b0c4f981af278990336e486492c5853f95dee8ed9024d0f29d"
+  "size": 149011,
+  "sha256": "f5c69bdcf1fae7143ca382ca7a936f1ad0637f9985ae8261bc4fd2cce339eaa1"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -18781,8 +21831,8 @@
  },
  {
   "path": "TOOLS/Test-Installed-State.ps1",
-  "size": 24633,
-  "sha256": "4cfe521d45bdb2cc2491338ad0fbc72cd9a2fe79ce4145578998af6831c5fd9e"
+  "size": 24863,
+  "sha256": "da05daee87a62d8613d0fe9b1376f151a196feaa65b8cbff95a40d1e1f8637e8"
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
@@ -18841,8 +21891,8 @@
  },
  {
   "path": "TOOLS/generate_retired_skills.py",
-  "size": 4516,
-  "sha256": "3afe2e8795d243376b3ad6c8537eeffa175de7ff75ab2afa822d82ae6a5b55cd"
+  "size": 9026,
+  "sha256": "fcb6430a0f28a52b10e36b18e9d3318e238528235aca990a2146169743d2cec3"
  },
  {
   "path": "TOOLS/hooks/assumption_gate.py",
@@ -18952,12 +22002,12 @@
  {
   "path": "VALIDATION.json",
   "size": 1342,
-  "sha256": "2c2270df29db72d372f6e95094fe74e2b79e6099eb2e40c8b9689572b821528d"
+  "sha256": "7c48a0579e2fdb8afc60c589f9a4e8f0cecfe84b857436cdb677544c214e8d00"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "a88d01cd7571287eecf68851b50a141ad14656110ba6f0ce5089feea8806a6e2"
+  "sha256": "c3a5f26696489698131302c946b5e7f9adaa4cc62152a9a96d0bf45af539d6fc"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -19020,6 +22070,21 @@
   "sha256": "10f1d65be6e0d2bae2fdfaf44064303a3c0bc4f062a3ec41b832414fe4f8bd54"
  },
  {
+  "path": "_CANONICAL-SKILLS/bethesda-creation-modding/SKILL.md",
+  "size": 697,
+  "sha256": "f2984b5a2e6bc6cbd715d58b62372396a4ff06be8945a078b713f757efec6718"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/bethesda-creation-modding/references/fallout4.md",
+  "size": 2263,
+  "sha256": "22d2f6ed770bb68e4cc5e617baa8afb631a4be7eccd4ad726833049391d0cc95"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/bethesda-creation-modding/references/starfield.md",
+  "size": 2171,
+  "sha256": "31ac87a68733937bf5b6f946a275cabf24414ea87d8ff4396f8c233b4d2d028f"
+ },
+ {
   "path": "_CANONICAL-SKILLS/biped-slot-reference/SKILL.md",
   "size": 4191,
   "sha256": "5712e3446f4904116370882cefa94f964dab5111503f605d3b3d344fb50f0edc"
@@ -19073,6 +22138,16 @@
   "path": "_CANONICAL-SKILLS/bulk-record-jobs/SKILL.md",
   "size": 17529,
   "sha256": "af40488b9a27e394c16e78f393e1e1617fdcff1c1991001b344ddf44fac54fb3"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/c-game-regression-testing/SKILL.md",
+  "size": 3201,
+  "sha256": "b808bbf03ce18f6b5984c3607ba288d2a1a7daa2335b638d905be3360c2a6306"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/c-game-regression-testing/references/native-c-game-harness-notes.md",
+  "size": 2897,
+  "sha256": "75e51569f8e9e1bc14a16fbe889d5d6b47be4e7e814a8c9afa8b86f99ffbde51"
  },
  {
   "path": "_CANONICAL-SKILLS/capability-profiles/SKILL.md",
@@ -19510,6 +22585,226 @@
   "sha256": "77b5562fa6fa91817dd06099bbb69e054141d08e86dfa1700384dd38051b8b3f"
  },
  {
+  "path": "_CANONICAL-SKILLS/game-modding/SKILL.md",
+  "size": 3692,
+  "sha256": "073c41efee0f45cc8447071df2a478c0dc73839c3b5d5ad3c5f2db933b9e1321"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/ERROR-REGISTRY.json",
+  "size": 10908,
+  "sha256": "d565b9cad11d74bb2b2af599b7b6ec9cabe966c6ed9179ac1d48e6d159e444ef"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/FRAMEWORK-MATRIX.md",
+  "size": 1670,
+  "sha256": "02e1ae1bac66412668551e6b76e6c49199b66bfa4cdb72219f3592fddda5f01e"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/GLOBAL-LESSONS.md",
+  "size": 1251,
+  "sha256": "09e64478b713c0aa149a63434a6c19717ea10f7b7f26b93b5fd944a6d1f611e1"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/MODDING-LAWS.md",
+  "size": 2263,
+  "sha256": "51e4c51f47aec18d70870efc8e14462bc8f854c4687194ae0697cec728ce5985"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/OFFICIAL-SOURCES.md",
+  "size": 1816,
+  "sha256": "7ed23887ba36d79f405f2131e9fa6365bd7499529051cdab42e0a21c6c879818"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/arma3.md",
+  "size": 346,
+  "sha256": "f409f3a8783017b430c81528b355e97d72c06509f90d69af8ac46ed167578afd"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/baldurs-gate3.md",
+  "size": 2133,
+  "sha256": "8227e279f0db5384c1a6e95d8a538e89c885e452eb78373ceec69bfb0fc2c096"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/bannerlord.md",
+  "size": 2159,
+  "sha256": "b1e36b5c16347f0ad94ab618efdf822036e4f9851e832dba6be8550575ecbb9d"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/barotrauma.md",
+  "size": 379,
+  "sha256": "78d7f08fedc252cf8fd04675a6c485ed9528f6e5ab02f95f4a4e535cdba7d2a1"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/beamng.md",
+  "size": 325,
+  "sha256": "ddff7e5d3762b1f6336a14e8e3d15395287b3764b3b6d403aa6ae3b4649ea425"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/cities-skylines2.md",
+  "size": 511,
+  "sha256": "6d90a5b320ee8c6dc0fefa8739d1e2d0d0b3a2119d1f2fff878cd3fdb33bd559"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/cyberpunk2077.md",
+  "size": 2574,
+  "sha256": "9b31094503812ca916457b42efb3a224ed0cb0766f3c78dd38e1a4f14b28592c"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/dayz.md",
+  "size": 407,
+  "sha256": "3abc46c998b996e410964031ae1dde96553e45636bf088722de243f722b2ffc3"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/divinity-original-sin2.md",
+  "size": 345,
+  "sha256": "45d2efee9e1a57c1a3e97b39bd690b7b9a72e81b32806b0bade6847da8e6c2eb"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/dont-starve-together.md",
+  "size": 370,
+  "sha256": "955158e000f98ac3abc0d33ab88bc8e5d0efcdf14299574494ab2bcaf823d279"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/factorio.md",
+  "size": 514,
+  "sha256": "284f3af0b9fd5befb1b7582f6a8c9eec59e8aa646790cb74d31094d22c9414a8"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-assets.md",
+  "size": 1079,
+  "sha256": "4e8ea88fdfda1bf577e5cc8f6fff54a7e9b62a62cddb56ea5717e86ce0be9320"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-code-review.md",
+  "size": 1175,
+  "sha256": "c87ec784f1fd0b819840018c200ee01650b11dedd6c6f3306f887b6422084cf9"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-crash-diagnostics.md",
+  "size": 1185,
+  "sha256": "b972a6fb8964e900af4796242f08b56b272d01ddf564399cae46d0dfddcf9c41"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-development.md",
+  "size": 2564,
+  "sha256": "50bf053f00b278891881c9681fc81ba89bf3dd58c7a8775004e85962f220e219"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-facts.md",
+  "size": 1227,
+  "sha256": "7e012700c032f62b5eb177c26a674e18488175ec991373bc39639ecbed29aba6"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-load-order-compatibility.md",
+  "size": 1049,
+  "sha256": "e62cc57d945cfc0bc68cb3d8107ebc9dea6c26baa428037f2975bd1c2e35e330"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-memory.md",
+  "size": 1429,
+  "sha256": "97b04cfb5054e45f7e68d7ab2734d25e98d050ccb7f034765ba9b0267b4ec323"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-native-plugin.md",
+  "size": 1187,
+  "sha256": "88ad50221ddc934c34533ce2df00ee90bc09fdcac65d9b15ffa5bade4228a119"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-packaging.md",
+  "size": 1034,
+  "sha256": "f6a8e9cf52a75ea1dba2aa3a738ba5732d886fa3fe8e44a7e84e491a1bffb444"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-performance-profiling.md",
+  "size": 1039,
+  "sha256": "2018ac39ffabda4ad33b5c60dc7e79032434508859f20ff947c04180725ecbe6"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-reworking.md",
+  "size": 2292,
+  "sha256": "7deb5455be2fa41416921cdeeafa2bc3f17c9fa472a80d9a28b3c3b1f3a2b543"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-runtime-patching.md",
+  "size": 1039,
+  "sha256": "a09d21c026351b122f270502bbd496ecfd75279060cc8db4e4804cd6446b9210"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-ship-gate.md",
+  "size": 1263,
+  "sha256": "03a22b7bcf06eeda0487eddd27f55b99bf219b41f9b5a47b9cbe566a8c124ffc"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-unknown-game-fallback.md",
+  "size": 1264,
+  "sha256": "ef749567c257f1daa608ee141c58e30e9925b82e4e20554ca98e22fbe72097eb"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/game-mod-versioned-workspace.md",
+  "size": 1427,
+  "sha256": "f176cca52d7814fa937eda0054a741ce3c36ff6bec8f3cb89b771c13acffba23"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/garrys-mod.md",
+  "size": 295,
+  "sha256": "1d5d9f05da9ba5279d247075f89d586337ac2a33282a716c55829bec46493a31"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/new_version.py",
+  "size": 3491,
+  "sha256": "be88223a9aa12594c718e183680968101a7efbb9e00ed579bed3ecea0952e4a7"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/no-mans-sky.md",
+  "size": 371,
+  "sha256": "a7d11b19f51607971baf83a2ab53842e77f2358258783203bf1b00f73227ea99"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/noita.md",
+  "size": 346,
+  "sha256": "826bd036cab312941682ebc50506d73484317abc7797108339f454121c7778f9"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/project-zomboid.md",
+  "size": 430,
+  "sha256": "918ddc4d6af954db51129b780807f33de79a8b780b865b51b43660225f95f0da"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/slay-the-spire.md",
+  "size": 340,
+  "sha256": "4b50082ece665a9b21ca207ce09b5e7f967ff8eae6e16c8521d076ab10fe2955"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/space-engineers.md",
+  "size": 365,
+  "sha256": "347886d51f921ea66cf5f675151b25cc9bf10af33ba6143e3a48089f8d66ff77"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/terraria-tmodloader.md",
+  "size": 475,
+  "sha256": "cb6e251d8721c664ec4be660fdacd95894b20cc4d993ea0b304e462d55afc56f"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/validate_project.py",
+  "size": 1872,
+  "sha256": "58e6eedd48ddf0c1552480c7904c2d3e124ca23501dce24e2b46e7da24e453d6"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/game-modding/references/witcher3-redkit.md",
+  "size": 2181,
+  "sha256": "f84af6a5792c1b63a5d46d4f01b05917a2758aa4c13895e1974a60b62cfede42"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/github-fleet-maintenance/SKILL.md",
+  "size": 6580,
+  "sha256": "55655337438e126c7a40912b06f81dd66c2b1993aad5f9c26e71feb4cecc8dcd"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/github-fleet-maintenance/templates/ci-cpp-vcpkg.yml",
+  "size": 1932,
+  "sha256": "3584781acb3ea4e31c2453f6bcc2f827d1be7f13c3fd6c42476bf05edc4b6f60"
+ },
+ {
   "path": "_CANONICAL-SKILLS/headroom/SKILL.md",
   "size": 4246,
   "sha256": "03ca71d0b6f09f0cc40e56000d0d1f7f8138d49a598584dc960a0225fc15da78"
@@ -19635,9 +22930,139 @@
   "sha256": "c48ecf8ceead509c4c3f8e6d58d7e473369292c5f6eee9a03957bf2ea20187a7"
  },
  {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/SKILL.md",
+  "size": 3846,
+  "sha256": "c4d230b02a597cb89aae4e2e53d844ede23ea33d84d8f5b092079b5bccb135fe"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/codebase-memory-mcp-upgrade.md",
+  "size": 2938,
+  "sha256": "e1787b2c7ae0aebe16c6de508f0e7564747a8c69bdd832d013209a325ed274c4"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/codebase-memory-ops.md",
+  "size": 1933,
+  "sha256": "8f66e875f21a14df24bca921ca00fa30791d63dae1923dabfb4a01bb9895aeb5"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/grok-mcp.md",
+  "size": 2956,
+  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/headless-browser-verification.md",
+  "size": 4292,
+  "sha256": "ead08b1b047aa5a086ebb0e12c260d6aea2a8e37170607e48ba6c0f1b7ed9179"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/hermes-empty-replies.md",
+  "size": 2154,
+  "sha256": "76e6b413a01b9d867778fee629cf1110bb7821e7bf17c0a9ba324068d2b4a28a"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
+  "size": 2662,
+  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/provider-cli-ops.md",
+  "size": 6011,
+  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/providers-windows.md",
+  "size": 2929,
+  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/roblox-studio-mcp.md",
+  "size": 2693,
+  "sha256": "c87d38ced1a626ec71cada670d604cae2fa82266af8cb37aca74bb397eb49a82"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/skyrimforge-verification.md",
+  "size": 3962,
+  "sha256": "2bc152187789d50b2b678b1ee9ea9c8e9ef0d59712551a5ae56254f67d865a7f"
+ },
+ {
   "path": "_CANONICAL-SKILLS/migration-rollback/SKILL.md",
   "size": 1047,
   "sha256": "0339f6c001469780e821c685fc6708c3f95ac1c0a38c8d2b57975135de819e1c"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/SKILL.md",
+  "size": 1578,
+  "sha256": "fee82f20c9d415078c43493ea7e894ca4241ec572d87a8a5ce1896969164265c"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/ECOSYSTEM-CATALOG.md",
+  "size": 1302,
+  "sha256": "ed5dc404681239abbc14843da9965637ea7118981a3d62083ad0330b5e0f1580"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/OVERVIEW.md",
+  "size": 2168,
+  "sha256": "81717b21a0040679db3de3aa5d71044d2d8ecf76eedd13a6df31c322b0549056"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/PORTING-CHECKLIST.md",
+  "size": 609,
+  "sha256": "a1ad3cdb03d7bba3448a99f27f96f09c1973856948d6adc36727e66fa969c1ef"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-content-datagen-worldgen.md",
+  "size": 742,
+  "sha256": "cf142352bee3d4922e4fe7d6003e64b57cb03b255c24e44d9166e05fc2a0deb8"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-data-components-attachments.md",
+  "size": 846,
+  "sha256": "736cda78a289d8b0d687ba18e710fac272f20cea8066c88fa1942e0049f18020"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-fabric-quilt.md",
+  "size": 749,
+  "sha256": "3c7f06e003d38b91ae56ee07bb2a7279d079868873046b08fc5f9ce40ad1d62d"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-forge-neoforge.md",
+  "size": 789,
+  "sha256": "5ca9f4e70c7573826ff9961d22564317981caaf99c3c6b8fe0ead0ff91a985b6"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-library-api-integrations.md",
+  "size": 1419,
+  "sha256": "760e6bc748347b7c2858f13b5c86e98c37a430d1d061a67599da16f5826da84a"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-mixins-access-control.md",
+  "size": 719,
+  "sha256": "57fcae92c37f9dd961d02057e27370da20a5fef7205b0983cd2fdc5ada4fd8a1"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-modpack-scripting.md",
+  "size": 609,
+  "sha256": "b2c7fd43450ceae2ac2c3a8e2fa9b40a4babaf1a239de41d9def733fe126d963"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-multiloader-architectury.md",
+  "size": 692,
+  "sha256": "fd279021835496ebb87599ad29387b439eb0d897b2fade087d9676e9aec7f6e3"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-networking-persistence.md",
+  "size": 507,
+  "sha256": "d90d66480f923ea9b97c3573bb94f2e8d1ddb46a1037cb5176d5b7039a74f5a5"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-rendering-animation.md",
+  "size": 662,
+  "sha256": "8f56d4f4c8469dddd1c3777f5cf8d4ac9439bd180fdf22d27dae1fca6c0eedff"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/minecraft-modding/references/minecraft-testing-porting-release.md",
+  "size": 613,
+  "sha256": "fd9b9d8752a03c8ddc72045cdf36235f7a8baab3176373283e8be33e95ee8273"
  },
  {
   "path": "_CANONICAL-SKILLS/minimal-reproducer/SKILL.md",
@@ -20675,6 +24100,41 @@
   "sha256": "3d58ca41ff98a4fee8a5d62e0a4dfe21e2cffb1d27547fd95ffacfc7ffac5a31"
  },
  {
+  "path": "_CANONICAL-SKILLS/paradox-modding/SKILL.md",
+  "size": 942,
+  "sha256": "37a10e40fed8f0cffada7cd2e988662b0a97d554587cfe47d15bf5bd05d8d78a"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/paradox-modding/references/OVERVIEW.md",
+  "size": 981,
+  "sha256": "60db5a6accdacf937d9b27ac49ba54268e82b96ecbd713f3bddc6fa26d934b6e"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/paradox-modding/references/ck3.md",
+  "size": 492,
+  "sha256": "f0ae99350a3af22170acb95823f63bef2ba0e00f8d42b78e254dda5f40abb78f"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/paradox-modding/references/eu4.md",
+  "size": 471,
+  "sha256": "2f56b8542c995cd9a85584d9d67ee3be980064c1fa7f0422af59138883ab9450"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/paradox-modding/references/hoi4.md",
+  "size": 487,
+  "sha256": "0a693f473a613d3cffc375dcfc43a934fbc82b9a3112fc8e3c84a83159197529"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/paradox-modding/references/stellaris.md",
+  "size": 605,
+  "sha256": "4d54c9d1af73121607939fdcdbc5118a48678470017958255efc58cfa675e5cc"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/paradox-modding/references/victoria3.md",
+  "size": 488,
+  "sha256": "d2d85003d2b4a3eeaa79379a9a201ecefe81623c40daa2d7a030aaf2a2a35a6e"
+ },
+ {
   "path": "_CANONICAL-SKILLS/partial-success-accounting/SKILL.md",
   "size": 934,
   "sha256": "5c454b9b95d1992c802ba5efd29f1e464a8d89fc66c8d0bd8002476c12d7e814"
@@ -20755,6 +24215,11 @@
   "sha256": "cc4b16b04b1c8e4eb583be3a8bc1ebcd8354c2a1b1be980425f3b712ee868cf0"
  },
  {
+  "path": "_CANONICAL-SKILLS/release-checklist/references/docs-heavy-repo-sweep.md",
+  "size": 2726,
+  "sha256": "b2437913a9a5ccbdd42bd3cbe410446701f679222f301995797cce43ef6e16af"
+ },
+ {
   "path": "_CANONICAL-SKILLS/reproducible-builds/SKILL.md",
   "size": 1119,
   "sha256": "2531c402cb94aca0d3fc2e84fa5b4c4d328c5f88c7704e96cae54270423fa070"
@@ -20788,6 +24253,96 @@
   "path": "_CANONICAL-SKILLS/retry-idempotency/SKILL.md",
   "size": 1048,
   "sha256": "61db5bdbd46d3fbb4a347d059e3df08bec9fd77ade0f0b91d7761a86ded1d349"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/SKILL.md",
+  "size": 3316,
+  "sha256": "6f21a80a11ee7dca91785af0851b833ecacdc738f49c820d855843e310252de4"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/api-docs-lookup.md",
+  "size": 953,
+  "sha256": "8ee2e42a9ca5cded7c32c92853bdac62a2a16dd2bf5a4af039bf7fda2465a76e"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/architecture.md",
+  "size": 2222,
+  "sha256": "2d1dfd06960e1ca23b147d31d8379266aac24924184dd7ce25c0712f95609307"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/assets.md",
+  "size": 1230,
+  "sha256": "b76868b86e4d2b06a4a3f290ea8e80fd758771f6878d8f64b1cd4d743cfda71b"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/assistant-skills.md",
+  "size": 1392,
+  "sha256": "a3ae2692fc3481d4350e53e12715e1b5f6c43c292783f5f480f3776df679bc28"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/development-loop.md",
+  "size": 2065,
+  "sha256": "821e03bed8304b8e97e1e7e592c32336f723c038c5714f021754e7e70f9ba981"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/game-design.md",
+  "size": 980,
+  "sha256": "d1eb1c4078ece0204cdd644d5442ad853aa466c03e4beb2590280b7d562bd288"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/performance.md",
+  "size": 1473,
+  "sha256": "aa0bdbf07cac40d4bfa0cd92fe83149dfa8809bd3b9846eba76d0db9383d7746"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/persistence.md",
+  "size": 1938,
+  "sha256": "bc7851dea4c8317fd72f39af1b743b16fec87e61d838d2e681c02842ec4a3af6"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/security-networking.md",
+  "size": 2434,
+  "sha256": "3493d5346efa8c39a93dbf70644837eb905953aabe692a8fec184c3c40561122"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/sharp-edges.md",
+  "size": 1891,
+  "sha256": "709453e2d1fa7e06d65f1e65308bc3fa2b7cc9ee293b0df95ba190cbea3ff4cf"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/studio-mcp.md",
+  "size": 2905,
+  "sha256": "16d28b9ac59bd6c8a6f3c56ce97d19626b0f87f060377fdd467df627e9e98203"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/testing-debugging.md",
+  "size": 2203,
+  "sha256": "6c14d832a0f37f0f621638f2e267e04e7ef15d403a90fcd488b889ca71cd99bb"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/tooling.md",
+  "size": 1391,
+  "sha256": "a78157b4425baad11790d8003818b5fe59f37e0c22fa1b9708642eabb714a31f"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/roblox-game-development/references/ui-mobile.md",
+  "size": 1615,
+  "sha256": "ea25522f1f24afadd2d08b64a6b92979a7a356017725bbb49bf5e0f4a44e772d"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/saints-row-modding/SKILL.md",
+  "size": 5946,
+  "sha256": "5ed1d22753b12a06453189948b684a53d201cdfc823e4d270daefcc9625890de"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/saints-row-modding/references/formats.md",
+  "size": 3527,
+  "sha256": "90a1380c6acd8454760d81f0d3fbce77d456d47209054f683abcdf480b66d446"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/saints-row-modding/references/srforge-project.md",
+  "size": 2290,
+  "sha256": "6a1431ab34979eaecac409648a71be27c56b1932228906fdb8aaeb2e1a3863f1"
  },
  {
   "path": "_CANONICAL-SKILLS/schema-evolution/SKILL.md",
@@ -21600,6 +25155,86 @@
   "sha256": "85907b4c239c24e1099c2aa1a3d10261f79512f9ea795f753f6783e19a04319b"
  },
  {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/SKILL.md",
+  "size": 1262,
+  "sha256": "00bd45a1d7012f6c3dd42618fc266077f94c269f1d84e8db87fb72903c31eb52"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/OVERVIEW.md",
+  "size": 2239,
+  "sha256": "42f3681a90f37f3881e43aecd118d6e974b89c38bd2fc7753cdffbceb4ab4427"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/dotnet-harmony-patching.md",
+  "size": 2129,
+  "sha256": "9db38102a78410eee959d30952dcc5279194bf32b3e1930b2c2f07b8f866f276"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/kerbal-space-program.md",
+  "size": 537,
+  "sha256": "23641795d3e82d627db3da65850d7d8b888c635b2e3944b6812c57573de646f1"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/lethal-company.md",
+  "size": 416,
+  "sha256": "9b4f2293d0ed6593cb1d85afcf6d42e2d407c73eaa97176684213fab1048a997"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/oxygen-not-included.md",
+  "size": 419,
+  "sha256": "9d230a8dbe1c820496e071e80e88b857dba8e255175ec5b202fd1ac84b1d3964"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/rimworld-harmony.md",
+  "size": 1119,
+  "sha256": "6dfb054357aac1e3d39c32e66463b814c6d26b777a7318d49bfc0b5c979ddbd8"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/risk-of-rain2.md",
+  "size": 2158,
+  "sha256": "69d9fd0ba4079a8c3f0595129a6a197908f0d80073334ec15dfd10a6a4edd212"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/stardew-valley.md",
+  "size": 2122,
+  "sha256": "797ccda6656f16b35c648064c7df676719b54755c7b2d9aa45a893dcdbfabca9"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/subnautica-nautilus.md",
+  "size": 355,
+  "sha256": "d734e234228aa76427a6f806feefd8c2d365b3bc7e7e5c7a8839e1c6edade11b"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unity-mod-frameworks/references/valheim-jotunn.md",
+  "size": 347,
+  "sha256": "7e58e38b1dfca32d904e5a88411beeebb8fa7bb62fa9639673843f19756f0c19"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unreal-mod-frameworks/SKILL.md",
+  "size": 839,
+  "sha256": "60d36adfdb41801f02ad2029c80eba15822e18725151ff8cc3d2ee843d760d87"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unreal-mod-frameworks/references/OVERVIEW.md",
+  "size": 2188,
+  "sha256": "b2e5bbb5788ad3ecfddbbeec05c3608bb7dcca9e235469fd213e2cbe820c7bc8"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unreal-mod-frameworks/references/palworld.md",
+  "size": 2279,
+  "sha256": "8084d7c0f0815706c5d5a9110afe97947f4b29eae73da821cc5a5389734fb562"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unreal-mod-frameworks/references/satisfactory-sml.md",
+  "size": 2191,
+  "sha256": "acd8f759a36e99c581487be592f452a11e79bec68a9a1c34efcf030fd8196a79"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/unreal-mod-frameworks/references/xcom2.md",
+  "size": 422,
+  "sha256": "b9abdba9966bca340cb3bbcb303862cafdef7537a0d861dc3e5cbfe8ea816e7b"
+ },
+ {
   "path": "_CANONICAL-SKILLS/unrestraint-packs/SKILL.md",
   "size": 2566,
   "sha256": "ddf58589ac70b476154b8f83267b5a70c54ded31d880dcf4d2382e2c1f6980f0"
@@ -21658,6 +25293,31 @@
   "path": "_CANONICAL-SKILLS/visual-verification/SKILL.md",
   "size": 5917,
   "sha256": "ee35b0b17d100e239fa862b48d74c310847547357925627736ccd2121da30cf9"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/win64-native-builds/SKILL.md",
+  "size": 3306,
+  "sha256": "02fec2b4ece06b2c07d402a437e2586427ae5dfdc730493db3e5470f144cc40d"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/windows-workspace-ops/SKILL.md",
+  "size": 4285,
+  "sha256": "fd1ad32b36cfb04f623b6a2001be7429ad1a9258c7f06d9211698cb5bb4df066"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/windows-workspace-ops/references/git-push-recovery.md",
+  "size": 2263,
+  "sha256": "786971f34ffacabb7c22b7aedbf8948c09358fe87e78a967dba11473ef6703b6"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/windows-workspace-ops/references/publishing-pitfalls.md",
+  "size": 4136,
+  "sha256": "a3cac28cbbe0948a88556ffaf946a3890c29254caf6cbd1c2db0b0addf3872e6"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/windows-workspace-ops/scripts/create_junction.py",
+  "size": 2825,
+  "sha256": "f14daa75bb81f60f7fdbcecdd4d9ecf16e01b9fce356c0e21dc228ca60ec5939"
  },
  {
   "path": "_CANONICAL-SKILLS/writing-plans/SKILL.md",
@@ -22113,5 +25773,10 @@
   "path": "docs/history/V8.3.0-CHANGELOG.md",
   "size": 7237,
   "sha256": "e6ee3d455d53759df921742204cb33930cc0ec38515bd151596e1b48d486b31e"
+ },
+ {
+  "path": "docs/history/V8.4.0-CHANGELOG.md",
+  "size": 8101,
+  "sha256": "2dff11b96f27af7938502b0013a6470824a77f8b1eb7587f3a22c05f9f36cf8a"
  }
 ]

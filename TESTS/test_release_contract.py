@@ -776,6 +776,245 @@ def test_tool_routing_prefers_the_free_cli_over_the_expensive_mcp() -> None:
     assert "not registering" in skill, "the skill no longer says where the saving actually comes from"
 
 
+def _skill_descriptions() -> dict:
+    """name -> description, for every shipped canonical skill."""
+    out = {}
+    for d in sorted(p for p in CANON.iterdir() if p.is_dir()):
+        f = d / "SKILL.md"
+        if not f.is_file():
+            continue
+        raw = f.read_bytes()
+        assert not raw.startswith(b"\xef\xbb\xbf"), "%s: BOM before frontmatter" % d.name
+        txt = raw.decode("utf-8")
+        # \s* before the newline: part of the canonical tree is CRLF, and a
+        # \n-anchored match would call every one of those skills unloadable.
+        m = re.match(r"(?s)^---\s*\n(.*?)\n---\s*\n", txt)
+        assert m, "%s: frontmatter block does not close -- not a loadable skill" % d.name
+        dm = re.search(r"(?ms)^description:[ \t]*(.*?)(?=^[A-Za-z_-]+:|\Z)", m.group(1))
+        assert dm, "%s: no description -- undiscoverable" % d.name
+        out[d.name] = " ".join(dm.group(1).split()).strip("\"'")
+    return out
+
+
+def test_skill_index_entry_count_stays_inside_the_measured_budget() -> None:
+    """Entry COUNT is the scarce resource, not description length.
+
+    Codex renders its skills index into a fixed ~22.3 KB block split across
+    every entry, and each entry costs ~77 chars of name + file path BEFORE it
+    describes anything. Measured with `codex debug prompt-input`, one variable
+    changed per run: 151 entries -> 80 visible chars, 181 -> 56, 196 -> 40,
+    255 -> 16. At 16 chars a description reads "Use when buildin" and the agent
+    is routing on skill NAMES alone -- and this pack routes by description.
+
+    Codex also indexes its own system skills and one set per installed plugin,
+    so a real machine carries roughly 35-40 entries this pack does not ship.
+    The ceiling below leaves room for those.
+    """
+    skills = _skill_descriptions()
+    # 175 canonical + ~40 foreign lands near the 223-entry measured point, where
+    # descriptions are down to ~32 chars. Past that the index stops working.
+    assert len(skills) <= 175, (
+        "%d canonical skills. Codex splits a FIXED index budget across every "
+        "entry, so past ~175 the descriptions this pack routes by collapse. "
+        "Consolidate into a router with reference files instead of adding "
+        "entries -- references are tier 3 and cost nothing." % len(skills)
+    )
+
+
+def test_new_skill_descriptions_are_front_loaded() -> None:
+    """At ~40 visible chars the identifying clause has to come first.
+
+    A description whose first 40 characters do not say what the skill is for is
+    invisible: that is all the agent sees when the index is over budget.
+    """
+    skills = _skill_descriptions()
+    added = [
+        "game-modding", "minecraft-modding", "paradox-modding",
+        "unity-mod-frameworks", "unreal-mod-frameworks", "bethesda-creation-modding",
+        "github-fleet-maintenance", "mcp-server-diagnostics", "win64-native-builds",
+        "windows-workspace-ops", "c-game-regression-testing",
+    ]
+    for name in added:
+        assert name in skills, "%s is no longer shipped" % name
+        head = skills[name][:40].lower()
+        # The subject has to appear in the visible window, not after it.
+        subject = name.split("-")[0].replace("bethesda", "fallout")
+        assert subject in head or any(w in head for w in name.split("-")), (
+            "%s: first 40 chars are %r, which never says what it is for. That is "
+            "the entire visible description when the index is over budget."
+            % (name, skills[name][:40])
+        )
+
+
+def test_megapack_consolidation_kept_every_game() -> None:
+    """Consolidation is structural. Losing a game to it would be a silent regression.
+
+    73 hand-installed skills became 8. 67 of them were single-file and 56% of the
+    pack's 188 KB was byte-identical boilerplate, so the entries were nearly free
+    to remove -- but the CONTENT was not, and it is carried verbatim into tier-3
+    reference files that cost nothing in the index.
+    """
+    routers = {
+        "game-modding": 19,          # one-off games (+ workflow refs + laws)
+        "minecraft-modding": 11,
+        "paradox-modding": 5,
+        "unity-mod-frameworks": 9,
+        "unreal-mod-frameworks": 3,
+        "bethesda-creation-modding": 2,
+    }
+    for name, least in routers.items():
+        d = CANON / name
+        assert (d / "SKILL.md").is_file(), "%s router is missing" % name
+        refs = list((d / "references").glob("*.md"))
+        assert len(refs) >= least, (
+            "%s has %d reference(s), expected at least %d -- a game or workflow "
+            "reference was lost in consolidation" % (name, len(refs), least)
+        )
+
+    # Named games that must remain reachable, one per family, plus the auxiliary
+    # payloads that are easy to drop when moving trees around.
+    for rel in (
+        "game-modding/references/factorio.md",
+        "game-modding/references/cyberpunk2077.md",
+        "game-modding/references/MODDING-LAWS.md",
+        "game-modding/references/ERROR-REGISTRY.json",
+        "game-modding/references/new_version.py",
+        "minecraft-modding/references/PORTING-CHECKLIST.md",
+        "unity-mod-frameworks/references/rimworld-harmony.md",
+        "unreal-mod-frameworks/references/palworld.md",
+        "bethesda-creation-modding/references/starfield.md",
+        "roblox-game-development/references/api-docs-lookup.md",
+        "release-checklist/references/docs-heavy-repo-sweep.md",
+        "mcp-server-diagnostics/references/provider-cli-ops.md",
+    ):
+        assert (CANON / rel).is_file(), "%s went missing in consolidation" % rel
+
+    # The laws were stated in 41 files and had drifted into two variants; the
+    # single copy must be the SUPERSET, not whichever variant was picked up.
+    laws = (CANON / "game-modding" / "references" / "MODDING-LAWS.md").read_text(encoding="utf-8")
+    # Assert on the ladder's RUNGS, not on the phrase "Evidence ladder": the
+    # file's own preamble explains that 20 of 41 source files dropped the
+    # ladder, so a phrase match stayed satisfied by that explanation after the
+    # section it describes had been deleted. Falsification caught this.
+    for rung in ("user-confirmed-runtime", "runtime-evidenced", "tool-validated",
+                 "assistant-claimed", "contradicted"):
+        assert rung in laws, (
+            "the consolidated laws lost the Evidence ladder (missing rung %r). "
+            "That is the half 20 of the 41 source files had already silently "
+            "dropped, so building the laws from the wrong variant restores the "
+            "drift this release removed" % rung
+        )
+
+
+def test_absorbed_skills_are_declared_and_exclude_live_ones() -> None:
+    """Derived history cannot see skills this repo never shipped.
+
+    The mega-pack was installed by hand, so nothing in this repository's history
+    records those names. Without a declared set the cleanup leaves the loose
+    copies in place, competing with the routers that absorbed them -- the exact
+    failure the derived list exists to prevent, arriving from the other side.
+    """
+    data = json.loads((ROOT / "BUNDLED-TOOLS" / "RETIRED-SKILLS.json").read_text(encoding="utf-8"))
+    entries = data["retired"]
+    names = {e["name"] for e in entries}
+    canonical = {p.name for p in CANON.iterdir() if p.is_dir()}
+
+    gen = (ROOT / "TOOLS" / "generate_retired_skills.py").read_text(encoding="utf-8")
+    assert "ABSORBED = {" in gen, "the absorbed set is no longer declared"
+    assert "(ever | set(ABSORBED)) - current" in gen, (
+        "the generator no longer unions declared absorptions with derived history"
+    )
+
+    # A sample from each family; if consolidation is real these cannot be live.
+    for name in ("factorio-modding", "minecraft-java-modding", "stellaris-modding",
+                 "rimworld-harmony-modding", "palworld-modding", "starfield-modding",
+                 "game-mod-tool-router", "roblox-docs"):
+        assert name in names, "%s was absorbed but is not on the cleanup list" % name
+        assert name not in canonical, "%s is both shipped and marked absorbed" % name
+
+    # The three that must survive. Listing any of them deletes a live skill or
+    # reaches into another product's directory.
+    for name in ("saints-row-modding", "roblox-game-development"):
+        assert name in canonical, "%s is no longer shipped" % name
+        assert name not in names, (
+            "%s is shipped canonically AND on the delete list; every install "
+            "would remove a skill it just wrote" % name
+        )
+    assert "autonomous-ai-agents" not in names, (
+        "autonomous-ai-agents is a Hermes CATEGORY directory holding Hermes' own "
+        "documentation -- removing it is reaching into another product"
+    )
+    assert data["current_skill_count"] == len(canonical), (
+        "RETIRED-SKILLS.json was generated against a different tree; re-run "
+        "TOOLS/generate_retired_skills.py"
+    )
+
+
+def test_canonical_tree_carries_no_maintainer_identity() -> None:
+    """This repository is public and skills were adopted from a live machine.
+
+    The Hermes-only skills carried a Windows SID, account name, git email, host
+    name and absolute profile paths. None of it is reusable by another user and
+    all of it identifies one. The pack's own law is "never assume a drive letter,
+    folder name, or username".
+    """
+    patterns = [
+        (re.compile(r"\bS-1-5-21-[0-9]{5,}"), "a Windows SID"),
+        (re.compile(r"[A-Za-z0-9_.+-]+@(?!example\.(?:com|org|net)\b)"
+                    r"(?!\w*\.?(?:test|invalid|localhost)\b)[A-Za-z0-9-]+\.[A-Za-z]{2,}"),
+         "a real email address"),
+        (re.compile(r"\bkarlo\b", re.I), "the maintainer's account name"),
+    ]
+    leaks = []
+    for p in CANON.rglob("*"):
+        if not p.is_file() or p.suffix.lower() not in (".md", ".txt", ".py", ".ps1", ".json", ".yml", ".yaml"):
+            continue
+        try:
+            txt = p.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for pat, what in patterns:
+            if pat.search(txt):
+                leaks.append("%s contains %s" % (p.relative_to(ROOT), what))
+                break
+    assert not leaks, "identity would be published:\n  " + "\n  ".join(leaks)
+
+
+def test_doctor_counts_every_skill_root_and_never_interpolates() -> None:
+    """Counting one directory understated a 255-entry index as 219.
+
+    Codex indexes its own system skills and one set per installed plugin. The
+    doctor saw only this pack's directory, reported 219 entries at ~88 chars,
+    and passed -- while Codex was rendering 255 entries at 16.
+    """
+    body = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+
+    assert "plugins\\cache" in body or "plugins\\\\cache" in body, (
+        "the doctor no longer counts plugin skill roots, so its entry count is "
+        "lower than what Codex actually renders"
+    )
+    assert "$indexCount++" in body and "$packCount++" in body, (
+        "the doctor no longer separates pack entries from foreign ones"
+    )
+    # Measured points only. An interpolated number in the shape of a measurement
+    # is worse than no number -- that is how ~88 chars got reported as fine.
+    for point in ("151", "196", "255"):
+        assert point in body, "the measured curve lost its %s-entry point" % point
+    assert "Nearest measured point" in body, (
+        "the doctor no longer says its figure is the nearest MEASURED point, so a "
+        "reader cannot tell a measurement from an interpolation"
+    )
+    # The old advice would now delete shipped skills.
+    assert "OPTIONAL Other-Games mega-pack" not in body, (
+        "the doctor still tells users to delete the Other-Games mega-pack, which "
+        "as of v8.4.0 IS the canonical tree"
+    )
+    assert "Clean-StaleState.ps1" in body, (
+        "the doctor no longer names the cleanup as the lever that removes "
+        "absorbed skills automatically"
+    )
+
+
 def test_forge_source_is_complete_and_buildable() -> None:
     """Forge ships as source in this repository, not as a released archive.
 
@@ -1777,6 +2016,13 @@ def main() -> int:
         test_retired_skills_are_declared_and_cannot_delete_a_live_skill,
         test_cleanup_is_dry_run_by_default_and_scoped_to_pack_files,
         test_tool_routing_prefers_the_free_cli_over_the_expensive_mcp,
+        # v8.4.0 -- entry COUNT is the scarce resource in a skills index.
+        test_skill_index_entry_count_stays_inside_the_measured_budget,
+        test_new_skill_descriptions_are_front_loaded,
+        test_megapack_consolidation_kept_every_game,
+        test_absorbed_skills_are_declared_and_exclude_live_ones,
+        test_canonical_tree_carries_no_maintainer_identity,
+        test_doctor_counts_every_skill_root_and_never_interpolates,
         test_every_defined_contract_is_actually_run,
         test_hermes_native_profile_migration_contract,
         test_same_version_forge_hotfix_refreshes_shipped_content,

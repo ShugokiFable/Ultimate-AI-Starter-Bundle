@@ -1,3 +1,48 @@
+## 8.4.0
+
+- 159 canonical skills total, up from 146: the 73-skill mega-pack consolidated
+  into 8, plus five skills that existed only in Hermes.
+
+- **Codex was routing on skill names alone.** Codex renders its skills index
+  into a fixed ~22.3 KB block split across every entry, and each entry costs its
+  name and file path before it describes anything. Measured with `codex debug
+  prompt-input`: at 255 entries every description was cut to 14-18 characters --
+  `adversarial-self-review: Use when finaliz`. 19.6 KB of the 22.3 KB budget was
+  file paths. The doctor had reported this as 219 entries at ~88 chars, because
+  it counted only this pack's directory and Codex indexes every root.
+- **The 73-skill Other-Games mega-pack is now 8 canonical skills.** It lived in
+  all four provider trees and in zero repositories -- unversioned, unbacked-up,
+  gone on any tree reset. 67 of its 73 skills were single-file, and 56% of its
+  188 KB was byte-identical boilerplate that had already drifted into two
+  variants (20 files had silently lost the Evidence ladder). Consolidated into
+  `game-modding` plus five family routers, with every game's body carried
+  VERBATIM into a reference file. Tier-3 references are loaded on demand and
+  never charged against the index. **255 entries at 16 chars -> 196 at 40**, with
+  all 73 games kept.
+- Deleting the mega-pack instead would have reached ~56 chars and cost 73 games.
+  Consolidating reaches ~40 and keeps them, and the per-game text goes back to
+  full length inside its reference instead of being cut to 16 characters.
+- **Five skills that existed only in Hermes are now in the bundle.**
+  `github-fleet-maintenance`, `mcp-server-diagnostics`, `win64-native-builds`,
+  `windows-workspace-ops`, `c-game-regression-testing`. `repo-release-sweep` and
+  `local-ai-tooling-ops` duplicated capabilities that already had an owner and
+  became references inside `release-checklist` and `mcp-server-diagnostics`
+  rather than competing entries.
+- **Identity scrubbed before publishing.** `windows-workspace-ops` carried a
+  Windows SID, account name, git email and machine name; `local-ai-tooling-ops`
+  carried absolute profile paths. Identity-only references are dropped, paths
+  generalized, and a sweep over the whole canonical tree gates the release.
+- `roblox-docs` has never been a loadable skill: its `SKILL.md` ends with the
+  literal text `...[truncated]` and never closes its frontmatter. It ships that
+  way from RobloxForge v0.1.0 and had propagated into all four provider trees,
+  costing an index entry while being unloadable. Rebuilt as a reference inside
+  `roblox-game-development`.
+- `RETIRED-SKILLS.json` gained a declared ABSORBED set. Derived history cannot
+  see the mega-pack -- those names were never in this repository -- so the
+  cleanup could not remove the loose copies now competing with the routers that
+  absorbed them. `saints-row-modding`, `roblox-game-development` and Hermes'
+  `autonomous-ai-agents` category are explicitly excluded from removal.
+
 ## 8.3.0
 
 - **Leftovers are cleaned automatically.** The installer copied skills in and

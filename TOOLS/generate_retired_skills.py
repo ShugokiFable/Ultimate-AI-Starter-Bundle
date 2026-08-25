@@ -50,6 +50,91 @@ SUCCESSORS = {
     "skyrim-forge-bridge": "skyrim-forge",
 }
 
+# Skills this pack never SHIPPED but now supersedes. The mega-pack was copied
+# onto machines by hand and lived in every provider tree while existing in no
+# repository; its 73 skills are consolidated into the routers below. On a machine
+# that has both, the loose copy competes with the skill that absorbed it -- so the
+# derived history list cannot see them and they are declared instead.
+#
+# Deliberately absent: saints-row-modding and roblox-game-development (now shipped
+# canonically, so removing them would delete a live skill) and autonomous-ai-agents
+# (a Hermes CATEGORY directory holding Hermes' own docs, not ours to remove).
+ABSORBED = {
+    'arma3-modding': 'game-modding',
+    'baldurs-gate3-modding': 'game-modding',
+    'bannerlord-modding': 'game-modding',
+    'barotrauma-modding': 'game-modding',
+    'beamng-modding': 'game-modding',
+    'cities-skylines2-modding': 'game-modding',
+    'ck3-modding': 'paradox-modding',
+    'cyberpunk2077-modding': 'game-modding',
+    'dayz-modding': 'game-modding',
+    'divinity-original-sin2-modding': 'game-modding',
+    'dont-starve-together-modding': 'game-modding',
+    'dotnet-harmony-patching': 'unity-mod-frameworks',
+    'eu4-modding': 'paradox-modding',
+    'factorio-modding': 'game-modding',
+    'fallout4-modding': 'bethesda-creation-modding',
+    'game-mod-assets': 'game-modding',
+    'game-mod-code-review': 'game-modding',
+    'game-mod-crash-diagnostics': 'game-modding',
+    'game-mod-development': 'game-modding',
+    'game-mod-facts': 'game-modding',
+    'game-mod-load-order-compatibility': 'game-modding',
+    'game-mod-memory': 'game-modding',
+    'game-mod-native-plugin': 'game-modding',
+    'game-mod-packaging': 'game-modding',
+    'game-mod-performance-profiling': 'game-modding',
+    'game-mod-reworking': 'game-modding',
+    'game-mod-runtime-patching': 'game-modding',
+    'game-mod-ship-gate': 'game-modding',
+    'game-mod-tool-router': 'game-modding',
+    'game-mod-unknown-game-fallback': 'game-modding',
+    'game-mod-versioned-workspace': 'game-modding',
+    'garrys-mod-modding': 'game-modding',
+    'hoi4-modding': 'paradox-modding',
+    'kerbal-space-program-modding': 'unity-mod-frameworks',
+    'lethal-company-modding': 'unity-mod-frameworks',
+    'local-ai-tooling-ops': 'mcp-server-diagnostics',
+    'minecraft-content-datagen-worldgen': 'minecraft-modding',
+    'minecraft-data-components-attachments': 'minecraft-modding',
+    'minecraft-fabric-quilt-modding': 'minecraft-modding',
+    'minecraft-forge-neoforge-modding': 'minecraft-modding',
+    'minecraft-java-game-modding': 'minecraft-modding',
+    'minecraft-java-modding': 'minecraft-modding',
+    'minecraft-library-api-integrations': 'minecraft-modding',
+    'minecraft-mixins-access-control': 'minecraft-modding',
+    'minecraft-modpack-scripting': 'minecraft-modding',
+    'minecraft-multiloader-architectury': 'minecraft-modding',
+    'minecraft-networking-persistence': 'minecraft-modding',
+    'minecraft-rendering-animation': 'minecraft-modding',
+    'minecraft-testing-porting-release': 'minecraft-modding',
+    'no-mans-sky-modding': 'game-modding',
+    'noita-modding': 'game-modding',
+    'oxygen-not-included-modding': 'unity-mod-frameworks',
+    'palworld-modding': 'unreal-mod-frameworks',
+    'paradox-clausewitz-jomini-modding': 'paradox-modding',
+    'project-zomboid-modding': 'game-modding',
+    'repo-release-sweep': 'release-checklist',
+    'rimworld-harmony-modding': 'unity-mod-frameworks',
+    'risk-of-rain2-modding': 'unity-mod-frameworks',
+    'roblox-docs': 'roblox-game-development',
+    'satisfactory-sml-modding': 'unreal-mod-frameworks',
+    'slay-the-spire-modding': 'game-modding',
+    'space-engineers-modding': 'game-modding',
+    'stardew-valley-modding': 'unity-mod-frameworks',
+    'starfield-modding': 'bethesda-creation-modding',
+    'stellaris-modding': 'paradox-modding',
+    'subnautica-nautilus-modding': 'unity-mod-frameworks',
+    'terraria-tmodloader-modding': 'game-modding',
+    'unity-bepinex-harmony': 'unity-mod-frameworks',
+    'unreal-ue4ss-modding': 'unreal-mod-frameworks',
+    'valheim-jotunn-modding': 'unity-mod-frameworks',
+    'victoria3-modding': 'paradox-modding',
+    'witcher3-redkit-modding': 'game-modding',
+    'xcom2-modding': 'unreal-mod-frameworks',
+}
+
 
 def git(*args: str) -> str:
     proc = subprocess.run(["git"] + list(args), cwd=ROOT,
@@ -73,14 +158,15 @@ def main() -> int:
 
     current = {d for d in os.listdir(CANON)
                if os.path.isdir(os.path.join(CANON, d))}
-    retired = sorted(ever - current)
+    # Derived history plus declared absorptions; both are stale on a machine.
+    retired = sorted((ever | set(ABSORBED)) - current)
 
     # A name that is both retired and current is a contradiction; guard rather
     # than emit a list that would delete a shipped skill.
     for name in retired:
         assert name not in current, name
 
-    unknown = [n for n in retired if n not in SUCCESSORS]
+    unknown = [n for n in retired if n not in SUCCESSORS and n not in ABSORBED]
     if unknown:
         print("NOTE: no successor recorded for: %s" % ", ".join(unknown))
 
@@ -88,7 +174,8 @@ def main() -> int:
         "schema": 1,
         "generated_by": "TOOLS/generate_retired_skills.py",
         "why": (
-            "Skills this pack used to ship and no longer does. The installer "
+            "Skills this pack used to ship and no longer does, plus skills it "
+            "ABSORBED that were never shipped from here. The installer "
             "copies the canonical tree in but never removed what left it, so a "
             "machine installed against an older version kept loading the "
             "superseded skill next to its replacement -- two skills claiming "
@@ -96,7 +183,8 @@ def main() -> int:
         ),
         "current_skill_count": len(current),
         "retired": [
-            {"name": n, "superseded_by": SUCCESSORS.get(n)} for n in retired
+            {"name": n, "superseded_by": SUCCESSORS.get(n) or ABSORBED.get(n)}
+            for n in retired
         ],
     }
     text = json.dumps(payload, indent=2, ensure_ascii=True) + "\n"

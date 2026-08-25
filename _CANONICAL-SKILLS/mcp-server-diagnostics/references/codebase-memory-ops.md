@@ -1,0 +1,9 @@
+# codebase-memory UI/HTTP ops (v0.10.5, verified 2026-08)
+
+- **Two channels, different health.** MCP tools (what agents use) can be 100% healthy while the web UI shows zeros. Always verify agent access via MCP (`list_projects`, `index_status`) before believing UI symptoms.
+- **UI endpoints:** `/api/index-status` is a *slot-status list* of recent jobs (≈4 slots, overwrites — NOT the persisted project registry). `/api/index` POST `{root_path, project_name?}` queues a re-index; GET is not a thing. `/api/projects`, `/api/stats` don't exist (404).
+- **Rate limit:** POST /api/index 429s on bursts (only a few queue slots). Re-register projects SEQUENTIALLY: POST one → poll `/api/index-status` until that path shows `done` → next. Parallel bursts fail almost all requests.
+- **Re-indexing is incremental-fast** for already-indexed roots (seconds) and can materially improve coverage (Mantella 7.5k→19.6k nodes after a refresh). It may create a duplicate project entry if you POST a root without a project_name — delete via MCP `delete_project`.
+- **UI RPC lockdown (v0.10.5):** HTTP `/rpc` `tools/call` allows only `list_projects`; `get_graph_schema`/`get_code_snippet`/`query_graph`/... return 403 `UI RPC method is not allowed`. The SPA tolerates this (schema null → 0), so the Projects-tab nodes/edges tiles read 0 with a healthy index. No config/env knob (config keys: auto_index, auto_index_limit, auto_watch, ui-lang, ui_enabled, ui_port). Upstream issue: DeusData/codebase-memory-mcp#1663. Agents unaffected.
+- **Keep-alive UI host:** the dashboard dies when its serving process' stdin closes. One standalone host: `Start-codebase-memory-UI.bat` = `codebase-memory-mcp.exe --ui=true` (loopback port 9749, single binder). MCP clients keep `args: []` and coexist.
+- Data lives under `%USERPROFILE%\.cache\codebase-memory-mcp\` — deleting a project from the dashboard is immediate and unrecoverable (no backup).

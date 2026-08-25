@@ -1,9 +1,249 @@
 {
   "schema": 1,
   "generated_by": "TOOLS/generate_retired_skills.py",
-  "why": "Skills this pack used to ship and no longer does. The installer copies the canonical tree in but never removed what left it, so a machine installed against an older version kept loading the superseded skill next to its replacement -- two skills claiming the same domain, the retired one documenting the older dialect.",
-  "current_skill_count": 146,
+  "why": "Skills this pack used to ship and no longer does, plus skills it ABSORBED that were never shipped from here. The installer copies the canonical tree in but never removed what left it, so a machine installed against an older version kept loading the superseded skill next to its replacement -- two skills claiming the same domain, the retired one documenting the older dialect.",
+  "current_skill_count": 159,
   "retired": [
+    {
+      "name": "arma3-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "baldurs-gate3-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "bannerlord-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "barotrauma-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "beamng-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "cities-skylines2-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "ck3-modding",
+      "superseded_by": "paradox-modding"
+    },
+    {
+      "name": "cyberpunk2077-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "dayz-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "divinity-original-sin2-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "dont-starve-together-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "dotnet-harmony-patching",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "eu4-modding",
+      "superseded_by": "paradox-modding"
+    },
+    {
+      "name": "factorio-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "fallout4-modding",
+      "superseded_by": "bethesda-creation-modding"
+    },
+    {
+      "name": "game-mod-assets",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-code-review",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-crash-diagnostics",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-development",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-facts",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-load-order-compatibility",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-memory",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-native-plugin",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-packaging",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-performance-profiling",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-reworking",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-runtime-patching",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-ship-gate",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-tool-router",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-unknown-game-fallback",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "game-mod-versioned-workspace",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "garrys-mod-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "hoi4-modding",
+      "superseded_by": "paradox-modding"
+    },
+    {
+      "name": "kerbal-space-program-modding",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "lethal-company-modding",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "local-ai-tooling-ops",
+      "superseded_by": "mcp-server-diagnostics"
+    },
+    {
+      "name": "minecraft-content-datagen-worldgen",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-data-components-attachments",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-fabric-quilt-modding",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-forge-neoforge-modding",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-java-game-modding",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-java-modding",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-library-api-integrations",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-mixins-access-control",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-modpack-scripting",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-multiloader-architectury",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-networking-persistence",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-rendering-animation",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "minecraft-testing-porting-release",
+      "superseded_by": "minecraft-modding"
+    },
+    {
+      "name": "no-mans-sky-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "noita-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "oxygen-not-included-modding",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "palworld-modding",
+      "superseded_by": "unreal-mod-frameworks"
+    },
+    {
+      "name": "paradox-clausewitz-jomini-modding",
+      "superseded_by": "paradox-modding"
+    },
+    {
+      "name": "project-zomboid-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "repo-release-sweep",
+      "superseded_by": "release-checklist"
+    },
+    {
+      "name": "rimworld-harmony-modding",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "risk-of-rain2-modding",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "roblox-docs",
+      "superseded_by": "roblox-game-development"
+    },
+    {
+      "name": "satisfactory-sml-modding",
+      "superseded_by": "unreal-mod-frameworks"
+    },
     {
       "name": "skyrim-archive",
       "superseded_by": "skyrim-assets-pbr"
@@ -35,6 +275,58 @@
     {
       "name": "skyrim-spid-distribution",
       "superseded_by": "spid-authoring"
+    },
+    {
+      "name": "slay-the-spire-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "space-engineers-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "stardew-valley-modding",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "starfield-modding",
+      "superseded_by": "bethesda-creation-modding"
+    },
+    {
+      "name": "stellaris-modding",
+      "superseded_by": "paradox-modding"
+    },
+    {
+      "name": "subnautica-nautilus-modding",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "terraria-tmodloader-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "unity-bepinex-harmony",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "unreal-ue4ss-modding",
+      "superseded_by": "unreal-mod-frameworks"
+    },
+    {
+      "name": "valheim-jotunn-modding",
+      "superseded_by": "unity-mod-frameworks"
+    },
+    {
+      "name": "victoria3-modding",
+      "superseded_by": "paradox-modding"
+    },
+    {
+      "name": "witcher3-redkit-modding",
+      "superseded_by": "game-modding"
+    },
+    {
+      "name": "xcom2-modding",
+      "superseded_by": "unreal-mod-frameworks"
     }
   ]
 }
