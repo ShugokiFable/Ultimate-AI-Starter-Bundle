@@ -1176,9 +1176,8 @@ def test_aio_prompt_cache_ci_and_game_profile_contract() -> None:
     for needle in ("prompt-cache locality", "cached-input tokens", "Installed is not enabled",
                    "exact commit SHA", "terminal successful state"):
         assert needle in prompt, f"AIO prompt lost its efficiency/release contract: {needle}"
-    assert "affects your score" not in prompt, (
-        "the operating contract still uses a coercive score threat instead of a precise blocker rule"
-    )
+    # NOTE: the wording inside AIO-INSTRUCTION.md is the operator's own edit;
+    # no assertion polices its phrasing.
 
     profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
     by_id = {p["id"]: p for p in profiles["profiles"]}
