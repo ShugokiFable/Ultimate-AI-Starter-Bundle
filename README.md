@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.6.0
+# Ultimate AI Starter Bundle v8.6.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -321,11 +321,15 @@ model_aliases:
 No API key: Hermes supplies its own placeholder, because there is nothing to
 authenticate to. Never write a real secret into an `lmstudio` block.
 
-**The one thing that will stop you:** Hermes refuses any model with a context
-window under **64,000 tokens** and raises at startup. LM Studio's saved default
-is often 32K, and a 32K window is too small for agent work anyway -- one tool
-result can be tens of thousands of characters. Raise the model's saved context,
-then confirm it stuck by loading with no explicit context flag.
+**The one thing that will stop you: set the saved context to 65,536.** Hermes
+refuses any model with a context window under 64,000 tokens and raises at
+startup, and LM Studio's saved default is commonly 32,768. 65,536 is the number
+to type -- the next power of two above the floor. A 32K window is too small for
+agent work anyway: one tool result can be tens of thousands of characters.
+
+Set it in LM Studio, then confirm it stuck by loading with **no** explicit
+context flag. Loading once by hand with a flag proves nothing -- a cold start
+uses the saved default, and that is what Hermes' preload picks up.
 
 Measured here on a 16 GB card, a 35B mixture-of-experts quant at 64K context:
 weights 17.08 GiB (so partial CPU offload is mandatory), ~15.5 GiB VRAM while
@@ -334,6 +338,15 @@ generating, **41 tok/s**. Set an idle TTL so the card frees itself.
 Run local for the things money cannot buy -- no policy layer, no egress, no rate
 limit. For everything else the hosted ladder above is faster and costs cents.
 Full detail in the `local-model-ops` skill.
+
+**Feeding a chat front-end from the same server?** SillyTavern is happy at 32K,
+so 65,536 keeps one loaded model serving both. Two of its behaviours look like
+a dead connection and are not: it demands a non-empty API key that a local
+server ignores entirely, and a reasoning model returns an **empty** message
+when Response Length is small, because thinking tokens come out of the same
+budget (measured: 40 tokens in, empty reply; 600 in, 191 of 203 spent
+reasoning). It also has no free web-search backend out of the box. All three
+are covered in `local-model-ops/references/sillytavern.md`.
 
 ### rtk: cut command output before it reaches the model
 
@@ -1057,6 +1070,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.1** - 2026-08-26. Documentation only. v8.6.0 stated the rule and never the setting: Hermes refuses a context window under 64,000 tokens, and both docs said exactly that, leaving a reader to type 64,000 (passes a strict `<`, but is not a value LM Studio offers) or 32,768 (the nearest power of two, and the one commonly saved already). Both now say **65,536**, with the verification step that is usually skipped -- confirm the saved default by loading with no explicit context flag, because a cold start is what Hermes' preload reads. Also a new SillyTavern reference: it demands an API key the local server ignores, and a reasoning model returns an empty message when Response Length is small because thinking tokens come out of the same budget.
 
 **v8.6.0** - 2026-08-25. Enabled is not installed. Two cloned Hermes profiles had been running no plugins at all -- `profile create` copies the enabled list and never the payload, so Ponytail and Superpowers had never loaded in `roblox` or `skyrim`, silently. All four of this pack's own Hermes gate hooks were dead for the same reason, a rename the consent allowlist never followed. The migration now links each profile to the shared plugin root and converges the enabled list additively; the doctor reports both failures. Also: a documented free path to the web (Hermes' own keyless search ring, not a billed provider plugin), a new `local-model-ops` skill for running LM Studio as a Hermes provider -- 41 tok/s measured, and a 64,000-token context floor that blocks the obvious setup -- and RTK as an optional CLI that cut `git diff HEAD~3` from 2,010,426 to 71,268 bytes here.
 

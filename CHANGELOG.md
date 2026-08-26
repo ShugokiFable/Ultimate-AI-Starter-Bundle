@@ -1,3 +1,32 @@
+## 8.6.1
+
+- 160 canonical skills total, unchanged. Documentation only.
+- **"Under 64,000" is a rule; 65,536 is an instruction.** Both the README and
+  `local-model-ops` stated the floor Hermes enforces and never the value to
+  type, which leaves two ways to get it wrong: 64,000 exactly (passes a strict
+  `<`, but is not a setting LM Studio offers) or 32,768 (the nearest power of
+  two, and the one commonly saved already). Both now say 65,536, and a contract
+  asserts the value appears in the skill AND the README.
+- The verification half is spelled out too: confirm the saved default by loading
+  with **no** explicit context flag. Loading once by hand with `-c 65536` proves
+  nothing, because a cold start uses the saved default and that is what Hermes'
+  preload reads.
+- **New reference `local-model-ops/references/sillytavern.md`.** One server can
+  feed an agent CLI and a chat front-end at once, but SillyTavern fails in two
+  ways that read as a dead connection rather than a setting. It demands an API
+  key the server ignores -- verified: a local LM Studio returns `/v1/models`
+  with a bogus bearer token and with no `Authorization` header, while
+  SillyTavern refuses to enumerate models without a stored secret
+  (`chat-completions.js`, `if (!apiKey && !request.body.reverse_proxy)` -> 400).
+  And a reasoning model returns an **empty** message on a small response budget,
+  because thinking tokens come out of the same allowance: 40 tokens in produced
+  an empty reply, 600 produced the answer with 191 of 203 spent reasoning.
+- The same reference documents the four CSS selectors SillyTavern's Web Search
+  extension actually parses, and why none of its six sources is both free and
+  self-contained. Public SearXNG instances were measured and are not a usable
+  answer: captcha pages or HTTP 429.
+- The contract for the skill was extended and falsified in both new directions.
+
 ## 8.6.0
 
 - 160 canonical skills total (+1: `local-model-ops`). One new optional CLI

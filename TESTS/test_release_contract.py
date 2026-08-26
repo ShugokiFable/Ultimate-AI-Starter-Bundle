@@ -3018,6 +3018,15 @@ def test_local_model_ops_carries_what_actually_blocks_a_local_run() -> None:
     assert "64,000" in body or "64000" in body, (
         "local-model-ops no longer states the context floor that blocks a local run"
     )
+    # The floor is the rule; 65,536 is the number a reader has to type. Stating
+    # only "64,000" invites setting exactly 64,000 against a strict < comparison,
+    # or 32,768 because it is the nearest power of two below it.
+    assert "65,536" in body or "65536" in body, (
+        "local-model-ops states the floor but not the setting that clears it"
+    )
+    assert "65,536" in read(ROOT / "README.md") or "65536" in read(ROOT / "README.md"), (
+        "the README states the floor but never the value to set"
+    )
     for key in ("model_aliases", "provider: lmstudio", "base_url"):
         assert key in body, "local-model-ops lost the alias schema element %r" % key
     # The placeholder-key fact is what stops someone pasting a real secret into
@@ -3027,6 +3036,20 @@ def test_local_model_ops_carries_what_actually_blocks_a_local_run() -> None:
     )
     assert "keyless" in body.lower() or "free" in body.lower(), (
         "local-model-ops no longer covers how a local model reaches the web"
+    )
+
+    # Two front-ends, one server, incompatible expectations: SillyTavern runs
+    # fine at 32K while Hermes refuses it, and SillyTavern fails in two ways
+    # that read as a dead connection instead of a setting.
+    st = skill.parent / "references" / "sillytavern.md"
+    assert st.is_file(), "local-model-ops lost its SillyTavern reference"
+    st_body = read(st)
+    assert "!apiKey" in st_body, (
+        "the SillyTavern reference no longer shows the guard that empties the model list"
+    )
+    assert "reasoning" in st_body.lower(), (
+        "the SillyTavern reference no longer warns that a small response budget "
+        "returns an empty message from a reasoning model"
     )
 
     ref = skill.parent / "references" / "gguf-metadata.md"

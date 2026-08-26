@@ -2301,13 +2301,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 6138,
-  "sha256": "f7c0709171892fdcb60cbc473669fc63937feaff42e102005ffb511fad39ec61"
+  "size": 7210,
+  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
   "size": 3848,
   "sha256": "0a5c6b6ff9e407f0497c6ff0df599b92f8e88b288369e05a6ad1d7d08b5a08b3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/sillytavern.md",
+  "size": 4043,
+  "sha256": "f91f450eb404e4988eb66d723a4b9d8e9ed5b31bafa25a6d12fb4907eedb327f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -5741,13 +5746,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 6138,
-  "sha256": "f7c0709171892fdcb60cbc473669fc63937feaff42e102005ffb511fad39ec61"
+  "size": 7210,
+  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
   "size": 3848,
   "sha256": "0a5c6b6ff9e407f0497c6ff0df599b92f8e88b288369e05a6ad1d7d08b5a08b3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/sillytavern.md",
+  "size": 4043,
+  "sha256": "f91f450eb404e4988eb66d723a4b9d8e9ed5b31bafa25a6d12fb4907eedb327f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -9166,13 +9176,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 6138,
-  "sha256": "f7c0709171892fdcb60cbc473669fc63937feaff42e102005ffb511fad39ec61"
+  "size": 7210,
+  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
   "size": 3848,
   "sha256": "0a5c6b6ff9e407f0497c6ff0df599b92f8e88b288369e05a6ad1d7d08b5a08b3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/sillytavern.md",
+  "size": 4043,
+  "sha256": "f91f450eb404e4988eb66d723a4b9d8e9ed5b31bafa25a6d12fb4907eedb327f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -12591,13 +12606,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 6138,
-  "sha256": "f7c0709171892fdcb60cbc473669fc63937feaff42e102005ffb511fad39ec61"
+  "size": 7210,
+  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
   "size": 3848,
   "sha256": "0a5c6b6ff9e407f0497c6ff0df599b92f8e88b288369e05a6ad1d7d08b5a08b3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/sillytavern.md",
+  "size": 4043,
+  "sha256": "f91f450eb404e4988eb66d723a4b9d8e9ed5b31bafa25a6d12fb4907eedb327f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -16026,13 +16046,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 6138,
-  "sha256": "f7c0709171892fdcb60cbc473669fc63937feaff42e102005ffb511fad39ec61"
+  "size": 7210,
+  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
   "size": 3848,
   "sha256": "0a5c6b6ff9e407f0497c6ff0df599b92f8e88b288369e05a6ad1d7d08b5a08b3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/sillytavern.md",
+  "size": 4043,
+  "sha256": "f91f450eb404e4988eb66d723a4b9d8e9ed5b31bafa25a6d12fb4907eedb327f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mantella-config/SKILL.md",
@@ -18582,12 +18607,12 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 28624,
-  "sha256": "8d827e75529087082fe4dcceb4c59df41e9c96b78e14a1a717e95428b36bfaba"
+  "sha256": "6170c6120aff587500424fb553fbeb6353853b6d96bae80a1ac6b81196ef3131"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1492,
-  "sha256": "ba61a5b59a7c5085cfc83137b788d7926dd72b365749860fac8427059c5b24ad"
+  "sha256": "81eaf10a0ec1be755340cdb5938ce0e20e1282f1c1cd3cbae852c6290917196b"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -21471,8 +21496,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 94529,
-  "sha256": "7fa91e1d2356bf288bace8a163f3d447a121cef2098edbe3abb6271cf86de3ea"
+  "size": 96428,
+  "sha256": "ac0875492d1428fd4475d388f1e31d56ea382db74bde6920784768ed40025e8b"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -21547,7 +21572,7 @@
  {
   "path": "INSTALL-AIO.ps1",
   "size": 111891,
-  "sha256": "68e9d8f60e8992a87e57d4331a0d9250e9e17d6f36b1c4ad484eefe068fb6968"
+  "sha256": "c0132068107b0fbf8b173d514851f32513f48836141ce59aa511ea439e05e2af"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -21596,8 +21621,8 @@
  },
  {
   "path": "README.md",
-  "size": 63691,
-  "sha256": "64fb695c1b60af17416d3c5aab7a3576bf10dca4edfcc7c345e49e1997c4d278"
+  "size": 65267,
+  "sha256": "fc81b78bb01448d67fe56a1960240451e0605897821f7a13acd436356769369a"
  },
  {
   "path": "SECURITY.md",
@@ -21607,12 +21632,12 @@
  {
   "path": "START-HERE.bat",
   "size": 709,
-  "sha256": "3022444237fb9b14f298cabca9ae141cf10b74e0302ab578a55e918eddea78a6"
+  "sha256": "864131ea3c67b03db23fca5d45fa86800e375057d1639fa4174b4f797496ffd9"
  },
  {
   "path": "START-HERE.txt",
   "size": 9681,
-  "sha256": "08feb3c1041e0197f9012d1cb03e88304eb960f23dee2b79c9fb7b7157f66606"
+  "sha256": "36680f12ccaea6a431fbc60fc807c4e7594ef277d29fa738ad06cce75e38ef14"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -21806,8 +21831,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 167199,
-  "sha256": "53ad28811b51260d50695a31e5e859f7c181e8734f5c5025aa3a6412fdae8281"
+  "size": 168411,
+  "sha256": "2f0efbfaf6a0238253353b9e75d0b9f456f1cae024e57eb28f06477253d22e72"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -22077,12 +22102,12 @@
  {
   "path": "VALIDATION.json",
   "size": 1311,
-  "sha256": "a7650f1d54cac876e681bc61a2b66ec112c970770156dd4ee1344aef8c711f9e"
+  "sha256": "d21da1f16b4ed5726ab7928734a2ce47448e3c41fadcb088775e368d8210933a"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "de3eaf3ba1b683943a99cb71f3f30b09c6ceb2849a0b99cd226c1c76a495e86d"
+  "sha256": "a48fdc736da622fb9a975eab69bd4921ed51975f3fc980e0638113d2c7a21b17"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -23001,13 +23026,18 @@
  },
  {
   "path": "_CANONICAL-SKILLS/local-model-ops/SKILL.md",
-  "size": 6138,
-  "sha256": "f7c0709171892fdcb60cbc473669fc63937feaff42e102005ffb511fad39ec61"
+  "size": 7210,
+  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
  },
  {
   "path": "_CANONICAL-SKILLS/local-model-ops/references/gguf-metadata.md",
   "size": 3848,
   "sha256": "0a5c6b6ff9e407f0497c6ff0df599b92f8e88b288369e05a6ad1d7d08b5a08b3"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/local-model-ops/references/sillytavern.md",
+  "size": 4043,
+  "sha256": "f91f450eb404e4988eb66d723a4b9d8e9ed5b31bafa25a6d12fb4907eedb327f"
  },
  {
   "path": "_CANONICAL-SKILLS/mantella-config/SKILL.md",
@@ -25878,5 +25908,10 @@
   "path": "docs/history/V8.6.0-CHANGELOG.md",
   "size": 5903,
   "sha256": "6d247a6d92f5fdf60b939b8d24e857b7982f0e0a8f7c664bb55913529152c525"
+ },
+ {
+  "path": "docs/history/V8.6.1-CHANGELOG.md",
+  "size": 3447,
+  "sha256": "78a44ae21af716ae5c73f209ab4d0e4273564fbd20b636a5418fa03a7c96feaa"
  }
 ]

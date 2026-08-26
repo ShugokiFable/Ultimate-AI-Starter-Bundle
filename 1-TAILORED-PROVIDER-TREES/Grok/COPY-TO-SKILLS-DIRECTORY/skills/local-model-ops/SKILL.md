@@ -50,10 +50,14 @@ by reflex. A 32K window is genuinely too small for agent work — a single tool
 result is capped at tens of thousands of characters, so a handful of calls
 fills the window and every turn after that pays for compression.
 
-**Raise the model's saved context instead.** Set it in the LM Studio UI (or
-its saved per-model config) and confirm it stuck by loading with no explicit
-context flag: the loaded context reported by LM Studio must be the new value,
-not the old one.
+**Set the saved context to 65,536.** That is the number to type -- not 64,000.
+The floor is a strict `<` comparison against 64,000, and LM Studio's context
+field takes powers of two, so 65,536 is the first setting that clears it with
+room to spare. Set it in the LM Studio UI (or its saved per-model config) and
+confirm it stuck by loading with **no** explicit context flag: the loaded
+context LM Studio reports must be the new value, not the old one. Loading it
+once by hand with a flag proves nothing -- the next cold start uses the saved
+default, which is what Hermes' preload will pick up.
 
 ## Aliases: pin the route, do not guess it
 
@@ -123,12 +127,25 @@ and still misread the result: a 35B answering from real search results
 reported a stale release number that the source page contradicted. The
 plumbing working is not the same as the answer being right.
 
+## The same model from a chat front-end
+
+One server can feed an agent CLI and a chat UI at once, but they disagree about
+what is acceptable. SillyTavern runs happily at 32K; Hermes refuses it. Load at
+**65,536** and both work off one loaded model.
+
+Two SillyTavern behaviours look like a dead connection and are not: it demands
+a non-empty API key that a local server ignores, and a reasoning model returns
+an **empty** message when Response Length is small, because thinking tokens come
+out of the same budget. `references/sillytavern.md` has the measurements, the
+exact guard in SillyTavern's source, and how to give it keyless web search.
+
 ## Checklist
 
 - [ ] Model id read from the running server, not guessed from the filename
-- [ ] Saved context >= 64,000, confirmed by loading with no context flag
+- [ ] Saved context set to 65,536, confirmed by loading with no context flag
 - [ ] `model_aliases` entry pins model + provider + base_url
 - [ ] No API key written into any `lmstudio` config block
 - [ ] VRAM measured while generating, not while idle
 - [ ] Idle TTL set so the card frees itself
 - [ ] Web search proven end-to-end against a source you checked yourself
+- [ ] Chat front-end: response budget large enough to survive reasoning tokens
