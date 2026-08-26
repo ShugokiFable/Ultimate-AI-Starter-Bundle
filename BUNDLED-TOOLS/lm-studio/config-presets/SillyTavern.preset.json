@@ -1,0 +1,41 @@
+{
+  "identifier": "@local:silly-tavern",
+  "name": "SillyTavern",
+  "changed": true,
+  "operation": {
+    "fields": [
+      {
+        "key": "llm.prediction.reasoning.budgetTokens",
+        "value": {
+          "checked": true,
+          "value": 1024
+        }
+      },
+      {
+        "key": "llm.prediction.repeatPenalty",
+        "value": {
+          "checked": false,
+          "value": 1
+        }
+      },
+      {
+        "key": "llm.prediction.topKSampling",
+        "value": 20
+      },
+      {
+        "key": "llm.prediction.minPSampling",
+        "value": {
+          "checked": true,
+          "value": 0
+        }
+      },
+      {
+        "key": "llm.prediction.temperature",
+        "value": 0.75
+      }
+    ]
+  },
+  "load": {
+    "fields": []
+  }
+}

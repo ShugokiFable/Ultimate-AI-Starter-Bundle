@@ -1,0 +1,48 @@
+{
+  "identifier": "@local:hermes",
+  "name": "Hermes",
+  "changed": true,
+  "operation": {
+    "fields": [
+      {
+        "key": "llm.prediction.reasoning.budgetTokens",
+        "value": {
+          "checked": true,
+          "value": 1024
+        }
+      },
+      {
+        "key": "llm.prediction.repeatPenalty",
+        "value": {
+          "checked": false,
+          "value": 1
+        }
+      },
+      {
+        "key": "llm.prediction.topKSampling",
+        "value": 20
+      },
+      {
+        "key": "llm.prediction.minPSampling",
+        "value": {
+          "checked": true,
+          "value": 0
+        }
+      },
+      {
+        "key": "llm.prediction.temperature",
+        "value": 0.6
+      },
+      {
+        "key": "llm.prediction.llama.presencePenalty",
+        "value": {
+          "checked": false,
+          "value": 0
+        }
+      }
+    ]
+  },
+  "load": {
+    "fields": []
+  }
+}

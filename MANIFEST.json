@@ -18606,13 +18606,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 30530,
-  "sha256": "f5eee6ec3d22eae14fb74eda298ad7528740826e469a1e4a9a87cb14461be9a6"
+  "size": 32167,
+  "sha256": "13d62d9341d75e7f5470c0c2c9d6839318290a021c11f05df32976e19b03c989"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1495,
-  "sha256": "0df394665c726994a284e6bf6997f1a0b4698b397da69ceab4881b85ec2a6734"
+  "sha256": "caf078e6e512aa07753db07bb7c49b0c733bba33a11e25076cf124d5c5573480"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -18648,6 +18648,31 @@
   "path": "BUNDLED-TOOLS/capability-records/game-mcp-schema-cost.json",
   "size": 3604,
   "sha256": "6ab86dad4a75f9d9c6c3edc039ae953b4367c776bae8c84e280da54d7f78f7a5"
+ },
+ {
+  "path": "BUNDLED-TOOLS/lm-studio/Install-LMStudio-Presets.ps1",
+  "size": 3332,
+  "sha256": "38cd3911c3b9bb2460b4cdfdd7a70701a9f2efee0f169becbf8e4bf2db8807d2"
+ },
+ {
+  "path": "BUNDLED-TOOLS/lm-studio/README.md",
+  "size": 4177,
+  "sha256": "5c388dd950e68f8350526e4887b9a49f7729c09dc30896924ebce0716bbf9a2a"
+ },
+ {
+  "path": "BUNDLED-TOOLS/lm-studio/config-presets/Hermes.preset.json",
+  "size": 902,
+  "sha256": "4a7b2b0dc05c67820bb30c558d78437ee4300162697f9eda80d380fc7a7d1f56"
+ },
+ {
+  "path": "BUNDLED-TOOLS/lm-studio/config-presets/Jailbreak.preset.json",
+  "size": 6725,
+  "sha256": "9b254126d12cd98cc4c686888e8595c4fb92bf6f285d100ba5a53516fe927378"
+ },
+ {
+  "path": "BUNDLED-TOOLS/lm-studio/config-presets/SillyTavern.preset.json",
+  "size": 764,
+  "sha256": "b5279d1d6d3333d739d276c263a745ae51d74dac1e2a7a50fd26fffbde7cfd8b"
  },
  {
   "path": "BUNDLED-TOOLS/offline/codebase-memory-mcp-windows-amd64.zip",
@@ -20581,8 +20606,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/START-HERE.bat",
-  "size": 2288,
-  "sha256": "1c8afc714d2b428700daee67cbefbc6f9f5752e8bafb39aec8ac91194ee15012"
+  "size": 4735,
+  "sha256": "8bc923a6bc5c004637dd37f9625127d998a5476088e1ff2222da553d24470e24"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/STATE.md",
@@ -21501,8 +21526,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 100121,
-  "sha256": "3302229928a253e2f9032cc9787333b005cfddd6115eaca29815c49431d84aee"
+  "size": 102683,
+  "sha256": "afb8c8c4ad2281e5eb3c66f3b97dd4f1dd11af6b2bfbbeae39f7fe8823515990"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -21577,7 +21602,7 @@
  {
   "path": "INSTALL-AIO.ps1",
   "size": 114109,
-  "sha256": "f8cc4e399e690607b78a9a92bcbc2c53728eb66e7e611ab91553d7557904a66c"
+  "sha256": "4dbdec8e3d81fc676f2f5b74b2d5acae07eb4cf9368174da1614fa5e1fbdfdd9"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -21626,8 +21651,8 @@
  },
  {
   "path": "README.md",
-  "size": 66140,
-  "sha256": "6e268d3ac861b5bf3500aaf4093333d1283071675607a0a4e42bbf24c7908f15"
+  "size": 67624,
+  "sha256": "1ab51fd8036aee98900c2e31e4bd3d1a655e0f032a35fad317c46d1d0a104059"
  },
  {
   "path": "SECURITY.md",
@@ -21637,12 +21662,12 @@
  {
   "path": "START-HERE.bat",
   "size": 712,
-  "sha256": "f002f3195bb4536ea6096f825613c845077aaa9ea8f87bad857636f9f8779b30"
+  "sha256": "570acc2d6d0fe849b7fc2e2530c40824f6074fe3e2a143ab4a39b9168bca09cd"
  },
  {
   "path": "START-HERE.txt",
   "size": 9684,
-  "sha256": "6208eaed1987aa535fe4a81ce7b7cedd70ea5f1467cf7c267004dcf2513fa121"
+  "sha256": "d2126ecd31a2e32feeadf7e587131e91232b359f7e8db14941eb581875c55742"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -22106,13 +22131,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1314,
-  "sha256": "d13c298f727e74a5299f78e4078bae9dc22591212d7595e9988a4813f54986e0"
+  "size": 1345,
+  "sha256": "ae6a59491bb99d96aed45a818b37428cb6056ef421798ad1323ebf802928e902"
  },
  {
   "path": "VERSION.txt",
   "size": 10,
-  "sha256": "42bcac80fdf22c93f491eb8cf973fe9c2a6c8f083583c3755593141f33fac060"
+  "sha256": "edbcd68d675b43bd5dd9c4f986e588b97ef9816222f20f0dc5802f6522f681e2"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -25490,6 +25515,11 @@
   "sha256": "c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade"
  },
  {
+  "path": "docs/TOOL-EVALUATIONS.md",
+  "size": 6877,
+  "sha256": "eda9a279a05e73763e3ddcfb96aded48766a7f20a9fff854756ce46a670f4f5e"
+ },
+ {
   "path": "docs/history/FINAL-AUDIT-v5.0.0.md",
   "size": 390,
   "sha256": "57a29e0c88b8e24399fb76a5629fb102d1d8cacb7e76dd24699a845631c87648"
@@ -25923,5 +25953,10 @@
   "path": "docs/history/V8.6.2-CHANGELOG.md",
   "size": 8580,
   "sha256": "bc08d0c5a57c026660a8ee3faf99138ee7b902838ef149e890263355f58e4ae7"
+ },
+ {
+  "path": "docs/history/V8.6.3-CHANGELOG.md",
+  "size": 6550,
+  "sha256": "90c9959b4868bb3efe514ff804e25827d60ca4af70917d320478358c406b9149"
  }
 ]

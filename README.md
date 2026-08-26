@@ -1,4 +1,4 @@
-﻿# Ultimate AI Starter Bundle v8.6.2
+﻿# Ultimate AI Starter Bundle v8.6.3
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -1070,6 +1070,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.3** - 2026-08-26. One keypress, and five tools that did not make it. Opening the bundled Forge folder and double-clicking `START-HERE.bat` landed on an eleven-item menu whose correct answer -- for anyone who had not used Forge before -- was always `1`; the bundle installer never showed that menu, so the only person who ever saw it was the one least able to answer it. It now installs and wires every detected AI app with no arguments, menu one keypress away, and **no files moved**: three of those scripts are executed by exact filename from `Install-SkyrimForge.ps1`, one as its integrity marker. New `BUNDLED-TOOLS/lm-studio/` ships three sampling presets and a copier the installer deliberately never calls -- `settings.json` stays out because it carries a username-bearing path and two Hugging Face credential fields, though reading it found `defaultContextLength` at 55,000, under the 64,000 floor Hermes hard-refuses. Six tool candidates evaluated in `docs/TOOL-EVALUATIONS.md`: **OMNI** taken as `cli-optional` at the number its own README reports (5.1% over 9,478 executions, not the 97.2% on its landing page); **lowfat** rejected because v0.8.0 ships no Windows binary and hooks through a POSIX shell eval -- the same degradation already documented for RTK; **Understand-Anything** rejected as a duplicate of `codebase-memory`; **Agent-Reach** rejected for installing via an agent-executed remote script; **Lightpanda** and **llmtrim** documented but not bundled.
 
 **v8.6.2** - 2026-08-26. Count it, don't infer it. The doctor reported the Codex skills index as 319 entries at "~16 visible description chars" while Codex was actually rendering 197 at 42 -- it walked `plugins\cache`, but Codex indexes only the plugins `config.toml` ENABLES, and the cache also holds marketplaces that were never enabled, backups of upgraded plugins, and payload meant for other tools. It now asks Codex directly (`codex debug prompt-input`) and measures both figures. Two silent bugs came out with it: `codex plugin list --json` fails wholesale when *any* marketplace snapshot is broken, which made the installer skip its dedupe and leave 20 skills in the index twice (197 -> 177 entries, 42 -> 54 chars once repaired); and a single-provider install erased the other providers' native-plugin records, turning a correct machine into 34 doctor errors.
 

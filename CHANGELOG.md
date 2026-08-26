@@ -1,3 +1,42 @@
+## 8.6.3
+
+- 160 canonical skills total, unchanged. A usability fix, an optional LM
+  Studio folder, and six tool candidates evaluated -- one taken.
+- **Forge stopped asking a question new users could not answer.** Opening the
+  bundled Forge folder and double-clicking `START-HERE.bat` landed on an
+  eleven-item menu whose correct answer, for anyone who had not used Forge
+  before, was always `1`. The bundle installer never showed it -- it calls the
+  `.ps1` scripts directly -- so the only person who ever saw that menu was the
+  one least able to answer it. With no arguments it now runs the install and
+  wires every detected AI app; the menu is one keypress away (`--menu`, or `M`
+  at the end) and is offered directly when an install fails. **No files
+  moved** -- three of those scripts are executed by exact filename from
+  `Install-SkyrimForge.ps1`, one of them as its integrity marker, so renaming
+  any would have broken the installer and its CI job at once.
+- **`BUNDLED-TOOLS/lm-studio/`.** Three sampling presets plus a copier that
+  `START-HERE.bat` deliberately never calls. `settings.json` is not shipped:
+  it carries an absolute downloads path with a username, two Hugging Face
+  credential fields and a billing context. One value in it was worth reading
+  though -- `defaultContextLength` was 55,000, under the 64,000 floor Hermes
+  hard-refuses, so every local model loaded was one Hermes would not accept.
+- **Six tool candidates, one taken** (`docs/TOOL-EVALUATIONS.md`). Gates, in
+  order: native Windows, no duplication, standing token cost, claims that
+  survive reading the source.
+  **OMNI** taken as `cli-optional` -- cross-call dedupe of tool output, ships
+  a real `pc-windows-msvc` binary, stacks with `rtk` rather than competing.
+  Its catalog entry records **5%, not 97%**: the landing page headlines
+  "97.2% off a file read twice", the README's own 9,478-execution corpus says
+  "1.4% from the filters, 5.1% with the ledger".
+  **lowfat** rejected -- v0.8.0 publishes darwin and linux-gnu only, no
+  Windows binary, and integrates via a POSIX shell eval hook: the same
+  degradation already documented for `rtk`'s non-Hermes hooks.
+  **Understand-Anything** rejected, duplicates `codebase-memory`.
+  **Agent-Reach** rejected, installs by having an agent execute a remote
+  script. **Lightpanda** documented not bundled (no native Windows, AGPL).
+  **llmtrim** documented not bundled: it proxies the credentialed request,
+  and its "-74% output" claim is unreconciled in its own README.
+- 93 contracts, unchanged and green.
+
 ## 8.6.2
 
 - 160 canonical skills total, unchanged. Four bugs -- three in one failure
