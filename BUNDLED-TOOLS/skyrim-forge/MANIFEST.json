@@ -1077,8 +1077,8 @@
     {
       "executable": true,
       "path": "START-HERE.bat",
-      "sha256": "1c8afc714d2b428700daee67cbefbc6f9f5752e8bafb39aec8ac91194ee15012",
-      "size": 2288
+      "sha256": "8bc923a6bc5c004637dd37f9625127d998a5476088e1ff2222da553d24470e24",
+      "size": 4735
     },
     {
       "executable": false,
