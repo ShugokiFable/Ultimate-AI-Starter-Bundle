@@ -1,3 +1,59 @@
+## 8.6.2
+
+- 160 canonical skills total, unchanged. Four bugs -- three in one failure
+  family, a number computed instead of read -- plus one MCP server added on
+  measured cost.
+- **The Codex skills index was reported wrong by 122 entries.** The doctor
+  walked `plugins\cache`, but Codex indexes only the plugins `config.toml`
+  ENABLES -- the cache also holds marketplaces that were never enabled, backups
+  of upgraded plugins, and payload directories meant for other tools. Measured:
+  319 entries reported at "~16 visible description chars" when Codex was
+  rendering 197 at 42. The doctor now asks Codex (`codex debug prompt-input`)
+  and MEASURES both figures; the old curve survives only as a fallback and that
+  branch says plainly that its number is an estimate. New JSON field
+  `codex_skill_index`.
+- **One broken marketplace silently cost 20 duplicate skills.** `codex plugin
+  list --json` fails wholesale when any configured marketplace snapshot is
+  unloadable, even an unrelated one. The installer read that as "the native
+  install failed" and skipped the dedupe, so superpowers and ponytail sat in
+  the index twice. It now falls back to Codex's own `config.toml` registry and
+  reports the degradation instead of hiding it. The doctor names duplicates
+  directly. On the maintainer's machine: 197 -> 177 entries, 42 -> 54 visible
+  description chars.
+- **`-Providers Codex` failed the doctor on a correct machine.** The installer
+  wrote `native_plugins` wholesale, erasing the dedupe record for every
+  provider that run did not visit; the doctor then reported 34 missing skills
+  that were legitimately owned by a native plugin. Untouched providers are now
+  carried forward.
+- **A dead autostart runs at every boot and nobody sees it.** Three Startup
+  entries on the maintainer's machine were written by past agent sessions, and
+  one launched a script under a tree that had since been deleted entirely --
+  a failed process launch at every single boot, invisible outside Task
+  Manager's Startup tab. The doctor now reports Startup-folder and HKCU Run
+  entries that launch AI tooling and WARNS when a target is missing (new JSON
+  field `ai_autostarts`); `Clean-StaleState.ps1` names them too. Neither
+  DELETES one: this pack has never written an autostart, and deletion stays
+  limited to what the pack created. A contract enforces exactly that.
+- **context7 joins the always-on core.** Measured with the credential
+  environment scrubbed: 2 tools, 4,870 bytes of schema, ~1,220 tokens per
+  turn, and BOTH tools answer keyless -- nothing rate-limited, key-gated or
+  deprecated. For contrast, firecrawl costs 36,321 bytes for the same count
+  of usable keyless tools and is deliberately not registered without a key.
+  Current library/framework docs on every provider; no overlap with
+  codebase-memory, which indexes the repository you are actually in.
+- **A dict-shaped `models:` duplicates the model list instead of narrowing
+  it.** Hermes treats a list/string `models:` as an allowlist and a dict as a
+  saved catalog that merges ALONGSIDE `discover_models`, so the picker shows
+  a local model twice -- and only once you load it, because discovery has
+  nothing to contribute while LM Studio is idle. `local-model-ops` documents
+  the shape rule, and that a stale local model id hides in five or six keys
+  at once (`model.default`, the provider's `model:`, `model_aliases`, every
+  `moa.*.aggregator.model`) where it fails soft into `fallback_providers`
+  rather than erroring.
+- 93 contracts. Falsified: the autostart contract survived 12 mutations, 12
+  caught -- including the one that would let the cleaner start deleting
+  autostarts it does not own.
+
 ## 8.6.1
 
 - 160 canonical skills total, unchanged. Documentation only.

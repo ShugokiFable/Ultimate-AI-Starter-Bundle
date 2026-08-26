@@ -49,8 +49,8 @@ fatal: unable to auto-detect email address (got '<user>@<host>(none)')
 This machine has NO global git identity. Set repo-local first:
 
 ```bash
-git config user.name  "ShugokiFable"
-git config user.email "35711149+ShugokiFable@users.noreply.github.com"
+git config user.name  "<your-github-username>"
+git config user.email "<id>+<your-github-username>@users.noreply.github.com"
 git rebase origin/main
 ```
 

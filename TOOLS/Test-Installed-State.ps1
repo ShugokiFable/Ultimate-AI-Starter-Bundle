@@ -139,63 +139,144 @@ if(-not $SkipSkills){
     #   151       80 chars
     #   166       68
     #   181       56
-    #   196       40      <- v8.4.0 canonical tree + typical plugins
+    #   196       40
     #   223       32
-    #   255       16      <- v8.3.0 on the maintainer's machine
+    #   255       16
     #
     # At 16 chars every description reads like "Use when buildin" and Codex is
     # routing on skill NAMES alone. Shortening descriptions does NOT help: the
     # allowance follows entry COUNT, and cutting every description to 60 chars
     # measurably gave no entry more room.
     #
-    # Codex indexes EVERY root, not just this pack's: its own system skills plus
-    # one set per installed plugin. Counting only $destSkills understated the
-    # real index by 37 entries on the maintainer's machine, which is how a 255
-    # entry index got reported as 219 and passed.
+    # DO NOT re-derive the index by walking plugins\cache. Codex indexes only
+    # the plugins ENABLED in config.toml, and the cache also holds marketplaces
+    # that were never enabled, backup copies of upgraded plugins, and payload
+    # directories meant for other tools (ponytail ships an .openclaw\skills).
+    # Counting the whole cache reported 319 entries on this machine when Codex
+    # was actually indexing 197 -- a warning that told the user their
+    # descriptions had collapsed to 16 chars while they were really at 42.
+    #
+    # So ask Codex. `codex debug prompt-input` emits the exact block the model
+    # receives; the entry count and the visible description width are then
+    # measured rather than estimated.
     if($provider -eq 'Codex'){
-      $roots = @($destSkills)
-      $roots += (Join-Path $destSkills '.system')
-      $pluginCache = Join-Path (Split-Path -Parent $destSkills) 'plugins\cache'
-      if(Test-Path -LiteralPath $pluginCache -PathType Container){
-        $roots += @(Get-ChildItem -LiteralPath $pluginCache -Directory -Recurse -Filter 'skills' -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName })
-      }
-      $indexCount = 0
-      $packCount = 0
-      foreach($root in $roots){
-        if(-not(Test-Path -LiteralPath $root -PathType Container)){ continue }
-        foreach($d in @(Get-ChildItem -LiteralPath $root -Directory -ErrorAction SilentlyContinue)){
-          $file = Join-Path $d.FullName 'SKILL.md'
-          if(-not(Test-Path -LiteralPath $file -PathType Leaf)){ continue }
-          $head = ''
-          try{ $head = (Get-Content -LiteralPath $file -TotalCount 40 -ErrorAction Stop) -join "`n" }catch{ continue }
-          if(-not [regex]::IsMatch($head,'(?ms)^description:[ \t]*(?<d>.*?)(?=^[A-Za-z_-]+:|^---)')){ continue }
-          $indexCount++
-          if($root -eq $destSkills){ $packCount++ }
+      $indexCount=0; $packCount=0; $medianWidth=0; $dupes=@(); $measured=$false
+      $codexExe=Resolve-Exe 'Codex'
+      if($codexExe){
+        $prompt=''
+        try{
+          $prevEap=$ErrorActionPreference; $ErrorActionPreference='Continue'
+          try{ $prompt=(& $codexExe 'debug' 'prompt-input' 2>&1 | Out-String) } finally { $ErrorActionPreference=$prevEap }
+        }catch{ $prompt='' }
+        # The block is JSON-encoded inside the developer message, so its line
+        # breaks are the two characters \n rather than real newlines.
+        $block=''
+        $m=[regex]::Match($prompt,'### Available skills(?<body>.*?)</skills_instructions>',[Text.RegularExpressions.RegexOptions]::Singleline)
+        if($m.Success){ $block=$m.Groups['body'].Value }
+        if($block){
+          $rootMap=@{}
+          foreach($rm in [regex]::Matches($prompt,'- `(?<r>r\d+)` = `(?<p>[^`]+)`')){
+            $rootMap[$rm.Groups['r'].Value]=$rm.Groups['p'].Value
+          }
+          $packRootIds=@($rootMap.Keys | Where-Object {
+            $rootMap[$_].Replace('/','\').TrimEnd('\') -ieq $destSkills.TrimEnd('\')
+          })
+          $widths=New-Object System.Collections.Generic.List[int]
+          $packNames=New-Object System.Collections.Generic.HashSet[string] ([StringComparer]::OrdinalIgnoreCase)
+          $entries=@()
+          # The name pattern must exclude spaces and parens. A loose one lets
+          # the optional `plugin:` half swallow "imagegen: Generate ... (file",
+          # after which the description runs on into the NEXT entry -- measured
+          # 113 entries of 97 chars where the truth was 197 of 42. The (?!\\n)
+          # guard makes spanning structurally impossible even if a future name
+          # character sneaks past the class.
+          foreach($em in [regex]::Matches($block,'\\n- (?<name>[A-Za-z0-9][A-Za-z0-9._-]*(?::[A-Za-z0-9][A-Za-z0-9._-]*)?): (?<desc>(?:(?!\\n).)*?) \(file: (?<root>r\d+)/')){
+            $entries += ,@($em.Groups['name'].Value, $em.Groups['desc'].Value, $em.Groups['root'].Value)
+          }
+          if($entries.Count){
+            $measured=$true
+            $indexCount=$entries.Count
+            foreach($e in $entries){
+              [void]$widths.Add($e[1].Length)
+              if($packRootIds -contains $e[2]){ $packCount++; [void]$packNames.Add($e[0]) }
+            }
+            foreach($e in $entries){
+              if($packRootIds -contains $e[2]){ continue }
+              $leaf=$e[0].Substring($e[0].LastIndexOf(':')+1)
+              if($packNames.Contains($leaf)){ $dupes+=$e[0] }
+            }
+            $sorted=@($widths | Sort-Object)
+            $medianWidth=$sorted[[int][math]::Floor($sorted.Count/2)]
+          }
         }
       }
-      # Report the nearest MEASURED point, never an interpolation. An invented
-      # number in the shape of a measurement is worse than no number.
-      $curve = @(
-        @{ n = 151; d = 80 }, @{ n = 166; d = 68 }, @{ n = 181; d = 56 },
-        @{ n = 196; d = 40 }, @{ n = 223; d = 32 }, @{ n = 255; d = 16 }
-      )
-      $near = $curve[0]
-      foreach($p in $curve){ if([math]::Abs($p.n - $indexCount) -lt [math]::Abs($near.n - $indexCount)){ $near = $p } }
-      $foreign = $indexCount - $packCount
-      $detail = "Codex skills index: $indexCount entries ($packCount from this pack, $foreign from Codex itself and installed plugins). Nearest measured point: $($near.n) entries renders ~$($near.d) visible chars per description."
+      if(-not $measured){
+        # Fallback only: Codex could not be asked. Count the pack tree plus the
+        # system root plus the cached payload of the plugins config.toml
+        # actually enables, and say plainly that the width is an estimate.
+        $roots=@($destSkills,(Join-Path $destSkills '.system'))
+        $cacheRoot=Join-Path $providerHome 'plugins\cache'
+        foreach($id in @(Get-UabsCodexEnabledPluginIds -CodexHome $providerHome)){
+          $parts=$id.Split('@'); if($parts.Count -ne 2){continue}
+          $pluginDir=Join-Path $cacheRoot ($parts[1]+'\'+$parts[0])
+          if(-not(Test-Path -LiteralPath $pluginDir -PathType Container)){continue}
+          foreach($ver in @(Get-ChildItem -LiteralPath $pluginDir -Directory -EA SilentlyContinue)){
+            $sk=Join-Path $ver.FullName 'skills'
+            if(Test-Path -LiteralPath $sk -PathType Container){$roots+=$sk}
+          }
+        }
+        foreach($root in $roots){
+          if(-not(Test-Path -LiteralPath $root -PathType Container)){continue}
+          foreach($d in @(Get-ChildItem -LiteralPath $root -Directory -EA SilentlyContinue)){
+            $file=Join-Path $d.FullName 'SKILL.md'
+            if(-not(Test-Path -LiteralPath $file -PathType Leaf)){continue}
+            $head=''
+            try{ $head=([IO.File]::ReadAllText($file)) }catch{ continue }
+            if(-not [regex]::IsMatch($head,'(?ms)^description:[ \t]*(?<d>.*?)(?=^[A-Za-z_-]+:|^---)')){continue}
+            $indexCount++
+            if($root -eq $destSkills){$packCount++}
+          }
+        }
+        $curve=@(
+          @{ n=151; d=80 }, @{ n=166; d=68 }, @{ n=181; d=56 },
+          @{ n=196; d=40 }, @{ n=223; d=32 }, @{ n=255; d=16 }
+        )
+        $near=$curve[0]
+        foreach($p in $curve){ if([math]::Abs($p.n-$indexCount) -lt [math]::Abs($near.n-$indexCount)){$near=$p} }
+        $medianWidth=$near.d
+      }
+      $foreign=$indexCount-$packCount
+      $how='measured'
+      if(-not $measured){ $how='estimated from the nearest measured point (codex CLI could not be asked)' }
+      $detail="Codex skills index: $indexCount entries ($packCount from this pack, $foreign from Codex itself and enabled plugins); $medianWidth visible description chars, $how."
+      $script:codexSkillIndex=[ordered]@{entries=$indexCount;from_pack=$packCount;from_elsewhere=$foreign;visible_description_chars=$medianWidth;measured=$measured;duplicates=@($dupes)}
 
-      if($indexCount -ge 220){
+      if($dupes.Count){
+        $shown=[string]::Join(', ',@($dupes|Select-Object -First 6))
+        if($dupes.Count -gt 6){ $shown=$shown+' ...' }
+        Warn "Codex indexes $($dupes.Count) skill(s) twice -- this pack copied them and an enabled plugin also serves its own: $shown"
+        Warn "  Each duplicate costs an index entry and narrows every other description. Re-run the installer; it dedupes copies a native plugin owns."
+        Warn "  If duplicates survive that, Codex's plugin inventory is unreadable. Repair it with: codex plugin marketplace upgrade <name>"
+      }
+      # Only two things here are actionable, and only those two warn: the
+      # duplicates above (the pack's own fault, fixed by the installer) and a
+      # genuinely collapsed width. Between 32 and 56 chars the index is merely
+      # narrow, and the only remaining lever is the user's own plugin choices.
+      # Warning about a state the user cannot clear teaches them to skip
+      # warnings, so that band is reported as a note instead.
+      if($medianWidth -lt 32){
         Warn $detail
-        Warn "  At this count descriptions collapse to roughly 16 chars ('Use when buildin') and Codex routes on skill NAMES alone."
+        Warn "  At this width descriptions read like 'Use when buildin' and Codex routes on skill NAMES alone."
         Warn "  Shortening descriptions does NOT help -- the allowance follows entry COUNT. What does:"
         Warn "    - run the installer; TOOLS\Clean-StaleState.ps1 removes retired and absorbed skills automatically"
         Warn "    - remove Codex plugins you do not use; each contributes its whole skill set"
         Warn "  Reproduce with: codex debug prompt-input"
-      } elseif($indexCount -gt 200){
-        Warn $detail
-        Warn "  Descriptions are short but still carry their leading clause. Removing unused plugins is the only lever left that does not cost a skill."
       } else {
         Write-UabsOk $detail
+        if($medianWidth -lt 56){
+          Write-Host '     Descriptions are short but still carry their leading clause. Each enabled Codex plugin adds its whole skill set; removing one you do not use is the only lever that costs no skill.' -ForegroundColor DarkGray
+          Write-Host '     Reproduce with: codex debug prompt-input' -ForegroundColor DarkGray
+        }
       }
     }
   }
@@ -517,8 +598,42 @@ if ($hermesPluginIssues.Count -or $hermesHookIssues.Count) {
   }
 }
 
+# ------------------------------------------------------------- autostarts ---
+# Boot-time launchers for AI tooling. This pack has never written one, so
+# NOTHING here is deleted: they are reported, and a dead one - an entry whose
+# target is no longer on disk - is warned about, because it costs a failed
+# process launch at every boot and is invisible outside Task Manager's Startup
+# tab. Measured on the maintainer's machine 2026-08-26: three entries written
+# by past agent sessions, one pointing into a tree that had been deleted
+# entirely.
+$autostarts = @()
+try { $autostarts = @(Get-UabsAiAutostartEntries) } catch {
+  Write-UabsWarn ('could not read autostart entries: ' + $_.Exception.Message)
+}
+$deadAutostarts = @($autostarts | Where-Object { $_.Dead })
+if ($autostarts.Count) {
+  Write-Host ''
+  Write-UabsStep 'Boot-time autostarts for AI tooling'
+  foreach ($a in $autostarts) {
+    if ($a.Dead) {
+      $m = ('autostart ''{0}'' runs at every boot but its target is missing: {1}' -f $a.Name, ($a.MissingTargets -join '; '))
+      Write-UabsWarn $m
+      $warnings += $m
+    } else {
+      Write-Host ('  {0,-34} {1}' -f $a.Name, $a.Source) -ForegroundColor DarkGray
+    }
+  }
+  if ($deadAutostarts.Count) {
+    Write-Host '     This pack never creates autostarts, so it will not remove one either.' -ForegroundColor DarkGray
+    Write-Host '     Review them yourself:  explorer shell:startup    (and Task Manager > Startup apps)' -ForegroundColor DarkGray
+  }
+}
+$autostartReport = @($autostarts | ForEach-Object {
+  [ordered]@{ name = $_.Name; source = $_.Source; dead = $_.Dead; missing_targets = @($_.MissingTargets) }
+})
+
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
-$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_hook_issues=@($hermesHookIssues);result=$doctorResult}
+$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_hook_issues=@($hermesHookIssues);codex_skill_index=$script:codexSkillIndex;ai_autostarts=@($autostartReport);result=$doctorResult}
 $reportPath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\installed-state-doctor.json'
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
 if($errors.Count){Write-UabsBad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}

@@ -2301,8 +2301,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 7210,
-  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
+  "size": 8946,
+  "sha256": "ca216a7202fb984dd6e1abfcebf28dc8e5f84108747759abac9d3e8bd4c0e826"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
@@ -4706,8 +4706,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
-  "size": 4120,
-  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+  "size": 4136,
+  "sha256": "a3cac28cbbe0948a88556ffaf946a3890c29254caf6cbd1c2db0b0addf3872e6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
@@ -5746,8 +5746,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 7210,
-  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
+  "size": 8946,
+  "sha256": "ca216a7202fb984dd6e1abfcebf28dc8e5f84108747759abac9d3e8bd4c0e826"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
@@ -8151,8 +8151,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
-  "size": 4120,
-  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+  "size": 4136,
+  "sha256": "a3cac28cbbe0948a88556ffaf946a3890c29254caf6cbd1c2db0b0addf3872e6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
@@ -9176,8 +9176,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 7210,
-  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
+  "size": 8946,
+  "sha256": "ca216a7202fb984dd6e1abfcebf28dc8e5f84108747759abac9d3e8bd4c0e826"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
@@ -11581,8 +11581,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
-  "size": 4120,
-  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+  "size": 4136,
+  "sha256": "a3cac28cbbe0948a88556ffaf946a3890c29254caf6cbd1c2db0b0addf3872e6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
@@ -12606,8 +12606,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 7210,
-  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
+  "size": 8946,
+  "sha256": "ca216a7202fb984dd6e1abfcebf28dc8e5f84108747759abac9d3e8bd4c0e826"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
@@ -15011,8 +15011,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
-  "size": 4120,
-  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+  "size": 4136,
+  "sha256": "a3cac28cbbe0948a88556ffaf946a3890c29254caf6cbd1c2db0b0addf3872e6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
@@ -16046,8 +16046,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/SKILL.md",
-  "size": 7210,
-  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
+  "size": 8946,
+  "sha256": "ca216a7202fb984dd6e1abfcebf28dc8e5f84108747759abac9d3e8bd4c0e826"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/local-model-ops/references/gguf-metadata.md",
@@ -18451,8 +18451,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/references/publishing-pitfalls.md",
-  "size": 4120,
-  "sha256": "1ca7d28ee84d61c88bcc8e6b7f8cb7690221cfc9360834ecaf35a2efaacab3db"
+  "size": 4136,
+  "sha256": "a3cac28cbbe0948a88556ffaf946a3890c29254caf6cbd1c2db0b0addf3872e6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/windows-workspace-ops/scripts/create_junction.py",
@@ -18606,13 +18606,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 28624,
-  "sha256": "6170c6120aff587500424fb553fbeb6353853b6d96bae80a1ac6b81196ef3131"
+  "size": 30530,
+  "sha256": "f5eee6ec3d22eae14fb74eda298ad7528740826e469a1e4a9a87cb14461be9a6"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 1492,
-  "sha256": "81eaf10a0ec1be755340cdb5938ce0e20e1282f1c1cd3cbae852c6290917196b"
+  "size": 1495,
+  "sha256": "0df394665c726994a284e6bf6997f1a0b4698b397da69ceab4881b85ec2a6734"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -18633,6 +18633,11 @@
   "path": "BUNDLED-TOOLS/THIRD-PARTY-NOTICES.md",
   "size": 1011,
   "sha256": "9c51b6bee0f09ca139e8fe9fbccbe5660b55f5dbb803bc5514729395421ee5d9"
+ },
+ {
+  "path": "BUNDLED-TOOLS/capability-records/context7.json",
+  "size": 876,
+  "sha256": "19afc14280bb0ff2f41a0021f40ae5ddb1d6366bdba1d117177f6de8fdad9ddf"
  },
  {
   "path": "BUNDLED-TOOLS/capability-records/firecrawl-mcp.json",
@@ -21496,8 +21501,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 96428,
-  "sha256": "ac0875492d1428fd4475d388f1e31d56ea382db74bde6920784768ed40025e8b"
+  "size": 100121,
+  "sha256": "3302229928a253e2f9032cc9787333b005cfddd6115eaca29815c49431d84aee"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -21571,8 +21576,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 111891,
-  "sha256": "c0132068107b0fbf8b173d514851f32513f48836141ce59aa511ea439e05e2af"
+  "size": 114109,
+  "sha256": "f8cc4e399e690607b78a9a92bcbc2c53728eb66e7e611ab91553d7557904a66c"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -21621,8 +21626,8 @@
  },
  {
   "path": "README.md",
-  "size": 65267,
-  "sha256": "fc81b78bb01448d67fe56a1960240451e0605897821f7a13acd436356769369a"
+  "size": 66140,
+  "sha256": "6e268d3ac861b5bf3500aaf4093333d1283071675607a0a4e42bbf24c7908f15"
  },
  {
   "path": "SECURITY.md",
@@ -21631,13 +21636,13 @@
  },
  {
   "path": "START-HERE.bat",
-  "size": 709,
-  "sha256": "864131ea3c67b03db23fca5d45fa86800e375057d1639fa4174b4f797496ffd9"
+  "size": 712,
+  "sha256": "f002f3195bb4536ea6096f825613c845077aaa9ea8f87bad857636f9f8779b30"
  },
  {
   "path": "START-HERE.txt",
-  "size": 9681,
-  "sha256": "36680f12ccaea6a431fbc60fc807c4e7594ef277d29fa738ad06cce75e38ef14"
+  "size": 9684,
+  "sha256": "6208eaed1987aa535fe4a81ce7b7cedd70ea5f1467cf7c267004dcf2513fa121"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -21831,8 +21836,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 168411,
-  "sha256": "2f0efbfaf6a0238253353b9e75d0b9f456f1cae024e57eb28f06477253d22e72"
+  "size": 179432,
+  "sha256": "8468fb4a1d35a4e874dadf70c560f4ba71604b89e86019e0557f58376284eea6"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -21851,8 +21856,8 @@
  },
  {
   "path": "TOOLS/Clean-StaleState.ps1",
-  "size": 10638,
-  "sha256": "1d6de5352fd8a2795af6755eceeee494d3076009a49e498474d55325ac8fa30f"
+  "size": 11719,
+  "sha256": "865fcae013f322aa8c50fd0ba7d5abc3f0ed25112b2235bd362d8ab8c83575bb"
  },
  {
   "path": "TOOLS/Ensure-Headroom-Grok.ps1",
@@ -21931,8 +21936,8 @@
  },
  {
   "path": "TOOLS/Test-Installed-State.ps1",
-  "size": 28798,
-  "sha256": "b03693c8f7a3447c0ccd4bc97285a55bbbf584de5ec69881b2c3978664e5e927"
+  "size": 35334,
+  "sha256": "6252760450dc4102d2c227859a97317adc88e843bb222d596202f0da1ceab6b1"
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
@@ -21946,8 +21951,8 @@
  },
  {
   "path": "TOOLS/UABS-Common.ps1",
-  "size": 58242,
-  "sha256": "f51617362d6f9530b0a296aa5537c1a2d803dcab455e1dd058e7407212065c63"
+  "size": 65087,
+  "sha256": "9dc18f98a9c931cb7e82e02e7e2faef407348b13b94ed54c3b602a01a56487e4"
  },
  {
   "path": "TOOLS/UABS-Mcp-Write.ps1",
@@ -22101,13 +22106,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1311,
-  "sha256": "d21da1f16b4ed5726ab7928734a2ce47448e3c41fadcb088775e368d8210933a"
+  "size": 1314,
+  "sha256": "d13c298f727e74a5299f78e4078bae9dc22591212d7595e9988a4813f54986e0"
  },
  {
   "path": "VERSION.txt",
-  "size": 7,
-  "sha256": "a48fdc736da622fb9a975eab69bd4921ed51975f3fc980e0638113d2c7a21b17"
+  "size": 10,
+  "sha256": "42bcac80fdf22c93f491eb8cf973fe9c2a6c8f083583c3755593141f33fac060"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -23026,8 +23031,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/local-model-ops/SKILL.md",
-  "size": 7210,
-  "sha256": "4aec2f6aa8d99aa18c2a3b826f0bd5c7b7dab11898ad6b2f91f068dfaaa178bc"
+  "size": 8946,
+  "sha256": "ca216a7202fb984dd6e1abfcebf28dc8e5f84108747759abac9d3e8bd4c0e826"
  },
  {
   "path": "_CANONICAL-SKILLS/local-model-ops/references/gguf-metadata.md",
@@ -25913,5 +25918,10 @@
   "path": "docs/history/V8.6.1-CHANGELOG.md",
   "size": 3447,
   "sha256": "78a44ae21af716ae5c73f209ab4d0e4273564fbd20b636a5418fa03a7c96feaa"
+ },
+ {
+  "path": "docs/history/V8.6.2-CHANGELOG.md",
+  "size": 8580,
+  "sha256": "bc08d0c5a57c026660a8ee3faf99138ee7b902838ef149e890263355f58e4ae7"
  }
 ]

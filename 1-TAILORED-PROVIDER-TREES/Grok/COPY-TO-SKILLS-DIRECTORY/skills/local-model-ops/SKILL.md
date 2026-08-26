@@ -38,6 +38,45 @@ endpoint. That buys real behaviour you do not get from a custom provider:
 - The on-disk context cache is deliberately bypassed for `lmstudio`, because
   a local model's loaded context changes whenever you reload it.
 
+## A dict-shaped `models:` does not narrow the list, it duplicates it
+
+Leave the provider's model catalog to `discover_models: true` and write **no**
+`models:` block under it. The two are not alternatives that happen to overlap:
+
+```yaml
+providers:
+  lm-studio:
+    discover_models: true
+    models:                      # <-- delete this
+      some-model@iq3_xs: {}
+```
+
+Hermes treats a **list or string** `models:` as an allowlist that narrows
+discovery, and a **dict** as a saved catalog that merges *alongside* it
+(`model_switch.py`: `if isinstance(value, dict): return False`). So the dict
+form adds entries instead of filtering them, and the picker shows the model
+twice — once discovered, once declared. The tell is that it looks correct
+while nothing is loaded, because discovery has nothing to contribute yet, and
+doubles the moment you load a model in LM Studio.
+
+To pin a dict-shaped catalog on purpose, set `discover_models: false`. If you
+want the list to track whatever you have loaded — the normal case when you
+swap models often — keep discovery on and delete the block.
+
+Then check the id everywhere, not just in `model.default`. A stale local model
+name tends to appear in five or six places at once: `model.default`, the
+provider's own `model:`, `model_aliases.<name>.model`, and every
+`moa.*.aggregator.model`. Measured on the maintainer's machine 2026-08-26: six
+references, **none** of which matched the id the server was serving.
+
+```powershell
+Select-String -Path "$env:LOCALAPPDATA\hermes\config.yaml" -Pattern '^\s*model:'
+```
+
+A name that no longer resolves does not fail loudly — it falls through to
+`fallback_providers`, so the symptom is "local is slow" or "it used a hosted
+model", not an error.
+
 ## The context floor is the thing that bites
 
 Hermes refuses any model whose window is below **64,000 tokens** and raises at

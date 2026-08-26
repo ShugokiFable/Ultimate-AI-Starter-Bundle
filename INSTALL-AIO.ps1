@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Ultimate AI Starter Bundle - All-In-One installer for skills, plugins, MCP tools, and houseCARL (MO2/Vortex).
 
@@ -322,7 +322,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.6.1 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.6.2 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -756,9 +756,28 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
           break
         }
 
+        # `codex plugin list --json` refuses to answer AT ALL when any one
+        # configured marketplace snapshot is unloadable -- including a
+        # marketplace that has nothing to do with the plugin being checked.
+        # An empty inventory then reads as "the native install failed", the
+        # dedupe below never runs, and the copied skills stay in the index
+        # alongside the plugin's own. Measured on this machine: a stale
+        # headroom-marketplace snapshot cost 20 duplicate skill entries.
+        # Codex's config.toml is the registry the CLI renders, so fall back
+        # to it rather than treating an unreadable inventory as empty.
+        $script:UabsCodexInventoryDegraded = $false
         function Get-UabsCodexInstalledPluginIds {
           $raw = Get-UabsNativeOutput -Exe $codexCli.Source -CmdArgs @('plugin','list','--json')
-          try { return @((($raw | ConvertFrom-Json).installed) | ForEach-Object { [string]$_.pluginId }) } catch { return @() }
+          $ids = @()
+          try { $ids = @((($raw | ConvertFrom-Json).installed) | ForEach-Object { [string]$_.pluginId }) } catch { }
+          if ($ids.Count) { return $ids }
+          $fallback = @(Get-UabsCodexEnabledPluginIds -CodexHome $providerHome)
+          if ($fallback.Count -and -not $script:UabsCodexInventoryDegraded) {
+            $script:UabsCodexInventoryDegraded = $true
+            Write-UabsWarn ('Codex: `plugin list --json` returned nothing usable; read ' +
+              $fallback.Count + ' plugin(s) from config.toml instead. Repair it with: codex plugin marketplace upgrade <name>')
+          }
+          return $fallback
         }
 
         # Retire the manually-written V7 marketplace through Codex's official
@@ -1775,8 +1794,27 @@ if (Test-Path $disc) {
 
 $stateDir = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
+
+# native_plugins records which skill copies a native plugin owns, and the
+# doctor treats a copy that is absent WITHOUT such a record as a fatal missing
+# skill. This run only visited $Providers, so writing its map wholesale erases
+# the record for every provider it did not touch: measured, `-Providers Codex`
+# after a full install turned a correct machine into 34 doctor errors. Carry
+# the untouched providers forward.
+$statePath = Join-Path $stateDir 'install-state.json'
+if (Test-Path -LiteralPath $statePath -PathType Leaf) {
+  try {
+    $priorPlugins = ([IO.File]::ReadAllText($statePath) | ConvertFrom-Json).native_plugins
+    if ($priorPlugins) {
+      foreach ($p in $priorPlugins.PSObject.Properties) {
+        if (-not $nativePlugins.Contains($p.Name)) { $nativePlugins[$p.Name] = $p.Value }
+      }
+    }
+  } catch { Write-UabsWarn 'Could not read the previous install state; native-plugin records for providers not in this run were not carried forward.' }
+}
+
   $state = @{
-  version = '8.6.1'
+  version = '8.6.2'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

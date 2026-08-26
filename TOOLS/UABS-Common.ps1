@@ -1,4 +1,4 @@
-# UABS-Common.ps1 - shared helpers for Ultimate AI Starter Bundle AIO installer
+﻿# UABS-Common.ps1 - shared helpers for Ultimate AI Starter Bundle AIO installer
 $script:UabsPackRoot = $null
 $script:UabsHeaders = @{ 'User-Agent' = 'Ultimate-AI-Starter-Bundle-AIO/8.0.0' }
 
@@ -759,6 +759,159 @@ function Get-UabsGrokPluginList {
   } catch {
     return @()
   }
+}
+
+function Get-UabsAutostartTargetPaths {
+  <#
+  Pull every filesystem path out of an autostart command line or launcher
+  script. A .vbs wrapper names two of them - the interpreter and the script it
+  runs - and it is normally the SECOND one that has gone missing, so all of
+  them are returned and the caller decides.
+
+  Environment variables are expanded, because launcher scripts written by
+  other tools use %LOCALAPPDATA% freely and an unexpanded string always
+  "does not exist".
+  #>
+  param([string]$Text)
+  $paths = New-Object System.Collections.Generic.List[string]
+  if ([string]::IsNullOrWhiteSpace($Text)) { return @() }
+  $rx = '(?<p>(?:[A-Za-z]:\\|%[A-Za-z_()0-9]+%\\)[^"''<>|\r\n]*?\.[A-Za-z0-9]{1,6})(?=["''\s,)]|$)'
+  foreach ($m in [regex]::Matches($Text, $rx)) {
+    $p = $m.Groups['p'].Value.Trim()
+    try { $p = [Environment]::ExpandEnvironmentVariables($p) } catch { }
+    if ($p -and -not $paths.Contains($p)) { [void]$paths.Add($p) }
+  }
+  return @($paths)
+}
+
+function Get-UabsAiAutostartEntries {
+  <#
+  Enumerate the boot-time autostarts that launch AI tooling: the per-user
+  Startup folder plus the HKCU Run key.
+
+  NOTHING HERE IS OWNED BY THIS PACK. The installer has never written an
+  autostart and never will. These entries are created by agent sessions,
+  by other tools' installers, and by the user - so this function REPORTS and
+  callers must not delete on their own initiative.
+
+  Measured on the maintainer's machine 2026-08-26: three Startup entries, all
+  written by past agent sessions, one of them (`cbm-dashboard-plus.vbs`)
+  pointing into a `Skyrim-AI-V5` tree that no longer existed at all. A dead
+  autostart costs a failed process launch at every single boot and is
+  invisible unless someone opens Task Manager's Startup tab.
+
+  Each entry carries: Name, Source, Command, Targets, MissingTargets, Dead.
+  `Dead` means at least one path the entry needs is not on disk.
+  #>
+  [CmdletBinding()] param()
+  $out = New-Object System.Collections.Generic.List[object]
+  # Broad on purpose: a false positive is only ever printed, never acted on,
+  # whereas a miss leaves the user staring at Task Manager. Bare `chroma` is
+  # deliberately NOT in this list - it matched Razer's RGB autostart
+  # (`--url-params=apps=synapse,chroma-app`) on the maintainer's machine.
+  $needle = 'claude|codex|grok|kimi|hermes|housecarl|codebase-memory|cbm[-_]|claude[-_]mem|superpowers|ponytail|headroom|chroma-mcp|skyrim-ai|forge|\bmcp\b|anthropic|openai|openrouter|ollama|spooky'
+
+  $startup = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'
+  if (Test-Path -LiteralPath $startup -PathType Container) {
+    foreach ($f in Get-ChildItem -LiteralPath $startup -File -ErrorAction SilentlyContinue) {
+      if ($f.Name -eq 'desktop.ini') { continue }
+      $command = ''
+      if ($f.Extension -eq '.lnk') {
+        try {
+          $sh = New-Object -ComObject WScript.Shell
+          $lnk = $sh.CreateShortcut($f.FullName)
+          $command = ('{0} {1}' -f $lnk.TargetPath, $lnk.Arguments).Trim()
+        } catch { $command = '' }
+      } else {
+        try { $command = [IO.File]::ReadAllText($f.FullName) } catch { $command = '' }
+      }
+      $haystack = ($f.Name + ' ' + $command)
+      if ($haystack -notmatch $needle) { continue }
+      $targets = @(Get-UabsAutostartTargetPaths -Text $command)
+      $missing = @($targets | Where-Object { -not (Test-Path -LiteralPath $_) })
+      [void]$out.Add([pscustomobject]@{
+        Name           = $f.Name
+        Source         = 'Startup folder'
+        Path           = $f.FullName
+        Command        = $command.Trim()
+        Targets        = $targets
+        MissingTargets = $missing
+        Dead           = [bool]($targets.Count -and $missing.Count)
+      })
+    }
+  }
+
+  $runKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
+  if (Test-Path -LiteralPath $runKey) {
+    $props = $null
+    try { $props = Get-ItemProperty -LiteralPath $runKey -ErrorAction Stop } catch { }
+    if ($props) {
+      foreach ($p in $props.PSObject.Properties) {
+        if ($p.Name -like 'PS*') { continue }
+        $command = [string]$p.Value
+        if (($p.Name + ' ' + $command) -notmatch $needle) { continue }
+        $targets = @(Get-UabsAutostartTargetPaths -Text $command)
+        $missing = @($targets | Where-Object { -not (Test-Path -LiteralPath $_) })
+        [void]$out.Add([pscustomobject]@{
+          Name           = $p.Name
+          Source         = 'HKCU Run'
+          Path           = $runKey + '\' + $p.Name
+          Command        = $command
+          Targets        = $targets
+          MissingTargets = $missing
+          Dead           = [bool]($targets.Count -and $missing.Count)
+        })
+      }
+    }
+  }
+  # .ToArray(), not @($out): on PS 5.1, wrapping a List[object] whose items
+  # carry array-valued properties throws "Argument types do not match".
+  # Callers wrap the CALL in @() to survive the single-item unroll.
+  return $out.ToArray()
+}
+
+function Get-UabsCodexEnabledPluginIds {
+  <#
+  Read Codex's OWN plugin registry - ~/.codex/config.toml - and return the
+  ids (`<plugin>@<marketplace>`) that are not explicitly disabled.
+
+  Why this exists: `codex plugin list --json` fails WHOLESALE when any one
+  configured marketplace snapshot is unloadable, even a marketplace unrelated
+  to the plugin being asked about. Measured on 2026-08-26:
+
+    Error: failed to load configured marketplace snapshot(s):
+    - `headroom-marketplace` at ...\.tmp/marketplaces\headroom-marketplace:
+      marketplace root does not contain a supported manifest
+
+  An empty inventory then reads as "the plugin is not installed", which made
+  the installer keep its copied skill duplicates. This file is what the CLI
+  renders, so it stays right when the CLI cannot answer.
+
+  Only the top-level [plugins."<id>"] table counts. Codex also writes nested
+  tables such as [plugins."browser@openai-bundled".ambient] that carry their
+  own `enabled` keys; reading those as the plugin's state inverts the answer.
+  #>
+  param([string]$CodexHome)
+  if (-not $CodexHome) { return @() }
+  $cfg = Join-Path $CodexHome 'config.toml'
+  if (-not (Test-Path -LiteralPath $cfg -PathType Leaf)) { return @() }
+  $ids = New-Object System.Collections.Generic.List[string]
+  $current = $null
+  $disabled = $false
+  foreach ($line in [IO.File]::ReadAllLines($cfg)) {
+    $t = $line.Trim()
+    if ($t.StartsWith('[')) {
+      if ($current -and -not $disabled) { [void]$ids.Add($current) }
+      $current = $null
+      $disabled = $false
+      $m = [regex]::Match($t, '^\[plugins\."(?<id>[^"]+)"\]$')
+      if ($m.Success) { $current = $m.Groups['id'].Value }
+      continue
+    }
+    if ($current -and $t -match '^enabled\s*=\s*false') { $disabled = $true }
+  }
+  if ($current -and -not $disabled) { [void]$ids.Add($current) }
+  return @($ids)
 }
 
 function Repair-UabsGrokDuplicatePlugins {

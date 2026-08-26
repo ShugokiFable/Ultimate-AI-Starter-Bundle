@@ -20,6 +20,11 @@
      is still a defect, and it buries the one backup someone might actually
      want to restore.
 
+  It also REPORTS, without touching, boot-time autostarts for AI tooling whose
+  target no longer exists -- the pack has never written an autostart, so those
+  are not its to remove, but a launcher that fails at every boot is worth
+  naming.
+
   DELETION IS LIMITED TO WHAT THIS PACK CREATED. A retired skill is removed
   only when its name is in BUNDLED-TOOLS/RETIRED-SKILLS.json AND the directory
   looks like a copy this pack made. Backups are matched on the pack's own
@@ -181,6 +186,22 @@ if (Test-Path -LiteralPath $backupsRoot -PathType Container) {
     foreach ($old in $ordered[$KeepBackups..($ordered.Count - 1)]) {
       Add-CleanTarget -Kind 'backup' -Path $old.FullName -Why "older than the $KeepBackups most recent $($group.Name) dedupe snapshots"
     }
+  }
+}
+
+# ------------------------------------------------------------ autostarts ----
+# Boot-time launchers for AI tooling are REPORTED, never planned for deletion.
+# The rule at the top of this file is that deletion is limited to what this
+# pack created, and this pack has never written an autostart -- these come from
+# agent sessions, other tools' installers, and the user. A dead one still gets
+# named, because it costs a failed process launch at every boot.
+$autostarts = @()
+try { $autostarts = @(Get-UabsAiAutostartEntries) } catch { }
+foreach ($a in $autostarts) {
+  if ($a.Dead) {
+    [void]$script:Reported.Add(
+      ("autostart '{0}' ({1}) runs at every boot but its target is gone: {2} -- not ours to delete; remove it yourself via  explorer shell:startup" -f `
+        $a.Name, $a.Source, ($a.MissingTargets -join '; ')))
   }
 }
 

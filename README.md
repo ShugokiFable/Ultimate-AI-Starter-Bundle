@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.6.1
+﻿# Ultimate AI Starter Bundle v8.6.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -1070,6 +1070,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.2** - 2026-08-26. Count it, don't infer it. The doctor reported the Codex skills index as 319 entries at "~16 visible description chars" while Codex was actually rendering 197 at 42 -- it walked `plugins\cache`, but Codex indexes only the plugins `config.toml` ENABLES, and the cache also holds marketplaces that were never enabled, backups of upgraded plugins, and payload meant for other tools. It now asks Codex directly (`codex debug prompt-input`) and measures both figures. Two silent bugs came out with it: `codex plugin list --json` fails wholesale when *any* marketplace snapshot is broken, which made the installer skip its dedupe and leave 20 skills in the index twice (197 -> 177 entries, 42 -> 54 chars once repaired); and a single-provider install erased the other providers' native-plugin records, turning a correct machine into 34 doctor errors.
 
 **v8.6.1** - 2026-08-26. Documentation only. v8.6.0 stated the rule and never the setting: Hermes refuses a context window under 64,000 tokens, and both docs said exactly that, leaving a reader to type 64,000 (passes a strict `<`, but is not a value LM Studio offers) or 32,768 (the nearest power of two, and the one commonly saved already). Both now say **65,536**, with the verification step that is usually skipped -- confirm the saved default by loading with no explicit context flag, because a cold start is what Hermes' preload reads. Also a new SillyTavern reference: it demands an API key the local server ignores, and a reasoning model returns an empty message when Response Length is small because thinking tokens come out of the same budget.
 

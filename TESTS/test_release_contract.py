@@ -983,9 +983,11 @@ def test_canonical_tree_carries_no_maintainer_identity() -> None:
 def test_doctor_counts_every_skill_root_and_never_interpolates() -> None:
     """Counting one directory understated a 255-entry index as 219.
 
-    Codex indexes its own system skills and one set per installed plugin. The
-    doctor saw only this pack's directory, reported 219 entries at ~88 chars,
-    and passed -- while Codex was rendering 255 entries at 16.
+    Codex indexes its own system skills and one set per ENABLED plugin. The
+    doctor first saw only this pack's directory (219 reported against a real
+    255), then over-corrected into the whole plugin cache (319 reported
+    against a real 197). Both numbers looked like measurements. The fallback
+    below is the only branch still allowed to estimate, and it has to say so.
     """
     body = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
 
@@ -1000,9 +1002,15 @@ def test_doctor_counts_every_skill_root_and_never_interpolates() -> None:
     # is worse than no number -- that is how ~88 chars got reported as fine.
     for point in ("151", "196", "255"):
         assert point in body, "the measured curve lost its %s-entry point" % point
-    assert "Nearest measured point" in body, (
-        "the doctor no longer says its figure is the nearest MEASURED point, so a "
-        "reader cannot tell a measurement from an interpolation"
+    assert "estimated from the nearest measured point" in body, (
+        "the doctor's fallback no longer says its figure is estimated from the "
+        "nearest MEASURED point, so a reader cannot tell a measurement from an "
+        "interpolation"
+    )
+    # The curve is the fallback, never the headline. Asking Codex outranks it.
+    assert body.index("debug' 'prompt-input") < body.index("$curve=@("), (
+        "the doctor consults its interpolation curve before asking Codex for "
+        "the index Codex actually renders"
     )
     # The old advice would now delete shipped skills.
     assert "OPTIONAL Other-Games mega-pack" not in body, (
@@ -2228,6 +2236,12 @@ def main() -> int:
         test_migrator_converges_plugins_additively_and_proves_the_payload,
         test_doctor_reports_unreachable_plugins_and_unconsented_hooks,
         test_readme_does_not_promise_a_web_backend_the_pack_never_installs,
+        # v8.6.2 -- the Codex skills index, counted instead of inferred.
+        test_codex_index_is_measured_not_inferred_from_the_plugin_cache,
+        test_codex_plugin_detection_survives_one_broken_marketplace,
+        test_subset_install_keeps_the_other_providers_native_plugin_records,
+        # v8.6.2 -- boot-time autostarts, reported but never ours to delete.
+        test_dead_autostarts_are_reported_and_never_deleted,
     ]
     failed = []
     for fn in tests:
@@ -3183,6 +3197,209 @@ def test_readme_does_not_promise_a_web_backend_the_pack_never_installs() -> None
     pin = readme[readme.index("web.search_backend"):][:400].lower()
     assert "only" in pin or "turns the rotation off" in pin, (
         "the README recommends pinning a backend without warning that it disables failover"
+    )
+
+
+def test_codex_index_is_measured_not_inferred_from_the_plugin_cache() -> None:
+    """The old count walked plugins\\cache and was wrong by 122 entries.
+
+    Codex indexes only the plugins config.toml ENABLES. The cache also holds
+    marketplaces that were never enabled, backups of upgraded plugins, and
+    payload directories meant for other tools. Counting all of it reported 319
+    entries when Codex was indexing 197 -- and the report that came with it
+    told the user their descriptions had collapsed to 16 characters when they
+    were really at 42. A wrong number in the shape of a measurement is worse
+    than no number, so the doctor now asks Codex and measures the real width.
+    """
+    code = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+
+    assert "debug' 'prompt-input" in code, (
+        "the doctor no longer asks Codex for the index it actually renders"
+    )
+    assert "### Available skills" in code, (
+        "the doctor no longer parses the skills block out of Codex's own prompt"
+    )
+    # The recursive cache walk is the specific bug. Its return would restore
+    # the 319-entry answer even with the new parser sitting next to it.
+    assert "-Recurse -Filter 'skills'" not in code, (
+        "the doctor is walking plugins\\cache recursively again; that counts "
+        "plugins Codex never loads and inflates the reported index"
+    )
+    assert "Get-UabsCodexEnabledPluginIds" in code, (
+        "the doctor's fallback no longer restricts itself to enabled plugins"
+    )
+    # Duplicates are the one lever the pack owns, so they must be named.
+    assert "indexes $($dupes.Count) skill(s) twice" in code, (
+        "the doctor no longer reports skills the pack copied that an enabled "
+        "plugin already serves -- the only index cost the installer can fix"
+    )
+    assert "codex_skill_index" in code, (
+        "the doctor's JSON report no longer carries the measured index, so "
+        "nothing downstream can read it"
+    )
+    # An estimate must never be presented as a measurement.
+    assert "$how='measured'" in code and "estimated from the nearest measured point" in code, (
+        "the doctor no longer distinguishes a measured index from an estimated one"
+    )
+
+
+def test_codex_plugin_detection_survives_one_broken_marketplace() -> None:
+    """An unreadable inventory is not an empty inventory.
+
+    `codex plugin list --json` fails wholesale when ANY configured marketplace
+    snapshot is unloadable, including one unrelated to the plugin being asked
+    about. The installer read that empty result as "the native install failed",
+    skipped the dedupe, and left 20 duplicate skills in the index -- measured
+    on a machine whose only fault was a stale headroom-marketplace snapshot.
+    """
+    install = ps_code(ROOT / "INSTALL-AIO.ps1")
+    common = ps_code(ROOT / "TOOLS" / "UABS-Common.ps1")
+
+    assert "function Get-UabsCodexEnabledPluginIds" in common, (
+        "the config.toml fallback for Codex's plugin registry is gone"
+    )
+    # Nested tables such as [plugins."browser@openai-bundled".ambient] carry
+    # their own enabled keys. Matching them inverts the answer, so the section
+    # pattern must be anchored to the top-level table.
+    assert "'^\\[plugins\\.\"(?<id>[^\"]+)\"\\]$'" in common, (
+        "the config.toml reader no longer anchors on the top-level plugins "
+        "table; nested tables would be read as the plugin's own state"
+    )
+    assert "Get-UabsCodexEnabledPluginIds -CodexHome $providerHome" in install, (
+        "the installer no longer falls back to Codex's own registry when the "
+        "plugin inventory cannot be read"
+    )
+    # Silently degrading is how this went unnoticed for a release.
+    assert "returned nothing usable" in install, (
+        "the installer degrades to the config fallback without telling the user"
+    )
+    assert "codex plugin marketplace upgrade" in install, (
+        "the installer reports a broken inventory without naming the repair"
+    )
+
+
+def test_subset_install_keeps_the_other_providers_native_plugin_records() -> None:
+    """`-Providers Codex` used to fail the doctor on a correct machine.
+
+    native_plugins records which skill copies a native plugin legitimately
+    owns. The doctor treats a copy that is absent WITHOUT such a record as a
+    fatal missing skill -- correctly, since that is what a half-finished
+    install looks like. Writing the map wholesale after a single-provider run
+    erased the record for the four providers that run never visited: measured,
+    34 doctor errors on a machine where nothing was actually wrong.
+    """
+    install = ps_code(ROOT / "INSTALL-AIO.ps1")
+
+    assert "$priorPlugins" in install, (
+        "the installer no longer reads the previous native_plugins map, so a "
+        "single-provider run erases every other provider's dedupe record"
+    )
+    merge = install[install.index("$priorPlugins"):][:900]
+    assert "$nativePlugins.Contains($p.Name)" in merge, (
+        "the carried-forward map is not keyed by provider, so this run's own "
+        "results could be overwritten by the stale ones"
+    )
+    assert "-not $nativePlugins.Contains($p.Name)" in merge, (
+        "the merge overwrites providers this run DID visit with their stale "
+        "records, which is the opposite of the intended fix"
+    )
+    # The merge has to happen before the state is serialised, not after.
+    assert install.index("$priorPlugins") < install.index("native_plugins = $nativePlugins"), (
+        "the previous records are merged after the state object is built, so "
+        "they never reach the file"
+    )
+
+
+def test_dead_autostarts_are_reported_and_never_deleted() -> None:
+    """A boot-time launcher whose target is gone is a defect the user cannot see.
+
+    Measured on the maintainer's machine 2026-08-26: three Startup entries
+    written by past agent sessions, one of them (`cbm-dashboard-plus.vbs`)
+    launching a script under a `Skyrim-AI-V5` tree that had been deleted
+    entirely. It failed at every boot, silently, for a week.
+
+    Two halves, and BOTH matter:
+
+      * the doctor and the cleaner must NAME such an entry, and
+      * neither may delete it. This pack has never written an autostart, so
+        every one of them belongs to someone else. `Clean-StaleState.ps1`
+        states that rule at the top of the file; a future edit that routes
+        autostarts through `Add-CleanTarget` would break it.
+    """
+    common = ps_code(ROOT / "TOOLS" / "UABS-Common.ps1")
+    doctor = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+    cleaner = ps_code(ROOT / "TOOLS" / "Clean-StaleState.ps1")
+
+    assert "function Get-UabsAiAutostartEntries" in common, (
+        "the shared autostart reader is gone; the doctor and the cleaner would "
+        "each have to grow their own copy"
+    )
+    # A .vbs launcher names the interpreter AND the script. It is normally the
+    # second path that has gone missing, so scanning only the first misses the
+    # exact case this was written for.
+    assert "function Get-UabsAutostartTargetPaths" in common, (
+        "autostart targets are no longer extracted, so 'dead' cannot be decided"
+    )
+    # The whole guarded line, not just the method name: UABS-Common calls
+    # ExpandEnvironmentVariables elsewhere too, and a bare-name assertion
+    # cannot tell that THIS one was deleted. Proven by falsification.
+    assert (
+        "try { $p = [Environment]::ExpandEnvironmentVariables($p) } catch { }"
+        in common
+    ), (
+        "autostart target paths are no longer expanded; a launcher written with "
+        "%LOCALAPPDATA% would always look missing"
+    )
+    # Both autostart surfaces. Dropping either one hides half the entries.
+    assert "Start Menu\Programs\Startup" in common, (
+        "the Startup folder is no longer scanned"
+    )
+    assert "CurrentVersion\Run" in common, (
+        "the HKCU Run key is no longer scanned"
+    )
+    # PS 5.1 throws "Argument types do not match" for @() over a List[object]
+    # whose items carry array-valued properties. ToArray() is not a style
+    # preference here -- @($out) is a crash.
+    assert "$out.ToArray()" in common, (
+        "Get-UabsAiAutostartEntries no longer returns via ToArray(); on PS 5.1 "
+        "wrapping this List[object] in @() throws"
+    )
+    # Bare 'chroma' matched Razer's RGB autostart. A false positive in a report
+    # the user is meant to act on is a real cost.
+    assert "|chroma-mcp|" in common, (
+        "the autostart needle matches bare 'chroma' again; that hits Razer "
+        "Synapse's --url-params=apps=synapse,chroma-app"
+    )
+
+    assert "Get-UabsAiAutostartEntries" in doctor, (
+        "the doctor no longer reports AI autostarts"
+    )
+    assert "but its target is missing" in doctor, (
+        "the doctor no longer distinguishes a dead autostart from a live one"
+    )
+    assert "ai_autostarts=@($autostartReport)" in doctor, (
+        "the measured autostarts no longer reach the JSON report"
+    )
+
+    assert "Get-UabsAiAutostartEntries" in cleaner, (
+        "Clean-StaleState no longer reports dead autostarts, so someone who "
+        "runs the cleaner concludes they have none"
+    )
+    # The load-bearing assertion: reported, not planned for deletion.
+    # Sliced on EXECUTABLE anchors: ps_code() strips comments, so the banner
+    # comments that delimit this section for a human reader are not here.
+    autostart_section = cleaner.split("$autostarts = @()")[-1]
+    autostart_section = autostart_section.split("Write-UabsStep")[0]
+    assert "Get-UabsAiAutostartEntries" in autostart_section, (
+        "the autostart section could not be isolated; this contract is no "
+        "longer checking what it claims to check"
+    )
+    assert "Add-CleanTarget" not in autostart_section, (
+        "Clean-StaleState now plans autostarts for DELETION. This pack never "
+        "created them; deletion is limited to what the pack created."
+    )
+    assert "$script:Reported.Add" in autostart_section, (
+        "dead autostarts no longer go through the report-only channel"
     )
 
 
