@@ -624,10 +624,32 @@
         "unity-editor-control"
       ],
       "scope_note": "There is no machine-wide Unity MCP server. The executable is generated inside the project's Library folder by the Unity package, so the entry is project-scoped by construction and its command is the resolved absolute path for that one project. Until the package is installed the exe does not exist, and the profile refuses rather than writing a path that is not there."
+    },
+    {
+      "id": "rtk",
+      "name": "RTK (Rust Token Killer)",
+      "kind": "cli-optional",
+      "license": "Apache-2.0",
+      "version": "0.45.0",
+      "github": {
+        "owner": "rtk-ai",
+        "repo": "rtk"
+      },
+      "install": "zip-extract",
+      "offline_asset": null,
+      "asset_match": [
+        "rtk-x86_64-pc-windows-msvc.zip"
+      ],
+      "target_dir": "%USERPROFILE%\\.local\\bin",
+      "exe_rel": "rtk.exe",
+      "required_for": [
+        "shell-output-compression"
+      ],
+      "scope_note": "CLI filter for noisy dev commands; zero standing tokens, unlike an MCP server. Measured on this repo: git diff HEAD~3 2,010,426 -> 71,268 bytes (97%), git log 158,877 -> 2,460 (99%). Install the Hermes plugin (`rtk init --agent hermes`) -- it is a Python hook and works on native Windows. Do NOT install the Claude Code / Cursor / Gemini shell hooks on native Windows: they silently degrade to CLAUDE.md prompt injection, which costs context to ASK for savings. Grok is unsupported. Keep exclude_commands = [\"curl\"] so exact API bodies are never filtered. Telemetry is opt-in and stays off."
     }
   ],
-  "pack_version": "8.5.0",
-  "updated_utc": "2026-08-24",
+  "pack_version": "8.6.0",
+  "updated_utc": "2026-08-25",
   "providers": {
     "Grok": {
       "skills": "skills",
@@ -702,7 +724,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "8.5.0",
-  "updated": "2026-08-24",
+  "catalog_version": "8.6.0",
+  "updated": "2026-08-25",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

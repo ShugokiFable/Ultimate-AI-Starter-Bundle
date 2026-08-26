@@ -329,7 +329,7 @@ function Get-UabsFallbackSignature($Chain) {
 }
 
 function Get-UabsProfilePrefs([string]$Profile) {
-  $out = @{ fallback = @(); aliases = @{} }
+  $out = @{ fallback = @(); aliases = @{}; plugins = @() }
   $fb = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'fallback_providers', '--json') -AllowMissing
   if ($fb.Code -eq 0) {
     $json = @($fb.Output | ForEach-Object { [string]$_ } |
@@ -339,6 +339,12 @@ function Get-UabsProfilePrefs([string]$Profile) {
     # and every entry then reads as Object[] instead of a server hashtable.
     if ($json) { $out.fallback = ConvertTo-UabsPlain ($json | ConvertFrom-Json) }
   }
+  $pl = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'plugins.enabled', '--json') -AllowMissing
+  if ($pl.Code -eq 0) {
+    $json = @($pl.Output | ForEach-Object { [string]$_ } |
+      Where-Object { $_.Trim().StartsWith('[') }) | Select-Object -Last 1
+    if ($json) { $out.plugins = @(ConvertTo-UabsPlain ($json | ConvertFrom-Json) | ForEach-Object { [string]$_ }) }
+  }
   $al = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'model.aliases', '--json') -AllowMissing
   if ($al.Code -eq 0) {
     $json = @($al.Output | ForEach-Object { [string]$_ } |
@@ -346,6 +352,40 @@ function Get-UabsProfilePrefs([string]$Profile) {
     if ($json) { $out.aliases = ConvertTo-UabsPlain ($json | ConvertFrom-Json) }
   }
   return $out
+}
+
+$script:UabsSharedPlugins = @()
+
+function Get-UabsSharedPlugins([string]$HermesRoot) {
+  # Exactly what the default profile already runs, minus anything whose payload
+  # is absent. Never a hardcoded list: the point is to propagate what the user
+  # actually installed, not what this pack imagines they installed.
+  $root = Join-Path $HermesRoot 'plugins'
+  if (-not (Test-Path $root)) { return @() }
+  $out = @()
+  foreach ($entry in (Get-UabsProfilePrefs 'default').plugins) {
+    $top = ([string]$entry).Split(@('/', [char]92))[0]
+    if ($top -and (Test-Path (Join-Path $root $top))) { $out += [string]$entry }
+  }
+  return $out
+}
+
+function Ensure-UabsProfilePluginPayload([string]$Profile, [string]$HermesRoot, [string]$ProfileDirs) {
+  # Hermes resolves a user plugin under <HERMES_HOME>/plugins. For a named
+  # profile that is profiles/<name>/plugins, which `profile create` never
+  # creates -- so every plugin the cloned config enables silently resolves to
+  # nothing. One junction back to the root keeps a single authoritative copy
+  # instead of duplicating payloads that would then drift.
+  if ($Profile -eq 'default') { return }
+  $root = Join-Path $HermesRoot 'plugins'
+  if (-not (Test-Path $root)) { return }
+  $link = Join-Path (Join-Path $ProfileDirs $Profile) 'plugins'
+  if (Test-Path $link) {
+    Add-UabsLedger 'untouched' "$Profile already has a plugins directory"
+    return
+  }
+  Add-UabsPlan -Kind 'LinkPlugins' -Profile $Profile -Id 'plugins' -Key 'plugins/' `
+    -Value $root -Detail 'profile cannot see any installed plugin (no plugins directory)'
 }
 
 function Ensure-UabsProfilePrefs([string]$Profile) {
@@ -382,6 +422,24 @@ function Ensure-UabsProfilePrefs([string]$Profile) {
     Add-UabsLedger 'untouched' "$Profile model aliases already complete"
   }
 
+
+  # Plugin payloads live in ONE place -- the root Hermes home's plugins dir --
+  # but every profile keeps its own enabled list. `profile create --clone-from`
+  # copies the list and not the payload, so a cloned profile ends up enabling
+  # plugins it cannot see. Only ever enable a plugin whose directory is really
+  # there; enabling a missing one is the bug this is fixing.
+  $missingPlugins = @()
+  foreach ($entry in $script:UabsSharedPlugins) {
+    if ($current.plugins -notcontains $entry) { $missingPlugins += $entry }
+  }
+  if ($missingPlugins.Count) {
+    Add-UabsPlan -Kind 'SetPrefs' -Profile $Profile -Id 'plugins.enabled' `
+      -Key 'plugins.enabled' -Value $missingPlugins `
+      -Detail ('enable ' + $missingPlugins.Count + ' installed plugin(s): ' + ($missingPlugins -join ', '))
+    $wanted['plugins'] = $missingPlugins
+  } else {
+    Add-UabsLedger 'untouched' "$Profile plugin list already covers every installed plugin"
+  }
   if ($wanted.Count) { $script:Prefs[$Profile] = $wanted }
 }
 
@@ -400,6 +458,15 @@ if aliases:
         merged.setdefault(key, value)   # never overwrite a user's own alias
     model["aliases"] = merged
     cfg["model"] = model
+plugin_names = prefs.get("plugins") or []
+if plugin_names:
+    plugins = dict(cfg.get("plugins") or {})
+    enabled = list(plugins.get("enabled") or [])
+    for name in plugin_names:
+        if name not in enabled:        # additive: never reorder or drop
+            enabled.append(name)
+    plugins["enabled"] = enabled
+    cfg["plugins"] = plugins
 save_config(cfg)
 '@
 
@@ -632,7 +699,11 @@ try {
   # Must be planned BEFORE the no-op check: MCP topology can already be correct
   # while fallbacks and aliases have drifted, and that combination is exactly
   # what a cloned profile looks like months later.
-  foreach ($profile in $managedProfiles) { Ensure-UabsProfilePrefs $profile }
+  $script:UabsSharedPlugins = Get-UabsSharedPlugins $HermesHome
+  foreach ($profile in $managedProfiles) {
+    Ensure-UabsProfilePluginPayload $profile $HermesHome $profileDirs
+    Ensure-UabsProfilePrefs $profile
+  }
 
   if (-not $script:Plan.Count) {
     Write-Host 'Hermes profiles already match the target architecture; no files changed.' -ForegroundColor Green
@@ -658,6 +729,10 @@ try {
       $description = if ($item.Profile -eq 'roblox') { 'Roblox development with the official Studio MCP.' } else { 'Skyrim development with houseCARL load-order evidence.' }
       [void](Invoke-UabsHermes -Arguments @('profile', 'create', $item.Profile, '--clone-from', 'default', '--description', $description))
       [void]$script:CreatedProfiles.Add($item.Profile)
+    }
+    foreach ($item in $script:Plan | Where-Object { $_.Kind -eq 'LinkPlugins' }) {
+      $link = Join-Path (Join-Path $profileDirs $item.Profile) 'plugins'
+      [void](New-Item -ItemType Junction -Path $link -Target $item.Value -ErrorAction Stop)
     }
     $affectedProfiles = @($script:Plan | Where-Object { $_.Kind -ne 'CreateProfile' } | ForEach-Object { $_.Profile } | Select-Object -Unique)
     foreach ($profile in $affectedProfiles) {
@@ -711,6 +786,19 @@ try {
       foreach ($key in $script:Prefs[$profile]['aliases'].Keys) {
         if (-not ($after.aliases -and $after.aliases.Contains($key))) {
           throw "Verification failed: $profile is missing alias '$key'."
+        }
+      }
+      foreach ($entry in @($script:Prefs[$profile]['plugins'])) {
+        if (-not $entry) { continue }
+        if ($after.plugins -notcontains $entry) {
+          throw "Verification failed: $profile did not enable plugin '$entry'."
+        }
+        # Enabled is worthless if the payload is unreachable -- that is the
+        # original bug, and writing the list without checking would recreate it.
+        $home2 = if ($profile -eq 'default') { $HermesHome } else { Join-Path $profileDirs $profile }
+        $top = ([string]$entry).Split(@('/', [char]92))[0]
+        if (-not (Test-Path (Join-Path (Join-Path $home2 'plugins') $top))) {
+          throw "Verification failed: $profile enables plugin '$entry' but cannot resolve its payload."
         }
       }
     }

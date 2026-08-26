@@ -1146,7 +1146,18 @@ def test_readme_model_guidance_matches_the_shipped_config() -> None:
     for alias in shipped:
         assert ("hermes model %s" % alias) in readme or alias in readme, (
             "alias %r is shipped but never documented" % alias)
+    # `local` is the deliberate exception and must stay one: it names a model
+    # that exists on one machine, behind a localhost endpoint. Shipping it in
+    # the portable starter is exactly what test_hermes_starter_carries_no_
+    # machine_state forbids, so the README documents it as something the
+    # reader configures rather than something the pack hands them.
+    MACHINE_LOCAL_ALIASES = {"local"}
     for alias in re.findall(r"hermes model ([a-z0-9-]+)", readme):
+        if alias in MACHINE_LOCAL_ALIASES:
+            assert alias not in shipped, (
+                "the starter now ships the %r alias; that puts a localhost endpoint "
+                "and one machine's model id into the portable config" % alias)
+            continue
         assert alias in shipped, (
             "README advertises `hermes model %s` but the starter does not ship "
             "that alias" % alias)
@@ -2210,6 +2221,13 @@ def main() -> int:
         test_double_click_launcher_keeps_success_visible,
         test_grok_forge_wiring_does_not_warn_before_bundled_forge_install,
         test_aio_prompt_cache_ci_and_game_profile_contract,
+        # v8.6.0 -- local inference, free web search, and shell-output compression.
+        test_no_shipped_text_file_carries_a_stray_control_character,
+        test_local_model_ops_carries_what_actually_blocks_a_local_run,
+        test_rtk_catalog_entry_keeps_its_windows_caveat,
+        test_migrator_converges_plugins_additively_and_proves_the_payload,
+        test_doctor_reports_unreachable_plugins_and_unconsented_hooks,
+        test_readme_does_not_promise_a_web_backend_the_pack_never_installs,
     ]
     failed = []
     for fn in tests:
@@ -2936,6 +2954,213 @@ def test_schema_cost_is_measurable_not_just_asserted() -> None:
         "the schema-cost tool no longer speaks real MCP"
     )
     assert "GetByteCount" in code, "the schema-cost tool no longer measures bytes"
+
+
+def test_no_shipped_text_file_carries_a_stray_control_character() -> None:
+    """A doubled backslash that collapsed one level too many.
+
+    Authoring files through a shell heredoc into Python during v8.6.0 turned
+    ``\\venv`` into a vertical tab and ``\\rtk`` into a carriage return -- twice,
+    in two separate files, silently. Both read correctly in a diff, because the
+    corrupted byte is invisible. One of them was a command a user would paste.
+
+    Nothing in this pack legitimately ships a control character other than tab
+    and the line ending, so the whole shipped text tree is scanned for the rest.
+    """
+    exts = {".md", ".txt", ".json", ".ps1", ".py", ".psm1", ".yaml", ".yml", ".bat"}
+    roots = [
+        ROOT / "_CANONICAL-SKILLS",
+        ROOT / "TOOLS",
+        ROOT / "TESTS",
+        ROOT / "1-TAILORED-PROVIDER-TREES",
+        ROOT / "BUNDLED-TOOLS" / "CATALOG.json",
+        ROOT / "README.md",
+        ROOT / "CHANGELOG.md",
+    ]
+    offenders = []
+    for root in roots:
+        paths = [root] if root.is_file() else sorted(root.rglob("*"))
+        for path in paths:
+            if not path.is_file() or path.suffix.lower() not in exts:
+                continue
+            try:
+                # newline="" is load-bearing: text mode translates a lone
+                # CR into LF, which is precisely the corruption being hunted.
+                with io.open(path, encoding="utf-8", newline="") as handle:
+                    text = handle.read()
+            except (UnicodeDecodeError, OSError):
+                continue
+            for index, char in enumerate(text):
+                if ord(char) >= 32 or char in "\n\t":
+                    continue
+                # A carriage return is only ever legitimate as half of CRLF.
+                if char == "\r" and text[index + 1:index + 2] == "\n":
+                    continue
+                rel = path.relative_to(ROOT).as_posix()
+                offenders.append("%s: %r at offset %d" % (rel, char, index))
+                break
+    assert not offenders, "control characters in shipped text: " + "; ".join(offenders[:5])
+
+
+def test_local_model_ops_carries_what_actually_blocks_a_local_run() -> None:
+    """The skill exists to stop one specific wasted afternoon.
+
+    Hermes refuses a model whose context window is under 64,000 tokens and
+    raises before the first turn. LM Studio's saved default is commonly 32K,
+    so the obvious setup fails at startup with no hint that the loader, not
+    the config, is what has to change. A skill that omits that number is
+    prose.
+    """
+    skill = ROOT / "_CANONICAL-SKILLS" / "local-model-ops" / "SKILL.md"
+    assert skill.is_file(), "_CANONICAL-SKILLS/local-model-ops/SKILL.md is missing"
+    body = read(skill)
+
+    assert "64,000" in body or "64000" in body, (
+        "local-model-ops no longer states the context floor that blocks a local run"
+    )
+    for key in ("model_aliases", "provider: lmstudio", "base_url"):
+        assert key in body, "local-model-ops lost the alias schema element %r" % key
+    # The placeholder-key fact is what stops someone pasting a real secret into
+    # a config block that reaches a server with no authentication at all.
+    assert "lmstudio" in body and "key" in body.lower(), (
+        "local-model-ops no longer explains that lmstudio needs no credential"
+    )
+    assert "keyless" in body.lower() or "free" in body.lower(), (
+        "local-model-ops no longer covers how a local model reaches the web"
+    )
+
+    ref = skill.parent / "references" / "gguf-metadata.md"
+    assert ref.is_file(), "local-model-ops lost its GGUF sizing reference"
+    ref_body = read(ref)
+    assert "head_count_kv" in ref_body and "block_count" in ref_body, (
+        "the sizing reference no longer names the fields the KV budget depends on"
+    )
+
+
+def test_rtk_catalog_entry_keeps_its_windows_caveat() -> None:
+    """The one fact about rtk that a vendor page will never tell you.
+
+    On native Windows the Claude Code / Cursor / Gemini integrations are shell
+    hooks and silently fall back to CLAUDE.md prompt injection -- context spent
+    asking for savings, with no guarantee the agent complies. Only the Hermes
+    integration is a Python plugin and actually rewrites. Drop that caveat and
+    the catalog is recommending a no-op.
+    """
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    entry = [c for c in catalog["components"] if c.get("id") == "rtk"]
+    assert entry, "CATALOG.json no longer lists rtk"
+    rtk = entry[0]
+
+    assert rtk.get("kind") == "cli-optional", (
+        "rtk is catalogued as %r; a CLI is the entire reason it costs no standing "
+        "tokens, and any MCP-shaped kind would be a different tool" % rtk.get("kind")
+    )
+    assert rtk.get("license") == "Apache-2.0", "rtk license claim changed"
+
+    note = rtk.get("scope_note", "")
+    assert "hermes" in note.lower(), "the rtk note no longer names the one working integration"
+    assert "windows" in note.lower(), "the rtk note lost its native-Windows caveat"
+    assert "curl" in note, "the rtk note no longer pins the curl exclusion"
+
+    readme = read(ROOT / "README.md")
+    assert "rtk init --agent hermes" in readme, (
+        "the README no longer gives the only rtk install command worth running here"
+    )
+    assert "rtk gain" in readme, (
+        "the README no longer says how to verify rtk is running -- an agent reports "
+        "the command it asked for, not the rewritten one, so self-report proves nothing"
+    )
+
+
+def test_migrator_converges_plugins_additively_and_proves_the_payload() -> None:
+    """`profile create --clone-from` copies the enabled list, not the payload.
+
+    Measured on the maintainer's machine: two cloned profiles enabled ponytail
+    and superpowers while having no plugins directory at all, so both had been
+    inert since the day they were created. Nothing reported it -- an enabled
+    plugin that cannot be resolved simply does nothing.
+
+    Writing the list without checking reachability would recreate exactly that
+    bug, so the migration has to do both.
+    """
+    code = ps_code(ROOT / "TOOLS" / "Migrate-HermesProfiles.ps1")
+
+    assert "Get-UabsSharedPlugins" in code, "the migration no longer discovers installed plugins"
+    assert "Ensure-UabsProfilePluginPayload" in code, (
+        "the migration no longer ensures a profile can reach the plugin payload"
+    )
+    assert "LinkPlugins" in code and "New-Item -ItemType Junction" in code, (
+        "the migration no longer links a profile's plugins directory to the shared root"
+    )
+    assert "cannot resolve its payload" in code, (
+        "the migration writes plugins.enabled without proving the payload resolves -- "
+        "that is the original bug"
+    )
+    assert "if name not in enabled" in code, (
+        "the plugin write is no longer additive; it may now drop or reorder a user's own list"
+    )
+
+    # Discovery must read the live default profile, never a list this pack
+    # invents -- enabling a plugin the user does not have is the same failure
+    # wearing different clothes.
+    body = code[code.index("function Get-UabsSharedPlugins"):]
+    body = body[:body.index("function Ensure-UabsProfilePluginPayload")]
+    assert "Get-UabsProfilePrefs 'default'" in body, (
+        "shared-plugin discovery no longer reads what the default profile actually runs"
+    )
+    assert "Test-Path" in body, "shared-plugin discovery no longer filters out missing payloads"
+
+
+def test_doctor_reports_unreachable_plugins_and_unconsented_hooks() -> None:
+    """Both failures report success from inside Hermes.
+
+    An enabled-but-unreachable plugin loads nothing and says nothing. A shell
+    hook that was never consented to is listed in config, passes every config
+    check, and never fires -- `hermes hooks doctor` calls that out, but only if
+    somebody thinks to run it. The pack's own doctor is where a user looks.
+    """
+    code = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+
+    assert "payload is not reachable" in code, (
+        "the doctor no longer reports plugins a profile cannot resolve"
+    )
+    assert "will NOT fire" in code, (
+        "the doctor no longer reports shell hooks that were never consented to"
+    )
+    assert "hermes --accept-hooks" in code, (
+        "the doctor reports unconsented hooks without giving the command that grants consent"
+    )
+    assert "Migrate-HermesProfiles.ps1 -Apply" in code, (
+        "the doctor reports unreachable plugins without naming the fix"
+    )
+    assert "hermes_plugin_issues" in code and "hermes_hook_issues" in code, (
+        "the doctor's JSON report no longer carries the new findings, so nothing "
+        "downstream can read them"
+    )
+
+
+def test_readme_does_not_promise_a_web_backend_the_pack_never_installs() -> None:
+    """ddgs is an optional dependency, not something the installer ships.
+
+    Hermes carries the DuckDuckGo backend itself but gates it on the `ddgs`
+    package being importable. Claiming it works out of the box would send a
+    user to a backend that silently is not there, which is the same class of
+    failure as an enabled plugin with no payload.
+    """
+    readme = read(ROOT / "README.md")
+    assert "pip install ddgs" in readme, (
+        "the README recommends the DuckDuckGo backend without the install step"
+    )
+    # The keyless ring is what actually works with no action at all; the README
+    # must not tell people to pin a single backend and lose the rotation.
+    assert "keyless" in readme.lower(), "the README no longer explains the free search ring"
+    assert "web.search_backend" in readme, (
+        "the README no longer names the key that pins a backend"
+    )
+    pin = readme[readme.index("web.search_backend"):][:400].lower()
+    assert "only" in pin or "turns the rotation off" in pin, (
+        "the README recommends pinning a backend without warning that it disables failover"
+    )
 
 
 if __name__ == "__main__":

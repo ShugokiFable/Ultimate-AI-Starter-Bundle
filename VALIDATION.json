@@ -1,23 +1,23 @@
 {
-  "pack": "Ultimate AI Starter Bundle",
-  "version": "8.5.0",
-  "generated": "2026-08-24",
-  "release_tag": "v8.0.4",
-  "canonical_skills": 159,
-  "provider_trees": 5,
-  "registry_entries": 159,
-  "gates": [
-    "TESTS/Test-Pack.ps1",
-    "TESTS/test_release_contract.py",
-    "TESTS/test_hermes_bootstrap.py",
-    "TOOLS/audit_skills.py",
-    "TOOLS/hooks/completeness_gate.py --selftest",
-    "TOOLS/hooks/assumption_gate.py --selftest",
-    "TESTS/Test-ForgeRootResolution.ps1",
-    "TESTS/Test-ProviderSkillSync.ps1",
-    "TESTS/Test-McpProfiles.ps1",
-    "TOOLS/mcp_handshake.py --selftest"
-  ],
-  "runtime_status": "Windows PowerShell 5.1 source gate and isolated idempotency pass; live V8 AIO completed for Claude, Codex, Grok, Kimi, and Hermes; official/native plugins refreshed; codebase-memory updated after exact-process lock cleanup; all 15 core MCP initialize plus tools/list handshakes passed.",
-  "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
+ "pack": "Ultimate AI Starter Bundle",
+ "version": "8.6.0",
+ "generated": "2026-08-25",
+ "release_tag": "v8.0.4",
+ "canonical_skills": 160,
+ "provider_trees": 5,
+ "registry_entries": 160,
+ "gates": [
+  "TESTS/Test-Pack.ps1",
+  "TESTS/test_release_contract.py",
+  "TESTS/test_hermes_bootstrap.py",
+  "TOOLS/audit_skills.py",
+  "TOOLS/hooks/completeness_gate.py --selftest",
+  "TOOLS/hooks/assumption_gate.py --selftest",
+  "TESTS/Test-ForgeRootResolution.ps1",
+  "TESTS/Test-ProviderSkillSync.ps1",
+  "TESTS/Test-McpProfiles.ps1",
+  "TOOLS/mcp_handshake.py --selftest"
+ ],
+ "runtime_status": "Windows PowerShell 5.1 source gate and isolated idempotency pass; live V8 AIO completed for Claude, Codex, Grok, Kimi, and Hermes; official/native plugins refreshed; codebase-memory updated after exact-process lock cleanup; all 15 core MCP initialize plus tools/list handshakes passed.",
+ "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

@@ -449,8 +449,76 @@ if ($hermesBudgets.Count) {
   Write-Host '     Change the set: hermes -p skyrim mcp configure housecarl  (interactive, survives re-installs)' -ForegroundColor DarkGray
 }
 
+# ---- Hermes plugin payloads and shell hooks --------------------------------
+# Two failures that are invisible from inside Hermes: a profile enabling a
+# plugin whose payload it cannot reach, and a configured shell hook that was
+# never consented to. Both report success everywhere and simply do nothing.
+$hermesPluginIssues = @()
+if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $hermesHomeRoot 'config.yaml') -PathType Leaf)) {
+  foreach ($profileName in @('default', 'roblox', 'skyrim')) {
+    $pHome = if ($profileName -eq 'default') { $hermesHomeRoot } else { Join-Path $hermesHomeRoot (Join-Path 'profiles' $profileName) }
+    $pCfg = Join-Path $pHome 'config.yaml'
+    if (-not (Test-Path -LiteralPath $pCfg -PathType Leaf)) { continue }
+    $inPlugins = $false; $inEnabled = $false; $names = @()
+    foreach ($line in [IO.File]::ReadAllLines($pCfg)) {
+      if ($line -match '^plugins:\s*$') { $inPlugins = $true; continue }
+      if ($inPlugins -and $line -match '^\S') { $inPlugins = $false; $inEnabled = $false }
+      if (-not $inPlugins) { continue }
+      if ($line -match '^  enabled:\s*$') { $inEnabled = $true; continue }
+      if ($inEnabled -and $line -match '^  \S') { $inEnabled = $false }
+      if ($inEnabled -and $line -match '^\s+-\s+(.+?)\s*$') { $names += $Matches[1].Trim("'" + '"') }
+    }
+    foreach ($name in $names) {
+      $top = ([string]$name).Split(@('/', [char]92))[0]
+      $userPath = Join-Path (Join-Path $pHome 'plugins') $top
+      $repoPath = Join-Path $hermesHomeRoot (Join-Path 'hermes-agent' (Join-Path 'plugins' $top))
+      if ((Test-Path -LiteralPath $userPath) -or (Test-Path -LiteralPath $repoPath)) { continue }
+      $hermesPluginIssues += ('{0}: plugin ''{1}'' is enabled but its payload is not reachable' -f $profileName, $name)
+    }
+  }
+}
+$hermesHookIssues = @()
+$hookAllowlist = Join-Path $hermesHomeRoot 'shell-hooks-allowlist.json'
+$hermesCfgPath = Join-Path $hermesHomeRoot 'config.yaml'
+if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath $hermesCfgPath -PathType Leaf)) {
+  $approved = @()
+  if (Test-Path -LiteralPath $hookAllowlist -PathType Leaf) {
+    # ReadAllText, not Get-Content: on PS 5.1 Get-Content decodes as ANSI and
+    # mangles any non-ASCII byte in a path. The pack gate enforces this.
+    try { $approved = @(([IO.File]::ReadAllText($hookAllowlist) | ConvertFrom-Json).approvals | ForEach-Object { [string]$_.command }) } catch { $approved = @() }
+  }
+  # Match on the script path, not the whole command: Hermes' YAML writer wraps
+  # long command strings across lines, so a literal comparison misses them.
+  $cfgText = [IO.File]::ReadAllText($hermesCfgPath)
+  $scripts = @([regex]::Matches($cfgText, '[A-Za-z]:/[^\s"'']+?\.py') | ForEach-Object { $_.Value } | Select-Object -Unique)
+  foreach ($s in $scripts) {
+    if ($cfgText.IndexOf('hooks:') -lt 0) { break }
+    $isApproved = $false
+    foreach ($cmd in $approved) { if ($cmd -and $cmd.Replace([char]92, '/').Contains($s)) { $isApproved = $true; break } }
+    if (-not $isApproved) { $hermesHookIssues += ('shell hook will NOT fire (never consented): {0}' -f (Split-Path -Leaf $s)) }
+  }
+}
+if ($hermesPluginIssues.Count -or $hermesHookIssues.Count) {
+  Write-Host ''
+  Write-UabsStep 'Hermes plugins and shell hooks'
+  foreach ($m in $hermesPluginIssues) {
+    Write-UabsWarn $m
+    $warnings += $m
+  }
+  if ($hermesPluginIssues.Count) {
+    Write-Host '     A cloned profile copies the enabled list, never the payload. Fix: TOOLS\Migrate-HermesProfiles.ps1 -Apply' -ForegroundColor DarkGray
+  }
+  foreach ($m in $hermesHookIssues) {
+    Write-UabsWarn $m
+    $warnings += $m
+  }
+  if ($hermesHookIssues.Count) {
+    Write-Host '     Consent is deliberately interactive. Grant once: hermes --accept-hooks   then re-run: hermes hooks doctor' -ForegroundColor DarkGray
+  }
+}
+
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
-$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);result=$doctorResult}
+$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_hook_issues=@($hermesHookIssues);result=$doctorResult}
 $reportPath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\installed-state-doctor.json'
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
 if($errors.Count){Write-UabsBad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}

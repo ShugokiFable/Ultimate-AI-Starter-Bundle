@@ -107,6 +107,18 @@ provider exposes aux-model routing, use it.
   a full re-send for information you were already holding.
 - Do not re-run a passing gate to feel sure. If nothing changed, nothing changed.
 
+## Cut the output at the source
+
+Batching stops re-sends. It does nothing about one command that dumps a
+megabyte. `git diff` over a few commits on a large repo really is ~2 MB --
+about half a million tokens for a single tool call.
+
+A CLI filter in front of noisy commands (rtk) cuts that 97% and costs zero
+standing tokens, unlike an MCP server. Coverage and the traps are in
+`references/shell-output-compression.md` -- read it before installing a
+transparent rewrite hook, because a lossy layer between a tool and the agent
+turns wrong answers into smaller ones.
+
 ## What this is not
 
 Not an argument for terse thinking or skipped verification. Reasoning tokens are
@@ -122,3 +134,4 @@ polls forty times and still gets it wrong.
 - [ ] Scoped toolsets where the server supports scoping.
 - [ ] Independent tool calls batched into one message.
 - [ ] No wake-ups scheduled purely to warm a cache.
+- [ ] Megabyte-scale command output filtered at the source, not after the fact.

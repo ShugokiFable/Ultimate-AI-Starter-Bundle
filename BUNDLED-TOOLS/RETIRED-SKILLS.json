@@ -2,7 +2,7 @@
   "schema": 1,
   "generated_by": "TOOLS/generate_retired_skills.py",
   "why": "Skills this pack used to ship and no longer does, plus skills it ABSORBED that were never shipped from here. The installer copies the canonical tree in but never removed what left it, so a machine installed against an older version kept loading the superseded skill next to its replacement -- two skills claiming the same domain, the retired one documenting the older dialect.",
-  "current_skill_count": 159,
+  "current_skill_count": 160,
   "retired": [
     {
       "name": "arma3-modding",

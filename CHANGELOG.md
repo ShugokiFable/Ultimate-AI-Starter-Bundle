@@ -1,3 +1,60 @@
+## 8.6.0
+
+- 160 canonical skills total (+1: `local-model-ops`). One new optional CLI
+  component, no new MCP servers.
+- **Two cloned Hermes profiles had been running no plugins at all.** Hermes
+  resolves a user plugin at `<HERMES_HOME>/plugins/<name>`; for a named profile
+  that is `profiles/<name>/plugins`, which `hermes profile create` never
+  creates. Measured: `roblox` and `skyrim` had enabled Ponytail and Superpowers
+  since the day they were cloned and neither had ever loaded. An enabled plugin
+  that cannot be resolved does nothing and reports nothing.
+- The migration now junctions each profile's `plugins` directory back to the
+  shared root -- one authoritative copy instead of duplicates that drift -- and
+  converges `plugins.enabled` additively. Discovery reads what the default
+  profile actually runs, filtered to payloads that exist; it never enables from
+  a hardcoded list. Verification asserts the name landed AND the payload
+  resolves.
+- **All four of the pack's own Hermes gate hooks were dead.** The consent
+  allowlist still named the pre-rename `Skyrim-AI-V5` path under a different
+  interpreter, so `hermes hooks doctor` reported "hook will NOT fire at
+  runtime" for every one. Consent is deliberately interactive and this pack
+  does not forge it -- the installed-state doctor now reports it and names
+  `hermes --accept-hooks`.
+- **Free web search is now documented.** `web_search` / `web_extract` are
+  Hermes tools, not a hosted provider's billed web plugin: the search happens
+  outside the model, so any model can drive it -- including a local one. With
+  no backend configured and no key present Hermes rotates across several
+  vendors' public free tiers and fails over on rate limits. `pip install ddgs`
+  adds a backstop that needs no vendor account; pinning `web.search_backend`
+  disables the rotation and the README says so.
+- **New skill `local-model-ops`.** `lmstudio` is a first-class Hermes provider
+  and needs no credential. The number that blocks the obvious setup: Hermes
+  refuses any model under **64,000 tokens** of context and raises before the
+  first turn, while LM Studio commonly saves 32K. Measured on a 16 GB card with
+  a 35B mixture-of-experts quant at 64K -- weights 17.08 GiB, ~15.5 GiB VRAM
+  while generating, 41 tok/s. LM Studio's `--estimate-only` cannot size a
+  context change (it models weights, not the KV cache, and says
+  `Confidence: LOW`), so the skill ships a GGUF header parser and the KV
+  arithmetic instead.
+- The `local` alias is deliberately absent from the shipped starter config: it
+  names one machine's model behind a localhost endpoint. The README/starter
+  cross-check encodes that exception explicitly instead of being weakened.
+- **RTK added as an optional CLI** (Apache-2.0, zero standing tokens). Measured
+  on this repository: `git diff HEAD~3` 2,010,426 -> 71,268 bytes (97%),
+  `git log` 158,877 -> 2,460 (99%). On native Windows **only the Hermes
+  integration actually rewrites** -- it is a Python plugin; the Claude Code,
+  Cursor and Gemini shell hooks fall back to CLAUDE.md prompt injection, which
+  spends context to ask for savings. Codex and Kimi are prompt-level by design;
+  Grok is unsupported. `exclude_commands = ["curl"]` is pinned so exact API
+  bodies are never filtered, and telemetry stays off.
+- **New gate for a bug this release caught in itself.** Authoring files through
+  a shell heredoc into Python collapsed a doubled backslash one level too far,
+  turning `\venv` into a vertical tab and `\rtk` into a carriage return in two
+  separate files -- invisible in a diff, and one of them was a command a user
+  would paste. Every shipped text file is now scanned for stray control
+  characters.
+- Six new release contracts, all registered in the explicit `tests` list.
+
 ## 8.5.0
 
 - 159 canonical skills, unchanged.

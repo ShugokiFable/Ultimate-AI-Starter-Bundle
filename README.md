@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.5.0
+# Ultimate AI Starter Bundle v8.6.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -21,7 +21,7 @@ One distinction explains almost everything about how this pack behaves:
 | **INSTALLED** | The tool exists on disk | Disk space only. **Zero** effect on your AI chats. |
 | **ENABLED** | Registered in a provider's config | Its tool descriptions ride along inside **every message you send, in every chat, forever** — related to your task or not. |
 
-The 159 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, the heaviest server (houseCARL) burns ~17,000 tokens *every single turn*, and enabling the entire catalog would cost ~40,000+ tokens/turn before you've typed a word. That's why the installer enables almost nothing.
+The 160 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, the heaviest server (houseCARL) burns ~17,000 tokens *every single turn*, and enabling the entire catalog would cost ~40,000+ tokens/turn before you've typed a word. That's why the installer enables almost nothing.
 
 ### What's ON after install
 
@@ -284,6 +284,87 @@ It replaces a chain only when it is missing, empty, or byte-equal to one this
 pack used to ship. A chain you chose is reported and left alone. Aliases are
 additive — an alias you already defined keeps your value.
 
+### Hermes: web search that does not bill you
+
+A hosted provider's own web plugin charges per search. Hermes does not use it.
+`web_search` / `web_extract` are **Hermes tools**, so the search happens outside
+the model and any model can drive it -- including a local one.
+
+With no backend configured and no key present, Hermes rotates round-robin
+across several vendors' public free tiers and fails over on rate limits
+(`web.keyless_fallback`, on by default). A failing call also retries once on
+that ring (`web.keyless_rescue`). Nothing to sign up for.
+
+For a backstop that depends on no vendor account at all, add DuckDuckGo:
+
+```powershell
+& "$env:LOCALAPPDATA\hermes\hermes-agent\venv\Scripts\python.exe" -m pip install ddgs
+```
+
+Hermes ships the backend already; the package is the only missing piece. Pin it
+with `web.search_backend: ddgs` **only** if the free ring gets flaky -- pinning
+turns the rotation off.
+
+### Hermes: run a local model, free and off the record
+
+`lmstudio` is a first-class Hermes provider. Point an alias at a model LM Studio
+is serving and switch to it with `hermes model local`:
+
+```yaml
+model_aliases:
+  local:
+    model: <the id LM Studio reports at /v1/models>
+    provider: lmstudio
+    base_url: http://127.0.0.1:1234/v1
+```
+
+No API key: Hermes supplies its own placeholder, because there is nothing to
+authenticate to. Never write a real secret into an `lmstudio` block.
+
+**The one thing that will stop you:** Hermes refuses any model with a context
+window under **64,000 tokens** and raises at startup. LM Studio's saved default
+is often 32K, and a 32K window is too small for agent work anyway -- one tool
+result can be tens of thousands of characters. Raise the model's saved context,
+then confirm it stuck by loading with no explicit context flag.
+
+Measured here on a 16 GB card, a 35B mixture-of-experts quant at 64K context:
+weights 17.08 GiB (so partial CPU offload is mandatory), ~15.5 GiB VRAM while
+generating, **41 tok/s**. Set an idle TTL so the card frees itself.
+
+Run local for the things money cannot buy -- no policy layer, no egress, no rate
+limit. For everything else the hosted ladder above is faster and costs cents.
+Full detail in the `local-model-ops` skill.
+
+### rtk: cut command output before it reaches the model
+
+Optional, and not installed by default. [RTK](https://github.com/rtk-ai/rtk)
+(Apache-2.0, single Rust binary) filters noisy dev commands. Measured on this
+repository:
+
+| Command | Raw | Through rtk | Saved |
+|---|---|---|---|
+| `git diff HEAD~3` | 2,010,426 B | 71,268 B | **97%** |
+| `git log` | 158,877 B | 2,460 B | **99%** |
+
+It is a CLI, so it costs **zero standing tokens** -- the same reason this pack
+prefers Forge's CLI over Forge's MCP.
+
+**On native Windows, install the Hermes integration and nothing else:**
+
+```powershell
+rtk init --agent hermes
+```
+
+That one is a Python plugin and genuinely rewrites commands. The Claude Code,
+Cursor and Gemini integrations are shell hooks that **silently degrade to
+CLAUDE.md prompt injection** on native Windows -- paying context to *ask* for
+savings. Codex and Kimi are prompt-level by design; Grok is unsupported.
+
+Keep `exclude_commands = ["curl"]` in `%APPDATA%\rtk\config.toml` so exact API
+bodies are never filtered. Telemetry is opt-in and stays off. Verify it is
+really running with `rtk gain` -- an agent cannot tell you, because it reports
+the command it *asked* for, not the one that ran.
+
 ### claude-mem is opt-in
 
 Every other component installs unattended. claude-mem pulls in the Bun runtime,
@@ -296,7 +377,7 @@ tools appear -- three surprises for one double-click, so it moved behind a flag:
 
 ## What gets installed
 
-- **Provider skills** — 159 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
+- **Provider skills** — 160 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
 - **Native plugins** — Superpowers and Ponytail use each provider's official/native plugin lifecycle; Claude-only `claude-mem` installs Bun automatically when needed.
 - **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Hermes isolates the official Studio MCP in `roblox` and houseCARL in `skyrim`; the remaining browser/editor/game profiles stay off outside matching projects, and credentialed servers stay off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
@@ -976,6 +1057,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.0** - 2026-08-25. Enabled is not installed. Two cloned Hermes profiles had been running no plugins at all -- `profile create` copies the enabled list and never the payload, so Ponytail and Superpowers had never loaded in `roblox` or `skyrim`, silently. All four of this pack's own Hermes gate hooks were dead for the same reason, a rename the consent allowlist never followed. The migration now links each profile to the shared plugin root and converges the enabled list additively; the doctor reports both failures. Also: a documented free path to the web (Hermes' own keyless search ring, not a billed provider plugin), a new `local-model-ops` skill for running LM Studio as a Hermes provider -- 41 tok/s measured, and a 64,000-token context floor that blocks the obvious setup -- and RTK as an optional CLI that cut `git diff HEAD~3` from 2,010,426 to 71,268 bytes here.
 
 **v8.5.0** - 2026-08-25. A cloned Hermes profile drifted and nothing re-converged it. `profile create --clone-from default` copies once, and the migration managed only `mcp_servers` — so `roblox` and `skyrim` were still running the fallback chain from the day they were cloned while `default` had moved on. A fallback chain is only consulted when the primary is already failing, so a stale one is invisible until the moment it matters. The migration now converges fallbacks and aliases across every profile, replacing a chain only when it is absent, empty, or one this pack itself shipped. The starter previously shipped **no** fallback chain at all; it now ships a four-deep free one, and the README documents the cost ladder with prices verified against the live OpenRouter model list.
 
