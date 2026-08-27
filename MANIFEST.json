@@ -22531,8 +22531,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 128086,
-  "sha256": "69444df8869c02661424c55362e2cb812e967064a437a29b20f38df1463e03ae"
+  "size": 129032,
+  "sha256": "ae8cb48130315addc3cb8b20bd0a81a2eeb5ffe23e4e9522428d097c71195d25"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -22606,8 +22606,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 121524,
-  "sha256": "6a161c72c994110debf59fbef398f1fdb401c4fae2219b6ffa60b138a0e478f3"
+  "size": 123569,
+  "sha256": "09c86af750ccedf8606be6a15d230627d88eb2869aff712a253e18002c365b3d"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -22866,8 +22866,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 219514,
-  "sha256": "df02bf5e79939d29d4d5af1ddb4c1e8ae3bf79f96c3d5c7eb5e26823ae042276"
+  "size": 223293,
+  "sha256": "8caf9b542b7e56d08884af3ff8a7a412a675dea45fa08584f0e55cd80a1cfbc2"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -26266,8 +26266,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/skyrim-tool-router/SKILL.md",
-  "size": 6716,
-  "sha256": "bdcee76318fbd377db55d94a224a7a412b1e23d27132d1af2735fbbd7be42a0e"
+  "size": 8291,
+  "sha256": "553075d1a82f66af3da181ed90608b5d598ad29ab78fea0c55fc31ce6a392c89"
  },
  {
   "path": "_CANONICAL-SKILLS/skyrim-versioned-workspace/SKILL.md",
@@ -26481,8 +26481,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/tool-discovery/SKILL.md",
-  "size": 7050,
-  "sha256": "917ee6e5be364b9312edc87822652718f1398f4f6a9616aad9e75435df4ce6ea"
+  "size": 8586,
+  "sha256": "6bd8023c2dbbd287c4c41f3774b3f6a9d26b3f4e3a2a210eb004786b1737b43e"
  },
  {
   "path": "_CANONICAL-SKILLS/tool-discovery/scripts/discover_tools.ps1",
@@ -27156,8 +27156,8 @@
  },
  {
   "path": "docs/history/V8.6.12-CHANGELOG.md",
-  "size": 16239,
-  "sha256": "0dc1c20900d85cd6143ec41b57a51c58f0895b78dcd2f4c20dc6b77cd074e271"
+  "size": 19018,
+  "sha256": "50166b275f1c19e55aafef94108210ae98ab03c3a196656f877413dcb069fef4"
  },
  {
   "path": "docs/history/V8.6.2-CHANGELOG.md",

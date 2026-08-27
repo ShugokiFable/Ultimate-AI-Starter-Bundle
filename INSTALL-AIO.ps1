@@ -2142,6 +2142,39 @@ Write-Host '     TOOLS\Test-McpHandshake.ps1 -Provider Claude'
 Write-Host '     Capability profiles (code memory, games, browser, Serena, Blender, Godot, Unity, reasoning) are off'
 Write-Host '     until a project needs them, and are then wired for THAT project only:'
 Write-Host '     TOOLS\Set-McpProfile.ps1 -List | -Auto -Path <project> | -Disable <id>'
+# Say, concretely, whether ANY project profile is enabled. -Auto only runs
+# above when -WorkspaceRoot was passed, and START-HERE.bat never passes it --
+# so on a default install this detection has never run and nothing said so.
+# The symptom is an agent whose houseCARL / Forge / codebase-memory tool calls
+# return nothing, with no hint that the fix is one command rather than an
+# install. Reported here because guessing a project directory and enabling
+# servers for it would be worse than saying nothing.
+$profileStateFile = Join-Path $stateDir 'mcp-profiles.json'
+$enabledProfiles = @()
+if (Test-Path -LiteralPath $profileStateFile -PathType Leaf) {
+  try {
+    $ps = [IO.File]::ReadAllText($profileStateFile) | ConvertFrom-Json
+    if ($ps.profiles) {
+      foreach ($pr in $ps.profiles.PSObject.Properties) {
+        $projs = @()
+        try { $projs = @($pr.Value.projects.PSObject.Properties.Name) } catch { $projs = @() }
+        if ($projs.Count) { $enabledProfiles += ('{0} -> {1}' -f $pr.Name, ($projs -join '; ')) }
+      }
+    }
+  } catch { }
+}
+if ($enabledProfiles.Count) {
+  Write-Host '     Currently enabled:' -ForegroundColor DarkGray
+  foreach ($ep in $enabledProfiles) { Write-Host ('       ' + $ep) -ForegroundColor DarkGray }
+} else {
+  Write-Host '     NONE are enabled for any project yet. Until you enable one, houseCARL,' -ForegroundColor Yellow
+  Write-Host '     Skyrim Forge, codebase-memory and Serena tools will NOT appear in any AI' -ForegroundColor Yellow
+  Write-Host '     app, and an agent asked to use them will simply find nothing. That is a' -ForegroundColor Yellow
+  Write-Host '     one-command fix, not an install problem:' -ForegroundColor Yellow
+  Write-Host '       TOOLS\Set-McpProfile.ps1 -Detect -Path "<your project>"   # what applies' -ForegroundColor Yellow
+  Write-Host '       TOOLS\Set-McpProfile.ps1 -Auto   -Path "<your project>"   # enable it' -ForegroundColor Yellow
+  Write-Host '     Works for Claude, Codex, Grok, Kimi and Hermes. Restart the app after.' -ForegroundColor Yellow
+}
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Hermes: run hermes --accept-hooks once if it asks for hook trust.'

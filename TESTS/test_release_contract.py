@@ -2275,6 +2275,7 @@ def main() -> int:
         test_always_on_mcp_pins_come_from_the_catalog,
         test_manifest_covers_every_tracked_file,
         test_a_running_mcp_binary_cannot_fail_the_whole_install,
+        test_an_unenabled_profile_is_never_reported_as_a_missing_tool,
     ]
     failed = []
     for fn in tests:
@@ -4203,6 +4204,76 @@ def test_a_running_mcp_binary_cannot_fail_the_whole_install() -> None:
     # And the raw copy must remain the else-branch, not the default path.
     assert "Copy-UabsRobo -From $rootExtract -To $target" in aio, (
         "the generic extract no longer copies at all when nothing is locked"
+    )
+
+def test_an_unenabled_profile_is_never_reported_as_a_missing_tool() -> None:
+    """Gating MCP servers on cost is defensible. Failing with no path forward
+    is not.
+
+    Reported by the maintainer 2026-08-27, from a real Grok transcript: the
+    agent tried houseCARL and Skyrim Forge tools, both searches returned
+    nothing, and it concluded "houseCARL and Forge MCP are disconnected". No
+    part of the pack told anyone that both tools were *installed* and one
+    command from working, or what that command was. Their words: "I don't even
+    know how to change profiles on grok."
+
+    Three separate holes, all of which had to be filled:
+
+    1. ``skyrim-tool-router`` said "if a tool is missing, recommend install".
+       houseCARL **is** installed -- following that advice tells the user to
+       install what they already have.
+    2. ``tool-discovery`` had one failure mode, TOOL MISSING, and no concept of
+       installed-but-not-registered.
+    3. ``INSTALL-AIO`` runs ``Set-McpProfile -Auto`` **only when
+       ``-WorkspaceRoot`` is passed**, and ``START-HERE.bat`` never passes it.
+       So on a default install the detection had never run, and the closing
+       text mentioned the command without ever saying that zero profiles were
+       enabled.
+
+    The pack may absolutely keep these servers off by default. It may not leave
+    the user to guess that "off" is why nothing works.
+    """
+    router = read(ROOT / "_CANONICAL-SKILLS" / "skyrim-tool-router" / "SKILL.md")
+    discovery = read(ROOT / "_CANONICAL-SKILLS" / "tool-discovery" / "SKILL.md")
+    aio = ps_code(ROOT / "INSTALL-AIO.ps1")
+
+    # 1 + 2: both skills must name the enable command, and must distinguish the
+    # two failures rather than treating everything as an install.
+    for name, text in (("skyrim-tool-router", router), ("tool-discovery", discovery)):
+        assert "Set-McpProfile" in text, (
+            "%s never names Set-McpProfile, so an agent that finds no houseCARL "
+            "or Forge tools has no way to tell the user what to do" % name
+        )
+        assert "not enabled" in text.lower() or "NOT ENABLED" in text, (
+            "%s no longer distinguishes 'installed but not enabled for this "
+            "project' from 'not installed'; it will tell users to install "
+            "something they already have" % name
+        )
+        assert "restart" in text.lower(), (
+            "%s does not say the AI app must be restarted; a running session "
+            "does not pick up a newly registered MCP server, so the fix looks "
+            "like it did not work" % name
+        )
+
+    # 3: the installer must report the actual state, not just mention a command.
+    assert "NONE are enabled for any project yet" in aio, (
+        "INSTALL-AIO no longer says when zero project profiles are enabled. "
+        "-Auto only runs when -WorkspaceRoot is passed and START-HERE.bat never "
+        "passes it, so silence here means the user is never told these servers "
+        "exist, let alone that they are off"
+    )
+    assert "one-command fix, not an install problem" in aio, (
+        "the installer notice no longer distinguishes this from an install "
+        "failure, which is the entire confusion it exists to prevent"
+    )
+    assert "Currently enabled:" in aio, (
+        "the installer no longer lists which profiles ARE enabled, so a user "
+        "cannot tell a working setup from an empty one"
+    )
+    # It must read real state rather than printing a fixed sentence.
+    assert "mcp-profiles.json" in aio, (
+        "the installer prints profile guidance without reading mcp-profiles.json, "
+        "so the message cannot reflect what is actually enabled"
     )
 
 if __name__ == "__main__":

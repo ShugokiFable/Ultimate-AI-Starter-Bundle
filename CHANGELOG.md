@@ -78,6 +78,19 @@
   `MANIFEST.json`; and `MANIFEST.json` was skipped by bare name anywhere,
   excluding the vendored Forge manifest too. Fixed with `ls-files -z` and a
   root-only skip: **5,428 -> 5,440 entries**, zero uncovered, zero phantom.
+- **"It never told me to change profile."** A Grok transcript showed the agent
+  trying houseCARL and Forge tools, finding nothing, and concluding they were
+  "disconnected". Both were installed and one command from working; nothing said
+  so. `skyrim-tool-router` told users to **install what they already had**;
+  `tool-discovery` had only a TOOL MISSING template; and `INSTALL-AIO` runs
+  `Set-McpProfile -Auto` **only when `-WorkspaceRoot` is passed**, which
+  `START-HERE.bat` never does -- so the detection had never run and the closing
+  text just listed a command among eight bullets. All three fixed: both skills
+  now separate "installed but not enabled here" from "not installed" and carry
+  the exact enable command plus the restart step, and the installer reports
+  whether **zero** profiles are enabled, reading `mcp-profiles.json` rather than
+  reciting a sentence. Gating on cost stays; failing with no path forward does
+  not.
 - **Running the installer with your AI apps open failed the whole install.**
   Four `github-mcp-server` processes were alive as MCP servers for open Claude,
   Codex, Grok, Kimi and Hermes sessions; their binary cannot be overwritten,
@@ -95,7 +108,7 @@
   field, which is why it rotted -- but it is a file users open to understand the
   MCP cost model. Corrected, and `check_versions.py` now enforces it so CI fails
   on the next drift.
-- 103 contracts, green; all six new ones falsified before shipping.
+- 104 contracts, green; all seven new ones falsified before shipping.
 
 ## 8.6.11
 
