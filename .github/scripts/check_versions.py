@@ -68,6 +68,21 @@ def main():
     except Exception as exc:
         problems.append("CATALOG.json unreadable: %s" % exc)
 
+    # PROFILES.json carries its own pack_version/catalog_version. Nothing reads
+    # them, which is exactly why they rotted: the file sat at 8.0.0 while the
+    # pack shipped through 8.6.x, and it is a file users open to understand the
+    # MCP cost model. An unread version string is still a claim.
+    try:
+        profiles = json.loads(read("BUNDLED-TOOLS/PROFILES.json"))
+        for field in ("pack_version", "catalog_version"):
+            got = profiles.get(field)
+            print("  %-8s %-34s %s" % ("ok" if got == bare else "MISMATCH",
+                                       "BUNDLED-TOOLS/PROFILES.json:" + field, got))
+            if got != bare:
+                problems.append("PROFILES.json %s is %s, expected %s" % (field, got, bare))
+    except Exception as exc:
+        problems.append("PROFILES.json unreadable: %s" % exc)
+
     try:
         validation = json.loads(read("VALIDATION.json"))
         got = validation.get("version")

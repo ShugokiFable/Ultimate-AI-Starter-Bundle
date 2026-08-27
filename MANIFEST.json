@@ -11,8 +11,8 @@
  },
  {
   "path": ".github/scripts/check_versions.py",
-  "size": 4113,
-  "sha256": "64522e5c9898de5bf5137d987fd4bf7d27e2ec121b89ed7580cfd532623c2843"
+  "size": 4961,
+  "sha256": "4b350942dc08b58adebda942fd5e01472072ae5c2f53689f09f8415d0dd317a0"
  },
  {
   "path": ".github/scripts/verify_manifest.py",
@@ -19596,8 +19596,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
-  "size": 26731,
-  "sha256": "22f940990420ff8193674c38c89a8827a938a7547d9dcd141139d02b4be25f13"
+  "size": 26733,
+  "sha256": "d54cd0a6d10dd4b1522cce1c8a50ed8dbba9a8667c3d3ae2bbd6f805b29f43bf"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -22531,8 +22531,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 126880,
-  "sha256": "ba3232d4af45a31dd4a90959687807efaf4a87b2912b1d8332b38988e71d154a"
+  "size": 127218,
+  "sha256": "5ac4645b7e185519133da32d481cfba4faf22cffb3e71241a220759821db811a"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -27156,8 +27156,8 @@
  },
  {
   "path": "docs/history/V8.6.12-CHANGELOG.md",
-  "size": 13460,
-  "sha256": "c9fb72c006288a110e18d2290eac5c80fac7b19d66dc39f3d1b377efc0d7b171"
+  "size": 14044,
+  "sha256": "b23f143db671a65f3d3b1ebb2abe67fa0b3eff06d52fd86b734aee11604b27b0"
  },
  {
   "path": "docs/history/V8.6.2-CHANGELOG.md",

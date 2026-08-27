@@ -78,6 +78,11 @@
   `MANIFEST.json`; and `MANIFEST.json` was skipped by bare name anywhere,
   excluding the vendored Forge manifest too. Fixed with `ls-files -z` and a
   root-only skip: **5,428 -> 5,440 entries**, zero uncovered, zero phantom.
+- **An unread version string is still a claim.** `PROFILES.json` declared
+  `pack_version: 8.0.0` while the pack shipped through 8.6.x. Nothing reads that
+  field, which is why it rotted -- but it is a file users open to understand the
+  MCP cost model. Corrected, and `check_versions.py` now enforces it so CI fails
+  on the next drift.
 - 102 contracts, green; all five new ones falsified before shipping.
 
 ## 8.6.11
