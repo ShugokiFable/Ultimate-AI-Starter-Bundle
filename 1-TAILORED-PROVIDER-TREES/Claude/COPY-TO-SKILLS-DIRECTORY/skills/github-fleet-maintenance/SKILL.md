@@ -41,6 +41,7 @@ Some of the user's repos (SkyrimForge, Ultimate-AI-Starter-Bundle) gate tracked 
 
 - After adding `.github/dependabot.yml` configs (ecosystems per repo language; group codeql-action bumps), Dependabot opens PRs within ~30 min. Merge policy: squash-merge ONLY when the PR's own checks are terminal-green; if `BEHIND`/conflicts, comment `@dependabot rebase`, wait, re-check. Never force-close.
 - **Guard-test trap:** repos whose tests assert exact action versions (`setup-python@v5`) go red on major bumps. Fix the test to match intent (assert action NAME, not version) in a separate main commit, then `@dependabot rebase` the PR.
+- **Dead-workflow trap:** before adding OR keeping an advanced CodeQL workflow, check `gh api repos/{o}/{r}/code-scanning/default-setup`. `state: configured` means default setup owns CodeQL and GitHub has DISABLED the advanced workflow (`gh workflow list --all` shows it `disabled_manually`, and the same repo lists TWO workflows named CodeQL). Dependabot keeps raising weekly PRs to bump pins in a file that cannot run, and in a manifest-gated repo every one of them fails the hash gate. Default setup usually covers MORE languages than a hand-written matrix (`actions`, `javascript-typescript`). Pick one: delete the workflow and its `codeql-action` group, or turn default setup off. Measured on Ultimate-AI-Starter-Bundle 2026-08-27, where the workflow had been inert for three days.
 - Merging workflow-file bumps into manifest-gated repos trips the hash gate — resync manifests right after merges and watch CI.
 
 ## Security alerts cleanup

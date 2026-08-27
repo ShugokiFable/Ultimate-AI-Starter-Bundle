@@ -3,13 +3,19 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule: {interval: weekly}
-    # codeql-action/init and codeql-action/analyze must run the SAME release.
-    # Ungrouped, Dependabot raises one PR per action, so each PR bumps half the
-    # pair and CodeQL fails with "Loaded a configuration file for version X, but
-    # running version Y". Grouping makes the pair move in a single commit.
+    # There is no codeql-action group any more, because there is no
+    # codeql-action pin left to bump. GitHub code scanning DEFAULT SETUP owns
+    # CodeQL in this repo (configured 2026-08-24T23:56Z, six languages
+    # including `actions`). Enabling it DISABLES any advanced-setup workflow:
+    # .github/workflows/codeql.yml ran for the last time that same evening and
+    # sat inert afterwards, while Dependabot kept raising PRs to bump pins in a
+    # file that could not run. The workflow is deleted; scanning is unchanged.
+    #
+    # If default setup is ever turned off, restore a CodeQL workflow AND
+    # re-add the group -- init and analyze must move in one commit, or CodeQL
+    # fails with "Loaded a configuration file for version X, but running
+    # version Y".
     groups:
-      codeql-action:
-        patterns: ["github/codeql-action*"]
       actions:
         patterns: ["actions/*"]
   - package-ecosystem: gomod
