@@ -1,4 +1,4 @@
-﻿# Ultimate AI Starter Bundle v8.6.4
+﻿# Ultimate AI Starter Bundle v8.6.5
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -1070,6 +1070,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.5** - 2026-08-26. The setting nobody looks at. v8.6.4 documented KV-cache spill correctly and then prescribed the wrong fix: on the machine it was measured against, cache quantisation was **already on at `q8_0`**. The real culprit was `llm.load.numParallelSessions: 2` -- a multiplier on the entire cache, with nothing in the name to suggest it costs VRAM. At 65,536 context on a 16 GB card holding 10.26 GB of weights, 2 sessions + q8_0 wants 16.3 GB against 4.23 available, 1 session + q8_0 still wants 8.1, and only **1 session + q4_0** fits at 4.1 GB (max context 68,205). New `Get-KvBudget.ps1` reads the GGUF header and your GPU and prints max context at each cache precision, with `-Sessions` so the multiplier is visible; it flags `key_length` 256 as double the common 128, which doubles a model's cache and appears on no model card. New `Hermes 16GB` preset is the first with a populated `load` block -- 65,536 context, q4_0 K/V, flash attention, full offload, one session -- with every key read out of LM Studio's own config files, because an invented config key is silently ignored rather than rejected.
 
 **v8.6.4** - 2026-08-26. Three bytes, and a skills index that went blank. `START-HERE.bat` shipped with a UTF-8 BOM in 8.6.2 and 8.6.3, so every user opened the launcher to a `'@echo' is not recognized` error -- the install still finished, which is why it survived two releases. Introduced here, not inherited: v8.6.1 starts `40 65 63`, v8.6.2 starts `EF BB BF`. Codex user skills moved to the supported `~/.agents/skills` root; with both it and the deprecated `$CODEX_HOME/skills` live, the index measured **314 entries, 125 duplicated names and zero visible description chars** -- every skill reduced to a bare name -- against 211/0/32 after cleanup. The doctor could not even report that: its pattern required a non-empty description, so it fell back to estimating 212 when the truth was 314. The four AIO preambles are synced on substance (web wording deliberately left different, since web surfaces filter server-side), `Web Light` is finally lighter at 1,910 bytes against Web's 2,257, and two variants stopped recommending an installer that does not exist in v8. LM Studio's intermittent slowness is documented as KV-cache spill with the arithmetic: `key_length` 256 gives 0.254 MB/token at fp16, so 16 GB hits the cliff near 20k tokens.
 

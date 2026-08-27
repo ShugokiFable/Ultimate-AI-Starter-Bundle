@@ -18607,12 +18607,12 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 32167,
-  "sha256": "4f233f8d17b632b9589630349fe053795bccc751c8d443b676bc8adfc510f09d"
+  "sha256": "4ac71b788561db2b1760b874837545a5af38bc5866c4829fd15b6b7bee82ad1b"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1495,
-  "sha256": "565d6623ac40c6efe7fcba1fe374332bfab8c7375681e3f8959058d257192b70"
+  "sha256": "501176f23be8a2bd0473ed6ca4edf5f6e0395e6e710e6e1872241e6b9ebb4137"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -18650,14 +18650,24 @@
   "sha256": "6ab86dad4a75f9d9c6c3edc039ae953b4367c776bae8c84e280da54d7f78f7a5"
  },
  {
+  "path": "BUNDLED-TOOLS/lm-studio/Get-KvBudget.ps1",
+  "size": 7823,
+  "sha256": "891d97f4dc1cfff863fd9096a3a5f62e2ef6531411253c739d2e317d2d08c8a8"
+ },
+ {
   "path": "BUNDLED-TOOLS/lm-studio/Install-LMStudio-Presets.ps1",
   "size": 3332,
   "sha256": "38cd3911c3b9bb2460b4cdfdd7a70701a9f2efee0f169becbf8e4bf2db8807d2"
  },
  {
   "path": "BUNDLED-TOOLS/lm-studio/README.md",
-  "size": 6367,
-  "sha256": "e8f3f35ab42251d69e152c24291e803bdbb4fad7c7351dccdfa21a04847c3f65"
+  "size": 8380,
+  "sha256": "5359cc3b226dcf4740580131bb833f7730f3d6c82efc0419cd2971e6a68e0078"
+ },
+ {
+  "path": "BUNDLED-TOOLS/lm-studio/config-presets/Hermes 16GB.preset.json",
+  "size": 1423,
+  "sha256": "3ab86379b4d36f253a83ace26062a599f7a912ad5f067df0aac20bafba9f74b3"
  },
  {
   "path": "BUNDLED-TOOLS/lm-studio/config-presets/Hermes.preset.json",
@@ -21526,8 +21536,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 105311,
-  "sha256": "30d2dcc89e72e935b66cb13ffd654128bf0a38decfc9ae640e87e741ee24d8a9"
+  "size": 106815,
+  "sha256": "d2f96bec9eb505bc096485d975bdc08bc5b515866f7c1e826f0b4ba8b026e3e4"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -21602,7 +21612,7 @@
  {
   "path": "INSTALL-AIO.ps1",
   "size": 116570,
-  "sha256": "c6e602f137e5c28f7cd90aa484c20572a50e6fa2f0dc16ae86b23e83e984c34b"
+  "sha256": "610bdc43eb3115e6685d89da392bd14f58ff38316bf4b0e1e1a07dff94f7c35b"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -21651,8 +21661,8 @@
  },
  {
   "path": "README.md",
-  "size": 68870,
-  "sha256": "e60d2ab94e7ed85509ca73c1138767d554b3c535d32a6e9b0634201fd6a40b8b"
+  "size": 69993,
+  "sha256": "c5c4883517591ae5bdbe1831467b3c32bc7235098034fccd879c19edbbde18c3"
  },
  {
   "path": "SECURITY.md",
@@ -21662,12 +21672,12 @@
  {
   "path": "START-HERE.bat",
   "size": 709,
-  "sha256": "18eed53de92c78df48d255c87e0a456caf5ab8d2071aa06d30dd977ec1154fa6"
+  "sha256": "5e0cf67dbdb6b78c771357162d9a7d7af4540615527e5ea906234b9e3d129f74"
  },
  {
   "path": "START-HERE.txt",
   "size": 9684,
-  "sha256": "9348e7b9472aed335052d69f5af1436fa108cc8fa7e98a1a73797e1f4075eff8"
+  "sha256": "91d3f84d1781e158505fb16cce11403043f6eb43b21de71dd02cd8224012f366"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -22132,12 +22142,12 @@
  {
   "path": "VALIDATION.json",
   "size": 1345,
-  "sha256": "c9a218c876e9add200ddae271288123f0150a101868046982e081d5fddadfcf8"
+  "sha256": "b694b63570a8719acb93a1eba9bbaf7eeda02c316938099643c29d9513e36f2f"
  },
  {
   "path": "VERSION.txt",
   "size": 10,
-  "sha256": "2aaff65ea0017dce09d0330521da9959d22ec5b1d3755ea5ae806c3b737006cd"
+  "sha256": "168753d35680d9eaba242470d35f056f0f84d31659dd491add590765b0792014"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -25963,5 +25973,10 @@
   "path": "docs/history/V8.6.4-CHANGELOG.md",
   "size": 5910,
   "sha256": "9dab902b9a23e43fc4a22c081acb957874cc6c96752622a0f6eb00d3192d8aca"
+ },
+ {
+  "path": "docs/history/V8.6.5-CHANGELOG.md",
+  "size": 3400,
+  "sha256": "289d2208d78895b2b87ad99016c32f3b31adcf8670be9bf3ce4657dbf14b9e5a"
  }
 ]

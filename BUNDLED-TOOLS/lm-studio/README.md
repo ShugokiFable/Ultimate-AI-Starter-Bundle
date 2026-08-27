@@ -66,20 +66,62 @@ So on this card the fp16 cliff is around **20k tokens**, and the 64,000 floor
 Hermes enforces is **not reachable at fp16 with a 27B**. The two constraints
 genuinely conflict, and quantising the cache is what resolves it:
 
-| KV quant | bytes/token | 64,000 ctx | + 10.26 GB weights |
+### Two settings decide it, and one of them is invisible
+
+`llm.load.numParallelSessions` is a **multiplier on the whole cache** -- every
+parallel session gets its own. Nobody looks at it, because nothing about the
+name suggests it costs VRAM. On the maintainer's machine it was `2`, which
+doubled a cache that already did not fit.
+
+Measured on that machine (16 GB card, 10.26 GB weights, 4.23 GB left for cache
+after a 1.5 GB desktop reserve), at 65,536 context:
+
+| sessions | K/V quant | cache wanted | verdict |
 |---|---|---|---|
-| fp16 | 266,240 | 17.0 GB | 27.3 GB -- impossible |
-| Q8_0 | 133,120 | 8.5 GB | 18.8 GB -- still over |
-| Q4_0 | ~66,560 | 4.3 GB | 14.5 GB -- **fits**, ~1.5 GB spare |
+| **2** | q8_0 | 16.3 GB | the setting it was actually on |
+| 2 | q4_0 | 8.1 GB | still over |
+| 1 | fp16 | 16.3 GB | over |
+| 1 | q8_0 | 8.1 GB | over |
+| **1** | **q4_0** | **4.1 GB** | **fits** -- max context 68,205 |
 
-Enable KV cache quantisation in LM Studio's model-load settings. Q4_0 K/V is
-what makes a 27B usable at the context Hermes requires on a 16 GB card; Q8_0
-is enough if you stay near 20-30k. The alternative is a smaller model: weights
-under ~8 GB leave room for a Q8 cache at 64k.
+So on a 16 GB card this model reaches the 64,000 Hermes demands in exactly one
+configuration: **one session, q4_0 K and V**. Quantising the cache alone is not
+enough, and neither is dropping to one session alone.
 
-Check the real numbers for YOUR model rather than reusing these -- the geometry
-varies enormously between models, and `key_length` is the field that surprises
-people.
+### Work it out for your own card
+
+Do not reuse the numbers above. `key_length` varies, weights vary, VRAM varies:
+
+```powershell
+.\Get-KvBudget.ps1                      # largest model in your LM Studio folder
+.\Get-KvBudget.ps1 -Sessions 2          # see what parallel sessions cost you
+.\Get-KvBudget.ps1 -Model <path.gguf> -VramGB 24
+```
+
+It reads the GGUF header and your GPU, and prints the maximum context at each
+cache precision. It changes nothing.
+
+### The load keys, if you set them by hand
+
+Verified against LM Studio's own per-model config files, not guessed:
+
+| key | shape | optimised value |
+|---|---|---|
+| `llm.load.contextLength` | int | `65536` |
+| `llm.load.llama.flashAttention` | bool | `true` |
+| `llm.load.llama.kCacheQuantizationType` | `{checked, value}` | `q4_0` |
+| `llm.load.llama.vCacheQuantizationType` | `{checked, value}` | `q4_0` |
+| `llm.load.llama.acceleration.offloadRatio` | 0..1 | `1` |
+| `llm.load.numParallelSessions` | int | `1` |
+
+Flash attention is listed because llama.cpp wants it for a quantised KV cache;
+leave it on.
+
+The `Hermes 16GB` preset in `config-presets/` carries exactly this load block
+plus the Hermes sampling values, so applying it is the same as typing the table
+above. It is named for the card it was computed against -- on a 24 GB card q8_0
+is affordable and preserves more cache fidelity, so run `Get-KvBudget.ps1`
+before assuming this preset is right for you.
 
 ## Presets
 
@@ -91,6 +133,7 @@ credentials, and no model names, so they apply to whatever you have loaded.
 | `Hermes` | 0.6 | 1024 | agent work through Hermes — lower temperature, less drift on tool calls |
 | `SillyTavern` | 0.75 | 1024 | roleplay and creative writing — looser |
 | `Jailbreak` | 0.65 | 2086 | carries a system prompt, the same unrestraint preamble this pack ships in `0-UNRESTRAINT-PACKS` |
+| `Hermes 16GB` | 0.6 | 1024 | Hermes sampling **plus a load block**: 65,536 context, q4_0 K/V cache, flash attention, full offload, one session. The only configuration that reaches Hermes' 64,000 floor on a 16 GB card — see the KV section below, and run `Get-KvBudget.ps1` before using it on a different card. |
 
 All three share `topKSampling: 20`, `minPSampling: 0` (checked), and
 `repeatPenalty` **off**. Those are the Qwen3-family sampling recommendations;

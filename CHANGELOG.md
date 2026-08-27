@@ -1,3 +1,28 @@
+## 8.6.5
+
+- 160 canonical skills total, unchanged. The LM Studio folder gains the
+  settings, not just the arithmetic.
+- **v8.6.4 got the cause right and the fix wrong.** It documented KV-cache
+  spill and said to enable cache quantisation -- but on the machine it was
+  measured against, quantisation was **already on** at `q8_0`. The actual
+  culprit was `llm.load.numParallelSessions: 2`, a **multiplier on the entire
+  cache** that nothing in the name marks as costing VRAM. At 65,536 context on
+  16 GB with 10.26 GB of weights: 2 sessions + q8_0 wants 16.3 GB against 4.23
+  available; 1 session + q8_0 still wants 8.1; **1 session + q4_0 wants 4.1 and
+  fits**, reaching 68,205 max context. Quantising alone was not enough and
+  neither was one session alone.
+- **`Get-KvBudget.ps1`** reads the GGUF header and the GPU and prints max
+  context at fp16/q8_0/q4_0, with `-Sessions` so the multiplier is visible.
+  Read-only. It names `key_length` explicitly -- the common value is 128, this
+  model ships 256, which doubles its cache and appears on no model card.
+- **`Hermes 16GB` preset** is the first shipped preset with a populated `load`
+  block: 65,536 context, q4_0 K/V, flash attention, full offload, one session.
+  Every key and value shape was read out of LM Studio's own
+  `user-concrete-model-default-config` files rather than guessed -- an invented
+  config key does not error, it is silently ignored, so the setting you thought
+  you applied was never applied.
+- 93 contracts, green.
+
 ## 8.6.4
 
 - 160 canonical skills total, unchanged. A launcher defect that shipped in two
