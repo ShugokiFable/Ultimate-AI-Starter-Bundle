@@ -2263,6 +2263,8 @@ def main() -> int:
         # v8.6.7 -- Codex ships skills of its own; adopting one by the same
         # name indexed it twice on Codex alone.
         test_codex_builtin_skills_are_discovered_not_hardcoded,
+        # v8.6.9 -- a correct preset over four unloadable saved model configs.
+        test_lmstudio_optimizer_writes_the_settings_that_actually_fit,
     ]
     failed = []
     for fn in tests:
@@ -3506,6 +3508,51 @@ def test_codex_builtin_skills_are_discovered_not_hardcoded() -> None:
         "the doctor cannot see built-in ownership, so a skill the installer "
         "correctly removed reads as a missing skill and fails the run"
     )
+
+
+def test_lmstudio_optimizer_writes_the_settings_that_actually_fit() -> None:
+    """A good preset does not save you; the per-model settings win.
+
+    Measured on the maintainer's machine: the `Hermes 16GB` preset was correct
+    while four of five SAVED MODEL configs for the same family were unloadable
+    -- q8_0 K/V, and one with three parallel sessions. The one in use asked for
+    18.32 GiB on a card with ~14.5, so llama.cpp spilled to system RAM every
+    session. LM Studio validates none of it.
+
+    The three settings that cause it read as though they are free:
+    cache quantisation, numParallelSessions (a MULTIPLIER on the whole cache),
+    and offloadRatio.
+    """
+    script = ROOT / "BUNDLED-TOOLS" / "lm-studio" / "Optimize-LMStudioModelConfig.ps1"
+    assert script.is_file(), "the LM Studio model-config optimizer is gone"
+    body = ps_code(script)
+
+    assert "'q4_0'" in body, "the optimizer no longer writes q4_0; q8_0 is double the cache"
+    assert "llm.load.numParallelSessions' 1" in body, (
+        "the optimizer no longer pins one parallel session -- the setting is a "
+        "multiplier on the entire KV cache and nothing in its name says so"
+    )
+    assert "llm.load.llama.acceleration.offloadRatio' 1" in body, (
+        "the optimizer no longer forces full GPU offload"
+    )
+    # Never write without a backup, and never write unasked.
+    assert "Copy-Item" in body and "uabs-backup" in body, (
+        "the optimizer overwrites user config without backing it up first"
+    )
+    assert "$Apply" in body, "the optimizer no longer has a dry-run default"
+
+    # A context of 0 is not a setting. A model too big for any useful window
+    # still has to be written a legal value.
+    assert "-lt 4096" in body, (
+        "the optimizer can write a context below 4096; flooring a tiny budget "
+        "produced ctx 0 on a 14.26 GB quant during development"
+    )
+
+    readme = read(ROOT / "BUNDLED-TOOLS" / "lm-studio" / "README.md")
+    assert "user-concrete-model-default-config" in readme, (
+        "the README no longer says WHERE the settings that actually win are kept"
+    )
+    assert "Optimize-LMStudioModelConfig.ps1" in readme, "the README does not mention the optimizer"
 
 
 if __name__ == "__main__":

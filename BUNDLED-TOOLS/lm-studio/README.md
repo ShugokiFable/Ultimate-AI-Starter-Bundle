@@ -88,9 +88,60 @@ So on a 16 GB card this model reaches the 64,000 Hermes demands in exactly one
 configuration: **one session, q4_0 K and V**. Quantising the cache alone is not
 enough, and neither is dropping to one session alone.
 
-### Work it out for your own card
+### A good preset does not save you: the MODEL settings win
 
-Do not reuse the numbers above. `key_length` varies, weights vary, VRAM varies:
+This is the part that catches people, and it caught the maintainer.
+
+LM Studio keeps **two** separate things:
+
+| | where | what it holds |
+|---|---|---|
+| **preset** | `~/.lmstudio/config-presets/*.json` | sampling, and a `load` block **only if you put one there** |
+| **saved model settings** | `~/.lmstudio/.internal/user-concrete-model-default-config/**.gguf.json` | the per-model load block LM Studio actually applies |
+
+A perfectly good preset does nothing about VRAM if the model's own saved
+settings say `q8_0` and three parallel sessions. Measured on the maintainer's
+machine, for one model family:
+
+| quant | saved by hand | asked for | verdict |
+|---|---|---|---|
+| `UD-IQ3_XXS` | ctx 65,000, K/V **q8_0**, 1 session | **18.32 GiB** | 3.83 GiB over |
+| `UD-Q3_K_XL` | ctx 64,000, q8_0, **2 sessions**, **75% offload** | far over | also on the CPU |
+| `UD-Q2_K_XL` | ctx 64,000, q8_0, **3 sessions** | far over | triple cache |
+| `UD-IQ2_S` | ctx 64,000, q8_0 | over | |
+| `Q2_K` | ctx 66,000, **q4_0**, 1 session | fits | the only correct one |
+
+Four of five were unloadable as written. The one actually in use asked for
+**18.32 GiB on a card with about 14.5**, so llama.cpp spilled to system RAM over
+PCIe every session. That is the whole of "sometimes fast, sometimes hella slow".
+
+Fix every model at once, computed from each GGUF and your card:
+
+```powershell
+.\Optimize-LMStudioModelConfig.ps1              # print the plan, write nothing
+.\Optimize-LMStudioModelConfig.ps1 -Apply       # back up, then write
+.\Optimize-LMStudioModelConfig.ps1 -ReserveGB 3 -Apply
+```
+
+It writes `q4_0` K/V, **one** session and full offload for every model, and sets
+each one's context to the largest value that genuinely fits, capped at 65,536.
+It backs up first and refuses nothing silently.
+
+### Your desktop is already holding several GB
+
+A flat "reserve 1.5 GB" is a guess, and on a real machine it is optimistic.
+Measured with **no model loaded at all**:
+
+```
+16376 MiB total, 6660 MiB used, 9386 MiB free
+```
+
+6.6 GB was Claude desktop, Discord, Steam, Edge WebView2, ArmouryCrate, Razer
+and Explorer. A budget of `total - 1.5` said a 10.26 GB model fit; only 9.2 GB
+was actually free, so the weights alone did not.
+
+`Get-KvBudget.ps1` now reports both — the lean-desktop budget and what is free
+*right now* — and says so when the second one is worse:
 
 ```powershell
 .\Get-KvBudget.ps1                      # largest model in your LM Studio folder
@@ -98,8 +149,30 @@ Do not reuse the numbers above. `key_length` varies, weights vary, VRAM varies:
 .\Get-KvBudget.ps1 -Model <path.gguf> -VramGB 24
 ```
 
-It reads the GGUF header and your GPU, and prints the maximum context at each
-cache precision. It changes nothing.
+Close the GPU-backed desktop apps before blaming the model. It reads the GGUF
+header and your GPU and changes nothing.
+
+### Which quant to download
+
+Bigger quant means less room for the cache, so on a fixed card the two trade
+directly. For this 27B on a 16 GB RTX 4080 SUPER, K/V at `q4_0`, lean desktop:
+
+| quant | weights | max context | reaches 65,536? |
+|---|---|---|---|
+| `UD-IQ2_S` | 9.36 G | 82,756 | **yes**, +17,220 spare |
+| `UD-IQ3_XXS` | 10.26 G | 68,205 | **yes**, +2,669 spare |
+| `UD-Q2_K_XL` | 10.94 G | 57,268 | no, 8,268 short |
+| `Q2_K` | 11.80 G | 43,394 | no |
+| `UD-IQ3_S` | 12.88 G | 25,972 | no |
+| `UD-Q3_K_XL` | 14.26 G | **3,710** | no, 61,826 short |
+| `Q3_K` | 14.43 G | 967 | no |
+
+The instructive row is `Q3_K_XL`. It is the one a "will it fit" badge is most
+likely to bless, because **14.26 GB of weights does fit on a 16 GB card** — with
+0.2 GB left, which is 3,710 tokens of cache. A fit check on weights alone cannot
+see the window you asked for.
+
+On this card, at this context, the largest quant that works is **`UD-IQ3_XXS`**.
 
 ### The load keys, if you set them by hand
 

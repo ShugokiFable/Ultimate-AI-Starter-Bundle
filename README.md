@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.6.8
+# Ultimate AI Starter Bundle v8.6.9
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -620,6 +620,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.9** - 2026-08-27. The preset was fine; the model settings were not. LM Studio keeps sampling presets and per-model **load** settings in different places, and the model's own settings are what it applies. Measured for one 27B family: four of five saved configs could not load as written -- `q8_0` K/V throughout, one with **three** parallel sessions, one at **75% offload** -- and the one actually in use asked for **18.32 GiB on a card with ~14.5**, spilling to system RAM over PCIe every session. New `Optimize-LMStudioModelConfig.ps1` reads each GGUF and your card, computes the largest context that genuinely fits at `q4_0`, and writes it with one session and full offload; dry-run by default, backs up first. `Get-KvBudget.ps1` stopped guessing its reserve: measured with **no model loaded**, 6.6 GB of a 16 GB card was already held by desktop apps, so the old `total - 1.5` budget said a 10.26 GB model fit when 9.2 GB was free. And the quant question is now arithmetic: at 65,536 with `q4_0`, only `UD-IQ2_S` and `UD-IQ3_XXS` reach the window, while `UD-Q3_K_XL` reaches **3,710** -- its 14.26 GB of weights do fit on a 16 GB card, leaving 0.2 GB, which is exactly why a weights-only fit check blesses it.
 
 **v8.6.8** - 2026-08-27. The rtk advice was stale, and the README was 61% changelog. Re-measured on native Windows at rtk 0.45.0: `rtk init -g` registers a **real PreToolUse hook** (`rtk hook claude`, JSON over stdin) that rewrites commands transparently and writes a 990-byte `RTK.md` -- so the catalog's blanket "do not install the Claude/Cursor/Gemini hooks on Windows" was wrong. The distinction is `-g`, not the provider: plain `rtk init` prints `No hook installed` and writes **5,140 bytes** into `CLAUDE.md`, ~1,400 tokens every turn forever, to *ask* for savings. Its rewrites are conservative -- `curl`, `npm test` and `gh --json` untouched, `rtk read` byte-identical to `cat`. The README's own rtk table was still advertising the decayed 97% from `git diff HEAD~3` that v8.6.6 had already pinned in the catalog; both now show the honest 25%-95% spread. New **`-WithRtk`** installs it behind one flag and then *prints* the hook command rather than running it, because registering it patches your `settings.json` and rewrites every shell command -- and rtk discards what it filters, with no archive and no retrieval. The README also carried **two** changelogs, one stale at v8.0.4 while the pack shipped through 8.6.x; 1,196 lines became 635 with nothing lost, since `CHANGELOG.md` holds all 86 entries and `docs/history/` 92 write-ups.
 

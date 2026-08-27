@@ -129,12 +129,20 @@ if (-not ($layers -and $kvHeads -and $kLen)) {
 }
 
 # ------------------------------------------------------------- budget ------
-if ($VramGB -le 0) {
-  try {
-    $q = & nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>$null
-    if ($q) { $VramGB = [double](($q | Select-Object -First 1).Trim()) / 1024.0 }
-  } catch { }
-}
+# Total AND free. A flat reserve is a guess, and on a real desktop it is an
+# optimistic one: measured on the maintainer's machine, Claude desktop, Discord,
+# Steam, Edge WebView2, ArmouryCrate and Razer held 6.6 GB of a 16 GB card with
+# no model loaded at all. A budget computed as total-minus-1.5 said a model fit
+# when only 9.2 GB was actually free. Report both and let the reader see the gap.
+$freeGB = 0.0
+try {
+  $q = & nvidia-smi --query-gpu=memory.total,memory.free --format=csv,noheader,nounits 2>$null
+  if ($q) {
+    $row = ($q | Select-Object -First 1).Split(',')
+    if ($VramGB -le 0) { $VramGB = [double]$row[0].Trim() / 1024.0 }
+    $freeGB = [double]$row[1].Trim() / 1024.0
+  }
+} catch { }
 if ($VramGB -le 0) { Write-Error "Could not detect VRAM; pass -VramGB."; exit 1 }
 
 $weightsGB = (Get-Item -LiteralPath $Model).Length / 1GB
@@ -145,7 +153,18 @@ Write-Host '== KV cache budget ==' -ForegroundColor Cyan
 Write-Host ("model            : " + (Split-Path -Leaf $Model))
 Write-Host ("weights          : {0:N2} GB" -f $weightsGB)
 Write-Host ("VRAM total       : {0:N2} GB   (reserve {1:N1} GB for desktop + compute buffers)" -f $VramGB, $ReserveGB)
-Write-Host ("left for KV      : {0:N2} GB" -f $usableGB)
+Write-Host ("left for KV      : {0:N2} GB   assuming a LEAN desktop" -f $usableGB)
+if ($freeGB -gt 0) {
+  $realNow = $freeGB - $weightsGB
+  Write-Host ("VRAM free NOW    : {0:N2} GB   ({1:N2} GB is already taken by other apps)" -f $freeGB, ($VramGB - $freeGB))
+  if ($realNow -lt $usableGB) {
+    Write-Host ("left for KV NOW  : {0:N2} GB   <-- what you actually have while those apps run" -f $realNow) -ForegroundColor Yellow
+    if ($realNow -le 0) {
+      Write-Host "  The weights alone do not fit alongside what is already on the GPU." -ForegroundColor Red
+      Write-Host "  Close GPU-backed desktop apps, or pick a smaller quant." -ForegroundColor Red
+    }
+  }
+}
 Write-Host ("parallel sessions: {0}{1}" -f $Sessions, $(if ($Sessions -gt 1) { "   <-- each one pays the full cache again" } else { '' }))
 Write-Host ''
 Write-Host ("layers {0}  kv_heads {1}  key_len {2}  value_len {3}{4}" -f $layers, $kvHeads, $kLen, $vLen, $(if ($derived) { '   (key_len derived from embedding/head_count)' } else { '' }))

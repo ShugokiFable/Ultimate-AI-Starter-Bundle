@@ -1,3 +1,33 @@
+## 8.6.9
+
+- **164 canonical skills total**, unchanged. A good LM Studio preset sitting on
+  top of four unloadable saved model configs.
+- **The preset was never the problem.** LM Studio keeps sampling presets and
+  per-model *load* settings in different places, and the model's own settings
+  are what it applies. Measured for one 27B family: four of five saved configs
+  could not load as written -- `q8_0` K/V throughout, one with **three** parallel
+  sessions, one at **75% offload**. The one actually in use asked for
+  **18.32 GiB on a card with ~14.5**, so llama.cpp spilled to system RAM over
+  PCIe every session. That is the whole of "sometimes fast, sometimes hella
+  slow", and no preset could have fixed it.
+- **`Optimize-LMStudioModelConfig.ps1`.** Reads each GGUF's geometry and your
+  card, computes the largest context that genuinely fits at `q4_0`, and writes
+  it back with one session and full offload. Dry-run by default, backs up first,
+  and floors the context at 4096 -- flooring a tiny budget produced `ctx 0` on a
+  14.26 GB quant during development, which is not a setting.
+- **`Get-KvBudget.ps1` stopped guessing the reserve.** A flat `total - 1.5 GB`
+  said a 10.26 GB model fit. Measured with **no model loaded**: 6.6 GB of a
+  16 GB card was already held by Claude desktop, Discord, Steam, Edge WebView2,
+  ArmouryCrate and Explorer, leaving 9.2 GB -- the weights alone did not fit. It
+  now reports the lean-desktop budget *and* what is free right now, and says so
+  when the second is worse.
+- **Which quant, answered with arithmetic.** On a 16 GB card at 65,536 context
+  with `q4_0` K/V, only two of seven offered quants reach the window:
+  `UD-IQ2_S` (82,756 max) and `UD-IQ3_XXS` (68,205). `UD-Q3_K_XL` reaches
+  **3,710** -- its 14.26 GB of weights *do* fit on a 16 GB card, leaving 0.2 GB,
+  which is why a fit check on weights alone will happily bless it.
+- 95 contracts, green. The new one was falsified four ways.
+
 ## 8.6.8
 
 - **164 canonical skills total**, unchanged. A stale claim about rtk, a README
