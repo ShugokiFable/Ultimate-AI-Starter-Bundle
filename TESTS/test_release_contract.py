@@ -2274,6 +2274,7 @@ def main() -> int:
         test_retired_marketplaces_are_unregistered_not_just_undeployed,
         test_always_on_mcp_pins_come_from_the_catalog,
         test_manifest_covers_every_tracked_file,
+        test_a_running_mcp_binary_cannot_fail_the_whole_install,
     ]
     failed = []
     for fn in tests:
@@ -4134,6 +4135,74 @@ def test_manifest_covers_every_tracked_file() -> None:
         "generate_manifest.py stopped using `git ls-files -z`; paths with a "
         "non-ASCII byte come back octal-quoted, never match the filesystem "
         "walk, and vanish from the manifest without an error"
+    )
+
+def test_a_running_mcp_binary_cannot_fail_the_whole_install() -> None:
+    """Running the installer with the AI apps open used to abort everything.
+
+    A component whose binary is currently running cannot be overwritten.
+    robocopy answers that with exit code 8, ``Copy-UabsRobo`` turns exit >= 8
+    into a throw, and the throw takes down the entire install:
+
+        INSTALL FAILED
+        robocopy failed exit=8 from=...uabs-extract-github-mcp-server-...
+
+    Measured 2026-08-27 with four ``github-mcp-server`` processes alive as MCP
+    servers for open Claude, Codex, Grok, Kimi and Hermes sessions -- which is
+    the *ordinary* case, not an edge one. One locked file, and nothing else in
+    the run completed.
+
+    houseCARL and codebase-memory already handled this. The generic
+    ``zip-extract`` branch every other component falls through to did not, and
+    ``github-mcp-server`` falls through to it.
+
+    Two properties, and the second is the one that matters:
+
+    1. The lock is **detected** and the owning process stopped, so the update
+       normally still happens. It did here: 1.10.1 -> 1.11.0 on the same run
+       that had just failed.
+    2. If the file still will not release, that component is **skipped with a
+       warning**, not thrown. Aborting an entire install over one MCP binary
+       is disproportionate, and the user cannot act on it without being told
+       which file and why.
+    """
+    aio = ps_code(ROOT / "INSTALL-AIO.ps1")
+
+    # The generic branch must consult the lock helpers the pack already has.
+    assert "Test-UabsFileLocked" in aio, (
+        "INSTALL-AIO no longer checks whether a target binary is locked before "
+        "overwriting it; robocopy exit 8 will abort the whole install again"
+    )
+    assert "Stop-UabsProcessUsingExecutable" in aio, (
+        "the installer no longer tries to stop the process holding a locked "
+        "binary, so an update silently never happens"
+    )
+
+    # Property 2: skip, do not throw.
+    assert "skipped-in-use" in aio, (
+        "a still-locked component no longer degrades to a recorded skip; one "
+        "running MCP server can take the entire install down again"
+    )
+    assert "Nothing else in this install was affected" in aio, (
+        "the skip no longer tells the user the rest of the install survived, "
+        "which is the whole difference between this and INSTALL FAILED"
+    )
+    assert "Close every AI app" in aio, (
+        "the skip warning no longer says what to DO about it"
+    )
+
+    # The skip must be recorded, or the doctor and the state file cannot tell
+    # a stale component from a current one.
+    idx = aio.index("skipped-in-use")
+    window = aio[max(0, idx - 600):idx + 600]
+    assert "locked" in window, (
+        "the skipped-in-use record does not name which files were locked, so "
+        "nothing downstream can report what stayed behind"
+    )
+
+    # And the raw copy must remain the else-branch, not the default path.
+    assert "Copy-UabsRobo -From $rootExtract -To $target" in aio, (
+        "the generic extract no longer copies at all when nothing is locked"
     )
 
 if __name__ == "__main__":

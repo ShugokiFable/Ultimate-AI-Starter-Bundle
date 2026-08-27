@@ -1404,8 +1404,46 @@ if (-not $SkillsOnly) {
             }
           }
           else {
-            Copy-UabsRobo -From $rootExtract -To $target
-            $installed[$id] = @{ status='installed'; root=$target }
+            # A component whose binary is CURRENTLY RUNNING cannot be
+            # overwritten, and robocopy's answer to that is exit code 8, which
+            # Copy-UabsRobo turns into a throw, which aborts the ENTIRE
+            # install. Measured 2026-08-27: four github-mcp-server processes
+            # were alive as MCP servers for open Claude/Codex/Grok/Kimi/Hermes
+            # sessions, and running the installer produced
+            #   INSTALL FAILED
+            #   robocopy failed exit=8 from=...uabs-extract-github-mcp-server...
+            # That is the ordinary case -- a user runs the installer with their
+            # AI apps open -- and it took the whole run down over one file.
+            #
+            # houseCARL and codebase-memory already handle this; this generic
+            # branch, which every other zip component falls through to, did
+            # not. Same treatment: stop the exact owning process, and if it
+            # still will not release, SKIP this one component with a loud
+            # warning rather than failing everything around it.
+            $lockedExes = @()
+            if (Test-Path -LiteralPath $target -PathType Container) {
+              foreach ($e in @(Get-ChildItem -LiteralPath $target -Recurse -File -Filter '*.exe' -EA SilentlyContinue)) {
+                if (Test-UabsFileLocked $e.FullName) { $lockedExes += $e.FullName }
+              }
+            }
+            foreach ($le in $lockedExes) {
+              try { [void](Stop-UabsProcessUsingExecutable $le) } catch { }
+            }
+            $stillLocked = @($lockedExes | Where-Object { Test-UabsFileLocked $_ })
+            if ($stillLocked.Count) {
+              $installed[$id] = @{
+                status = 'skipped-in-use'
+                root   = $target
+                locked = @($stillLocked)
+              }
+              Write-UabsWarn ($id + ': binary in use, left at the installed version -- ' +
+                (($stillLocked | ForEach-Object { Split-Path -Leaf $_ }) -join ', '))
+              Write-Host '     Close every AI app (their MCP servers hold this file) and re-run to update it.' -ForegroundColor DarkGray
+              Write-Host '     Nothing else in this install was affected.' -ForegroundColor DarkGray
+            } else {
+              Copy-UabsRobo -From $rootExtract -To $target
+              $installed[$id] = @{ status='installed'; root=$target }
+            }
           }
         } finally {
           Remove-Item -LiteralPath $stage -Recurse -Force -EA SilentlyContinue

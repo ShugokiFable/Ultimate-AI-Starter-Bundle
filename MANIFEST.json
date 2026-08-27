@@ -22531,8 +22531,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 127218,
-  "sha256": "5ac4645b7e185519133da32d481cfba4faf22cffb3e71241a220759821db811a"
+  "size": 128086,
+  "sha256": "69444df8869c02661424c55362e2cb812e967064a437a29b20f38df1463e03ae"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -22606,8 +22606,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 119226,
-  "sha256": "a9c8a5b83ebe63fc979130ec194e0125f6daf6aacfdf5882f74df198911da5b2"
+  "size": 121524,
+  "sha256": "6a161c72c994110debf59fbef398f1fdb401c4fae2219b6ffa60b138a0e478f3"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -22656,8 +22656,8 @@
  },
  {
   "path": "README.md",
-  "size": 51282,
-  "sha256": "63372458ddc6d1aaa84b0d8d23c3dda61e03525c82117d0782a0457c90e8070f"
+  "size": 51892,
+  "sha256": "27ba1534e8721a1a1c32c4f52f916c1cb778712af35b5c0fd5d66de70259ef24"
  },
  {
   "path": "SECURITY.md",
@@ -22866,8 +22866,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 216324,
-  "sha256": "6ec0c8b38dedb39c94c0f027140fcbd86f5a0f494c78152d533023c1501f429d"
+  "size": 219514,
+  "sha256": "df02bf5e79939d29d4d5af1ddb4c1e8ae3bf79f96c3d5c7eb5e26823ae042276"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -27156,8 +27156,8 @@
  },
  {
   "path": "docs/history/V8.6.12-CHANGELOG.md",
-  "size": 14044,
-  "sha256": "b23f143db671a65f3d3b1ebb2abe67fa0b3eff06d52fd86b734aee11604b27b0"
+  "size": 16239,
+  "sha256": "0dc1c20900d85cd6143ec41b57a51c58f0895b78dcd2f4c20dc6b77cd074e271"
  },
  {
   "path": "docs/history/V8.6.2-CHANGELOG.md",

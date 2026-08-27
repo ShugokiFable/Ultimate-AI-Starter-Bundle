@@ -78,12 +78,24 @@
   `MANIFEST.json`; and `MANIFEST.json` was skipped by bare name anywhere,
   excluding the vendored Forge manifest too. Fixed with `ls-files -z` and a
   root-only skip: **5,428 -> 5,440 entries**, zero uncovered, zero phantom.
+- **Running the installer with your AI apps open failed the whole install.**
+  Four `github-mcp-server` processes were alive as MCP servers for open Claude,
+  Codex, Grok, Kimi and Hermes sessions; their binary cannot be overwritten,
+  robocopy answers with exit 8, `Copy-UabsRobo` throws, and the throw aborts
+  **everything** -- `INSTALL FAILED` over one locked file. That is what happens
+  when anyone double-clicks `START-HERE.bat` without closing their apps first.
+  houseCARL and codebase-memory already handled it; the generic `zip-extract`
+  branch every other component falls through to did not. Now it detects the
+  lock, stops the owning process, and if the file still will not release
+  **skips that one component with a warning** instead of failing the run. The
+  same command that had just failed then completed: **github-mcp-server
+  1.10.1 -> 1.11.0**.
 - **An unread version string is still a claim.** `PROFILES.json` declared
   `pack_version: 8.0.0` while the pack shipped through 8.6.x. Nothing reads that
   field, which is why it rotted -- but it is a file users open to understand the
   MCP cost model. Corrected, and `check_versions.py` now enforces it so CI fails
   on the next drift.
-- 102 contracts, green; all five new ones falsified before shipping.
+- 103 contracts, green; all six new ones falsified before shipping.
 
 ## 8.6.11
 
