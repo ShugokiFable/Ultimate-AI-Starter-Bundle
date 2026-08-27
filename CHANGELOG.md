@@ -1,3 +1,44 @@
+## 8.6.8
+
+- **164 canonical skills total**, unchanged. A stale claim about rtk, a README
+  that had become 61% changelog, and a one-flag install for the tool.
+- **The rtk guidance was wrong, and re-measuring proved it.** The catalog said
+  "do NOT install the Claude Code / Cursor / Gemini hooks on native Windows:
+  they silently degrade to CLAUDE.md prompt injection." Re-tested at 0.45.0 on
+  native Windows: `rtk init -g --agent claude` registers a **real PreToolUse
+  hook** (`rtk hook claude`, JSON over stdin) that rewrites `git status` into
+  `rtk git status` transparently, and writes a 990-byte `RTK.md`. The
+  distinction that matters is `-g`, not the provider. The blanket warning is
+  gone; the real one is sharper.
+- **What the non-global form actually costs, measured.** Plain `rtk init` prints
+  `No hook installed` and writes **5,140 bytes** into `CLAUDE.md` -- roughly
+  1,400 tokens every turn, forever, 0.8x this pack's whole AIO preamble, to ASK
+  for savings it cannot enforce.
+- **The rtk rewrite engine is conservative, verified.** `curl`, `npm test`,
+  `python manage.py migrate` and `gh pr view --json` all pass through untouched,
+  and `rtk read` returns files byte-identical to `cat` (checked on a 60-byte env
+  file and a 67 KB script). The `exclude_commands = ["curl"]` advice now pins
+  behaviour rtk already has rather than fixing a hazard it does not.
+- **The README's rtk table was still quoting the decayed number.** v8.6.6 pinned
+  the catalog to tag ranges and left the README advertising 97% from
+  `git diff HEAD~3` -- one fact, two files, one of them fixed. Both now show the
+  pinned 25%-95% spread, and a contract asserts no moving ref appears in that
+  table again, scoped to the table so the prose can still explain why.
+- **`-WithRtk`.** rtk installs behind one flag, like claude-mem. The installer
+  then **prints** `rtk init -g --agent <name>` per detected provider instead of
+  running it: registering the hook patches your `settings.json` and rewrites
+  every shell command, so that keystroke stays yours. Still not default, and the
+  reason is now written down -- rtk DISCARDS what it filters, with no archive
+  and no retrieval, so 87% saved is 87% gone.
+- **The README lost 561 lines and got more accurate.** It carried TWO
+  changelogs: a `What's new` section that went stale at **v8.0.4** while the
+  pack shipped through 8.6.x -- thirty releases of "recent releases first" that
+  were not recent -- plus 37 `Version` paragraphs duplicating `CHANGELOG.md`.
+  `What's new` is now a pointer, `Version` keeps the current 8.6 line, and
+  1,196 lines became 635. Nothing was lost: `CHANGELOG.md` has all 86 entries
+  and `docs/history/` has 92 long-form write-ups.
+- 94 contracts, green.
+
 ## 8.6.7
 
 - **164 canonical skills total**, unchanged. A defect v8.6.6 introduced, and

@@ -107,6 +107,12 @@ param(
   # and needs a Claude Code restart before its tools appear. Good software,
   # but three surprises for someone who double-clicked one .bat.
   [switch]$WithClaudeMem,
+  # rtk, same shape of decision. The binary is harmless and costs zero standing
+  # tokens, but it only SAVES anything once its hook is registered -- and that
+  # hook rewrites every shell command on the machine and patches settings.json.
+  # rtk also discards: 87% saved is 87% gone, with no archive and no retrieval.
+  # So the install is one flag, and the hook stays the user's own keystroke.
+  [switch]$WithRtk,
   # Register an optional-key MCP server even when its keyless surface is a
   # fraction of what it charges in schema. Off by default: see
   # keyless_skip_reason in CATALOG.json for the measured numbers.
@@ -157,6 +163,7 @@ if (-not $CoreOnly) {
   ) | Select-Object -Unique
 }
 if ($WithClaudeMem) { $Components = @($Components) + @('claude-mem') | Select-Object -Unique }
+if ($WithRtk) { $Components = @($Components) + @('rtk') | Select-Object -Unique }
 
 $ErrorActionPreference = 'Stop'
 $PackRoot = $PSScriptRoot
@@ -322,7 +329,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.6.7 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.6.8 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1684,6 +1691,25 @@ if (-not $SkillsOnly) {
       default { Write-UabsWarn "No installer for $($comp.install)" }
     }
   }
+
+  # rtk installs a binary; the binary alone saves nothing. Registering the hook
+  # rewrites every shell command and patches the provider's settings.json, so
+  # the installer prints the keystroke rather than taking it. -g is the whole
+  # point: without it rtk writes ~1,400 tokens/turn of CLAUDE.md instructions
+  # and no hook at all, which costs context to ASK for savings.
+  if ($installed['rtk']) {
+    Write-UabsStep 'rtk is installed - one command left, and it is yours to run'
+    foreach ($p in $Providers) {
+      $agent = switch ($p) {
+        'Claude' { 'claude' } 'Kimi' { 'kimi' } 'Hermes' { 'hermes' } default { $null }
+      }
+      if ($agent) { Write-Host ("     rtk init -g --agent " + $agent) -ForegroundColor Yellow }
+    }
+    Write-Host '     Grok is unsupported by rtk; Codex has no rtk hook.' -ForegroundColor DarkGray
+    Write-Host '     Verify with `rtk gain` - an agent reports the command it ASKED for,' -ForegroundColor DarkGray
+    Write-Host '     not the one that ran, so its self-report proves nothing.' -ForegroundColor DarkGray
+    Write-Host '     rtk DISCARDS what it filters: no archive, no retrieval.' -ForegroundColor DarkGray
+  }
 }
 
 # ---------- Grok compat cells (always, before any MCP decision) ----------
@@ -1875,7 +1901,7 @@ if (Test-Path -LiteralPath $statePath -PathType Leaf) {
 }
 
   $state = @{
-  version = '8.6.7'
+  version = '8.6.8'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

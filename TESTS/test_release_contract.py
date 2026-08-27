@@ -3098,11 +3098,16 @@ def test_local_model_ops_carries_what_actually_blocks_a_local_run() -> None:
 def test_rtk_catalog_entry_keeps_its_windows_caveat() -> None:
     """The one fact about rtk that a vendor page will never tell you.
 
-    On native Windows the Claude Code / Cursor / Gemini integrations are shell
-    hooks and silently fall back to CLAUDE.md prompt injection -- context spent
-    asking for savings, with no guarantee the agent complies. Only the Hermes
-    integration is a Python plugin and actually rewrites. Drop that caveat and
-    the catalog is recommending a no-op.
+    Re-measured at rtk 0.45.0 on native Windows, 2026-08-27, because the
+    caveat this contract used to enforce had gone stale. The GLOBAL form
+    `rtk init -g --agent claude` registers a real PreToolUse hook (`rtk hook
+    claude`, JSON over stdin) and writes a 990-byte RTK.md. The NON-global
+    `rtk init` prints `No hook installed` and writes 5,140 bytes into CLAUDE.md
+    -- roughly 1,400 tokens every turn, forever, to ASK for savings.
+
+    So the distinction that matters is `-g`, not the provider. A README that
+    documents the non-global form is recommending the expensive no-op, which is
+    what this contract now exists to prevent.
     """
     catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
     entry = [c for c in catalog["components"] if c.get("id") == "rtk"]
@@ -3121,13 +3126,38 @@ def test_rtk_catalog_entry_keeps_its_windows_caveat() -> None:
     assert "curl" in note, "the rtk note no longer pins the curl exclusion"
 
     readme = read(ROOT / "README.md")
+    assert "rtk init -g" in readme, (
+        "the README no longer gives the GLOBAL rtk install form. Without -g, rtk "
+        "installs no hook and writes ~1,400 tokens/turn of CLAUDE.md instructions "
+        "instead -- the README would be documenting the expensive no-op"
+    )
     assert "rtk init --agent hermes" in readme, (
-        "the README no longer gives the only rtk install command worth running here"
+        "the README dropped the Hermes integration, which is its own Python plugin"
     )
     assert "rtk gain" in readme, (
         "the README no longer says how to verify rtk is running -- an agent reports "
         "the command it asked for, not the rewritten one, so self-report proves nothing"
     )
+    # The measured numbers must stay pinned. `HEAD~3` moves with every commit:
+    # the 97% this table once advertised measures 82.5% today, and a claim that
+    # decays silently is worse than no claim.
+    #
+    # Scoped to the LIVE rtk section. The release history further down quotes
+    # the old figure while describing the release that made it, which is a
+    # correct historical record, not a live claim.
+    #
+    # Narrowed to the measurement TABLE. The prose beside it names `HEAD~3`
+    # deliberately, to say why the refs are pinned; banning the string outright
+    # would delete the explanation along with the defect.
+    assert "### rtk:" in readme, "the rtk section heading moved; this contract cannot find what it guards"
+    rtk_section = readme.split("### rtk:", 1)[1].split("\n### ", 1)[0]
+    rtk_rows = [ln for ln in rtk_section.splitlines() if ln.startswith("| `git")]
+    assert rtk_rows, "the rtk measurement table is gone; the savings claim is now unsourced"
+    assert not any("HEAD~" in ln for ln in rtk_rows), (
+        "the rtk table measures against a MOVING git reference again; pin the refs "
+        "or the number rots without anyone noticing (97%% became 82.5%% this way)"
+    )
+    assert "-g" in rtk_section, "the rtk section lost the global-install form"
 
 
 def test_migrator_converges_plugins_additively_and_proves_the_payload() -> None:
