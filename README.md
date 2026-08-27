@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.6.10
+# Ultimate AI Starter Bundle v8.6.11
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -378,58 +378,90 @@ which is why every number here now carries the version it was taken on.
 It is a CLI, so it costs **zero standing tokens** -- the same reason this pack
 prefers Forge's CLI over Forge's MCP.
 
-**Installing it: use the global flag.**
+#### Off git, it is a different tool
 
-```powershell
-rtk init -g --agent claude     # or: cursor, gemini, copilot, kimi, hermes, droid, vibe
-rtk init --agent hermes        # Hermes' own Python plugin
-```
+Every number above is a git command, and so was every number this pack had ever
+shipped for rtk. Its own pitch is loudest about build output, test runners and
+logs, so those were measured too -- same repo, **stdout only**, at 0.46.0:
 
-`-g` registers a real `PreToolUse` hook (`rtk hook claude`, JSON over stdin)
-that rewrites `git status` into `rtk git status` transparently, and writes a
-**990-byte** `RTK.md`. Verified on native Windows at 0.45.0.
+| Command | Raw | Through rtk | Saved | Fidelity |
+|---|---|---|---|---|
+| `rtk err <powershell pack gate>` | 5,746 B | 567 B | **90%** | subset |
+| `rtk test <python suite, RED>` | 5,507 B | ~400 B | **93%** | failure kept |
+| `rtk ls -la` | 811 B | 271 B | **67%** | rewritten |
+| `rtk ls -R` (164-skill tree) | 25,059 B | 19,129 B | **24%** | rewritten |
+| `rtk grep -rn` | 17,588 B | 14,463 B | **18%** | **truncates** |
+| `rtk wc -l` | 5,414 B | 5,003 B | **8%** | rewritten |
+| `rtk read` (191 KB `.py`) | 191,795 B | 191,795 B | **0%** | byte-identical |
+| `rtk json` (5,425-row array) | 1,121,123 B | 144 B | *100%* | **truncates** |
 
-**Do not use the non-global form.** Plain `rtk init` prints `No hook installed`
-and writes a **5,140-byte** instruction block into `CLAUDE.md` instead -- about
-1,400 tokens on *every* turn, forever, paying context to *ask* for savings.
-That is 0.8x the size of this pack's entire AIO preamble, for a worse result.
+**Excluding the rows that truncate rather than compress, the non-git aggregate
+is 7.4% -- against 85.2% on git.** rtk is a git tool that also ships filters.
 
-The installer can fetch the binary for you:
+Two traps in that table. `rtk json` returning 144 bytes from 1.1 MB is not
+compression: it prints **one** array element and `... +5424 more`. And **stdout
+only** matters -- rtk writes a 78-byte `No hook installed` nag to *stderr* on
+every invocation, which inverts the ratio on small outputs. A 4,869-byte result
+measured **-486%** until stderr was excluded.
+
+**`rtk find` is broken at 0.46.0.** It shell-expands the pattern before handing
+off, so `rtk find . -name '*.ps1'` reaches native `find` as
+`-name INSTALL-AIO.ps1 INSTALL-REMOTE.ps1 ...`, which it rejects. **stdout is
+empty and the error stays on stderr** -- an agent reads that as "no files match"
+and is simply wrong; 76 files exist. That is a wrong answer, not lossy
+compression.
+
+**Correction: rtk does not always discard.** Earlier releases of this README and
+the catalog said flatly that rtk keeps no archive. That holds for `rtk git`,
+`rtk ls`, `rtk read`, `rtk json` and `rtk wc` -- verified, no tee file is
+written. It is **false** for `rtk test`, which writes a *complete* tee log (all
+96 result lines) to `%LOCALAPPDATA%\rtk\tee` and prints the path, and only
+partly true of `rtk grep`, which tees 6,482 of 17,588 bytes in per-file chunks.
+
+#### Installing it, and why the hook stays off
 
 ```powershell
 .\INSTALL-AIO.ps1 -WithRtk
 ```
 
-It installs rtk and then **prints** the `rtk init -g --agent <name>` line for
-each provider you have, rather than running it. Registering the hook patches
-your provider's `settings.json` and rewrites every shell command on the
-machine; that is a keystroke this pack leaves to you.
+That installs the binary and then **prints** the `rtk init -g --agent <name>`
+line for each provider you have, rather than running it.
 
-Its rewrite engine is conservative, which is the reassuring part: `curl`,
-`npm test`, `python manage.py migrate` and `gh pr view --json` are all passed
-through untouched, and `rtk read` returns files byte-identical to `cat`
-(verified on a 60-byte env file and a 67 KB script).
+The hook is left off, and as of 8.6.11 that is an evidence decision rather than
+a default. Feeding `rtk hook claude` real payloads shows exactly what `-g` would
+automate:
 
-### Why rtk is not installed by default
+| You type | Hook runs | Worth it? |
+|---|---|---|
+| `git status` | `rtk git status` | **yes** -- the one real win |
+| `ls -la` | `rtk ls -la` | 24-67% |
+| `grep -rn ...` | `rtk grep -rn ...` | 18%, truncates |
+| `cat file` | `rtk read file` | **0%** -- byte-identical, pure overhead |
+| `find . -name '*.ps1'` | `rtk find ...` | **broken** -- silent wrong answer |
+| `npm test`, `curl`, `python x.py` | *not rewritten* | -- |
 
-Installing the binary alone does nothing -- the savings need the hook, and the
-hook rewrites **every shell command on your machine**. Three reasons that stays
-a decision rather than a default:
+So the hook automates the categories that measure worst or return wrong
+answers, and does **not** automate `rtk err` / `rtk test` on a test runner --
+the only strong non-git rows. **Invoke those two deliberately; leave the hook
+off.** It also patches your provider's `settings.json` and rewrites every shell
+command on the machine, which is a keystroke this pack leaves to you.
 
-1. **rtk discards.** On the commands it filters there is no archive and no
-   retrieval: 87% saved means 87% of the bytes are gone. If an agent needs the
-   full diff it cannot get it back. (OMNI keeps a retrievable copy below its
-   64 KB cap; rtk keeps nothing.)
-2. **It patches your `settings.json`** to register the hook.
-3. `installed != enabled` is this pack's whole thesis. A tool that silently
-   rewrites tool output is exactly the kind of thing the user should switch on
-   knowingly.
+If you do want it, use `-g` -- and note Hermes is different: it has its own
+Python plugin, registered with the non-global form.
+
+```powershell
+rtk init -g --agent claude     # or: cursor, gemini, copilot, kimi, droid, vibe
+rtk init --agent hermes        # Hermes' own Python plugin
+```
+
+Everywhere else, plain `rtk init` prints `No hook installed` and
+writes a **5,140-byte** instruction block into `CLAUDE.md` -- about 1,400 tokens
+on *every* turn, forever, paying context to *ask* for savings.
 
 Keep `exclude_commands = ["curl"]` in `%APPDATA%\rtk\config.toml` so exact API
-bodies are never filtered -- 0.45.0 already leaves `curl` alone, and this pins
-it. Telemetry is opt-in and stays off. Verify it is really running with
-`rtk gain` -- an agent cannot tell you, because it reports the command it
-*asked* for, not the one that ran.
+bodies are never filtered. Telemetry is opt-in and stays off. Verify it is
+really running with `rtk gain` -- an agent cannot tell you, because it reports
+the command it *asked* for, not the one that ran.
 
 ### claude-mem is opt-in
 
@@ -627,6 +659,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.11** - 2026-08-27. rtk is a git tool. Every number this pack had shipped for it was a `git` command; measured off git at 0.46.0 it aggregates **7.4%** (excluding rows that truncate rather than compress) against **85.2%** on git. `rtk read` is byte-identical to `cat`, `rtk json` returns 144 bytes from 1.1 MB by printing *one* array element, and **`rtk find` returns EMPTY stdout** for `-name` patterns -- an agent reads "no files match" when 76 match. Two claims corrected: the pack said rtk keeps "no archive and no retrieval", but `rtk test` writes a **complete** tee log and prints its path. The hook now stays off on evidence -- probing `rtk hook claude` shows `-g` rewrites `find` (broken), `cat` (0.0%) and `grep` (truncating) while leaving `npm test`, `curl` and `python x.py` alone, automating the worst categories and skipping the best. Also: the **byte-order marks are gone** from `CATALOG.json` and `OFFLINE-MANIFEST.json` -- Core regenerates that manifest BOM-less, so the two archives shipped one logical file in two encodings.
 
 **v8.6.10** - 2026-08-27. Pinning the corpus was only half of it. v8.6.8 pinned the rtk savings to tag ranges so the corpus could not drift; rtk then shipped **0.46.0** and `git log --stat -20` went from **95% to 0%** -- `--stat` now passes straight through, while plain `git log` still compresses ~86% and the other three rows reproduced **to the byte**. Every number now carries the tool version it was measured on, bound by contract to the version CATALOG declares, so bumping the version without re-measuring fails the build. That contract took two attempts: the first matched "any rtk X.Y.Z in the section" and passed while the stamp was deleted, because the paragraph explaining the regression still named both versions. Also: **six reverse-engineering tools evaluated, none bundled** -- four are desktop GUIs, and GhidraMCP, the only one that puts an agent in the loop, has not been touched since **2025-06-23** while Ghidra shipped through 12.1.3. And **lean-ctx measured**: best supply chain seen here (sigstore-signed checksums), but its headline 98.1% is `-m map`, a *symbol index* that duplicates `codebase-memory`, it saved **0.0%** on the same shell corpus as rtk and OMNI, and it carries **78 MCP tools**.
 

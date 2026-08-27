@@ -2265,6 +2265,9 @@ def main() -> int:
         test_codex_builtin_skills_are_discovered_not_hardcoded,
         # v8.6.9 -- a correct preset over four unloadable saved model configs.
         test_lmstudio_optimizer_writes_the_settings_that_actually_fit,
+        # v8.6.11 -- the same three bytes that broke START-HERE.bat twice.
+        test_no_shipped_json_carries_a_byte_order_mark,
+        test_rtk_is_documented_as_a_git_tool_not_a_general_filter,
     ]
     failed = []
     for fn in tests:
@@ -3576,6 +3579,141 @@ def test_lmstudio_optimizer_writes_the_settings_that_actually_fit() -> None:
     )
     assert "Optimize-LMStudioModelConfig.ps1" in readme, "the README does not mention the optimizer"
 
+
+def test_no_shipped_json_carries_a_byte_order_mark() -> None:
+    """A UTF-8 BOM in a JSON file is invisible until something outside the pack
+    reads it.
+
+    Every reader *inside* the pack opens these with ``utf-8-sig``, so the BOM
+    never surfaced here. It surfaced in the shipped archives: the Core variant
+    rewrites ``OFFLINE-MANIFEST.json`` through ``json.dumps(...).encode('utf-8')``
+    and therefore shipped it BOM-less, while the source tree and the Full
+    variant shipped the same logical file with three extra leading bytes. Same
+    file, two encodings, decided by which archive you downloaded.
+
+    ``json.load(open(path))`` -- the obvious call, and the one any consumer
+    outside this repo writes -- raises on the BOM version and succeeds on the
+    other. These are also the same three bytes that broke ``START-HERE.bat`` in
+    two separate releases.
+
+    Walks MANIFEST.json rather than naming the two known files, so a BOM
+    entering through any *new* JSON fails too. MANIFEST and not ``git
+    ls-files``: this suite is also run from an extracted archive, where there
+    is no git.
+    """
+    bom = b"\xef\xbb\xbf"
+    manifest = json.loads(read(ROOT / "MANIFEST.json"))
+    rows = manifest["files"] if isinstance(manifest, dict) else manifest
+
+    offenders = []
+    checked = 0
+    for row in rows:
+        rel = row["path"] if isinstance(row, dict) else row
+        if not rel.endswith(".json"):
+            continue
+        p = ROOT / rel
+        if not p.is_file():
+            continue
+        checked += 1
+        if p.read_bytes().startswith(bom):
+            offenders.append(rel)
+
+    assert checked > 5, (
+        "only %d JSON files were inspected; MANIFEST.json is not being walked "
+        "and this contract is asserting nothing" % checked
+    )
+    assert not offenders, (
+        "these shipped JSON files start with a UTF-8 BOM, so plain "
+        "json.load(open(path)) fails on them for any reader outside this pack: "
+        + ", ".join(sorted(offenders))
+    )
+
+    # Absence of a BOM is not the same as the file still reading. Prove the
+    # two that actually carried one parse the plain way.
+    for rel in ("BUNDLED-TOOLS/CATALOG.json", "BUNDLED-TOOLS/OFFLINE-MANIFEST.json"):
+        p = ROOT / rel
+        assert p.is_file(), rel + " is gone"
+        with io.open(str(p), encoding="utf-8") as fh:
+            json.load(fh)
+
+    # Both shipped variants must keep agreeing on the encoding of the one file
+    # whose Core bytes are regenerated rather than copied.
+    build = read(ROOT / "TOOLS" / "build_release.py")
+    assert "encode('utf-8')" in build or 'encode("utf-8")' in build, (
+        "build_release no longer states the encoding it writes the Core "
+        "OFFLINE-MANIFEST with; Core and Full can silently diverge again"
+    )
+
+def test_rtk_is_documented_as_a_git_tool_not_a_general_filter() -> None:
+    """Every rtk number this pack shipped before 8.6.11 was a git command.
+
+    Measured off git at 0.46.0 the same tool aggregates **7.4%** against git's
+    85.2%, one subcommand returns a wrong answer, and a blanket claim this pack
+    had been repeating turned out to be false. All three have to survive in the
+    docs, because each one is the kind of fact that a tidy-up deletes:
+
+    1. ``rtk find`` shell-expands the pattern, so ``-name '*.ps1'`` reaches
+       native find as a file list, find rejects it, and **stdout is empty**
+       while the error stays on stderr. An agent reads that as "no matches".
+       That is a wrong answer, not compression, and it is a category the
+       ``-g`` hook rewrites automatically.
+    2. ``rtk json`` on a 5,425-row array returns one element and
+       ``... +5424 more``. 100% "saved" is 100% of the data gone.
+    3. rtk does **not** always discard. ``rtk test`` writes a complete tee log
+       and prints its path. The pack shipped "no archive and no retrieval" as
+       an unqualified property of the tool; it is true only of some
+       subcommands.
+    """
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    entry = next((c for c in catalog["components"] if c.get("id") == "rtk"), None)
+    assert entry, "CATALOG.json no longer lists rtk"
+    note = entry["scope_note"]
+    readme = read(ROOT / "README.md")
+
+    # 1. The broken subcommand, in both places.
+    for where, text in (("catalog note", note), ("README", readme)):
+        assert "rtk find" in text, (
+            "the %s no longer names `rtk find`, which returns EMPTY stdout for "
+            "-name patterns at 0.46.0 and is rewritten automatically by the hook"
+            % where
+        )
+    assert "empty" in note.lower() or "EMPTY" in readme, (
+        "the find breakage is named but its symptom -- empty stdout, error "
+        "hidden on stderr -- is gone, and the symptom is the dangerous part"
+    )
+
+    # 2. Truncation must never be presented as compression.
+    assert "TRUNCATION IS NOT SAVING" in note or "truncat" in note.lower(), (
+        "the catalog note lost the warning that rtk json's 100% is truncation"
+    )
+
+    # 3. The archive claim must stay qualified. This is the assertion that
+    #    matters: the unqualified sentence is what shipped, and it was wrong.
+    lowered = note.lower()
+    if "no archive" in lowered:
+        window = lowered.split("no archive", 1)[1][:400]
+        assert "rtk test" in window or "corrected" in lowered, (
+            "the catalog note claims rtk keeps 'no archive' without qualifying "
+            "it -- `rtk test` writes a COMPLETE tee log and prints the path, so "
+            "the blanket form of this claim is false"
+        )
+    assert "tee" in lowered, (
+        "the catalog note no longer mentions the tee archive at all; the "
+        "correction to the 'rtk discards everything' claim has been lost"
+    )
+
+    # The non-git aggregate has to be stated next to the git one, or the
+    # 85-88% headline reads as the tool's general behaviour.
+    assert "7.4%" in note, "the catalog note lost the measured non-git aggregate"
+    assert "7.4%" in readme, "the README lost the measured non-git aggregate"
+
+    # And the hook decision has to stay attached to its evidence.
+    rtk_section = readme.split("### rtk:", 1)[1].split("\n### ", 1)[0]
+    assert "not rewritten" in rtk_section, (
+        "the README dropped the rewrite table showing that `npm test`, `curl` "
+        "and `python x.py` are NOT rewritten -- which is why the hook does not "
+        "deliver the only strong non-git rows"
+    )
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -1,3 +1,33 @@
+## 8.6.11
+
+- **164 canonical skills total**, unchanged. rtk re-measured off the git corpus,
+  a false claim corrected in two documents, and two JSON files stopped carrying
+  a byte-order mark.
+- **rtk is a git tool.** Every number this pack had shipped for it -- 87%, 88%,
+  25%, 0% -- was a `git` command. Measured off git at 0.46.0 it aggregates
+  **7.4%**, excluding rows that truncate rather than compress, against **85.2%**
+  on git. `rtk read` is byte-identical to `cat` (0.0%), `rtk json` returns 144
+  bytes from 1.1 MB by printing *one* array element and `... +5424 more`, and
+  the only strong rows are `rtk err` / `rtk test` on a test runner (90%, with
+  the FAIL line intact).
+- **`rtk find` returns a wrong answer at 0.46.0.** It shell-expands the pattern,
+  native find rejects the result, **stdout is empty and the error hides on
+  stderr** -- an agent reads "no files match" when 76 files match.
+- **Correction: rtk does not always discard.** The pack shipped "no archive and
+  no retrieval" in the README and the catalog. True of `rtk git`/`ls`/`read`/
+  `json`/`wc`; **false** of `rtk test`, which writes a complete tee log and
+  prints its path; partly true of `rtk grep`. The blanket form was wrong.
+- **The hook stays off on evidence, not caution.** Probing `rtk hook claude`
+  directly shows `-g` rewrites `find` (broken), `cat` (0.0%) and `grep`
+  (truncating), while `npm test`, `curl` and `python x.py` are **not** rewritten
+  -- so it automates the worst categories and skips the best ones.
+- **Byte-order marks gone.** `CATALOG.json` and `OFFLINE-MANIFEST.json` each
+  began `EF BB BF`. Invisible inside the pack (every reader uses `utf-8-sig`),
+  visible in what shipped: `build_release.py` regenerates the Core
+  `OFFLINE-MANIFEST` BOM-less, so Core and Full carried the same logical file in
+  two encodings. The new contract walks all 148 JSON files in `MANIFEST.json`.
+- 97 contracts, green; both new ones falsified before shipping.
+
 ## 8.6.10
 
 - **164 canonical skills total**, unchanged. A shipped rtk number that stopped

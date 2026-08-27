@@ -1,8 +1,8 @@
 {
   "pack": "Ultimate AI Starter Bundle",
-  "version": "8.6.10",
-  "generated": "2026-08-27T10:00:49Z",
-  "release_tag": "v8.6.10",
+  "version": "8.6.11",
+  "generated": "2026-08-27T15:47:00Z",
+  "release_tag": "v8.6.11",
   "canonical_skills": 164,
   "provider_trees": 5,
   "registry_entries": 164,
@@ -18,6 +18,6 @@
     "TESTS/Test-McpProfiles.ps1",
     "TOOLS/mcp_handshake.py --selftest"
   ],
-  "runtime_status": "Windows PowerShell 5.1 source gate and isolated idempotency pass; live V8 AIO completed for Claude, Codex, Grok, Kimi, and Hermes; official/native plugins refreshed; codebase-memory updated after exact-process lock cleanup; all 15 core MCP initialize plus tools/list handshakes passed.",
+  "runtime_status": "Windows PowerShell 5.1 source gate and isolated idempotency pass; live V8 AIO completed for Claude, Codex, Grok, Kimi, and Hermes; installed-state doctor PASS at 8.6.11; official/native plugins refreshed; all 15 core MCP initialize plus tools/list handshakes passed. rtk 0.46.0 re-measured off the git corpus: 7.4% aggregate excluding truncating rows, against 85.2% on git; rtk find returns EMPTY stdout for -name patterns and the hook rewrite table was probed directly, so the hook stays unwired on evidence.",
   "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

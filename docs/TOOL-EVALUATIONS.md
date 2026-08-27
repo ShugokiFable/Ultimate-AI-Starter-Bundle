@@ -291,6 +291,106 @@ Neither rtk nor OMNI has anything like it. Its `gain` command also labels itself
 Not bundled: the headline win duplicates `codebase-memory`, the MCP surface is
 78 tools, and measured compression on this corpus was zero.
 
+## 2026-08-27 — rtk off the git corpus
+
+Every rtk figure this pack had shipped — 87%, 88%, 25%, 0%, and the retired
+97% — was a **git** command. rtk's own pitch is loudest about build output,
+test runners and logs. Those had never been measured. Measured now, at
+**0.46.0**, same repo, **stdout only**:
+
+| Command | Native | rtk | Saved | Fidelity |
+|---|---|---|---|---|
+| `rtk err <powershell pack gate>` | 5,746 B | 567 B | **90.1%** | SUBSET |
+| `rtk test <python suite, RED>` | 5,507 B | ~400 B | **93%** | FAIL line kept |
+| `rtk ls -la` | 811 B | 271 B | 66.6% | rewritten |
+| `rtk ls -R` (164 skills) | 25,059 B | 19,129 B | 23.7% | rewritten |
+| `rtk grep -rn` | 17,588 B | 14,463 B | 17.8% | **TRUNCATED** |
+| `rtk wc -l` | 5,414 B | 5,003 B | 7.6% | rewritten |
+| `rtk read` (191 KB `.py`) | 191,795 B | 191,795 B | **0.0%** | IDENTICAL |
+| `rtk read` (119 KB `.ps1`) | 119,226 B | 119,226 B | **0.0%** | IDENTICAL |
+| `rtk proxy python -m pip list` | 4,766 B | 4,766 B | 0.0% | IDENTICAL |
+| `rtk json` (5,425-row array) | 1,121,123 B | 144 B | *100%* | **TRUNCATED** |
+| `rtk json` (nested object) | 34,442 B | 4,050 B | *88.2%* | **TRUNCATED** |
+| `rtk find . -name '*.ps1'` | 4,869 B | **0 B** | — | **BROKEN** |
+
+**Excluding rows that truncate rather than compress: 7.4%.** The git corpus
+measures 85.2% on the same tool and the same day. rtk is a git tool that also
+ships filters.
+
+### Three things the first pass got wrong
+
+**stderr contaminated every row.** rtk writes a 78-byte
+`[rtk] /!\ No hook installed` nag to stderr on *every* invocation. Captured
+combined, it inverts small rows: the `find` row measured **-486%** before
+stdout was isolated. Anyone benchmarking this tool with `2>&1` is measuring the
+nag.
+
+**`rtk read` is not a 0.1% loss, it is byte-identical.** The apparent +78 bytes
+was the nag. Redirected to a file, `rtk read` reproduces `cat` exactly — which
+confirms the catalog's existing claim and also means it saves *nothing*.
+
+**100% is not always a saving.** `rtk json` on `MANIFEST.json` returns 144 bytes
+from 1.1 MB by printing one array element and `... +5424 more`. That is a
+sample. The same trap as lean-ctx's `-m map`: a different operation wearing a
+compression ratio.
+
+### `rtk find` returns a wrong answer
+
+```
+$ rtk find . -name '*.ps1'          # stdout: 0 bytes
+/usr/bin/find: paths must precede expression: `INSTALL-REMOTE.ps1'
+```
+
+rtk shell-expands the pattern before handing off, so `-name '*.ps1'` arrives at
+native `find` as a file list. find rejects it, **stdout is empty, and the error
+stays on stderr.** An agent reads empty stdout as "no files match". 76 files
+match. This is not lossy compression, it is a wrong answer — and it is the same
+class as the `git log --stat` collapse: a subcommand that silently stopped
+working across a version bump.
+
+### Correction: rtk does not always discard
+
+This pack shipped, in both the README and the catalog, that rtk keeps
+**"no archive and no retrieval"**. That was measured on `git` and generalised.
+Verified per subcommand by watching `%LOCALAPPDATA%\rtk\tee`:
+
+| Subcommand | Tee written? |
+|---|---|
+| `rtk test` | **yes — complete** (all 96 result lines, 5,409 B) |
+| `rtk grep` | partial (6,482 of 17,588 B, per-file chunks) |
+| `rtk git`, `rtk ls`, `rtk read`, `rtk json`, `rtk wc` | no |
+
+So the blanket claim was false for the one subcommand where an archive matters
+most — a test runner, where you filter to the failure and may then want the
+full log. `rtk test` prints the path to it. Both documents now say this.
+
+### The hook decision, on evidence
+
+`rtk hook claude` was fed real payloads to see what `-g` would actually
+automate:
+
+| Typed | Rewritten to | Measured |
+|---|---|---|
+| `git status` | `rtk git status` | 85.2% — the real win |
+| `ls -la` | `rtk ls -la` | 24–67% |
+| `grep -rn foo .` | `rtk grep -rn foo .` | 17.8%, truncates |
+| `cat README.md` | `rtk read README.md` | **0.0%** — pure overhead |
+| `find . -name '*.ps1'` | `rtk find ...` | **broken** |
+| `npm test` | *not rewritten* | — |
+| `curl https://…` | *not rewritten* | — |
+| `python TESTS/…py` | *not rewritten* | — |
+
+The hook automates the categories that measure worst or return wrong answers,
+and does **not** automate the two that measure best (`rtk err` / `rtk test` on a
+test runner). **Verdict: keep the binary, leave the hook off, invoke `rtk git`,
+`rtk err` and `rtk test` deliberately.** That was already the pack's default; it
+is now a measured decision rather than a cautious one.
+
+Harness: `TESTS/test_release_contract.py::test_rtk_is_documented_as_a_git_tool_not_a_general_filter`
+binds the find breakage, the truncation warning, the archive correction and the
+7.4% aggregate to the shipped docs.
+
+
 ## How to add a row
 
 Run the candidate through the four gates in order and write down where it
