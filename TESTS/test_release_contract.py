@@ -2276,6 +2276,7 @@ def main() -> int:
         test_manifest_covers_every_tracked_file,
         test_a_running_mcp_binary_cannot_fail_the_whole_install,
         test_an_unenabled_profile_is_never_reported_as_a_missing_tool,
+        test_every_canonical_skill_reached_every_provider_tree,
     ]
     failed = []
     for fn in tests:
@@ -4274,6 +4275,73 @@ def test_an_unenabled_profile_is_never_reported_as_a_missing_tool() -> None:
     assert "mcp-profiles.json" in aio, (
         "the installer prints profile guidance without reading mcp-profiles.json, "
         "so the message cannot reflect what is actually enabled"
+    )
+
+def test_every_canonical_skill_reached_every_provider_tree() -> None:
+    """Editing a canonical skill and shipping are two different acts.
+
+    ``_CANONICAL-SKILLS`` is the authoring tree. ``INSTALL-AIO`` copies from
+    ``1-TAILORED-PROVIDER-TREES/<Provider>/COPY-TO-SKILLS-DIRECTORY/skills``,
+    which ``TOOLS/fanout_providers.py`` generates. Forget the fanout and the
+    edit exists only where nothing reads it.
+
+    Measured 2026-08-27, on this very repo: two skills were corrected so an
+    agent would stop telling users to *install* an already-installed houseCARL.
+    The full gate ran green -- **104 contracts** -- the installer reported
+    "skills installed" for all five providers, and every provider copy was
+    still yesterday's file. Nothing failed. Nothing shipped.
+
+    Two contracts already touched this and neither would have caught it: one
+    byte-compares only a short list of "v7.8 reliability skills", the other
+    compares only the *set of names* in each tree, never their contents. The
+    two edited skills were in neither list.
+
+    Normalisation, both parts load-bearing:
+
+    * the nested ``provider:`` metadata line is rewritten per target by design
+      and is the only intended per-provider tailoring;
+    * line endings, because ``unrestraint-packs`` carries mixed EOLs in
+      canonical that the fanout writes out as CRLF. That is cosmetic and
+      predates this check; failing on it would train people to ignore the
+      contract.
+
+    Everything else must match, for all 164 skills across all five trees.
+    """
+    providers = ["Claude", "Codex", "Grok", "Kimi", "Hermes"]
+    tag = re.compile(r"(?m)^\s*provider:\s*\S+\s*$\n?")
+
+    def norm(raw: bytes) -> str:
+        text = raw.decode("utf-8").replace("\r\n", "\n")
+        return tag.sub("", text)
+
+    canon = sorted(CANON.glob("*/SKILL.md"))
+    assert len(canon) >= 100, "canonical tree looks empty (%d skills)" % len(canon)
+
+    drifted = []
+    missing = []
+    for p in canon:
+        name = p.parent.name
+        expected = norm(p.read_bytes())
+        for prov in providers:
+            q = (ROOT / "1-TAILORED-PROVIDER-TREES" / prov /
+                 "COPY-TO-SKILLS-DIRECTORY" / "skills" / name / "SKILL.md")
+            if not q.is_file():
+                missing.append("%s/%s" % (prov, name))
+                continue
+            if norm(q.read_bytes()) != expected:
+                drifted.append("%s/%s" % (prov, name))
+
+    assert not missing, (
+        "%d canonical skill(s) never reached a provider tree: %s -- run "
+        "`python TOOLS/fanout_providers.py _CANONICAL-SKILLS .`"
+        % (len(missing), ", ".join(sorted(missing)[:5]))
+    )
+    assert not drifted, (
+        "%d provider copy(ies) differ from canonical in content: %s. Editing "
+        "_CANONICAL-SKILLS does not ship anything on its own -- INSTALL-AIO "
+        "copies from 1-TAILORED-PROVIDER-TREES. Run "
+        "`python TOOLS/fanout_providers.py _CANONICAL-SKILLS .`"
+        % (len(drifted), ", ".join(sorted(drifted)[:5]))
     )
 
 if __name__ == "__main__":

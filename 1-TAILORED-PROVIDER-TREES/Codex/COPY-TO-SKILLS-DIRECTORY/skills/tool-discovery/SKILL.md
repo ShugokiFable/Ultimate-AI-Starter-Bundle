@@ -16,9 +16,39 @@ Never hardcode `C:\Users\<name>`, `S:\Apps`, or `Z:\Backup` as authority. Those 
 3. Well-known defaults under `%USERPROFILE%` and `%LOCALAPPDATA%`.
 4. `PATH` / `where.exe` / `Get-Command`.
 5. User-supplied absolute path from the current conversation.
-6. If still missing → **recommend install** (do not invent a fake install).
+6. **If the binary EXISTS but its MCP tools are not callable, stop — this is
+   not an install problem.** Most MCP servers in this pack are registered per
+   project on purpose (houseCARL alone costs ~41,768 tokens *every turn*), so
+   "installed" and "enabled here" are different states. Recommending an install
+   here tells the user to install something they already have.
+7. Only if the binary is genuinely absent from disk → **recommend install**
+   (do not invent a fake install).
 
-## Missing-tool response template
+## Two different failures, two different answers
+
+| What you see | State | Response template |
+|---|---|---|
+| MCP tool search returns 0 results; binary present on disk | installed, **not enabled for this project** | NOT ENABLED (below) |
+| Binary absent from every path in the resolution order | not installed | TOOL MISSING (below) |
+
+### NOT ENABLED response template
+
+```text
+TOOL PRESENT BUT NOT ENABLED HERE: <name>
+WHY: this pack registers most MCP servers per project, not machine-wide
+ENABLE:  TOOLS\Set-McpProfile.ps1 -Auto -Path "<project>"
+   or:   TOOLS\Set-McpProfile.ps1 -Enable <profile> -Path "<project>"
+SEE:     TOOLS\Set-McpProfile.ps1 -Detect -Path "<project>"
+THEN:    restart the AI app - a running session does not pick up a new MCP server
+```
+
+Profiles worth naming: `game-skyrim-load-order` (houseCARL), `game-skyrim`
+(Skyrim Forge), `code-intel` (codebase-memory + serena), `web` (Playwright,
+Chrome DevTools). `-List` marks each server `REGISTERED for the project above`
+or `ready, but NOT registered`; the second one is always one command away, on
+Claude, Codex, Grok, Kimi and Hermes alike.
+
+### Missing-tool response template
 
 ```text
 TOOL MISSING: <name>

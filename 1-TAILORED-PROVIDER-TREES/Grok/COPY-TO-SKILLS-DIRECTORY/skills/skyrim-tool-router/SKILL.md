@@ -76,7 +76,40 @@ Optional process overlays (not Skyrim-specific): `using-superpowers`, `systemati
 - Prefer live tools in this order when multiple apply: **evidence from installed LO (houseCARL) → typed Forge jobs → Spooky CLI on owned trees → manual specialist skills**.
 - Try `skyrim-forge` for supported inspection; the bundle installs Forge, so it is normally present.
 - Never load every Skyrim skill into one session.
-- If a tool is missing, load `tool-discovery` and **recommend install** — do not fake results.
+- If a tool is missing, first decide **which kind of missing**, because the two
+  need opposite answers and only one of them is an install:
+
+  | Symptom | Meaning | What to tell the user |
+  |---|---|---|
+  | MCP tool search returns **0 results**, or a `housecarl_*` / `skyrim_forge_*` tool is not callable | Installed, but its MCP is **not enabled for this project**. This pack registers most MCP servers per project on purpose — houseCARL alone costs ~41,768 tokens *every turn* | Give them the exact command (below). **Do not tell them to install it.** |
+  | The binary/CLI itself is absent from disk | Genuinely not installed | Load `tool-discovery` and **recommend install** |
+
+  Never fake results for either one.
+
+### houseCARL or Forge tools not there? Say this
+
+Do not stop at "MCP is disconnected". Name the fix, with the project path filled
+in. Works for Claude, Codex, Grok, Kimi and Hermes alike:
+
+```powershell
+# see which profiles this project qualifies for
+TOOLS\Set-McpProfile.ps1 -Detect -Path "<project>"
+
+# enable everything it qualifies for
+TOOLS\Set-McpProfile.ps1 -Auto -Path "<project>"
+
+# or name one explicitly
+TOOLS\Set-McpProfile.ps1 -Enable game-skyrim-load-order -Path "<project>"   # houseCARL
+TOOLS\Set-McpProfile.ps1 -Enable game-skyrim            -Path "<project>"   # Skyrim Forge
+```
+
+Then **restart that AI app** — a running session does not pick up a newly
+registered MCP server.
+
+`-List` shows what is enabled where, and distinguishes `REGISTERED for the
+project above` from `ready, but NOT registered`. If a profile reads
+*ready but not registered*, the tool is installed and one command away; that is
+never an install problem.
 
 ## Route report
 
