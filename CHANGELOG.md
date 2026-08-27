@@ -10,9 +10,12 @@
   bytes from 1.1 MB by printing *one* array element and `... +5424 more`, and
   the only strong rows are `rtk err` / `rtk test` on a test runner (90%, with
   the FAIL line intact).
-- **`rtk find` returns a wrong answer at 0.46.0.** It shell-expands the pattern,
-  native find rejects the result, **stdout is empty and the error hides on
-  stderr** -- an agent reads "no files match" when 76 files match.
+- **`rtk find` breaks on compound predicates at 0.46.0.** A simple `-name` works
+  (709 B to 565 B, exit 0); `-not -path` returns **0 bytes, exit 1**. Upstream
+  knows: ten-plus open issues against `rtk find` alone, four of them duplicate
+  reports of this, plus **#3410** -- the `find` rewrite is unconditional, so
+  `find ... -delete`/`-exec` is captured and refused, silently doing nothing and
+  breaking `&&` chains. It also reformats paths rather than listing them.
 - **Correction: rtk does not always discard.** The pack shipped "no archive and
   no retrieval" in the README and the catalog. True of `rtk git`/`ls`/`read`/
   `json`/`wc`; **false** of `rtk test`, which writes a complete tee log and

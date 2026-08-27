@@ -3648,15 +3648,19 @@ def test_rtk_is_documented_as_a_git_tool_not_a_general_filter() -> None:
     """Every rtk number this pack shipped before 8.6.11 was a git command.
 
     Measured off git at 0.46.0 the same tool aggregates **7.4%** against git's
-    85.2%, one subcommand returns a wrong answer, and a blanket claim this pack
+    85.2%, one subcommand breaks outright, and a blanket claim this pack
     had been repeating turned out to be false. All three have to survive in the
     docs, because each one is the kind of fact that a tidy-up deletes:
 
-    1. ``rtk find`` shell-expands the pattern, so ``-name '*.ps1'`` reaches
-       native find as a file list, find rejects it, and **stdout is empty**
-       while the error stays on stderr. An agent reads that as "no matches".
-       That is a wrong answer, not compression, and it is a category the
-       ``-g`` hook rewrites automatically.
+    1. ``rtk find`` breaks on **compound predicates**. A simple ``-name`` works
+       (709 -> 565 B, exit 0); adding ``-not -path`` returns **0 bytes, exit
+       1**. The first pass here diagnosed this as shell-expansion of the
+       pattern and was wrong -- caught before the release was tagged, which is
+       why the corrected form is pinned rather than the symptom. Upstream has
+       ten-plus open issues against ``rtk find`` alone, including #3410, where
+       the unconditional rewrite captures ``find ... -delete``/``-exec`` and
+       refuses it, breaking ``&&`` chains. The ``-g`` hook rewrites ``find``
+       automatically.
     2. ``rtk json`` on a 5,425-row array returns one element and
        ``... +5424 more``. 100% "saved" is 100% of the data gone.
     3. rtk does **not** always discard. ``rtk test`` writes a complete tee log
@@ -3677,9 +3681,20 @@ def test_rtk_is_documented_as_a_git_tool_not_a_general_filter() -> None:
             "-name patterns at 0.46.0 and is rewritten automatically by the hook"
             % where
         )
-    assert "empty" in note.lower() or "EMPTY" in readme, (
-        "the find breakage is named but its symptom -- empty stdout, error "
-        "hidden on stderr -- is gone, and the symptom is the dangerous part"
+    # Pin the CORRECTED diagnosis, not the symptom. The first pass blamed
+    # shell-expansion; a simple `-name` works fine and the compound predicate
+    # is what fails. If "compound" disappears, the wrong story is back.
+    for where, text in (("catalog note", note), ("README", readme)):
+        assert "compound" in text.lower(), (
+            "the %s no longer says COMPOUND PREDICATE is what breaks `rtk find`. "
+            "A simple -name works; an earlier draft of this pack blamed "
+            "shell-expansion of the pattern and was wrong" % where
+        )
+    assert "3410" in note or "3410" in readme, (
+        "the reference to upstream rtk-ai/rtk#3410 is gone -- the unconditional "
+        "`find` rewrite that captures `-delete`/`-exec` and breaks && chains is "
+        "the most serious thing known about this subcommand, and it is their "
+        "report rather than anything measured here"
     )
 
     # 2. Truncation must never be presented as compression.

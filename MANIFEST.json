@@ -19531,8 +19531,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 36579,
-  "sha256": "92c927400acb805a9ea01806cbb8b88f26a411a81eddb59e4ebf2f97486854cc"
+  "size": 37481,
+  "sha256": "9a29fe5380a8fb663f8923b2e24d3c8cc2e4bd719aaf3f2e3561f0abe1ff10d5"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -22466,8 +22466,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 120870,
-  "sha256": "a8b213e575cb7b4f887ef33cdd7782135d8d230d48666bf033be3138758c47c4"
+  "size": 121118,
+  "sha256": "814289eefd5d5e5f0d4221b47520455bb2ea8aa9b68e1306de1ea35e83514c47"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -22591,8 +22591,8 @@
  },
  {
   "path": "README.md",
-  "size": 47511,
-  "sha256": "60aa20429b963ba67652ed9aa19ac8d550dd67fed08ee0a7427767c0fb7e5f50"
+  "size": 48213,
+  "sha256": "412d7af3379b278386f78ceb359953ca863cae563fb1108278f6bce74f156725"
  },
  {
   "path": "SECURITY.md",
@@ -22801,8 +22801,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 195560,
-  "sha256": "faf319f679b0bb5118a992c4314744872f113ae27632e103eed91b59b404f46a"
+  "size": 196553,
+  "sha256": "f4166607bced7d4cfdbe8434bfd55ffe9945eb2ff5ea57aba1bd4b1abd29a93e"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -26646,8 +26646,8 @@
  },
  {
   "path": "docs/TOOL-EVALUATIONS.md",
-  "size": 19946,
-  "sha256": "3845f2d04d0859145e8c5273ba7451eaa7e59f87aed5cbfd5f37b655671e9cd4"
+  "size": 21021,
+  "sha256": "2880f1d28586b38d764d4659ab5f459ee4c3c58085a4a08120802ce7853539d8"
  },
  {
   "path": "docs/history/FINAL-AUDIT-v5.0.0.md",
@@ -27083,6 +27083,11 @@
   "path": "docs/history/V8.6.10-CHANGELOG.md",
   "size": 5631,
   "sha256": "29ea33d7665c6934d5859d0e2fddebea39b599b69fcf926afbb5ad460c11a715"
+ },
+ {
+  "path": "docs/history/V8.6.11-CHANGELOG.md",
+  "size": 6587,
+  "sha256": "08527e6c1d725239f7dc9b92cfbbdf98e246ca27d38f64eed5209f33e738ce6d"
  },
  {
   "path": "docs/history/V8.6.2-CHANGELOG.md",

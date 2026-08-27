@@ -311,7 +311,8 @@ test runners and logs. Those had never been measured. Measured now, at
 | `rtk proxy python -m pip list` | 4,766 B | 4,766 B | 0.0% | IDENTICAL |
 | `rtk json` (5,425-row array) | 1,121,123 B | 144 B | *100%* | **TRUNCATED** |
 | `rtk json` (nested object) | 34,442 B | 4,050 B | *88.2%* | **TRUNCATED** |
-| `rtk find . -name '*.ps1'` | 4,869 B | **0 B** | — | **BROKEN** |
+| `rtk find` **compound** (`-not -path`) | 4,869 B | **0 B** | — | **exit 1** |
+| `rtk find` simple (`-name`) | 709 B | 565 B | 20.3% | paths stripped |
 
 **Excluding rows that truncate rather than compress: 7.4%.** The git corpus
 measures 85.2% on the same tool and the same day. rtk is a git tool that also
@@ -334,19 +335,40 @@ from 1.1 MB by printing one array element and `... +5424 more`. That is a
 sample. The same trap as lean-ctx's `-m map`: a different operation wearing a
 compression ratio.
 
-### `rtk find` returns a wrong answer
+### `rtk find` breaks on compound predicates
+
+The first measurement here used `find . -name '*.ps1' -not -path './.git/*'`
+and concluded rtk shell-expands the pattern. **That diagnosis was wrong.** A
+simple `-name` works:
+
+| Form | Result |
+|---|---|
+| `rtk find TOOLS -name '*.ps1'` | 709 B → 565 B, 24 files, **exit 0** |
+| `rtk find . -name '*.ps1' -not -path './.git/*'` | **0 B, exit 1** |
 
 ```
-$ rtk find . -name '*.ps1'          # stdout: 0 bytes
 /usr/bin/find: paths must precede expression: `INSTALL-REMOTE.ps1'
 ```
 
-rtk shell-expands the pattern before handing off, so `-name '*.ps1'` arrives at
-native `find` as a file list. find rejects it, **stdout is empty, and the error
-stays on stderr.** An agent reads empty stdout as "no files match". 76 files
-match. This is not lossy compression, it is a wrong answer — and it is the same
-class as the `git log --stat` collapse: a subcommand that silently stopped
-working across a version bump.
+It is the **compound predicate** that fails, and this is upstream-known and
+unfixed. `rtk-ai/rtk` has ten-plus open issues against `rtk find` alone:
+
+| Issue | Report |
+|---|---|
+| #2469, #2847, #3256, #3458 | compound predicates unsupported (four near-duplicates, all open) |
+| #3656 | silently hides everything `.gitignore` covers |
+| #3291 | silently returns no results for hidden files, exit 0 |
+| #2589 | stops working after `git init` |
+| **#3410** | **the `find` rewrite is unconditional, so `find … -delete` / `-exec` is captured and refused — silently does nothing and breaks `&&` chains** |
+
+#3410 is the serious one and it is *their* report, not measured here — this
+pack does not run `-delete` to find out. Four duplicate reports of the same
+limitation sitting open also says something about triage.
+
+Separately, `rtk find` **reformats paths**. Single-directory mode strips the
+prefix (`Build-Release.ps1`, not `TOOLS/Build-Release.ps1`); across directories
+it regroups under a `10F 2D:` header. Real saving, small, but the output is not
+a path list you can pipe into anything.
 
 ### Correction: rtk does not always discard
 
@@ -375,12 +397,12 @@ automate:
 | `ls -la` | `rtk ls -la` | 24–67% |
 | `grep -rn foo .` | `rtk grep -rn foo .` | 17.8%, truncates |
 | `cat README.md` | `rtk read README.md` | **0.0%** — pure overhead |
-| `find . -name '*.ps1'` | `rtk find ...` | **broken** |
+| `find . -name '*.ps1' -not ...` | `rtk find ...` | **breaks** (compound) |
 | `npm test` | *not rewritten* | — |
 | `curl https://…` | *not rewritten* | — |
 | `python TESTS/…py` | *not rewritten* | — |
 
-The hook automates the categories that measure worst or return wrong answers,
+The hook automates the categories that measure worst or break outright,
 and does **not** automate the two that measure best (`rtk err` / `rtk test` on a
 test runner). **Verdict: keep the binary, leave the hook off, invoke `rtk git`,
 `rtk err` and `rtk test` deliberately.** That was already the pack's default; it

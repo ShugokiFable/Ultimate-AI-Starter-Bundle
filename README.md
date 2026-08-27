@@ -404,12 +404,27 @@ only** matters -- rtk writes a 78-byte `No hook installed` nag to *stderr* on
 every invocation, which inverts the ratio on small outputs. A 4,869-byte result
 measured **-486%** until stderr was excluded.
 
-**`rtk find` is broken at 0.46.0.** It shell-expands the pattern before handing
-off, so `rtk find . -name '*.ps1'` reaches native `find` as
-`-name INSTALL-AIO.ps1 INSTALL-REMOTE.ps1 ...`, which it rejects. **stdout is
-empty and the error stays on stderr** -- an agent reads that as "no files match"
-and is simply wrong; 76 files exist. That is a wrong answer, not lossy
-compression.
+**`rtk find` breaks on compound predicates, and upstream knows.** A simple
+`rtk find TOOLS -name '*.ps1'` is fine -- 709 B to 565 B, 24 files, exit 0. Add
+a compound predicate and it collapses:
+
+```
+$ rtk find . -name '*.ps1' -not -path './.git/*'     # stdout: 0 bytes, exit 1
+/usr/bin/find: paths must precede expression: `INSTALL-REMOTE.ps1'
+```
+
+`rtk-ai/rtk` carries **ten-plus open issues against `rtk find` alone**,
+including four near-duplicate reports of exactly this (#2469, #2847, #3256,
+#3458), silent omission of gitignored (#3656) and hidden (#3291) files, and
+**#3410** -- the rewrite rule for `find` is *unconditional*, so
+`find ... -delete` / `-exec` is captured and refused, **silently doing nothing
+and breaking `&&` chains**. That last one is upstream's report, not measured
+here.
+
+`rtk find` also **reformats paths**: single-directory mode drops the directory
+prefix (`Build-Release.ps1`, not `TOOLS/Build-Release.ps1`), and across
+directories it regroups under a `10F 2D:` header. The saving is real and small;
+the output is not a path list you can pipe.
 
 **Correction: rtk does not always discard.** Earlier releases of this README and
 the catalog said flatly that rtk keeps no archive. That holds for `rtk git`,
@@ -437,7 +452,7 @@ automate:
 | `ls -la` | `rtk ls -la` | 24-67% |
 | `grep -rn ...` | `rtk grep -rn ...` | 18%, truncates |
 | `cat file` | `rtk read file` | **0%** -- byte-identical, pure overhead |
-| `find . -name '*.ps1'` | `rtk find ...` | **broken** -- silent wrong answer |
+| `find . -name '*.ps1' -not ...` | `rtk find ...` | **breaks** on compound predicates |
 | `npm test`, `curl`, `python x.py` | *not rewritten* | -- |
 
 So the hook automates the categories that measure worst or return wrong
