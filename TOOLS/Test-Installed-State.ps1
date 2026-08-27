@@ -101,6 +101,19 @@ if(-not $SkipSkills){
       }
     }
 
+    # Codex additionally owns a handful of skills itself (<CodexHome>\skills\
+    # .system). A canonical skill sharing one of those names is removed from the
+    # Codex tree by the installer for the same reason a plugin-owned copy is, so
+    # it is accounted the same way -- separately, because "Codex ships this
+    # itself" and "a plugin ships this" are different facts, and a reader who
+    # cannot tell them apart cannot act on either.
+    $builtinDeduped=New-Object System.Collections.Generic.HashSet[string] ([StringComparer]::OrdinalIgnoreCase)
+    if($providerState -and $providerState.Value.codex_builtin_deduped){
+      foreach($name in @($providerState.Value.codex_builtin_deduped)){
+        if($name){[void]$builtinDeduped.Add([string]$name)}
+      }
+    }
+
     $expectedSkills=@(Get-ChildItem -LiteralPath $sourceSkills -Directory -ErrorAction Stop | Where-Object {
       Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') -PathType Leaf
     })
@@ -108,6 +121,7 @@ if(-not $SkipSkills){
 
     $verified=0
     $nativeOwned=0
+    $builtinOwned=0
     foreach($skillDir in $expectedSkills){
       $skill=$skillDir.Name
       $src=Join-Path $skillDir.FullName 'SKILL.md'
@@ -123,9 +137,15 @@ if(-not $SkipSkills){
         $nativeOwned++
         continue
       }
+      if($builtinDeduped.Contains($skill)){
+        $builtinOwned++
+        continue
+      }
       Err "$provider missing bundled skill with no native-plugin ownership record: $skill"
     }
-    Write-UabsOk ("$provider bundled skills accounted: $verified exact file(s), $nativeOwned native-plugin-owned, $($expectedSkills.Count) expected.")
+    $ownedNote=''
+    if($builtinOwned){ $ownedNote=", $builtinOwned owned by Codex itself" }
+    Write-UabsOk ("$provider bundled skills accounted: $verified exact file(s), $nativeOwned native-plugin-owned$ownedNote, $($expectedSkills.Count) expected.")
 
     # Codex renders its skills index into a FIXED block of roughly 22.3 KB and
     # splits it across every entry. Each entry costs its name plus its file path
@@ -254,8 +274,8 @@ if(-not $SkipSkills){
       if($dupes.Count){
         $shown=[string]::Join(', ',@($dupes|Select-Object -First 6))
         if($dupes.Count -gt 6){ $shown=$shown+' ...' }
-        Warn "Codex indexes $($dupes.Count) skill(s) twice -- this pack copied them and an enabled plugin also serves its own: $shown"
-        Warn "  Each duplicate costs an index entry and narrows every other description. Re-run the installer; it dedupes copies a native plugin owns."
+        Warn "Codex indexes $($dupes.Count) skill(s) twice -- this pack copied them and an enabled plugin, or Codex's own .system set, also serves its own: $shown"
+        Warn "  Each duplicate costs an index entry and narrows every other description. Re-run the installer; it dedupes copies a native plugin OR Codex itself owns."
         Warn "  If duplicates survive that, Codex's plugin inventory is unreadable. Repair it with: codex plugin marketplace upgrade <name>"
       }
       # Only two things here are actionable, and only those two warn: the

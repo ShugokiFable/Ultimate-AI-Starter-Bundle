@@ -1,3 +1,36 @@
+## 8.6.7
+
+- **164 canonical skills total**, unchanged. A defect v8.6.6 introduced, and
+  the general fix for its whole class.
+- **v8.6.6 adopted `skill-creator`; Codex already ships one.** Codex carries
+  its own skills in `<CodexHome>\skills\.system`, so on Codex alone the pack's
+  copy became a SECOND index entry for a capability that was already there. The
+  final doctor caught it on the first real install: `Codex indexes 1 skill(s)
+  twice`. Measured cost: **184 entries at 48 visible description chars with the
+  duplicate, 183 at 50 without** -- so the collision was quietly taxing every
+  other skill's description.
+- **Fixed by discovery, not by name.** `Get-UabsCodexBuiltinSkillNames` reads
+  `.system` and treats a directory as an owner only when it actually carries a
+  `SKILL.md`. Hardcoding `skill-creator` would have fixed this one collision and
+  no other: `.system` also holds `imagegen`, `openai-docs`, `plugin-creator`,
+  `review-agent` and `skill-installer`, and any future canonical skill taking
+  one of those names collides identically.
+- **It reuses the verified remover.** The same
+  `Remove-UabsPluginOwnedSkillCopies` the native-plugin dedupe uses: md5 against
+  canonical, robocopy backup before any delete, and a copy the user has modified
+  is REFUSED rather than removed. Only the owner differs -- an enabled plugin
+  there, Codex itself here.
+- **The doctor accounts the two separately.** `143 exact, 20
+  native-plugin-owned, 1 owned by Codex itself, 164 expected`. Folding them
+  together would hide which one to act on; without the accounting at all, a
+  skill the installer correctly removed reads as a missing skill and fails the
+  run.
+- `skill-creator` still installs to **Claude, Grok, Kimi and Hermes**, which
+  ship no equivalent. Only Codex, which does, goes without.
+- 94 contracts, green. The new one was falsified four ways -- hardcoded name
+  list, installer dropping the call, doctor blind to built-in ownership, and the
+  verified remover bypassed -- and catches all four.
+
 ## 8.6.6
 
 - **164 canonical skills total**, up from 160. Four adopted from Anthropic's

@@ -2260,6 +2260,9 @@ def main() -> int:
         test_subset_install_keeps_the_other_providers_native_plugin_records,
         # v8.6.2 -- boot-time autostarts, reported but never ours to delete.
         test_dead_autostarts_are_reported_and_never_deleted,
+        # v8.6.7 -- Codex ships skills of its own; adopting one by the same
+        # name indexed it twice on Codex alone.
+        test_codex_builtin_skills_are_discovered_not_hardcoded,
     ]
     failed = []
     for fn in tests:
@@ -3422,6 +3425,56 @@ def test_dead_autostarts_are_reported_and_never_deleted() -> None:
     )
     assert "$script:Reported.Add" in autostart_section, (
         "dead autostarts no longer go through the report-only channel"
+    )
+
+
+def test_codex_builtin_skills_are_discovered_not_hardcoded() -> None:
+    """v8.6.6 adopted `skill-creator`; Codex already ships one of its own.
+
+    The result was a skill indexed twice on Codex alone -- 184 entries at 48
+    visible description chars against 183 at 50 without it. Codex's `.system`
+    set also holds imagegen, openai-docs, plugin-creator, review-agent and
+    skill-installer, so a future canonical skill taking any of those names
+    collides the same way. The ownership must therefore be DISCOVERED from
+    disk; a hardcoded name list would catch this one case and no other.
+    """
+    common = ps_code(ROOT / "TOOLS" / "UABS-Common.ps1")
+    assert "function Get-UabsCodexBuiltinSkillNames" in common, (
+        "the Codex built-in skill discovery is gone; a canonical skill sharing "
+        "a name with one of Codex's own is indexed twice again"
+    )
+    body = common.split("function Get-UabsCodexBuiltinSkillNames", 1)[1]
+    body = body.split("\nfunction ", 1)[0]
+    assert "'.system'" in body or '".system"' in body, (
+        "the discovery no longer reads Codex's .system root"
+    )
+    assert "'SKILL.md'" in body, (
+        "a directory with no SKILL.md owns nothing; without this check an "
+        "empty folder would evict the pack's working copy in favour of nothing"
+    )
+    # Discovered, never hardcoded: the collision that motivated this must not
+    # appear as a literal anywhere in the discovery.
+    assert "skill-creator" not in body, (
+        "Codex built-ins are hardcoded again; only the one known collision "
+        "would be caught and the other five names would not"
+    )
+
+    installer = ps_code(ROOT / "INSTALL-AIO.ps1")
+    assert "Get-UabsCodexBuiltinSkillNames" in installer, (
+        "the installer no longer dedupes copies Codex itself owns"
+    )
+    # It must reuse the verified remover, which backs up first and refuses to
+    # delete a copy whose SKILL.md differs from canonical.
+    codex_dedupe = installer.split("Get-UabsCodexBuiltinSkillNames", 1)[1][:900]
+    assert "Remove-UabsPluginOwnedSkillCopies" in codex_dedupe, (
+        "the built-in dedupe deletes directly instead of going through the "
+        "remover that backs up and refuses user-modified copies"
+    )
+
+    doctor = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+    assert "codex_builtin_deduped" in doctor, (
+        "the doctor cannot see built-in ownership, so a skill the installer "
+        "correctly removed reads as a missing skill and fails the run"
     )
 
 

@@ -322,7 +322,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.6.6 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.6.7 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -990,6 +990,22 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
             $entry.status = 'fallback-skills'
             $entry.reason = 'official plugin add did not appear in inventory; copied skills stay'
             Write-UabsWarn ('Codex: ' + $pluginId + ' native install failed - copied skills stay')
+          }
+        }
+
+        # Codex also ships skills of its OWN (<CodexHome>\skills\.system), and
+        # a canonical skill sharing one of those names is indexed twice on Codex
+        # alone. Same waste as a plugin-owned duplicate, different owner, so it
+        # reuses the same verified remover: md5 against canonical, backup first,
+        # and a user-modified copy is refused rather than deleted.
+        $builtins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome)
+        if ($builtins.Count) {
+          $bres = Remove-UabsPluginOwnedSkillCopies -Provider 'Codex' -SkillsDir $skillsDir `
+                    -Names $builtins -CanonicalRoot $canonicalSkills -BackupRoot $backupRoot -Log $log
+          if (@($bres.removed).Count) {
+            $pstate.codex_builtin_deduped = @($bres.removed)
+            Write-UabsOk ('Codex: removed ' + @($bres.removed).Count +
+              ' copy/copies of a skill Codex ships itself: ' + (@($bres.removed) -join ', '))
           }
         }
       }
@@ -1859,7 +1875,7 @@ if (Test-Path -LiteralPath $statePath -PathType Leaf) {
 }
 
   $state = @{
-  version = '8.6.6'
+  version = '8.6.7'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

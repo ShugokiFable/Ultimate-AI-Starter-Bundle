@@ -922,6 +922,40 @@ function Get-UabsCodexEnabledPluginIds {
   return @($ids)
 }
 
+function Get-UabsCodexBuiltinSkillNames {
+  <#
+  Names of the skills Codex ships ITSELF, from <CodexHome>\skills\.system.
+
+  Why this exists: v8.6.6 adopted `skill-creator` into the canonical tree so
+  all five providers would carry it. Codex already ships a `skill-creator` of
+  its own, so on Codex alone the pack's copy became a SECOND index entry for a
+  capability that was already there -- measured as 184 entries / 48 visible
+  description chars with the duplicate, against 183 / 50 without it.
+
+  This is the same class of waste the native-plugin dedupe already removes,
+  with a different owner: there the owner is an enabled plugin, here it is
+  Codex's own built-in set. Discovered, never hardcoded -- `.system` also holds
+  `imagegen`, `openai-docs`, `plugin-creator`, `review-agent` and
+  `skill-installer`, and any future canonical skill taking one of those names
+  would collide in exactly the same way with no code change to catch it.
+
+  A directory only counts when it actually carries a SKILL.md: an empty or
+  half-written folder owns nothing, and treating it as an owner would evict
+  the pack's working copy in favour of nothing.
+  #>
+  param([string]$CodexHome)
+  if (-not $CodexHome) { return @() }
+  $sys = Join-Path (Join-Path $CodexHome 'skills') '.system'
+  if (-not (Test-Path -LiteralPath $sys -PathType Container)) { return @() }
+  $names = New-Object System.Collections.Generic.List[string]
+  foreach ($d in @(Get-ChildItem -LiteralPath $sys -Directory -EA SilentlyContinue)) {
+    if (Test-Path -LiteralPath (Join-Path $d.FullName 'SKILL.md') -PathType Leaf) {
+      [void]$names.Add($d.Name)
+    }
+  }
+  return @($names)
+}
+
 function Repair-UabsGrokDuplicatePlugins {
   <#
   Grok's official marketplace auto-installs superpowers. The AIO used to
