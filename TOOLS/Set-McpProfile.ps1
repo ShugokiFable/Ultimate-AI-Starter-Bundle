@@ -564,16 +564,40 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
     $on = ($projects.Count -gt 0) -or $isGlobal
     $mark = if ($on) { '[on ]' } else { '[off]' }
     Write-Host ("{0} {1,-14} {2}" -f $mark, $p['id'], $p['title']) -ForegroundColor $(if ($on) { 'Green' } else { 'Gray' })
+    # Which servers this profile ACTUALLY registered, per project. A profile
+    # can be enabled with a subset -- code-intel was switched on for one repo
+    # with serena alone, while its other server, codebase-memory, was never
+    # registered. The listing showed [on] with both servers "installed and
+    # ready", which reads as though both were live, and codebase-memory's own
+    # SessionStart hook was meanwhile telling every agent to use tools that
+    # were not there. "Ready to enable" and "enabled" are different facts and
+    # now print differently.
+    $registeredIds = @{}
     foreach ($proj in $projects) {
       $provs = @($state['profiles'][$p['id']]['projects'][$proj]['providers'])
       $suffix = if ($provs.Count) { '  -> ' + ($provs -join ', ') } else { '' }
       Write-Host ("       enabled for  {0}{1}" -f $proj, $suffix) -ForegroundColor Green
+      $srv = $state['profiles'][$p['id']]['projects'][$proj]['servers']
+      foreach ($sid in @(([string]$srv) -split '[,;]')) {
+        $sid = $sid.Trim()
+        if ($sid) { $registeredIds[$sid] = $true }
+      }
     }
     if ($isGlobal) { Write-Host '       enabled MACHINE-WIDE (-Global): every session pays for it' -ForegroundColor Yellow }
     foreach ($s in @($p['servers'])) {
       $req = Test-UabsServerRequirement -Server $s -ProjectPath $Path
       $status = if ($req.Ok) { 'installed and ready' } else { $req.Reason }
-      Write-Host ("       {0,-16} {1}" -f $s['id'], $status) -ForegroundColor $(if ($req.Ok) { 'DarkGray' } else { 'Yellow' })
+      $colour = if ($req.Ok) { 'DarkGray' } else { 'Yellow' }
+      if ($on -and $registeredIds.Count) {
+        if ($registeredIds.ContainsKey([string]$s['id'])) {
+          $status = 'REGISTERED for the project above'
+          $colour = 'Green'
+        } elseif ($req.Ok) {
+          $status = 'ready, but NOT registered -- this profile was enabled without it'
+          $colour = 'Yellow'
+        }
+      }
+      Write-Host ("       {0,-16} {1}" -f $s['id'], $status) -ForegroundColor $colour
       if (-not $req.Ok -and $s.Contains('install_hint') -and $s['install_hint']) {
         Write-Host ("       {0,-16} install: {1}" -f '', $s['install_hint']) -ForegroundColor DarkGray
       }

@@ -56,6 +56,55 @@ $ErrorActionPreference = 'Stop'
 if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
 . (Join-Path $PackRoot 'TOOLS\UABS-Common.ps1')
 
+function Remove-UabsRetiredRegistration {
+  param([object]$Edit, [switch]$WhatIfOnly)
+  $file = [string]$Edit.File
+  if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { return $false }
+  if ($WhatIfOnly) { return $true }
+
+  # Back up before editing anyone's config, every time.
+  $stamp = (Get-Date).ToString('yyyyMMdd-HHmmss')
+  try { Copy-Item -LiteralPath $file -Destination ($file + '.bak-retired-' + $stamp) -Force } catch { }
+
+  if ($Edit.Format -eq 'toml-table') {
+    $lines = [IO.File]::ReadAllLines($file)
+    $out = New-Object System.Collections.Generic.List[string]
+    $skip = $false
+    $head = '[marketplaces.' + $Edit.Key + ']'
+    $pluginSuffix = '@' + $Edit.Key + '"]'
+    foreach ($ln in $lines) {
+      $t = $ln.Trim()
+      if ($t.StartsWith('[')) {
+        # A new table always ends any skip; then decide about this one.
+        $skip = $false
+        if ($t -eq $head) { $skip = $true }
+        elseif ($t.StartsWith('[plugins."') -and $t.EndsWith($pluginSuffix)) { $skip = $true }
+      }
+      if (-not $skip) { [void]$out.Add($ln) }
+    }
+    $enc = New-Object System.Text.UTF8Encoding($false)
+    [IO.File]::WriteAllLines($file, $out, $enc)
+    return $true
+  }
+
+  # JSON: drop one top-level key, or one key under extraKnownMarketplaces.
+  $obj = $null
+  try { $obj = [IO.File]::ReadAllText($file) | ConvertFrom-Json } catch { return $false }
+  if ($Edit.Format -eq 'json-key') {
+    if (-not ($obj.PSObject.Properties.Name -contains $Edit.Key)) { return $false }
+    $obj.PSObject.Properties.Remove($Edit.Key)
+  } elseif ($Edit.Format -eq 'json-extra-marketplace') {
+    if (-not $obj.extraKnownMarketplaces) { return $false }
+    if (-not ($obj.extraKnownMarketplaces.PSObject.Properties.Name -contains $Edit.Key)) { return $false }
+    $obj.extraKnownMarketplaces.PSObject.Properties.Remove($Edit.Key)
+  } else {
+    return $false
+  }
+  $enc2 = New-Object System.Text.UTF8Encoding($false)
+  [IO.File]::WriteAllText($file, (($obj | ConvertTo-Json -Depth 32)), $enc2)
+  return $true
+}
+
 $script:Planned = New-Object System.Collections.Generic.List[object]
 $script:Reported = New-Object System.Collections.Generic.List[string]
 $script:FreedBytes = 0
@@ -195,6 +244,194 @@ if (Test-Path -LiteralPath $backupsRoot -PathType Container) {
 # pack created, and this pack has never written an autostart -- these come from
 # agent sessions, other tools' installers, and the user. A dead one still gets
 # named, because it costs a failed process launch at every boot.
+# ------------------------------------------- retired plugin marketplaces ---
+# Marketplace registration is ADDITIVE in every provider: the installer only
+# ever adds to extraKnownMarketplaces, and nothing removes an entry when the
+# tool behind it is uninstalled. So a dead registration lives forever -- and it
+# propagates, because Grok inherits Claude's marketplace list. One stale entry
+# in ~/.claude becomes a failing entry in ~/.grok the user never registered.
+#
+# Measured 2026-08-27: claude-mem was long uninstalled, yet 'thedotmack' was
+# still in Claude's known_marketplaces.json and settings.json, still cloned at
+# 140 MB, still present as four orphaned 140 MB temp clones, and had synced
+# into ~/.grok/marketplace-cache, where grok reported
+#   thedotmack (0 plugins) [error] Git sync failed: failed to lock cache
+#
+# Safety, deliberately narrow: a marketplace is only touched when its NAME and
+# its GIT URL both match an entry in RETIRED-PLUGINS.json, and when it
+# contributes no ENABLED plugin. Anything still in use is reported, not removed.
+$retiredPluginsPath = Join-Path $PackRoot 'BUNDLED-TOOLS\RETIRED-PLUGINS.json'
+$retiredMarkets = @()
+if (Test-Path -LiteralPath $retiredPluginsPath -PathType Leaf) {
+  try { $retiredMarkets = @(([IO.File]::ReadAllText($retiredPluginsPath) | ConvertFrom-Json).retired) }
+  catch { Write-UabsWarn "RETIRED-PLUGINS.json unreadable - skipping marketplace cleanup" }
+} else {
+  Write-UabsWarn "RETIRED-PLUGINS.json not found - skipping marketplace cleanup"
+}
+
+$script:RetiredRegistrationEdits = New-Object System.Collections.Generic.List[object]
+
+function Test-UabsUrlMatch {
+  param([string]$A, [string]$B)
+  if (-not $A -or -not $B) { return $false }
+  $na = $A.Trim().TrimEnd('/'); $nb = $B.Trim().TrimEnd('/')
+  if ($na.EndsWith('.git')) { $na = $na.Substring(0, $na.Length - 4) }
+  if ($nb.EndsWith('.git')) { $nb = $nb.Substring(0, $nb.Length - 4) }
+  return [string]::Equals($na, $nb, [StringComparison]::OrdinalIgnoreCase)
+}
+
+if ($retiredMarkets.Count) {
+
+  # ---- Claude: known_marketplaces.json + settings.json + the clones --------
+  $claudeHome = Join-Path $env:USERPROFILE '.claude'
+  $kmPath = Join-Path $claudeHome 'plugins\known_marketplaces.json'
+  $settingsPath = Join-Path $claudeHome 'settings.json'
+  # A marketplace is only dead if nothing it provides is still around. Two
+  # signals, because they answer different questions: enabledPlugins says the
+  # user switched it on, installed_plugins.json says it is on disk at all.
+  #
+  # This matters for a component the pack still SHIPS. claude-mem is opt-in
+  # behind -WithClaudeMem and its catalog entry registers the very marketplace
+  # listed as retired here. Without the installed check, the cleanup that runs
+  # at the end of every install would unregister what that same install had
+  # just registered -- the installer and the cleaner fighting each other on
+  # every run.
+  $enabledNames = @()
+  if (Test-Path -LiteralPath $settingsPath -PathType Leaf) {
+    try {
+      $sj = [IO.File]::ReadAllText($settingsPath) | ConvertFrom-Json
+      if ($sj.enabledPlugins) {
+        foreach ($pp in $sj.enabledPlugins.PSObject.Properties) {
+          if ($pp.Value) { $enabledNames += ([string]$pp.Name) }
+        }
+      }
+    } catch { }
+  }
+  $installedNames = @()
+  $installedPluginsPath = Join-Path $claudeHome 'plugins\installed_plugins.json'
+  if (Test-Path -LiteralPath $installedPluginsPath -PathType Leaf) {
+    try {
+      $ip = [IO.File]::ReadAllText($installedPluginsPath) | ConvertFrom-Json
+      if ($ip.plugins) {
+        foreach ($pp in $ip.plugins.PSObject.Properties) { $installedNames += ([string]$pp.Name) }
+      }
+    } catch { }
+  }
+
+  foreach ($entry in $retiredMarkets) {
+    $name = [string]$entry.marketplace
+    if (-not $name) { continue }
+
+    # Never remove a marketplace that still backs an ENABLED plugin.
+    $stillUsed = @($enabledNames | Where-Object { $_ -like ('*@' + $name) })
+    $stillUsed += @($installedNames | Where-Object { $_ -like ('*@' + $name) })
+    $stillUsed = @($stillUsed | Select-Object -Unique)
+    if ($stillUsed.Count) {
+      [void]$script:Reported.Add(
+        ("marketplace '{0}' is retired but is still installed or enabled as: {1} -- left alone" -f $name, ($stillUsed -join ', ')))
+      continue
+    }
+
+    # known_marketplaces.json -- match name AND url before proposing an edit.
+    if (Test-Path -LiteralPath $kmPath -PathType Leaf) {
+      try {
+        $km = [IO.File]::ReadAllText($kmPath) | ConvertFrom-Json
+        $prop = $km.PSObject.Properties | Where-Object { $_.Name -eq $name } | Select-Object -First 1
+        if ($prop) {
+          $url = ''
+          try { $url = [string]$prop.Value.source.url } catch { $url = '' }
+          if (Test-UabsUrlMatch $url ([string]$entry.url)) {
+            [void]$script:RetiredRegistrationEdits.Add([pscustomobject]@{
+              File = $kmPath; Format = 'json-key'; Key = $name
+              Why = ("retired marketplace ({0})" -f $entry.reason)
+            })
+          } else {
+            [void]$script:Reported.Add(
+              ("marketplace '{0}' in known_marketplaces.json points at '{1}', not the retired '{2}' -- left alone" -f $name, $url, $entry.url))
+          }
+        }
+      } catch { }
+    }
+
+    # settings.json -> extraKnownMarketplaces
+    if (Test-Path -LiteralPath $settingsPath -PathType Leaf) {
+      try {
+        $sj2 = [IO.File]::ReadAllText($settingsPath) | ConvertFrom-Json
+        if ($sj2.extraKnownMarketplaces) {
+          $ep = $sj2.extraKnownMarketplaces.PSObject.Properties | Where-Object { $_.Name -eq $name } | Select-Object -First 1
+          if ($ep) {
+            $url2 = ''
+            try { $url2 = [string]$ep.Value.source.url } catch { $url2 = '' }
+            if (Test-UabsUrlMatch $url2 ([string]$entry.url)) {
+              [void]$script:RetiredRegistrationEdits.Add([pscustomobject]@{
+                File = $settingsPath; Format = 'json-extra-marketplace'; Key = $name
+                Why = ("retired marketplace ({0})" -f $entry.reason)
+              })
+            }
+          }
+        }
+      } catch { }
+    }
+
+    # The clone and any plugin cache under Claude.
+    foreach ($sub in @('plugins\marketplaces', 'plugins\cache')) {
+      $dir = Join-Path (Join-Path $claudeHome $sub) $name
+      if (Test-Path -LiteralPath $dir -PathType Container) {
+        Add-CleanTarget -Kind 'retired-market' -Path $dir -Why ("clone of retired marketplace " + $name)
+      }
+    }
+
+    # ---- Grok: cache directories are hashed, so match on the git remote ----
+    $grokCache = Join-Path $env:USERPROFILE '.grok\marketplace-cache'
+    if (Test-Path -LiteralPath $grokCache -PathType Container) {
+      foreach ($d in @(Get-ChildItem -LiteralPath $grokCache -Directory -EA SilentlyContinue)) {
+        $gitCfg = Join-Path $d.FullName '.git\config'
+        if (-not (Test-Path -LiteralPath $gitCfg -PathType Leaf)) { continue }
+        $cfgText = ''
+        try { $cfgText = [IO.File]::ReadAllText($gitCfg) } catch { continue }
+        $m = [regex]::Match($cfgText, 'url\s*=\s*(\S+)')
+        if (-not $m.Success) { continue }
+        if (Test-UabsUrlMatch $m.Groups[1].Value ([string]$entry.url)) {
+          Add-CleanTarget -Kind 'retired-market' -Path $d.FullName -Why ("Grok cache of retired marketplace " + $name)
+          $lock = $d.FullName + '.lock'
+          if (Test-Path -LiteralPath $lock -PathType Leaf) {
+            Add-CleanTarget -Kind 'retired-market' -Path $lock -Why ("stale lock for retired marketplace " + $name)
+          }
+        }
+      }
+    }
+
+    # ---- Codex: [marketplaces.<name>] and [plugins."<x>@<name>"] ----------
+    $codexCfg = Join-Path $env:USERPROFILE '.codex\config.toml'
+    if (Test-Path -LiteralPath $codexCfg -PathType Leaf) {
+      $toml = ''
+      try { $toml = [IO.File]::ReadAllText($codexCfg) } catch { $toml = '' }
+      if ($toml -match ('(?m)^\[marketplaces\.' + [regex]::Escape($name) + '\]')) {
+        [void]$script:RetiredRegistrationEdits.Add([pscustomobject]@{
+          File = $codexCfg; Format = 'toml-table'; Key = $name
+          Why = ("retired marketplace ({0})" -f $entry.reason)
+        })
+      }
+    }
+  }
+
+  # Orphaned temp clones: Claude leaves temp_<epoch> directories behind when a
+  # marketplace sync is interrupted. Four of them, 140 MB each, were sitting in
+  # marketplaces/ with no entry in known_marketplaces.json pointing at any.
+  $mkRoot = Join-Path $claudeHome 'plugins\marketplaces'
+  if (Test-Path -LiteralPath $mkRoot -PathType Container) {
+    $known = @()
+    if (Test-Path -LiteralPath $kmPath -PathType Leaf) {
+      try { $known = @(([IO.File]::ReadAllText($kmPath) | ConvertFrom-Json).PSObject.Properties.Name) } catch { }
+    }
+    foreach ($d in @(Get-ChildItem -LiteralPath $mkRoot -Directory -EA SilentlyContinue)) {
+      if ($d.Name -notmatch '^temp_\d+$') { continue }
+      if ($known -contains $d.Name) { continue }
+      Add-CleanTarget -Kind 'orphan-market' -Path $d.FullName -Why 'interrupted marketplace sync, registered nowhere'
+    }
+  }
+}
+
 $autostarts = @()
 try { $autostarts = @(Get-UabsAiAutostartEntries) } catch { }
 foreach ($a in $autostarts) {
@@ -209,8 +446,8 @@ foreach ($a in $autostarts) {
 Write-Host ''
 Write-UabsStep $(if ($Apply) { 'Cleaning pack-created leftovers' } else { 'Leftover plan (nothing removed)' })
 
-if (-not $script:Planned.Count) {
-  Write-UabsOk 'Nothing to clean; no retired skills and no backups past the retention limit.'
+if (-not $script:Planned.Count -and -not $script:RetiredRegistrationEdits.Count) {
+  Write-UabsOk 'Nothing to clean; no retired skills, no retired marketplaces, and no backups past the retention limit.'
 } else {
   foreach ($group in ($script:Planned | Group-Object Kind | Sort-Object Name)) {
     $bytes = ($group.Group | Measure-Object -Property Bytes -Sum).Sum
@@ -223,10 +460,18 @@ if (-not $script:Planned.Count) {
   Write-Host ("  TOTAL            {0,3} item(s)  {1,8:N1} KB" -f $script:Planned.Count, ($script:FreedBytes / 1KB))
 }
 
+if ($script:RetiredRegistrationEdits.Count) {
+  Write-Host ("  {0,-16} {1,3} registration(s) in provider config" -f 'retired-market', $script:RetiredRegistrationEdits.Count)
+  foreach ($e in $script:RetiredRegistrationEdits) {
+    Write-Host ("      " + $e.Key + "  in " + (Split-Path -Leaf $e.File) + "  -- " + $e.Why) -ForegroundColor DarkGray
+  }
+  Write-Host '      Each edited file is backed up alongside itself first.' -ForegroundColor DarkGray
+}
+
 foreach ($note in $script:Reported) { Write-UabsWarn $note }
 
 if (-not $Apply) {
-  if ($script:Planned.Count) {
+  if ($script:Planned.Count -or $script:RetiredRegistrationEdits.Count) {
     Write-Host ''
     Write-Host '  Nothing was removed. Re-run with -Apply to delete the items above.' -ForegroundColor Yellow
   }
@@ -244,7 +489,23 @@ foreach ($item in $script:Planned) {
     Write-UabsWarn ("could not remove " + $item.Path + ": " + $_.Exception.Message)
   }
 }
+$edited = 0
+foreach ($e in $script:RetiredRegistrationEdits) {
+  try {
+    if (Remove-UabsRetiredRegistration -Edit $e) {
+      $edited++
+      Write-UabsOk ("unregistered '" + $e.Key + "' from " + (Split-Path -Leaf $e.File))
+    }
+  } catch {
+    $failed++
+    Write-UabsWarn ("could not unregister " + $e.Key + " from " + $e.File + ": " + $_.Exception.Message)
+  }
+}
 Write-UabsOk ("removed $removed item(s), freed ~{0:N1} KB" -f ($script:FreedBytes / 1KB))
+if ($edited) {
+  Write-UabsOk "unregistered $edited retired marketplace registration(s)"
+  Write-UabsWarn 'Close every AI app before trusting this: a running session holds its config in memory and writes it back on exit, which is how an earlier removal was undone.'
+}
 if ($failed) {
   Write-UabsWarn "$failed item(s) could not be removed (in use, or permission denied). Re-run after closing the AI apps."
 }

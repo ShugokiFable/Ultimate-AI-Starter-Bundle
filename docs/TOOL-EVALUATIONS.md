@@ -260,10 +260,17 @@ fn pub Restore-UabsHermesPluginScan() @L1328-1388
 ```
 
 That is a **symbol index, not a compressed file**. Useful — and it is precisely
-what `codebase-memory-mcp` already provides in this pack, which the
-`cbm-code-discovery-gate` hook already forces agents to reach for first. The
-headline saving duplicates a capability that is already installed and already
-mandatory. **Gate 2.**
+what `codebase-memory-mcp` already provides in this pack. The headline saving
+duplicates a capability that is already installed. **Gate 2.**
+
+*Corrected 2026-08-27:* this paragraph used to say the `cbm-code-discovery-gate`
+hook "forces agents to reach for" cbm first, and that the capability was
+"mandatory". Reading the hook shows it does neither — its own comment says
+"Despite the name this NEVER blocks a tool call - it only adds graph context",
+and it exits 0 silently when the binary is absent. The hook that *instructs* is
+`cbm-session-reminder`, and cbm is profile-gated here, so on most sessions it
+was naming tools that were not registered. See the doctor check added in
+8.6.12.
 
 **On shell output it did nothing here.** Same pinned corpus used for rtk and
 OMNI, through `lean-ctx -c`:

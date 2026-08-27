@@ -2268,6 +2268,10 @@ def main() -> int:
         # v8.6.11 -- the same three bytes that broke START-HERE.bat twice.
         test_no_shipped_json_carries_a_byte_order_mark,
         test_rtk_is_documented_as_a_git_tool_not_a_general_filter,
+        # v8.6.12 -- instructions outliving the tools they name.
+        test_doctor_reports_hooks_that_steer_at_unregistered_mcps,
+        test_doctor_reports_pack_tools_shadowed_by_another_copy,
+        test_retired_marketplaces_are_unregistered_not_just_undeployed,
     ]
     failed = []
     for fn in tests:
@@ -3728,6 +3732,278 @@ def test_rtk_is_documented_as_a_git_tool_not_a_general_filter() -> None:
         "the README dropped the rewrite table showing that `npm test`, `curl` "
         "and `python x.py` are NOT rewritten -- which is why the hook does not "
         "deliver the only strong non-git rows"
+    )
+
+def test_doctor_reports_hooks_that_steer_at_unregistered_mcps() -> None:
+    """A session hook that TELLS an agent to use an MCP is only correct while
+    that MCP is registered, and this pack profile-gates most of its MCPs.
+
+    Those two facts drift apart silently, and the cost is invisible: the
+    instructions reach the model, the tools do not, and the turn is spent
+    reaching for something uncallable.
+
+    Found on the maintainer's machine 2026-08-27: ``cbm-session-reminder``,
+    installed by codebase-memory-mcp itself, emitted 695 bytes of "ALWAYS use
+    codebase-memory-mcp tools FIRST" naming six tools on every startup,
+    resume, clear and compact -- while codebase-memory was registered on no
+    provider at all.
+
+    The doctor reports it and never rewrites it, exactly like the autostart
+    check: these hooks belong to the tools that installed them.
+
+    Two properties this pins, because getting either wrong makes the check
+    useless rather than merely noisy:
+
+    1. A hook that emits nothing is not flagged. cbm's *other* hook shells out
+       to a binary and exits; its own comment says it "NEVER blocks a tool
+       call". Flagging it would be a false positive.
+    2. A hook that GATES itself is not flagged. Punishing the fix is worse
+       than not having the check -- and the guard must be found across the
+       whole body, because a gate is invoked by piping the payload into it
+       (``printf ... | gate || exit 0``) and that printf is the hook asking,
+       not the hook speaking. An earlier draft anchored on the first print
+       construct and therefore read the guard as arriving too late, flagging
+       a hook that was already correct.
+    """
+    doctor = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+
+    assert "hookMisdirection" in doctor, (
+        "the doctor no longer checks whether a session hook instructs agents "
+        "toward an MCP server that is registered nowhere"
+    )
+    assert "registered on no provider" in doctor, (
+        "the hook-misdirection warning lost the text that says WHY it fired"
+    )
+
+    # It must decide "unregistered" from the measured capability states, not
+    # from a hardcoded list of server names.
+    idx = doctor.index("hookMisdirection")
+    prelude = doctor[:idx]
+    assert "capabilityStates" in prelude and "registered_for" in prelude, (
+        "the check no longer derives 'unregistered' from the doctor's own "
+        "measured capability states; a hardcoded server list would rot"
+    )
+    assert "codebase-memory" not in doctor.split("hookMisdirection")[0][-4000:], (
+        "the check appears to hardcode codebase-memory rather than walking "
+        "whatever the capability states report as unregistered"
+    )
+
+    # Property 1: silent hooks are exempt.
+    assert "Write-Output" in doctor and "printf" in doctor, (
+        "the emit-detection that exempts hooks producing no text is gone"
+    )
+
+    # Property 2: self-gated hooks are exempt, checked across the whole body.
+    assert "(exit\\s+0|return)" in doctor, (
+        "the doctor no longer exempts hooks that gate themselves with a "
+        "conditional early exit -- it would now warn about the very fix it "
+        "asks for"
+    )
+    assert "$prelude" not in doctor, (
+        "the gate detection is anchored on the text before the first print "
+        "again; a gate invoked as `printf ... | gate || exit 0` puts a printf "
+        "ahead of its own guard and is then misread as ungated"
+    )
+
+    # Reported, never repaired.
+    assert "does not rewrite hooks it did not install" in doctor, (
+        "the doctor no longer states that it leaves these hooks alone; this "
+        "pack reports third-party hooks, it does not edit them"
+    )
+
+    # And it has to reach the JSON report, or nothing downstream can see it.
+    assert "hook_misdirection" in doctor, (
+        "hook misdirection is printed but never written to "
+        "installed-state-doctor.json"
+    )
+
+def test_doctor_reports_pack_tools_shadowed_by_another_copy() -> None:
+    """The installer records where it put each tool. Nothing checked that the
+    recorded copy is the one that actually runs.
+
+    Measured 2026-08-27: codebase-memory-mcp had been updated to 0.10.8 under
+    ``%LOCALAPPDATA%\\Programs``, while ``%USERPROFILE%\\.local\\bin`` still held
+    a **0.9.0** binary from six weeks earlier -- and ``.local\\bin`` came first
+    on PATH, so every caller got 0.9.0, including codebase-memory's own
+    discovery hook, which hardcodes that path. The update had reported success
+    on every run it ever made.
+
+    The sibling failure, found the same day, is not path order at all:
+    ``headroom`` was pip-installed at **0.36.5** into Python 3.14 while the
+    registered launcher belonged to Python 3.12, which had **0.35.0**. Same
+    symptom -- an update that succeeds and changes nothing -- via a different
+    mechanism. That one is documented rather than automated.
+
+    Two properties keep this check useful rather than noisy:
+
+    1. **Two copies alone is not a finding.** Several tools legitimately
+       install their own launcher alongside the pack's. Only copies that
+       *differ* can silently diverge, so the sizes are compared and identical
+       ones are passed over.
+    2. **Compared by length, not hash.** These are single-file builds, so a
+       version change always moves the size, and hashing a 274 MB binary on
+       every doctor run buys certainty nobody needs.
+
+    Reported with both paths, never repaired: which copy should win is a PATH
+    decision, and this pack does not reorder anyone's PATH.
+    """
+    doctor = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+
+    assert "shadowed" in doctor, (
+        "the doctor no longer checks whether a pack-installed tool is shadowed "
+        "by another copy earlier on PATH"
+    )
+    assert "PATH resolves" in doctor, (
+        "the shadowing warning lost the text naming which copy actually wins"
+    )
+
+    # Property 1: identical copies are not reported.
+    assert "-eq $sizeB" in doctor or "$sizeA -eq $sizeB" in doctor, (
+        "the doctor no longer skips shadowed copies that are byte-equal in "
+        "length -- it will now warn about every tool that ships its own "
+        "launcher next to the pack's, which is normal and not a defect"
+    )
+
+    # It has to read the recorded install location rather than guess one.
+    assert "install-state.json" in doctor, (
+        "the shadowing check no longer reads install-state.json, so it has "
+        "nothing authoritative to compare PATH against"
+    )
+    assert "Get-Command" in doctor, (
+        "the check no longer resolves the tool through PATH, which is the "
+        "whole comparison"
+    )
+
+    # Reported, never repaired -- same rule as autostarts and third-party hooks.
+    assert "does not reorder your PATH" in doctor, (
+        "the doctor no longer states that it leaves PATH alone; this pack "
+        "reports this condition, it does not fix it"
+    )
+
+    # And it must reach the JSON report.
+    assert "shadowed_tools" in doctor, (
+        "shadowed tools are printed but never written to "
+        "installed-state-doctor.json"
+    )
+
+def test_retired_marketplaces_are_unregistered_not_just_undeployed() -> None:
+    """Marketplace registration is additive in every provider, and nothing ever
+    removed one.
+
+    ``Install-Provider-Starter-Settings.ps1`` only ever ADDS to
+    ``extraKnownMarketplaces``. No provider removes a marketplace when the tool
+    behind it is uninstalled. So a dead registration outlives its tool -- and
+    it **propagates**, because Grok inherits Claude's marketplace list.
+
+    Measured 2026-08-27: claude-mem had been uninstalled and 1.29 GB of its
+    payload already reclaimed, yet ``thedotmack`` was still registered in
+    Claude's ``known_marketplaces.json`` *and* ``settings.json``, still cloned
+    at 140 MB, still present as four orphaned 140 MB temp clones, and had been
+    synced into ``~/.grok/marketplace-cache`` -- where grok reported
+    ``thedotmack (0 plugins) [error] Git sync failed: failed to lock cache``.
+    The user never registered it in Grok at all.
+
+    ``RETIRED-SKILLS.json`` already solved exactly this for skills. This is the
+    same idea for marketplaces, and the safety rails have to match:
+
+    1. **Name AND url must both match.** Removing on name alone would delete a
+       marketplace someone re-pointed at their own fork.
+    2. **A marketplace still backing an ENABLED plugin is never touched.** The
+       point is clearing the dead, not disabling something in use.
+    3. **Every edited config is backed up first.**
+    """
+    catalog_path = ROOT / "BUNDLED-TOOLS" / "RETIRED-PLUGINS.json"
+    assert catalog_path.is_file(), (
+        "BUNDLED-TOOLS/RETIRED-PLUGINS.json is gone; retired marketplaces have "
+        "nothing declaring them and will accumulate again"
+    )
+    data = json.loads(read(catalog_path))
+    retired = data.get("retired") or []
+    assert retired, "RETIRED-PLUGINS.json declares no retired marketplaces"
+    for e in retired:
+        assert e.get("marketplace"), "a retired entry has no marketplace name"
+        assert e.get("url"), (
+            "retired marketplace %r has no url; name-only matching would delete "
+            "a marketplace someone re-pointed at their own fork" % e.get("marketplace")
+        )
+        assert e.get("reason"), (
+            "retired marketplace %r has no reason; a deletion list nobody can "
+            "audit is how a live entry gets removed by accident" % e["marketplace"]
+        )
+
+    # A retired marketplace MAY belong to a component the pack still ships --
+    # claude-mem is opt-in behind -WithClaudeMem and its catalog entry
+    # registers this very marketplace. That is only safe because the cleaner
+    # skips a marketplace whose plugin is still installed or enabled. Without
+    # that guard the cleanup at the end of every install would unregister what
+    # the same install had just registered.
+    live = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    live_repos = set()
+    for c in live.get("components", []):
+        gh = c.get("github") or {}
+        if gh.get("owner") and gh.get("repo"):
+            live_repos.add(("%s/%s" % (gh["owner"], gh["repo"])).lower())
+    overlapping = []
+    for e in retired:
+        slug = e["url"].lower().rstrip("/")
+        if slug.endswith(".git"):
+            slug = slug[:-4]
+        overlapping.append("/".join(slug.split("/")[-2:]) in live_repos)
+    if any(overlapping):
+        guard = ps_code(ROOT / "TOOLS" / "Clean-StaleState.ps1")
+        assert "installed_plugins.json" in guard, (
+            "a retired marketplace belongs to a component CATALOG.json still "
+            "ships, but the cleaner does not check installed_plugins.json -- "
+            "the install-time cleanup would unregister what the install just "
+            "registered, on every single run"
+        )
+
+    cleaner = ps_code(ROOT / "TOOLS" / "Clean-StaleState.ps1")
+    assert "RETIRED-PLUGINS.json" in cleaner, (
+        "Clean-StaleState no longer reads RETIRED-PLUGINS.json, so retired "
+        "marketplaces are declared and never acted on"
+    )
+
+    # Rail 1: url must be compared, not just the name.
+    assert "Test-UabsUrlMatch" in cleaner, (
+        "the cleaner no longer compares the marketplace URL before removing it "
+        "-- name-only matching would delete a re-pointed fork"
+    )
+
+    # Rail 2: never remove one that still backs an enabled plugin.
+    assert "enabledPlugins" in cleaner and "installed_plugins.json" in cleaner, (
+        "the cleaner no longer checks both enabledPlugins and "
+        "installed_plugins.json before unregistering a marketplace; it could "
+        "disable something the user is actively using, or fight the installer "
+        "over a component the pack still ships"
+    )
+    assert "still installed or enabled as" in cleaner, (
+        "the cleaner lost the message explaining why a retired marketplace was "
+        "left alone; a silent skip is indistinguishable from a broken check"
+    )
+
+    # Rail 3: back up before editing anyone's config.
+    assert "bak-retired-" in cleaner, (
+        "the cleaner edits provider config without writing a backup first"
+    )
+
+    # All three registration shapes have to be handled, or the entry survives
+    # in whichever provider was skipped and syncs back into the others.
+    for needle, what in (
+        ("known_marketplaces", "Claude's marketplace registry"),
+        ("extraKnownMarketplaces", "Claude's settings.json"),
+        ("marketplace-cache", "Grok's hashed clone cache"),
+        ("[marketplaces.", "Codex's config.toml tables"),
+    ):
+        assert needle in cleaner, (
+            "the cleaner no longer handles %s; a retired marketplace left there "
+            "propagates back into the providers that inherit it" % what
+        )
+
+    # Grok's cache directories are hashed, so they can only be matched by remote.
+    assert ".git\\config" in cleaner or ".git/config" in cleaner, (
+        "the cleaner no longer identifies Grok's hashed marketplace caches by "
+        "their git remote, which is the only way to tell which one is which"
     )
 
 if __name__ == "__main__":

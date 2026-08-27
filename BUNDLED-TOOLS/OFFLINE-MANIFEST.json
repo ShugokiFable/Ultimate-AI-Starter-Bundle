@@ -1,21 +1,21 @@
 {
-  "generated": "2026-08-26",
-  "pack_version": "8.6.11",
+  "generated": "2026-08-27",
+  "pack_version": "8.6.12",
   "assets": [
     {
       "file": "codebase-memory-mcp-windows-amd64.zip",
-      "size": 39154915,
-      "sha256": "1e5ba3cca69194b9229f89a0cafe4a6538ba9e0040d892d57bf472e992420273"
+      "size": 39172588,
+      "sha256": "b43ad982994c4d829670749e08d3b622a74bb20041fc0a7d02bef6113f81c34d"
     },
     {
-      "file": "github-mcp-server-1.10.1-windows-x86_64.zip",
-      "size": 8321910,
-      "sha256": "3b94ca079cf51a54698401b7affea7288a64b38118c243ae488dd8dd96f4ffb2"
+      "file": "github-mcp-server-1.11.0-windows-x86_64.zip",
+      "size": 8390167,
+      "sha256": "d16a3b2bbf775365541aa18729c0c3ff5e1b26dfb5dc190928895ba482211268"
     },
     {
-      "file": "headroom_ai-0.35.0-cp310-abi3-win_amd64.whl",
-      "size": 13591679,
-      "sha256": "c80533399c911761fb47f49ac02db35c33ef4eb628c6568c213d7d7f0b594bef"
+      "file": "headroom_ai-0.36.5-cp310-abi3-win_amd64.whl",
+      "size": 13873068,
+      "sha256": "f842990c69e39d967982ef9bd1da20c12b9a7f39507e4f76d638b44f93114986"
     },
     {
       "file": "houseCARL-1.9.0.zip",

@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "why": "Plugin MARKETPLACES this pack once registered, or that a tool registered on its own, and that should no longer exist on a machine. Registration is additive everywhere: Install-Provider-Starter-Settings.ps1 only ever ADDS to extraKnownMarketplaces, and no provider removes a marketplace when the tool behind it is uninstalled. So a registration outlives its tool forever, and worse, it PROPAGATES -- Grok inherits Claude's marketplace list, so one dead entry in ~/.claude becomes a failing entry in ~/.grok that the user never registered at all. RETIRED-SKILLS.json solves exactly this problem for skills; this is the same idea for marketplaces.",
+  "measured": "2026-08-27 on the maintainer's machine: claude-mem had been uninstalled and 1.29 GB of its payload already reclaimed, yet 'thedotmack' was still registered in Claude's known_marketplaces.json AND settings.json, still cloned at 140 MB under plugins/marketplaces, still present as FOUR orphaned 140 MB temp clones, and had been synced into ~/.grok/marketplace-cache, where grok reported it as `thedotmack (0 plugins) [error] Git sync failed: failed to lock cache`. Every one of those is a leftover of a tool the user removed weeks earlier.",
+  "scope": "Removal is limited to a marketplace whose name AND git URL both match an entry below, and which contributes NO enabled plugin. A marketplace that still has an enabled plugin is reported, never touched -- the point is to clear the dead, not to disable something in use.",
+  "retired": [
+    {
+      "marketplace": "thedotmack",
+      "url": "https://github.com/thedotmack/claude-mem.git",
+      "plugins": [
+        "claude-mem"
+      ],
+      "reason": "claude-mem was uninstalled. Its marketplace registration survived in Claude, kept a 140 MB clone plus four orphaned temp clones on disk, and propagated into Grok, which then failed to sync it on every start.",
+      "retired_utc": "2026-08-27T00:00:00Z"
+    }
+  ]
+}

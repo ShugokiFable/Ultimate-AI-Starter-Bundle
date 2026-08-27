@@ -163,7 +163,7 @@
         "python3"
       ],
       "name": "Headroom",
-      "offline_asset": "headroom_ai-0.35.0-cp310-abi3-win_amd64.whl",
+      "offline_asset": "headroom_ai-0.36.5-cp310-abi3-win_amd64.whl",
       "license": "see-upstream",
       "required_for": [
         "context-compress"
@@ -423,7 +423,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "@perplexity-ai/mcp-server@1.2.0"
+        "@perplexity-ai/mcp-server@1.2.1"
       ],
       "api_key_env": "PERPLEXITY_API_KEY",
       "api_key_optional": false,
@@ -444,7 +444,7 @@
       "offline_asset": null,
       "scope_note": "REQUIRES PERPLEXITY_API_KEY (paid). Not installed on a keyless machine. Current-information research (new SKSE/CommonLib releases, game patch news). Never a substitute for houseCARL on Nexus, codebase-memory on code, or skyrim-memory on verified Skyrim facts.",
       "key_required": true,
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     {
       "id": "context7",
@@ -452,7 +452,7 @@
       "kind": "mcp-npx",
       "mcp": true,
       "license": "MIT",
-      "version": "4.0.2",
+      "version": "4.0.3",
       "github": {
         "owner": "upstash",
         "repo": "context7"
@@ -461,7 +461,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "@upstash/context7-mcp@4.0.2"
+        "@upstash/context7-mcp@4.0.3"
       ],
       "auto_register": true,
       "api_key_env": "CONTEXT7_API_KEY",
@@ -471,7 +471,7 @@
         "resolve-library-id",
         "query-docs"
       ],
-      "keyless_note": "Measured 2026-08-26 against the pinned 4.0.2 with the credential environment scrubbed: BOTH advertised tools answer keyless, nothing is rate-limited, key-gated or deprecated. `--api-key` / CONTEXT7_API_KEY is documented by the server's own --help and raises rate limits; it unlocks no additional tool. Regenerate with TOOLS/measure_mcp_capability.py rather than editing by hand.",
+      "keyless_note": "Measured 2026-08-26 against the pinned 4.0.3 with the credential environment scrubbed: BOTH advertised tools answer keyless, nothing is rate-limited, key-gated or deprecated. `--api-key` / CONTEXT7_API_KEY is documented by the server's own --help and raises rate limits; it unlocks no additional tool. Regenerate with TOOLS/measure_mcp_capability.py rather than editing by hand.",
       "capability_record": "BUNDLED-TOOLS/capability-records/context7.json",
       "providers": [
         "Claude",
@@ -492,13 +492,13 @@
       "kind": "mcp-binary",
       "mcp": true,
       "license": "MIT",
-      "version": "1.10.1",
+      "version": "1.11.0",
       "github": {
         "owner": "github",
         "repo": "github-mcp-server"
       },
       "install": "zip-extract",
-      "offline_asset": "github-mcp-server-1.10.1-windows-x86_64.zip",
+      "offline_asset": "github-mcp-server-1.11.0-windows-x86_64.zip",
       "asset_match": [
         "github-mcp-server-*-windows-x86_64.zip",
         "*github-mcp-server*Windows_x86_64.zip"
@@ -545,7 +545,7 @@
       "kind": "mcp-npx",
       "mcp": true,
       "license": "Apache-2.0",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "github": {
         "owner": "ChromeDevTools",
         "repo": "chrome-devtools-mcp"
@@ -554,7 +554,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "chrome-devtools-mcp@1.7.0",
+        "chrome-devtools-mcp@1.8.0",
         "--no-usage-statistics"
       ],
       "profile": "web",
@@ -573,7 +573,7 @@
       "kind": "mcp-npx",
       "mcp": true,
       "license": "MIT",
-      "version": "4.18.0",
+      "version": "4.19.0",
       "github": {
         "owner": "shadcn-ui",
         "repo": "ui"
@@ -582,7 +582,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "shadcn@4.18.0",
+        "shadcn@4.19.0",
         "mcp"
       ],
       "profile": "web",
@@ -599,7 +599,7 @@
       "kind": "mcp-uvx",
       "mcp": true,
       "license": "MIT",
-      "version": "1.8.3",
+      "version": "1.8.7",
       "github": {
         "owner": "ahujasid",
         "repo": "blender-mcp"
@@ -607,7 +607,7 @@
       "install": "mcp-uvx",
       "npx_command": "uvx",
       "npx_args": [
-        "blender-mcp@1.8.3"
+        "blender-mcp@1.8.7"
       ],
       "profile": "engine-blender",
       "auto_register": false,
@@ -615,7 +615,7 @@
       "required_for": [
         "blender-scene-control"
       ],
-      "scope_note": "Talks to an addon inside a running Blender. Pinned: `uvx blender-mcp` was version-free through 7.9.6, and an unpinned invocation can change its tool surface mid-session. `uvx blender-mcp@1.8.3 install-addon` places the addon, but ENABLING it is inside the editor and cannot be done from outside that process -- so the profile prints the step rather than claiming it ran it. Note the difference between 'the MCP executable starts' and 'the addon is connected': the server answers initialize with no Blender running at all, and only a tool call that reaches the scene proves the second. Blender is discovered from %APPDATA%\\Blender Foundation, which Blender creates on first run whatever the install source -- 7.9.6 carried a maintainer's own Steam drive path here, which could never match on another machine. Telemetry: the addon has a consent-gated `telemetry_consent` preference and no telemetry endpoint; it is off unless the user enables it inside Blender, where this pack cannot reach it."
+      "scope_note": "Talks to an addon inside a running Blender. Pinned: `uvx blender-mcp` was version-free through 7.9.6, and an unpinned invocation can change its tool surface mid-session. `uvx blender-mcp@1.8.7 install-addon` places the addon, but ENABLING it is inside the editor and cannot be done from outside that process -- so the profile prints the step rather than claiming it ran it. Note the difference between 'the MCP executable starts' and 'the addon is connected': the server answers initialize with no Blender running at all, and only a tool call that reaches the scene proves the second. Blender is discovered from %APPDATA%\\Blender Foundation, which Blender creates on first run whatever the install source -- 7.9.6 carried a maintainer's own Steam drive path here, which could never match on another machine. Telemetry: the addon has a consent-gated `telemetry_consent` preference and no telemetry endpoint; it is off unless the user enables it inside Blender, where this pack cannot reach it."
     },
     {
       "id": "godot-mcp",
@@ -649,7 +649,7 @@
       "kind": "mcp-project-binary",
       "mcp": true,
       "license": "Apache-2.0",
-      "version": "0.89.0",
+      "version": "0.90.0",
       "github": {
         "owner": "IvanMurzak",
         "repo": "Unity-MCP"
@@ -703,7 +703,7 @@
       "scope_note": "CLI + host hook, zero standing tokens -- same slot as rtk, different mechanism, so they stack rather than compete: rtk filters ONE command's output, OMNI remembers output across calls and returns a handle instead of resending what the agent already saw. USE THE README'S NUMBERS, NOT THE LANDING PAGE'S. The page headlines '97.2% off a file read twice' and '~24%'; the README's own corpus of 9,478 executions says '1.4% from the filters, 5.1% with the ledger'. 97.2% is a best case for one re-read, not an expected value -- treat 5% as the number and anything above it as a bonus. Ships a real x86_64-pc-windows-msvc binary with SHA256SUMS (v0.7.8, 2026-08-25), which is why it is here and lowfat is not: lowfat v0.8.0 publishes darwin and linux-gnu only and integrates through a POSIX shell eval hook, the same native-Windows degradation this catalog already documents for rtk's non-Hermes hooks. Full host rewrite on Claude Code, Codex CLI and Gemini CLI; Hermes is supported; MCP-only fallback elsewhere. Stores a local SQLite ledger (permanent project knowledge, 30-day working data, 7-day verbatim traces) -- it is a cache of your own tool output, so treat it as project data, not a temp file. REWIND CAP, measured 2026-08-26 at 0.7.8: output above 65,536 bytes is truncated and NOT archived -- the marker says `full output not archived` and those bytes are unrecoverable, which the README's byte-for-byte guarantee does not qualify. Below the cap the guarantee holds and is self-verifying: the retrieve handle IS the content's SHA-256 prefix, and a 33,453-byte diff came back byte-identical. Head-to-head on this repo's git corpus: rtk 85.2%, OMNI 71.2% headline but only 6.4% once the truncated rows are excluded -- consistent with OMNI's own published 8.8% on git. Its value is the ledger, not the filter; see docs/TOOL-EVALUATIONS.md. Not auto-installed: a 5% saving does not justify rewriting every tool result on a machine by default."
     }
   ],
-  "pack_version": "8.6.11",
+  "pack_version": "8.6.12",
   "updated_utc": "2026-08-26",
   "providers": {
     "Grok": {
@@ -779,7 +779,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "8.6.11",
+  "catalog_version": "8.6.12",
   "updated": "2026-08-26",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

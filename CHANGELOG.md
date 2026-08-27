@@ -1,3 +1,69 @@
+## 8.6.12
+
+- **164 canonical skills total**, unchanged. A full-bundle currency audit:
+  stale offline payloads, seven behind-pins, and a hook steering agents at
+  tools that were not registered.
+- **The Full-Offline archive was shipping last month's tools.** Three of seven
+  payloads in `BUNDLED-TOOLS/offline/` were stale -- headroom **0.35.0**,
+  github-mcp-server **1.10.1**, and an August codebase-memory build. Found by
+  *running* the installer: `-Mode BundledFirst` pip-installed
+  `headroom_ai-0.35.0` seconds after the updater had fetched 0.36.5, because
+  `Update-From-GitHub.ps1` writes to `cache/` while the installer reads
+  `offline/`, and only `-UpdateCatalogOffline` bridges them. All three
+  refreshed, superseded files removed, `OFFLINE-MANIFEST.json` regenerated from
+  the bytes on disk.
+- **Seven pinned versions bumped**: github-mcp-server 1.10.1 -> **1.11.0** and
+  context7 4.0.2 -> **4.0.3** (both registered on all five providers), plus
+  chrome-devtools-mcp **1.8.0**, shadcn **4.19.0**, perplexity-mcp **1.2.1**,
+  unity-mcp **0.90.0**, blender-mcp **1.8.7**. context7 was **re-measured**,
+  not just renumbered: same two keyless tools, same 4,870 schema bytes.
+- **Registry trap recorded:** `blender-mcp` installs through uvx, so its version
+  is on **PyPI** (1.8.7). The npm package of the same name is unrelated and sits
+  at 1.0.1 -- the wrong registry would have "downgraded" the pin.
+- **The doctor now reports hooks that steer at unregistered MCP servers.**
+  codebase-memory-mcp's own SessionStart hook was injecting **695 bytes** of
+  "ALWAYS use codebase-memory-mcp tools FIRST" on every startup, resume, clear
+  and compact -- while codebase-memory was registered on no provider. Hooks that
+  emit nothing, and hooks that gate themselves, are exempt. Reported, never
+  rewritten.
+- **Correction:** the evaluations doc claimed the `cbm-code-discovery-gate` hook
+  "forces agents to reach for" cbm and that the capability was "mandatory". It
+  does neither -- its own comment says it never blocks a call. The lean-ctx
+  rejection stands on its measurements; the reasoning around it was overstated.
+- **A marketplace outlived its tool, and spread.** `claude-mem` was uninstalled
+  weeks ago and 1.29 GB reclaimed, yet `thedotmack` was still registered in
+  Claude's `known_marketplaces.json` *and* `settings.json`, still cloned at
+  140 MB, still present as **four orphaned 140 MB temp clones**, and had synced
+  into `~/.grok/marketplace-cache`, where grok reported
+  `thedotmack (0 plugins) [error] Git sync failed`. **Grok inherits Claude's
+  marketplace list**, so a dead entry upstream became a failing entry the user
+  never registered. Registration is additive everywhere and nothing removed it.
+- **New `BUNDLED-TOOLS/RETIRED-PLUGINS.json`**, the marketplace equivalent of
+  `RETIRED-SKILLS.json`. `Clean-StaleState.ps1` -- already run with `-Apply` at
+  the end of every install -- now clears retired marketplaces from Claude's JSON
+  registry and settings, Codex's `[marketplaces.*]`/`[plugins."*@*"]` tables,
+  and Grok's cache, whose directories are hashed and identifiable only by git
+  remote. Three rails: name **and** URL must match; never touch one whose plugin
+  is still installed or enabled; back up every edited config. That second rail
+  is load-bearing -- `claude-mem` is still shipped opt-in behind
+  `-WithClaudeMem` and registers this very marketplace, so without it the
+  install-time cleanup would unregister what the install just registered, every
+  run. **286 MB freed**; Grok re-synced to six legitimate marketplaces and
+  claude-mem did not return.
+- **`Set-McpProfile.ps1 -List` printed "enabled" and "ready to enable" the
+  same.** `code-intel` showed `[on]` with both `codebase-memory-mcp` and
+  `serena` "installed and ready", while only serena was ever registered -- the
+  profile had been switched on with a subset. Meanwhile cbm's own hook told
+  every agent to use its six tools first. The listing now says
+  `REGISTERED for the project above` versus `ready, but NOT registered`.
+- **Checked, not defects:** all 164 skills parse with valid frontmatter and
+  matching names on all five providers (red skill names in a Grok transcript are
+  its theme); the 12 profile-gated MCP servers reading `registered: none` are
+  deliberate and documented -- houseCARL alone costs ~41,768 tokens *every
+  turn*; and Hermes' 90,605-entry skills-hub index mentions claude-mem because
+  it catalogues what is *available*, not what is installed.
+- 100 contracts, green; all three new ones falsified before shipping.
+
 ## 8.6.11
 
 - **164 canonical skills total**, unchanged. rtk re-measured off the git corpus,

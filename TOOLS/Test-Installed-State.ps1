@@ -618,6 +618,166 @@ if ($hermesPluginIssues.Count -or $hermesHookIssues.Count) {
   }
 }
 
+# ------------------------------------ hooks that steer toward absent MCPs ---
+# A session hook that TELLS an agent to use an MCP server is only correct while
+# that server is registered. This pack deliberately profile-gates most of its
+# MCPs, so the two conditions drift apart silently and the cost is invisible:
+# the instructions are injected, the tools are not there, and the agent spends
+# the turn reaching for something it cannot call.
+#
+# Measured on the maintainer's machine 2026-08-27: codebase-memory-mcp's own
+# SessionStart hook was emitting 695 bytes of "ALWAYS use codebase-memory-mcp
+# tools FIRST", naming six tools, on every startup / resume / clear / compact,
+# while codebase-memory was registered on no provider at all.
+#
+# Reported, never rewritten. These hooks belong to the tools that installed
+# them, exactly as with autostarts above.
+$unregisteredMcp = @()
+foreach ($cs in $capabilityStates) {
+  $regCount = 0
+  if ($cs.registered_for) { $regCount = @($cs.registered_for).Count }
+  if ($regCount -eq 0) { $unregisteredMcp += [string]$cs.component }
+}
+
+$hookMisdirection = @()
+if ($unregisteredMcp.Count) {
+  $claudeSettingsPath = Join-Path $env:USERPROFILE '.claude\settings.json'
+  if (Test-Path -LiteralPath $claudeSettingsPath -PathType Leaf) {
+    try {
+      $sj = [IO.File]::ReadAllText($claudeSettingsPath) | ConvertFrom-Json
+      $hookCmds = New-Object System.Collections.Generic.List[string]
+      foreach ($evt in @('SessionStart', 'SubagentStart', 'UserPromptSubmit', 'PreToolUse')) {
+        $group = $null
+        try { $group = $sj.hooks.$evt } catch { $group = $null }
+        if (-not $group) { continue }
+        foreach ($matcher in @($group)) {
+          foreach ($h in @($matcher.hooks)) {
+            if ($h -and $h.command) { [void]$hookCmds.Add([string]$h.command) }
+          }
+        }
+      }
+      foreach ($cmd in $hookCmds) {
+        $p = $cmd.Trim()
+        if ($p.StartsWith('"')) { $p = $p.Split('"')[1] }
+        else { $p = $p.Split(' ')[0] }
+        if ($p.StartsWith('~')) { $p = $env:USERPROFILE + $p.Substring(1) }
+        $p = $p.Replace('/', '\')
+        if (-not (Test-Path -LiteralPath $p -PathType Leaf)) { continue }
+        $body = ''
+        try { $body = [IO.File]::ReadAllText($p) } catch { continue }
+        # Only a hook that PRODUCES text can misdirect. One that merely shells
+        # out to a binary and exits (like cbm's own augmenter, which its
+        # comments describe as never blocking) injects nothing.
+        $emitAt = -1
+        $m = [regex]::Match($body, 'cat\s*<<|echo\s|printf\s|Write-Output|Write-Host')
+        if ($m.Success) { $emitAt = $m.Index }
+        if ($emitAt -lt 0) { continue }
+        # A hook that gates itself -- a conditional early exit, so it stays
+        # quiet when the server is absent -- is correct as written, and
+        # flagging it would punish the fix. Only ungated emitters are reported.
+        #
+        # Checked across the whole body rather than the text before the first
+        # print: a gate is normally invoked by piping the payload into it
+        # (printf ... | gate || exit 0), and that printf is not the hook
+        # speaking, it is the hook asking. Anchoring on the first print
+        # construct therefore reads the guard as arriving too late.
+        if ($body -match '\|\|\s*(exit\s+0|return)\b') { continue }
+        foreach ($id in $unregisteredMcp) {
+          if ([string]::IsNullOrWhiteSpace($id)) { continue }
+          if ($body -match [regex]::Escape($id)) {
+            $hookMisdirection += ('{0} injects text naming MCP ''{1}'', which is registered on no provider' -f (Split-Path -Leaf $p), $id)
+          }
+        }
+      }
+    } catch { }
+  }
+}
+
+if ($hookMisdirection.Count) {
+  Write-Host ''
+  Write-UabsStep 'Session hooks pointing at unregistered MCP servers'
+  foreach ($m in ($hookMisdirection | Select-Object -Unique)) {
+    Write-UabsWarn $m
+    $warnings += $m
+  }
+  Write-Host '     Those instructions reach the model on every session; the tools do not.' -ForegroundColor DarkGray
+  Write-Host '     Either register the server for the projects that need it' -ForegroundColor DarkGray
+  Write-Host '       (TOOLS\Set-McpProfile.ps1 -Auto -Path <project>)' -ForegroundColor DarkGray
+  Write-Host '     or gate the hook so it stays quiet when the server is absent.' -ForegroundColor DarkGray
+  Write-Host '     This pack does not rewrite hooks it did not install.' -ForegroundColor DarkGray
+}
+
+# --------------------------------- pack tools shadowed by older copies ---
+# The installer records where it put each tool. Nothing checked that the
+# recorded copy is the one that actually RUNS, and on a machine with more than
+# one install location it usually is not: PATH order decides, and an older copy
+# earlier on PATH wins silently, forever.
+#
+# Measured 2026-08-27: codebase-memory-mcp had been updated to 0.10.8 under
+# %LOCALAPPDATA%\Programs, while %USERPROFILE%\.local\bin held a 0.9.0 binary
+# from six weeks earlier -- and .local\bin came first on PATH, so every caller,
+# including codebase-memory's own discovery hook (which hardcodes that path),
+# got 0.9.0. The update had "succeeded" every time it ran.
+#
+# Reported with both paths, never repaired: which copy should win is a PATH
+# decision, and this pack does not reorder anyone's PATH.
+$shadowed = @()
+try {
+  $stateFile = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\install-state.json'
+  if (Test-Path -LiteralPath $stateFile -PathType Leaf) {
+    $st = [IO.File]::ReadAllText($stateFile) | ConvertFrom-Json
+    if ($st.components) {
+      foreach ($prop in $st.components.PSObject.Properties) {
+        $entry = $prop.Value
+        if (-not $entry) { continue }
+        $recorded = $null
+        foreach ($k in @('exe', 'path', 'headroom', 'binary')) {
+          $v = $null
+          try { $v = $entry.$k } catch { $v = $null }
+          if ($v -and ([string]$v).EndsWith('.exe')) { $recorded = [string]$v; break }
+        }
+        if (-not $recorded) { continue }
+        if (-not (Test-Path -LiteralPath $recorded -PathType Leaf)) { continue }
+        $leaf = [IO.Path]::GetFileNameWithoutExtension($recorded)
+        $onPath = Get-Command $leaf -ErrorAction SilentlyContinue
+        if (-not $onPath -or -not $onPath.Source) { continue }
+        $a = [IO.Path]::GetFullPath($recorded)
+        $b = [IO.Path]::GetFullPath([string]$onPath.Source)
+        if ([string]::Equals($a, $b, [StringComparison]::OrdinalIgnoreCase)) { continue }
+        # Two copies is normal -- some tools install their own launcher as well
+        # as the pack's. Two copies that DIFFER is the hazard, because then an
+        # update to one silently leaves every caller on the other. Compared by
+        # length: cheap, and these are single-file builds, so a version change
+        # always moves it. Hashing a 274 MB binary on every doctor run is not
+        # worth the certainty.
+        $sizeA = (Get-Item -LiteralPath $a).Length
+        $sizeB = (Get-Item -LiteralPath $b -EA SilentlyContinue).Length
+        if ($sizeB -and $sizeA -eq $sizeB) { continue }
+        $shadowed += [pscustomobject]@{
+          component = $prop.Name; installed = $a; wins = $b
+        }
+      }
+    }
+  }
+} catch { }
+
+if ($shadowed.Count) {
+  Write-Host ''
+  Write-UabsStep 'Pack-installed tools shadowed by another copy on PATH'
+  foreach ($s in $shadowed) {
+    $m = ('{0}: this pack installed {1}, but PATH resolves {2} first' -f $s.component, $s.installed, $s.wins)
+    Write-UabsWarn $m
+    $warnings += $m
+  }
+  Write-Host '     Whichever comes first on PATH is what every caller gets, including' -ForegroundColor DarkGray
+  Write-Host '     hooks that hardcode a path. An update can succeed and change nothing.' -ForegroundColor DarkGray
+  Write-Host '     Compare them:  <path> --version   for each of the two above.' -ForegroundColor DarkGray
+  Write-Host '     This pack does not reorder your PATH.' -ForegroundColor DarkGray
+}
+$shadowReport = @($shadowed | ForEach-Object {
+  [ordered]@{ component = $_.component; installed = $_.installed; wins = $_.wins }
+})
+
 # ------------------------------------------------------------- autostarts ---
 # Boot-time launchers for AI tooling. This pack has never written one, so
 # NOTHING here is deleted: they are reported, and a dead one - an entry whose
@@ -653,7 +813,7 @@ $autostartReport = @($autostarts | ForEach-Object {
 })
 
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
-$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_hook_issues=@($hermesHookIssues);codex_skill_index=$script:codexSkillIndex;ai_autostarts=@($autostartReport);result=$doctorResult}
+$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_hook_issues=@($hermesHookIssues);codex_skill_index=$script:codexSkillIndex;ai_autostarts=@($autostartReport);hook_misdirection=@($hookMisdirection);shadowed_tools=@($shadowReport);result=$doctorResult}
 $reportPath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\installed-state-doctor.json'
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
 if($errors.Count){Write-UabsBad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}
