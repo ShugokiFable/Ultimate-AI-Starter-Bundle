@@ -703,7 +703,7 @@
       "scope_note": "CLI + host hook, zero standing tokens -- same slot as rtk, different mechanism, so they stack rather than compete: rtk filters ONE command's output, OMNI remembers output across calls and returns a handle instead of resending what the agent already saw. USE THE README'S NUMBERS, NOT THE LANDING PAGE'S. The page headlines '97.2% off a file read twice' and '~24%'; the README's own corpus of 9,478 executions says '1.4% from the filters, 5.1% with the ledger'. 97.2% is a best case for one re-read, not an expected value -- treat 5% as the number and anything above it as a bonus. Ships a real x86_64-pc-windows-msvc binary with SHA256SUMS (v0.7.8, 2026-08-25), which is why it is here and lowfat is not: lowfat v0.8.0 publishes darwin and linux-gnu only and integrates through a POSIX shell eval hook, the same native-Windows degradation this catalog already documents for rtk's non-Hermes hooks. Full host rewrite on Claude Code, Codex CLI and Gemini CLI; Hermes is supported; MCP-only fallback elsewhere. Stores a local SQLite ledger (permanent project knowledge, 30-day working data, 7-day verbatim traces) -- it is a cache of your own tool output, so treat it as project data, not a temp file. REWIND CAP, measured 2026-08-26 at 0.7.8: output above 65,536 bytes is truncated and NOT archived -- the marker says `full output not archived` and those bytes are unrecoverable, which the README's byte-for-byte guarantee does not qualify. Below the cap the guarantee holds and is self-verifying: the retrieve handle IS the content's SHA-256 prefix, and a 33,453-byte diff came back byte-identical. Head-to-head on this repo's git corpus: rtk 85.2%, OMNI 71.2% headline but only 6.4% once the truncated rows are excluded -- consistent with OMNI's own published 8.8% on git. Its value is the ledger, not the filter; see docs/TOOL-EVALUATIONS.md. Not auto-installed: a 5% saving does not justify rewriting every tool result on a machine by default."
     }
   ],
-  "pack_version": "8.6.12",
+  "pack_version": "8.6.13",
   "updated_utc": "2026-08-26",
   "providers": {
     "Grok": {
@@ -779,7 +779,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "8.6.12",
+  "catalog_version": "8.6.13",
   "updated": "2026-08-26",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

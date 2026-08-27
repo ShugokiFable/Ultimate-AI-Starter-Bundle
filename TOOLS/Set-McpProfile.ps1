@@ -143,27 +143,29 @@ function Get-UabsProfileScope($ProfileDef, $Server) {
   return 'project'
 }
 
-function Test-UabsProfileDetected($ProfileDef, [string]$ProjectPath) {
-  <# Top level only, deliberately: a recursive scan of a large tree would be
-     slow and would match a marker in some vendored dependency. #>
-  if ([string]::IsNullOrEmpty($ProjectPath)) { return $false }
-  if (-not (Test-UabsPath -LiteralPath $ProjectPath -PathType Container)) { return $false }
-  $d = $null
-  if ($ProfileDef.Contains('detect')) { $d = $ProfileDef['detect'] }
-  if (-not $d) { return $false }
+# Directories that hold someone else's code. A marker inside one of these is
+# a vendored dependency's, not this project's, and matching it is the false
+# positive the old top-level-only rule existed to avoid.
+$script:UabsDetectSkipDirs = @(
+  'node_modules', '.git', '.hg', '.svn', 'vendor', 'dist', 'build', 'out',
+  'target', '__pycache__', '.venv', 'venv', '.tox', '.gradle', 'Packages',
+  'bin', 'obj', '.next', '.cache', 'site-packages'
+)
+
+function Test-UabsProfileMarkersIn($d, [string]$Dir) {
   if ($d.Contains('files')) {
     foreach ($f in @($d['files'])) {
-      if (Test-UabsPath -LiteralPath (Join-UabsPath $ProjectPath $f)) { return $true }
+      if (Test-UabsPath -LiteralPath (Join-UabsPath $Dir $f)) { return $true }
     }
   }
   if ($d.Contains('globs')) {
     foreach ($g in @($d['globs'])) {
-      if (Get-ChildItem -LiteralPath $ProjectPath -Filter $g -File -ErrorAction SilentlyContinue | Select-Object -First 1) { return $true }
+      if (Get-ChildItem -LiteralPath $Dir -Filter $g -File -ErrorAction SilentlyContinue | Select-Object -First 1) { return $true }
     }
   }
   if ($d.Contains('json')) {
     foreach ($probe in @($d['json'])) {
-      $file = Join-UabsPath $ProjectPath $probe['path']
+      $file = Join-UabsPath $Dir $probe['path']
       if (-not (Test-UabsPath -LiteralPath $file -PathType Leaf)) { continue }
       try {
         $obj = [IO.File]::ReadAllText($file) | ConvertFrom-Json
@@ -171,6 +173,44 @@ function Test-UabsProfileDetected($ProfileDef, [string]$ProjectPath) {
         if ($prop -and @($probe['equals']) -contains [string]$prop.Value) { return $true }
       } catch { }
     }
+  }
+  return $false
+}
+
+function Test-UabsProfileDetected($ProfileDef, [string]$ProjectPath) {
+  <# The project root, THEN its immediate subdirectories -- depth 1, never
+     recursive.
+
+     Root-only was the original rule, for two good reasons: a recursive scan
+     of a large tree is slow, and it matches markers belonging to vendored
+     dependencies. Both still hold. What it missed is the shape people
+     actually work in: a WORKSPACE whose children are the projects.
+
+     Measured 2026-08-27 on the maintainer's Skyrim workspace: 45 mod
+     directories holding 327 .esp and 5,877 .psc files, and -Detect reported
+     "no profile markers found" because none of them sit at the root. The
+     agent then failed on missing houseCARL and Forge tools with nothing to
+     suggest, which is the failure this whole area exists to prevent.
+
+     Depth 1 keeps the cost bounded and keeps the vendored-dependency
+     objection answered: those live deeper, and the obvious ones are skipped
+     by name regardless. #>
+  if ([string]::IsNullOrEmpty($ProjectPath)) { return $false }
+  if (-not (Test-UabsPath -LiteralPath $ProjectPath -PathType Container)) { return $false }
+  $d = $null
+  if ($ProfileDef.Contains('detect')) { $d = $ProfileDef['detect'] }
+  if (-not $d) { return $false }
+
+  if (Test-UabsProfileMarkersIn $d $ProjectPath) { return $true }
+
+  $children = @()
+  try {
+    $children = @(Get-ChildItem -LiteralPath $ProjectPath -Directory -ErrorAction SilentlyContinue |
+                  Where-Object { $script:UabsDetectSkipDirs -notcontains $_.Name -and -not $_.Name.StartsWith('.') } |
+                  Select-Object -First 250)
+  } catch { $children = @() }
+  foreach ($child in $children) {
+    if (Test-UabsProfileMarkersIn $d $child.FullName) { return $true }
   }
   return $false
 }

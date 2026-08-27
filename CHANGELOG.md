@@ -1,3 +1,20 @@
+## 8.6.13
+
+- **164 canonical skills total**, unchanged. Detection could not see a
+  workspace of projects.
+- **327 plugin files, and `-Detect` found nothing.** 8.6.12 taught the skills
+  and installer to say "installed but not enabled here, run this". Pointed at a
+  real Skyrim workspace -- **45 mod directories, 327 `.esp`, 5,877 `.psc`** --
+  it answered "no profile markers found", because detection scanned only the
+  project root and not one marker sits there. Root-only was deliberate (a
+  recursive scan is slow and matches vendored dependencies) but it missed the
+  shape people actually work in: a workspace whose children are the projects.
+- **Now root + immediate subdirectories. Depth 1, never recursive.** 0.6 s on
+  that 45-project tree. Bounded at 250 children, and vendored directories
+  (`node_modules`, `vendor`, `dist`, `.venv`, ...) skipped by name, so the
+  original false-positive risk is answered rather than ignored.
+- 106 contracts, green; the new one pins both the bound and the skip-list.
+
 ## 8.6.12
 
 - **164 canonical skills total**, unchanged. A full-bundle currency audit:

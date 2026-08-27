@@ -2277,6 +2277,7 @@ def main() -> int:
         test_a_running_mcp_binary_cannot_fail_the_whole_install,
         test_an_unenabled_profile_is_never_reported_as_a_missing_tool,
         test_every_canonical_skill_reached_every_provider_tree,
+        test_profile_detection_sees_a_workspace_of_projects,
     ]
     failed = []
     for fn in tests:
@@ -4342,6 +4343,84 @@ def test_every_canonical_skill_reached_every_provider_tree() -> None:
         "copies from 1-TAILORED-PROVIDER-TREES. Run "
         "`python TOOLS/fanout_providers.py _CANONICAL-SKILLS .`"
         % (len(drifted), ", ".join(sorted(drifted)[:5]))
+    )
+
+def test_profile_detection_sees_a_workspace_of_projects() -> None:
+    """Detection scanned only the project root, and people do not work that way.
+
+    Measured 2026-08-27 on the maintainer's Skyrim workspace: 45 mod
+    directories holding **327 .esp and 5,877 .psc files**, and
+    ``Set-McpProfile -Detect`` reported *"no profile markers found"* -- because
+    not one marker sits at the root. Their agent then failed on missing
+    houseCARL and Forge tools with nothing to suggest, which is the exact
+    failure the profile system exists to prevent.
+
+    Root-only was deliberate, and its two reasons still stand: a recursive scan
+    of a large tree is slow, and it matches markers belonging to vendored
+    dependencies. Neither argues for missing the *workspace* shape, where each
+    immediate child is a project.
+
+    So: root, then immediate subdirectories. **Depth 1, never recursive.**
+    0.6 s on that 45-project tree, and `game-skyrim` now fires.
+
+    Two properties, both load-bearing:
+
+    1. **Bounded.** Depth 1 and a cap on how many children are examined, or a
+       directory with thousands of entries turns `-Detect` into a stall.
+    2. **Vendor directories skipped by name.** `node_modules`, `vendor`,
+       `dist`, `.venv` and friends hold someone else's markers. Matching those
+       is the false positive the original rule was protecting against, and
+       widening the scan without this would reintroduce it.
+    """
+    src = ps_code(ROOT / "TOOLS" / "Set-McpProfile.ps1")
+
+    assert "Test-UabsProfileMarkersIn" in src, (
+        "the per-directory marker test was folded back into the detector, so "
+        "detection can only look at one directory again"
+    )
+
+    # Property 1: bounded, and explicitly not recursive.
+    #
+    # Bound the assertion to the CHILD ENUMERATION, not to the file. A first
+    # draft accepted any "Select-Object -First" anywhere -- and the marker test
+    # a few lines above uses "Select-Object -First 1" for its glob probe, so
+    # deleting the real cap still passed. An assertion satisfied by an
+    # unrelated line is decoration.
+    idx = src.find('-Directory')
+    assert idx != -1, "the immediate-child directory enumeration is gone"
+    enum = src[idx:idx + 400]
+    cap = re.search(r"Select-Object\s+-First\s+(\d+)", enum)
+    assert cap and int(cap.group(1)) > 1, (
+        "child-directory enumeration is unbounded; a folder with thousands of "
+        "entries would stall -Detect. Found: %r" % enum[:200]
+    )
+    assert "-Recurse" not in src.split("Test-UabsProfileDetected")[-1][:2000], (
+        "detection went recursive; that is slow on a large tree and matches "
+        "markers inside vendored dependencies"
+    )
+
+    # Property 2: vendored trees are skipped by name.
+    assert "UabsDetectSkipDirs" in src, (
+        "the vendored-directory skip list is gone; detection will now match a "
+        "dependency's markers, which is why the scan was root-only to begin with"
+    )
+    for vendor in ("node_modules", "vendor", ".venv"):
+        assert vendor in src, (
+            "%r is no longer skipped during detection; a marker inside it "
+            "belongs to someone else's code" % vendor
+        )
+
+    # The reason has to survive, or the next reader re-narrows this. Read the
+    # RAW file: ps_code() strips comments on purpose, so the explanation is
+    # invisible to it -- and the explanation is exactly what is being pinned.
+    raw = read(ROOT / "TOOLS" / "Set-McpProfile.ps1")
+    assert "workspace" in raw.lower(), (
+        "the comment explaining WHY detection looks one level down is gone; "
+        "without it this reads as an accidental widening and gets reverted"
+    )
+    assert "327" in raw or "5,877" in raw or "45 mod" in raw, (
+        "the measurement that motivated the change is gone from the source; "
+        "'looks one level down' without the tree it was measured on is folklore"
     )
 
 if __name__ == "__main__":
