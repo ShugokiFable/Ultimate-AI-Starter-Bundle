@@ -211,6 +211,12 @@ def test_documented_skill_counts() -> None:
 def test_bootstrap() -> None:
     start = ROOT / "START-HERE.bat"
     assert start.is_file(), "canonical START-HERE.bat missing"
+    raw = start.read_bytes()
+    assert raw.startswith(b"@echo off"), (
+        "START-HERE.bat must begin with ASCII @echo off. A UTF-8 BOM makes "
+        "cmd.exe execute a mangled first token and print "
+        "a command-not-found error before every install."
+    )
     txt = read(start).lower()
     assert "install-aio.ps1" in txt
     assert "set \"exitcode=%errorlevel%\"" in txt
@@ -1719,6 +1725,7 @@ def test_local_launcher_failure_is_persistent_and_diagnosable() -> None:
 
 def test_provider_skill_sync_is_content_authoritative() -> None:
     common = read(ROOT / "TOOLS" / "UABS-Common.ps1")
+    common_code = ps_code(ROOT / "TOOLS" / "UABS-Common.ps1")
     installer = read(ROOT / "INSTALL-AIO.ps1")
 
     assert "function Sync-UabsProviderSkills" in common, (
@@ -1741,6 +1748,17 @@ def test_provider_skill_sync_is_content_authoritative() -> None:
     assert "existing instructions preserved" in installer, (
         "AIO can still overwrite an existing provider instruction file before merging its managed block"
     )
+    assert "function Get-UabsProviderSkillsDir" in common_code, (
+        "provider skill paths are inferred from provider homes again"
+    )
+    assert "Join-Path $env:USERPROFILE '.agents\\skills'" in common_code, (
+        "Codex user skills no longer use its supported ~/.agents/skills root"
+    )
+    assert installer.count("Get-UabsProviderSkillsDir -Provider $prov") >= 3, (
+        "one of the AIO skill writers still bypasses the canonical provider skill path"
+    )
+    for needle in ("managed-skills\\codex.json", "codex-legacy-skills-", "$oldSkill.Name -eq '.system'"):
+        assert needle in installer, f"safe Codex legacy-root migration missing {needle}"
 
 
 def test_codex_plugins_use_the_official_lifecycle() -> None:
@@ -3219,6 +3237,10 @@ def test_codex_index_is_measured_not_inferred_from_the_plugin_cache() -> None:
     assert "### Available skills" in code, (
         "the doctor no longer parses the skills block out of Codex's own prompt"
     )
+    assert r"(?:(?<desc>(?:(?!\\n).)*?) )?\(file:" in code, (
+        "the doctor cannot measure a fully collapsed Codex index whose entries "
+        "contain no description text"
+    )
     # The recursive cache walk is the specific bug. Its return would restore
     # the 319-entry answer even with the new parser sitting next to it.
     assert "-Recurse -Filter 'skills'" not in code, (
@@ -3351,10 +3373,10 @@ def test_dead_autostarts_are_reported_and_never_deleted() -> None:
         "%LOCALAPPDATA% would always look missing"
     )
     # Both autostart surfaces. Dropping either one hides half the entries.
-    assert "Start Menu\Programs\Startup" in common, (
+    assert r"Start Menu\Programs\Startup" in common, (
         "the Startup folder is no longer scanned"
     )
-    assert "CurrentVersion\Run" in common, (
+    assert r"CurrentVersion\Run" in common, (
         "the HKCU Run key is no longer scanned"
     )
     # PS 5.1 throws "Argument types do not match" for @() over a List[object]

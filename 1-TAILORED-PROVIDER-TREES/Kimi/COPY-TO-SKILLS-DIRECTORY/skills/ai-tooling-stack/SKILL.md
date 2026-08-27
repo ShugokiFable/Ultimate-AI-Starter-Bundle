@@ -101,7 +101,7 @@ takes it to 27 tools when the session is diagnosis rather than authoring.
 
 - **Claude Code:** houseCARL ships as a Claude plugin; Superpowers/Ponytail/Headroom often install as plugins. Skills in this pack still work as plain `SKILL.md`.
 - **Grok Build:** register MCP servers in `%USERPROFILE%\.grok\config.toml`. Use pack script `TOOLS\Fix-Grok-Codebase-Memory-Direct.ps1` only after editing the exe path. Skills go in `%USERPROFILE%\.grok\skills`.
-- **Codex:** skills in `%CODEX_HOME%\skills`; MCP per Codex docs. houseCARL may ship a `codex\` skill stub — still require MCP binary.
+- **Codex:** user skills in `%USERPROFILE%\.agents\skills`; `%CODEX_HOME%\skills` is legacy-only. MCP per Codex docs. houseCARL may ship a `codex\` skill stub — still require MCP binary.
 - **Kimi / Hermes / others:** copy provider-native skills; wire MCP if the harness supports it; otherwise say MCP unavailable and use CLI fallbacks.
 
 ## Hard rules

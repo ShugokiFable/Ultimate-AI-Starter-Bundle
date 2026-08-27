@@ -85,6 +85,7 @@ function Find-HouseCarlMcp {
   $candidates = @(
     (Join-Path $env:LOCALAPPDATA 'houseCARL\server\housecarl-mcp.exe'),
     (Join-Path $env:USERPROFILE '.claude\skills\housecarl\server\housecarl-mcp.exe'),
+    (Join-Path $env:USERPROFILE '.agents\skills\housecarl\server\housecarl-mcp.exe'),
     (Join-Path $env:USERPROFILE '.codex\skills\housecarl\server\housecarl-mcp.exe'),
     (Join-Path $env:USERPROFILE '.agents\skills\housecarl\server\housecarl-mcp.exe')
   )

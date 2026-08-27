@@ -6,23 +6,23 @@ Edition: provider-tailored
 Provider-native skills:
 
 ```text
-%CODEX_HOME%\skills
+%USERPROFILE%\.agents\skills
 ```
 
-Default when `CODEX_HOME` is unset:
+Supported user-level Agent Skills root:
 
 ```text
-%USERPROFILE%\.codex\skills
+%USERPROFILE%\.agents\skills
 ```
 
 Bundled evidence registry:
 
 ```text
-%CODEX_HOME%\skills\skyrim-memory\references\ERROR-REGISTRY.json
+%USERPROFILE%\.agents\skills\skyrim-memory\references\ERROR-REGISTRY.json
 ```
 
-Do not install this provider's tailored skills in another application's home or
-in a cross-tool shared directory.
+Do not copy a second set into `%CODEX_HOME%\skills`; Codex still scans that
+legacy compatibility root and would index every skill twice.
 
 ## Start every substantial Skyrim task
 
@@ -53,8 +53,8 @@ in a cross-tool shared directory.
 ## Codex controls
 
 - Follow the Codex `AGENTS.md` hierarchy and the closest project override.
-- Use `%CODEX_HOME%\skills` for this provider-specific pack.
-- Do not install this tailored pack in a cross-tool shared skills directory.
+- Use `%USERPROFILE%\.agents\skills`; it is Codex's supported user-level root.
+- Leave `%CODEX_HOME%\skills` for Codex's own `.system` cache only.
 - Use subagents only for independent exploration or review; one owner writes coupled files.
 - Keep Codex-native memories under Codex control.
 - Compile the exact target against exact local dependencies before packaging.

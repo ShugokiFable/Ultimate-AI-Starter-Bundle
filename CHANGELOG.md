@@ -1,3 +1,42 @@
+## 8.6.4
+
+- 160 canonical skills total, unchanged. A launcher defect that shipped in two
+  releases, a Codex skills root that moved, and the measurement that could not
+  see either.
+- **START-HERE.bat shipped with a UTF-8 BOM.** cmd.exe does not skip it, so every
+  user in 8.6.2 and 8.6.3 opened the launcher to `'∩»¿@echo' is not recognized`.
+  The install still completed, which is why it survived two releases. Introduced
+  here, not inherited: v8.6.1 starts `40 65 63`, v8.6.2 starts `EF BB BF` -- the
+  8.6.2 version bump rewrote it through a PowerShell path that defaults to
+  UTF-8-with-BOM. A contract now asserts the launcher begins with ASCII
+  `@echo off`, narrowly: two legacy skill scripts carry a BOM **on purpose**
+  because PS 5.1 needs it, so the guard names the launcher rather than the bytes.
+- **Codex user skills moved to `~/.agents/skills`.** OpenAI's loader treats
+  `$CODEX_HOME/skills` as deprecated compatibility and `$HOME/.agents/skills` as
+  supported; both are still read, and that is the danger. With both roots live,
+  measured: **314 entries, 125 duplicated names, and 0 visible description chars
+  -- all 314 entries reduced to a bare name.** After cleanup: 211 entries, 0
+  duplicates, 32 chars. The installer now migrates out of the legacy root, moving
+  only copies it can prove from its own ledger that it wrote.
+- **The doctor could not measure the degenerate index.** Its pattern required a
+  description between the name and `(file: ...)`, so a blank-description index
+  matched nothing and it silently fell back to estimating -- announcing 212 when
+  the truth was 314. The description group is optional now, and the result was
+  verified digit-for-digit against an independent parse of the same capture.
+- **AIO preambles synced on substance, not wording.** The CLI pair had the
+  physics but no anatomical term list; the web pair the reverse. All four now
+  carry the same substance, with web wording deliberately left different because
+  web surfaces filter server-side. `Web Light` is finally lighter: 1,910 bytes vs
+  Web's 2,257, down from a draft that was 14 bytes *larger*. No unrestraint
+  clause was touched. Also: two variants told every agent to recommend
+  `INSTALL-V7-AIO.ps1`, which does not exist in v8.
+- **LM Studio intermittent slowness is the KV cache**, documented with the
+  arithmetic. Measured from the GGUF header: `key_length` 256 (double the usual
+  128) gives 0.254 MB/token at fp16, so on 16 GB the cliff lands near 20k tokens
+  and the 64,000 Hermes floor wants 17.0 GB of cache before any weights. Q4_0 K/V
+  reconciles them.
+- 93 contracts, green.
+
 ## 8.6.3
 
 - 160 canonical skills total, unchanged. A usability fix, an optional LM

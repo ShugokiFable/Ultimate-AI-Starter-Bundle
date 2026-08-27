@@ -1,6 +1,8 @@
 ﻿# Codex tailored V5 copy map
 
-Copy all folders under `COPY-TO-SKILLS-DIRECTORY\skills` into `%CODEX_HOME%\skills`. Default home: `%USERPROFILE%\.codex`.
+Copy all folders under `COPY-TO-SKILLS-DIRECTORY\skills` into `%USERPROFILE%\.agents\skills`.
+Do not also copy them into `%CODEX_HOME%\skills`; that path is legacy-only and
+Codex scans both roots.
 
 Copy `COPY-TO-PROVIDER-HOME\AGENTS.md` to `%CODEX_HOME%\AGENTS.md`.
 
@@ -10,9 +12,9 @@ are never taken from the pack. AGENTS.md is the unrestraint/SOUL file.
 
 Copy `COPY-TO-WORKSPACE\AGENTS.md` into the user-selected workspace root. No workspace name is assumed.
 
-The registry is already at `%CODEX_HOME%\skills\skyrim-memory\references\ERROR-REGISTRY.json`.
+The registry is already at `%USERPROFILE%\.agents\skills\skyrim-memory\references\ERROR-REGISTRY.json`.
 
-The preflight guard is at `%CODEX_HOME%\skills\skyrim-versioned-workspace\scripts\guard.py`. Run it before any write or shell command.
+The preflight guard is at `%USERPROFILE%\.agents\skills\skyrim-versioned-workspace\scripts\guard.py`. Run it before any write or shell command.
 ## V5 extras
 
 After copying skills, optionally:

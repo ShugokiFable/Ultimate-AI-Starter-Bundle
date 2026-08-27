@@ -27,6 +27,60 @@ is what Hermes' preload picks up.
 See the `local-model-ops` skill for the rest: VRAM budget, KV arithmetic, and
 why a stale model id fails soft into `fallback_providers` instead of erroring.
 
+## "Sometimes fast, sometimes hella slow" is the KV cache
+
+If a local model is quick in a fresh chat and collapses later in the same
+conversation, nothing else has grabbed the GPU. The KV cache grew past VRAM and
+started spilling to system RAM over PCIe. It is the conversation itself.
+
+Work out the cliff before blaming anything else. Read the geometry from the
+GGUF header, never from the model card:
+
+```
+KV bytes/token = block_count x head_count_kv x (key_length + value_length) x bytes_per_element
+```
+
+`bytes_per_element` is 2 at fp16, 1 at Q8_0, ~0.5 at Q4_0.
+
+Measured on the maintainer's machine 2026-08-26 --
+`Huihui-Qwen3.8-27B-abliterated-UD-IQ3_XXS`, RTX 4080 SUPER (15.99 GB):
+
+| field | value |
+|---|---|
+| `block_count` | 65 |
+| `head_count_kv` | 4 |
+| `key_length` / `value_length` | 256 / 256 |
+| KV at fp16 | **266,240 bytes/token = 0.254 MB** |
+| weights on disk | 10.26 GB |
+
+That geometry is unusually KV-hungry: `key_length` 256 is double the common
+128, so this model costs twice the cache of a same-size model with 128.
+
+| context | KV @ fp16 | + weights | verdict on 16 GB |
+|---|---|---|---|
+| 20,000 | 5.1 GB | 15.4 GB | fits, barely |
+| 55,000 | 13.6 GB | 23.9 GB | spills |
+| 64,000 | 17.0 GB | 27.3 GB | exceeds the card before weights |
+
+So on this card the fp16 cliff is around **20k tokens**, and the 64,000 floor
+Hermes enforces is **not reachable at fp16 with a 27B**. The two constraints
+genuinely conflict, and quantising the cache is what resolves it:
+
+| KV quant | bytes/token | 64,000 ctx | + 10.26 GB weights |
+|---|---|---|---|
+| fp16 | 266,240 | 17.0 GB | 27.3 GB -- impossible |
+| Q8_0 | 133,120 | 8.5 GB | 18.8 GB -- still over |
+| Q4_0 | ~66,560 | 4.3 GB | 14.5 GB -- **fits**, ~1.5 GB spare |
+
+Enable KV cache quantisation in LM Studio's model-load settings. Q4_0 K/V is
+what makes a 27B usable at the context Hermes requires on a 16 GB card; Q8_0
+is enough if you stay near 20-30k. The alternative is a smaller model: weights
+under ~8 GB leave room for a Q8 cache at 64k.
+
+Check the real numbers for YOUR model rather than reusing these -- the geometry
+varies enormously between models, and `key_length` is the field that surprises
+people.
+
 ## Presets
 
 Sampling presets, copied from a working setup. They carry no paths, no

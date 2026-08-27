@@ -75,7 +75,7 @@ if(-not $SkipSkills){
     # automatic variable on Windows PowerShell 5.1. Never use $home as a local.
     $providerHome=Get-UabsProviderHome -Provider $provider -Catalog $catalog
     if (-not $providerHome) { Err "$provider provider home could not be resolved."; continue }
-    $destSkills=Join-Path $providerHome 'skills'
+    $destSkills=Get-UabsProviderSkillsDir -Provider $provider -Catalog $catalog
     $sourceSkills=Join-Path $PackRoot ("1-TAILORED-PROVIDER-TREES\$provider\COPY-TO-SKILLS-DIRECTORY\skills")
     if(-not(Test-Path -LiteralPath $sourceSkills -PathType Container)){
       Err "$provider bundled skill source is missing: $sourceSkills"
@@ -190,7 +190,7 @@ if(-not $SkipSkills){
           # 113 entries of 97 chars where the truth was 197 of 42. The (?!\\n)
           # guard makes spanning structurally impossible even if a future name
           # character sneaks past the class.
-          foreach($em in [regex]::Matches($block,'\\n- (?<name>[A-Za-z0-9][A-Za-z0-9._-]*(?::[A-Za-z0-9][A-Za-z0-9._-]*)?): (?<desc>(?:(?!\\n).)*?) \(file: (?<root>r\d+)/')){
+          foreach($em in [regex]::Matches($block,'\\n- (?<name>[A-Za-z0-9][A-Za-z0-9._-]*(?::[A-Za-z0-9][A-Za-z0-9._-]*)?): (?:(?<desc>(?:(?!\\n).)*?) )?\(file: (?<root>r\d+)/')){
             $entries += ,@($em.Groups['name'].Value, $em.Groups['desc'].Value, $em.Groups['root'].Value)
           }
           if($entries.Count){

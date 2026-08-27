@@ -47,6 +47,7 @@ if (-not $forgeRoot) {
     (Join-Path $PSScriptRoot '..\skyrim-forge\INSTALLATION.json'),
     (Join-Path $env:USERPROFILE '.grok\skills\skyrim-forge\INSTALLATION.json'),
     (Join-Path $env:USERPROFILE '.claude\skills\skyrim-forge\INSTALLATION.json'),
+    (Join-Path $env:USERPROFILE '.agents\skills\skyrim-forge\INSTALLATION.json'),
     (Join-Path $env:USERPROFILE '.codex\skills\skyrim-forge\INSTALLATION.json'),
     (Join-Path $env:USERPROFILE '.agents\skills\skyrim-forge\INSTALLATION.json')
   )) {

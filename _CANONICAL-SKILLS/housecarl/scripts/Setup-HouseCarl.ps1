@@ -85,6 +85,7 @@ function Find-HouseCarlMcp {
   $candidates = @(
     (Join-Path $env:LOCALAPPDATA 'houseCARL\server\housecarl-mcp.exe'),
     (Join-Path $env:USERPROFILE '.claude\skills\housecarl\server\housecarl-mcp.exe'),
+    (Join-Path $env:USERPROFILE '.agents\skills\housecarl\server\housecarl-mcp.exe'),
     (Join-Path $env:USERPROFILE '.codex\skills\housecarl\server\housecarl-mcp.exe'),
     (Join-Path $env:USERPROFILE '.agents\skills\housecarl\server\housecarl-mcp.exe')
   )
@@ -677,4 +678,3 @@ if (-not $SkipDotNetCheck -and (-not $script:Report['dotnet9'] -or -not $script:
   exit 4
 }
 exit 0
-

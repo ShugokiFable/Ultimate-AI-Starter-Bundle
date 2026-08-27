@@ -322,7 +322,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.6.3 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.6.4 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -434,9 +434,54 @@ if (-not $ToolsOnly) {
     $srcSkills = Join-Path $tailored "$prov\COPY-TO-SKILLS-DIRECTORY\skills"
     if (-not (Test-Path $srcSkills)) { Write-UabsBad "Missing $srcSkills"; continue }
     $providerHome = Get-UabsProviderHome -Provider $prov -Catalog $catalog
-    $destSkills = Join-Path $providerHome 'skills'
+    $destSkills = Get-UabsProviderSkillsDir -Provider $prov -Catalog $catalog
     Write-Host "  $prov -> $destSkills"
+
+    # Codex standardized on ~/.agents/skills but still scans the old
+    # $CODEX_HOME/skills root. Snapshot the old ownership ledger before the
+    # sync rewrites it, then move only proven bundle copies out of that legacy
+    # root after the supported root is healthy.
+    $legacyCodexSkills = $null
+    $legacyCodexDigests = @{}
+    if ($prov -eq 'Codex') {
+      $legacyCodexSkills = Join-Path $providerHome 'skills'
+      $ledgerPath = Join-Path (Get-UabsStateRoot) 'managed-skills\codex.json'
+      if (Test-Path -LiteralPath $ledgerPath -PathType Leaf) {
+        try {
+          foreach ($entry in @(([IO.File]::ReadAllText($ledgerPath) | ConvertFrom-Json).skills)) {
+            $legacyCodexDigests[[string]$entry.name] = [string]$entry.digest
+          }
+        } catch { Write-UabsWarn ('Codex legacy skill ledger unreadable; only current exact copies can migrate: ' + $_.Exception.Message) }
+      }
+    }
+
     Sync-UabsProviderSkills -From $srcSkills -To $destSkills -Provider $prov
+    if ($legacyCodexSkills -and
+        $legacyCodexSkills.TrimEnd('\') -ine $destSkills.TrimEnd('\') -and
+        (Test-Path -LiteralPath $legacyCodexSkills -PathType Container)) {
+      $legacyBackup = $null
+      $movedLegacy = 0
+      foreach ($oldSkill in @(Get-ChildItem -LiteralPath $legacyCodexSkills -Directory -Force -ErrorAction SilentlyContinue)) {
+        if ($oldSkill.Name -eq '.system' -or ($oldSkill.Attributes -band [IO.FileAttributes]::ReparsePoint)) { continue }
+        $expected = $legacyCodexDigests[$oldSkill.Name]
+        if (-not $expected) {
+          $currentSource = Join-Path $srcSkills $oldSkill.Name
+          if (Test-Path -LiteralPath $currentSource -PathType Container) { $expected = Get-UabsTreeDigest $currentSource }
+        }
+        if (-not $expected) { continue }
+        if ((Get-UabsTreeDigest $oldSkill.FullName) -cne $expected) {
+          Write-UabsWarn ('Codex legacy skill was modified; preserved: ' + $oldSkill.FullName)
+          continue
+        }
+        if (-not $legacyBackup) {
+          $legacyBackup = Join-Path (Get-UabsStateRoot) ('backups\codex-legacy-skills-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+          New-Item -ItemType Directory -Force -Path $legacyBackup | Out-Null
+        }
+        Move-Item -LiteralPath $oldSkill.FullName -Destination (Join-Path $legacyBackup $oldSkill.Name)
+        $movedLegacy++
+      }
+      if ($movedLegacy) { Write-UabsOk "Codex: moved $movedLegacy legacy duplicate skill(s) to $legacyBackup" }
+    }
     # provider home instructions
     $pmeta = $catalog.providers.$prov
     if ($pmeta.instructions) {
@@ -545,7 +590,7 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
 
   foreach ($prov in $Providers) {
     $providerHome = Get-UabsProviderHome -Provider $prov -Catalog $catalog
-    $skillsDir = Join-Path $providerHome 'skills'
+    $skillsDir = Get-UabsProviderSkillsDir -Provider $prov -Catalog $catalog
     $pstate = [ordered]@{ supported = $true; reason = ''; plugins = [ordered]@{} }
     $nativePlugins[$prov] = $pstate
 
@@ -1403,7 +1448,7 @@ if (-not $SkillsOnly) {
             $installed[$id] = @{ status='vendored'; skills=@($skipped); providers=@() }
           } else {
             foreach ($prov in $wanted) {
-              $destRoot = Join-Path (Get-UabsProviderHome -Provider $prov -Catalog $catalog) 'skills'
+              $destRoot = Get-UabsProviderSkillsDir -Provider $prov -Catalog $catalog
               foreach ($pair in $pairs) {
                 Copy-UabsRobo -From $pair.path -To (Join-Path $destRoot $pair.name)
               }
@@ -1814,7 +1859,7 @@ if (Test-Path -LiteralPath $statePath -PathType Leaf) {
 }
 
   $state = @{
-  version = '8.6.3'
+  version = '8.6.4'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

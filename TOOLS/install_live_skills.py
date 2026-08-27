@@ -32,7 +32,7 @@ from fanout_providers import SCOPED  # noqa: E402  single source of truth
 HOMES = {
     'Claude': r'%USERPROFILE%\.claude\skills',
     'Grok': r'%USERPROFILE%\.grok\skills',
-    'Codex': r'%USERPROFILE%\.codex\skills',
+    'Codex': r'%USERPROFILE%\.agents\skills',
     'Kimi': r'%USERPROFILE%\.kimi-code\skills',
     'Hermes': r'%LOCALAPPDATA%\hermes\skills',
 }

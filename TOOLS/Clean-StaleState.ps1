@@ -79,7 +79,7 @@ function Add-CleanTarget {
 # ---------------------------------------------------------------- skills ----
 $providerSkillDirs = [ordered]@{
   Claude = Join-Path $env:USERPROFILE '.claude\skills'
-  Codex  = Join-Path $env:USERPROFILE '.codex\skills'
+  Codex  = Join-Path $env:USERPROFILE '.agents\skills'
   Grok   = Join-Path $env:USERPROFILE '.grok\skills'
   Kimi   = Join-Path $env:USERPROFILE '.kimi-code\skills'
   Hermes = Join-Path $env:LOCALAPPDATA 'hermes\skills'

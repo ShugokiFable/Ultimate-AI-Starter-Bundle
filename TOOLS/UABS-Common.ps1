@@ -160,6 +160,14 @@ function Get-UabsProviderHome([string]$Provider, $Catalog) {
   return (Expand-UabsEnvPath $p.home_default)
 }
 
+function Get-UabsProviderSkillsDir([string]$Provider, $Catalog) {
+  # Codex still reads $CODEX_HOME\skills for compatibility, but its supported
+  # user-level Agent Skills root is $HOME\.agents\skills. Writing both makes
+  # Codex index every bundle skill twice and can erase every description.
+  if ($Provider -eq 'Codex') { return (Join-Path $env:USERPROFILE '.agents\skills') }
+  return (Join-Path (Get-UabsProviderHome -Provider $Provider -Catalog $Catalog) 'skills')
+}
+
 function Invoke-UabsGitHubLatest {
   param([string]$Owner, [string]$Repo)
   $uri = "https://api.github.com/repos/$Owner/$Repo/releases/latest"

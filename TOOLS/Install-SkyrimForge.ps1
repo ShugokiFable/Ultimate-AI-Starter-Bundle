@@ -234,8 +234,7 @@ foreach ($provider in $Providers) {
   if ($BundleOwnsProviderSkills) {
     # The all-in-one bundle already installed the canonical skill. Preserve that
     # single writer and add only Forge's per-machine launch descriptor beside it.
-    $providerHome = Get-UabsProviderHome -Provider $provider -Catalog $bundleCatalog
-    $providerSkill = Join-Path $providerHome 'skills\skyrim-forge'
+    $providerSkill = Join-Path (Get-UabsProviderSkillsDir -Provider $provider -Catalog $bundleCatalog) 'skyrim-forge'
     $providerSkillMd = Join-Path $providerSkill 'SKILL.md'
     if (-not (Test-Path -LiteralPath $providerSkillMd -PathType Leaf)) {
       throw "Expected bundle-owned Forge skill is missing for ${provider}: $providerSkillMd"
