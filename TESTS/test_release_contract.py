@@ -2272,6 +2272,8 @@ def main() -> int:
         test_doctor_reports_hooks_that_steer_at_unregistered_mcps,
         test_doctor_reports_pack_tools_shadowed_by_another_copy,
         test_retired_marketplaces_are_unregistered_not_just_undeployed,
+        test_always_on_mcp_pins_come_from_the_catalog,
+        test_manifest_covers_every_tracked_file,
     ]
     failed = []
     for fn in tests:
@@ -4004,6 +4006,134 @@ def test_retired_marketplaces_are_unregistered_not_just_undeployed() -> None:
     assert ".git\\config" in cleaner or ".git/config" in cleaner, (
         "the cleaner no longer identifies Grok's hashed marketplace caches by "
         "their git remote, which is the only way to tell which one is which"
+    )
+
+def test_always_on_mcp_pins_come_from_the_catalog() -> None:
+    """A version in two places is a version in the wrong place.
+
+    ``TOOLS/Add-Reasoning-MCPs.ps1`` wires the always-on core -- context7,
+    github, headroom -- onto all five providers. Until 8.6.12 it carried its
+    own hardcoded ``@upstash/context7-mcp@4.0.2``, and that made the catalog
+    decorative for the one npx server every provider registers.
+
+    Proven, not assumed: 8.6.12 bumped context7 to 4.0.3 in ``CATALOG.json``,
+    re-measured its capability record, and ran the full installer. Afterwards
+    **all five providers were still pinned to 4.0.2** -- Claude, Codex, Grok,
+    Kimi and Hermes -- because this one file had its own copy of the number.
+    A catalog bump that cannot reach an installed machine is not a bump.
+
+    The same file's own comment already said CATALOG entries "carry a version
+    to check rather than only a pin to trust", which is what made the
+    duplicate so easy to miss.
+    """
+    src = ps_code(ROOT / "TOOLS" / "Add-Reasoning-MCPs.ps1")
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    c7 = next((c for c in catalog["components"] if c.get("id") == "context7"), None)
+    assert c7, "CATALOG.json no longer describes context7"
+    declared = c7["version"]
+
+    # It must read the catalog rather than carry its own pin.
+    assert "CATALOG.json" in src, (
+        "Add-Reasoning-MCPs.ps1 no longer reads CATALOG.json, so the context7 "
+        "pin it writes to all five providers can drift from the catalog again"
+    )
+    assert "$context7Args" in src, (
+        "the resolved-from-catalog context7 argument list is gone"
+    )
+
+    # The literal pin may survive ONLY as the documented fallback, and it must
+    # not be what the server entry actually uses.
+    entry = re.search(r"id\s*=\s*'context7'.*?\}", src, re.S)
+    assert entry, "the context7 server entry is no longer recognisable"
+    body = entry.group(0)
+    assert "$context7Args" in body, (
+        "the context7 entry stopped using the catalog-resolved arguments"
+    )
+    assert not re.search(r"args\s*=\s*@\(\s*'-y'\s*,\s*'@upstash/context7-mcp@", body), (
+        "the context7 entry hardcodes its package pin again; bumping "
+        "CATALOG.json will silently not reach any provider"
+    )
+
+    # Whatever literal remains must be a fallback, and must never be NEWER than
+    # the catalog -- a fallback ahead of the catalog would install an untested
+    # version whenever the catalog read fails.
+    literals = re.findall(r"@upstash/context7-mcp@([0-9][0-9.]*)", src)
+    for lit in literals:
+        assert tuple(int(x) for x in lit.split(".")) <= tuple(
+            int(x) for x in declared.split(".")
+        ), (
+            "the hardcoded context7 fallback (%s) is newer than the catalog "
+            "declares (%s); if the catalog read fails this installs a version "
+            "nothing measured" % (lit, declared)
+        )
+
+def test_manifest_covers_every_tracked_file() -> None:
+    """``verify_manifest.py`` proves every RECORDED file exists. Nothing proved
+    every existing file is recorded, and the difference hid two bugs.
+
+    1. ``git ls-files`` **octal-quotes** any path containing a non-ASCII byte.
+       An em dash came back as
+       ``"0-UNRESTRAINT-PACKS/AIO-INSTRUCTION \\342\\200\\224 Compact.md"``,
+       quotes included, while ``os.walk`` yielded the real name. They never
+       matched, so eleven tracked files were dropped from the manifest in
+       silence. Fixed with ``ls-files -z``.
+    2. ``MANIFEST.json`` was skipped by bare NAME anywhere in the tree, which
+       also excluded the vendored Forge manifest at
+       ``BUNDLED-TOOLS/skyrim-forge/MANIFEST.json``. Now skipped only at the
+       root, where it genuinely cannot hash its own output.
+
+    Twelve tracked files were shipping unverified. Both failures are invisible
+    to a verifier that only walks the manifest, which is exactly why this walks
+    the other direction.
+
+    Skipped when git is unavailable -- this suite also runs from an extracted
+    archive, where there is no repository to compare against.
+    """
+    try:
+        raw = subprocess.run(
+            ["git", "-C", str(ROOT), "ls-files", "-z"],
+            capture_output=True, check=True,
+        ).stdout
+    except Exception:
+        return  # extracted archive: nothing to compare against
+
+    tracked = {p for p in raw.decode("utf-8").split("\0") if p}
+    tracked.discard("MANIFEST.json")
+
+    rows = json.loads(read(ROOT / "MANIFEST.json"))
+    recorded = {r["path"] for r in rows}
+
+    # The names that trigger this are non-ASCII by definition, and this
+    # message is printed to a cp1252 console. Escape them, or the contract
+    # dies with a UnicodeEncodeError instead of saying what is wrong -- which
+    # is exactly what the first version of it did.
+    def _safe(paths):
+        return ", ".join(p.encode("ascii", "backslashreplace").decode("ascii")
+                         for p in paths[:5])
+
+    uncovered = sorted(tracked - recorded)
+    assert not uncovered, (
+        "%d tracked file(s) are absent from MANIFEST.json and therefore ship "
+        "with no recorded hash; verify_manifest.py cannot see this because it "
+        "only checks that recorded files exist. First few: %s"
+        % (len(uncovered), _safe(uncovered))
+    )
+
+    phantom = sorted(recorded - tracked)
+    assert not phantom, (
+        "%d file(s) are recorded in MANIFEST.json but are not tracked; a fresh "
+        "clone will fail verification with MISSING for files it never had. "
+        "First few: %s" % (len(phantom), _safe(phantom))
+    )
+
+    # The generator must keep reading NUL-separated paths, or the non-ASCII
+    # names silently drop out again and this contract is the only thing that
+    # would have noticed.
+    gen = read(ROOT / "TOOLS" / "generate_manifest.py")
+    assert "'ls-files', '-z'" in gen or '"ls-files", "-z"' in gen, (
+        "generate_manifest.py stopped using `git ls-files -z`; paths with a "
+        "non-ASCII byte come back octal-quoted, never match the filesystem "
+        "walk, and vanish from the manifest without an error"
     )
 
 if __name__ == "__main__":

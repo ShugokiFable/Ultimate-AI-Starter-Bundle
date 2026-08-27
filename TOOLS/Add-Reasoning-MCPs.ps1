@@ -85,6 +85,30 @@ if (-not $hasNpx) {
 # skills-only run) means the entry is skipped, not guessed at.
 $ghExe = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\github-mcp-server\github-mcp-server.exe'
 
+# The context7 pin lives in CATALOG.json, not here. It was hardcoded until
+# 8.6.12, and that made the catalog decorative for the one server registered on
+# ALL FIVE providers: 8.6.12 bumped context7 4.0.2 -> 4.0.3, re-measured its
+# capability record, shipped it -- and a full installer re-run left every
+# provider still pinned to 4.0.2, because this file had its own copy. A version
+# in two places is a version in the wrong place.
+#
+# Falls back to the previous literal if the catalog cannot be read, so a
+# damaged catalog degrades to "one release behind" rather than "unpinned".
+$context7Args = @('-y', '@upstash/context7-mcp@4.0.2')
+try {
+  $catalogPath = Join-Path (Split-Path -Parent $PSScriptRoot) 'BUNDLED-TOOLS\CATALOG.json'
+  if (Test-Path -LiteralPath $catalogPath -PathType Leaf) {
+    $cat = [IO.File]::ReadAllText($catalogPath) | ConvertFrom-Json
+    $c7 = $cat.components | Where-Object { $_.id -eq 'context7' } | Select-Object -First 1
+    if ($c7 -and $c7.npx_args) {
+      $fromCatalog = @($c7.npx_args | ForEach-Object { [string]$_ })
+      if (@($fromCatalog | Where-Object { $_ -like '*context7-mcp@*' }).Count) {
+        $context7Args = $fromCatalog
+      }
+    }
+  }
+} catch { }
+
 # A machine installed before 7.9.7 still has sequential-thinking registered.
 # Say so, with the number and the command -- do not silently remove a server the
 # user may be relying on, and do not silently keep charging them for it either.
@@ -111,7 +135,7 @@ $servers = @(
   @{
     id      = 'context7'
     command = 'npx'
-    args    = @('-y', '@upstash/context7-mcp@4.0.2')
+    args    = $context7Args
     note    = 'live library/API docs - stops invented signatures'
     key     = 'CONTEXT7_API_KEY'   # optional: higher rate limits
   },

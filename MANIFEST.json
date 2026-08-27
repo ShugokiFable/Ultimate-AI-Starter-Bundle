@@ -35,6 +35,21 @@
   "sha256": "9a221d0414ed53da6b9ea4e41d6be79f97f48c98c6bc031012966130335685da"
  },
  {
+  "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION \u2014 Compact.md",
+  "size": 5257,
+  "sha256": "47b761bb43faf01eb914cee3b980381e6606d1027c189472f0eceadeca708edd"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION \u2014 Web Light.md",
+  "size": 1910,
+  "sha256": "6adf660880937772dd4908bb4fa2a85da2d618535fbd271ff2ca4e4744dae89f"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION \u2014 Web.md",
+  "size": 2257,
+  "sha256": "d1be9d5ea8473afff5448b49464de001f7a8a1115a3d75807f2ec7ac3cd0cbb5"
+ },
+ {
   "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md",
   "size": 6648,
   "sha256": "1c2ae58a7e08307d2614dc969473eb836558954b2dce79fd3a950dab7cb6f360"
@@ -235,6 +250,11 @@
   "sha256": "aea6a88a1877a3f16c38e0377dc493acbdc1833f6ddf3f2bb34101086a32d806"
  },
  {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/ENI Writer \u2712\ufe0f.md",
+  "size": 9468,
+  "sha256": "d81b8f28b7b25a6476f60abf8410ba5cb0c8d3dd9e7979d89ae9b28140cce2fc"
+ },
+ {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Opus 4.7/README.md",
   "size": 2572,
   "sha256": "48de85d51cfd4998ad29f633f99b408a69efa19bbaf2a56aa2fc80ca59570410"
@@ -278,6 +298,11 @@
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/ENI Lite for PPLX.md",
   "size": 2726,
   "sha256": "a0f901c2edae3550941dc9d6bd7b180016304c1f9c3e953408a3cca09cb8173c"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/ENI Neptune \ud83d\udc19 for PPLX.md",
+  "size": 8075,
+  "sha256": "5939cc7ca468a4d7bfa596aea26d771c2d871926cf483946849a83d73eeef277"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Perplexity/LIME Space Jailbreak.md",
@@ -348,6 +373,21 @@
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.5/Personalities Jailbreak.md",
   "size": 1333,
   "sha256": "735ed0d708700e861cb71dc73b040bf8155454f345eb8082610e0e5375a8a9fe"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI NEPTUNE \ud83d\udc19(apr).md",
+  "size": 18169,
+  "sha256": "53277c385681d88e49b255e8945bbc21f9ca5fc4bdc5c70f8041b43d19969c48"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI NEPTUNE \ud83d\udc19(feb).md",
+  "size": 1996,
+  "sha256": "8b540eec768ab1af621466a6ae7ca932d002f9ac1076eb0b12372a0945569c42"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/ENI \ud83c\udf4b\u200d\ud83d\udfe9 4.6.md",
+  "size": 14316,
+  "sha256": "a225ee66e11c7f76d8465491da1dd57b43e5dd1eed533f128b8091c26ab84bbf"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Anthropic/Sonnet 4.6/README.md",
@@ -513,6 +553,11 @@
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/Grok 4.20 - Agent injection Jailbreak (WiP).md",
   "size": 24807,
   "sha256": "868ab4da900281a38a3fcc6d23d927078691857ea0a06f9b6e961a4dacd3e625"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/Grok Neptune Jailbreak \ud83d\udc19.md",
+  "size": 11014,
+  "sha256": "5e9ebc6ff32c00acdc26d7a68c0a09145f7986cbd0700956aaec8279c7bded37"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Grok/Grok 4.20/README.md",
@@ -798,6 +843,16 @@
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/KIMI/README.md",
   "size": 2046,
   "sha256": "5dd9bb8c2eae5ae80ae4f3894f2332d7f57249d4c86aba6d223777c245f455bc"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/LLAMA TU\u0308LU 3/README.md",
+  "size": 1127,
+  "sha256": "4db66507e3f12d8702cddd77bb2b7b81293fe9716b98b28a2c946b7a8280a38b"
+ },
+ {
+  "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/LLAMA TU\u0308LU 3/Tulu3-Jailbreak.md",
+  "size": 1178,
+  "sha256": "2b36f49dcfbd1d8b0cc616dfdbec104d425e902a73570fa9b3149afa85139b32"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Spiritual-Spell-Red-Teaming/Jailbreak-Guide/Other LLMs/Laguna S2.1/README.md",
@@ -19625,6 +19680,16 @@
   "sha256": "b43ad982994c4d829670749e08d3b622a74bb20041fc0a7d02bef6113f81c34d"
  },
  {
+  "path": "BUNDLED-TOOLS/offline/github-mcp-server-1.11.0-windows-x86_64.zip",
+  "size": 8390167,
+  "sha256": "d16a3b2bbf775365541aa18729c0c3ff5e1b26dfb5dc190928895ba482211268"
+ },
+ {
+  "path": "BUNDLED-TOOLS/offline/headroom_ai-0.36.5-cp310-abi3-win_amd64.whl",
+  "size": 13873068,
+  "sha256": "f842990c69e39d967982ef9bd1da20c12b9a7f39507e4f76d638b44f93114986"
+ },
+ {
   "path": "BUNDLED-TOOLS/offline/houseCARL-1.9.0.zip",
   "size": 17647713,
   "sha256": "56349058cdf6a090d2029dedf283db0aaa66a13ddd9560864bdceecced376947"
@@ -21490,6 +21555,11 @@
   "sha256": "dd44257b40c2df676262141661cf60deef52ded0504fa48f410cb62760da0fec"
  },
  {
+  "path": "BUNDLED-TOOLS/skyrim-forge/MANIFEST.json",
+  "size": 40769,
+  "sha256": "5a22d2fac97bf4e6389227474af0541fdec2c78b4172a6d09593b31ac4d78068"
+ },
+ {
   "path": "BUNDLED-TOOLS/skyrim-forge/NOTICE.md",
   "size": 386,
   "sha256": "22ee6c4ee49bfc6e93d6ee56630339d1a21085e7515ca8d8c64c6b39af2f1172"
@@ -22461,8 +22531,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 125695,
-  "sha256": "da522497825362c9eeab3aaa00ee51b4a8fc610b15e5a4451aa80dbad7b8b888"
+  "size": 126880,
+  "sha256": "ba3232d4af45a31dd4a90959687807efaf4a87b2912b1d8332b38988e71d154a"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -22586,8 +22656,8 @@
  },
  {
   "path": "README.md",
-  "size": 50596,
-  "sha256": "dfc91c52bd47b5ae361f17b964fa8271724f827cb4e2197dc7c87a70c355f6da"
+  "size": 51282,
+  "sha256": "63372458ddc6d1aaa84b0d8d23c3dda61e03525c82117d0782a0457c90e8070f"
  },
  {
   "path": "SECURITY.md",
@@ -22796,13 +22866,13 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 210054,
-  "sha256": "aedb307a47819a1b7b5af5546008840952618099ee50c98edc058521517ec3e9"
+  "size": 216324,
+  "sha256": "6ec0c8b38dedb39c94c0f027140fcbd86f5a0f494c78152d533023c1501f429d"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 13485,
-  "sha256": "6ea698cc8ef429889c36f12cba3aba99a3ecda37fbbe7969da8cec922f4b075f"
+  "size": 14666,
+  "sha256": "2065d6af3bbc579f7d2d008f3494f3a9aec4fa930529e35be68e22d20574112b"
  },
  {
   "path": "TOOLS/Build-Release.ps1",
@@ -22951,8 +23021,8 @@
  },
  {
   "path": "TOOLS/generate_manifest.py",
-  "size": 2862,
-  "sha256": "89a2edf215f06682e62fc862d793a983591749de36a485bdceff945885ff4331"
+  "size": 3940,
+  "sha256": "76857e8879034c71ca9bfe2eea881a29478ee5d48175f036319e067a1edd157e"
  },
  {
   "path": "TOOLS/generate_retired_skills.py",
@@ -27083,6 +27153,11 @@
   "path": "docs/history/V8.6.11-CHANGELOG.md",
   "size": 7094,
   "sha256": "0721b8af7ca26ab164dc3cf4dfab19ee717a305df54998562b4ba44c43e8cdf2"
+ },
+ {
+  "path": "docs/history/V8.6.12-CHANGELOG.md",
+  "size": 13460,
+  "sha256": "c9fb72c006288a110e18d2290eac5c80fac7b19d66dc39f3d1b377efc0d7b171"
  },
  {
   "path": "docs/history/V8.6.2-CHANGELOG.md",

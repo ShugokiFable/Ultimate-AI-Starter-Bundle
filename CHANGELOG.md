@@ -62,7 +62,23 @@
   deliberate and documented -- houseCARL alone costs ~41,768 tokens *every
   turn*; and Hermes' 90,605-entry skills-hub index mentions claude-mem because
   it catalogues what is *available*, not what is installed.
-- 100 contracts, green; all three new ones falsified before shipping.
+- **The catalog was decorative for the server every provider runs.** Bumping
+  `context7` to 4.0.3 -- measured, capability record regenerated, contracts and
+  CI green -- then left **all five providers still pinned to 4.0.2** after a
+  full installer re-run. `TOOLS/Add-Reasoning-MCPs.ps1` carried its own
+  hardcoded `@upstash/context7-mcp@4.0.2` and never read `CATALOG.json`, four
+  lines below its own comment saying catalog entries "carry a version to check
+  rather than only a pin to trust". Now resolved from the catalog, literal kept
+  only as a fallback that a contract forbids from drifting newer. Re-wired; all
+  five verified at 4.0.3.
+- **Twelve files were shipping unverified.** `verify_manifest.py` proves every
+  *recorded* file exists; nothing proved every *existing* file is recorded.
+  `git ls-files` octal-quotes non-ASCII paths, so eleven files with em dashes or
+  emoji in their names never matched the filesystem walk and vanished from
+  `MANIFEST.json`; and `MANIFEST.json` was skipped by bare name anywhere,
+  excluding the vendored Forge manifest too. Fixed with `ls-files -z` and a
+  root-only skip: **5,428 -> 5,440 entries**, zero uncovered, zero phantom.
+- 102 contracts, green; all five new ones falsified before shipping.
 
 ## 8.6.11
 
