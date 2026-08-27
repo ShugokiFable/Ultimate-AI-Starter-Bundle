@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.6.9
+# Ultimate AI Starter Bundle v8.6.10
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -354,19 +354,26 @@ are covered in `local-model-ops/references/sillytavern.md`.
 
 Optional, and **not installed by default** -- see below for why that is a
 deliberate choice rather than an oversight. [RTK](https://github.com/rtk-ai/rtk)
-(Apache-2.0, single Rust binary) filters noisy dev commands. Measured here at
-rtk 0.45.0 against **pinned tag ranges**, so the numbers do not decay:
+(Apache-2.0, single Rust binary) filters noisy dev commands. Measured here
+**at rtk 0.46.0** against **pinned tag ranges**, so the corpus cannot drift:
 
 | Command | Raw | Through rtk | Saved |
 |---|---|---|---|
-| `git log --stat -20` | 102,301 B | 5,642 B | **95%** |
-| `git log v8.6.1..v8.6.5` | 14,250 B | 1,663 B | **88%** |
+| `git log v8.6.1..v8.6.5` | 14,250 B | 1,661 B | **88%** |
 | `git diff v8.6.1..v8.6.5` | 430,285 B | 54,251 B | **87%** |
 | `git diff v8.6.4..v8.6.5` | 33,453 B | 24,977 B | **25%** |
+| `git log --stat -20` | 128,145 B | 128,145 B | **0%** |
 
-**25% to 95%, depending entirely on the corpus.** A single headline number for
+**0% to 88%, depending entirely on the command.** A single headline number for
 this tool is not honest -- an earlier version of this table quoted 97% from
 `git diff HEAD~3`, which moves with every commit and measures 82.5% today.
+
+**Pin the tool version too, not just the corpus.** That last row used to read
+**95%**, measured at rtk 0.45.0. Upgrading to 0.46.0 dropped it to zero: plain
+`git log` still compresses ~86%, but `--stat` now passes straight through. The
+other three rows reproduced to the byte across the same upgrade. Pinning the git
+refs stopped the *corpus* from moving and did nothing about the *tool* moving,
+which is why every number here now carries the version it was taken on.
 
 It is a CLI, so it costs **zero standing tokens** -- the same reason this pack
 prefers Forge's CLI over Forge's MCP.
@@ -620,6 +627,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.10** - 2026-08-27. Pinning the corpus was only half of it. v8.6.8 pinned the rtk savings to tag ranges so the corpus could not drift; rtk then shipped **0.46.0** and `git log --stat -20` went from **95% to 0%** -- `--stat` now passes straight through, while plain `git log` still compresses ~86% and the other three rows reproduced **to the byte**. Every number now carries the tool version it was measured on, bound by contract to the version CATALOG declares, so bumping the version without re-measuring fails the build. That contract took two attempts: the first matched "any rtk X.Y.Z in the section" and passed while the stamp was deleted, because the paragraph explaining the regression still named both versions. Also: **six reverse-engineering tools evaluated, none bundled** -- four are desktop GUIs, and GhidraMCP, the only one that puts an agent in the loop, has not been touched since **2025-06-23** while Ghidra shipped through 12.1.3. And **lean-ctx measured**: best supply chain seen here (sigstore-signed checksums), but its headline 98.1% is `-m map`, a *symbol index* that duplicates `codebase-memory`, it saved **0.0%** on the same shell corpus as rtk and OMNI, and it carries **78 MCP tools**.
 
 **v8.6.9** - 2026-08-27. The preset was fine; the model settings were not. LM Studio keeps sampling presets and per-model **load** settings in different places, and the model's own settings are what it applies. Measured for one 27B family: four of five saved configs could not load as written -- `q8_0` K/V throughout, one with **three** parallel sessions, one at **75% offload** -- and the one actually in use asked for **18.32 GiB on a card with ~14.5**, spilling to system RAM over PCIe every session. New `Optimize-LMStudioModelConfig.ps1` reads each GGUF and your card, computes the largest context that genuinely fits at `q4_0`, and writes it with one session and full offload; dry-run by default, backs up first. `Get-KvBudget.ps1` stopped guessing its reserve: measured with **no model loaded**, 6.6 GB of a 16 GB card was already held by desktop apps, so the old `total - 1.5` budget said a 10.26 GB model fit when 9.2 GB was free. And the quant question is now arithmetic: at 65,536 with `q4_0`, only `UD-IQ2_S` and `UD-IQ3_XXS` reach the window, while `UD-Q3_K_XL` reaches **3,710** -- its 14.26 GB of weights do fit on a 16 GB card, leaving 0.2 GB, which is exactly why a weights-only fit check blesses it.
 

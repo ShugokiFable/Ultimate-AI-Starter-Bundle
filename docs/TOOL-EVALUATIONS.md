@@ -180,6 +180,117 @@ with the trust-boundary change stated plainly.
 
 ---
 
+## 2026-08-27 — reverse-engineering tools
+
+Six asked about together. **None bundled.** Not because they are bad — Ghidra
+and ImHex are excellent — but because five of six are the wrong *shape* for a
+pack that installs CLIs and MCP servers, and the sixth is stale.
+
+| tool | stars | licence | last push | verdict |
+|---|---|---|---|---|
+| [Ghidra](https://github.com/NationalSecurityAgency/ghidra) | 72.9k | Apache-2.0 | 2026-08-25 | documented — GUI, ~1.5 GB |
+| [GhidraMCP](https://github.com/LaurieWired/GhidraMCP) | 9.9k | Apache-2.0 | **2025-06-23** | **rejected — 14 months stale** |
+| [GhidrAssist](https://github.com/symgraph/GhidrAssist) | 710 | MIT | 2026-05-29 | documented — wrong direction |
+| [radare2](https://github.com/radareorg/radare2) | 24.7k | (LGPL, unlabelled) | 2026-08-27 | documented — best shape of the six |
+| [Frida](https://github.com/frida/frida) | 21.8k | (unlabelled) | 2026-08-18 | documented — process injection |
+| [ImHex](https://github.com/WerWolv/ImHex) | 54.6k | GPL-2.0 | 2026-08-26 | documented — GUI |
+
+**GhidraMCP is the one that would have mattered**, because it is the only one
+that puts an agent in the loop rather than a human. It is also the only one that
+fails on maintenance: last commit and last release both **2025-06-23**, 82 open
+issues, while Ghidra itself shipped through to **12.1.3** in that time. A bridge
+to a fast-moving GUI application, untouched for over a year, is a liability the
+pack would inherit.
+
+**Four of the six are desktop GUIs** (Ghidra, ImHex, and GhidrAssist which runs
+*inside* Ghidra). This pack's standing law is that GUI tools are user-side — it
+is the same rule that forbids launching SSEEdit, xEdit or the Creation Kit. It
+installs things an agent can drive from a command line.
+
+**GhidrAssist points the wrong way.** It wires an LLM into Ghidra so Ghidra can
+ask a model for explanations. This pack wires agents to tools, not tools to
+models, and it would want its own endpoint and key.
+
+**radare2 is the one with the right shape** — a scriptable CLI with real
+`w64` zips, pushed the day this was written, so it costs zero standing tokens
+and an agent can drive it directly. It is not bundled because of what is below,
+not because of what it is.
+
+**Frida** hooks and rewrites functions in a live process. That is legitimate for
+this domain — SKSE is itself a hook framework — but auto-installing a
+process-injection toolkit on someone's machine is not something a double-clicked
+installer should decide.
+
+**And for the domain this pack actually serves, the need is thin.** SKSE plugin
+work overwhelmingly resolves addresses through Address Library IDs and
+CommonLibSSE, which exist precisely so that individual modders do not each
+re-derive offsets. Fresh reverse engineering is a real but niche need, and the
+pack already carries `skse-plugin-authoring`, `skyrim-skse-commonlib` and
+`win64-native-builds` for the part that is not niche.
+
+If that changes, **radare2 first** (CLI, scriptable, cheap), and Ghidra as a
+documented user-side install.
+
+## 2026-08-27 — lean-ctx, measured
+
+[lean-ctx](https://github.com/yvgude/lean-ctx) (Apache-2.0, Rust, 3.6k★) was
+carried forward from the 2026-08-26 search as the only candidate claiming
+reversible compression. Measured, it is **documented, not bundled**.
+
+**Supply chain is the best of anything evaluated here.** The release ships
+`SHA256SUMS` *plus* `SHA256SUMS.sig` and `SHA256SUMS.pem` — sigstore signing.
+The Windows `x86_64-pc-windows-msvc` hash verified on download.
+
+**Its own numbers are real, but they are a different operation than they read
+as.** On `TOOLS/UABS-Common.ps1`, 67,219 bytes:
+
+| mode | bytes | saved |
+|---|---|---|
+| `-m map` | 2,355 | **96.5%** |
+| `-m signatures` | 2,144 | **96.8%** |
+| `-m outline` | 67,217 | 0.0% |
+| `-m summary` | 67,217 | 0.0% |
+| default `read` | 63,905 | 4.9% |
+
+The 96.5% is `map` mode, and map mode returns this:
+
+```
+fn pub Install-UabsKimiPlugin() @L1216-1326
+fn pub Restore-UabsHermesPluginScan() @L1328-1388
+```
+
+That is a **symbol index, not a compressed file**. Useful — and it is precisely
+what `codebase-memory-mcp` already provides in this pack, which the
+`cbm-code-discovery-gate` hook already forces agents to reach for first. The
+headline saving duplicates a capability that is already installed and already
+mandatory. **Gate 2.**
+
+**On shell output it did nothing here.** Same pinned corpus used for rtk and
+OMNI, through `lean-ctx -c`:
+
+| command | raw | lean-ctx | saved |
+|---|---|---|---|
+| `git log -15` | 40,757 | 40,757 | 0.0% |
+| `git status` | 53 | 53 | 0.0% |
+| `git diff v8.6.4..v8.6.5` | 33,453 | 33,453 | 0.0% |
+| `git diff v8.6.1..v8.6.5` | 430,285 | 430,285 | 0.0% |
+
+**Standing cost: 78 MCP tools.** The tool knows: it ships `lean-ctx tools
+minimal|standard|power` and a `tools health` report for "token-budget & rot".
+A server that needs its own tool-budget triage is a poor fit for a pack whose
+first principle is that MCP schemas are charged on every turn. **Gate 3.**
+
+The binary is **102 MB** against rtk's 9 MB.
+
+**What is genuinely novel, and worth stealing conceptually:** secret redaction
+is ON by default (`.env` and API keys masked *before* the model sees them), plus
+a path jail scoped to the project root and a 223-command shell allowlist.
+Neither rtk nor OMNI has anything like it. Its `gain` command also labels itself
+"not a benchmark", which is more honesty than most landing pages manage.
+
+Not bundled: the headline win duplicates `codebase-memory`, the MCP surface is
+78 tools, and measured compression on this corpus was zero.
+
 ## How to add a row
 
 Run the candidate through the four gates in order and write down where it

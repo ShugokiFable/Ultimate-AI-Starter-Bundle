@@ -3161,6 +3161,28 @@ def test_rtk_catalog_entry_keeps_its_windows_caveat() -> None:
     )
     assert "-g" in rtk_section, "the rtk section lost the global-install form"
 
+    # Pinning the corpus is only half of it. `git log --stat -20` measured 95%
+    # at rtk 0.45.0 and 0% at 0.46.0 -- the flag stopped being handled -- while
+    # the other three rows reproduced to the byte across the same upgrade. A
+    # measurement with no tool version on it cannot be re-checked, and rots
+    # silently the next time the tool ships.
+    #
+    # Both assertions bind to the version CATALOG declares, and to the exact
+    # phrase that stamps the measurement -- not to any mention of a version.
+    # A looser check passed while the stamp was removed, because the paragraph
+    # explaining the 0.45.0 -> 0.46.0 regression still named both versions.
+    declared = rtk.get("version", "")
+    assert declared, "CATALOG's rtk entry has no version field"
+    assert ("**at rtk %s**" % declared) in rtk_section, (
+        "the rtk table is not stamped '**at rtk %s**' -- the version CATALOG "
+        "declares. `git log --stat -20` measured 95%% at 0.45.0 and 0%% at "
+        "0.46.0, so a number with no tool version on it cannot be re-checked "
+        "and rots the next time the tool ships." % declared
+    )
+    assert ("AT rtk %s" % declared) in note, (
+        "CATALOG's rtk scope_note does not stamp its numbers 'AT rtk %s'" % declared
+    )
+
 
 def test_migrator_converges_plugins_additively_and_proves_the_payload() -> None:
     """`profile create --clone-from` copies the enabled list, not the payload.

@@ -1,3 +1,40 @@
+## 8.6.10
+
+- **164 canonical skills total**, unchanged. A shipped rtk number that stopped
+  being true, six reverse-engineering tools evaluated, and lean-ctx measured.
+- **Pinning the corpus was only half of it.** v8.6.8 pinned the rtk savings to
+  tag ranges so the corpus could not drift. rtk then shipped **0.46.0**, and
+  `git log --stat -20` went from **95% to 0%** -- `--stat` now passes straight
+  through, while plain `git log` still compresses ~86%. The other three rows
+  reproduced **to the byte** across the same upgrade. Every number in the rtk
+  table and catalog note now carries the tool version it was taken on, and a
+  contract binds that stamp to the version CATALOG declares -- so bumping the
+  version without re-measuring fails the build.
+- **The contract took two attempts, and the first one was decoration.** A
+  regex for "any rtk X.Y.Z in the section" passed while the stamp was deleted,
+  because the paragraph *explaining* the regression still named both versions.
+  It now asserts the exact stamp, bound to the declared version. Falsified three
+  ways including the real case -- bump the catalog version, docs go stale, fail.
+- **Six RE tools evaluated, none bundled.** Ghidra, GhidraMCP, GhidrAssist,
+  radare2, Frida, ImHex. Four are desktop GUIs, which this pack treats as
+  user-side by the same rule that forbids launching SSEEdit or the Creation Kit.
+  **GhidraMCP is the one that would have mattered** -- the only one that puts an
+  agent in the loop -- and it is the one that fails: last commit and last
+  release both **2025-06-23**, 82 open issues, while Ghidra shipped through to
+  12.1.3. radare2 has the right shape (scriptable CLI, real w64 builds) and is
+  the first pick if the need becomes real; for SKSE work it mostly is not,
+  because Address Library and CommonLibSSE already publish the offsets.
+- **lean-ctx measured, documented, not bundled.** Best supply chain of anything
+  evaluated here -- `SHA256SUMS` plus sigstore `.sig`/`.pem`, hash verified. But
+  its headline **98.1%** is `-m map`, which returns a *symbol index*, not a
+  compressed file -- exactly what `codebase-memory-mcp` already provides and the
+  `cbm-code-discovery-gate` hook already forces agents to use. On the same
+  pinned shell corpus as rtk and OMNI it saved **0.0% on every row**, and a
+  plain file read saved 4.9%. It carries **78 MCP tools** and ships its own
+  tool-budget triage command because of it. Its secret redaction, path jail and
+  223-command allowlist are genuinely novel and worth stealing conceptually.
+- 95 contracts, green.
+
 ## 8.6.9
 
 - **164 canonical skills total**, unchanged. A good LM Studio preset sitting on
