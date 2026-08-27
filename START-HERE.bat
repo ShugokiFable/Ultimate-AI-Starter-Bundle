@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title Ultimate AI Starter Bundle v8.6.5
+title Ultimate AI Starter Bundle v8.6.6
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0INSTALL-AIO.ps1" %*
 set "EXITCODE=%ERRORLEVEL%"
 echo.

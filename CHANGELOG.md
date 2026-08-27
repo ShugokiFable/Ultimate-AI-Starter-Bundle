@@ -1,3 +1,45 @@
+## 8.6.6
+
+- **164 canonical skills total**, up from 160. Four adopted from Anthropic's
+  Apache-2.0 `claude-plugins-official`: `skill-creator` (authoring, evals and
+  description tuning) and the `mcp-server-dev` set, `build-mcp-server` +
+  `build-mcpb` + `build-mcp-app`, kept together because the first hands off to
+  the other two. They are carried here rather than left as a plugin because a
+  plugin serves ONE provider and a canonical skill serves all five.
+- **The skills index stopped being the bottleneck.** Codex was carrying 211
+  entries with 32 visible description characters, 18 of them indexed twice.
+  `anthropic-skills@claude-cowork` was re-serving 14 of this pack's OWN skills
+  (`"creatorType": "user"`) as STALE copies that had drifted from canonical,
+  plus five more that duplicate Codex's native `documents` / `pdf` /
+  `spreadsheets` / `presentations` runtime plugins. Disabled, along with the
+  `obsidian` plugin whose five skills this pack already carries byte-identical.
+  Result: **180 entries, 52 visible chars** -- descriptions 63% wider, on every
+  skill, at a cost of zero capability.
+- **The installed-state doctor went FAIL (29 errors) to PASS.** 29 skills had
+  drifted from canonical across Codex, Grok, Kimi and Hermes; `ai-tooling-stack`
+  was stale on all four. Resynced.
+- **1.29 GB of claude-mem leftovers removed.** Two 271 MB `temp_*` marketplace
+  clones, a 478 MB cache, a third clone and a dead install manifest survived the
+  tool's own removal. `~/.claude/plugins` went 1.4 GB to 128 MB.
+- **RTK vs OMNI, measured rather than quoted.** On this repo's git corpus rtk
+  0.45.0 saved 85.2%; OMNI 0.7.8 showed 71.2% but **17.4 points of that was
+  truncation, not compression** -- above a 65,536-byte cap OMNI drops content
+  and does not archive it (`full output not archived`), which its byte-for-byte
+  guarantee does not qualify. Excluding those rows its real recoverable saving
+  was 6.4%, matching its own published 8.8% on git. Below the cap the guarantee
+  holds and is self-verifying: the retrieve handle IS the content SHA-256, and a
+  33,453-byte diff came back byte-identical. They are not rivals -- the ledger
+  is the half a filter cannot do -- and both stay `cli-optional`.
+- **The rtk catalog claim was unreproducible and is now pinned.** It quoted 97%
+  from `git diff HEAD~3`; `HEAD~3` MOVES, and it measures 82.5% today. Pinned to
+  tag ranges with the honest 25%-95% spread, because a single headline number
+  for a corpus-dependent filter is not honest -- the same standard this catalog
+  already applied to OMNI's landing page.
+- `_CANONICAL-SKILLS/THIRD-PARTY-NOTICES.md` records provenance for every
+  adopted skill, and what was reviewed and deliberately NOT taken, so the
+  decision is not re-litigated.
+- 93 contracts, green.
+
 ## 8.6.5
 
 - 160 canonical skills total, unchanged. The LM Studio folder gains the

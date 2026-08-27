@@ -43,6 +43,56 @@ ANSI).
 Added as `cli-optional`, not auto-installed. A 5% saving does not justify
 rewriting every tool result on someone's machine by default.
 
+#### Follow-up: RTK vs OMNI, measured on this repo
+
+The entry above took both tools' claims on trust. Measured, `rtk 0.45.0` and
+`omni 0.7.8` against the same git corpus in this repository:
+
+| command | raw | rtk | | omni | | omni fidelity |
+|---|---|---|---|---|---|---|
+| `git log -15` | 33,816 | 4,484 | 86.7% | 33,816 | 0.0% | left alone by design |
+| `git log v8.6.1..v8.6.5` | 14,250 | 1,663 | 88.3% | 14,250 | 0.0% | left alone by design |
+| `git status` | 53 | 35 | 34.0% | 53 | 0.0% | left alone by design |
+| `git diff v8.6.4..v8.6.5` | 33,453 | 24,977 | 25.3% | 28,228 | 15.6% | archived, retrievable |
+| `git log --stat -20` | 102,301 | 5,642 | 94.5% | 50,124 | 51.0% | **truncated, not archived** |
+| `git diff v8.6.1..v8.6.5` | 430,285 | 54,251 | 87.4% | 50,123 | 88.4% | **truncated, not archived** |
+| **total** | **614,158** | **91,052** | **85.2%** | **176,594** | **71.2%** | |
+
+**They are not competitors, and the earlier entry was right about that.** OMNI's
+own README puts it better than the catalog did: the ledger "removes bytes
+because they are already in the context, not because a pattern calls them
+noise" — "the half a filter cannot do." On the axis where they *do* overlap,
+filtering, RTK wins decisively.
+
+**OMNI's headline 71.2% here is not 71.2% of saving.** Two rows exceeded a
+65,536-byte cap and were cut, and the marker says so plainly:
+
+```
+[OMNI: 6730 lines omitted, full output not archived:
+ 430285 bytes over the 65536 byte rewind cap]
+```
+
+Above that cap the content is **gone**, not archived — which the README's
+four-guarantees table ("get the original back, byte-for-byte") does not
+qualify. Excluding the truncated rows, OMNI's real recoverable saving on this
+corpus was **6.4%** — close to its own published git figure of 8.8% and its
+5.1% aggregate. The honest reading is that OMNI's self-reported numbers are
+sound and its *apparent* large wins come from truncation.
+
+Below the cap the guarantee holds, and it is verifiable: `omni retrieve` on a
+33,453-byte diff returned it byte-for-byte identical, and the handle **is** the
+content's SHA-256 prefix, so retrieval is self-verifying.
+
+RTK is lossy by design with no archive and never claims otherwise, so its 85.2%
+and OMNI's 6.4% are not the same kind of number: RTK condenses and discards,
+OMNI's below-cap saving is fully recoverable. Both remain `cli-optional`,
+neither auto-installed, and stacking them is still the right recommendation.
+
+*Caveat: measured through `omni exec`, which is the documented way to try one
+command without installing hooks. A full host integration may distill more, and
+the ledger half cannot be measured in a single session at all — it only pays as
+repetition accumulates across real work.*
+
 ### REJECTED — lowfat (`zdk/lowfat`), Apache-2.0 — **gate 1, Windows**
 
 Filters CLI output and file content before it reaches the agent. Genuinely

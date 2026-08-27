@@ -1,4 +1,4 @@
-﻿# Ultimate AI Starter Bundle v8.6.5
+# Ultimate AI Starter Bundle v8.6.6
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -21,7 +21,7 @@ One distinction explains almost everything about how this pack behaves:
 | **INSTALLED** | The tool exists on disk | Disk space only. **Zero** effect on your AI chats. |
 | **ENABLED** | Registered in a provider's config | Its tool descriptions ride along inside **every message you send, in every chat, forever** — related to your task or not. |
 
-The 160 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, the heaviest server (houseCARL) burns ~17,000 tokens *every single turn*, and enabling the entire catalog would cost ~40,000+ tokens/turn before you've typed a word. That's why the installer enables almost nothing.
+The 164 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, the heaviest server (houseCARL) burns ~17,000 tokens *every single turn*, and enabling the entire catalog would cost ~40,000+ tokens/turn before you've typed a word. That's why the installer enables almost nothing.
 
 ### What's ON after install
 
@@ -390,7 +390,7 @@ tools appear -- three surprises for one double-click, so it moved behind a flag:
 
 ## What gets installed
 
-- **Provider skills** — 160 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
+- **Provider skills** — 164 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
 - **Native plugins** — Superpowers and Ponytail use each provider's official/native plugin lifecycle; Claude-only `claude-mem` installs Bun automatically when needed.
 - **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Hermes isolates the official Studio MCP in `roblox` and houseCARL in `skyrim`; the remaining browser/editor/game profiles stay off outside matching projects, and credentialed servers stay off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
@@ -1070,6 +1070,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.6.6** - 2026-08-26. The index was full of the pack's own skills. Codex was rendering **211 entries at 32 visible description characters**, 18 of them indexed twice -- and the plugin contributing 26 of them was not an Anthropic skill set at all: its manifest says `"creatorType": "user"`, so it was **this pack's own skills**, uploaded to Cowork and served back as *stale* copies that canonical had since moved past. Five more duplicated Codex's native `documents`/`pdf`/`spreadsheets`/`presentations` plugins. Disabled, with the `obsidian` plugin whose five skills this pack already carries byte-identical: **180 entries at 52 chars**, descriptions 63% wider on every skill for zero capability. The installed-state doctor went **FAIL (29 errors) to PASS** -- 29 skills had drifted from canonical across Codex, Grok, Kimi and Hermes -- and 1.29 GB of claude-mem leftovers went with them (`~/.claude/plugins` 1.4 GB -> 128 MB) months after the tool itself was uninstalled. Four skills adopted from Anthropic's Apache-2.0 marketplace into `_CANONICAL-SKILLS`, which installs to **all five providers** rather than one: `skill-creator` plus the `build-mcp-server`/`build-mcpb`/`build-mcp-app` set; eleven others reviewed and rejected on the record. RTK and OMNI measured head-to-head at last: rtk 85.2% against OMNI's 71.2%, of which **17.4 points is truncation, not compression** -- above a 65,536-byte cap OMNI drops content and says `full output not archived`, which its byte-for-byte guarantee does not qualify; its real recoverable saving was 6.4%, matching its own published 8.8% on git. And our own rtk claim of 97% was quoting `git diff HEAD~3` -- a MOVING reference that measures 82.5% today -- now pinned to tag ranges with the honest 25%-95% spread.
 
 **v8.6.5** - 2026-08-26. The setting nobody looks at. v8.6.4 documented KV-cache spill correctly and then prescribed the wrong fix: on the machine it was measured against, cache quantisation was **already on at `q8_0`**. The real culprit was `llm.load.numParallelSessions: 2` -- a multiplier on the entire cache, with nothing in the name to suggest it costs VRAM. At 65,536 context on a 16 GB card holding 10.26 GB of weights, 2 sessions + q8_0 wants 16.3 GB against 4.23 available, 1 session + q8_0 still wants 8.1, and only **1 session + q4_0** fits at 4.1 GB (max context 68,205). New `Get-KvBudget.ps1` reads the GGUF header and your GPU and prints max context at each cache precision, with `-Sessions` so the multiplier is visible; it flags `key_length` 256 as double the common 128, which doubles a model's cache and appears on no model card. New `Hermes 16GB` preset is the first with a populated `load` block -- 65,536 context, q4_0 K/V, flash attention, full offload, one session -- with every key read out of LM Studio's own config files, because an invented config key is silently ignored rather than rejected.
 

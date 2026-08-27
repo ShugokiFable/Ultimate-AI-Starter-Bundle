@@ -1,11 +1,11 @@
-﻿{
+{
   "pack": "Ultimate AI Starter Bundle",
-  "version": "8.6.5",
-  "generated": "2026-08-26",
-  "release_tag": "v8.0.4",
-  "canonical_skills": 160,
+  "version": "8.6.6",
+  "generated": "2026-08-27T02:21:24Z",
+  "release_tag": "v8.6.6",
+  "canonical_skills": 164,
   "provider_trees": 5,
-  "registry_entries": 160,
+  "registry_entries": 164,
   "gates": [
     "TESTS/Test-Pack.ps1",
     "TESTS/test_release_contract.py",
