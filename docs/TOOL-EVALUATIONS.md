@@ -379,8 +379,27 @@ Verified per subcommand by watching `%LOCALAPPDATA%\rtk\tee`:
 | Subcommand | Tee written? |
 |---|---|
 | `rtk test` | **yes — complete** (all 96 result lines, 5,409 B) |
-| `rtk grep` | partial (6,482 of 17,588 B, per-file chunks) |
+| `rtk grep` | partial (6,482 of 17,588 B) **but prints the retrieval command** |
 | `rtk git`, `rtk ls`, `rtk read`, `rtk json`, `rtk wc` | no |
+
+`rtk grep` cuts each file at 25 hits and appends
+`+28 more in <file> [see remaining: tail -n +26 "<tee path>"]` — the truncation
+is recoverable, not lost, which is closer to OMNI's handle model than to
+discarding.
+
+### What the filters actually drop
+
+The `-g` hook applies these to commands you did not opt into, so it matters
+what each one removes beyond bytes:
+
+| Filter | Silently gone |
+|---|---|
+| `rtk ls -la` | **timestamps and owner**, and sizes rounded (`36.6K` for 37,481 B) — the two usual reasons to pass `-la` |
+| `rtk grep` | middle path segments (`TOOLS/.../hooks/assumption_gate.py`) |
+| `rtk find` | directory prefixes, stripped or regrouped |
+
+In each case the saving is real and the output has stopped being a value you can
+pipe into anything else.
 
 So the blanket claim was false for the one subcommand where an archive matters
 most — a test runner, where you filter to the failure and may then want the

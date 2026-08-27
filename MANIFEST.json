@@ -19531,8 +19531,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 37481,
-  "sha256": "9a29fe5380a8fb663f8923b2e24d3c8cc2e4bd719aaf3f2e3561f0abe1ff10d5"
+  "size": 38212,
+  "sha256": "ca3ec9510a4dd0774bd51843de762c5e6c172ed2801bf15aecb16280ef7ce897"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
@@ -22591,8 +22591,8 @@
  },
  {
   "path": "README.md",
-  "size": 48213,
-  "sha256": "412d7af3379b278386f78ceb359953ca863cae563fb1108278f6bce74f156725"
+  "size": 48920,
+  "sha256": "21967fbac210538aee6017221092aafd90b5873b9cf71bf2afde41653ddb001e"
  },
  {
   "path": "SECURITY.md",
@@ -26646,8 +26646,8 @@
  },
  {
   "path": "docs/TOOL-EVALUATIONS.md",
-  "size": 21021,
-  "sha256": "2880f1d28586b38d764d4659ab5f459ee4c3c58085a4a08120802ce7853539d8"
+  "size": 21814,
+  "sha256": "35ec598872835725cd163a95b0d6ee054d36499e9c019ac19ea1159b1b23d0e5"
  },
  {
   "path": "docs/history/FINAL-AUDIT-v5.0.0.md",
@@ -27086,8 +27086,8 @@
  },
  {
   "path": "docs/history/V8.6.11-CHANGELOG.md",
-  "size": 6587,
-  "sha256": "08527e6c1d725239f7dc9b92cfbbdf98e246ca27d38f64eed5209f33e738ce6d"
+  "size": 7094,
+  "sha256": "0721b8af7ca26ab164dc3cf4dfab19ee717a305df54998562b4ba44c43e8cdf2"
  },
  {
   "path": "docs/history/V8.6.2-CHANGELOG.md",

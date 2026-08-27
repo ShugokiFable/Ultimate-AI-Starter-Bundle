@@ -431,7 +431,18 @@ the catalog said flatly that rtk keeps no archive. That holds for `rtk git`,
 `rtk ls`, `rtk read`, `rtk json` and `rtk wc` -- verified, no tee file is
 written. It is **false** for `rtk test`, which writes a *complete* tee log (all
 96 result lines) to `%LOCALAPPDATA%\rtk\tee` and prints the path, and only
-partly true of `rtk grep`, which tees 6,482 of 17,588 bytes in per-file chunks.
+partly true of `rtk grep`, which tees 6,482 of 17,588 bytes in per-file chunks
+**and prints the retrieval command inline** -- it cuts each file at 25 hits and
+appends `+28 more in <file> [see remaining: tail -n +26 "<tee path>"]`, so that
+truncation is recoverable rather than lost.
+
+**Know what the filters drop**, because `-g` applies them to commands you did
+not opt into. `rtk ls -la` removes **timestamps and owner** and rounds sizes
+(`36.6K` for 37,481 B) -- it cannot answer when a file changed or how big it
+exactly is, the two usual reasons to pass `-la`. `rtk grep` abbreviates middle
+path segments to `TOOLS/.../hooks/assumption_gate.py`. `rtk find` strips or
+regroups directory prefixes. In each case the saving is real and the output has
+stopped being a value you can pipe.
 
 #### Installing it, and why the hook stays off
 
