@@ -76,7 +76,54 @@ MUTATING_HINTS = (
     "create", "update", "delete", "remove", "write", "push", "merge", "close",
     "add", "set", "post", "send", "upload", "fork", "rename", "move", "start",
     "stop", "cancel", "run", "execute", "install", "publish", "revoke",
+    # Added when windows-mcp entered the catalog. Every verb above is one a WEB
+    # API would use. A server that drives the machine changes state in a
+    # different vocabulary and none of it was here, so this sweep would have
+    # called Click, Type, Shortcut, PowerShell, Registry, Clipboard, MultiEdit
+    # and Process against the operator's live desktop, with arguments
+    # synthesized from each schema. Skipping them is the floor, not the fix.
+    "click", "type", "press", "key", "shortcut", "drag", "scroll", "shell",
+    "registry", "clipboard", "edit", "select", "kill", "terminate", "restart",
+    "launch", "open", "process", "notify", "notification",
 )
+
+# The line above is a BLOCKLIST of name fragments, and this file already knows
+# what is wrong with those: the environment handling below was converted to an
+# allowlist for exactly this reason. A blocklist fails open on the name nobody
+# predicted, and two survive the extension even against a server whose tools we
+# have read -- windows-mcp's `App` launches programs and `FileSystem` writes
+# files. Neither contains a hint, and neither should ever be called blind.
+#
+# So a server that drives the machine is not swept at all. WHICH servers those
+# are is a catalog fact rather than a guess about spelling, and the refusal
+# points at the tool that answers the same question without calling anything.
+CONTROLS_MACHINE_NOTE = """%s drives the local machine: keyboard, mouse, shell,
+registry or filesystem. This sweep calls EVERY tool a server advertises with
+arguments synthesized from its schema, which against that surface means typing
+into whatever window has focus and running whatever PowerShell the sample
+produces.
+
+Nothing was called. For the numbers a profile decision actually needs -- tools,
+schema bytes, tokens per turn -- use the tool that only reads:
+
+    TOOLS\\Measure-McpSchemaCost.ps1 -Command '%s' -Name %s
+
+To sweep it anyway, on a machine you accept will be driven, pass
+--i-accept-desktop-control."""
+
+
+def controls_machine(component_id):
+    """True when CATALOG.json marks this component as driving the machine."""
+    path = os.path.join(ROOT, "BUNDLED-TOOLS", "CATALOG.json")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            catalog = json.load(fh)
+    except Exception:
+        return False
+    for component in catalog.get("components", []):
+        if component.get("id") == component_id:
+            return bool(component.get("controls_machine"))
+    return False
 
 AUTH_MARKERS = ("api key", "unauthorized", "payment required",
                 "insufficient credits", "authentication", "forbidden")
@@ -260,6 +307,10 @@ def main() -> int:
         return 2
     command, component_id = sys.argv[1], sys.argv[2]
     include_mutating = "--include-mutating" in sys.argv[3:]
+    # Before anything is called, not after.
+    if controls_machine(component_id) and "--i-accept-desktop-control" not in sys.argv[3:]:
+        print(CONTROLS_MACHINE_NOTE % (component_id, command, component_id))
+        return 2
     record = measure(command, component_id, include_mutating=include_mutating)
 
     print("%s -- %d tools, %d schema bytes, no credentials\n"

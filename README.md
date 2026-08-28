@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.6.13
+# Ultimate AI Starter Bundle v8.7.0
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -685,6 +685,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.0** - 2026-08-27. The desktop, and a router worth 38,900 tokens a turn. New **`windows` profile** (windows-mcp): click, type, shortcuts, PowerShell, registry and filesystem over UI Automation -- the one surface Playwright and chrome-devtools cannot reach -- measured at **20 tools, 22,088 bytes, ~5,522 tokens/turn**, off by default with **no detect markers at all**, because no file on disk is evidence that an operator wants an agent clicking their mouse. Measuring it exposed that the capability sweep would have *driven* that desktop: its guard was a blocklist of REST verbs, and the one call that did land was safe only because upstream happened to order an enum `read` before `write`. **super-mcp-router** measured at 11 tools / 11,386 bytes / **~2,846 tokens per turn, fixed** -- against houseCARL's 41,768 on every turn -- and proven end to end against this pack's own houseCARL, though deliberately not wired yet. Plus a UTF-8 BOM the schema-cost tool had been sending on its first frame for seven releases.
 
 **v8.6.13** - 2026-08-27. Detection could not see a workspace of projects. 8.6.12 taught the skills and installer to say "installed but not enabled here, run this" -- then pointed at a real Skyrim workspace of **45 mod directories, 327 `.esp` and 5,877 `.psc` files**, `Set-McpProfile -Detect` answered *"no profile markers found"*, because it scanned only the root and not one marker sits there. Root-only was deliberate and its reasons were sound (recursive scans are slow and match vendored dependencies), but it missed the shape people work in. Now root **plus immediate subdirectories, depth 1, never recursive** -- 0.6 s on that tree -- bounded at 250 children with `node_modules`, `vendor`, `dist`, `.venv` and friends skipped by name.
 

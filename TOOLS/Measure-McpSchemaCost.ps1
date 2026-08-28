@@ -77,6 +77,28 @@ $psi.UseShellExecute = $false
 $psi.CreateNoWindow = $true
 $psi.StandardOutputEncoding = New-Object System.Text.UTF8Encoding $false
 
+# Windows PowerShell 5.1 puts a UTF-8 BOM in front of the FIRST frame this tool
+# writes to the child, and windows-mcp's pydantic parser rejects the whole
+# initialize message for it:
+#
+#   Invalid JSON: expected value at line 1 column 1
+#   [type=json_invalid, input_value='\ufeff{"method":"initialize"...
+#
+# Every server measured before it tolerated the BOM in silence, which is how a
+# tool whose entire job is speaking MCP the way a provider does spent seven
+# releases sending something no provider sends.
+#
+# The BOM is not written by the code below. Reading $proc.StandardInput builds
+# .NET's own StreamWriter and sets AutoFlush, and StreamWriter.Flush() emits the
+# encoding's preamble before any content -- so it is in the pipe before this
+# script has a handle. Wrapping BaseStream in a BOM-less writer therefore does
+# NOT fix it; that was tried first and the child still received EF BB BF.
+# Console::InputEncoding is what that writer is constructed from, so it is the
+# only lever that lands early enough, and it has to be set before Start().
+$prevConsoleIn = $null
+try { $prevConsoleIn = [Console]::InputEncoding } catch { }
+try { [Console]::InputEncoding = New-Object System.Text.UTF8Encoding $false } catch { }
+
 $proc = [System.Diagnostics.Process]::Start($psi)
 try {
   $send = {
@@ -156,4 +178,5 @@ try {
 } finally {
   if (-not $proc.HasExited) { $proc.Kill() }
   $proc.Dispose()
+  if ($prevConsoleIn) { try { [Console]::InputEncoding = $prevConsoleIn } catch { } }
 }

@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "catalog_version": "8.6.13",
-  "pack_version": "8.6.13",
+  "catalog_version": "8.7.0",
+  "pack_version": "8.7.0",
   "updated_utc": "2026-08-27T20:44:01Z",
   "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 146 skill bodies are far larger than the description index an agent actually reads. There is no equivalent discount for MCP. So the servers here are NOT registered globally: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
   "reads": "TOOLS/Set-McpProfile.ps1",
@@ -480,6 +480,39 @@
           }
         }
       ]
+    },
+    {
+      "id": "windows",
+      "title": "Windows desktop control through UI Automation (windows-mcp)",
+      "scope": "global",
+      "why": "Every other capability here stops at a file or a browser tab. This one drives the machine: clicking, typing, shortcuts, PowerShell, the registry, the filesystem, windows and processes. It is the only way an agent in this pack can operate a native application, and UI Automation means it can read controls without spending a vision call on a screenshot. It costs ~5,522 tokens on every turn while enabled (20 tools, 22,088 bytes, measured 2026-08-27), which is cheap for the surface and still far too much to carry when you are not using it -- hence off by default, like everything else in this file. Global scope rather than project: a desktop is not a property of a repository, so there is no project this could honestly be scoped to. That is the same reasoning `reasoning` uses, and it means every session on the machine pays while it is on. Turn it off when you are done.",
+      "detect": {
+        "files": [],
+        "globs": []
+      },
+      "detect_note": "Deliberately empty, and for a stronger reason than `reasoning`'s. That one is empty because a way of thinking is not a property of a directory. This one is empty because the profile can click, type, run PowerShell and write the registry, and no marker on disk is evidence that an operator wants an agent doing those things. -Auto will never enable it; -Enable windows -Global is the only way in.",
+      "servers": [
+        {
+          "id": "windows-mcp",
+          "command": "uvx",
+          "args": [
+            "windows-mcp@0.8.5",
+            "serve"
+          ],
+          "note": "desktop control: click, type, shortcuts, PowerShell, registry, filesystem, windows, processes (~5,522 tokens per turn while enabled)",
+          "key": null,
+          "requires": {
+            "command": "uvx"
+          },
+          "measured_cost": {
+            "tools": 20,
+            "schema_bytes": 22088,
+            "approx_tokens_per_turn": 5522,
+            "method": "real MCP initialize -> tools/list over stdio, tools array serialized compactly, via TOOLS/Measure-McpSchemaCost.ps1",
+            "measured_utc": "2026-08-27"
+          }
+        }
+      ]
     }
   ],
   "evaluated_not_shipped": [
@@ -495,6 +528,16 @@
     {
       "id": "supabase-mcp",
       "reason": "Shipped as the 'cloud' profile in 7.9.5 and 7.9.6; removed in 7.9.7 at the owner's decision. It was also the only profile here that required an account and a personal access token, against this pack's default of free, local, keyless and no signup. Deliberately not replaced with another account-dependent backend MCP. Anyone who wants it can register @supabase/mcp-server-supabase themselves; the migration removes only entries this pack created and leaves an independently configured one alone."
+    },
+    {
+      "id": "kitesurf",
+      "source": "Cloudflare Browser Run (hosted, not a repository)",
+      "reason": "A browser built for agents, running on Cloudflare Workers. The headline figure is real -- Cloudflare's own numbers are 3.1-3.8x less CPU and 4.7-7x less memory than Chromium -- but the same measurement says tasks take 1.7-1.8x LONGER, which the recommendation that reached this pack had dropped. It is also account-gated, and an account requirement is the one thing test_bundle_stays_free_and_accountless exists to refuse: that contract was written when Supabase was withdrawn in 7.9.7 and it forbids any profile server carrying a key. Local playwright-mcp stays the browser."
+    },
+    {
+      "id": "agentseal",
+      "source": "getagentseal/agentseal",
+      "reason": "Scans skills and MCP configs for dangerous patterns and baseline-hashes configs to catch a rug-pull. The IDEA is right and this pack is most of the way to it already -- MANIFEST hashing, RETIRED-SKILLS.json, RETIRED-PLUGINS.json and an installed-state doctor. The instance is the problem. Checked 2026-08-27: last commit 2026-06-11, latest PUBLISHED release v0.8.0 from 2026-03-25 while the tree carries an unreleased 0.10.0 bump, and GitHub detects no OSI license (NOASSERTION). It is also from the same owner as CodeBurn, which this pack already ships and which committed twice in the last three days -- the security tool is the quiet side of that org, not its focus. A config-hash baseline belongs in Test-Installed-State.ps1, where it runs on this pack's own cadence and depends on nothing."
     }
   ],
   "installed_vs_enabled": "Two different things, and conflating them is what made 7.9.5's code-deep expensive. INSTALLED means the executable exists on disk: it costs disk and nothing else, no model context, no startup time. ENABLED means an MCP entry is registered in a provider config, so the server is spawned and its tool schemas ride in context on every turn of every session that config covers. Set-McpProfile.ps1 will install a missing tool when it can (see auto_install) and still leave it disabled everywhere except the project that asked.",

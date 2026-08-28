@@ -701,9 +701,68 @@
         "tool-output-deduplication"
       ],
       "scope_note": "CLI + host hook, zero standing tokens -- same slot as rtk, different mechanism, so they stack rather than compete: rtk filters ONE command's output, OMNI remembers output across calls and returns a handle instead of resending what the agent already saw. USE THE README'S NUMBERS, NOT THE LANDING PAGE'S. The page headlines '97.2% off a file read twice' and '~24%'; the README's own corpus of 9,478 executions says '1.4% from the filters, 5.1% with the ledger'. 97.2% is a best case for one re-read, not an expected value -- treat 5% as the number and anything above it as a bonus. Ships a real x86_64-pc-windows-msvc binary with SHA256SUMS (v0.7.8, 2026-08-25), which is why it is here and lowfat is not: lowfat v0.8.0 publishes darwin and linux-gnu only and integrates through a POSIX shell eval hook, the same native-Windows degradation this catalog already documents for rtk's non-Hermes hooks. Full host rewrite on Claude Code, Codex CLI and Gemini CLI; Hermes is supported; MCP-only fallback elsewhere. Stores a local SQLite ledger (permanent project knowledge, 30-day working data, 7-day verbatim traces) -- it is a cache of your own tool output, so treat it as project data, not a temp file. REWIND CAP, measured 2026-08-26 at 0.7.8: output above 65,536 bytes is truncated and NOT archived -- the marker says `full output not archived` and those bytes are unrecoverable, which the README's byte-for-byte guarantee does not qualify. Below the cap the guarantee holds and is self-verifying: the retrieve handle IS the content's SHA-256 prefix, and a 33,453-byte diff came back byte-identical. Head-to-head on this repo's git corpus: rtk 85.2%, OMNI 71.2% headline but only 6.4% once the truncated rows are excluded -- consistent with OMNI's own published 8.8% on git. Its value is the ledger, not the filter; see docs/TOOL-EVALUATIONS.md. Not auto-installed: a 5% saving does not justify rewriting every tool result on a machine by default."
+    },
+    {
+      "id": "windows-mcp",
+      "name": "Windows MCP",
+      "kind": "mcp-uvx",
+      "mcp": true,
+      "license": "MIT",
+      "version": "0.8.5",
+      "github": {
+        "owner": "CursorTouch",
+        "repo": "Windows-MCP"
+      },
+      "install": "mcp-uvx",
+      "npx_command": "uvx",
+      "npx_args": [
+        "windows-mcp@0.8.5",
+        "serve"
+      ],
+      "profile": "windows",
+      "auto_register": false,
+      "api_key_env": null,
+      "controls_machine": true,
+      "required_for": [
+        "desktop-automation"
+      ],
+      "offline_asset": null,
+      "runtimes": [
+        "python313"
+      ],
+      "scope_note": "Desktop control through UI Automation: click, type, send shortcuts, run PowerShell, read and write the registry and the filesystem, enumerate windows and processes. This is the one operating surface the pack had no way to reach -- Playwright and chrome-devtools stop at the browser. UIA also lets an agent PERCEIVE controls without spending a vision call, which is most of why it earns its schema. Measured 2026-08-27 with TOOLS\\Measure-McpSchemaCost.ps1 against `uvx windows-mcp@0.8.5 serve`: 20 tools, 22,088 bytes, ~5,522 tokens on every turn while enabled -- less than firecrawl-mcp's 36,337 and about four times context7, for the whole desktop. OFF by default and never auto-detected: the `windows` profile carries no detect markers, so -Auto cannot reach it. Turn it on deliberately with TOOLS\\Set-McpProfile.ps1 -Enable windows -Global. controls_machine is why TOOLS/measure_mcp_capability.py refuses to sweep it: that sweep calls every advertised tool with arguments synthesized from the schema, which here means typing into whatever window has focus and running whatever PowerShell the sample produces."
+    },
+    {
+      "id": "super-mcp-router",
+      "name": "Super MCP Router",
+      "kind": "mcp-npx",
+      "mcp": true,
+      "license": "MIT",
+      "version": "2.7.6",
+      "github": {
+        "owner": "mindstone",
+        "repo": "Super-MCP"
+      },
+      "install": "mcp-npx",
+      "npx_command": "npx",
+      "npx_args": [
+        "-y",
+        "super-mcp-router@2.7.6"
+      ],
+      "profile": null,
+      "auto_register": false,
+      "api_key_env": null,
+      "required_for": [
+        "mcp-schema-reduction"
+      ],
+      "offline_asset": null,
+      "runtimes": [
+        "node22"
+      ],
+      "scope_note": "A proxy MCP. It registers ONE server carrying 11 meta-tools and puts every other server behind on-demand discovery: search_tools by intent, get_tool_details for one schema, use_tool to call it. Measured 2026-08-27: 11 tools, 11,386 bytes, ~2,846 tokens per turn -- and that figure does NOT grow as more servers go behind it. The comparison that matters: houseCARL wired directly is 45 tools, 167,072 bytes, 41,768 tokens on EVERY turn, and Claude, Codex, Grok and Kimi cannot filter individual tools the way Hermes can, so on those four it is all 45 or nothing. Proven end to end against this pack's own houseCARL on 2026-08-27: search_tools('list the plugins in the active load order') -> get_tool_details (3,652 chars, ~913 tokens for that ONE schema) -> use_tool returned live data from the shim (2,999 mods, 2,995 plugins). Startup 1.2s, search 400ms, detail 200ms. NOT wired into a profile, and the reason is specific rather than cautious: the router reads its own config at %USERPROFILE%\\.super-mcp\\config.json, so enabling it means this pack writing and preserving a THIRD-PARTY tool's config file -- a second config writer with its own merge obligations, on a 24-star dependency. The measurement is what ships here; the wiring is its own release. One caveat to carry into that decision: BM25 ranking returned housecarl_merge_plugins FIRST for that read-only query, with the correct housecarl_load_order_status third. Discovery works, but the top hit is not automatically the safe one."
     }
   ],
-  "pack_version": "8.6.13",
+  "pack_version": "8.7.0",
   "updated_utc": "2026-08-26",
   "providers": {
     "Grok": {
@@ -779,7 +838,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "8.6.13",
+  "catalog_version": "8.7.0",
   "updated": "2026-08-26",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

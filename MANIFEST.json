@@ -19606,18 +19606,18 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 38212,
-  "sha256": "71f1fa5693513123adc84775bde54c6ced799e27401046868dee3f2cd928e1a1"
+  "size": 42111,
+  "sha256": "6da5e548b256eb8fdbd03e5b0cd068515fd13cef5b760368c03cf9be141359db"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 1493,
-  "sha256": "9d07de8dd7375680c3cff712720eb9a3ea5d7339f8916202c5356d1413f16b5e"
+  "size": 1492,
+  "sha256": "fb0282c3c1e4c2abc9a448d3049d9acd34111f02d71eb3254048a263bd68db3e"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
-  "size": 26733,
-  "sha256": "9505af2519f529cc1688161f424bc8abc06ee542545306823c076cb2d4e01693"
+  "size": 30604,
+  "sha256": "42e1ff987ac52e46d616714fb48dc3ce2aa22aeab03322ed14af4bc8175ed3ab"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -22551,8 +22551,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 130886,
-  "sha256": "3c918a448152717e825ca9719e0b115230011b123dce89a2bfc87da0101899f2"
+  "size": 133710,
+  "sha256": "2686d76cd9869a7eab4de8c735ba9d787bc0239a70670a78e559aae90931cd38"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -22626,8 +22626,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 123569,
-  "sha256": "28aab856754294d4dfaf5189f006a7b795af2ab41d0b2fe8d04ab953f2866d8b"
+  "size": 123567,
+  "sha256": "665f4c6b13b76c8bba2f03f067a68830909538ed501f38b921f8472b8a618be8"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -22676,8 +22676,8 @@
  },
  {
   "path": "README.md",
-  "size": 52636,
-  "sha256": "941261e01f199c1a7442db4c3826a471487de96ec5b0070c88f07b6338e4e658"
+  "size": 53660,
+  "sha256": "3fe74b0c522382f893cfd89afb4f0e1edf4da4ff4ebbe18c3e095a7147e0fbe4"
  },
  {
   "path": "SECURITY.md",
@@ -22686,13 +22686,13 @@
  },
  {
   "path": "START-HERE.bat",
-  "size": 710,
-  "sha256": "a97ece9b8736eb1f6ff812ddcae9a0d303e286ebfd7926ed5ade4dd2bbe45eea"
+  "size": 709,
+  "sha256": "9550e462c536d9475bb4db636e10bca3b2b9786ee8639079eb2b78033280ee37"
  },
  {
   "path": "START-HERE.txt",
-  "size": 9682,
-  "sha256": "34e3f103d4f76e4f6fb76885a83d102eb35b9af8b72d033de2e2dce98275addf"
+  "size": 9681,
+  "sha256": "cb51df5b2cf8439d1e809d2b41e91208ed737a123c51409a84b8fece6ba29fb8"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -22886,8 +22886,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 230370,
-  "sha256": "49a93a1d2d73bb298b158d366642a933206484cb0c9e1389e551bf87473a797a"
+  "size": 238246,
+  "sha256": "715972db91e30bcc4c966f74ec758fcee4b0d1ada64f7067be583d909983b849"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -22951,8 +22951,8 @@
  },
  {
   "path": "TOOLS/Measure-McpSchemaCost.ps1",
-  "size": 6786,
-  "sha256": "cbf35049ae7c0bfedbb6bef0c403b99151f46eddb631e6af7a92b21ca3507606"
+  "size": 8102,
+  "sha256": "bffcdaa5cbed8f565e3746a4a4e44864786188bceeb1c27a8b06231096921546"
  },
  {
   "path": "TOOLS/Migrate-HermesProfiles.ps1",
@@ -23116,8 +23116,8 @@
  },
  {
   "path": "TOOLS/measure_mcp_capability.py",
-  "size": 13218,
-  "sha256": "8b82779692581a4d3007e225241aa66ae159f943be92279e5479245294137864"
+  "size": 15937,
+  "sha256": "d91805f39c03f22fdec9ee2385050730de7e24f0274797e4e64aca4aac0e5b9c"
  },
  {
   "path": "TOOLS/merge_registry.py",
@@ -23156,13 +23156,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1578,
-  "sha256": "33c572594d866ad737ad75bc1d1f046992ade57d94a2ad3132771e51cb4f683b"
+  "size": 1576,
+  "sha256": "bbcc098344fd7f5f8e9b6bedc204ead68935faf2ea6e7e3ded932deebfa645d6"
  },
  {
   "path": "VERSION.txt",
-  "size": 8,
-  "sha256": "61f828e803658b6c63855353c1068e6b20688af4ad94b6279958a1b90292a0b1"
+  "size": 7,
+  "sha256": "e2a2f1615943f389ff8bccf7ff931bfb7a0bd55d3f8ea2e76c9dd3f856176101"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -27223,5 +27223,10 @@
   "path": "docs/history/V8.6.9-CHANGELOG.md",
   "size": 4212,
   "sha256": "ecaf9f35f62866cfee9d380a84ab60c7a026ca86d0ea1fb34388374ebb79f729"
+ },
+ {
+  "path": "docs/history/V8.7.0-CHANGELOG.md",
+  "size": 7476,
+  "sha256": "7a40bebbed8946d2ff9133a5759cced8e31099077758f759e3ff06cc2074e95c"
  }
 ]

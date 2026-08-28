@@ -1,3 +1,46 @@
+## 8.7.0
+
+- **164 canonical skills total**, unchanged. Two new catalog components, one new
+  profile, and two defects found by measuring them. Fifteen projects were
+  recommended into this pack from outside; all fifteen exist, none came with
+  maturity data, and two survived a check against the GitHub API.
+- **`windows` profile -> windows-mcp.** The desktop was the one surface this
+  pack could not reach: Playwright and chrome-devtools stop at the browser.
+  Click, type, shortcuts, PowerShell, registry, filesystem, windows and
+  processes over UI Automation, which also reads controls without spending a
+  vision call. Measured **20 tools, 22,088 bytes, ~5,522 tokens/turn** -- less
+  than firecrawl's 36,337, for a whole operating surface. Off by default,
+  `scope: global`, and **no detect markers at all**, so `-Auto` can never reach
+  it: no file on disk is evidence that an operator wants an agent clicking their
+  mouse.
+- **The capability sweep would have driven that desktop.**
+  `measure_mcp_capability.py` calls every advertised tool with synthesized
+  arguments, and its only guard was a blocklist of REST verbs -- *create,
+  delete, push, merge* -- none of which match `Click` or `Registry`. Measured,
+  not reasoned about: the sweep really did call `FileSystem`, whose `mode` enum
+  the synthesizer fills with `enum[0]`. That happened to be `"read"`. Ordered
+  `["write", ...]` it would have written a file. A server flagged
+  `controls_machine` in CATALOG.json is now not swept at all, and the refusal
+  fires before any tool is called.
+- **super-mcp-router measured: 41,768 tokens/turn becomes 2,846.** houseCARL
+  direct is 45 tools and 167,072 bytes on EVERY turn, and Claude/Codex/Grok/Kimi
+  cannot filter tools the way Hermes can. The router fronts it with 11 meta-tools
+  at 11,386 bytes, fixed no matter how many servers go behind. Proven end to end
+  against this pack's houseCARL: search by intent -> one schema (~913 tokens) ->
+  live data (2,999 mods, 2,995 plugins). **Not wired into a profile**: it reads
+  its own config file, so enabling it means this pack writing and preserving a
+  third-party tool's config -- a second writer, on a 24-star dependency. Caveat
+  recorded: BM25 put `housecarl_merge_plugins` first for a read-only query.
+- **The schema-cost tool had been sending a UTF-8 BOM** on the first frame for
+  seven releases; windows-mcp is the first server strict enough to reject it.
+  Wrapping `BaseStream` does not fix it -- `.StandardInput` sets `AutoFlush` and
+  `Flush()` emits the preamble first. `Console::InputEncoding`, set before
+  `Process.Start`, restored after.
+- **Kitesurf and AgentSeal recorded in `evaluated_not_shipped`** with the
+  measurements that rejected them.
+- 109 contracts, green; all three new ones broken on purpose first, 7/7
+  mutations caught.
+
 ## 8.6.13
 
 - **164 canonical skills total**, unchanged. Detection could not see a

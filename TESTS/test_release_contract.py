@@ -2278,6 +2278,9 @@ def main() -> int:
         test_an_unenabled_profile_is_never_reported_as_a_missing_tool,
         test_every_canonical_skill_reached_every_provider_tree,
         test_profile_detection_sees_a_workspace_of_projects,
+        test_a_machine_controlling_server_is_never_swept_by_calling_its_tools,
+        test_desktop_control_can_never_be_switched_on_by_detection,
+        test_the_schema_cost_tool_does_not_send_a_byte_order_mark,
     ]
     failed = []
     for fn in tests:
@@ -4421,6 +4424,156 @@ def test_profile_detection_sees_a_workspace_of_projects() -> None:
     assert "327" in raw or "5,877" in raw or "45 mod" in raw, (
         "the measurement that motivated the change is gone from the source; "
         "'looks one level down' without the tree it was measured on is folklore"
+    )
+
+def test_a_machine_controlling_server_is_never_swept_by_calling_its_tools() -> None:
+    """The capability sweep would have driven the operator's desktop.
+
+    TOOLS/measure_mcp_capability.py calls EVERY tool a server advertises, with
+    arguments synthesized from each tool's own schema. That is the right idea
+    against a web API. windows-mcp advertises Click, Type, Shortcut, PowerShell,
+    Registry, Clipboard, MultiEdit, Process, App and FileSystem.
+
+    Its only protection was MUTATING_HINTS, a blocklist of name fragments --
+    "create", "delete", "push", "merge" and friends. Every one of those is a verb
+    a REST API would use. Not one of them matches `Click` or `Registry`, so the
+    sweep sailed straight through, and this was measured on 2026-08-27 rather
+    than reasoned about: the run called FileSystem, Snapshot, Scrape,
+    DisplayInventory and Wait for real. FileSystem takes mode:enum and the
+    synthesizer picks enum[0]. That happened to be "read". Had upstream listed
+    the enum as ["write", "read", ...] the sweep would have written a file. The
+    safety of that call rested on the ordering of somebody else's enum.
+
+    So two things are pinned here:
+
+    1. The refusal is driven by CATALOG data (`controls_machine`), not by
+       guessing at spellings. A blocklist fails open on the name nobody
+       predicted, which is exactly what happened, and this file already knows
+       that -- the same script's environment handling was converted to an
+       allowlist for the same reason.
+    2. The refusal happens BEFORE any tool is called, and names the read-only
+       tool that answers the same question.
+    """
+    src = read(ROOT / "TOOLS" / "measure_mcp_capability.py")
+
+    assert "controls_machine" in src, (
+        "the capability sweep no longer asks whether a server drives the "
+        "machine; it will call Click, Type, PowerShell and Registry against a "
+        "live desktop with synthesized arguments"
+    )
+
+    # The guard has to run before measure(), or it guards nothing.
+    guard = src.index("if controls_machine(component_id)")
+    call = src.index("record = measure(")
+    assert guard < call, (
+        "the desktop-control refusal runs after measure(); by then every tool "
+        "has already been called"
+    )
+
+    # It must be a catalog lookup, not a name heuristic.
+    assert "CATALOG.json" in src and 'component.get("controls_machine")' in src, (
+        "controls_machine stopped being read from CATALOG.json -- a heuristic "
+        "over tool names is the blocklist this replaced"
+    )
+
+    # And the catalog has to actually mark the one server that needs it.
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    win = [c for c in catalog["components"] if c["id"] == "windows-mcp"]
+    assert win, "windows-mcp left the catalog"
+    assert win[0].get("controls_machine") is True, (
+        "windows-mcp is no longer flagged controls_machine, so the sweep will "
+        "call Click, Type, PowerShell and Registry on the operator's desktop"
+    )
+
+
+def test_desktop_control_can_never_be_switched_on_by_detection() -> None:
+    """-Auto must not be able to reach a profile that can type and run shells.
+
+    Every other profile earns its place from a marker on disk: a pyproject.toml
+    means code-intel is useful, ModOrganizer.ini means houseCARL is. There is no
+    file whose presence is evidence that an operator wants an agent clicking
+    their mouse, so the windows profile carries no markers at all and the
+    reasoning is written down next to it -- without that note the empty block
+    reads like an oversight and the next person helpfully fills it in.
+    """
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    win = [p for p in profiles["profiles"] if p["id"] == "windows"]
+    assert win, "the windows profile is gone"
+    win = win[0]
+
+    detect = win.get("detect") or {}
+    for key in ("files", "globs", "json"):
+        assert not detect.get(key), (
+            "the windows profile grew a %s detection marker. -Auto would then "
+            "enable keyboard, mouse, PowerShell and registry control because a "
+            "directory looked a certain way." % key
+        )
+    assert win.get("detect_note"), (
+        "the note explaining why detection is empty is gone; the next reader "
+        "will treat the empty block as an omission and fill it in"
+    )
+
+    server = win["servers"][0]
+    assert server["id"] == "windows-mcp"
+    assert not server.get("key"), "windows-mcp must stay keyless"
+    cost = server.get("measured_cost") or {}
+    assert cost.get("schema_bytes") == 22088 and cost.get("tools") == 20, (
+        "the windows-mcp cost figures changed without a re-measurement; run "
+        "TOOLS/Measure-McpSchemaCost.ps1 -Command 'uvx windows-mcp@0.8.5 serve'"
+    )
+    # Pinned, for the reason every other npx/uvx entry here is pinned.
+    assert any("@" in str(a) for a in server["args"]), (
+        "windows-mcp lost its version pin; an unpinned uvx server can change "
+        "its tool surface mid-session"
+    )
+
+
+def test_the_schema_cost_tool_does_not_send_a_byte_order_mark() -> None:
+    """It spent seven releases sending a BOM no provider sends.
+
+    Windows PowerShell 5.1 puts EF BB BF in front of the first frame written to
+    a child's stdin, and windows-mcp's pydantic parser rejects the whole
+    initialize message for it. Every server measured before it tolerated the BOM
+    silently, which is why a tool whose entire job is speaking MCP the way a
+    provider does went that long being wrong.
+
+    The fix is specific and the specificity is the point: wrapping
+    StandardInput.BaseStream in a BOM-less StreamWriter does NOT work, because
+    reading .StandardInput builds .NET's own writer and sets AutoFlush, and
+    Flush() emits the preamble before this script ever has a handle. That was
+    tried first and measured still emitting EF BB BF. Console::InputEncoding is
+    what that writer is constructed from, so it is the only lever early enough,
+    and it has to be set before Process.Start.
+    """
+    src = ps_code(ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1")
+
+    # Match the ASSIGNMENT, not the property name. Matching the name alone is
+    # satisfied by the line two above that only READS the previous value, so
+    # deleting the fix left this assertion green and blew up on .index() with
+    # "substring not found" instead of saying what broke. Caught by mutating it.
+    setter = "[Console]::InputEncoding = New-Object System.Text.UTF8Encoding $false"
+    assert setter in src, (
+        "the stdin BOM fix is gone; strict MCP servers will reject the "
+        "initialize frame this tool sends"
+    )
+    enc = src.index(setter)
+    start = src.index("[System.Diagnostics.Process]::Start($psi)")
+    assert enc < start, (
+        "Console::InputEncoding is set after Process.Start; the child's writer "
+        "is already built by then and the BOM is already in the pipe"
+    )
+    assert "$prevConsoleIn" in src, (
+        "the previous console encoding is not restored, so measuring a server "
+        "changes the encoding for everything that runs after it in the session"
+    )
+
+    # The BaseStream dead end has to stay documented, in the comments, or it
+    # gets re-attempted -- it is the obvious fix and it does not work.
+    prose = read(ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1")
+    assert "BaseStream" in prose and "AutoFlush" in prose, (
+        "the note explaining why the obvious BaseStream fix fails is gone; "
+        "without it the next person tries it, sees clean-looking code, and "
+        "ships the BOM back"
     )
 
 if __name__ == "__main__":
