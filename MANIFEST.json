@@ -21577,7 +21577,7 @@
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/MANIFEST.json",
   "size": 40769,
-  "sha256": "5a22d2fac97bf4e6389227474af0541fdec2c78b4172a6d09593b31ac4d78068"
+  "sha256": "eeac1ad3dd20b73af245724f2d8f58cea4fd827e9e2b21b232101b7e038e723a"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/NOTICE.md",
@@ -22441,8 +22441,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_ci_validation.py",
-  "size": 4375,
-  "sha256": "2a52432ca8a4f4ae8435e790af72d710bb07e080928ffb9263e3f655a078509d"
+  "size": 5192,
+  "sha256": "4838815a0865259863c466ee9625f75785cbcb1f7e65706deea3c782de76be66"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/tests/test_core.py",

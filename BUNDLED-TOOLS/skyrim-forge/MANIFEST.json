@@ -1101,8 +1101,8 @@
     {
       "executable": false,
       "path": "tests/test_ci_validation.py",
-      "sha256": "2a52432ca8a4f4ae8435e790af72d710bb07e080928ffb9263e3f655a078509d",
-      "size": 4375
+      "sha256": "4838815a0865259863c466ee9625f75785cbcb1f7e65706deea3c782de76be66",
+      "size": 5192
     },
     {
       "executable": false,

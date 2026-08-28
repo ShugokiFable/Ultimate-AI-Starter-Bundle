@@ -78,6 +78,17 @@ class WorkflowPinningTests(unittest.TestCase):
     def test_dependabot_groups_the_codeql_pair(self):
         if self.WORKFLOWS is None:
             self.skipTest("no workflows above this subtree")
+        # A group for an action nothing uses is not a requirement, it is stale
+        # config. The host repository deleted .github/workflows/codeql.yml on
+        # 2026-08-27: code scanning DEFAULT SETUP owns CodeQL there, and
+        # enabling default setup DISABLES the advanced workflow, so the file
+        # had been inert for three days while Dependabot kept raising weekly
+        # PRs to bump pins in a workflow that could not run. This test then
+        # failed a repository that has no init/analyze pair to split. Guard on
+        # the pair existing, the way the sibling test above already does.
+        if not any("github/codeql-action" in workflow.read_text(encoding="utf-8")
+                   for workflow in self.WORKFLOWS.glob("*.yml")):
+            self.skipTest("no CodeQL workflow present")
         config = self.WORKFLOWS.parent / "dependabot.yml"
         if not config.exists():
             self.skipTest("no dependabot configuration present")
