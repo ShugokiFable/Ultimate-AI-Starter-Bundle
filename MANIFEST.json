@@ -19612,7 +19612,7 @@
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1492,
-  "sha256": "ccf7a2f1c0b2e222cd7878cb082465513e3027a74b3990e6bc7f21eca296cf47"
+  "sha256": "780eb13ed805635f30b312e7785da9b3bfc41a064acc5f96694f8033d2506d45"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
@@ -27233,5 +27233,10 @@
   "path": "docs/history/V8.7.1-CHANGELOG.md",
   "size": 2697,
   "sha256": "fc23f6ef3fdb5028b07c87e0561ef3ebd2440a749fb8aa3cf327ac5f742edc5d"
+ },
+ {
+  "path": "docs/history/V8.7.2-CHANGELOG.md",
+  "size": 1880,
+  "sha256": "956a1c3438f9d95bf84f04aef3beac26bd171a28d0f3d2c7d2b6bb7138fa8349"
  }
 ]
