@@ -1,3 +1,17 @@
+## 8.7.2
+
+- Disabled the `windows` profile (windows-mcp) machine-wide on every provider.
+  It had been enabled globally on 2026-08-29; a capability audit the next day
+  showed all three real targets -- Hermes, Claude Code/Cowork and the Codex app
+  on Windows -- now ship native computer use, so the profile was paying
+  ~5,522 tokens per turn on every session to duplicate a tool every host
+  already carried. The profile stays shipped and off by default; the empty
+  detect-marker rule was correct when it was written and the manual
+  `-Enable windows -Global` remains the fallback for any agent without native
+  desktop control. Live configs (Hermes config.yaml, Codex config.toml,
+  Claude .claude.json) were reverted, not just documented.
+- 164 canonical skills, unchanged. No new always-on schemas.
+
 ## 8.7.1
 
 - Updated the three stale current-version pins found by a live upstream audit:

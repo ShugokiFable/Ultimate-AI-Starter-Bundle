@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.1
+# Ultimate AI Starter Bundle v8.7.2
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -685,6 +685,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.2** - 2026-08-30. Hotfix: the `windows` profile (windows-mcp, ~5,522 tokens/turn) is disabled machine-wide on every provider. It was enabled globally on the 29th; by the 30th Hermes, Claude Code/Cowork and the Codex app on Windows all ship native computer use, so it duplicated a capability every host already paid for on every turn. Shipped and off by default, as designed; `-Enable windows -Global` is the fallback for agents without native desktop control. 164 canonical skills, unchanged.
 
 **v8.7.1** - 2026-08-29. Maintenance release: Headroom **0.37.0**, Context7 **4.0.4**, and CodeBurn **0.9.23** are pinned consistently across online and offline installs. A true empty-home run fixed Codex failing before `.codex` existed and removed a retired claude-mem marketplace that fresh settings were adding and cleanup was removing on every run. Headroom now prefers an isolated `uv` tool install, including MCP dependencies and locked-process handling, so a successful pip install cannot leave an older executable active on PATH. MCP handshake proofs resolve a real Python interpreter even when Windows exposes no `python` alias. GitHub MCP guidance now matches the official binary's built-in browser OAuth: a PAT is optional, not required. No new always-on schemas were added.
 

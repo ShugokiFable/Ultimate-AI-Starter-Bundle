@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "catalog_version": "8.7.1",
-  "pack_version": "8.7.1",
-  "updated_utc": "2026-08-29T00:00:00Z",
+  "catalog_version": "8.7.2",
+  "pack_version": "8.7.2",
+  "updated_utc": "2026-08-30T00:00:00Z",
   "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 146 skill bodies are far larger than the description index an agent actually reads. There is no equivalent discount for MCP. So the servers here are NOT registered globally: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
   "reads": "TOOLS/Set-McpProfile.ps1",
   "always_on_note": "The always-on core is context7, github, and headroom, in TOOLS/Add-Reasoning-MCPs.ps1, not here. They earn permanent slots for current documentation, verified repository state, and context inspection/compression. sequential-thinking is the opt-in reasoning profile after measurement showed its permanent schema cost. Playwright is in the web profile; Firecrawl and Perplexity register only when their keys exist.",
@@ -485,12 +485,12 @@
       "id": "windows",
       "title": "Windows desktop control through UI Automation (windows-mcp)",
       "scope": "global",
-      "why": "Every other capability here stops at a file or a browser tab. This one drives the machine: clicking, typing, shortcuts, PowerShell, the registry, the filesystem, windows and processes. It is the only way an agent in this pack can operate a native application, and UI Automation means it can read controls without spending a vision call on a screenshot. It costs ~5,522 tokens on every turn while enabled (20 tools, 22,088 bytes, measured 2026-08-27), which is cheap for the surface and still far too much to carry when you are not using it -- hence off by default, like everything else in this file. Global scope rather than project: a desktop is not a property of a repository, so there is no project this could honestly be scoped to. That is the same reasoning `reasoning` uses, and it means every session on the machine pays while it is on. Turn it off when you are done.",
+      "why": "Every other capability here stops at a file or a browser tab. This one drives the machine: clicking, typing, shortcuts, PowerShell, the registry, the filesystem, windows and processes. It costs ~5,522 tokens on every turn while enabled (20 tools, 22,088 bytes, measured 2026-08-27). v8.7.2 decision: it was briefly enabled machine-wide on every provider and then disabled again on every provider, for the same reason -- by 2026-08-30 Hermes, Claude (Code desktop / Cowork) and Codex (macOS and Windows app) all ship native computer use, so windows-mcp duplicated a capability every host already paid for on every turn. It stays shipped and off by default; -Enable windows -Global remains the one-command fallback for an agent that has no native desktop control.",
       "detect": {
         "files": [],
         "globs": []
       },
-      "detect_note": "Deliberately empty, and for a stronger reason than `reasoning`'s. That one is empty because a way of thinking is not a property of a directory. This one is empty because the profile can click, type, run PowerShell and write the registry, and no marker on disk is evidence that an operator wants an agent doing those things. -Auto will never enable it; -Enable windows -Global is the only way in.",
+      "detect_note": "Deliberately empty, and for a stronger reason than `reasoning`'s. That one is empty because a way of thinking is not a property of a directory. This one is empty because the profile can click, type, run PowerShell and write the registry, and no marker on disk is evidence that an operator wants an agent doing those things. -Auto will never enable it; -Enable windows -Global is the only way in. It was machine-wide enabled once (2026-08-29) and machine-wide disabled the next day once every target host shipped native computer use -- the detect-marker rule was right both times.",
       "servers": [
         {
           "id": "windows-mcp",
