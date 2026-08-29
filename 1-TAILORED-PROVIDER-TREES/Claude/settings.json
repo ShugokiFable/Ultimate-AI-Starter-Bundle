@@ -25,12 +25,6 @@
         "url": "https://github.com/obra/superpowers.git"
       }
     },
-    "thedotmack": {
-      "source": {
-        "source": "git",
-        "url": "https://github.com/thedotmack/claude-mem.git"
-      }
-    },
     "obsidian-skills": {
       "source": {
         "source": "git",

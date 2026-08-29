@@ -2281,6 +2281,10 @@ def main() -> int:
         test_a_machine_controlling_server_is_never_swept_by_calling_its_tools,
         test_desktop_control_can_never_be_switched_on_by_detection,
         test_the_schema_cost_tool_does_not_send_a_byte_order_mark,
+        test_mcp_proofs_do_not_require_a_python_path_alias,
+        test_versioned_online_tools_pin_the_same_version_offline,
+        test_github_auth_guidance_matches_the_official_oauth_binary,
+        test_fresh_codex_home_exists_before_instruction_copy,
     ]
     failed = []
     for fn in tests:
@@ -3940,6 +3944,25 @@ def test_retired_marketplaces_are_unregistered_not_just_undeployed() -> None:
             "audit is how a live entry gets removed by accident" % e["marketplace"]
         )
 
+    # A retired marketplace in a fresh-install template makes every install
+    # add it and the cleanup pass remove it again, producing backup litter on
+    # every identical rerun. The opt-in component may still register it when
+    # explicitly requested; defaults may not.
+    starter_candidates = _starter_templates() + [
+        ROOT / "1-TAILORED-PROVIDER-TREES" / "Claude" / "settings.json"
+    ]
+    for entry in retired:
+        needles = (entry["marketplace"].lower(), entry["url"].lower())
+        bad = [
+            p.relative_to(ROOT).as_posix()
+            for p in starter_candidates
+            if any(needle in read(p).lower() for needle in needles)
+        ]
+        assert not bad, (
+            "retired marketplace %s is still shipped in fresh-install settings: %s"
+            % (entry["marketplace"], ", ".join(bad))
+        )
+
     # A retired marketplace MAY belong to a component the pack still ships --
     # claude-mem is opt-in behind -WithClaudeMem and its catalog entry
     # registers this very marketplace. That is only safe because the cleaner
@@ -4034,6 +4057,7 @@ def test_always_on_mcp_pins_come_from_the_catalog() -> None:
     duplicate so easy to miss.
     """
     src = ps_code(ROOT / "TOOLS" / "Add-Reasoning-MCPs.ps1")
+    migrator = ps_code(ROOT / "TOOLS" / "Migrate-HermesProfiles.ps1")
     catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
     c7 = next((c for c in catalog["components"] if c.get("id") == "context7"), None)
     assert c7, "CATALOG.json no longer describes context7"
@@ -4073,6 +4097,19 @@ def test_always_on_mcp_pins_come_from_the_catalog() -> None:
             "declares (%s); if the catalog read fails this installs a version "
             "nothing measured" % (lit, declared)
         )
+
+    # Hermes has a second writer for its native named profiles. It used to keep
+    # the exact hardcoded 4.0.2 pin this contract removed from the AIO writer.
+    assert "CATALOG.json" in migrator and "$context7Args" in migrator
+    hermes_entry = re.search(r"Get-UabsCoreSpec.*?'context7'.*?\}\s*'context7'", migrator, re.S)
+    assert hermes_entry and "args = $context7Args" in hermes_entry.group(0), (
+        "Hermes' standalone profile migrator stopped using the Context7 args "
+        "resolved from CATALOG.json"
+    )
+    for lit in re.findall(r"@upstash/context7-mcp@([0-9][0-9.]*)", migrator):
+        assert tuple(int(x) for x in lit.split(".")) <= tuple(
+            int(x) for x in declared.split(".")
+        ), "Hermes carries an unmeasured Context7 fallback newer than the catalog"
 
 def test_manifest_covers_every_tracked_file() -> None:
     """``verify_manifest.py`` proves every RECORDED file exists. Nothing proved
@@ -4274,6 +4311,9 @@ def test_an_unenabled_profile_is_never_reported_as_a_missing_tool() -> None:
     assert "Currently enabled:" in aio, (
         "the installer no longer lists which profiles ARE enabled, so a user "
         "cannot tell a working setup from an empty one"
+    )
+    assert "$pr.Value.global" in aio and "(global)" in aio, (
+        "machine-wide profiles are rendered as a blank project path"
     )
     # It must read real state rather than printing a fixed sentence.
     assert "mcp-profiles.json" in aio, (
@@ -4574,6 +4614,96 @@ def test_the_schema_cost_tool_does_not_send_a_byte_order_mark() -> None:
         "the note explaining why the obvious BaseStream fix fails is gone; "
         "without it the next person tries it, sees clean-looking code, and "
         "ships the BOM back"
+    )
+
+
+def test_mcp_proofs_do_not_require_a_python_path_alias() -> None:
+    """The AIO can own a working Python while `python` is absent from PATH.
+
+    This happened on the maintainer machine after a successful all-provider
+    install: Hermes and Skyrim Forge both had runnable venv interpreters, but
+    `Test-McpHandshake.ps1` did `(Get-Command python -ErrorAction Stop)` and
+    therefore failed before it sent one MCP frame. The full pack gate made the
+    same assumption. A fresh winget Python install can also expose `py` before
+    the current process sees a `python` PATH update.
+
+    Resolve and execute a real interpreter once in the shared helper. The two
+    proofs must use that helper rather than reintroducing launcher assumptions.
+    """
+    common = ps_code(ROOT / "TOOLS" / "UABS-Common.ps1")
+    probe = ps_code(ROOT / "TOOLS" / "Test-McpHandshake.ps1")
+    pack = ps_code(ROOT / "TESTS" / "Test-Pack.ps1")
+
+    assert "function Get-UabsPythonExecutable" in common
+    for evidence in ("SKYRIM_FORGE_PYTHON", "Get-Command py", "hermes\\hermes-agent\\venv"):
+        assert evidence in common, "shared Python resolver lost fallback: %s" % evidence
+    assert "Get-UabsPythonExecutable" in probe and "Get-UabsPythonExecutable" in pack
+    assert "Get-Command python -ErrorAction Stop" not in probe, (
+        "the live MCP proof again hard-requires a `python` PATH alias"
+    )
+
+
+def test_versioned_online_tools_pin_the_same_version_offline() -> None:
+    """OnlineLatest and Full-Offline must not install different releases."""
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    components = {c["id"]: c for c in catalog["components"]}
+
+    headroom = components["headroom"]
+    assert headroom["version"] in headroom["pip_spec"]
+    assert headroom["version"] in headroom["offline_asset"]
+    installer = ps_code(ROOT / "INSTALL-AIO.ps1")
+    assert '$wheelSpec = ("{0}[mcp]" -f $asset)' in installer, (
+        "the bundled Headroom wheel is installed without its MCP dependencies"
+    )
+    assert "Get-Command uv" in installer and "tool','install','--force" in installer, (
+        "Headroom has no uv fallback when Windows exposes no base Python launcher"
+    )
+    assert installer.index("if ($uv)") < installer.index("pip install $asset"), (
+        "pip is preferred over uv again, so a successful install can leave an older "
+        "headroom.exe earlier on PATH"
+    )
+    assert "tool dir --bin" in installer and "$hrInstalled" in installer, (
+        "the installer does not record the Headroom executable uv actually installed"
+    )
+    assert "Stop-UabsProcessUsingExecutable $activeHeadroom.Source" in installer, (
+        "a running Headroom MCP can lock its own entrypoint and defeat the uv upgrade"
+    )
+
+    codeburn = components["codeburn"]
+    assert codeburn["version"] in codeburn["npm_spec"], (
+        "CodeBurn's catalog version does not constrain the npm install"
+    )
+
+
+def test_github_auth_guidance_matches_the_official_oauth_binary() -> None:
+    """The official binary no longer requires a PAT on github.com."""
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    github = next(c for c in catalog["components"] if c["id"] == "github-mcp-server")
+    note = github["scope_note"].lower()
+    writer = read(ROOT / "TOOLS" / "Add-Reasoning-MCPs.ps1")
+
+    assert github.get("api_key_optional") is True
+    assert github.get("auth_mode") == "built-in-oauth-or-optional-pat"
+    assert "no pat is required" in note and "browser authorization" in note
+    assert "both servers work without one, with lower limits" not in writer
+    assert "opens browser oauth" in writer.lower(), (
+        "the installer no longer tells a keyless user how official GitHub OAuth starts"
+    )
+
+
+def test_fresh_codex_home_exists_before_instruction_copy() -> None:
+    """Codex skills live outside CODEX_HOME, so they cannot create it for us."""
+    src = ps_code(ROOT / "INSTALL-AIO.ps1")
+    loop = re.search(
+        r"\$providerHome\s*=\s*Get-UabsProviderHome.*?"
+        r"New-Item\s+-ItemType\s+Directory\s+-Force\s+-Path\s+\$providerHome.*?"
+        r"\$instructionTarget\s*=\s*Join-Path\s+\$providerHome",
+        src,
+        re.S,
+    )
+    assert loop, (
+        "the provider home is not created before fresh-install instructions; "
+        "Codex fails because its skills are written to ~/.agents instead"
     )
 
 if __name__ == "__main__":

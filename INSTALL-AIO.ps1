@@ -329,7 +329,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.0 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.1 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -443,6 +443,10 @@ if (-not $ToolsOnly) {
     $providerHome = Get-UabsProviderHome -Provider $prov -Catalog $catalog
     $destSkills = Get-UabsProviderSkillsDir -Provider $prov -Catalog $catalog
     Write-Host "  $prov -> $destSkills"
+    # Codex stores pack skills in ~/.agents/skills, outside CODEX_HOME. On a
+    # clean machine syncing those skills therefore does not create ~/.codex,
+    # but the instruction and starter-setting writers need that home.
+    New-Item -ItemType Directory -Force -Path $providerHome | Out-Null
 
     # Codex standardized on ~/.agents/skills but still scans the old
     # $CODEX_HOME/skills root. Snapshot the old ownership ledger before the
@@ -1269,20 +1273,44 @@ if (-not $SkillsOnly) {
                   if ($kind -eq 'base' -or $c -eq 'py') { $py = $c; break }
                 }
               }
-              if (-not $py) {
-                Write-UabsBad 'No python with pip found - install Python 3.12 and re-run'
+              $uv = Get-Command uv -ErrorAction SilentlyContinue
+              if (-not $py -and -not $uv) {
+                Write-UabsBad 'No base Python with pip or uv found - install Python 3.12 and re-run'
                 $installed[$id] = @{ status = 'failed' }
                 continue
               }
               $asset = Get-ComponentAssetPath -Comp $comp
               $ok = $false
-              if ($asset -and $asset.EndsWith('.whl') -and $py) {
+              $hrInstalled = $null
+              $installMethod = 'pip'
+              if ($uv) {
+                # Prefer uv's isolated tool environment. A pip --user install
+                # can succeed into a Scripts directory that is not on PATH,
+                # leaving an older ~/.local/bin/headroom.exe active.
+                $activeHeadroom = Get-Command headroom -ErrorAction SilentlyContinue
+                if ($activeHeadroom -and $activeHeadroom.Source) {
+                  [void](Stop-UabsProcessUsingExecutable $activeHeadroom.Source)
+                }
+                $uvSpec = if ($asset -and $asset.EndsWith('.whl')) { ("{0}[mcp]" -f $asset) } else { $comp.pip_spec }
+                $ok = Invoke-UabsNative $uv.Source @('tool','install','--force',$uvSpec)
+                if ($ok) {
+                  $installMethod = 'uv-tool'
+                  $uvBin = @(& $uv.Source tool dir --bin 2>$null | Where-Object { $_ } | Select-Object -Last 1)
+                  if ($uvBin.Count) {
+                    $candidate = Join-Path ([string]$uvBin[0]) 'headroom.exe'
+                    if (Test-Path -LiteralPath $candidate -PathType Leaf) { $hrInstalled = $candidate }
+                  }
+                  Refresh-ProcessPath
+                }
+              }
+              if (-not $ok -and $asset -and $asset.EndsWith('.whl') -and $py) {
                 Write-Host "  pip install $asset"
                 $env:PYTHONPATH = ''
+                $wheelSpec = ("{0}[mcp]" -f $asset)
                 # Invoke-UabsNative keeps pip's stderr ("already satisfied", the
                 # pip-version notice) from surfacing as a NativeCommandError.
-                if ($py -eq 'py') { $ok = Invoke-UabsNative 'py' (@('-3','-m','pip','install','--user',$asset)) }
-                else { $ok = Invoke-UabsNative $py @('-m','pip','install','--user',$asset) }
+                if ($py -eq 'py') { $ok = Invoke-UabsNative 'py' (@('-3','-m','pip','install','--user',$wheelSpec)) }
+                else { $ok = Invoke-UabsNative $py @('-m','pip','install','--user',$wheelSpec) }
               }
               if (-not $ok -and $py) {
                 $spec = $comp.pip_spec
@@ -1290,11 +1318,17 @@ if (-not $SkillsOnly) {
                 if ($py -eq 'py') { $ok = Invoke-UabsNative 'py' (@('-3','-m','pip','install','--user',$spec)) }
                 else { $ok = Invoke-UabsNative $py @('-m','pip','install','--user',$spec) }
               }
+              if ($ok -and -not $hrInstalled -and $py) {
+                $scriptsProbe = "import os,sysconfig; print(os.path.join(sysconfig.get_path('scripts', scheme='nt_user'), 'headroom.exe'))"
+                $probeArgs = if ($py -eq 'py') { @('-3','-c',$scriptsProbe) } else { @('-c',$scriptsProbe) }
+                $candidate = @(& $py @probeArgs 2>$null | Where-Object { $_ } | Select-Object -Last 1)
+                if ($candidate.Count -and (Test-Path -LiteralPath $candidate[0] -PathType Leaf)) { $hrInstalled = [string]$candidate[0] }
+              }
         if ($ok) {
-          $hr = $null
-          try { $hr = (Get-Command headroom -EA SilentlyContinue).Source } catch {}
+          $hr = $hrInstalled
+          if (-not $hr) { try { $hr = (Get-Command headroom -EA SilentlyContinue).Source } catch {} }
           if ($hr) { Set-UabsUserEnv 'HEADROOM_CMD' $hr }
-          $installed[$id] = @{ status='pip'; headroom=$hr }
+          $installed[$id] = @{ status=$installMethod; headroom=$hr }
           Write-UabsOk 'Headroom installed'
         } else {
           Write-UabsBad 'Headroom install failed (need Python)'
@@ -1939,7 +1973,7 @@ if (Test-Path -LiteralPath $statePath -PathType Leaf) {
 }
 
   $state = @{
-  version = '8.7.0'
+  version = '8.7.1'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -2159,6 +2193,7 @@ if (Test-Path -LiteralPath $profileStateFile -PathType Leaf) {
         $projs = @()
         try { $projs = @($pr.Value.projects.PSObject.Properties.Name) } catch { $projs = @() }
         if ($projs.Count) { $enabledProfiles += ('{0} -> {1}' -f $pr.Name, ($projs -join '; ')) }
+        if ($pr.Value.global) { $enabledProfiles += ('{0} -> (global)' -f $pr.Name) }
       }
     }
   } catch { }

@@ -123,6 +123,46 @@ function Test-UabsPath([string]$p) {
   try { return Test-Path -LiteralPath (Expand-UabsEnvPath $p) } catch { return $false }
 }
 
+function Get-UabsPythonExecutable {
+  <# Return a real, runnable interpreter path rather than trusting a PATH alias.
+     A fresh winget install may expose only `py`, WindowsApps can expose a dead
+     `python.exe`, and the AIO's Hermes install already carries a stable Python
+     even when neither launcher is visible in the current process. #>
+  $candidates = @()
+  if ($env:SKYRIM_FORGE_PYTHON) {
+    $candidates += [pscustomobject]@{ Source = $env:SKYRIM_FORGE_PYTHON; Prefix = @() }
+  }
+  foreach ($name in @('python', 'python3')) {
+    $cmd = Get-Command $name -ErrorAction SilentlyContinue
+    if ($cmd) { $candidates += [pscustomobject]@{ Source = $cmd.Source; Prefix = @() } }
+  }
+  $launcher = Get-Command py -ErrorAction SilentlyContinue
+  if ($launcher) { $candidates += [pscustomobject]@{ Source = $launcher.Source; Prefix = @('-3') } }
+  foreach ($path in @(
+    (Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA 'Programs\Python\Python*\python.exe') -File -ErrorAction SilentlyContinue |
+      Sort-Object FullName -Descending | ForEach-Object FullName),
+    (Join-Path $env:LOCALAPPDATA 'hermes\hermes-agent\venv\Scripts\python.exe')
+  )) {
+    if ($path) { $candidates += [pscustomobject]@{ Source = $path; Prefix = @() } }
+  }
+
+  $seen = @{}
+  foreach ($candidate in $candidates) {
+    $key = ([string]$candidate.Source + '|' + (@($candidate.Prefix) -join ' ')).ToLowerInvariant()
+    if ($seen.ContainsKey($key)) { continue }
+    $seen[$key] = $true
+    try {
+      $prefix = @($candidate.Prefix)
+      $resolved = @(& $candidate.Source @prefix -c "import os,sys;print(os.path.abspath(sys.executable))" 2>$null |
+        Where-Object { $_ } | Select-Object -Last 1)
+      if ($LASTEXITCODE -eq 0 -and $resolved.Count -and (Test-Path -LiteralPath $resolved[0] -PathType Leaf)) {
+        return [string]$resolved[0]
+      }
+    } catch { }
+  }
+  return $null
+}
+
 function Test-UabsPathWithin([string]$Path, [string]$Root) {
   if (-not $Path -or -not $Root) { return $false }
   try {

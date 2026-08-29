@@ -1,8 +1,8 @@
 {
   "pack": "Ultimate AI Starter Bundle",
-  "version": "8.7.0",
-  "generated": "2026-08-28T02:12:34Z",
-  "release_tag": "v8.7.0",
+  "version": "8.7.1",
+  "generated": "2026-08-29T21:05:24Z",
+  "release_tag": "v8.7.1",
   "canonical_skills": 164,
   "provider_trees": 5,
   "registry_entries": 164,
@@ -18,6 +18,6 @@
     "TESTS/Test-McpProfiles.ps1",
     "TOOLS/mcp_handshake.py --selftest"
   ],
-  "runtime_status": "Windows PowerShell 5.1 source gate and isolated idempotency pass; live V8 AIO completed for Claude, Codex, Grok, Kimi, and Hermes; installed-state doctor PASS at 8.6.11; official/native plugins refreshed; all 15 core MCP initialize plus tools/list handshakes passed. rtk 0.46.0 re-measured off the git corpus: 7.4% aggregate excluding truncating rows, against 85.2% on git; rtk find returns EMPTY stdout for -name patterns and the hook rewrite table was probed directly, so the hook stays unwired on evidence.",
+  "runtime_status": "Windows PowerShell 5.1 pack gate PASS. Isolated empty provider homes under a path containing spaces and Unicode passed twice for Claude, Codex, Grok, and Kimi: 2,912 managed files, 164 skills each, zero byte changes on the second run. The full V8 AIO completed twice for all five live providers; installed-state doctor PASS at 8.7.1. All 15 always-on core initialize plus tools/list handshakes passed on both full runs. Windows-MCP is registered machine-wide on all five and passed five 20-tool handshakes. Headroom 0.37.0 and CodeBurn 0.9.23 are active; Headroom passed five post-upgrade handshakes. GitHub's 45-tool handshake proves binary, config, and protocol; its first authenticated tool call may still request browser OAuth.",
   "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

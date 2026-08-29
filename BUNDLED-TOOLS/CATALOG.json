@@ -154,7 +154,6 @@
       "id": "headroom",
       "kind": "mcp-python",
       "mcp": true,
-      "pip_spec": "headroom-ai[mcp]",
       "github": {
         "repo": "headroom",
         "owner": "headroomlabs-ai"
@@ -163,7 +162,9 @@
         "python3"
       ],
       "name": "Headroom",
-      "offline_asset": "headroom_ai-0.36.5-cp310-abi3-win_amd64.whl",
+      "version": "0.37.0",
+      "pip_spec": "headroom-ai[mcp]==0.37.0",
+      "offline_asset": "headroom_ai-0.37.0-cp310-abi3-win_amd64.whl",
       "license": "see-upstream",
       "required_for": [
         "context-compress"
@@ -220,12 +221,13 @@
         "owner": "getagentseal"
       },
       "name": "CodeBurn",
+      "version": "0.9.23",
       "offline_asset": null,
       "license": "see-upstream",
       "required_for": [
         "ai-cost"
       ],
-      "npm_spec": "codeburn"
+      "npm_spec": "codeburn@0.9.23"
     },
     {
       "install": "bundle-source",
@@ -452,7 +454,7 @@
       "kind": "mcp-npx",
       "mcp": true,
       "license": "MIT",
-      "version": "4.0.3",
+      "version": "4.0.4",
       "github": {
         "owner": "upstash",
         "repo": "context7"
@@ -461,7 +463,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "@upstash/context7-mcp@4.0.3"
+        "@upstash/context7-mcp@4.0.4"
       ],
       "auto_register": true,
       "api_key_env": "CONTEXT7_API_KEY",
@@ -471,7 +473,7 @@
         "resolve-library-id",
         "query-docs"
       ],
-      "keyless_note": "Measured 2026-08-26 against the pinned 4.0.3 with the credential environment scrubbed: BOTH advertised tools answer keyless, nothing is rate-limited, key-gated or deprecated. `--api-key` / CONTEXT7_API_KEY is documented by the server's own --help and raises rate limits; it unlocks no additional tool. Regenerate with TOOLS/measure_mcp_capability.py rather than editing by hand.",
+      "keyless_note": "Measured 2026-08-29 against the pinned 4.0.4 with the credential environment scrubbed: BOTH advertised tools answer keyless, nothing is rate-limited, key-gated or deprecated. `--api-key` / CONTEXT7_API_KEY is documented by the server's own --help and raises rate limits; it unlocks no additional tool. Regenerate with TOOLS/measure_mcp_capability.py rather than editing by hand.",
       "capability_record": "BUNDLED-TOOLS/capability-records/context7.json",
       "providers": [
         "Claude",
@@ -512,8 +514,9 @@
       ],
       "api_key_env": "GITHUB_PERSONAL_ACCESS_TOKEN",
       "api_key_optional": true,
+      "auth_mode": "built-in-oauth-or-optional-pat",
       "toolsets": "context,repos,pull_requests,actions,issues",
-      "scope_note": "GitHub's official server, replacing @modelcontextprotocol/server-github, which npm marks 'Package no longer supported'. Registered with a scoped --toolsets list, not 'all': the server exposes 20 toolset groups and every enabled group costs tool-schema tokens on every turn. Widen it per project, never globally.",
+      "scope_note": "GitHub's official server, replacing @modelcontextprotocol/server-github, which npm marks 'Package no longer supported'. Official release binaries since 1.5.0 carry GitHub's OAuth application: no PAT is required on github.com; the first authenticated tool call opens GitHub's browser authorization and keeps that token in the server process only. A GITHUB_PERSONAL_ACCESS_TOKEN is optional and takes precedence when the user deliberately configures one. initialize + tools/list proves the binary and protocol, not completion of that later browser authorization. Registered with a scoped --toolsets list, not 'all': the server exposes 20 toolset groups and every enabled group costs tool-schema tokens on every turn. Widen it per project, never globally.",
       "server_id": "github"
     },
     {
@@ -762,8 +765,8 @@
       "scope_note": "A proxy MCP. It registers ONE server carrying 11 meta-tools and puts every other server behind on-demand discovery: search_tools by intent, get_tool_details for one schema, use_tool to call it. Measured 2026-08-27: 11 tools, 11,386 bytes, ~2,846 tokens per turn -- and that figure does NOT grow as more servers go behind it. The comparison that matters: houseCARL wired directly is 45 tools, 167,072 bytes, 41,768 tokens on EVERY turn, and Claude, Codex, Grok and Kimi cannot filter individual tools the way Hermes can, so on those four it is all 45 or nothing. Proven end to end against this pack's own houseCARL on 2026-08-27: search_tools('list the plugins in the active load order') -> get_tool_details (3,652 chars, ~913 tokens for that ONE schema) -> use_tool returned live data from the shim (2,999 mods, 2,995 plugins). Startup 1.2s, search 400ms, detail 200ms. NOT wired into a profile, and the reason is specific rather than cautious: the router reads its own config at %USERPROFILE%\\.super-mcp\\config.json, so enabling it means this pack writing and preserving a THIRD-PARTY tool's config file -- a second config writer with its own merge obligations, on a 24-star dependency. The measurement is what ships here; the wiring is its own release. One caveat to carry into that decision: BM25 ranking returned housecarl_merge_plugins FIRST for that read-only query, with the correct housecarl_load_order_status third. Discovery works, but the top hit is not automatically the safe one."
     }
   ],
-  "pack_version": "8.7.0",
-  "updated_utc": "2026-08-26",
+  "pack_version": "8.7.1",
+  "updated_utc": "2026-08-29",
   "providers": {
     "Grok": {
       "skills": "skills",
@@ -838,7 +841,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "8.7.0",
-  "updated": "2026-08-26",
+  "catalog_version": "8.7.1",
+  "updated": "2026-08-29",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

@@ -1,3 +1,31 @@
+## 8.7.1
+
+- Updated the three stale current-version pins found by a live upstream audit:
+  Headroom 0.37.0, Context7 4.0.4, and CodeBurn 0.9.23. Headroom's Full-Offline
+  wheel was replaced with the exact upstream asset and verified by size and
+  SHA256. Online and offline specs are now contract-bound to the same version.
+- Fixed MCP proof scripts on Windows installations where `python` is usable but
+  has no PATH alias. The shared resolver checks real system launchers and the
+  bundle-owned Skyrim Forge/Hermes interpreters before running a handshake.
+- Corrected GitHub MCP authentication guidance. The official binary has built-in
+  browser OAuth on github.com; a PAT is optional. A real initialize + tools/list
+  handshake proves the binary/config/protocol without pretending the later OAuth
+  grant has already happened.
+- Removed the second hardcoded Context7 pin from Hermes profile migration.
+  Every provider writer now resolves the measured pin from `CATALOG.json`.
+- A real empty-home run found two fresh-install defects hidden by existing
+  machines: Codex's skills go to `.agents`, so `.codex` did not exist when the
+  installer copied `AGENTS.md`; and Claude's starter still carried the retired
+  `thedotmack` marketplace, so cleanup removed it and wrote a new backup on
+  every identical run. Both defaults now converge byte-for-byte.
+- Headroom now prefers `uv tool install` when available, installs the wheel's
+  `[mcp]` dependencies, records the executable uv actually wrote, and stops
+  only an exact-path Headroom process when it locks its own upgrade. This fixed
+  a live split where pip reported 0.37.0 installed but PATH still ran 0.36.5.
+- Global profile reporting prints `(global)` instead of a blank project path.
+- 113 contracts, plus the full PowerShell pack gate and isolated second-run
+  installer proof.
+
 ## 8.7.0
 
 - **164 canonical skills total**, unchanged. Two new catalog components, one new

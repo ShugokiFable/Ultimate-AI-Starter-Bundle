@@ -44,6 +44,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 # Join-Path, not Join-UabsPath: the helper lives in the file being sourced.
+. ([IO.Path]::Combine($PSScriptRoot, 'UABS-Common.ps1'))
 . (Join-Path $PSScriptRoot 'UABS-Mcp-Write.ps1')
 
 function Get-HermesServers {
@@ -172,7 +173,8 @@ function Get-ServersFromConfig {
 
 function Invoke-McpHandshake {
   param([string]$Command, [string[]]$Arguments, [int]$TimeoutSeconds)
-  $python = (Get-Command python -ErrorAction Stop).Source
+  $python = Get-UabsPythonExecutable
+  if (-not $python) { throw 'No working Python interpreter found (checked system launchers, local Python, Skyrim Forge, and Hermes).' }
   $probe = Join-UabsPath $PSScriptRoot 'mcp_handshake.py'
   if (-not (Test-UabsPath -LiteralPath $probe -PathType Leaf)) { throw "MCP probe missing: $probe" }
 

@@ -332,7 +332,7 @@ def main() -> int:
 
     os.makedirs(OUT_DIR, exist_ok=True)
     dest = os.path.join(OUT_DIR, component_id + ".json")
-    with open(dest, "w", encoding="utf-8") as fh:
+    with open(dest, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(record, fh, indent=2)
         fh.write("\n")
     print("\nwrote %s" % os.path.relpath(dest, ROOT))

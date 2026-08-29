@@ -2,7 +2,6 @@
   "effortLevel": "xhigh",
   "enabledPlugins": {
     "claude-code-setup@claude-plugins-official": true,
-    "claude-mem@thedotmack": true,
     "headroom@headroom-marketplace": true,
     "obsidian@obsidian-skills": true,
     "ponytail@ponytail": true,
@@ -31,12 +30,6 @@
       "source": {
         "source": "git",
         "url": "https://github.com/obra/superpowers.git"
-      }
-    },
-    "thedotmack": {
-      "source": {
-        "source": "git",
-        "url": "https://github.com/thedotmack/claude-mem.git"
       }
     },
     "obsidian-skills": {

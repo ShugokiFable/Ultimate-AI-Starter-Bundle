@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.0
+# Ultimate AI Starter Bundle v8.7.1
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -685,6 +685,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.1** - 2026-08-29. Maintenance release: Headroom **0.37.0**, Context7 **4.0.4**, and CodeBurn **0.9.23** are pinned consistently across online and offline installs. A true empty-home run fixed Codex failing before `.codex` existed and removed a retired claude-mem marketplace that fresh settings were adding and cleanup was removing on every run. Headroom now prefers an isolated `uv` tool install, including MCP dependencies and locked-process handling, so a successful pip install cannot leave an older executable active on PATH. MCP handshake proofs resolve a real Python interpreter even when Windows exposes no `python` alias. GitHub MCP guidance now matches the official binary's built-in browser OAuth: a PAT is optional, not required. No new always-on schemas were added.
 
 **v8.7.0** - 2026-08-27. The desktop, and a router worth 38,900 tokens a turn. New **`windows` profile** (windows-mcp): click, type, shortcuts, PowerShell, registry and filesystem over UI Automation -- the one surface Playwright and chrome-devtools cannot reach -- measured at **20 tools, 22,088 bytes, ~5,522 tokens/turn**, off by default with **no detect markers at all**, because no file on disk is evidence that an operator wants an agent clicking their mouse. Measuring it exposed that the capability sweep would have *driven* that desktop: its guard was a blocklist of REST verbs, and the one call that did land was safe only because upstream happened to order an enum `read` before `write`. **super-mcp-router** measured at 11 tools / 11,386 bytes / **~2,846 tokens per turn, fixed** -- against houseCARL's 41,768 on every turn -- and proven end to end against this pack's own houseCARL, though deliberately not wired yet. Plus a UTF-8 BOM the schema-cost tool had been sending on its first frame for seven releases.
 

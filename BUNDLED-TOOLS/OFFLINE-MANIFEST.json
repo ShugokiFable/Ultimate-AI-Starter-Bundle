@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-27",
-  "pack_version": "8.7.0",
+  "generated": "2026-08-29",
+  "pack_version": "8.7.1",
   "assets": [
     {
       "file": "codebase-memory-mcp-windows-amd64.zip",
@@ -13,9 +13,9 @@
       "sha256": "d16a3b2bbf775365541aa18729c0c3ff5e1b26dfb5dc190928895ba482211268"
     },
     {
-      "file": "headroom_ai-0.36.5-cp310-abi3-win_amd64.whl",
-      "size": 13873068,
-      "sha256": "f842990c69e39d967982ef9bd1da20c12b9a7f39507e4f76d638b44f93114986"
+      "file": "headroom_ai-0.37.0-cp310-abi3-win_amd64.whl",
+      "size": 13903214,
+      "sha256": "e961f892786f7577e75f2c26229f11e2609fc007083dae24d336e76fc4c72e58"
     },
     {
       "file": "houseCARL-1.9.0.zip",

@@ -528,8 +528,20 @@ try {
     }
   }
 
+  $catalogPath = Join-Path (Split-Path -Parent $PSScriptRoot) 'BUNDLED-TOOLS\CATALOG.json'
+  $catalog = $null
+  if (Test-Path -LiteralPath $catalogPath -PathType Leaf) {
+    try { $catalog = [IO.File]::ReadAllText($catalogPath) | ConvertFrom-Json }
+    catch { Write-Warning "CATALOG.json is unreadable at $catalogPath - using the previous known-good Context7 pin and no houseCARL tool budget." }
+  }
+  $context7Args = @('-y', '@upstash/context7-mcp@4.0.3')
+  if ($catalog) {
+    $context7Comp = @($catalog.components | Where-Object { $_.id -eq 'context7' }) | Select-Object -First 1
+    $fromCatalog = if ($context7Comp) { @($context7Comp.npx_args | ForEach-Object { [string]$_ }) } else { @() }
+    if (@($fromCatalog | Where-Object { $_ -like '*context7-mcp@*' }).Count) { $context7Args = $fromCatalog }
+  }
   $context7 = Get-UabsCoreSpec $maps['default'] 'context7' @('context-7') @{
-    command = 'npx'; args = @('-y', '@upstash/context7-mcp@4.0.2'); enabled = $true; connect_timeout = 30
+    command = 'npx'; args = $context7Args; enabled = $true; connect_timeout = 30
   } 'context7'
   $github = Get-UabsCoreSpec $maps['default'] 'github' @('github-mcp-server') @{
     command = (Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\github-mcp-server\github-mcp-server.exe')
@@ -552,14 +564,12 @@ try {
   $script:ForceToolset = $PSBoundParameters.ContainsKey('SkyrimToolset')
   $toolsFilter = $null
   $toolsetNote = ''
-  $catalogPath = Join-Path (Split-Path -Parent $PSScriptRoot) 'BUNDLED-TOOLS\CATALOG.json'
-  if (-not (Test-Path -LiteralPath $catalogPath -PathType Leaf)) {
+  if (-not $catalog) {
     # Say so. Silently registering all 45 tools because a data file was not
     # found is a ~10,000 token/turn difference the user never asked for.
     Write-Warning "CATALOG.json not found at $catalogPath - no tool budget applied; every tool will be registered."
   }
-  if (Test-Path -LiteralPath $catalogPath -PathType Leaf) {
-    $catalog = [IO.File]::ReadAllText($catalogPath) | ConvertFrom-Json
+  if ($catalog) {
     $carlComp = @($catalog.components | Where-Object { $_.id -eq 'housecarl' }) | Select-Object -First 1
     $budget = if ($carlComp) { $carlComp.mcp_tool_budget } else { $null }
     $chosen = if ($budget -and $budget.sets) { $budget.sets.$SkyrimToolset } else { $null }

@@ -31,8 +31,10 @@ if (-not (Test-Path (Join-Path $PackRoot '_CANONICAL-SKILLS'))) {
 }
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PackRoot 'TOOLS\UABS-Common.ps1')
 $fail = 0
-$py = (Get-Command python -ErrorAction SilentlyContinue)
+$pythonExe = Get-UabsPythonExecutable
+$py = if ($pythonExe) { [pscustomobject]@{ Source = $pythonExe } } else { $null }
 
 function Section($t) { Write-Host "`n=== $t ===" -ForegroundColor Cyan }
 function Bad($m) { Write-Host "  FAIL $m" -ForegroundColor Red; $script:fail++ }

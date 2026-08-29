@@ -94,7 +94,7 @@ $ghExe = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\github-mcp-serv
 #
 # Falls back to the previous literal if the catalog cannot be read, so a
 # damaged catalog degrades to "one release behind" rather than "unpinned".
-$context7Args = @('-y', '@upstash/context7-mcp@4.0.2')
+$context7Args = @('-y', '@upstash/context7-mcp@4.0.3')
 try {
   $catalogPath = Join-Path (Split-Path -Parent $PSScriptRoot) 'BUNDLED-TOOLS\CATALOG.json'
   if (Test-Path -LiteralPath $catalogPath -PathType Leaf) {
@@ -286,9 +286,10 @@ foreach ($p in $Providers) {
 }
 
 Write-Host ''
-Write-Host 'Optional keys (both servers work without one, with lower limits):'
+Write-Host 'Optional credentials:'
 Write-Host '  setx CONTEXT7_API_KEY "<key>"                 https://context7.com'
-Write-Host '  setx GITHUB_PERSONAL_ACCESS_TOKEN "<token>"   github.com/settings/tokens'
+Write-Host '  GitHub needs no PAT: its official binary opens browser OAuth on the first authenticated tool call.'
+Write-Host '  A PAT is an optional alternative only; configure credentials yourself, never through an AI prompt.'
 Write-Host 'Restart each AI app, then check /mcp.'
 Write-Host ''
 Show-UabsSequentialThinkingNotice
