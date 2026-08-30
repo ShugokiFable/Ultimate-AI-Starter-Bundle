@@ -3861,13 +3861,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package-lock.json",
-  "size": 15477,
-  "sha256": "79d529441e9afa797e44abb5b330698a2659f03230df06408b0ff6360d019561"
+  "size": 16034,
+  "sha256": "8be6332fbdee1301940f63da067637c15ab1a61bd8fe03b5b2e1b1fe8bce322f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package.json",
   "size": 313,
-  "sha256": "209df774546fd58b06fd96965a271ab87bd1e04b0f1d5b4c66deba8f41aff717"
+  "sha256": "80756e78df496bb85fe0b4d258f64d329866c4dd8bf309546515aecb0893da4e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/verify_cells.mjs",
@@ -3936,8 +3936,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/pyproject.toml",
-  "size": 373,
-  "sha256": "0bcfa52091e1af57c7202d424bf4821c6d1bae249eb9efb6889879404c086640"
+  "size": 375,
+  "sha256": "42c60fa5bd708a645c2251f13df845d7da19d4d8064a171890346ab90960b1ce"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/reference_vision.py",
@@ -3946,8 +3946,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/uv.lock",
-  "size": 163198,
-  "sha256": "8c06ef21302d7177338911519babf575b918408dcd7df579d4f00ee7f2f77ad9"
+  "size": 161387,
+  "sha256": "eec9001e066f03570c2e7233e715b1f25836d68207f8ad8965fa587609ea71f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/scripts/capture_threejs_playwright.py",
@@ -9876,13 +9876,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package-lock.json",
-  "size": 15477,
-  "sha256": "79d529441e9afa797e44abb5b330698a2659f03230df06408b0ff6360d019561"
+  "size": 16034,
+  "sha256": "8be6332fbdee1301940f63da067637c15ab1a61bd8fe03b5b2e1b1fe8bce322f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package.json",
   "size": 313,
-  "sha256": "209df774546fd58b06fd96965a271ab87bd1e04b0f1d5b4c66deba8f41aff717"
+  "sha256": "80756e78df496bb85fe0b4d258f64d329866c4dd8bf309546515aecb0893da4e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/verify_cells.mjs",
@@ -9951,8 +9951,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/pyproject.toml",
-  "size": 373,
-  "sha256": "0bcfa52091e1af57c7202d424bf4821c6d1bae249eb9efb6889879404c086640"
+  "size": 375,
+  "sha256": "42c60fa5bd708a645c2251f13df845d7da19d4d8064a171890346ab90960b1ce"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/reference_vision.py",
@@ -9961,8 +9961,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/uv.lock",
-  "size": 163198,
-  "sha256": "8c06ef21302d7177338911519babf575b918408dcd7df579d4f00ee7f2f77ad9"
+  "size": 161387,
+  "sha256": "eec9001e066f03570c2e7233e715b1f25836d68207f8ad8965fa587609ea71f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/scripts/capture_threejs_playwright.py",
@@ -15876,13 +15876,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package-lock.json",
-  "size": 15477,
-  "sha256": "79d529441e9afa797e44abb5b330698a2659f03230df06408b0ff6360d019561"
+  "size": 16034,
+  "sha256": "8be6332fbdee1301940f63da067637c15ab1a61bd8fe03b5b2e1b1fe8bce322f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package.json",
   "size": 313,
-  "sha256": "209df774546fd58b06fd96965a271ab87bd1e04b0f1d5b4c66deba8f41aff717"
+  "sha256": "80756e78df496bb85fe0b4d258f64d329866c4dd8bf309546515aecb0893da4e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/verify_cells.mjs",
@@ -15951,8 +15951,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/pyproject.toml",
-  "size": 373,
-  "sha256": "0bcfa52091e1af57c7202d424bf4821c6d1bae249eb9efb6889879404c086640"
+  "size": 375,
+  "sha256": "42c60fa5bd708a645c2251f13df845d7da19d4d8064a171890346ab90960b1ce"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/reference_vision.py",
@@ -15961,8 +15961,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/uv.lock",
-  "size": 163198,
-  "sha256": "8c06ef21302d7177338911519babf575b918408dcd7df579d4f00ee7f2f77ad9"
+  "size": 161387,
+  "sha256": "eec9001e066f03570c2e7233e715b1f25836d68207f8ad8965fa587609ea71f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/scripts/capture_threejs_playwright.py",
@@ -21876,13 +21876,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package-lock.json",
-  "size": 15477,
-  "sha256": "79d529441e9afa797e44abb5b330698a2659f03230df06408b0ff6360d019561"
+  "size": 16034,
+  "sha256": "8be6332fbdee1301940f63da067637c15ab1a61bd8fe03b5b2e1b1fe8bce322f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package.json",
   "size": 313,
-  "sha256": "209df774546fd58b06fd96965a271ab87bd1e04b0f1d5b4c66deba8f41aff717"
+  "sha256": "80756e78df496bb85fe0b4d258f64d329866c4dd8bf309546515aecb0893da4e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/verify_cells.mjs",
@@ -21951,8 +21951,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/pyproject.toml",
-  "size": 373,
-  "sha256": "0bcfa52091e1af57c7202d424bf4821c6d1bae249eb9efb6889879404c086640"
+  "size": 375,
+  "sha256": "42c60fa5bd708a645c2251f13df845d7da19d4d8064a171890346ab90960b1ce"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/reference_vision.py",
@@ -21961,8 +21961,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/uv.lock",
-  "size": 163198,
-  "sha256": "8c06ef21302d7177338911519babf575b918408dcd7df579d4f00ee7f2f77ad9"
+  "size": 161387,
+  "sha256": "eec9001e066f03570c2e7233e715b1f25836d68207f8ad8965fa587609ea71f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/scripts/capture_threejs_playwright.py",
@@ -27886,13 +27886,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package-lock.json",
-  "size": 15477,
-  "sha256": "79d529441e9afa797e44abb5b330698a2659f03230df06408b0ff6360d019561"
+  "size": 16034,
+  "sha256": "8be6332fbdee1301940f63da067637c15ab1a61bd8fe03b5b2e1b1fe8bce322f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/package.json",
   "size": 313,
-  "sha256": "209df774546fd58b06fd96965a271ab87bd1e04b0f1d5b4c66deba8f41aff717"
+  "sha256": "80756e78df496bb85fe0b4d258f64d329866c4dd8bf309546515aecb0893da4e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/glb_character_pipeline/node/verify_cells.mjs",
@@ -27961,8 +27961,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/pyproject.toml",
-  "size": 373,
-  "sha256": "0bcfa52091e1af57c7202d424bf4821c6d1bae249eb9efb6889879404c086640"
+  "size": 375,
+  "sha256": "42c60fa5bd708a645c2251f13df845d7da19d4d8064a171890346ab90960b1ce"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/reference_vision.py",
@@ -27971,8 +27971,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/integrations/vision/uv.lock",
-  "size": 163198,
-  "sha256": "8c06ef21302d7177338911519babf575b918408dcd7df579d4f00ee7f2f77ad9"
+  "size": 161387,
+  "sha256": "eec9001e066f03570c2e7233e715b1f25836d68207f8ad8965fa587609ea71f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/img2threejs/scripts/capture_threejs_playwright.py",
@@ -31507,17 +31507,17 @@
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
   "size": 44054,
-  "sha256": "62c387bb8a3df55110e91a32411c124345f8f32ca55bf466a2f24efac60eb70c"
+  "sha256": "f2a77d369591cf9ccd438a3c0eb3ca766c5006e62831957b886555760ad8050e"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1492,
-  "sha256": "8eec31154a1029bda3d9ba6d1f5e9ef6bdbe8071049f739fa86fdeb4dbed03e3"
+  "sha256": "c10c2051a7e1d184d28aa2e141b8063dcffe404d76ba0f368fd08e8e67e82584"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
   "size": 30979,
-  "sha256": "78f2e8a21b733c3df66a10c7605739bb96d0d2ea075272ae1c10734feb8bbea6"
+  "sha256": "2198e364a41e6218b3af5cfe78f250b9910abda56f569a9ca8a74c36ecae4859"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -34451,8 +34451,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 139772,
-  "sha256": "02b82ab2986006014ff406ce6b7d0e66da475f9599a2cc94d52620ab32efe818"
+  "size": 140551,
+  "sha256": "cc9af401675c7430c8370db4746c78decba00470b891117f6eed328a12d0dc26"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34527,7 +34527,7 @@
  {
   "path": "INSTALL-AIO.ps1",
   "size": 127263,
-  "sha256": "c1fd5fad893935779fe691db8044b1164331ca52df56a11c553b32177535b12b"
+  "sha256": "ebb8878e39e2c29f3227ce80cb61df530ad542ece767d62d5d4a0ac816bd2dfa"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -34576,8 +34576,8 @@
  },
  {
   "path": "README.md",
-  "size": 55892,
-  "sha256": "ea18d33c65ca43f5bcb475207caea1057209fe4f4ad6c48c15fc9c747d211bac"
+  "size": 55849,
+  "sha256": "dbacc0462d4cb77bf781386333b6dcad1e6d420fab1c405f822b2f9f530bcab0"
  },
  {
   "path": "SECURITY.md",
@@ -34587,12 +34587,12 @@
  {
   "path": "START-HERE.bat",
   "size": 709,
-  "sha256": "7176c9f621f6a06534f2c35ab35ed3cbdce3b1c6961145cc1b0f317af17d0a7d"
+  "sha256": "e7ea163a71cd2e05804b5c7a2934a49fe2ce6c591666b808661043e33efa015d"
  },
  {
   "path": "START-HERE.txt",
   "size": 9681,
-  "sha256": "a11bd5c875e030b50224bb146dc0d85926c094e04683a88b89a4caafd768309d"
+  "sha256": "61e3e8697f80db434547c14a4b93ae0b30a87378fd0bf0e319b217b2db255441"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -34786,8 +34786,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 249794,
-  "sha256": "4af35ebfd58f4351c0c7e8872c0c71a7c6d2c412b31edd2a5e768c88f56cf8d1"
+  "size": 250488,
+  "sha256": "8d802644b29b2fecaa72d04b5d9d232e0cdba782d53f33519a8bd53d2df1d3bf"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -35056,13 +35056,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1932,
-  "sha256": "32fb76a7f83e7e2ee9788df24e1aff277ea2fa86494c798fc7c06cedc2e2fb77"
+  "size": 2009,
+  "sha256": "3337da4f58c98e98e096ad3e5dd7d01a9809913ea64a085f9ac661361d9b2048"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "8ace82137a4d398f445370d28cdccbcb0dda93a099967a2ce6bdb6eb8347b93e"
+  "sha256": "8da87bf2e3bd3238f53d8d3fa3cebb3a19551ba2594a9e439973c184423dcf5c"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -37491,13 +37491,13 @@
  },
  {
   "path": "_CANONICAL-SKILLS/img2threejs/integrations/glb_character_pipeline/node/package-lock.json",
-  "size": 15477,
-  "sha256": "79d529441e9afa797e44abb5b330698a2659f03230df06408b0ff6360d019561"
+  "size": 16034,
+  "sha256": "8be6332fbdee1301940f63da067637c15ab1a61bd8fe03b5b2e1b1fe8bce322f"
  },
  {
   "path": "_CANONICAL-SKILLS/img2threejs/integrations/glb_character_pipeline/node/package.json",
   "size": 313,
-  "sha256": "209df774546fd58b06fd96965a271ab87bd1e04b0f1d5b4c66deba8f41aff717"
+  "sha256": "80756e78df496bb85fe0b4d258f64d329866c4dd8bf309546515aecb0893da4e"
  },
  {
   "path": "_CANONICAL-SKILLS/img2threejs/integrations/glb_character_pipeline/node/verify_cells.mjs",
@@ -37566,8 +37566,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/img2threejs/integrations/vision/pyproject.toml",
-  "size": 373,
-  "sha256": "0bcfa52091e1af57c7202d424bf4821c6d1bae249eb9efb6889879404c086640"
+  "size": 375,
+  "sha256": "42c60fa5bd708a645c2251f13df845d7da19d4d8064a171890346ab90960b1ce"
  },
  {
   "path": "_CANONICAL-SKILLS/img2threejs/integrations/vision/reference_vision.py",
@@ -37576,8 +37576,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/img2threejs/integrations/vision/uv.lock",
-  "size": 163198,
-  "sha256": "8c06ef21302d7177338911519babf575b918408dcd7df579d4f00ee7f2f77ad9"
+  "size": 161387,
+  "sha256": "eec9001e066f03570c2e7233e715b1f25836d68207f8ad8965fa587609ea71f9"
  },
  {
   "path": "_CANONICAL-SKILLS/img2threejs/scripts/capture_threejs_playwright.py",
@@ -41528,5 +41528,10 @@
   "path": "docs/history/V8.7.4-CHANGELOG.md",
   "size": 1449,
   "sha256": "a32923c715a0300069ab64dc253c87f5104c2e4ae8cccea6e3abd63b161faf96"
+ },
+ {
+  "path": "docs/history/V8.7.5-CHANGELOG.md",
+  "size": 1084,
+  "sha256": "7d221b42a514ef4230b4cdb29327016b91d0301af20f0f8fc5c33952b2cca5ac"
  }
 ]

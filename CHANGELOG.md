@@ -1,3 +1,17 @@
+## 8.7.5
+
+- Resolved all 36 open Dependabot alerts, which were six generated copies of
+  three underlying img2threejs dependency findings: Transformers 4.57.6 and
+  esbuild 0.24.2 in the canonical skill plus five provider fanouts.
+- Updated the optional vision environment to Transformers 5.16.1 (the current
+  PyPI release; all reported advisories are fixed from 5.5.0 onward) and
+  regenerated its complete `uv.lock` for Python 3.11/3.12.
+- Updated the Node verification pipeline to esbuild 0.28.2, regenerated the
+  npm lockfile from registry integrity metadata, and left unrelated Playwright
+  pinned to avoid an unnecessary second compatibility change.
+- Bound both patched versions in the release contracts and regenerated all
+  five provider trees from canonical source.
+
 ## 8.7.4
 
 - Codex built-in skills are dynamically excluded before provider skill sync.

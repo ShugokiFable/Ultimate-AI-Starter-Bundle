@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.4
+# Ultimate AI Starter Bundle v8.7.5
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -691,7 +691,7 @@ registry.
 
 ## Version
 
-**v8.7.4** - 2026-08-30. Codex built-in skills are now excluded before provider synchronization instead of being copied and removed later, closing an open-app rewrite race and keeping those names out of the ownership ledger. The deprecated `~/.codex/skills` root now archives only byte-identical duplicates already present in supported `~/.agents/skills`; modified or unique user skills remain untouched. **167 canonical skills**, no new tools or always-on schemas. Windows MCP remains installed and manually opt-in: useful for native UI Automation when needed, too broad and expensive for a default.
+**v8.7.5** - 2026-08-30. Security follow-up for img2threejs: its optional vision environment now locks Transformers 5.16.1 and its Node verification pipeline locks esbuild 0.28.2, clearing the vulnerable 4.57.6/0.24.2 dependency lineages that GitHub reported once per generated provider tree. The v8.7.4 Codex convergence fix remains intact: built-ins are excluded before sync and exact deprecated-root duplicates are backup-migrated. **167 canonical skills**, no new tools, profiles, or always-on schemas. Windows MCP remains installed and manually opt-in.
 
 **v8.7.2** - 2026-08-30. Hotfix: the `windows` profile (windows-mcp, ~5,522 tokens/turn) is disabled machine-wide on every provider. It was enabled globally on the 29th; by the 30th Hermes, Claude Code/Cowork and the Codex app on Windows all ship native computer use, so it duplicated a capability every host already paid for on every turn. Shipped and off by default, as designed; `-Enable windows -Global` is the fallback for agents without native desktop control. 164 canonical skills, unchanged.
 

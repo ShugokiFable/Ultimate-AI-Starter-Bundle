@@ -4763,6 +4763,11 @@ def test_new_creative_skills_are_pinned_and_single_writer() -> None:
     notices = read(CANON / "THIRD-PARTY-NOTICES.md")
     img_skill = read(CANON / "img2threejs" / "SKILL.md")
     img_wrapper = ps_code(CANON / "img2threejs" / "scripts" / "uabs-python.ps1")
+    vision_project = read(CANON / "img2threejs" / "integrations" / "vision" / "pyproject.toml")
+    vision_lock = read(CANON / "img2threejs" / "integrations" / "vision" / "uv.lock")
+    node_root = CANON / "img2threejs" / "integrations" / "glb_character_pipeline" / "node"
+    node_package = json.loads(read(node_root / "package.json"))
+    node_lock = json.loads(read(node_root / "package-lock.json"))
     ui_skill = read(CANON / "impeccable" / "SKILL.md")
 
     assert "dede5909be4e494b228c801a55dda47439143932" in notices
@@ -4771,6 +4776,10 @@ def test_new_creative_skills_are_pinned_and_single_writer() -> None:
     assert "PYTHONDONTWRITEBYTECODE" in img_wrapper, (
         "img2threejs wrapper can leave __pycache__ inside every installed skill tree"
     )
+    assert '"transformers>=5.16.1,<6"' in vision_project
+    assert re.search(r'(?m)^name = "transformers"\nversion = "5\.16\.1"$', vision_lock)
+    assert node_package["devDependencies"]["esbuild"] == "0.28.2"
+    assert node_lock["packages"]["node_modules/esbuild"]["version"] == "0.28.2"
     assert impeccable["version"] == "3.6.0" and impeccable["skill_version"] == "4.1.2"
     assert impeccable["skill_asset_sha256"] == "5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c"
     assert impeccable["npm_integrity"].startswith("sha512-")
