@@ -9,7 +9,7 @@ dependencies = [
   "pillow>=11,<13",
   "torch>=2.5,<3",
   "torchvision>=0.20,<1",
-  "transformers>=4.56,<5",
+  "transformers>=4.56,<6",
 ]
 
 [tool.uv]
