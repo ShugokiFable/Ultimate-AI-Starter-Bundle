@@ -456,7 +456,12 @@ function Get-UabsTreeDigest([string]$Path) {
   try { return ([BitConverter]::ToString($sha.ComputeHash($bytes))).Replace('-','') } finally { $sha.Dispose() }
 }
 
-function Sync-UabsProviderSkills([string]$From, [string]$To, [string]$Provider = '') {
+function Sync-UabsProviderSkills(
+  [string]$From,
+  [string]$To,
+  [string]$Provider = '',
+  [string[]]$ExcludeNames = @()
+) {
   <#
     Bundle-owned provider skills are content-authoritative.
 
@@ -479,6 +484,7 @@ function Sync-UabsProviderSkills([string]$From, [string]$To, [string]$Provider =
 
   $currentNames = @(Get-ChildItem -LiteralPath $From -Directory -Force |
     Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') } |
+    Where-Object { $ExcludeNames -notcontains $_.Name } |
     Select-Object -ExpandProperty Name)
   $ledgerPath = $null
   if ($Provider) {
@@ -504,6 +510,7 @@ function Sync-UabsProviderSkills([string]$From, [string]$To, [string]$Provider =
   }
 
   foreach ($skillDir in @(Get-ChildItem -LiteralPath $From -Directory -Force -ErrorAction Stop)) {
+    if ($ExcludeNames -contains $skillDir.Name) { continue }
     $sourceSkillMd = Join-Path $skillDir.FullName 'SKILL.md'
     if (-not (Test-Path -LiteralPath $sourceSkillMd -PathType Leaf)) { continue }
     if (($skillDir.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {

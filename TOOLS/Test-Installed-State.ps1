@@ -101,15 +101,12 @@ if(-not $SkipSkills){
       }
     }
 
-    # Codex additionally owns a handful of skills itself (<CodexHome>\skills\
-    # .system). A canonical skill sharing one of those names is removed from the
-    # Codex tree by the installer for the same reason a plugin-owned copy is, so
-    # it is accounted the same way -- separately, because "Codex ships this
-    # itself" and "a plugin ships this" are different facts, and a reader who
-    # cannot tell them apart cannot act on either.
+    # Codex additionally owns skills under <CodexHome>\skills\.system. Discover
+    # the live set instead of trusting old install state: if Codex removes a
+    # built-in later, the matching pack copy is installed again on the next run.
     $builtinDeduped=New-Object System.Collections.Generic.HashSet[string] ([StringComparer]::OrdinalIgnoreCase)
-    if($providerState -and $providerState.Value.codex_builtin_deduped){
-      foreach($name in @($providerState.Value.codex_builtin_deduped)){
+    if($provider -eq 'Codex'){
+      foreach($name in @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome)){
         if($name){[void]$builtinDeduped.Add([string]$name)}
       }
     }

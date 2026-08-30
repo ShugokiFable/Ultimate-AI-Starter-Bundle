@@ -329,7 +329,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.3 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.4 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -454,8 +454,10 @@ if (-not $ToolsOnly) {
     # root after the supported root is healthy.
     $legacyCodexSkills = $null
     $legacyCodexDigests = @{}
+    $codexBuiltins = @()
     if ($prov -eq 'Codex') {
       $legacyCodexSkills = Join-Path $providerHome 'skills'
+      $codexBuiltins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome)
       $ledgerPath = Join-Path (Get-UabsStateRoot) 'managed-skills\codex.json'
       if (Test-Path -LiteralPath $ledgerPath -PathType Leaf) {
         try {
@@ -466,7 +468,7 @@ if (-not $ToolsOnly) {
       }
     }
 
-    Sync-UabsProviderSkills -From $srcSkills -To $destSkills -Provider $prov
+    Sync-UabsProviderSkills -From $srcSkills -To $destSkills -Provider $prov -ExcludeNames $codexBuiltins
     if ($legacyCodexSkills -and
         $legacyCodexSkills.TrimEnd('\') -ine $destSkills.TrimEnd('\') -and
         (Test-Path -LiteralPath $legacyCodexSkills -PathType Container)) {
@@ -478,6 +480,18 @@ if (-not $ToolsOnly) {
         if (-not $expected) {
           $currentSource = Join-Path $srcSkills $oldSkill.Name
           if (Test-Path -LiteralPath $currentSource -PathType Container) { $expected = Get-UabsTreeDigest $currentSource }
+        }
+        if (-not $expected) {
+          # A non-pack skill may also exist in both Codex's supported and
+          # deprecated roots. Move only a byte-identical legacy duplicate.
+          $supportedCopy = Join-Path $destSkills $oldSkill.Name
+          if (Test-Path -LiteralPath $supportedCopy -PathType Container) {
+            $supportedItem = Get-Item -LiteralPath $supportedCopy -Force
+            if (($supportedItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -eq 0) {
+              $supportedDigest = Get-UabsTreeDigest $supportedCopy
+              if ((Get-UabsTreeDigest $oldSkill.FullName) -ceq $supportedDigest) { $expected = $supportedDigest }
+            }
+          }
         }
         if (-not $expected) { continue }
         if ((Get-UabsTreeDigest $oldSkill.FullName) -cne $expected) {
@@ -1009,12 +1023,14 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
         # alone. Same waste as a plugin-owned duplicate, different owner, so it
         # reuses the same verified remover: md5 against canonical, backup first,
         # and a user-modified copy is refused rather than deleted.
-        $builtins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome)
+        $builtins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome | Where-Object {
+          Test-Path -LiteralPath (Join-Path $canonicalSkills $_) -PathType Container
+        })
         if ($builtins.Count) {
+          $pstate.codex_builtin_deduped = @($builtins)
           $bres = Remove-UabsPluginOwnedSkillCopies -Provider 'Codex' -SkillsDir $skillsDir `
                     -Names $builtins -CanonicalRoot $canonicalSkills -BackupRoot $backupRoot -Log $log
           if (@($bres.removed).Count) {
-            $pstate.codex_builtin_deduped = @($bres.removed)
             Write-UabsOk ('Codex: removed ' + @($bres.removed).Count +
               ' copy/copies of a skill Codex ships itself: ' + (@($bres.removed) -join ', '))
           }
@@ -1996,7 +2012,7 @@ if (Test-Path -LiteralPath $statePath -PathType Leaf) {
 }
 
   $state = @{
-  version = '8.7.3'
+  version = '8.7.4'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

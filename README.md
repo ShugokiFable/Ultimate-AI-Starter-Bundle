@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.3
+# Ultimate AI Starter Bundle v8.7.4
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -691,7 +691,7 @@ registry.
 
 ## Version
 
-**v8.7.3** - 2026-08-30. Three narrow capability gains, **zero new always-on schemas**: img2threejs v1.5.1 for evidence-gated image-to-procedural-3D, Impeccable skill 4.1.2 plus integrity-bound CLI 3.6.0 for UI craft and executable checks, and telemetry-free pinned skill discovery that cannot mutate provider trees. **167 canonical skills**, fanned to all five providers. Installer reruns now repair already-enabled MCP profiles when a component becomes available later; backend-only `package.json` files no longer enable Playwright/Chrome DevTools. Candidate review rejected Agent-Reach, taste-skill and OmniRoute as overlapping mutable tool soup; Playwright MCP and Anthropic's official marketplace were already present and stay selective. Windows MCP stays installed but disabled: useful for hosts that need native UI Automation, not worth ~5,522 standing tokens/turn as a default.
+**v8.7.4** - 2026-08-30. Codex built-in skills are now excluded before provider synchronization instead of being copied and removed later, closing an open-app rewrite race and keeping those names out of the ownership ledger. The deprecated `~/.codex/skills` root now archives only byte-identical duplicates already present in supported `~/.agents/skills`; modified or unique user skills remain untouched. **167 canonical skills**, no new tools or always-on schemas. Windows MCP remains installed and manually opt-in: useful for native UI Automation when needed, too broad and expensive for a default.
 
 **v8.7.2** - 2026-08-30. Hotfix: the `windows` profile (windows-mcp, ~5,522 tokens/turn) is disabled machine-wide on every provider. It was enabled globally on the 29th; by the 30th Hermes, Claude Code/Cowork and the Codex app on Windows all ship native computer use, so it duplicated a capability every host already paid for on every turn. Shipped and off by default, as designed; `-Enable windows -Global` is the fallback for agents without native desktop control. 164 canonical skills, unchanged.
 

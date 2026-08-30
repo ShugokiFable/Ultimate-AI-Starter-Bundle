@@ -1748,8 +1748,11 @@ def test_provider_skill_sync_is_content_authoritative() -> None:
     )
     for needle in ("Get-FileHash", "Move-Item", ".uabs-skill-stage-", ".uabs-skill-backup-"):
         assert needle in sync_body, f"provider skill sync missing {needle} stage/verify/swap contract"
-    assert "Sync-UabsProviderSkills -From $srcSkills -To $destSkills -Provider $prov" in installer, (
+    assert "Sync-UabsProviderSkills -From $srcSkills -To $destSkills -Provider $prov -ExcludeNames $codexBuiltins" in installer, (
         "AIO does not use content-authoritative provider skill sync"
+    )
+    assert "$codexBuiltins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome)" in installer, (
+        "Codex built-ins are not dynamically excluded before provider skill sync"
     )
     assert "Copy-UabsRobo -From $srcSkills -To $destSkills" not in installer, (
         "AIO still uses metadata-only whole-tree Robocopy for provider skills"
@@ -1770,6 +1773,8 @@ def test_provider_skill_sync_is_content_authoritative() -> None:
     )
     for needle in ("managed-skills\\codex.json", "codex-legacy-skills-", "$oldSkill.Name -eq '.system'"):
         assert needle in installer, f"safe Codex legacy-root migration missing {needle}"
+    for needle in ("$supportedCopy = Join-Path $destSkills $oldSkill.Name", "$supportedDigest = Get-UabsTreeDigest $supportedCopy"):
+        assert needle in installer, f"exact Codex cross-root duplicate migration missing {needle}"
 
 
 def test_codex_plugins_use_the_official_lifecycle() -> None:
@@ -3553,16 +3558,15 @@ def test_codex_builtin_skills_are_discovered_not_hardcoded() -> None:
     )
     # It must reuse the verified remover, which backs up first and refuses to
     # delete a copy whose SKILL.md differs from canonical.
-    codex_dedupe = installer.split("Get-UabsCodexBuiltinSkillNames", 1)[1][:900]
+    codex_dedupe = installer.rsplit("Get-UabsCodexBuiltinSkillNames", 1)[1][:900]
     assert "Remove-UabsPluginOwnedSkillCopies" in codex_dedupe, (
         "the built-in dedupe deletes directly instead of going through the "
         "remover that backs up and refuses user-modified copies"
     )
 
     doctor = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
-    assert "codex_builtin_deduped" in doctor, (
-        "the doctor cannot see built-in ownership, so a skill the installer "
-        "correctly removed reads as a missing skill and fails the run"
+    assert "Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome" in doctor, (
+        "the doctor does not verify Codex's live built-in ownership"
     )
 
 

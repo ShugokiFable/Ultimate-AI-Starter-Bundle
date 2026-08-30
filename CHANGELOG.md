@@ -1,3 +1,19 @@
+## 8.7.4
+
+- Codex built-in skills are dynamically excluded before provider skill sync.
+  They no longer appear transiently under `~/.agents/skills`, where an open
+  host could rewrite and recreate a copy between sync and post-install dedupe.
+- Excluded skills are omitted from the managed-skill ledger. An unchanged copy
+  owned by an older bundle is retired; a user-modified copy is preserved for
+  backup-safe review.
+- Codex's deprecated `~/.codex/skills` root now migrates a non-pack duplicate
+  only when its complete tree digest exactly matches the copy already present
+  in supported `~/.agents/skills`. Unique or modified skills stay untouched.
+- Extended the Windows PowerShell sync regression and release contracts to
+  bind both preventative exclusion and exact cross-root migration.
+- Windows MCP remains installed but off by default. This fix changes no MCP
+  registration, profile, tool pin, or always-on schema budget.
+
 ## 8.7.3
 
 - **167 canonical skills total**, up from 164, with no new always-on MCP schemas.

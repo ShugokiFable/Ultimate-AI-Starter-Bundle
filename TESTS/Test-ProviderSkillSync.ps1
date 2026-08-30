@@ -29,11 +29,12 @@ $srcSkill = Join-Path $srcRoot 'release-checklist'
 $dstSkill = Join-Path $dstRoot 'release-checklist'
 $customSkill = Join-Path $dstRoot 'my-custom-skill'
 $modifiedSkill = Join-Path $srcRoot 'modified-retired'
+$excludedSkill = Join-Path $srcRoot 'codex-system-skill'
 $previousLocal = $env:LOCALAPPDATA
 $env:LOCALAPPDATA = Join-Path $tempRoot 'state'
 
 try {
-    New-Item -ItemType Directory -Force -Path $srcSkill, $dstSkill, $customSkill, $modifiedSkill | Out-Null
+    New-Item -ItemType Directory -Force -Path $srcSkill, $dstSkill, $customSkill, $modifiedSkill, $excludedSkill | Out-Null
 
     # Exactly the old failure shape: same byte count and same last-write time,
     # but different bytes. Deterministic release ZIPs normalize timestamps.
@@ -49,6 +50,7 @@ try {
     [IO.File]::WriteAllText($srcFile, $new, $utf8)
     [IO.File]::WriteAllText($dstFile, $old, $utf8)
     [IO.File]::WriteAllText((Join-Path $modifiedSkill 'SKILL.md'), 'managed-before-user-edit', $utf8)
+    [IO.File]::WriteAllText((Join-Path $excludedSkill 'SKILL.md'), 'provider-owned', $utf8)
 
     $sameTime = [DateTime]::SpecifyKind([DateTime]'2026-08-20T00:00:00', [DateTimeKind]::Local)
     (Get-Item -LiteralPath $srcFile).LastWriteTime = $sameTime
@@ -85,10 +87,17 @@ try {
     Remove-Item -LiteralPath $srcSkill -Recurse -Force
     [IO.File]::WriteAllText((Join-Path $dstRoot 'modified-retired\SKILL.md'), 'user-edited', $utf8)
     Remove-Item -LiteralPath $modifiedSkill -Recurse -Force
-    Sync-UabsProviderSkills -From $srcRoot -To $dstRoot -Provider Test
+    Sync-UabsProviderSkills -From $srcRoot -To $dstRoot -Provider Test -ExcludeNames 'codex-system-skill'
     if (Test-Path -LiteralPath $dstSkill) { throw 'unchanged retired managed skill was not removed' }
+    if (Test-Path -LiteralPath (Join-Path $dstRoot 'codex-system-skill')) {
+        throw 'excluded provider-owned skill was copied or retained'
+    }
     if ([IO.File]::ReadAllText((Join-Path $dstRoot 'modified-retired\SKILL.md')) -cne 'user-edited') {
         throw 'modified retired managed skill was not preserved'
+    }
+    $ledger = [IO.File]::ReadAllText((Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\managed-skills\test.json')) | ConvertFrom-Json
+    if (@($ledger.skills | Where-Object { $_.name -eq 'codex-system-skill' }).Count) {
+        throw 'excluded provider-owned skill remained in the ownership ledger'
     }
 
     Write-Host 'PROVIDER SKILL SYNC: PASS' -ForegroundColor Green
