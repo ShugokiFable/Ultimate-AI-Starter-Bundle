@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Node-side Surface Nets encode/verify/capture scripts for the GLB character pipeline integration",
   "devDependencies": {
-    "esbuild": "0.24.2",
+    "esbuild": "0.28.1",
     "playwright": "1.57.0"
   }
 }
