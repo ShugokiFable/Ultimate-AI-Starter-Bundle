@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "catalog_version": "8.7.2",
-  "pack_version": "8.7.2",
+  "catalog_version": "8.7.3",
+  "pack_version": "8.7.3",
   "updated_utc": "2026-08-30T00:00:00Z",
   "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 146 skill bodies are far larger than the description index an agent actually reads. There is no equivalent discount for MCP. So the servers here are NOT registered globally: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
   "reads": "TOOLS/Set-McpProfile.ps1",
@@ -128,7 +128,6 @@
       "why": "Chrome DevTools MCP reads a real Chrome: console messages, network requests, performance traces and the rendered DOM. That is the half playwright-mcp does not do -- playwright drives a browser, this one explains what the browser did. Enable it for front-end work; it is dead weight in a Papyrus session.",
       "detect": {
         "files": [
-          "package.json",
           "index.html",
           "angular.json",
           "svelte.config.js",
@@ -137,6 +136,28 @@
         "globs": [
           "next.config.*",
           "vite.config.*"
+        ],
+        "json_has_any": [
+          {
+            "path": "package.json",
+            "properties": [
+              "dependencies",
+              "devDependencies"
+            ],
+            "names": [
+              "@angular/core",
+              "@remix-run/react",
+              "astro",
+              "next",
+              "nuxt",
+              "react",
+              "react-dom",
+              "solid-js",
+              "svelte",
+              "vite",
+              "vue"
+            ]
+          }
         ]
       },
       "servers": [
@@ -485,12 +506,12 @@
       "id": "windows",
       "title": "Windows desktop control through UI Automation (windows-mcp)",
       "scope": "global",
-      "why": "Every other capability here stops at a file or a browser tab. This one drives the machine: clicking, typing, shortcuts, PowerShell, the registry, the filesystem, windows and processes. It costs ~5,522 tokens on every turn while enabled (20 tools, 22,088 bytes, measured 2026-08-27). v8.7.2 decision: it was briefly enabled machine-wide on every provider and then disabled again on every provider, for the same reason -- by 2026-08-30 Hermes, Claude (Code desktop / Cowork) and Codex (macOS and Windows app) all ship native computer use, so windows-mcp duplicated a capability every host already paid for on every turn. It stays shipped and off by default; -Enable windows -Global remains the one-command fallback for an agent that has no native desktop control.",
+      "why": "Every other optional MCP here stops at a file or browser tab. This one drives native Windows applications through UI Automation: clicking, typing, shortcuts, PowerShell, the registry, the filesystem, windows and processes. It is useful when a host has no native desktop control, or when UI Automation can expose controls more cheaply than repeated screenshots. It costs ~5,522 tokens on every turn while enabled (20 tools, 22,088 bytes, measured 2026-08-27), and provider-native computer-use availability is not uniform. That cost and its machine-mutating scope make it a poor default for ordinary coding, research and modding sessions. It stays installed and off by default; -Enable windows -Global is the one-command fallback for a host that actually needs it.",
       "detect": {
         "files": [],
         "globs": []
       },
-      "detect_note": "Deliberately empty, and for a stronger reason than `reasoning`'s. That one is empty because a way of thinking is not a property of a directory. This one is empty because the profile can click, type, run PowerShell and write the registry, and no marker on disk is evidence that an operator wants an agent doing those things. -Auto will never enable it; -Enable windows -Global is the only way in. It was machine-wide enabled once (2026-08-29) and machine-wide disabled the next day once every target host shipped native computer use -- the detect-marker rule was right both times.",
+      "detect_note": "Deliberately empty, and for a stronger reason than `reasoning`'s. That one is empty because a way of thinking is not a property of a directory. This one is empty because the profile can click, type, run PowerShell and write the registry, and no marker on disk is evidence that an operator wants an agent doing those things. -Auto will never enable it; -Enable windows -Global is the only way in.",
       "servers": [
         {
           "id": "windows-mcp",

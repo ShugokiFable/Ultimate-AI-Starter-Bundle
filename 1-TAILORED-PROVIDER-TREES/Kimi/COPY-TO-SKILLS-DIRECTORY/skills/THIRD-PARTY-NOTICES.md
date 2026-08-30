@@ -24,6 +24,30 @@ The three `mcp-server-dev` skills are kept as a **set**: `build-mcp-server`
 explicitly hands off to the other two, so taking one alone leaves a dangling
 reference.
 
+## img2threejs — `img2threejs/img2threejs`, Apache-2.0
+
+`img2threejs` is vendored from tag **v1.5.1**, commit
+`dede5909be4e494b228c801a55dda47439143932`. CI metadata, sponsor assets and the
+upstream provider-specific `CLAUDE.md` are excluded; the skill, stdlib Python
+forge, documentation, fixtures and license are retained. UABS adds one Windows
+Python/UTF-8 resolver and replaces upstream's provider symlink instructions with
+canonical fanout.
+
+## Impeccable — `pbakaus/impeccable`, Apache-2.0
+
+`impeccable` is the `.agents/skills/impeccable` payload from the official
+**skill-v4.1.2** `universal.zip` (17,906,506 bytes, SHA-256
+`5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c`). UABS
+removes its provider-directory pin/self-update path and routes deterministic
+scans through the separately pinned CLI. The included `LICENSE` is upstream's.
+
+## skills CLI — `vercel-labs/skills`, MIT
+
+No upstream source is vendored. The `skill-discovery` wrapper invokes the exact
+published `skills@1.5.23` package on demand with telemetry disabled and exposes
+only its read-only `find` command. Its output is discovery evidence, never an
+installation decision.
+
 ## kepano — `kepano/obsidian-skills`
 
 | skill |
@@ -54,7 +78,9 @@ not re-litigated every time someone browses it:
   same `CLAUDE.md` this pack's own preamble wiring owns. Two writers, one file.
 - **`plugin-dev/*`** (7 skills) — Claude Code plugin format: structure,
   settings, commands, agents. Correct for Claude, noise on the other four.
-- **`frontend-design`, `session-report`, `receipts`, `project-artifact`,
+- **`frontend-design`** — prompt-only and now overlapped by Impeccable's
+  cross-provider design router plus executable detector.
+- **`session-report`, `receipts`, `project-artifact`,
   `playground`, `math-olympiad`, `example-plugin/*`, `cwc-makers/*`** — off
   mission for a provider-setup pack.
 

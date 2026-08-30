@@ -73,7 +73,7 @@ param(
   [switch]$AllProviders,
   [ValidateSet('BundledFirst','OnlineLatest','BundledOnly')]
   [string]$Mode = 'OnlineLatest',
-  [string[]]$Components = @('housecarl','spooky','codebase-memory','headroom','superpowers','ponytail','codeburn','github-mcp-server'),
+  [string[]]$Components = @('housecarl','spooky','codebase-memory','headroom','superpowers','ponytail','codeburn','impeccable','github-mcp-server'),
   [string]$WorkspaceRoot = '',
   # The directory Skyrim Forge is installed INTO, not the folder that
   # contains it: -ForgeRoot 'S:\Apps\Skyrim Tools\Skyrim-Forge' keeps Forge
@@ -329,7 +329,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.2 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.3 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1238,18 +1238,35 @@ if (-not $SkillsOnly) {
         $installed[$id] = @{ status='manual'; note=$comp.note }
       }
       'npx-or-npm' {
-        if (Get-Command npm -EA SilentlyContinue) {
+        $npm = Get-Command npm -EA SilentlyContinue
+        if ($npm) {
           try {
-            if (Invoke-UabsNative 'npm' @('install','-g', $comp.npm_spec)) {
-              $installed[$id] = @{ status='npm-global'; spec=$comp.npm_spec }
+            if ($comp.npm_integrity) {
+              $reported = (& $npm.Source view $comp.npm_spec dist.integrity --json 2>$null | Out-String).Trim()
+              if ($LASTEXITCODE -ne 0 -or -not $reported) { throw "INTEGRITY: npm could not verify $($comp.npm_spec)" }
+              $actualIntegrity = [string]($reported | ConvertFrom-Json)
+              if ($actualIntegrity -cne [string]$comp.npm_integrity) {
+                throw "INTEGRITY: $($comp.npm_spec) registry integrity changed"
+              }
+            }
+            $npmArgs = @('install', '-g')
+            if ($comp.npm_args) { $npmArgs += @($comp.npm_args) }
+            $npmArgs += $comp.npm_spec
+            if (Invoke-UabsNative $npm.Source $npmArgs) {
+              $installed[$id] = @{ status='npm-global'; spec=$comp.npm_spec; integrity=$comp.npm_integrity; args=@($comp.npm_args) }
               Write-UabsOk "npm -g $($comp.npm_spec)"
             } else { throw "npm exited with code $LASTEXITCODE" }
           } catch {
-            Write-UabsWarn "npm global failed - users can run: npx $($comp.npm_spec)"
-            $installed[$id] = @{ status='npx-fallback' }
+            if ($_.Exception.Message -like 'INTEGRITY:*') {
+              Write-UabsBad $_.Exception.Message
+              $installed[$id] = @{ status='blocked-integrity'; spec=$comp.npm_spec }
+            } else {
+              Write-UabsWarn "npm global failed - users can run: npx $($comp.npm_spec)"
+              $installed[$id] = @{ status='npx-fallback' }
+            }
           }
         } else {
-          Write-UabsWarn "Node/npm missing - CodeBurn via npx when Node is installed"
+          Write-UabsWarn "Node/npm missing - $($comp.name) can run through its pinned npx package after Node is installed"
           $installed[$id] = @{ status='skipped-no-node' }
         }
       }
@@ -1940,8 +1957,14 @@ $saintsForge = Set-UabsDiscoveredGameForgeRoot -Variable 'SAINTSROW_FORGE_ROOT' 
 $installed['roblox-forge-discovery'] = @{ status=$(if($robloxForge){'found'}else{'not-installed'}); root=$robloxForge }
 $installed['saints-row-forge-discovery'] = @{ status=$(if($saintsForge){'found'}else{'not-installed'}); root=$saintsForge }
 
-if ($WorkspaceRoot) {
-  & (Join-Path $PackRoot 'TOOLS\Set-McpProfile.ps1') -Auto -Path $WorkspaceRoot -Providers $Providers
+if (-not $SkipMcpWire -and -not $SkillsOnly) {
+  $mcpProfile = Join-Path $PackRoot 'TOOLS\Set-McpProfile.ps1'
+  if (Test-Path -LiteralPath $mcpProfile) {
+    & $mcpProfile -Repair -Providers $Providers -PackRoot $PackRoot
+    if ($WorkspaceRoot) {
+      & $mcpProfile -Auto -Path $WorkspaceRoot -Providers $Providers -PackRoot $PackRoot
+    }
+  }
 }
 
 # ---------- Discover + state ----------
@@ -1973,7 +1996,7 @@ if (Test-Path -LiteralPath $statePath -PathType Leaf) {
 }
 
   $state = @{
-  version = '8.7.2'
+  version = '8.7.3'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -2036,22 +2059,6 @@ if (-not $ToolsOnly) {
       L 'Hermes native profiles evaluated'
     } catch {
       Write-UabsWarn ('Hermes native profiles: ' + $_.Exception.Message)
-    }
-  }
-
-  # Capability profiles. Everything beyond the always-on three is off until a
-  # project needs it: MCP tool schemas are in context on every turn, so a
-  # globally registered server is a permanent cost paid by every unrelated
-  # session. -Auto writes a profile only when the workspace shows its markers
-  # AND the machine satisfies its requirements, and prints the missing
-  # prerequisite otherwise rather than leaving an entry that fails on first call.
-  $mcpProfile = Join-Path $PackRoot 'TOOLS\Set-McpProfile.ps1'
-  if ((Test-Path -LiteralPath $mcpProfile) -and $WorkspaceRoot -and (Test-Path -LiteralPath $WorkspaceRoot)) {
-    try {
-      & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $mcpProfile -Auto -Path $WorkspaceRoot -Providers ($Providers -join ',') -PackRoot $PackRoot
-      L 'capability profiles evaluated for the workspace'
-    } catch {
-      Write-UabsWarn ('Capability profiles: ' + $_.Exception.Message)
     }
   }
 
@@ -2191,7 +2198,10 @@ if (Test-Path -LiteralPath $profileStateFile -PathType Leaf) {
     if ($ps.profiles) {
       foreach ($pr in $ps.profiles.PSObject.Properties) {
         $projs = @()
-        try { $projs = @($pr.Value.projects.PSObject.Properties.Name) } catch { $projs = @() }
+        try {
+          $projs = @($pr.Value.projects.PSObject.Properties.Name |
+            Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
+        } catch { $projs = @() }
         if ($projs.Count) { $enabledProfiles += ('{0} -> {1}' -f $pr.Name, ($projs -join '; ')) }
         if ($pr.Value.global) { $enabledProfiles += ('{0} -> (global)' -f $pr.Name) }
       }

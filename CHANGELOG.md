@@ -1,3 +1,39 @@
+## 8.7.3
+
+- **167 canonical skills total**, up from 164, with no new always-on MCP schemas.
+  Adopted img2threejs v1.5.1 for deterministic image-to-procedural-Three.js,
+  Impeccable skill 4.1.2 plus CLI 3.6.0 for UI craft and executable checks,
+  and a telemetry-free, search-only wrapper over `skills@1.5.23`.
+- Impeccable's official skill archive is SHA-256 bound; the actually published
+  npm package is pinned by exact version and registry integrity. Optional
+  Puppeteer, provider-directory pinning, and self-update paths are excluded so
+  Playwright and canonical fanout remain the only browser and skill writers.
+- Installer reruns now repair every profile scope already owned by the pack.
+  A profile enabled before one of its MCP binaries existed no longer stays
+  permanently partial after that component is installed. Repair preserves the
+  providers recorded for each scope and counts existing Grok entries as already
+  occupying their slot instead of dropping them at the budget ceiling.
+- The `web` profile no longer treats any `package.json` as a frontend. It
+  requires a frontend config or dependency, so backend-only Node projects keep
+  Playwright and Chrome DevTools parked.
+- Commented-out TOML MCP tables are now inactive everywhere: the doctor no
+  longer reports them as registered, and they no longer block an explicit
+  re-enable. This lets an operator keep a note without paying for the server.
+- Retired-skill generation now ignores canonical-root notice files. A root
+  `THIRD-PARTY-NOTICES.md` can never become a stale-skill cleanup target.
+- Fixed a fresh-shell Headroom upgrade failure found by the live install: the
+  installer called a PATH-refresh helper that existed only inside the separate
+  provider bootstrap script. The helper now lives in the shared module.
+- Re-tested Agent-Reach v1.5.0 (154 pass, 8 skip), taste-skill, OmniRoute,
+  Anthropic's official marketplace, and Playwright MCP. The first three remain
+  out for overlap/mutable state; the latter two were already covered.
+- Kept Windows MCP installed but disabled on all five providers. It is useful
+  for native UI Automation when a host lacks equivalent computer use, but its
+  20 schemas cost ~5,522 tokens on every turn and its tools control the whole
+  machine. That makes manual `-Enable windows -Global` the correct default.
+- 116 release contracts plus the dedicated PowerShell profile gate bind the
+  new pins, single-writer rules, repair path, and frontend detector.
+
 ## 8.7.2
 
 - Disabled the `windows` profile (windows-mcp) machine-wide on every provider.

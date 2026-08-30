@@ -126,6 +126,10 @@ dashboard for a human rather than a queryable surface for an agent.
 
 ### REJECTED — Agent-Reach (`Panniantong/Agent-Reach`), MIT — **gate 1, install method**
 
+**Superseded by the 2026-08-29 v1.5.0 re-evaluation below.** The remote-script
+installer is no longer the decisive problem; its mutable meta-installer surface
+and overlap are.
+
 Unified reading and search across Twitter, Reddit, YouTube, GitHub, Bilibili
 and XiaoHongShu with no API fees. The capability gap is real — nothing here
 reads social platforms.
@@ -438,6 +442,82 @@ Harness: `TESTS/test_release_contract.py::test_rtk_is_documented_as_a_git_tool_n
 binds the find breakage, the truncation warning, the archive correction and the
 7.4% aggregate to the shipped docs.
 
+
+## 2026-08-29 — image-to-3D, UI craft, and capability discovery
+
+Eight recommendations were checked at immutable releases where upstream had
+one. Three add distinct capability without another always-on MCP schema.
+
+### TAKEN — img2threejs v1.5.1 (`img2threejs/img2threejs`), Apache-2.0
+
+A deterministic, code-only image-to-procedural-Three.js reconstruction
+pipeline. It adds something the existing Blender and image-generation tools do
+not: an agent can turn one reference image into an inspectable staged model,
+with evidence and correction gates instead of claiming hidden geometry is
+known.
+
+The exact v1.5.1 commit is vendored. On Windows with UTF-8 forced, upstream's
+1,083-test run had no assertion failures; three fixture-setup errors were all
+`WinError 1314` because an unprivileged Windows process could not create test
+symlinks, and 38 tests were skipped. Its forge is Python 3.10+ stdlib. UABS adds
+only a path-contained UTF-8 Python resolver and keeps one canonical skill
+writer.
+
+### TAKEN — Impeccable skill 4.1.2 + CLI 3.6.0 (`pbakaus/impeccable`), Apache-2.0
+
+The official skill adds a broad UI-design router; the CLI makes part of that
+quality floor executable. The published universal skill archive is bound to
+SHA-256 `5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c`.
+The npm registry does not publish the repository's advertised 3.6.1 CLI, so the
+bundle pins the actually published 3.6.0 package and its registry integrity.
+In an isolated install its detector returned exit 2 and identified a deliberate
+low-contrast fixture. All 101 retained JavaScript modules pass `node --check`.
+
+Optional Puppeteer is omitted because Playwright already owns browser rendering.
+Upstream self-update and provider-directory pinning are removed so generated
+provider trees still have one writer. No MCP, daemon, account, key, or standing
+schema cost is added.
+
+### TAKEN — safe skill discovery (`vercel-labs/skills` CLI 1.5.23), MIT
+
+The CLI already searches the public skills catalog across the providers this
+pack supports. Bundling another marketplace or auto-installer would create a
+second writer, so UABS exposes only pinned `find`, disables telemetry/audit
+calls, and requires immutable provenance, license, script, credential, write,
+hook, and overlap review before anything enters `_CANONICAL-SKILLS`. The shipped
+wrapper completed a live multi-word search on Windows.
+
+### REJECTED — Agent-Reach v1.5.0 (`Panniantong/Agent-Reach`), MIT — **gate 2**
+
+Re-tested because v1.5.0 is materially safer than the old remote-script-only
+release: 154 tests passed and 8 skipped in an isolated `uv` environment. It is
+still a mutable meta-installer over many third-party CLIs and cookie/auth flows;
+even `doctor` installed its skill into the isolated home. Its useful surfaces
+overlap Playwright, Firecrawl, the official GitHub MCP, and native web tools.
+That breadth belongs in a user-owned specialist install, not the bundle core.
+
+### REJECTED — taste-skill (`Leonxlnx/taste-skill`), MIT — **gate 2**
+
+Fourteen prompt-heavy style skills, no immutable release, and direct overlap
+with the official frontend-design skill and the more complete Impeccable router.
+Adding it would spend index entries to provide a third writer for the same
+judgment.
+
+### REJECTED — OmniRoute (`diegosouzapw/OmniRoute`), MIT — **gate 2**
+
+A full model/provider gateway with a large MCP surface and account/credential
+routing. It duplicates the providers' own routing and changes the trust
+boundary. Super-MCP Router remains the measured schema-on-demand experiment;
+OmniRoute does not solve that narrower problem more cheaply.
+
+### ALREADY COVERED — Playwright MCP and Anthropic official plugins
+
+Playwright MCP is already pinned at 0.0.79 behind the `web` profile, alongside
+Chrome DevTools rather than duplicated. The profile no longer turns on for
+every backend-only `package.json`; it requires a frontend marker or dependency.
+Anthropic's official marketplace is already registered selectively. Enabling
+the whole marketplace would reintroduce provider-specific duplicates, keyed
+MCPs, and skills already carried by the canonical tree.
 
 ## How to add a row
 

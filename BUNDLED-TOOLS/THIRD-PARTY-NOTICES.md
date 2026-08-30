@@ -12,6 +12,7 @@ for convenience. **You do not own these projects** by receiving this pack.
 | Superpowers | https://github.com/obra/superpowers | see repo |
 | Ponytail | https://github.com/DietrichGebert/ponytail | MIT |
 | CodeBurn | https://github.com/getagentseal/codeburn | see repo |
+| Impeccable CLI 3.6.0 / skill 4.1.2 | https://github.com/pbakaus/impeccable | Apache-2.0 |
 
 Skyrim Forge is **not** redistributed.
 

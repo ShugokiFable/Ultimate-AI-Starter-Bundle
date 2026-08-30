@@ -9,6 +9,12 @@ function Get-UabsStateRoot {
   return (Join-Path $base 'Ultimate-AI-Starter-Bundle')
 }
 
+function Refresh-ProcessPath {
+  $machine = [Environment]::GetEnvironmentVariable('Path', 'Machine')
+  $user = [Environment]::GetEnvironmentVariable('Path', 'User')
+  $env:Path = (@($machine, $user) | Where-Object { $_ }) -join ';'
+}
+
 function Get-UabsCodexCli {
   <# Prefer an independently updatable Codex CLI over Hermes' private copy.
      The desktop AppX resource appears on PATH but Windows does not permit

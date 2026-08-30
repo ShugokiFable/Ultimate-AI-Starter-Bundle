@@ -153,7 +153,10 @@ def main() -> int:
         if "/" not in line:
             continue
         parts = line.split("/")
-        if len(parts) >= 2 and parts[0] in TREES:
+        # A skill is a directory below the tree. Root files such as
+        # THIRD-PARTY-NOTICES.md have only two path components and must never
+        # become cleanup targets.
+        if len(parts) >= 3 and parts[0] in TREES:
             ever.add(parts[1])
 
     current = {d for d in os.listdir(CANON)

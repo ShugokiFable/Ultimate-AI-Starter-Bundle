@@ -230,6 +230,36 @@
       "npm_spec": "codeburn@0.9.23"
     },
     {
+      "install": "npx-or-npm",
+      "id": "impeccable",
+      "kind": "cli-optional",
+      "runtimes": [
+        "node22"
+      ],
+      "github": {
+        "repo": "impeccable",
+        "owner": "pbakaus"
+      },
+      "name": "Impeccable",
+      "version": "3.6.0",
+      "skill_version": "4.1.2",
+      "skill_asset": "universal.zip",
+      "skill_asset_sha256": "5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c",
+      "offline_asset": null,
+      "license": "Apache-2.0",
+      "required_for": [
+        "ui-quality",
+        "frontend-design"
+      ],
+      "npm_spec": "impeccable@3.6.0",
+      "npm_integrity": "sha512-nysc6/2OHTWqLrcSxTxZk4r4QMufhU8NTIuG2ic6p5zzyZe45AWBX3/18OA5S88pCWq+4z8pKsjUxhAM990RKg==",
+      "npm_args": [
+        "--omit=optional",
+        "--ignore-scripts"
+      ],
+      "scope_note": "The cross-provider skill is vendored from the official skill-v4.1.2 universal.zip and bound to its published SHA-256. The executable detector is the actually published npm 3.6.0 package, pinned by npm integrity. Optional Puppeteer is omitted: Playwright/browser profiles already own live rendering, and downloading a second browser would be duplication. Lifecycle scripts are disabled. UABS removes upstream self-update/pin paths so provider skill trees keep one writer. Zero MCP schemas, daemon, account or key."
+    },
+    {
       "install": "bundle-source",
       "id": "skyrim-forge",
       "kind": "bundled-product",
@@ -765,7 +795,7 @@
       "scope_note": "A proxy MCP. It registers ONE server carrying 11 meta-tools and puts every other server behind on-demand discovery: search_tools by intent, get_tool_details for one schema, use_tool to call it. Measured 2026-08-27: 11 tools, 11,386 bytes, ~2,846 tokens per turn -- and that figure does NOT grow as more servers go behind it. The comparison that matters: houseCARL wired directly is 45 tools, 167,072 bytes, 41,768 tokens on EVERY turn, and Claude, Codex, Grok and Kimi cannot filter individual tools the way Hermes can, so on those four it is all 45 or nothing. Proven end to end against this pack's own houseCARL on 2026-08-27: search_tools('list the plugins in the active load order') -> get_tool_details (3,652 chars, ~913 tokens for that ONE schema) -> use_tool returned live data from the shim (2,999 mods, 2,995 plugins). Startup 1.2s, search 400ms, detail 200ms. NOT wired into a profile, and the reason is specific rather than cautious: the router reads its own config at %USERPROFILE%\\.super-mcp\\config.json, so enabling it means this pack writing and preserving a THIRD-PARTY tool's config file -- a second config writer with its own merge obligations, on a 24-star dependency. The measurement is what ships here; the wiring is its own release. One caveat to carry into that decision: BM25 ranking returned housecarl_merge_plugins FIRST for that read-only query, with the correct housecarl_load_order_status third. Discovery works, but the top hit is not automatically the safe one."
     }
   ],
-  "pack_version": "8.7.2",
+  "pack_version": "8.7.3",
   "updated_utc": "2026-08-29",
   "providers": {
     "Grok": {
@@ -823,7 +853,7 @@
       "winget": [
         "OpenJS.NodeJS.LTS"
       ],
-      "note": "For CodeBurn npx"
+      "note": "For CodeBurn and Impeccable"
     },
     "dotnet8-sdk": {
       "winget": [
@@ -841,7 +871,7 @@
   "notes": "Multi-provider Ultimate AI Starter Bundle. Includes optional full Skyrim SE/AE modding stack; not Skyrim-only.",
   "pack_name": "Ultimate-AI-Starter-Bundle",
   "display_name": "Ultimate AI Starter Bundle",
-  "catalog_version": "8.7.2",
+  "catalog_version": "8.7.3",
   "updated": "2026-08-29",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

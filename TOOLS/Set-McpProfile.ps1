@@ -51,6 +51,7 @@ param(
   [Parameter(ParameterSetName = 'List')][switch]$List,
   [Parameter(ParameterSetName = 'Detect')][switch]$Detect,
   [Parameter(ParameterSetName = 'Auto')][switch]$Auto,
+  [Parameter(ParameterSetName = 'Repair')][switch]$Repair,
   [Parameter(ParameterSetName = 'Enable', Mandatory = $true)][string[]]$Enable,
   [Parameter(ParameterSetName = 'Disable', Mandatory = $true)][string[]]$Disable,
   [string]$Path,
@@ -171,6 +172,21 @@ function Test-UabsProfileMarkersIn($d, [string]$Dir) {
         $obj = [IO.File]::ReadAllText($file) | ConvertFrom-Json
         $prop = $obj.PSObject.Properties[[string]$probe['property']]
         if ($prop -and @($probe['equals']) -contains [string]$prop.Value) { return $true }
+      } catch { }
+    }
+  }
+  if ($d.Contains('json_has_any')) {
+    foreach ($probe in @($d['json_has_any'])) {
+      $file = Join-UabsPath $Dir $probe['path']
+      if (-not (Test-UabsPath -LiteralPath $file -PathType Leaf)) { continue }
+      try {
+        $obj = [IO.File]::ReadAllText($file) | ConvertFrom-Json
+        foreach ($property in @($probe['properties'])) {
+          $bucket = $obj.PSObject.Properties[[string]$property]
+          if (-not $bucket -or -not $bucket.Value) { continue }
+          $present = @($bucket.Value.PSObject.Properties.Name)
+          if (@($probe['names'] | Where-Object { $present -contains [string]$_ }).Count) { return $true }
+        }
       } catch { }
     }
   }
@@ -409,7 +425,15 @@ function Invoke-UabsProfileWrite {
       # grok-cli wedges at eight servers RUNNING, and it runs the union of the
       # user file and the project file -- so the ceiling is counted over both.
       if ($write.Count) {
-        $write = @(Select-UabsWithinGrokBudget -Servers $write -Budget $GrokMcpBudget -ProjectPath $ProjectPath)
+        # Existing entries consume no NEW slot. Running repair at the ceiling
+        # used to reject even the server already present, then erase Grok from
+        # the ownership record while leaving its live entry behind.
+        $existing = @($write | Where-Object {
+          Test-UabsServerDeclared -Path $target.Path -Style $target.Style -Section $target.Section -Id $_['id'] -ProjectKey $target.ProjectKey
+        })
+        $new = @($write | Where-Object { @($existing | ForEach-Object { $_['id'] }) -notcontains $_['id'] })
+        $fit = if ($new.Count) { @(Select-UabsWithinGrokBudget -Servers $new -Budget $GrokMcpBudget -ProjectPath $ProjectPath) } else { @() }
+        $write = @($existing + $fit)
       }
       if (-not $write.Count) { continue }
     }
@@ -617,9 +641,9 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
       $provs = @($state['profiles'][$p['id']]['projects'][$proj]['providers'])
       $suffix = if ($provs.Count) { '  -> ' + ($provs -join ', ') } else { '' }
       Write-Host ("       enabled for  {0}{1}" -f $proj, $suffix) -ForegroundColor Green
-      $srv = $state['profiles'][$p['id']]['projects'][$proj]['servers']
-      foreach ($sid in @(([string]$srv) -split '[,;]')) {
-        $sid = $sid.Trim()
+      $srv = @($state['profiles'][$p['id']]['projects'][$proj]['servers'])
+      foreach ($sid in $srv) {
+        $sid = ([string]$sid).Trim()
         if ($sid) { $registeredIds[$sid] = $true }
       }
     }
@@ -671,7 +695,7 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
 # answer "turn this off": -Disable with no -Path means every project the profile
 # was enabled for, and defaulting to the cwd there swept a directory nobody
 # asked about while leaving the real registrations in place.
-if (-not $Path -and -not $Global -and $PSCmdlet.ParameterSetName -ne 'Disable') {
+if (-not $Path -and -not $Global -and $PSCmdlet.ParameterSetName -notin @('Disable', 'Repair')) {
   $Path = (Get-Location).Path
 }
 if ($Path) {
@@ -699,6 +723,46 @@ if ($PSCmdlet.ParameterSetName -eq 'Detect') {
 
 Invoke-UabsStaleGlobalMigration -Entries $stale
 Invoke-UabsRetiredProfileMigration -State $state
+
+if ($PSCmdlet.ParameterSetName -eq 'Repair') {
+  # A tool can be installed after its profile was first enabled. Reconcile the
+  # scopes this pack already owns; do not detect or enable anything new here.
+  $jobs = @()
+  foreach ($id in @($state['profiles'].Keys)) {
+    try { [void](Get-UabsProfile $id) } catch { Write-Skip ("{0}: no longer in the profile catalog" -f $id); continue }
+    foreach ($proj in @(Get-UabsProfileProjects $state $id)) {
+      $record = $state['profiles'][$id]['projects'][$proj]
+      $owned = @($record['providers'])
+      $repairProviders = if ($owned.Count) { @($Providers | Where-Object { $owned -contains $_ }) } else { @($Providers) }
+      $jobs += @{ Id = $id; Path = $proj; Global = $false; Providers = $repairProviders }
+    }
+    if (Test-UabsProfileGlobal $state $id) {
+      $record = $state['profiles'][$id]['global']
+      $owned = @($record['providers'])
+      $repairProviders = if ($owned.Count) { @($Providers | Where-Object { $owned -contains $_ }) } else { @($Providers) }
+      $jobs += @{ Id = $id; Path = ''; Global = $true; Providers = $repairProviders }
+    }
+  }
+  Save-UabsProfileState $state
+  if (-not $jobs.Count) { Write-Host '  no enabled profiles to repair'; return }
+  foreach ($job in $jobs) {
+    if (-not $job.Global -and -not (Test-UabsPath -LiteralPath $job.Path -PathType Container)) {
+      Write-Skip ("{0}: recorded project is unavailable, left unchanged ({1})" -f $job.Id, $job.Path)
+      continue
+    }
+    if (-not @($job.Providers).Count) {
+      Write-Skip ("{0}: none of its recorded providers were selected for this install" -f $job.Id)
+      continue
+    }
+    $invoke = @{
+      Enable = @($job.Id); Providers = @($job.Providers); PackRoot = $PackRoot
+      GrokMcpBudget = $GrokMcpBudget; CheckOnly = $CheckOnly.IsPresent
+    }
+    if ($job.Global) { $invoke['Global'] = $true } else { $invoke['Path'] = $job.Path }
+    & $PSCommandPath @invoke
+  }
+  return
+}
 
 if ($PSCmdlet.ParameterSetName -eq 'Disable') {
   foreach ($rawId in $Disable) {

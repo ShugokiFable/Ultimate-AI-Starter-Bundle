@@ -177,6 +177,19 @@ $text = [IO.File]::ReadAllText($tomlPath)
 if ($text -match 'withenv') { Bad 'sub-table orphaned by parent removal' } else { Good 'sub-table removed with its parent' }
 if ($text -match '\[mcp_servers\.after\]') { Good 'the table after a removed family survived' } else { Bad 'removal ate the following table' }
 
+# A user may comment a table out to disable it. It is documentation, not a
+# registration: the doctor must report it off and a later explicit enable must
+# be able to create one active table.
+Set-Utf8NoBom -Path $tomlPath -Text @"
+# [mcp_servers.serena]
+# command = "old"
+# args = []
+"@
+Is (Test-UabsServerDeclared -Path $tomlPath -Style 'toml' -Section 'mcp_servers' -Id 'serena') $false 'a commented TOML table is not registered'
+$added = @(Add-UabsMcpToml -Path $tomlPath -Section 'mcp_servers' -Servers @($winSrv) -Provider 'Codex')
+Is $added.Count 1 'a commented TOML table does not block re-enable'
+Is ([regex]::Matches([IO.File]::ReadAllText($tomlPath), '(?m)^\[mcp_servers\.serena\]\r?$').Count) 1 're-enable writes exactly one active TOML table'
+
 # An env block is only written for variables that are actually set.
 $envVar = 'UABS_MCP_GATE_TOKEN'
 [Environment]::SetEnvironmentVariable($envVar, 'secret-value')
@@ -404,6 +417,20 @@ if (-not (Test-Path -LiteralPath $setProfile -PathType Leaf)) {
   Set-Utf8NoBom -Path (Join-Path $saintsProject 'project.json') -Text '{"game":"unrelated"}'
   $detected = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $setProfile -Detect -Path $saintsProject -PackRoot $PackRoot 2>&1 | Out-String
   if ($detected -notmatch 'game-saints-row') { Good 'generic project.json does not enable Saints Row tools' } else { Bad 'generic project.json falsely selected game-saints-row' }
+
+  $nodeBackend = Join-Path $sandbox 'detect-node-backend'
+  New-Item -ItemType Directory -Force -Path $nodeBackend | Out-Null
+  Set-Utf8NoBom -Path (Join-Path $nodeBackend 'package.json') -Text '{"dependencies":{"express":"5.0.0"}}'
+  $detected = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $setProfile -Detect -Path $nodeBackend -PackRoot $PackRoot 2>&1 | Out-String
+  if ($detected -match 'code-intel' -and $detected -notmatch '(?m)^\s*web\s') { Good 'a backend-only package.json does not enable the browser profile' }
+  else { Bad 'a backend-only Node project was mistaken for a frontend' }
+
+  $nodeFrontend = Join-Path $sandbox 'detect-node-frontend'
+  New-Item -ItemType Directory -Force -Path $nodeFrontend | Out-Null
+  Set-Utf8NoBom -Path (Join-Path $nodeFrontend 'package.json') -Text '{"devDependencies":{"vite":"7.0.0"}}'
+  $detected = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $setProfile -Detect -Path $nodeFrontend -PackRoot $PackRoot 2>&1 | Out-String
+  if ($detected -match '(?m)^\s*web\s') { Good 'a frontend dependency enables the browser profile' }
+  else { Bad 'a frontend package.json did not select the web profile' }
 }
 
 # Both writers must share one implementation. Two copies means every bug in
@@ -469,8 +496,8 @@ function New-UabsTestBox {
 }
 
 function Invoke-UabsProfile {
-  param($Box, [string[]]$Arguments)
-  $saved = @{ U = $env:USERPROFILE; L = $env:LOCALAPPDATA; H = $env:HERMES_HOME; A = $env:APPDATA }
+  param($Box, [string[]]$Arguments, [string]$ProviderList = 'Claude,Grok,Codex,Kimi,Hermes')
+  $saved = @{ U = $env:USERPROFILE; L = $env:LOCALAPPDATA; H = $env:HERMES_HOME; A = $env:APPDATA; C = $env:CODEBASE_MEMORY_MCP }
   try {
     $env:USERPROFILE  = $Box.Home
     $env:LOCALAPPDATA = $Box.Local
@@ -480,13 +507,17 @@ function Invoke-UabsProfile {
     # Point Hermes at a directory that does not exist, so it reports itself
     # absent instead of touching the real one.
     $env:HERMES_HOME  = Join-Path $Box.Root 'no-hermes'
+    $cbm = Join-Path $Box.Home '.local\bin\codebase-memory-mcp.exe'
+    if (Test-Path -LiteralPath $cbm -PathType Leaf) { $env:CODEBASE_MEMORY_MCP = $cbm }
+    else { Remove-Item Env:CODEBASE_MEMORY_MCP -ErrorAction SilentlyContinue }
     $all = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $setProfileScript) + $Arguments +
-           @('-PackRoot', $PackRoot, '-Providers', 'Claude,Grok,Codex,Kimi,Hermes')
+           @('-PackRoot', $PackRoot, '-Providers', $ProviderList)
     return (& $psExe @all 2>&1 | Out-String)
   } finally {
     $env:USERPROFILE = $saved.U
     $env:LOCALAPPDATA = $saved.L
     $env:APPDATA = $saved.A
+    if ($null -eq $saved.C) { Remove-Item Env:CODEBASE_MEMORY_MCP -ErrorAction SilentlyContinue } else { $env:CODEBASE_MEMORY_MCP = $saved.C }
     if ($null -eq $saved.H) { Remove-Item Env:HERMES_HOME -ErrorAction SilentlyContinue } else { $env:HERMES_HOME = $saved.H }
   }
 }
@@ -582,6 +613,27 @@ if ($out -match 'already registered') { Good 'a re-run reports the profile as st
 else { Bad "a re-run lost track of the registration: $out" }
 $claudeServers = @((Get-UabsBoxClaude $box).projects.$($box.Proj).mcpServers.PSObject.Properties.Name)
 Is (@($claudeServers | Where-Object { $_ -eq 'serena' }).Count) 1 'a second run does not duplicate the JSON entry'
+
+# ---- repair an already-enabled partial profile ------------------------------
+$rbox = New-UabsTestBox
+[void](Invoke-UabsProfile -Box $rbox -Arguments @('-Auto', '-Path', $rbox.Proj) -ProviderList 'Claude')
+if (-not (Test-UabsBoxProjectServer $rbox $rbox.Proj 'codebase-memory-mcp')) { Good 'the fixture starts with a partial code-intel profile' }
+else { Bad 'the partial-profile fixture unexpectedly registered codebase-memory' }
+Set-Utf8NoBom -Path (Join-Path $rbox.Home '.local\bin\codebase-memory-mcp.exe') -Text 'stub'
+$out = Invoke-UabsProfile -Box $rbox -Arguments @('-Repair')
+if (Test-UabsBoxProjectServer $rbox $rbox.Proj 'codebase-memory-mcp') { Good '-Repair adds a newly available server to an already-enabled profile' }
+else { Bad "-Repair left codebase-memory missing from the recorded project: $out" }
+$rstate = Get-UabsBoxText (Join-Path $rbox.Local 'Ultimate-AI-Starter-Bundle\mcp-profiles.json') | ConvertFrom-Json
+if (@($rstate.profiles.'code-intel'.projects.$($rbox.Proj).servers) -contains 'codebase-memory-mcp') { Good '-Repair records the complete server set' }
+else { Bad '-Repair rewired the server but left stale partial state' }
+if (((@($rstate.profiles.'code-intel'.projects.$($rbox.Proj).providers) -join ',') -eq 'Claude') -and
+    -not (Test-Path -LiteralPath (Join-Path $rbox.Proj '.grok\config.toml') -PathType Leaf)) {
+  Good '-Repair does not widen a Claude-only scope into other selected providers'
+} else { Bad '-Repair widened the recorded provider scope' }
+$out = Invoke-UabsProfile -Box $rbox -Arguments @('-List', '-Path', $rbox.Proj)
+if ($out -match '(?m)^\s*codebase-memory-mcp\s+REGISTERED' -and $out -match '(?m)^\s*serena\s+REGISTERED') {
+  Good '-List handles a multi-server state array'
+} else { Bad "-List lost registered ids from a multi-server array: $out" }
 
 # ---- -Disable ----------------------------------------------------------------
 # No -Path: every project the profile was enabled for. The cwd is not a default

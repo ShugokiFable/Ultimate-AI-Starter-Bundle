@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.2
+# Ultimate AI Starter Bundle v8.7.3
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -21,7 +21,7 @@ One distinction explains almost everything about how this pack behaves:
 | **INSTALLED** | The tool exists on disk | Disk space only. **Zero** effect on your AI chats. |
 | **ENABLED** | Registered in a provider's config | Its tool descriptions ride along inside **every message you send, in every chat, forever** — related to your task or not. |
 
-The 164 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, the heaviest server (houseCARL) burns ~17,000 tokens *every single turn*, and enabling the entire catalog would cost ~40,000+ tokens/turn before you've typed a word. That's why the installer enables almost nothing.
+The 167 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, houseCARL alone burns ~41,768 tokens *every single turn*. That's why the installer enables almost nothing.
 
 ### What's ON after install
 
@@ -501,7 +501,7 @@ tools appear -- three surprises for one double-click, so it moved behind a flag:
 
 ## What gets installed
 
-- **Provider skills** — 164 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
+- **Provider skills** — 167 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
 - **Native plugins** — Superpowers and Ponytail use each provider's official/native plugin lifecycle; Claude-only `claude-mem` installs Bun automatically when needed.
 - **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Hermes isolates the official Studio MCP in `roblox` and houseCARL in `skyrim`; the remaining browser/editor/game profiles stay off outside matching projects, and credentialed servers stay off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
@@ -510,6 +510,9 @@ tools appear -- three surprises for one double-click, so it moved behind a flag:
 - **Headroom** (context compression, registered as an MCP server — see [Headroom + Grok](#headroom--grok))
 - **Superpowers** + **Ponytail** plugins/skills
 - **CodeBurn** (optional, via npm/npx)
+- **Impeccable** — UI design router plus a pinned executable HTML/CSS detector; no second browser download
+- **img2threejs** — staged image-to-procedural-Three.js reconstruction with resumable evidence gates
+- **Safe skill discovery** — telemetry-free pinned catalog search; candidates still pass provenance and dedupe review before fanout
 - Grok MCP wiring + portable tool discovery
 
 ### Skyrim Forge
@@ -585,6 +588,8 @@ Notable upstream projects:
 | Superpowers | https://github.com/obra/superpowers |
 | Ponytail | https://github.com/DietrichGebert/ponytail |
 | CodeBurn | https://github.com/getagentseal/codeburn |
+| Impeccable | https://github.com/pbakaus/impeccable |
+| img2threejs | https://github.com/img2threejs/img2threejs |
 
 Do not re-upload third-party binaries to Nexus as your own work. Keep attribution. Prefer `TOOLS\Update-From-GitHub.ps1` for newer versions.
 
@@ -665,7 +670,7 @@ registry.
 
 ## Known limitations
 
-- 19 skills exceed the tier-1/tier-2 context budget (22 warnings). They work;
+- 6 skills exceed the tier-2 body budget (6 warnings). They work;
   they are not free. Trimming is deferred, not done.
 - **The knowledge graph cannot read Papyrus.** `codebase-memory-mcp` has no
   `.psc` parser and skips `scripts/` via a built-in skip-list, so Skyrim mod
@@ -685,6 +690,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.3** - 2026-08-30. Three narrow capability gains, **zero new always-on schemas**: img2threejs v1.5.1 for evidence-gated image-to-procedural-3D, Impeccable skill 4.1.2 plus integrity-bound CLI 3.6.0 for UI craft and executable checks, and telemetry-free pinned skill discovery that cannot mutate provider trees. **167 canonical skills**, fanned to all five providers. Installer reruns now repair already-enabled MCP profiles when a component becomes available later; backend-only `package.json` files no longer enable Playwright/Chrome DevTools. Candidate review rejected Agent-Reach, taste-skill and OmniRoute as overlapping mutable tool soup; Playwright MCP and Anthropic's official marketplace were already present and stay selective. Windows MCP stays installed but disabled: useful for hosts that need native UI Automation, not worth ~5,522 standing tokens/turn as a default.
 
 **v8.7.2** - 2026-08-30. Hotfix: the `windows` profile (windows-mcp, ~5,522 tokens/turn) is disabled machine-wide on every provider. It was enabled globally on the 29th; by the 30th Hermes, Claude Code/Cowork and the Codex app on Windows all ship native computer use, so it duplicated a capability every host already paid for on every turn. Shipped and off by default, as designed; `-Enable windows -Global` is the fallback for agents without native desktop control. 164 canonical skills, unchanged.
 

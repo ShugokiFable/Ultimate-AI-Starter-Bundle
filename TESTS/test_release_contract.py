@@ -694,7 +694,9 @@ def test_retired_skills_are_declared_and_cannot_delete_a_live_skill() -> None:
     entries = data["retired"]
     assert entries, "the retired list is empty; regenerate with TOOLS/generate_retired_skills.py"
 
-    canonical = {p.name for p in (ROOT / "_CANONICAL-SKILLS").iterdir() if p.is_dir()}
+    canonical_root = ROOT / "_CANONICAL-SKILLS"
+    canonical = {p.name for p in canonical_root.iterdir() if p.is_dir()}
+    live_root_entries = {p.name for p in canonical_root.iterdir()}
     names = [e["name"] for e in entries]
     assert len(names) == len(set(names)), "duplicate entry in the retired list"
 
@@ -704,6 +706,15 @@ def test_retired_skills_are_declared_and_cannot_delete_a_live_skill() -> None:
     assert not overlap, (
         f"these names are BOTH shipped and marked retired, so the cleanup would "
         f"delete skills the installer just wrote: {overlap}"
+    )
+    root_overlap = sorted(set(names) & live_root_entries)
+    assert not root_overlap, (
+        "retired cleanup targets collide with live canonical root entries: %s"
+        % root_overlap
+    )
+    generator = read(ROOT / "TOOLS" / "generate_retired_skills.py")
+    assert "len(parts) >= 3" in generator, (
+        "the retired-skill generator can mistake canonical root files for skill directories"
     )
     assert data.get("current_skill_count") == len(canonical), (
         "RETIRED-SKILLS.json was generated against a different tree; "
@@ -2285,6 +2296,9 @@ def main() -> int:
         test_versioned_online_tools_pin_the_same_version_offline,
         test_github_auth_guidance_matches_the_official_oauth_binary,
         test_fresh_codex_home_exists_before_instruction_copy,
+        test_profile_repair_and_frontend_detection_are_default,
+        test_new_creative_skills_are_pinned_and_single_writer,
+        test_skill_discovery_is_search_only,
     ]
     failed = []
     for fn in tests:
@@ -4668,6 +4682,14 @@ def test_versioned_online_tools_pin_the_same_version_offline() -> None:
     assert "Stop-UabsProcessUsingExecutable $activeHeadroom.Source" in installer, (
         "a running Headroom MCP can lock its own entrypoint and defeat the uv upgrade"
     )
+    common = ps_code(ROOT / "TOOLS" / "UABS-Common.ps1")
+    bootstrap = ps_code(ROOT / "TOOLS" / "Ensure-Provider-CLIs.ps1")
+    assert "function Refresh-ProcessPath" in common, (
+        "Headroom calls Refresh-ProcessPath but the shared installer scope does not define it"
+    )
+    assert "function Refresh-ProcessPath" not in bootstrap, (
+        "the PATH refresh helper drifted back into one caller instead of shared scope"
+    )
 
     codeburn = components["codeburn"]
     assert codeburn["version"] in codeburn["npm_spec"], (
@@ -4705,6 +4727,65 @@ def test_fresh_codex_home_exists_before_instruction_copy() -> None:
         "the provider home is not created before fresh-install instructions; "
         "Codex fails because its skills are written to ~/.agents instead"
     )
+
+
+def test_profile_repair_and_frontend_detection_are_default() -> None:
+    """Installer reruns repair owned scopes without enabling browser tools for any Node repo."""
+    installer = ps_code(ROOT / "INSTALL-AIO.ps1")
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    writer = ps_code(ROOT / "TOOLS" / "Set-McpProfile.ps1")
+    web = next(p for p in profiles["profiles"] if p["id"] == "web")
+
+    assert "& $mcpProfile -Repair" in installer
+    assert installer.index("& $mcpProfile -Repair") < installer.index("& $mcpProfile -Auto")
+    assert "ParameterSetName = 'Repair'" in writer and "& $PSCommandPath @invoke" in writer
+    assert "Providers = @($job.Providers)" in writer
+    assert "Test-UabsServerDeclared -Path $target.Path" in writer
+    assert "package.json" not in web["detect"].get("files", [])
+    probes = web["detect"].get("json_has_any", [])
+    names = {name for probe in probes for name in probe.get("names", [])}
+    assert {"vite", "react", "vue", "svelte"} <= names
+    assert "json_has_any" in writer
+    assert "IsNullOrWhiteSpace([string]$_)" in installer, (
+        "a global-only profile prints a fake blank project in the install summary"
+    )
+
+
+def test_new_creative_skills_are_pinned_and_single_writer() -> None:
+    """Image-to-3D and UI craft keep immutable provenance and one bundle writer."""
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    impeccable = next(c for c in catalog["components"] if c["id"] == "impeccable")
+    installer = ps_code(ROOT / "INSTALL-AIO.ps1")
+    notices = read(CANON / "THIRD-PARTY-NOTICES.md")
+    img_skill = read(CANON / "img2threejs" / "SKILL.md")
+    img_wrapper = ps_code(CANON / "img2threejs" / "scripts" / "uabs-python.ps1")
+    ui_skill = read(CANON / "impeccable" / "SKILL.md")
+
+    assert "dede5909be4e494b228c801a55dda47439143932" in notices
+    assert re.search(r"(?m)^version:\s*1\.5\.1\s*$", img_skill)
+    assert "PYTHONUTF8" in img_wrapper and "must be inside" in img_wrapper
+    assert "PYTHONDONTWRITEBYTECODE" in img_wrapper, (
+        "img2threejs wrapper can leave __pycache__ inside every installed skill tree"
+    )
+    assert impeccable["version"] == "3.6.0" and impeccable["skill_version"] == "4.1.2"
+    assert impeccable["skill_asset_sha256"] == "5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c"
+    assert impeccable["npm_integrity"].startswith("sha512-")
+    assert impeccable["npm_args"] == ["--omit=optional", "--ignore-scripts"]
+    assert "view $comp.npm_spec dist.integrity" in installer and "blocked-integrity" in installer
+    assert re.search(r"(?m)^version:\s*4\.1\.2\s*$", ui_skill)
+    assert not (CANON / "impeccable" / "scripts" / "pin.mjs").exists()
+    assert "impeccable detect" in read(CANON / "impeccable" / "reference" / "routing.md")
+
+
+def test_skill_discovery_is_search_only() -> None:
+    """The catalog finder can discover candidates but cannot mutate managed skill homes."""
+    skill = read(CANON / "skill-discovery" / "SKILL.md")
+    wrapper = ps_code(CANON / "skill-discovery" / "scripts" / "find-skills.ps1")
+    assert "skills@1.5.23" in wrapper and "'find'" in wrapper
+    assert "DISABLE_TELEMETRY" in wrapper and "DO_NOT_TRACK" in wrapper
+    assert not re.search(r"['\"](?:add|update|remove|experimental_sync)['\"]", wrapper)
+    for command in ("skills add", "skills update", "skills remove", "skills experimental_sync"):
+        assert command in skill, f"discovery skill does not forbid {command}"
 
 if __name__ == "__main__":
     raise SystemExit(main())

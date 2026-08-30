@@ -588,7 +588,7 @@ function Add-UabsMcpToml {
   $added = @()
   foreach ($s in $Servers) {
     $header = "[$Section.$($s['id'])]"
-    $declared = $text -match [regex]::Escape($header)
+    $declared = Test-UabsTomlTableDeclared -Text $text -Section $Section -Id $s['id']
     if ($declared -and -not $Refresh) { continue }
     $cmd = Expand-UabsTemplate -Text $s['command'] -ProjectPath $ProjectPath
     $argv = Resolve-UabsServerArgs -Server $s -Provider $Provider -ProjectPath $ProjectPath -Scope $Scope
@@ -632,6 +632,12 @@ function Add-UabsMcpToml {
 
 # ---- Hermes ----------------------------------------------------------------
 
+function Test-UabsTomlTableDeclared {
+  param([string]$Text, [string]$Section, [string]$Id)
+  $header = [regex]::Escape("[$Section.$Id]")
+  return [bool]($Text -match ('(?m)^[ \t]*' + $header + '[ \t]*(?:#[^\r\n]*)?\r?$'))
+}
+
 function Test-UabsServerDeclared {
   <# Is this server registered in that config right now? The add functions
      answer "did I change anything", which is a different question: once an
@@ -642,7 +648,9 @@ function Test-UabsServerDeclared {
   param([string]$Path, [string]$Style, [string]$Section, [string]$Id, [string]$ProjectKey)
   if (-not (Test-UabsPath -LiteralPath $Path -PathType Leaf)) { return $false }
   $text = [IO.File]::ReadAllText($Path)
-  if ($Style -eq 'toml') { return [bool]($text -match [regex]::Escape("[$Section.$Id]")) }
+  if ($Style -eq 'toml') {
+    return (Test-UabsTomlTableDeclared -Text $text -Section $Section -Id $Id)
+  }
   try { $doc = $text | ConvertFrom-Json } catch { return $false }
   $c = Get-UabsJsonScopeContainer -Json $doc -ProjectKey $ProjectKey
   if ($null -eq $c) { return $false }
