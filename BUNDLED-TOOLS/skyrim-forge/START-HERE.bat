@@ -1,5 +1,6 @@
 @echo off
 setlocal EnableExtensions
+set "PSModulePath="
 title Skyrim Forge 6.0.0
 set "FORGE_PS_GATE=%~dp0PowerShell-Parse-Gate.ps1"
 powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%FORGE_PS_GATE%"

@@ -1,4 +1,6 @@
 @echo off
+setlocal
+set "PSModulePath="
 title Ultimate AI Starter Bundle - Remote Installer
 echo.
 echo  Ultimate AI Starter Bundle Remote Installer

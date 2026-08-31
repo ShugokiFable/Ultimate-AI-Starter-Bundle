@@ -507,8 +507,8 @@
     {
       "executable": true,
       "path": "Run Tests.bat",
-      "sha256": "df8ffd988e5b7f4f128a10d4b4240a062693ff80c21b67292dbd78e10a4760a5",
-      "size": 629
+      "sha256": "7b7b96c846e739d587e2a27dcfcb46574934d1754e07111604c19e9350b1b952",
+      "size": 650
     },
     {
       "executable": false,
@@ -1077,8 +1077,8 @@
     {
       "executable": true,
       "path": "START-HERE.bat",
-      "sha256": "8bc923a6bc5c004637dd37f9625127d998a5476088e1ff2222da553d24470e24",
-      "size": 4735
+      "sha256": "5935e6d1e6c92e74aa8a9cb24874469f580a7bbda9bf05770af84bb3acc6aa7b",
+      "size": 4756
     },
     {
       "executable": false,

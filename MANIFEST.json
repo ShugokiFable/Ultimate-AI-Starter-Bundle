@@ -33397,7 +33397,7 @@
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/BUILD-RECEIPT.json",
   "size": 7244,
-  "sha256": "f9995d08859f7ed9642d684ea91e9981ffab24fb0aff60c40c5d044e41041ec3"
+  "sha256": "9839b4a07edca03d8adfb97bde64eb34b39d698ba5f3bdaa8ec8a38dc4140392"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/CHANGELOG.md",
@@ -33477,7 +33477,7 @@
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/MANIFEST.json",
   "size": 40769,
-  "sha256": "eeac1ad3dd20b73af245724f2d8f58cea4fd827e9e2b21b232101b7e038e723a"
+  "sha256": "a7aa3c3742a224340d87c4f033c7a586217f9e82346b28ba2417bd02fdb45062"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/NOTICE.md",
@@ -33516,13 +33516,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/Run Tests.bat",
-  "size": 629,
-  "sha256": "df8ffd988e5b7f4f128a10d4b4240a062693ff80c21b67292dbd78e10a4760a5"
+  "size": 650,
+  "sha256": "7b7b96c846e739d587e2a27dcfcb46574934d1754e07111604c19e9350b1b952"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/SBOM.spdx.json",
   "size": 96091,
-  "sha256": "bc8b6655df9ac6934a4b2b346e1167025a979abab18ccaade61d9866776ce98b"
+  "sha256": "2ee58ad268bac6531f279fc5381bdcdac9c83db5c837a9b9a0b6b4f898e08234"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/SECURITY.md",
@@ -33531,8 +33531,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/START-HERE.bat",
-  "size": 4735,
-  "sha256": "8bc923a6bc5c004637dd37f9625127d998a5476088e1ff2222da553d24470e24"
+  "size": 4756,
+  "sha256": "5935e6d1e6c92e74aa8a9cb24874469f580a7bbda9bf05770af84bb3acc6aa7b"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/STATE.md",
@@ -33556,8 +33556,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/VALIDATION.json",
-  "size": 49194,
-  "sha256": "8ced0bb76fa28532cf663ef3f7338e23323069f738b5f3121e56208cfd5a91c1"
+  "size": 49337,
+  "sha256": "a323b2c5b1ca298ed4531c6c78c75f2fa8554323fb4c1514538af1285938ea3a"
  },
  {
   "path": "BUNDLED-TOOLS/skyrim-forge/VALIDATION.md",
@@ -34451,8 +34451,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 140551,
-  "sha256": "cc9af401675c7430c8370db4746c78decba00470b891117f6eed328a12d0dc26"
+  "size": 141137,
+  "sha256": "36bde3b60f61d95df36725929ea09f093ab46d4002c32955233b0475e92bf499"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34531,8 +34531,8 @@
  },
  {
   "path": "INSTALL-REMOTE.bat",
-  "size": 588,
-  "sha256": "f449c052405284c0957b73e866db41f659a78bfaf164c431c77b12f71d99ff5c"
+  "size": 621,
+  "sha256": "c152d776e5ec6fa89bfb853a2d78487d916b4514c3468c8e6b9e55b6ba65aa94"
  },
  {
   "path": "INSTALL-REMOTE.ps1",
@@ -34576,8 +34576,8 @@
  },
  {
   "path": "README.md",
-  "size": 55849,
-  "sha256": "dbacc0462d4cb77bf781386333b6dcad1e6d420fab1c405f822b2f9f530bcab0"
+  "size": 55997,
+  "sha256": "b45342071a250064f0725ece296991b2a66dfdda95f76ca6e762dd8c99509553"
  },
  {
   "path": "SECURITY.md",
@@ -34586,8 +34586,8 @@
  },
  {
   "path": "START-HERE.bat",
-  "size": 709,
-  "sha256": "e7ea163a71cd2e05804b5c7a2934a49fe2ce6c591666b808661043e33efa015d"
+  "size": 729,
+  "sha256": "b561ffe7caeb95f6903d94ddcce69e0b5a511ae7b28890316fd5119860e7bf91"
  },
  {
   "path": "START-HERE.txt",
@@ -34786,8 +34786,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 250488,
-  "sha256": "8d802644b29b2fecaa72d04b5d9d232e0cdba782d53f33519a8bd53d2df1d3bf"
+  "size": 251844,
+  "sha256": "968d24cf764c9567a46573986f7e5faec6dc34971bdc5171e967c537a05bdd0b"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -35056,8 +35056,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 2009,
-  "sha256": "3337da4f58c98e98e096ad3e5dd7d01a9809913ea64a085f9ac661361d9b2048"
+  "size": 2423,
+  "sha256": "30e234a68f47b1eb443134c632e3b7e72d184bcb7cc7314d5bbe0bc35155a369"
  },
  {
   "path": "VERSION.txt",
@@ -41531,7 +41531,7 @@
  },
  {
   "path": "docs/history/V8.7.5-CHANGELOG.md",
-  "size": 1084,
-  "sha256": "7d221b42a514ef4230b4cdb29327016b91d0301af20f0f8fc5c33952b2cca5ac"
+  "size": 1770,
+  "sha256": "b8cbc29bdd4103b6b0345fe2d7f0b71ef7d27d760a74be6619e5da75528521a5"
  }
 ]

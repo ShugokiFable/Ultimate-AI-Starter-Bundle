@@ -135,6 +135,16 @@ def read(path: Path) -> str:
     return path.read_text(encoding="utf-8-sig")
 
 
+def shipped_files() -> list[Path]:
+    """Tracked checkout files, or every file in an extracted release."""
+    if not (ROOT / ".git").exists():
+        return [path for path in ROOT.rglob("*") if path.is_file()]
+    raw = subprocess.run(
+        ["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=True
+    ).stdout
+    return [ROOT / rel for rel in raw.decode("utf-8").split("\0") if rel]
+
+
 def frontmatter(text: str) -> tuple[str, str]:
     m = re.match(r"^---\s*\n(.*?)\n---\s*\n(.*)$", text, re.S)
     assert m, "missing YAML frontmatter"
@@ -1444,8 +1454,8 @@ def test_v8_active_surface_uses_versionless_names() -> None:
     )
     text_exts = {".md", ".txt", ".ps1", ".psm1", ".py", ".json", ".yaml", ".yml", ".toml", ".bat", ".cmd"}
     offenders = []
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or path.suffix.lower() not in text_exts or path.name == "MANIFEST.json":
+    for path in shipped_files():
+        if path.suffix.lower() not in text_exts or path.name == "MANIFEST.json":
             continue
         rel = path.relative_to(ROOT).as_posix()
         if rel.startswith("docs/history/") or rel == "CHANGELOG.md" or rel in (
@@ -1482,8 +1492,8 @@ def test_linux_helpers_keep_their_execute_bit() -> None:
     """
     helpers = sorted(
         p.relative_to(ROOT).as_posix()
-        for p in ROOT.rglob("linux-x64/SkyrimForge.Native")
-        if p.is_file()
+        for p in shipped_files()
+        if p.as_posix().endswith("/linux-x64/SkyrimForge.Native")
     )
     assert helpers, "no Linux native helper found; this gate is aimed at nothing"
 
@@ -2240,6 +2250,7 @@ def main() -> int:
         test_current_forge_docs_contract,
         test_ps51_utf8_reads_are_explicit,
         test_windows_ci_and_ps51_static_contract,
+        test_batch_launchers_drop_incompatible_powershell_module_roots,
         test_v8_active_surface_uses_versionless_names,
         test_hermes_mcp_registration_is_noninteractive_and_bounded,
         test_linux_helpers_keep_their_execute_bit,
@@ -4799,6 +4810,25 @@ def test_skill_discovery_is_search_only() -> None:
     assert not re.search(r"['\"](?:add|update|remove|experimental_sync)['\"]", wrapper)
     for command in ("skills add", "skills update", "skills remove", "skills experimental_sync"):
         assert command in skill, f"discovery skill does not forbid {command}"
+
+
+def test_batch_launchers_drop_incompatible_powershell_module_roots() -> None:
+    """A cmd boundary must not feed PowerShell 7 modules to Windows PowerShell."""
+    batches = sorted(ROOT.glob("*.bat")) + sorted(FORGE_SOURCE.rglob("*.bat"))
+    launchers = []
+    for path in batches:
+        text = read(path)
+        match = re.search(r"(?im)^.*\bpowershell(?:\.exe)?\b.*$", text)
+        if not match:
+            continue
+        launchers.append(path)
+        prefix = text[: match.start()]
+        assert re.search(r'(?im)^\s*set\s+"PSModulePath="\s*$', prefix), (
+            "%s launches Windows PowerShell with an inherited module path; "
+            "PowerShell 7/Codex can shadow Microsoft.PowerShell.Utility and "
+            "remove Get-FileHash" % path.relative_to(ROOT).as_posix()
+        )
+    assert launchers, "no shipped batch-to-PowerShell launchers were checked"
 
 if __name__ == "__main__":
     raise SystemExit(main())

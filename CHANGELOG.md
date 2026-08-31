@@ -11,6 +11,14 @@
   pinned to avoid an unnecessary second compatibility change.
 - Bound both patched versions in the release contracts and regenerated all
   five provider trees from canonical source.
+- Fixed every shipped batch-to-Windows-PowerShell boundary. Launching a `.bat`
+  from Codex or PowerShell 7 could preserve its Core-only `PSModulePath`, make
+  Windows PowerShell load the wrong `Microsoft.PowerShell.Utility`, and remove
+  `Get-FileHash` from the one-click installer. Batch launchers now discard only
+  that inherited module path so Windows PowerShell rebuilds its native defaults.
+- Bound source-tree release contracts to Git-tracked files. Ignored `dist/`
+  extraction proofs no longer masquerade as active source or untracked Linux
+  helpers after a candidate build.
 
 ## 8.7.4
 
