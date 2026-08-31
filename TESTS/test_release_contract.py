@@ -2251,6 +2251,7 @@ def main() -> int:
         test_ps51_utf8_reads_are_explicit,
         test_windows_ci_and_ps51_static_contract,
         test_batch_launchers_drop_incompatible_powershell_module_roots,
+        test_pack_gate_does_not_write_persistent_environment,
         test_v8_active_surface_uses_versionless_names,
         test_hermes_mcp_registration_is_noninteractive_and_bounded,
         test_linux_helpers_keep_their_execute_bit,
@@ -3408,7 +3409,7 @@ def test_codex_plugin_detection_survives_one_broken_marketplace() -> None:
 
 
 def test_subset_install_keeps_the_other_providers_native_plugin_records() -> None:
-    """`-Providers Codex` used to fail the doctor on a correct machine.
+    """A narrow rerun updates its slice instead of replacing the full ledger.
 
     native_plugins records which skill copies a native plugin legitimately
     owns. The doctor treats a copy that is absent WITHOUT such a record as a
@@ -3436,6 +3437,23 @@ def test_subset_install_keeps_the_other_providers_native_plugin_records() -> Non
     assert install.index("$priorPlugins") < install.index("native_plugins = $nativePlugins"), (
         "the previous records are merged after the state object is built, so "
         "they never reach the file"
+    )
+    assert "$partialComponentRun = $SkillsOnly -or $PSBoundParameters.ContainsKey('Components')" in install, (
+        "SkillsOnly or an explicit component repair can erase untouched tool records"
+    )
+    component_merge = install[install.index("$partialComponentRun"):][:700]
+    assert "$priorState.components.PSObject.Properties" in component_merge
+    assert "-not $installed.Contains($p.Name)" in component_merge, (
+        "stale component records can overwrite results from the current partial run"
+    )
+    assert install.index("$partialComponentRun") < install.index("components = $installed"), (
+        "untouched components are merged after the state object is already built"
+    )
+    assert "providers = $stateProviders" in install, (
+        "a single-provider rerun still rewrites the installed provider inventory"
+    )
+    assert install.index("$stateProviders =") < install.index("providers = $stateProviders"), (
+        "the provider union is computed after the state object is already built"
     )
 
 
@@ -4829,6 +4847,16 @@ def test_batch_launchers_drop_incompatible_powershell_module_roots() -> None:
             "remove Get-FileHash" % path.relative_to(ROOT).as_posix()
         )
     assert launchers, "no shipped batch-to-PowerShell launchers were checked"
+
+
+def test_pack_gate_does_not_write_persistent_environment() -> None:
+    gate = read(ROOT / "TESTS" / "Test-Pack.ps1")
+    assert not re.search(r"SetEnvironmentVariable\(\s*['\"]HOUSECARL_MCP", gate), (
+        "the pack gate writes the user's persistent houseCARL environment"
+    )
+    assert "$env:HOUSECARL_MCP = $liveExe" in gate, (
+        "the houseCARL resolver fixture is no longer isolated to the test process"
+    )
 
 if __name__ == "__main__":
     raise SystemExit(main())

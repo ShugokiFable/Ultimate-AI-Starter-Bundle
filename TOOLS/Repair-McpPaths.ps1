@@ -149,9 +149,9 @@ function Resolve-LivePath([string]$dead) {
   # "no replacement found" for a perfectly live server). That env is the
   # bundle's own registry - repoint from it, never guess.
   if ((Get-NormalPath $dead) -match '(?i)housecarl-mcp\.exe$') {
-    $envMcp = [Environment]::GetEnvironmentVariable('HOUSECARL_MCP','User')
-    if (-not $envMcp) { $envMcp = $env:HOUSECARL_MCP }
-    if ($envMcp -and (Test-Path -LiteralPath (Get-NormalPath $envMcp))) { return (Get-NormalPath $envMcp) }
+    foreach ($envMcp in @($env:HOUSECARL_MCP, [Environment]::GetEnvironmentVariable('HOUSECARL_MCP','User'))) {
+      if ($envMcp -and (Test-Path -LiteralPath (Get-NormalPath $envMcp))) { return (Get-NormalPath $envMcp) }
+    }
   }
   return $null
 }

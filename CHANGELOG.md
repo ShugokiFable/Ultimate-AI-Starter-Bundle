@@ -19,6 +19,12 @@
 - Bound source-tree release contracts to Git-tracked files. Ignored `dist/`
   extraction proofs no longer masquerade as active source or untracked Linux
   helpers after a candidate build.
+- Fixed partial-install state convergence. `-SkillsOnly`, explicit component
+  repairs, and single-provider reruns now retain untouched component/provider
+  records instead of replacing the full local ledger with the narrow run.
+- Made the MCP path regression fixture process-local. The pack gate no longer
+  edits persistent user environment variables, and a dead process-level
+  houseCARL hint now falls through to the valid user-level path.
 
 ## 8.7.4
 

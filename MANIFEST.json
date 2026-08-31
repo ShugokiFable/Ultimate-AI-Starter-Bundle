@@ -34451,8 +34451,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 141137,
-  "sha256": "36bde3b60f61d95df36725929ea09f093ab46d4002c32955233b0475e92bf499"
+  "size": 141581,
+  "sha256": "c2f58d6a8e7ba73b31892a78f94b07fbf1ed298521ef86be8d364bd0d56927bd"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34526,8 +34526,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 127263,
-  "sha256": "ebb8878e39e2c29f3227ce80cb61df530ad542ece767d62d5d4a0ac816bd2dfa"
+  "size": 127710,
+  "sha256": "43d93816189618540b1fa772f70efb5422b6c3509ac67b833efb51a8dfc52209"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -34576,8 +34576,8 @@
  },
  {
   "path": "README.md",
-  "size": 55997,
-  "sha256": "b45342071a250064f0725ece296991b2a66dfdda95f76ca6e762dd8c99509553"
+  "size": 56065,
+  "sha256": "b869e18533acd6f23a789e6218d08d68ade8999c2e4217a3cf5ec7160711f519"
  },
  {
   "path": "SECURITY.md",
@@ -34616,8 +34616,8 @@
  },
  {
   "path": "TESTS/Test-Pack.ps1",
-  "size": 40047,
-  "sha256": "105b4ed2492e105524603b0fd9cb85a41e45791364b8449fac9494ba0a351eff"
+  "size": 39908,
+  "sha256": "9c812da390a4ba3fcbe8913bb7429eb09924c1b4a0f45da71b6cfcb75976696c"
  },
  {
   "path": "TESTS/Test-ProviderDetection.ps1",
@@ -34786,8 +34786,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 251844,
-  "sha256": "968d24cf764c9567a46573986f7e5faec6dc34971bdc5171e967c537a05bdd0b"
+  "size": 253363,
+  "sha256": "cebe96e5f5fa65cae11aecf169f4e544052c547bb1361d03be92596993b3cc18"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -34866,8 +34866,8 @@
  },
  {
   "path": "TOOLS/Repair-McpPaths.ps1",
-  "size": 10113,
-  "sha256": "11f7bd287728889d4f8db9d9084c15ecd867426085250355381fefb8fbb6372b"
+  "size": 10102,
+  "sha256": "d6eb5f43aed2138b8582d52b9efc90093ed2036ac2d2dfec230ce3ac58f51b0b"
  },
  {
   "path": "TOOLS/Set-McpProfile.ps1",
@@ -35056,8 +35056,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 2423,
-  "sha256": "30e234a68f47b1eb443134c632e3b7e72d184bcb7cc7314d5bbe0bc35155a369"
+  "size": 2653,
+  "sha256": "c7569c6d97bc5e14334646d3f14deefc0c9851b6a63b34319ffedf641f4c568a"
  },
  {
   "path": "VERSION.txt",
@@ -41531,7 +41531,7 @@
  },
  {
   "path": "docs/history/V8.7.5-CHANGELOG.md",
-  "size": 1770,
-  "sha256": "b8cbc29bdd4103b6b0345fe2d7f0b71ef7d27d760a74be6619e5da75528521a5"
+  "size": 2294,
+  "sha256": "33554a77ed58d127977900d38f23c1579d72d6640be81eb1a5953d31e3b44c34"
  }
 ]

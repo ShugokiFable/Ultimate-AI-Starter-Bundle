@@ -1993,30 +1993,39 @@ if (Test-Path $disc) {
 $stateDir = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 
-# native_plugins records which skill copies a native plugin owns, and the
-# doctor treats a copy that is absent WITHOUT such a record as a fatal missing
-# skill. This run only visited $Providers, so writing its map wholesale erases
-# the record for every provider it did not touch: measured, `-Providers Codex`
-# after a full install turned a correct machine into 34 doctor errors. Carry
-# the untouched providers forward.
+# A partial run must update what it touched without forgetting everything else.
+# native_plugins is always provider-scoped; components are carried forward only
+# for SkillsOnly or an explicitly narrowed -Components run. A normal full tool
+# pass remains authoritative and can retire old component records.
 $statePath = Join-Path $stateDir 'install-state.json'
+$priorState = $null
 if (Test-Path -LiteralPath $statePath -PathType Leaf) {
   try {
-    $priorPlugins = ([IO.File]::ReadAllText($statePath) | ConvertFrom-Json).native_plugins
+    $priorState = [IO.File]::ReadAllText($statePath) | ConvertFrom-Json
+    $priorPlugins = $priorState.native_plugins
     if ($priorPlugins) {
       foreach ($p in $priorPlugins.PSObject.Properties) {
         if (-not $nativePlugins.Contains($p.Name)) { $nativePlugins[$p.Name] = $p.Value }
       }
     }
-  } catch { Write-UabsWarn 'Could not read the previous install state; native-plugin records for providers not in this run were not carried forward.' }
+    $partialComponentRun = $SkillsOnly -or $PSBoundParameters.ContainsKey('Components')
+    if ($partialComponentRun -and $priorState.components) {
+      foreach ($p in $priorState.components.PSObject.Properties) {
+        if (-not $installed.Contains($p.Name)) { $installed[$p.Name] = $p.Value }
+      }
+    }
+  } catch { Write-UabsWarn 'Could not read the previous install state; untouched partial-install records were not carried forward.' }
 }
+$knownProviders = @($Providers)
+if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.providers) }
+$stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
   version = '8.7.5'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
-  providers = $Providers
+  providers = $stateProviders
   components = $installed
   native_plugins = $nativePlugins
   pack_root = $PackRoot

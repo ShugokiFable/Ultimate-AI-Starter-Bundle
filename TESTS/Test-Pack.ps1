@@ -393,15 +393,15 @@ else {
             # The bundle registers houseCARL via the HOUSECARL_MCP env, and the
             # resolver must repoint a dead housecarl-mcp.exe from that registry
             # (its live root is not a version-stamped sibling of the dead path).
-            $envMcpBak = [Environment]::GetEnvironmentVariable('HOUSECARL_MCP','User')
+            $envMcpBak = $env:HOUSECARL_MCP
             try {
-              [Environment]::SetEnvironmentVariable('HOUSECARL_MCP', $liveExe, 'User')
+              $env:HOUSECARL_MCP = $liveExe
               $got3 = Resolve-LivePath (Join-Path (Join-Path $sandbox 'houseCARL') 'server\housecarl-mcp.exe')
               if ($got3 -eq $liveExe) { Good 'dead housecarl-mcp.exe repoints from HOUSECARL_MCP env' }
               else { Bad "env fallback returned '$got3', expected '$liveExe'" }
             } finally {
-              if ($null -eq $envMcpBak) { [Environment]::SetEnvironmentVariable('HOUSECARL_MCP', $null, 'User') }
-              else { [Environment]::SetEnvironmentVariable('HOUSECARL_MCP', $envMcpBak, 'User') }
+              if ($null -eq $envMcpBak) { Remove-Item Env:HOUSECARL_MCP -ErrorAction SilentlyContinue }
+              else { $env:HOUSECARL_MCP = $envMcpBak }
             }
 
             # Escaping. A JSON config stores every separator doubled; writing a
