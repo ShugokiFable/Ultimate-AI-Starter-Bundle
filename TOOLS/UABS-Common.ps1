@@ -1104,10 +1104,10 @@ function Remove-UabsPluginOwnedSkillCopies {
 
   Safety rules (the destructive step of the native-plugin rework):
     - skip names with no <SkillsDir>\<name> directory (nothing to do);
-    - NEVER remove a copy whose SKILL.md md5 differs from the pack canonical
-      (<CanonicalRoot>\<name>\SKILL.md) - a difference means the user may have
-      modified the copy, so warn loudly and record it as skipped_modified;
-    - a copy with no SKILL.md, or a name absent from the canonical tree, is
+    - NEVER remove a copy whose SKILL.md md5 differs from the exact provider
+      source (<ExpectedRoot>\<name>\SKILL.md) - a difference means the user may
+      have modified the copy, so warn loudly and record it as skipped_modified;
+    - a copy with no SKILL.md, or a name absent from the expected tree, is
       unverifiable - keep it and record why;
     - before any Remove-Item, robocopy the directory to
       <BackupRoot>\dedupe-<Provider>-<yyyyMMdd-HHmmss>\<name>.
@@ -1118,7 +1118,7 @@ function Remove-UabsPluginOwnedSkillCopies {
     [string]$Provider,
     [string]$SkillsDir,
     [string[]]$Names,
-    [string]$CanonicalRoot,
+    [string]$ExpectedRoot,
     [string]$BackupRoot,
     [System.Collections.Generic.List[string]]$Log
   )
@@ -1130,27 +1130,27 @@ function Remove-UabsPluginOwnedSkillCopies {
     $target = Join-Path $SkillsDir $name
     if (-not (Test-Path -LiteralPath $target -PathType Container)) { continue }
     $copyMd = Join-Path $target 'SKILL.md'
-    $canonMd = Join-Path (Join-Path $CanonicalRoot $name) 'SKILL.md'
+    $expectedMd = Join-Path (Join-Path $ExpectedRoot $name) 'SKILL.md'
     if (-not (Test-Path -LiteralPath $copyMd -PathType Leaf)) {
       $result.skipped += ($name + ' (copy has no SKILL.md - unverifiable, kept)')
-      Write-UabsWarn ('dedupe: kept ' + $name + ' - copy has no SKILL.md to verify against canonical')
+      Write-UabsWarn ('dedupe: kept ' + $name + ' - copy has no SKILL.md to verify against provider source')
       if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: kept ' + $name + ' in ' + $SkillsDir + ' (no SKILL.md)') }
       continue
     }
-    if (-not (Test-Path -LiteralPath $canonMd -PathType Leaf)) {
-      # The canonical tree never shipped a skill of this name, so there is
+    if (-not (Test-Path -LiteralPath $expectedMd -PathType Leaf)) {
+      # This provider tree never shipped a skill of this name, so there is
       # nothing to verify the copy against. Keep it.
-      $result.skipped += ($name + ' (absent from canonical tree - kept)')
-      Write-UabsWarn ('dedupe: kept ' + $name + ' - no canonical SKILL.md to verify against')
-      if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: kept ' + $name + ' in ' + $SkillsDir + ' (not in canonical)') }
+      $result.skipped += ($name + ' (absent from expected provider tree - kept)')
+      Write-UabsWarn ('dedupe: kept ' + $name + ' - no expected provider SKILL.md to verify against')
+      if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: kept ' + $name + ' in ' + $SkillsDir + ' (not in provider source)') }
       continue
     }
     $hCopy = (Get-FileHash -LiteralPath $copyMd -Algorithm MD5).Hash
-    $hCanon = (Get-FileHash -LiteralPath $canonMd -Algorithm MD5).Hash
-    if ($hCopy -ne $hCanon) {
+    $hExpected = (Get-FileHash -LiteralPath $expectedMd -Algorithm MD5).Hash
+    if ($hCopy -ne $hExpected) {
       $result.skipped_modified += $name
-      Write-UabsWarn ('dedupe: REFUSED to remove ' + $target + ' - SKILL.md differs from the pack canonical (user-modified?). Back up your changes and remove it by hand if unwanted.')
-      if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: REFUSED ' + $target + ' (md5 differs from canonical)') }
+      Write-UabsWarn ('dedupe: REFUSED to remove ' + $target + ' - SKILL.md differs from the pack provider source (user-modified?). Back up your changes and remove it by hand if unwanted.')
+      if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: REFUSED ' + $target + ' (md5 differs from provider source)') }
       continue
     }
     New-Item -ItemType Directory -Force -Path $bkDir | Out-Null

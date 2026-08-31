@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-  Install the completeness gate and the assumption gate using each provider's
-  real hook mechanism.
+  Install the completeness gate, assumption gate, and narrow RTK output hook
+  using each provider's real hook mechanism.
 
 .DESCRIPTION
-  Two controls, same three design rules (precise, cheap, fail open):
+  Three controls, same three design rules (precise, cheap, fail open):
 
     completeness_gate.py  refuses a push, and refuses to end a turn, while a
                           release is internally inconsistent - a version bumped
@@ -14,6 +14,8 @@
                           a drive letter that does not exist on this machine,
                           another user's home directory hardcoded into a script,
                           remote content piped straight into a shell.
+    rtk_safe_hook.py      rewrites only exact status and standalone
+                          human-facing pytest/cargo/go tests. It never blocks.
 
   v6.8.0 wired every provider by dropping the same JSON into
   `~/.<provider>/hooks/`. That was an assumption, and it was wrong for three of
@@ -61,7 +63,7 @@
   Report what would change and exit.
 
 .PARAMETER Uninstall
-  Remove both gates from every provider.
+  Remove all three bundle controls from every provider.
 #>
 [CmdletBinding()]
 param(
@@ -105,9 +107,11 @@ if (Test-Path -LiteralPath $v7Common) { . $v7Common }
 
 # Every gate the pack ships, with the tools each one needs to see.
 $gates = @(
-  @{ Name = 'completeness_gate.py'; Matcher = 'Bash|Shell|Terminal|PowerShell|run_command|execute_command'; AllTools = $false }
-  @{ Name = 'assumption_gate.py';   Matcher = 'Bash|Shell|Terminal|PowerShell|run_command|execute_command|Write|Edit|MultiEdit|NotebookEdit|write_file|create_file|str_replace.*'; AllTools = $true }
+  @{ Name = 'completeness_gate.py'; Matcher = 'Bash|Shell|Terminal|PowerShell|run_command|execute_command'; AllTools = $false; Stop = $true }
+  @{ Name = 'assumption_gate.py';   Matcher = 'Bash|Shell|Terminal|PowerShell|run_command|execute_command|Write|Edit|MultiEdit|NotebookEdit|write_file|create_file|str_replace.*'; AllTools = $true; Stop = $true }
+  @{ Name = 'rtk_safe_hook.py';     Matcher = 'Bash|Shell|Terminal|PowerShell|run_command|execute_command'; AllTools = $false; Stop = $false }
 )
+$managedHookNames = @($gates | ForEach-Object { [regex]::Escape($_.Name) }) -join '|'
 foreach ($g in $gates) {
   if (-not (Test-Path -LiteralPath (Join-Path $hooksSrc $g.Name))) { throw "$($g.Name) not found under $hooksSrc" }
 }
@@ -178,8 +182,10 @@ function New-HookBlock {
       matcher = $g.Matcher
       hooks   = @([ordered]@{ type='command'; command=('{0}"{1}" "{2}" --pre'  -f $co,$Py,$script); timeout=15 })
     }
-    $stop += [ordered]@{
-      hooks = @([ordered]@{ type='command'; command=('{0}"{1}" "{2}" --stop' -f $co,$Py,$script); timeout=30 })
+    if ($g.Stop) {
+      $stop += [ordered]@{
+        hooks = @([ordered]@{ type='command'; command=('{0}"{1}" "{2}" --stop' -f $co,$Py,$script); timeout=30 })
+      }
     }
   }
   [ordered]@{ PreToolUse = $pre; Stop = $stop }
@@ -196,7 +202,7 @@ if ($Uninstall) {
       foreach ($evt in @('PreToolUse','Stop')) {
         if ($json.hooks.PSObject.Properties.Name -contains $evt) {
           $json.hooks.$evt = @($json.hooks.$evt | Where-Object {
-            -not ($_.hooks | Where-Object { $_.command -like '*_gate.py*' }) })
+            -not ($_.hooks | Where-Object { $_.command -match $managedHookNames }) })
         }
       }
       if (-not $CheckOnly) { Set-Utf8NoBom -Path $s -Text ($json | ConvertTo-Json -Depth 20) }
@@ -205,7 +211,11 @@ if ($Uninstall) {
   }
   $hx = Get-HermesExe
   if ($hx -and -not $CheckOnly -and (Test-Path -LiteralPath $wireSrc)) {
-    foreach ($g in $gates) { & $python $wireSrc $hx $python (Join-Path $installRoot $g.Name) --remove }
+    foreach ($g in $gates) {
+      $args = @($wireSrc, $hx, $python, (Join-Path $installRoot $g.Name), '--remove')
+      if (-not $g.Stop) { $args += '--pre-only' }
+      & $python @args
+    }
   }
   Write-Host 'Codex: disable [plugins."completeness-gate@ultimate-bundle"] in ~/.codex/config.toml'
   exit 0
@@ -242,7 +252,7 @@ foreach ($p in $Providers) {
       foreach ($evt in @('PreToolUse','Stop')) {
         $existing = @()
         if ($json.hooks.PSObject.Properties.Name -contains $evt) {
-          $existing = @($json.hooks.$evt | Where-Object { -not ($_.hooks | Where-Object { $_.command -like '*_gate.py*' }) })
+          $existing = @($json.hooks.$evt | Where-Object { -not ($_.hooks | Where-Object { $_.command -match $managedHookNames }) })
         }
         $merged = @($existing) + @($block[$evt])
         if ($json.hooks.PSObject.Properties.Name -contains $evt) { $json.hooks.$evt = $merged }
@@ -250,7 +260,7 @@ foreach ($p in $Providers) {
       }
       Copy-Item -LiteralPath $target -Destination "$target.bak-gate-$(Get-Date -Format yyyyMMdd-HHmmss)" -Force -ErrorAction SilentlyContinue
       Set-Utf8NoBom -Path $target -Text ($json | ConvertTo-Json -Depth 20)
-      Write-Host "Claude  merged $($gates.Count) gates into settings.json"
+      Write-Host "Claude  merged $($gates.Count) bundle controls into settings.json"
     }
 
     'Grok' {
@@ -260,7 +270,7 @@ foreach ($p in $Providers) {
       New-Item -ItemType Directory -Force -Path $dir | Out-Null
       $grokBlock = New-HookBlock -Py $python -Root $installRoot -CallOperator
       Set-Utf8NoBom -Path (Join-Path $dir 'ultimate-bundle.json') -Text (([ordered]@{ hooks = $grokBlock }) | ConvertTo-Json -Depth 20)
-      Write-Host "Grok    wired ~/.grok/hooks/ultimate-bundle.json ($($gates.Count) gates, PowerShell call-operator form)"
+      Write-Host "Grok    wired ~/.grok/hooks/ultimate-bundle.json ($($gates.Count) controls, PowerShell call-operator form)"
     }
 
     'Codex' {
@@ -298,19 +308,15 @@ foreach ($p in $Providers) {
       foreach ($g in $gates) {
         $args = @($wireSrc, $hx, $python, (Join-Path $installRoot $g.Name))
         if ($g.AllTools) { $args += '--all-tools' }
+        if (-not $g.Stop) { $args += '--pre-only' }
+        $args += '--approve'
         & $python @args
+        if ($LASTEXITCODE -ne 0) { throw "Hermes hook wiring failed for $($g.Name)." }
       }
-      # Auto-accept only the installer-owned hooks for this one verification
-      # process. Never persist hooks_auto_accept=true for future third-party hooks.
-      $previousAccept = $env:HERMES_ACCEPT_HOOKS
-      try {
-        $env:HERMES_ACCEPT_HOOKS = '1'
-        & $hx hooks list
-        if ($LASTEXITCODE -ne 0) { throw "Hermes hook verification failed with exit $LASTEXITCODE." }
-      } finally {
-        if ($null -eq $previousAccept) { Remove-Item Env:HERMES_ACCEPT_HOOKS -ErrorAction SilentlyContinue }
-        else { $env:HERMES_ACCEPT_HOOKS = $previousAccept }
-      }
+      # Only the exact, self-tested bundle commands above are persisted. Never
+      # set hooks_auto_accept=true, which would approve future third-party hooks.
+      & $hx hooks list
+      if ($LASTEXITCODE -ne 0) { throw "Hermes hook verification failed with exit $LASTEXITCODE." }
     }
   }
 }

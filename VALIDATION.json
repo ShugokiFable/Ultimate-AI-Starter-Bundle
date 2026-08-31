@@ -1,8 +1,8 @@
 {
   "pack": "Ultimate AI Starter Bundle",
-  "version": "8.7.6",
-  "generated": "2026-08-31T16:15:56Z",
-  "release_tag": "v8.7.6",
+  "version": "8.7.7",
+  "generated": "2026-08-31T21:37:51Z",
+  "release_tag": "v8.7.7",
   "canonical_skills": 167,
   "provider_trees": 5,
   "registry_entries": 167,
@@ -13,11 +13,12 @@
     "TOOLS/audit_skills.py",
     "TOOLS/hooks/completeness_gate.py --selftest",
     "TOOLS/hooks/assumption_gate.py --selftest",
+    "TOOLS/hooks/rtk_safe_hook.py --selftest",
     "TESTS/Test-ForgeRootResolution.ps1",
     "TESTS/Test-ProviderSkillSync.ps1",
     "TESTS/Test-McpProfiles.ps1",
     "TOOLS/mcp_handshake.py --selftest"
   ],
-  "runtime_status": "The Windows PowerShell 5.1 full pack gate with live installs passed, along with all 119 release contracts, five Hermes bootstrap cases, version consistency, skill audits, both evidence gates, Forge root resolution, provider skill sync, MCP profile tests, and the MCP process/stdio self-test. The live v8.7.6 doctor passed with 167/167 skills accounted for on every provider: Claude 147 exact plus 20 native-plugin-owned; Codex 146 exact plus 20 native-plugin-owned plus 1 Codex-owned; Grok 167 exact; dormant Kimi 153 exact plus 14 native-plugin-owned; Hermes 167 exact. A non-mutating SkillsOnly reconciliation left installed Claude/Codex plugins unchanged and backup-removed only byte-exact duplicate skill copies, reducing the measured Codex index from 208 entries/36 visible description chars to 188/46. Hermes profile migration backed up and moved rtk-rewrite from enabled to disabled in roblox and skyrim after fixing the plugin-array parser; the final doctor reported no discouraged-plugin drift. Real initialize/tools-list exchanges passed for every enabled core: Claude 4/4 including the user's healthy personal RimWorldForge, Codex 4/4 including its app-owned Node bridge, Grok 3/3, Kimi 3/3, and Hermes 3/3. Enabled project profiles also passed: Claude bundle code-intel, Claude Skyrim Forge, and Grok Skyrim Forge; a stale Grok houseCARL entry was removed because game-skyrim-load-order is off, reducing that project from 147 to 102 live tool schemas. The verifier now honors disabled JSON/TOML entries and current Hermes YAML list indentation. Profile pins are catalog-bound at Chrome DevTools 1.8.0, shadcn 4.19.0, Blender MCP 1.9.0 and Unity MCP 0.90.0. Blender MCP 1.9.0 returned 28 tools/29,154 schema bytes and, with BLENDER_MCP_DISABLE_TELEMETRY=true, logged the supported opt-out with no startup HTTP request. Windows MCP and Super-MCP remain installed but disabled; the stale-state cleaner found nothing to remove. Both deterministic release archives passed CRC, full extraction under a path containing spaces and Unicode, and extracted-manifest verification. The extracted Core START-HERE.bat then completed against a fully isolated empty Codex home with 167 copied skills, a present preamble, and install-state 8.7.6/complete.",
+  "runtime_status": "v8.7.7 pre-push validation passed: the full Windows pack gate, all 120 release contracts, RTK and Hermes hook self-tests, live Claude/Grok/Hermes hook-shape checks, Hermes hook doctor, official RTK v0.46.0 offline-asset hash verification, a four-provider OnlineLatest install, 12 core MCP handshakes, 167/167 installed-skill accounting on Claude/Codex/Grok/Hermes, and the final installed-state doctor. Kimi remains supported in fresh-install tests but was not touched locally because it is not installed/used here. Build, extracted-artifact, and exact-SHA CI evidence are produced after this file is committed.",
   "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

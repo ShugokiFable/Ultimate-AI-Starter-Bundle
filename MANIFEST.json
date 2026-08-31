@@ -46,8 +46,8 @@
  },
  {
   "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION.md",
-  "size": 6648,
-  "sha256": "1c2ae58a7e08307d2614dc969473eb836558954b2dce79fd3a950dab7cb6f360"
+  "size": 6883,
+  "sha256": "f0668c9ad1155517c1f0735ff64887ae25dc0f937a42f19c74bd84d3eac655e3"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/Fun-stuff-kit/AIO.txt",
@@ -31506,18 +31506,18 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 44489,
-  "sha256": "e034a899fa997704f0f6c4e9adc37bd5b198430f2e63e1ab1f0073970fa6c218"
+  "size": 40839,
+  "sha256": "a26c41f48334866a41e7abdcc755e0045abe7366d826047cf97466099968309c"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
-  "size": 1492,
-  "sha256": "ad7eac9803f6eaa1d7dfc1d80c91bf5a2d370667e70bb531fb7f59d633d46db9"
+  "size": 1659,
+  "sha256": "410446b0dc6142c9ec8ce88836d55678f213a2a16096c9511a58ab8219fc8fb1"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
   "size": 31569,
-  "sha256": "62032dc7977b879e3c38f5ce638e56182b8c68db1cc82a5c6a71eca9562cd573"
+  "sha256": "296ae55c173675a082e3ca43c4d51730bfb988a5cbdee429356f73b6e035a247"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -31618,6 +31618,11 @@
   "path": "BUNDLED-TOOLS/offline/ponytail-v4.9.0.zip",
   "size": 1149510,
   "sha256": "361c15a62c49584c40436ed162527d61c067c55eea621cf49c4a8d2de7e77163"
+ },
+ {
+  "path": "BUNDLED-TOOLS/offline/rtk-x86_64-pc-windows-msvc.zip",
+  "size": 4184125,
+  "sha256": "9bc5acd54d35a916e4a561435963e0acf2f1a0115cf43dcfe2b719f361c8a970"
  },
  {
   "path": "BUNDLED-TOOLS/offline/spookys-automod-toolkit-v1.11.2.zip",
@@ -34451,8 +34456,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 143949,
-  "sha256": "c7d42de0c3640b8da6674d77432ff34d79c32e10df88a2a11c2487b03a325bd2"
+  "size": 145040,
+  "sha256": "229379abaaee9d0699a6a4e995239be1a2120f3db0b574ab634d6f8e006b3ec5"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34526,8 +34531,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 130273,
-  "sha256": "f420859657ad86a6cf72c78e0f93449c14987b90cbfa483d71eea24a54f3db90"
+  "size": 130350,
+  "sha256": "b65622de1493c73491db4e8d3d5aaa1300ba1b4bc7f297c14a4337bf83f413c7"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -34576,8 +34581,8 @@
  },
  {
   "path": "README.md",
-  "size": 56836,
-  "sha256": "e41a3c0a05f5cde9251aed7d0cf3040f59f07ce15c8a33c133227dc974beb7a7"
+  "size": 58086,
+  "sha256": "1622854f9d96ad9ebe45008eb155c2a10d187abe93d7f4232cb639ef51822451"
  },
  {
   "path": "SECURITY.md",
@@ -34587,12 +34592,12 @@
  {
   "path": "START-HERE.bat",
   "size": 729,
-  "sha256": "899df77e1bf37a76e6929ea8bfb3f2081331fd2b8a04427bd433b8470acd3cd3"
+  "sha256": "cf8c951c5b0acb5fab4945a74cdde6f86ab0c1be34a2a8926d92cdcdd607a42d"
  },
  {
   "path": "START-HERE.txt",
   "size": 9681,
-  "sha256": "a696b9b50b315895b8882d935ffc8988d424acb00280b69823f949a93ec06992"
+  "sha256": "a1a3934fd77745464db02c57f684ecc345268cac78a32d673c21d074f182eee6"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -34616,8 +34621,8 @@
  },
  {
   "path": "TESTS/Test-Pack.ps1",
-  "size": 40085,
-  "sha256": "f5e7e89bd205a0242c89d76e399850aae081799eb9f7ffedd11ec72685d7e2d8"
+  "size": 40361,
+  "sha256": "330ff89482a68e8571eb1da469985157a9460d2e2ceff29a5a1f2d411a194cac"
  },
  {
   "path": "TESTS/Test-ProviderDetection.ps1",
@@ -34786,8 +34791,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 259142,
-  "sha256": "2729b26e7d8b1f08de8441828af4644ee791b0f8e3b824cd1266df867af8bf55"
+  "size": 262549,
+  "sha256": "cee666f62136915746c275f00c872be613334c711f1760e1462797c4fd98528a"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -34831,8 +34836,8 @@
  },
  {
   "path": "TOOLS/Install-Completeness-Gate.ps1",
-  "size": 16308,
-  "sha256": "08aeaf1b28fdec8a881dd9ceaadbf1522c169918b409b8e4663e7eaafa7a9551"
+  "size": 16764,
+  "sha256": "1afc8721c1b41fe70c2d42fa8fa5b47d031d5e5e65da9196b7e1db7492eb8b11"
  },
  {
   "path": "TOOLS/Install-Provider-Starter-Settings.ps1",
@@ -34901,8 +34906,8 @@
  },
  {
   "path": "TOOLS/UABS-Common.ps1",
-  "size": 69494,
-  "sha256": "01340a61957c3feb627e129f654909ecac225e170e003f0174e1ee624e489f76"
+  "size": 69552,
+  "sha256": "ac886133021b7f13e15f639d092476b670a839e51eca9561351ac110bce030c6"
  },
  {
   "path": "TOOLS/UABS-Mcp-Write.ps1",
@@ -34961,8 +34966,8 @@
  },
  {
   "path": "TOOLS/hooks/hermes_wire.py",
-  "size": 4661,
-  "sha256": "40aee6c7445b20938e335175d70068c671f0dae934a5a0f409547adf4d9a1a38"
+  "size": 9132,
+  "sha256": "3494f6813f5812b0683d0c81245cd24b9c02def808a36ee75ef87efbdf1e68bc"
  },
  {
   "path": "TOOLS/hooks/plugin/.claude-plugin/marketplace.json",
@@ -34990,9 +34995,14 @@
   "sha256": "2f3cc7aa82cacec06092c4c3bb867547706031d953439a5f8e04a551e5ec0433"
  },
  {
+  "path": "TOOLS/hooks/rtk_safe_hook.py",
+  "size": 5901,
+  "sha256": "128f1c22b7df5427173bdf47ea61beee081145faf9a3669975660669783df9f6"
+ },
+ {
   "path": "TOOLS/hooks/ultimate-bundle.json",
-  "size": 1579,
-  "sha256": "538cbe4a2a95a77b5c97f58e1873c38cd1451279526c514918bcf6475b215b20"
+  "size": 1750,
+  "sha256": "c4c7d76253e264d9114b066e49b23d9caea6dcef03ed9c930bb25c4cdb583814"
  },
  {
   "path": "TOOLS/housecarl/README.md",
@@ -35056,13 +35066,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 3316,
-  "sha256": "c46bc162a925abb0b48eb38318b2f71cee95b69244552e8c31e5f79d60f69c94"
+  "size": 1725,
+  "sha256": "39cd00fd98a5b59a8bcdd3bc5ca2bdfeab0ce0e2ca8a79ca75a8b1e4f9e3f425"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "f9b980e6024b06049c3b5a9a4c724fe3e9b720b511e4852c837652e022d1a63a"
+  "sha256": "553b7d63216e09e09c44687b3899c827ddfad5552e4b58a43d2447e66f67136b"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -41011,8 +41021,8 @@
  },
  {
   "path": "docs/TOOL-EVALUATIONS.md",
-  "size": 26601,
-  "sha256": "bad54aaa04dfb40f82587aea0381add595b5f02a3fcd275770c63e72e34860d0"
+  "size": 27011,
+  "sha256": "2ef2a328137b244d7c8a7e1f9a53286386680abc889febb6e15484f0e1679f55"
  },
  {
   "path": "docs/history/FINAL-AUDIT-v5.0.0.md",
@@ -41538,5 +41548,10 @@
   "path": "docs/history/V8.7.6-CHANGELOG.md",
   "size": 4140,
   "sha256": "5917d8175415f97a89d42ba59bcc29ef8ae8552ded873eb3dc2f28551e4fcb41"
+ },
+ {
+  "path": "docs/history/V8.7.7-CHANGELOG.md",
+  "size": 2837,
+  "sha256": "097fee178a290c7b9e012cfb365d10db373c9cce360f17d4edb94d05a83c4ed8"
  }
 ]

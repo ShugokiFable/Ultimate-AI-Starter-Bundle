@@ -416,31 +416,32 @@ So the blanket claim was false for the one subcommand where an archive matters
 most — a test runner, where you filter to the failure and may then want the
 full log. `rtk test` prints the path to it. Both documents now say this.
 
-### The hook decision, on evidence
+### Broad hook rejected; narrow hook adopted (re-probed 2026-08-31)
 
-`rtk hook claude` was fed real payloads to see what `-g` would actually
-automate:
+The 2026-08-27 verdict rejected RTK's whole hook. That was too binary. Re-probing
+0.46.0 found a small safe subset and also showed that upstream's rewrite table
+had broadened:
 
-| Typed | Rewritten to | Measured |
+| Typed | Upstream rewrite | Bundle policy |
 |---|---|---|
-| `git status` | `rtk git status` | 85.2% — the real win |
-| `ls -la` | `rtk ls -la` | 24–67% |
-| `grep -rn foo .` | `rtk grep -rn foo .` | 17.8%, truncates |
-| `cat README.md` | `rtk read README.md` | **0.0%** — pure overhead |
-| `find . -name '*.ps1' -not ...` | `rtk find ...` | **breaks** (compound) |
-| `npm test` | *not rewritten* | — |
-| `curl https://…` | *not rewritten* | — |
-| `python TESTS/…py` | *not rewritten* | — |
+| exact standalone `git status` / `--short` / `-s` | `rtk git status ...` | automatic; a five-state fixture was line-identical 5/5 |
+| standalone `pytest`, `cargo test`, `go test` | matching RTK test filter | automatic only for human-facing output |
+| `git diff`, `git show`, `git log` | RTK summary | raw; a large diff retained 361 of 5,856 changed lines |
+| `git add`, `git commit`, `git push` | **rewritten despite mutation** | raw |
+| compound `find` | broken `rtk find` | raw |
+| `cat`, `grep`, `curl`, `gh` | rewritten | raw: zero-gain, lossy, or exact-body surfaces |
+| JSON/JUnit/report output, pipes, redirects | varies | raw |
 
-The hook automates the categories that measure worst or break outright,
-and does **not** automate the two that measure best (`rtk err` / `rtk test` on a
-test runner). **Verdict: keep the binary, leave the hook off, invoke `rtk git`,
-`rtk err` and `rtk test` deliberately.** That was already the pack's default; it
-is now a measured decision rather than a cautious one.
+The binary is therefore a default component, but the broad upstream hook and
+Hermes `rtk-rewrite` plugin remain off. `rtk_safe_hook.py` owns the allowlist,
+fails open, and is installed as PreToolUse only for Claude, Grok and Hermes.
+Codex and Kimi receive the same narrow instruction without pretending they have
+a trusted command-mutation hook. Its self-test pins every unsafe category above,
+and a version guard leaves a newer RTK raw until its rewrite table is re-measured.
 
-Harness: `TESTS/test_release_contract.py::test_rtk_is_documented_as_a_git_tool_not_a_general_filter`
-binds the find breakage, the truncation warning, the archive correction and the
-7.4% aggregate to the shipped docs.
+Harnesses: `test_rtk_is_documented_as_a_git_tool_not_a_general_filter` keeps the
+measurement caveats; `test_rtk_safe_hook_is_default_narrow_and_self_testing`
+keeps the implementation boundary.
 
 
 ## 2026-08-29 — image-to-3D, UI craft, and capability discovery

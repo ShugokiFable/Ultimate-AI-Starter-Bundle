@@ -1,6 +1,6 @@
 {
   "_comment": [
-    "Ultimate AI Starter Bundle - completeness + assumption gates.",
+    "Ultimate AI Starter Bundle - completeness + assumption gates + safe RTK routing.",
     "Claude-compatible hook shape. Grok and Codex plugins read this format too.",
     "Kimi has a hook engine, but its config schema is not established - this file is not written there.",
     "Hermes is wired by hermes_wire.py, not this file.",
@@ -19,6 +19,11 @@
           {
             "type": "command",
             "command": "<PYTHON> \"<HOOKS>/assumption_gate.py\" --pre",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "<PYTHON> \"<HOOKS>/rtk_safe_hook.py\" --pre",
             "timeout": 15
           }
         ]

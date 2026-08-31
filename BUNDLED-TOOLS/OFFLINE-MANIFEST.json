@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-30",
-  "pack_version": "8.7.6",
+  "generated": "2026-08-31",
+  "pack_version": "8.7.7",
   "assets": [
     {
       "file": "codebase-memory-mcp-windows-amd64.zip",
@@ -26,6 +26,11 @@
       "file": "ponytail-v4.9.0.zip",
       "size": 1149510,
       "sha256": "361c15a62c49584c40436ed162527d61c067c55eea621cf49c4a8d2de7e77163"
+    },
+    {
+      "file": "rtk-x86_64-pc-windows-msvc.zip",
+      "size": 4184125,
+      "sha256": "9bc5acd54d35a916e4a561435963e0acf2f1a0115cf43dcfe2b719f361c8a970"
     },
     {
       "file": "spookys-automod-toolkit-v1.11.2.zip",

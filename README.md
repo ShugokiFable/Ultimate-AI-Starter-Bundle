@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.6
+# Ultimate AI Starter Bundle v8.7.7
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -144,7 +144,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
 .\INSTALL-AIO.ps1 -SkillsOnly
 .\INSTALL-AIO.ps1 -ToolsOnly
 .\INSTALL-AIO.ps1 -WorkspaceRoot "D:\My\AI-Workspace"
-.\INSTALL-AIO.ps1 -WithRtk        # + the rtk output filter (hook stays yours)
+.\INSTALL-AIO.ps1 -WithRtk        # compatibility alias; rtk is already in the default install
 .\INSTALL-AIO.ps1 -WithClaudeMem  # + claude-mem (pulls in Bun, runs a daemon)
 ```
 
@@ -352,9 +352,9 @@ are covered in `local-model-ops/references/sillytavern.md`.
 
 ### rtk: cut command output before it reaches the model
 
-Optional, and **not installed by default** -- see below for why that is a
-deliberate choice rather than an oversight. [RTK](https://github.com/rtk-ai/rtk)
-(Apache-2.0, single Rust binary) filters noisy dev commands. Measured here
+Installed by default with a **bundle-owned narrow hook**; RTK's broad upstream
+hook remains disabled. [RTK](https://github.com/rtk-ai/rtk) (Apache-2.0, single
+Rust binary) filters noisy dev commands. Measured here
 **at rtk 0.46.0** against **pinned tag ranges**, so the corpus cannot drift:
 
 | Command | Raw | Through rtk | Saved |
@@ -444,14 +444,29 @@ path segments to `TOOLS/.../hooks/assumption_gate.py`. `rtk find` strips or
 regroups directory prefixes. In each case the saving is real and the output has
 stopped being a value you can pipe.
 
-#### Installing it, and why the hook stays off
+#### Default safe routing
 
-```powershell
-.\INSTALL-AIO.ps1 -WithRtk
-```
+No flag is needed. A normal install adds the binary and the bundle's allowlist
+hook. `-WithRtk` remains a harmless compatibility alias for old scripts. The
+safe hook rewrites only commands whose shape and output were measured:
 
-That installs the binary and leaves every automatic hook off. Use the measured
-good paths deliberately:
+| You type | Bundle runs | Policy |
+|---|---|---|
+| `git status`, `git status --short`, `git status -s` | `rtk git status ...` | automatic; a staged/unstaged/deleted/renamed/Unicode/untracked fixture was line-identical 5/5 |
+| standalone `pytest`, `cargo test`, `go test` | RTK's matching test filter | automatic only for human-facing terminal output |
+| `git diff`, `git show`, `git log` | unchanged | raw; the large measured diff retained only 361 of 5,856 changed lines |
+| `git add`, `git commit`, `git push` | unchanged | mutating Git is never wrapped |
+| `find`, `rg`/`grep`, `cat`, `curl`, `gh` | unchanged | broken, lossy, zero-gain, or exact-body surfaces stay raw |
+| JSON/JUnit/report output, pipes, redirects, compound commands | unchanged | machine-readable and composable output stays raw |
+| `npm test`, `dotnet test`, `python x.py` | *not rewritten* | RTK 0.46.0 provides no matching safe rewrite |
+
+Claude, Grok and Hermes receive the executable hook. Codex and Kimi receive the
+same narrow routing rule in their installed instructions; no trusted
+command-mutation hook is assumed for them. Unknown payloads, missing RTK, RTK
+errors, unsupported commands, and an RTK version newer than the measured catalog
+pin all fail open to the original command.
+
+You can still invoke other filters deliberately:
 
 ```powershell
 rtk git status
@@ -459,34 +474,13 @@ rtk err <command>
 rtk test <test command>
 ```
 
-The hook is left off, and as of 8.6.11 that is an evidence decision rather than
-a default. Feeding `rtk hook claude` real payloads shows exactly what `-g` would
-automate:
-
-| You type | Hook runs | Worth it? |
-|---|---|---|
-| `git status` | `rtk git status` | **yes** -- the one real win |
-| `ls -la` | `rtk ls -la` | 24-67% |
-| `grep -rn ...` | `rtk grep -rn ...` | 18%, truncates |
-| `cat file` | `rtk read file` | **0%** -- byte-identical, pure overhead |
-| `find . -name '*.ps1' -not ...` | `rtk find ...` | **breaks** on compound predicates |
-| `npm test`, `curl`, `python x.py` | *not rewritten* | -- |
-
-So the hook automates the categories that measure worst or return wrong
-answers, and does **not** automate `rtk err` / `rtk test` on a test runner --
-the only strong non-git rows. **Invoke those two deliberately; leave the hook
-off.** Provider init is therefore not a remaining setup step. The global hook
-patches provider settings and rewrites every shell command; Hermes' `rtk-rewrite`
-plugin drives the same known-bad rewrite table. This pack recommends neither.
-The non-global initializer is worse: it installs no hook and writes a
-**5,140-byte** instruction block into `CLAUDE.md` -- about 1,400 tokens on every
-turn, forever, paying context to ask for savings.
-
-If you independently enable an upstream hook, keep `exclude_commands = ["curl"]`
-in `%APPDATA%\rtk\config.toml` so exact API bodies are never filtered. Telemetry
-is opt-in and stays off. `rtk gain` verifies recorded deliberate invocations;
-an agent cannot prove a rewrite from its own self-report because it reports the
-command it asked for, not the one that ran.
+Why not use RTK's broad hook or Hermes' `rtk-rewrite` plugin? The current rewrite
+table catches lossy diff/log/show, broken compound `find`, `cat` at 0% gain,
+truncating search, exact `curl`/`gh` output, and even `git add`/`commit`/`push`.
+This pack recommends neither broad path. The bundle hook delegates to RTK only
+after its own allowlist passes, so `exclude_commands` is not the safety boundary.
+Telemetry is opt-in and stays off. `rtk gain` verifies recorded invocations; an
+agent's self-report does not prove that a rewrite actually ran.
 
 ### claude-mem is opt-in
 
@@ -689,6 +683,10 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.7** - 2026-08-31. RTK 0.46.0 is now installed by default with a bundle-owned fail-open allowlist instead of its broad upstream hook: exact standalone Git status plus human-facing pytest/cargo/go tests are routed automatically; diffs/logs/show, compound find, search/read/curl/gh, machine output, pipes and mutating Git remain raw. A five-state Git fixture was line-identical through status compression, while a large RTK diff omitted 5,531 changed lines, which is why broad routing stays disabled. Claude/Grok/Hermes receive the executable pre-hook; Codex/Kimi get the same narrow instruction. Full-Offline now includes the hash-recorded RTK archive. No new MCP schemas.
+
+The live upgrade also fixed Hermes fresh-hook consent: only the exact self-tested bundle commands are persistently allowlisted, never future third-party hooks. Codex built-in dedupe now compares installed skills to the exact provider-tailored source, while still refusing actual local edits.
 
 **v8.7.6** - 2026-08-31. Provider/profile convergence: package pins in project profiles are now contract-bound to the component catalog, fixing stale Chrome DevTools, shadcn, Blender and Unity wiring. Blender MCP 1.9.0 was measured at 28 tools / ~7,288 schema tokens per enabled turn; its server sends an anonymous startup event before Blender connects, so the profile now carries the supported `BLENDER_MCP_DISABLE_TELEMETRY=true` opt-out through the shared config writer. RTK's measured automatic-hook policy is enforced as off: the installer and live README no longer steer users into the broken rewrite table, profile migration parks stale cloned copies with backup/verification, and the doctor reports surviving drift. Fresh Hermes templates match runtime schema 39. No new always-on MCP schemas; Windows MCP remains installed and off by default.
 

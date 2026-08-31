@@ -73,7 +73,7 @@ param(
   [switch]$AllProviders,
   [ValidateSet('BundledFirst','OnlineLatest','BundledOnly')]
   [string]$Mode = 'OnlineLatest',
-  [string[]]$Components = @('housecarl','spooky','codebase-memory','headroom','superpowers','ponytail','codeburn','impeccable','github-mcp-server'),
+  [string[]]$Components = @('housecarl','spooky','codebase-memory','headroom','superpowers','ponytail','codeburn','impeccable','github-mcp-server','rtk'),
   [string]$WorkspaceRoot = '',
   # The directory Skyrim Forge is installed INTO, not the folder that
   # contains it: -ForgeRoot 'S:\Apps\Skyrim Tools\Skyrim-Forge' keeps Forge
@@ -107,9 +107,9 @@ param(
   # and needs a Claude Code restart before its tools appear. Good software,
   # but three surprises for someone who double-clicked one .bat.
   [switch]$WithClaudeMem,
-  # rtk is useful when invoked deliberately for git, failing tests, or noisy
-  # diagnostics. Its automatic hook rewrites categories that measured poorly
-  # or returned wrong answers, so this flag installs only the binary.
+  # Compatibility alias: rtk is now a default component. The bundle's narrow
+  # hook handles only exact status and standalone human-facing tests; the broad
+  # upstream hook remains disabled.
   [switch]$WithRtk,
   # Register an optional-key MCP server even when its keyless surface is a
   # fraction of what it charges in schema. Off by default: see
@@ -327,7 +327,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.6 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.7 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -585,11 +585,11 @@ if (-not $ToolsOnly -and -not $SkipStarterSettings) {
 # Where a plugin is native, its skill name list is computed from the bundled
 # tree (never hardcoded) and the matching copies are deduped from the
 # provider's skills dir - backup-first, and only when the copy's SKILL.md
-# md5 matches the pack canonical (_CANONICAL-SKILLS).
+# md5 matches that provider's tailored source. Comparing to canonical falsely
+# labels deliberate Claude-to-Codex tailoring as a user edit.
 $nativePlugins = [ordered]@{}
 if (-not $ToolsOnly -and -not $SkipNativePlugins) {
   Write-UabsStep "Native plugins (superpowers + ponytail)"
-  $canonicalSkills = Join-Path $PackRoot '_CANONICAL-SKILLS'
   $backupRoot = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\backups'
   New-Item -ItemType Directory -Force -Path $backupRoot | Out-Null
 
@@ -605,7 +605,8 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
       $StateEntry.skipped_kept = @('bundled plugin tree has no skills dir')
       return
     }
-    $res = Remove-UabsPluginOwnedSkillCopies -Provider $Provider -SkillsDir $SkillsDir -Names $names -CanonicalRoot $canonicalSkills -BackupRoot $backupRoot -Log $log
+    $expectedRoot = Join-Path $tailored "$Provider\COPY-TO-SKILLS-DIRECTORY\skills"
+    $res = Remove-UabsPluginOwnedSkillCopies -Provider $Provider -SkillsDir $SkillsDir -Names $names -ExpectedRoot $expectedRoot -BackupRoot $backupRoot -Log $log
     $StateEntry.deduped = @($res.removed)
     $StateEntry.skipped_modified = @($res.skipped_modified)
     $StateEntry.skipped_kept = @($res.skipped)
@@ -1019,15 +1020,16 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
         # Codex also ships skills of its OWN (<CodexHome>\skills\.system), and
         # a canonical skill sharing one of those names is indexed twice on Codex
         # alone. Same waste as a plugin-owned duplicate, different owner, so it
-        # reuses the same verified remover: md5 against canonical, backup first,
-        # and a user-modified copy is refused rather than deleted.
+        # reuses the same verified remover: md5 against this provider's shipped
+        # source, backup first, and a user-modified copy is refused.
+        $expectedSkills = Join-Path $tailored 'Codex\COPY-TO-SKILLS-DIRECTORY\skills'
         $builtins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome | Where-Object {
-          Test-Path -LiteralPath (Join-Path $canonicalSkills $_) -PathType Container
+          Test-Path -LiteralPath (Join-Path $expectedSkills $_) -PathType Container
         })
         if ($builtins.Count) {
           $pstate.codex_builtin_deduped = @($builtins)
           $bres = Remove-UabsPluginOwnedSkillCopies -Provider 'Codex' -SkillsDir $skillsDir `
-                    -Names $builtins -CanonicalRoot $canonicalSkills -BackupRoot $backupRoot -Log $log
+                    -Names $builtins -ExpectedRoot $expectedSkills -BackupRoot $backupRoot -Log $log
           if (@($bres.removed).Count) {
             Write-UabsOk ('Codex: removed ' + @($bres.removed).Count +
               ' copy/copies of a skill Codex ships itself: ' + (@($bres.removed) -join ', '))
@@ -1184,7 +1186,6 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
 # A skills-only sync recreates canonical copies first; reconcile those copies
 # against the provider's existing registry without invoking any plugin CLI.
 if (-not $ToolsOnly -and $SkipNativePlugins) {
-  $canonicalSkills = Join-Path $PackRoot '_CANONICAL-SKILLS'
   $backupRoot = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\backups'
   New-Item -ItemType Directory -Force -Path $backupRoot | Out-Null
   foreach ($prov in @($Providers | Where-Object { $_ -in @('Claude', 'Codex') })) {
@@ -1224,8 +1225,9 @@ if (-not $ToolsOnly -and $SkipNativePlugins) {
       $pstate.plugins[$pluginId] = $entry
       if (-not $isNative) { continue }
       $names = @(Get-UabsPluginOwnedSkillNames -PluginRoot $srcRoot)
+      $expectedRoot = Join-Path $tailored "$prov\COPY-TO-SKILLS-DIRECTORY\skills"
       $res = Remove-UabsPluginOwnedSkillCopies -Provider $prov -SkillsDir $skillsDir `
-               -Names $names -CanonicalRoot $canonicalSkills -BackupRoot $backupRoot -Log $log
+               -Names $names -ExpectedRoot $expectedRoot -BackupRoot $backupRoot -Log $log
       $entry.deduped = @($res.removed)
       $entry.skipped_modified = @($res.skipped_modified)
       $entry.skipped_kept = @($res.skipped)
@@ -1851,15 +1853,12 @@ if (-not $SkillsOnly) {
     }
   }
 
-  # The measured policy lives in CATALOG.json: deliberate invocation is useful,
-  # automatic rewriting is not. Never print an init command here -- users copy
-  # installer output, and the old advice re-enabled the known-bad Hermes plugin.
+  # Never print an upstream init command here: it enables the broad rewrite
+  # table. The bundle-owned hook installed below has a measured allowlist.
   if ($installed['rtk']) {
-    Write-UabsStep 'rtk is installed - automatic hooks remain off by measured policy'
-    Write-Host '     Use it deliberately:  rtk git status' -ForegroundColor Yellow
-    Write-Host '                           rtk err <command>' -ForegroundColor Yellow
-    Write-Host '                           rtk test <test command>' -ForegroundColor Yellow
-    Write-Host '     `rtk gain` measures those invocations. Do not use provider init as bundle setup.' -ForegroundColor DarkGray
+    Write-UabsStep 'rtk is installed - safe routing covers status + standalone pytest/cargo/go tests'
+    Write-Host '     Broad upstream hooks remain off; diff/log/show/find/read/search and mutating Git stay raw.' -ForegroundColor Yellow
+    Write-Host '     Use rtk explicitly for other noisy output, then verify savings with `rtk gain`.' -ForegroundColor DarkGray
   }
 }
 
@@ -2067,7 +2066,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-  version = '8.7.6'
+  version = '8.7.7'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -2079,14 +2078,15 @@ $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -c
 $state | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stateDir 'install-state.json') -Encoding UTF8
 $log | Set-Content (Join-Path $stateDir 'install-log.txt') -Encoding UTF8
 
-# Completeness + assumption gates. Every provider's prose already says 'be
-# thorough' and 'do not assume'; these are the layers that can actually refuse.
+# Completeness + assumption gates, plus narrow RTK output routing. Every
+# provider's prose already says 'be thorough' and 'do not assume'; the first
+# two can actually refuse, while RTK only modifies commands on its allowlist.
 if (-not $ToolsOnly) {
   $gateInstaller = Join-Path $PackRoot 'TOOLS\Install-Completeness-Gate.ps1'
   if (Test-Path -LiteralPath $gateInstaller) {
     try {
       & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $gateInstaller -Providers ($Providers -join ',')
-      L 'completeness + assumption gates installed'
+      L 'completeness + assumption gates and safe RTK routing installed'
     } catch {
       Write-UabsWarn ('Gates: ' + $_.Exception.Message)
     }

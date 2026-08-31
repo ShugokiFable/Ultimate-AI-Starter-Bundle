@@ -1,3 +1,22 @@
+## 8.7.7
+
+- Installed RTK 0.46.0 by default and added its official Windows archive to the
+  Full-Offline payload.
+- Added a bundle-owned fail-open hook that rewrites only exact standalone Git
+  status and standalone human-facing pytest/cargo/go tests.
+- Kept lossy, broken, machine-readable, piped, exact-body and mutating commands
+  raw; the broad upstream hook and Hermes `rtk-rewrite` plugin remain disabled.
+- Wired the executable hook to Claude, Grok and Hermes, with instruction-only
+  fallback for Codex and Kimi and a version guard for unmeasured RTK releases.
+- Added hook self-tests and release contracts covering the allowlist, provider
+  payloads, default/offline install, and Hermes pre-only wiring.
+- Bound native-plugin and Codex built-in dedupe to the exact provider source
+  rather than canonical, preserving the right user-edit boundary if a future
+  provider fanout changes skill bytes.
+- Persistently allowlisted only the three exact, self-tested bundle hook
+  commands in Hermes; the previous process-only verification left fresh hooks
+  configured but unable to fire.
+
 ## 8.7.6
 
 - Bound every versioned project-profile package to its component catalog entry,

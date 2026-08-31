@@ -316,7 +316,10 @@ def test_gate_and_remote_fail_closed() -> None:
     assert "-split ','" in gate or '-split ","' in gate, "comma-delimited child-process provider args are not normalized"
     assert "Codex   skill/native-plugin enforcement" in gate, "Codex zero-chore gate policy not present"
     assert "Codex will ask once" not in gate, "Codex still requires a manual trust prompt"
-    assert "HERMES_ACCEPT_HOOKS" in gate, "Hermes one-time noninteractive hook consent missing"
+    assert "$args += '--approve'" in gate, "Hermes exact bundle-hook consent missing"
+    assert "hooks_auto_accept=true" not in ps_code(ROOT / "TOOLS" / "Install-Completeness-Gate.ps1"), (
+        "the installer blanket-approves future third-party Hermes hooks"
+    )
 
     remote = read(ROOT / "INSTALL-REMOTE.ps1")
     assert "if ($LASTEXITCODE -ne 0) { Fail" in remote, "remote installer can still print DONE after installer failure"
@@ -2348,6 +2351,7 @@ def main() -> int:
         test_no_shipped_text_file_carries_a_stray_control_character,
         test_local_model_ops_carries_what_actually_blocks_a_local_run,
         test_rtk_catalog_entry_keeps_its_windows_caveat,
+        test_rtk_safe_hook_is_default_narrow_and_self_testing,
         test_migrator_converges_plugins_additively_and_proves_the_payload,
         test_doctor_reports_unreachable_plugins_and_unconsented_hooks,
         test_readme_does_not_promise_a_web_backend_the_pack_never_installs,
@@ -3241,8 +3245,13 @@ def test_rtk_catalog_entry_keeps_its_windows_caveat() -> None:
     assert "windows" in note.lower(), "the rtk note lost its native-Windows caveat"
     assert "curl" in note, "the rtk note no longer pins the curl exclusion"
     assert rtk.get("hook_policy") == "off", (
-        "rtk's measured rewrite table includes a wrong-answer find path; the "
-        "catalog must keep automatic hooks off"
+        "rtk's measured rewrite table includes wrong-answer and mutating paths; "
+        "the catalog must keep the broad upstream hook off"
+    )
+    safe = rtk.get("safe_hook_policy") or {}
+    assert safe.get("enabled") is True and safe.get("broad_upstream_hook") is False, (
+        "the catalog no longer distinguishes the bundle allowlist from RTK's "
+        "broad upstream hook"
     )
     discouraged = (rtk.get("discouraged_provider_plugins") or {}).get("Hermes") or []
     assert "rtk-rewrite" in discouraged, (
@@ -3315,6 +3324,44 @@ def test_rtk_catalog_entry_keeps_its_windows_caveat() -> None:
     assert ("AT rtk %s" % declared) in note, (
         "CATALOG's rtk scope_note does not stamp its numbers 'AT rtk %s'" % declared
     )
+
+
+def test_rtk_safe_hook_is_default_narrow_and_self_testing() -> None:
+    """Default RTK must never mean enabling its broad rewrite table."""
+    hook = ROOT / "TOOLS" / "hooks" / "rtk_safe_hook.py"
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    rtk_version = next(c["version"] for c in catalog["components"] if c.get("id") == "rtk")
+    source = read(hook)
+    assert f'EXPECTED_RTK_VERSION = "{rtk_version}"' in source, (
+        "the safe hook is not pinned to the RTK rewrite table measured by CATALOG"
+    )
+    result = subprocess.run(
+        [sys.executable, str(hook), "--selftest"],
+        cwd=str(ROOT), capture_output=True, text=True, timeout=20,
+    )
+    assert result.returncode == 0 and "SELFTEST: PASS" in result.stdout, (
+        "rtk_safe_hook.py rejected its allow/deny matrix:\n" +
+        (result.stdout + result.stderr)
+    )
+
+    installer = read(ROOT / "INSTALL-AIO.ps1")
+    default = re.search(r"\[string\[\]\]\$Components\s*=\s*@\((.*?)\),", installer, re.S)
+    assert default and "'rtk'" in default.group(1), "rtk is no longer in the default install"
+    assert "rtk init" not in installer, "the installer re-enabled RTK's broad upstream hook"
+
+    wiring = read(ROOT / "TOOLS" / "Install-Completeness-Gate.ps1")
+    assert "rtk_safe_hook.py" in wiring and "Stop = $false" in wiring, (
+        "the narrow hook is missing or was accidentally wired as a Stop gate"
+    )
+    assert "--pre-only" in wiring and "--pre-only" in read(ROOT / "TOOLS" / "hooks" / "hermes_wire.py"), (
+        "Hermes no longer keeps RTK routing out of pre_verify"
+    )
+    template = read(ROOT / "TOOLS" / "hooks" / "ultimate-bundle.json")
+    assert "rtk_safe_hook.py" in template, "the shipped hook template lost safe RTK routing"
+
+    preamble = read(ROOT / "0-UNRESTRAINT-PACKS" / "AIO-INSTRUCTION.md")
+    for raw_surface in ("diff/show/log/find/search/read/curl/gh", "mutating Git", "machine-readable"):
+        assert raw_surface in preamble, f"provider instructions no longer keep {raw_surface} raw"
 
 
 def test_migrator_converges_plugins_additively_and_proves_the_payload() -> None:
@@ -3678,12 +3725,24 @@ def test_codex_builtin_skills_are_discovered_not_hardcoded() -> None:
     assert "Get-UabsCodexBuiltinSkillNames" in installer, (
         "the installer no longer dedupes copies Codex itself owns"
     )
-    # It must reuse the verified remover, which backs up first and refuses to
-    # delete a copy whose SKILL.md differs from canonical.
-    codex_dedupe = installer.rsplit("Get-UabsCodexBuiltinSkillNames", 1)[1][:900]
+    # It must reuse the verified remover, which backs up first and compares to
+    # the provider-tailored source. That source may equal canonical today, but
+    # it is the byte authority installed into this provider and is allowed to
+    # diverge on the next fanout without being mislabeled as a user edit.
+    tailored = (ROOT / "1-TAILORED-PROVIDER-TREES" / "Codex" /
+                "COPY-TO-SKILLS-DIRECTORY" / "skills" / "skill-creator" / "SKILL.md")
+    assert tailored.is_file(), "Codex's expected provider source is absent"
+    codex_dedupe = installer.rsplit("Get-UabsCodexBuiltinSkillNames", 1)[1][:1100]
     assert "Remove-UabsPluginOwnedSkillCopies" in codex_dedupe, (
         "the built-in dedupe deletes directly instead of going through the "
         "remover that backs up and refuses user-modified copies"
+    )
+    assert "$expectedSkills" in codex_dedupe and "-ExpectedRoot $expectedSkills" in codex_dedupe, (
+        "Codex built-in dedupe compares its tailored copy to canonical again"
+    )
+    remover = common.split("function Remove-UabsPluginOwnedSkillCopies", 1)[1].split("\nfunction ", 1)[0]
+    assert "$ExpectedRoot" in remover and "$CanonicalRoot" not in remover, (
+        "the shared deduper cannot distinguish bundle provider tailoring from a user edit"
     )
 
     doctor = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")

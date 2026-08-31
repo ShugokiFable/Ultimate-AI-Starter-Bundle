@@ -194,7 +194,7 @@ sys.exit(1 if (dup or bad) else 0)
 
 Section '6. Gate self-tests'
 $gateDir = Join-Path $PackRoot 'TOOLS\hooks'
-foreach ($g in @('completeness_gate.py', 'assumption_gate.py')) {
+foreach ($g in @('completeness_gate.py', 'assumption_gate.py', 'rtk_safe_hook.py')) {
     $gp = Join-Path $gateDir $g
     if (-not (Test-Path -LiteralPath $gp)) { Bad "$g missing"; continue }
     if (-not $py) { Bad "python not found; $g --selftest skipped"; continue }
@@ -202,7 +202,12 @@ foreach ($g in @('completeness_gate.py', 'assumption_gate.py')) {
     if ($out -match 'PASS') { Good "$g  self-test PASS" } else { Bad "$g self-test failed: $out" }
 }
 $wire = Join-Path $gateDir 'hermes_wire.py'
-if (Test-Path -LiteralPath $wire) { Good 'hermes_wire.py present' } else { Bad 'hermes_wire.py missing' }
+if (-not $py -or -not (Test-Path -LiteralPath $wire)) { Bad 'hermes_wire.py or Python missing' }
+else {
+    $wireOut = & $py.Source $wire --selftest 2>&1 | Out-String
+    if ($LASTEXITCODE -eq 0 -and $wireOut -match 'HERMES WIRE SELFTEST: PASS') { Good 'hermes_wire.py self-test PASS' }
+    else { Bad ('hermes_wire.py self-test failed: ' + $wireOut.Trim()) }
+}
 $mcpProbe = Join-Path $PackRoot 'TOOLS\mcp_handshake.py'
 if (-not $py -or -not (Test-Path -LiteralPath $mcpProbe -PathType Leaf)) {
     Bad 'mcp_handshake.py or Python missing'
