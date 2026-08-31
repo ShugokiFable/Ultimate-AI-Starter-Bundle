@@ -1,3 +1,37 @@
+## 8.7.6
+
+- Bound every versioned project-profile package to its component catalog entry,
+  fixing stale Chrome DevTools 1.7.0, shadcn 4.18.0, Blender MCP 1.8.3 and
+  Unity MCP 0.89.0 profile wiring.
+- Updated Blender MCP to 1.9.0 after a real initialize/tools-list probe: 28
+  tools, 29,154 schema bytes, about 7,288 tokens per enabled turn.
+- Confirmed Blender MCP sends an anonymous startup event before Blender
+  connects. The profile now writes its supported
+  `BLENDER_MCP_DISABLE_TELEMETRY=true` opt-out through the shared provider
+  config writer; credentials remain passthrough-only and are never stored.
+- Made RTK's measured hook policy executable: automatic provider hooks and
+  Hermes' `rtk-rewrite` plugin remain off, installer/README setup advice no
+  longer re-enables them, profile migration parks stale cloned copies with a
+  verified backup, and the installed-state doctor reports any surviving drift.
+- Fixed Hermes plugin-array parsing: the migrator had converted the whole JSON
+  array to one space-joined string, so exact plugin membership checks could
+  silently miss both stale and missing entries.
+- Made `-SkipNativePlugins` genuinely non-mutating without sacrificing index
+  hygiene: it now reads existing Claude/Codex ownership and backup-dedupes only
+  byte-exact bundle skill copies, without invoking a plugin lifecycle command.
+- Fixed live Hermes handshake parsing for current ruamel YAML indentation.
+  Four-space `args` sequence items were ignored by the six-space-only reader,
+  so valid servers were launched without their `mcp serve`/`stdio` arguments.
+- Made MCP proofs honor JSON `enabled`/`disabled` and TOML `enabled = false`.
+  The old reader launched parked game servers and Codex's disabled app-owned
+  `cua_repl`, then reported false failures and inflated default schema cost.
+- Updated fresh Hermes templates from config schema 37 to the current stable
+  schema 39 without promoting any user's model, memory or compression choices.
+- Added release contracts for catalog/profile pin parity, static non-secret
+  environment policy, RTK policy enforcement and Hermes schema parity.
+- Kept Windows MCP installed but off by default and added no always-on MCP
+  schemas.
+
 ## 8.7.5
 
 - Resolved all 36 open Dependabot alerts, which were six generated copies of

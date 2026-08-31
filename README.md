@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.5
+# Ultimate AI Starter Bundle v8.7.6
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -450,8 +450,14 @@ stopped being a value you can pipe.
 .\INSTALL-AIO.ps1 -WithRtk
 ```
 
-That installs the binary and then **prints** the `rtk init -g --agent <name>`
-line for each provider you have, rather than running it.
+That installs the binary and leaves every automatic hook off. Use the measured
+good paths deliberately:
+
+```powershell
+rtk git status
+rtk err <command>
+rtk test <test command>
+```
 
 The hook is left off, and as of 8.6.11 that is an evidence decision rather than
 a default. Feeding `rtk hook claude` real payloads shows exactly what `-g` would
@@ -469,25 +475,18 @@ automate:
 So the hook automates the categories that measure worst or return wrong
 answers, and does **not** automate `rtk err` / `rtk test` on a test runner --
 the only strong non-git rows. **Invoke those two deliberately; leave the hook
-off.** It also patches your provider's `settings.json` and rewrites every shell
-command on the machine, which is a keystroke this pack leaves to you.
+off.** Provider init is therefore not a remaining setup step. The global hook
+patches provider settings and rewrites every shell command; Hermes' `rtk-rewrite`
+plugin drives the same known-bad rewrite table. This pack recommends neither.
+The non-global initializer is worse: it installs no hook and writes a
+**5,140-byte** instruction block into `CLAUDE.md` -- about 1,400 tokens on every
+turn, forever, paying context to ask for savings.
 
-If you do want it, use `-g` -- and note Hermes is different: it has its own
-Python plugin, registered with the non-global form.
-
-```powershell
-rtk init -g --agent claude     # or: cursor, gemini, copilot, kimi, droid, vibe
-rtk init --agent hermes        # Hermes' own Python plugin
-```
-
-Everywhere else, plain `rtk init` prints `No hook installed` and
-writes a **5,140-byte** instruction block into `CLAUDE.md` -- about 1,400 tokens
-on *every* turn, forever, paying context to *ask* for savings.
-
-Keep `exclude_commands = ["curl"]` in `%APPDATA%\rtk\config.toml` so exact API
-bodies are never filtered. Telemetry is opt-in and stays off. Verify it is
-really running with `rtk gain` -- an agent cannot tell you, because it reports
-the command it *asked* for, not the one that ran.
+If you independently enable an upstream hook, keep `exclude_commands = ["curl"]`
+in `%APPDATA%\rtk\config.toml` so exact API bodies are never filtered. Telemetry
+is opt-in and stays off. `rtk gain` verifies recorded deliberate invocations;
+an agent cannot prove a rewrite from its own self-report because it reports the
+command it asked for, not the one that ran.
 
 ### claude-mem is opt-in
 
@@ -690,6 +689,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.6** - 2026-08-31. Provider/profile convergence: package pins in project profiles are now contract-bound to the component catalog, fixing stale Chrome DevTools, shadcn, Blender and Unity wiring. Blender MCP 1.9.0 was measured at 28 tools / ~7,288 schema tokens per enabled turn; its server sends an anonymous startup event before Blender connects, so the profile now carries the supported `BLENDER_MCP_DISABLE_TELEMETRY=true` opt-out through the shared config writer. RTK's measured automatic-hook policy is enforced as off: the installer and live README no longer steer users into the broken rewrite table, profile migration parks stale cloned copies with backup/verification, and the doctor reports surviving drift. Fresh Hermes templates match runtime schema 39. No new always-on MCP schemas; Windows MCP remains installed and off by default.
 
 **v8.7.5** - 2026-08-30. Security follow-up for img2threejs: its optional vision environment now locks Transformers 5.16.1 and its Node verification pipeline locks esbuild 0.28.2, clearing the vulnerable 4.57.6/0.24.2 dependency lineages that GitHub reported once per generated provider tree. The v8.7.4 Codex convergence fix remains intact: built-ins are excluded before sync and exact deprecated-root duplicates are backup-migrated. Extracted-artifact testing also fixed batch launchers inheriting PowerShell 7/Codex module roots into Windows PowerShell and losing `Get-FileHash`, and partial reruns now preserve the untouched install-state ledger. **167 canonical skills**, no new tools, profiles, or always-on schemas. Windows MCP remains installed and manually opt-in.
 

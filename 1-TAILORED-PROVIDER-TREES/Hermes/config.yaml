@@ -235,7 +235,7 @@ updates:
   pre_update_backup: false
   backup_keep: 5
   non_interactive_local_changes: stash
-_config_version: 37
+_config_version: 39
 provider_routing:
   sort: price
   require_parameters: true

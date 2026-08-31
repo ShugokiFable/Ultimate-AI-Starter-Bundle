@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "catalog_version": "8.7.5",
-  "pack_version": "8.7.5",
-  "updated_utc": "2026-08-30T00:00:00Z",
+  "catalog_version": "8.7.6",
+  "pack_version": "8.7.6",
+  "updated_utc": "2026-08-31T00:00:00Z",
   "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 146 skill bodies are far larger than the description index an agent actually reads. There is no equivalent discount for MCP. So the servers here are NOT registered globally: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
   "reads": "TOOLS/Set-McpProfile.ps1",
   "always_on_note": "The always-on core is context7, github, and headroom, in TOOLS/Add-Reasoning-MCPs.ps1, not here. They earn permanent slots for current documentation, verified repository state, and context inspection/compression. sequential-thinking is the opt-in reasoning profile after measurement showed its permanent schema cost. Playwright is in the web profile; Firecrawl and Perplexity register only when their keys exist.",
@@ -12,6 +12,9 @@
     "env": "This environment variable must be set and non-empty. Used for servers that cannot do anything without a key.",
     "project_rel": "A path relative to the project directory that must exist. Project-scoped servers only.",
     "auto_install": "Steps this pack may run unattended to satisfy the requirement, when 'requires_command' resolves. Package installs only -- never something that needs a GUI, a licence acceptance, or a credential. An auto_install makes a tool INSTALLED, never ENABLED: registration is still decided per project."
+  },
+  "server_forms": {
+    "env_static": "Literal non-secret environment values enforced for this server, such as a supported telemetry opt-out. Credentials belong in 'key' or 'env_passthrough' and are never stored here."
   },
   "profiles": [
     {
@@ -163,6 +166,7 @@
       "servers": [
         {
           "id": "playwright-mcp",
+          "catalog_component": "playwright-mcp",
           "command": "npx",
           "args": [
             "-y",
@@ -188,10 +192,11 @@
         },
         {
           "id": "chrome-devtools",
+          "catalog_component": "chrome-devtools-mcp",
           "command": "npx",
           "args": [
             "-y",
-            "chrome-devtools-mcp@1.7.0",
+            "chrome-devtools-mcp@1.8.0",
             "--no-usage-statistics"
           ],
           "note": "console, network, performance traces and DOM from a live Chrome",
@@ -210,10 +215,11 @@
         },
         {
           "id": "shadcn",
+          "catalog_component": "shadcn-mcp",
           "command": "npx",
           "args": [
             "-y",
-            "shadcn@4.18.0",
+            "shadcn@4.19.0",
             "mcp"
           ],
           "note": "search, inspect and add components from configured shadcn registries",
@@ -386,10 +392,14 @@
       "servers": [
         {
           "id": "blender",
+          "catalog_component": "blender-mcp",
           "command": "uvx",
           "args": [
-            "blender-mcp@1.8.3"
+            "blender-mcp@1.9.0"
           ],
+          "env_static": {
+            "BLENDER_MCP_DISABLE_TELEMETRY": "true"
+          },
           "note": "live Blender scene inspection and control",
           "key": null,
           "requires": {
@@ -401,10 +411,10 @@
               "%LOCALAPPDATA%\\Programs\\Blender Foundation\\*\\blender.exe"
             ]
           },
-          "editor_side": "uvx blender-mcp@1.8.3 install-addon",
+          "editor_side": "uvx blender-mcp@1.9.0 install-addon",
           "editor_side_note": "The server talks to an addon inside Blender. `install-addon` copies it into the user addons folder, but ENABLING it is inside the editor process and cannot be done from outside -- so Set-McpProfile prints the command rather than pretending it ran it. 'The MCP executable starts' and 'the addon is connected' are different claims: the server answers initialize with no Blender running at all. Only a tool call that reaches the scene proves the second.",
-          "requires_note": "Discovered, never hardcoded. 7.9.6 listed a Steam path on this maintainer's own drive letter, which could not match on anybody else's machine -- the exact class of path this pack forbids elsewhere. The first two entries are what `uvx blender-mcp@1.8.3 addon-paths` reports: Blender creates that user directory on first run whatever the install source, Steam included.",
-          "telemetry_note": "There is no telemetry flag to pass this server. Read from the 1.8.3 wheel: the bundled addon carries a `telemetry_consent` preference and attaches its edit-capture handlers only with consent, and the addon contains no telemetry endpoint (its outbound URLs are PolyHaven, Rodin and Sketchfab, each separately toggled in the addon). So it is off unless you turn it on, inside Blender's addon preferences, where this pack cannot reach it. Stated rather than claimed: nothing here disabled anything."
+          "requires_note": "Discovered, never hardcoded. 7.9.6 listed a Steam path on this maintainer's own drive letter, which could not match on anybody else's machine -- the exact class of path this pack forbids elsewhere. The first two entries are what `uvx blender-mcp@1.9.0 addon-paths` reports: Blender creates that user directory on first run whatever the install source, Steam included.",
+          "telemetry_note": "Measured 2026-08-31: an unconfigured 1.9.0 server posts an anonymous startup event to Supabase before Blender connects. The addon's consent toggle governs prompts, code, screenshots and scene data, but does not suppress that minimal event. This profile writes BLENDER_MCP_DISABLE_TELEMETRY=true into the server environment; a real initialize/tools-list probe then logged `Telemetry disabled via environment variable` and made no HTTP request."
         }
       ]
     },
@@ -422,6 +432,7 @@
       "servers": [
         {
           "id": "godot",
+          "catalog_component": "godot-mcp",
           "command": "npx",
           "args": [
             "-y",
@@ -455,6 +466,7 @@
       "servers": [
         {
           "id": "unity",
+          "catalog_component": "unity-mcp",
           "command": "{project}\\Library\\mcp-server\\win-x64\\gamedev-mcp-server.exe",
           "args": [
             "client-transport=stdio"
@@ -464,7 +476,7 @@
           "requires": {
             "project_rel": "Library\\mcp-server\\win-x64\\gamedev-mcp-server.exe"
           },
-          "editor_side": "npx -y unity-mcp-cli@0.89.0 install-plugin \"{project}\"",
+          "editor_side": "npx -y unity-mcp-cli@0.90.0 install-plugin \"{project}\"",
           "requires_note": "Unity-MCP does not ship a machine-wide server. The executable is generated inside the project's Library folder by the Unity package, so there is no global registration to write -- the entry is project-scoped by construction, and the command is the resolved absolute path for that one project. Until the package is installed the exe does not exist, and the profile refuses rather than writing a path that is not there."
         }
       ]
@@ -515,6 +527,7 @@
       "servers": [
         {
           "id": "windows-mcp",
+          "catalog_component": "windows-mcp",
           "command": "uvx",
           "args": [
             "windows-mcp@0.8.5",

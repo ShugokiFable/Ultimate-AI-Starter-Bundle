@@ -107,11 +107,9 @@ param(
   # and needs a Claude Code restart before its tools appear. Good software,
   # but three surprises for someone who double-clicked one .bat.
   [switch]$WithClaudeMem,
-  # rtk, same shape of decision. The binary is harmless and costs zero standing
-  # tokens, but it only SAVES anything once its hook is registered -- and that
-  # hook rewrites every shell command on the machine and patches settings.json.
-  # rtk also discards: 87% saved is 87% gone, with no archive and no retrieval.
-  # So the install is one flag, and the hook stays the user's own keystroke.
+  # rtk is useful when invoked deliberately for git, failing tests, or noisy
+  # diagnostics. Its automatic hook rewrites categories that measured poorly
+  # or returned wrong answers, so this flag installs only the binary.
   [switch]$WithRtk,
   # Register an optional-key MCP server even when its keyless surface is a
   # fraction of what it charges in schema. Off by default: see
@@ -329,7 +327,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.5 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.6 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1181,6 +1179,62 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
   }
 }
 
+# -SkipNativePlugins means "do not install, update, remove, or reconfigure a
+# plugin". It must not mean "pretend already-enabled plugins own no skills".
+# A skills-only sync recreates canonical copies first; reconcile those copies
+# against the provider's existing registry without invoking any plugin CLI.
+if (-not $ToolsOnly -and $SkipNativePlugins) {
+  $canonicalSkills = Join-Path $PackRoot '_CANONICAL-SKILLS'
+  $backupRoot = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\backups'
+  New-Item -ItemType Directory -Force -Path $backupRoot | Out-Null
+  foreach ($prov in @($Providers | Where-Object { $_ -in @('Claude', 'Codex') })) {
+    $providerHome = Get-UabsProviderHome -Provider $prov -Catalog $catalog
+    $skillsDir = Get-UabsProviderSkillsDir -Provider $prov -Catalog $catalog
+    $enabledIds = @()
+    if ($prov -eq 'Codex') {
+      $enabledIds = @(Get-UabsCodexEnabledPluginIds -CodexHome $providerHome)
+    } else {
+      $settingsPath = Join-Path $providerHome 'settings.json'
+      if (Test-Path -LiteralPath $settingsPath -PathType Leaf) {
+        try {
+          $settings = [IO.File]::ReadAllText($settingsPath) | ConvertFrom-Json
+          if ($settings.enabledPlugins) {
+            $enabledIds = @($settings.enabledPlugins.PSObject.Properties |
+              Where-Object { $_.Value -eq $true } | ForEach-Object { [string]$_.Name })
+          }
+        } catch { Write-UabsWarn 'Claude enabled-plugin registry is unreadable; copied skills were kept.' }
+      }
+    }
+
+    $pstate = [ordered]@{ supported = $true; reason = 'plugin lifecycle skipped; existing ownership reconciled read-only'; plugins = [ordered]@{} }
+    foreach ($pluginId in @('superpowers', 'ponytail')) {
+      $srcRoot = Join-Path $plugins $pluginId
+      $marketName = Get-UabsClaudeMarketplaceName -PluginRoot $srcRoot
+      $nativeId = if ($marketName) { $pluginId + '@' + $marketName } else { '' }
+      $isNative = $nativeId -and ($enabledIds -contains $nativeId)
+      if ($isNative -and $prov -eq 'Claude') {
+        $isNative = Test-Path -LiteralPath (Join-Path $providerHome ('plugins\cache\' + $marketName + '\' + $pluginId)) -PathType Container
+      }
+      $entry = [ordered]@{
+        native = [bool]$isNative
+        status = $(if ($isNative) { 'detected-existing' } else { 'fallback-skills' })
+        reason = $(if ($isNative) { 'left installed plugin unchanged' } else { 'no enabled, reachable native plugin detected' })
+        deduped = @(); skipped_modified = @(); skipped_kept = @()
+      }
+      $pstate.plugins[$pluginId] = $entry
+      if (-not $isNative) { continue }
+      $names = @(Get-UabsPluginOwnedSkillNames -PluginRoot $srcRoot)
+      $res = Remove-UabsPluginOwnedSkillCopies -Provider $prov -SkillsDir $skillsDir `
+               -Names $names -CanonicalRoot $canonicalSkills -BackupRoot $backupRoot -Log $log
+      $entry.deduped = @($res.removed)
+      $entry.skipped_modified = @($res.skipped_modified)
+      $entry.skipped_kept = @($res.skipped)
+      Write-UabsOk ("${prov}: existing $nativeId left unchanged; reconciled " + @($res.removed).Count + ' copied skill(s)')
+    }
+    $nativePlugins[$prov] = $pstate
+  }
+}
+
 # ---------- AI preamble: SOUL + AIO for every agent (v7.5.0) ----------
 # Wires the same preamble into every selected provider so a fresh machine
 # behaves like the operator's own setup. Idempotent: re-running replaces the
@@ -1797,23 +1851,15 @@ if (-not $SkillsOnly) {
     }
   }
 
-  # rtk installs a binary; the binary alone saves nothing. Registering the hook
-  # rewrites every shell command and patches the provider's settings.json, so
-  # the installer prints the keystroke rather than taking it. -g is the whole
-  # point: without it rtk writes ~1,400 tokens/turn of CLAUDE.md instructions
-  # and no hook at all, which costs context to ASK for savings.
+  # The measured policy lives in CATALOG.json: deliberate invocation is useful,
+  # automatic rewriting is not. Never print an init command here -- users copy
+  # installer output, and the old advice re-enabled the known-bad Hermes plugin.
   if ($installed['rtk']) {
-    Write-UabsStep 'rtk is installed - one command left, and it is yours to run'
-    foreach ($p in $Providers) {
-      $agent = switch ($p) {
-        'Claude' { 'claude' } 'Kimi' { 'kimi' } 'Hermes' { 'hermes' } default { $null }
-      }
-      if ($agent) { Write-Host ("     rtk init -g --agent " + $agent) -ForegroundColor Yellow }
-    }
-    Write-Host '     Grok is unsupported by rtk; Codex has no rtk hook.' -ForegroundColor DarkGray
-    Write-Host '     Verify with `rtk gain` - an agent reports the command it ASKED for,' -ForegroundColor DarkGray
-    Write-Host '     not the one that ran, so its self-report proves nothing.' -ForegroundColor DarkGray
-    Write-Host '     rtk DISCARDS what it filters: no archive, no retrieval.' -ForegroundColor DarkGray
+    Write-UabsStep 'rtk is installed - automatic hooks remain off by measured policy'
+    Write-Host '     Use it deliberately:  rtk git status' -ForegroundColor Yellow
+    Write-Host '                           rtk err <command>' -ForegroundColor Yellow
+    Write-Host '                           rtk test <test command>' -ForegroundColor Yellow
+    Write-Host '     `rtk gain` measures those invocations. Do not use provider init as bundle setup.' -ForegroundColor DarkGray
   }
 }
 
@@ -2021,7 +2067,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-  version = '8.7.5'
+  version = '8.7.6'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

@@ -85,7 +85,10 @@ function Get-HermesServers {
     if ($line -match '^    enabled:\s*(?<v>\S+)') { $cur.enabled = ((Get-YamlScalar $Matches['v']) -ine 'false'); $inArgs = $false; continue }
     if ($line -match '^    args:\s*\[\s*\]\s*$') { $cur.args = @(); $inArgs = $false; continue }
     if ($line -match '^    args:\s*$') { $inArgs = $true; continue }
-    if ($inArgs -and $line -match '^      -\s*(?<v>.*)$') { $cur.args += (Get-YamlScalar $Matches['v']); continue }
+    # Hermes/ruamel emits block-sequence items at four spaces, while older
+    # configs used six. Both are valid beneath `args:` in this constrained
+    # shape; accepting only six silently launched every server with no args.
+    if ($inArgs -and $line -match '^\s{4,6}-\s*(?<v>.*)$') { $cur.args += (Get-YamlScalar $Matches['v']); continue }
     if ($line -match '^    \S') { $inArgs = $false }
   }
   if ($cur -and $cur.command) { $out += $cur }
@@ -111,6 +114,10 @@ function Get-ServersFromFile {
     if ($null -eq $json) { return @() }
     if (-not $json.PSObject.Properties[$Section]) { return @() }
     foreach ($p in $json.($Section).PSObject.Properties) {
+      $enabledProp = $p.Value.PSObject.Properties['enabled']
+      $disabledProp = $p.Value.PSObject.Properties['disabled']
+      if (($enabledProp -and $p.Value.enabled -eq $false) -or
+          ($disabledProp -and $p.Value.disabled -eq $true)) { continue }
       $out += @{ id = $p.Name; command = $p.Value.command; args = @($p.Value.args); scope = $Scope }
     }
     return $out
@@ -122,6 +129,8 @@ function Get-ServersFromFile {
   $pattern = '(?ms)^\[' + [regex]::Escape($t.Section) + '\.(?<name>[^\].]+)\](?<body>.*?)(?=^\[|\z)'
   foreach ($m in [regex]::Matches($text, $pattern)) {
     $body = $m.Groups['body'].Value
+    $enabledLine = [regex]::Match($body, '(?m)^\s*enabled\s*=\s*(?<v>true|false)\s*$')
+    if ($enabledLine.Success -and $enabledLine.Groups['v'].Value -eq 'false') { continue }
     # TOML has two string forms and Codex writes both: basic "..." (escapes
     # apply) and literal '...' (no escapes at all). Reading only the first
     # silently dropped two real servers from this report.

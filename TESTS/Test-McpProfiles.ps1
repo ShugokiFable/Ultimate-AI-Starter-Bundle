@@ -207,6 +207,17 @@ Set-Utf8NoBom -Path $tomlPath -Text ''
 $text = [IO.File]::ReadAllText($tomlPath)
 if ($text -match '\.env\]') { Bad 'env sub-table written for an unset variable' } else { Good 'no env sub-table when the variable is unset' }
 
+# Non-secret policy values (for example a telemetry opt-out) are not user
+# credentials and must be present even when no process variable was set.
+$staticEnv = @{ id = 'static'; command = 'uvx'; args = @('thing@1.0.0'); note = 'n'; env_static = @{ DISABLE_TELEMETRY = 'true' } }
+$resolvedStatic = Resolve-UabsServerEnv -Server $staticEnv
+Is $resolvedStatic['DISABLE_TELEMETRY'] 'true' 'a static server environment policy is resolved without a process variable'
+Set-Utf8NoBom -Path $tomlPath -Text ''
+[void](Add-UabsMcpToml -Path $tomlPath -Section 'mcp_servers' -Servers @($staticEnv) -Provider 'Codex')
+$text = [IO.File]::ReadAllText($tomlPath)
+if ($text -match '\[mcp_servers\.static\.env\]' -and $text -match 'DISABLE_TELEMETRY = "true"') { Good 'a static environment policy reaches TOML provider config' }
+else { Bad 'static environment policy was dropped from TOML provider config' }
+
 # ------------------------------------------------------------ requirements ----
 Section 'requirement gating'
 
@@ -271,7 +282,7 @@ Section 'the same server under a different name'
 # `playwright-mcp` -- two entries, two handshakes, one server each.
 Is (Get-UabsNpxPackageBase -Arguments @('-y', '@playwright/mcp@0.0.79')) '@playwright/mcp' 'scoped package base, version dropped'
 Is (Get-UabsNpxPackageBase -Arguments @('-y', 'firecrawl-mcp@3.24.0')) 'firecrawl-mcp' 'unscoped package base'
-Is (Get-UabsNpxPackageBase -Arguments @('-y', 'shadcn@4.18.0', 'mcp')) 'shadcn' 'the first non-flag argument wins'
+Is (Get-UabsNpxPackageBase -Arguments @('-y', 'shadcn@4.19.0', 'mcp')) 'shadcn' 'the first non-flag argument wins'
 Is (Get-UabsNpxPackageBase -Arguments @()) '' 'no arguments means no package'
 
 $yaml = @"

@@ -329,7 +329,7 @@ function Get-UabsFallbackSignature($Chain) {
 }
 
 function Get-UabsProfilePrefs([string]$Profile) {
-  $out = @{ fallback = @(); aliases = @{}; plugins = @() }
+  $out = @{ fallback = @(); aliases = @{}; plugins = @(); disabled_plugins = @() }
   $fb = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'fallback_providers', '--json') -AllowMissing
   if ($fb.Code -eq 0) {
     $json = @($fb.Output | ForEach-Object { [string]$_ } |
@@ -343,7 +343,22 @@ function Get-UabsProfilePrefs([string]$Profile) {
   if ($pl.Code -eq 0) {
     $json = @($pl.Output | ForEach-Object { [string]$_ } |
       Where-Object { $_.Trim().StartsWith('[') }) | Select-Object -Last 1
-    if ($json) { $out.plugins = @(ConvertTo-UabsPlain ($json | ConvertFrom-Json) | ForEach-Object { [string]$_ }) }
+    # ConvertTo-UabsPlain deliberately returns an array as one pipeline object.
+    # Casting that object to string joins every plugin with spaces, making
+    # membership checks impossible. Let the parsed JSON array enumerate here.
+    if ($json) {
+      $parsedPlugins = $json | ConvertFrom-Json
+      $out.plugins = @($parsedPlugins | ForEach-Object { [string]$_ })
+    }
+  }
+  $dp = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'plugins.disabled', '--json') -AllowMissing
+  if ($dp.Code -eq 0) {
+    $json = @($dp.Output | ForEach-Object { [string]$_ } |
+      Where-Object { $_.Trim().StartsWith('[') }) | Select-Object -Last 1
+    if ($json) {
+      $parsedDisabled = $json | ConvertFrom-Json
+      $out.disabled_plugins = @($parsedDisabled | ForEach-Object { [string]$_ })
+    }
   }
   $al = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'model.aliases', '--json') -AllowMissing
   if ($al.Code -eq 0) {
@@ -355,6 +370,7 @@ function Get-UabsProfilePrefs([string]$Profile) {
 }
 
 $script:UabsSharedPlugins = @()
+$script:UabsDiscouragedPlugins = @()
 
 function Get-UabsSharedPlugins([string]$HermesRoot) {
   # Exactly what the default profile already runs, minus anything whose payload
@@ -364,6 +380,7 @@ function Get-UabsSharedPlugins([string]$HermesRoot) {
   if (-not (Test-Path $root)) { return @() }
   $out = @()
   foreach ($entry in (Get-UabsProfilePrefs 'default').plugins) {
+    if ($script:UabsDiscouragedPlugins -contains [string]$entry) { continue }
     $top = ([string]$entry).Split(@('/', [char]92))[0]
     if ($top -and (Test-Path (Join-Path $root $top))) { $out += [string]$entry }
   }
@@ -391,6 +408,16 @@ function Ensure-UabsProfilePluginPayload([string]$Profile, [string]$HermesRoot, 
 function Ensure-UabsProfilePrefs([string]$Profile) {
   $current = Get-UabsProfilePrefs $Profile
   $wanted = @{}
+
+  $toDisable = @($current.plugins | Where-Object { $script:UabsDiscouragedPlugins -contains [string]$_ })
+  Write-Verbose ("$Profile enabled plugins: {0}; catalog-rejected: {1}" -f ($current.plugins -join ', '), ($toDisable -join ', '))
+  if ($toDisable.Count) {
+    Add-UabsPlan -Kind 'SetPrefs' -Profile $Profile -Id 'plugins.disabled' `
+      -Key 'plugins.disabled' -Value $toDisable `
+      -Detail ('disable catalog-rejected plugin(s): ' + ($toDisable -join ', '))
+    $wanted['disable_plugins'] = $toDisable
+    foreach ($entry in $toDisable) { Add-UabsLedger 'removed' "$Profile enabled plugin '$entry'" }
+  }
 
   $signature = Get-UabsFallbackSignature $current.fallback
   $target = Get-UabsFallbackSignature $script:UabsFallbackChain
@@ -459,12 +486,20 @@ if aliases:
     model["aliases"] = merged
     cfg["model"] = model
 plugin_names = prefs.get("plugins") or []
-if plugin_names:
+disable_names = prefs.get("disable_plugins") or []
+if plugin_names or disable_names:
     plugins = dict(cfg.get("plugins") or {})
     enabled = list(plugins.get("enabled") or [])
     for name in plugin_names:
         if name not in enabled:        # additive: never reorder or drop
             enabled.append(name)
+    if disable_names:
+        enabled = [name for name in enabled if name not in disable_names]
+        disabled = list(plugins.get("disabled") or [])
+        for name in disable_names:
+            if name not in disabled:
+                disabled.append(name)
+        plugins["disabled"] = disabled
     plugins["enabled"] = enabled
     cfg["plugins"] = plugins
 save_config(cfg)
@@ -536,6 +571,14 @@ try {
   }
   $context7Args = @('-y', '@upstash/context7-mcp@4.0.3')
   if ($catalog) {
+    foreach ($comp in @($catalog.components | Where-Object { $_.hook_policy -eq 'off' -and $_.discouraged_provider_plugins })) {
+      $providerBlock = $comp.discouraged_provider_plugins.PSObject.Properties['Hermes']
+      if ($providerBlock) {
+        $script:UabsDiscouragedPlugins += @($providerBlock.Value | ForEach-Object { [string]$_ })
+      }
+    }
+    $script:UabsDiscouragedPlugins = @($script:UabsDiscouragedPlugins | Where-Object { $_ } | Select-Object -Unique)
+    Write-Verbose ('Catalog-rejected Hermes plugins: ' + ($script:UabsDiscouragedPlugins -join ', '))
     $context7Comp = @($catalog.components | Where-Object { $_.id -eq 'context7' }) | Select-Object -First 1
     $fromCatalog = if ($context7Comp) { @($context7Comp.npx_args | ForEach-Object { [string]$_ }) } else { @() }
     if (@($fromCatalog | Where-Object { $_ -like '*context7-mcp@*' }).Count) { $context7Args = $fromCatalog }
@@ -809,6 +852,12 @@ try {
         $top = ([string]$entry).Split(@('/', [char]92))[0]
         if (-not (Test-Path (Join-Path (Join-Path $home2 'plugins') $top))) {
           throw "Verification failed: $profile enables plugin '$entry' but cannot resolve its payload."
+        }
+      }
+      foreach ($entry in @($script:Prefs[$profile]['disable_plugins'])) {
+        if (-not $entry) { continue }
+        if ($after.plugins -contains $entry -or $after.disabled_plugins -notcontains $entry) {
+          throw "Verification failed: $profile did not disable catalog-rejected plugin '$entry'."
         }
       }
     }

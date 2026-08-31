@@ -1808,6 +1808,18 @@ def test_codex_plugins_use_the_official_lifecycle() -> None:
     assert "\\\\WindowsApps\\\\OpenAI\\.Codex_" in common
     assert "https://github.com/obra/superpowers.git" in aio
     assert "migrated ' + $marketName + ' to its upgradeable upstream Git marketplace" in aio
+    assert "existing ownership reconciled read-only" in aio, (
+        "-SkipNativePlugins recreates copied skills but never reconciles them "
+        "against plugins that are already enabled"
+    )
+    skipped = aio[aio.index('if (-not $ToolsOnly -and $SkipNativePlugins)'):]
+    skipped = skipped[:skipped.index('if (-not $ToolsOnly -and -not $SkipPreamble)')]
+    assert "Get-UabsCodexEnabledPluginIds" in skipped and "enabledPlugins" in skipped
+    assert "Remove-UabsPluginOwnedSkillCopies" in skipped
+    for mutator in ("'plugin','add'", "'plugin','remove'", "'plugin','marketplace'", "plugins install"):
+        assert mutator not in skipped, (
+            f"the read-only -SkipNativePlugins reconciliation still invokes {mutator}"
+        )
 
 
 def test_hermes_legacy_openrouter_extra_is_migrated_without_replacing_config() -> None:
@@ -2082,7 +2094,13 @@ def test_bundle_stays_free_and_accountless() -> None:
     assert "cloud" not in ids, "the withdrawn Supabase profile is back"
     for prof in profiles["profiles"]:
         for server in prof["servers"]:
-            blob = json.dumps(server).lower()
+            # Notes may explain why an endpoint is blocked. Only executable
+            # configuration can bring the withdrawn account service back.
+            live_surface = {
+                key: server.get(key)
+                for key in ("id", "command", "args", "editor_side", "requires", "key")
+            }
+            blob = json.dumps(live_surface).lower()
             assert "supabase" not in blob, f"{prof['id']}/{server['id']} references Supabase"
             # A profile gated on an API key is an account requirement by another
             # name. Any future one has to be argued for here deliberately.
@@ -2182,6 +2200,56 @@ def test_blender_is_pinned_and_discovered() -> None:
     # 'The MCP executable starts' and 'the addon is connected' are different
     # claims, and the profile has to say so.
     assert "editor_side_note" in blender and "different claims" in blender["editor_side_note"]
+    assert blender.get("env_static", {}).get("BLENDER_MCP_DISABLE_TELEMETRY") == "true", (
+        "blender-mcp sends a startup event before Blender connects; the profile "
+        "must carry its supported environment opt-out"
+    )
+    writer = read(ROOT / "TOOLS" / "UABS-Mcp-Write.ps1")
+    assert "env_static" in writer and "Resolve-UabsServerEnv" in writer, (
+        "the Blender telemetry opt-out is decorative; the shared provider writer "
+        "does not carry static environment policy into provider configs"
+    )
+
+
+def test_profile_package_pins_follow_the_component_catalog() -> None:
+    """Profile wiring must not keep a second, stale copy of a package pin."""
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    components = {c["id"]: c for c in catalog["components"]}
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    seen: set[str] = set()
+    for profile in profiles["profiles"]:
+        for server in profile.get("servers", []):
+            component_id = server.get("catalog_component")
+            if not component_id:
+                continue
+            seen.add(component_id)
+            assert component_id in components, (
+                f"profile {profile['id']} points at unknown catalog component {component_id}"
+            )
+            expected = str(components[component_id].get("version") or "")
+            assert expected, f"catalog component {component_id} has no version to bind"
+            executable_surface = " ".join(
+                [str(x) for x in server.get("args", [])]
+                + [str(server.get("editor_side") or "")]
+            )
+            pins = re.findall(r"@([0-9][0-9A-Za-z.-]*)", executable_surface)
+            assert pins, (
+                f"profile {profile['id']} declares catalog_component={component_id} "
+                "but has no versioned package invocation"
+            )
+            assert set(pins) == {expected}, (
+                f"profile {profile['id']} pins {component_id} at {sorted(set(pins))}, "
+                f"catalog declares {expected}"
+            )
+
+    expected_links = {
+        "playwright-mcp", "chrome-devtools-mcp", "shadcn-mcp", "blender-mcp",
+        "godot-mcp", "unity-mcp", "windows-mcp",
+    }
+    assert expected_links <= seen, (
+        "versioned profile components are not bound to the catalog: "
+        + ", ".join(sorted(expected_links - seen))
+    )
 
 
 def main() -> int:
@@ -2242,6 +2310,7 @@ def main() -> int:
         test_visual_verification_ships_its_own_falsifiable_check,
         test_always_on_core_is_three_servers_and_says_why,
         test_blender_is_pinned_and_discovered,
+        test_profile_package_pins_follow_the_component_catalog,
         test_extras_never_overwrite_a_skill_the_bundle_vendors,
         test_mcp_config_writing_has_exactly_one_implementation,
         test_npx_pin_reaches_machines_that_already_have_the_entry,
@@ -2787,6 +2856,12 @@ def test_both_hermes_config_copies_agree() -> None:
     a = read(ROOT / "1-TAILORED-PROVIDER-TREES" / "Hermes" / "config.yaml")
     b = read(ROOT / "1-TAILORED-PROVIDER-TREES" / "Hermes" / "COPY-TO-PROVIDER-HOME" / "config.yaml")
     assert a == b, "the two shipped Hermes config.yaml copies have diverged"
+    catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
+    schema = catalog.get("provider_config_schemas", {}).get("Hermes")
+    assert schema and f"_config_version: {schema}" in a, (
+        "the Hermes starter schema drifted from CATALOG.json; a fresh install "
+        "would immediately need a runtime migration"
+    )
 
 
 def test_starter_installer_refuses_the_shape_not_the_symptoms() -> None:
@@ -3149,19 +3224,7 @@ def test_local_model_ops_carries_what_actually_blocks_a_local_run() -> None:
 
 
 def test_rtk_catalog_entry_keeps_its_windows_caveat() -> None:
-    """The one fact about rtk that a vendor page will never tell you.
-
-    Re-measured at rtk 0.45.0 on native Windows, 2026-08-27, because the
-    caveat this contract used to enforce had gone stale. The GLOBAL form
-    `rtk init -g --agent claude` registers a real PreToolUse hook (`rtk hook
-    claude`, JSON over stdin) and writes a 990-byte RTK.md. The NON-global
-    `rtk init` prints `No hook installed` and writes 5,140 bytes into CLAUDE.md
-    -- roughly 1,400 tokens every turn, forever, to ASK for savings.
-
-    So the distinction that matters is `-g`, not the provider. A README that
-    documents the non-global form is recommending the expensive no-op, which is
-    what this contract now exists to prevent.
-    """
+    """The measured hook policy must win over mechanically valid setup syntax."""
     catalog = json.loads(read(ROOT / "BUNDLED-TOOLS" / "CATALOG.json"))
     entry = [c for c in catalog["components"] if c.get("id") == "rtk"]
     assert entry, "CATALOG.json no longer lists rtk"
@@ -3177,19 +3240,38 @@ def test_rtk_catalog_entry_keeps_its_windows_caveat() -> None:
     assert "hermes" in note.lower(), "the rtk note no longer names the one working integration"
     assert "windows" in note.lower(), "the rtk note lost its native-Windows caveat"
     assert "curl" in note, "the rtk note no longer pins the curl exclusion"
+    assert rtk.get("hook_policy") == "off", (
+        "rtk's measured rewrite table includes a wrong-answer find path; the "
+        "catalog must keep automatic hooks off"
+    )
+    discouraged = (rtk.get("discouraged_provider_plugins") or {}).get("Hermes") or []
+    assert "rtk-rewrite" in discouraged, (
+        "the Hermes plugin that drives the same rewrite table is no longer tied "
+        "to the catalog's off policy"
+    )
 
     readme = read(ROOT / "README.md")
-    assert "rtk init -g" in readme, (
-        "the README no longer gives the GLOBAL rtk install form. Without -g, rtk "
-        "installs no hook and writes ~1,400 tokens/turn of CLAUDE.md instructions "
-        "instead -- the README would be documenting the expensive no-op"
+    live = readme.split("### rtk:", 1)[1].split("### claude-mem", 1)[0]
+    assert "rtk init" not in live, (
+        "the live README still gives a copy-paste hook command even though the "
+        "catalog's measured policy is off"
     )
-    assert "rtk init --agent hermes" in readme, (
-        "the README dropped the Hermes integration, which is its own Python plugin"
+    for command in ("rtk git status", "rtk err <command>", "rtk test <test command>"):
+        assert command in live, f"the README lost the deliberate-use example {command!r}"
+    assert "rtk-rewrite" in live and "recommends neither" in live, (
+        "the README no longer explains that the Hermes plugin is the same bad rewrite path"
     )
-    assert "rtk gain" in readme, (
+    assert "rtk gain" in live, (
         "the README no longer says how to verify rtk is running -- an agent reports "
         "the command it asked for, not the rewritten one, so self-report proves nothing"
+    )
+    installer = read(ROOT / "INSTALL-AIO.ps1")
+    assert "rtk init" not in installer, (
+        "the installer still prints provider init commands that contradict the catalog policy"
+    )
+    doctor = read(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+    assert "discouraged_provider_plugins" in doctor and "hermes_discouraged_plugin_issues" in doctor, (
+        "the installed-state doctor cannot report the known-bad Hermes integration"
     )
     # The measured numbers must stay pinned. `HEAD~3` moves with every commit:
     # the 97% this table once advertised measures 82.5% today, and a claim that
@@ -3261,6 +3343,17 @@ def test_migrator_converges_plugins_additively_and_proves_the_payload() -> None:
     )
     assert "if name not in enabled" in code, (
         "the plugin write is no longer additive; it may now drop or reorder a user's own list"
+    )
+    assert "UabsDiscouragedPlugins" in code and "disable_plugins" in code, (
+        "the migration does not consume catalog hook policy, so cloned profiles "
+        "can retain a provider plugin the bundle has rejected"
+    )
+    assert 'plugins["disabled"] = disabled' in code and "did not disable catalog-rejected plugin" in code, (
+        "the migration neither parks rejected plugins reversibly nor verifies the result"
+    )
+    assert "ConvertTo-UabsPlain ($json | ConvertFrom-Json) | ForEach-Object" not in code, (
+        "a JSON plugin array is being cast as one object, which space-joins every "
+        "name and makes enabled/disabled membership checks silently miss"
     )
 
     # Discovery must read the live default profile, never a list this pack
@@ -4687,6 +4780,17 @@ def test_mcp_proofs_do_not_require_a_python_path_alias() -> None:
     assert "Get-UabsPythonExecutable" in probe and "Get-UabsPythonExecutable" in pack
     assert "Get-Command python -ErrorAction Stop" not in probe, (
         "the live MCP proof again hard-requires a `python` PATH alias"
+    )
+    assert "\\s{4,6}-" in read(ROOT / "TOOLS" / "Test-McpHandshake.ps1"), (
+        "the Hermes handshake reader accepts only the old six-space sequence "
+        "indent; current ruamel config launches every MCP with no arguments"
+    )
+    handshake = read(ROOT / "TOOLS" / "Test-McpHandshake.ps1")
+    assert "enabledProp" in handshake and "disabledProp" in handshake, (
+        "the JSON handshake reader launches servers the provider marks disabled"
+    )
+    assert "enabledLine" in handshake and "Value -eq 'false'" in handshake, (
+        "the TOML handshake reader launches servers the provider marks disabled"
     )
 
 

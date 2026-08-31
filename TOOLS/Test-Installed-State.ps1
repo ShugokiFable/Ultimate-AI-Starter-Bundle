@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-  Final fail-closed installed-state doctor for Ultimate AI Starter Bundle 7.9.x.
+  Final fail-closed installed-state doctor for Ultimate AI Starter Bundle.
 #>
 [CmdletBinding()]
 param(
@@ -552,6 +552,15 @@ if ($hermesBudgets.Count) {
 # plugin whose payload it cannot reach, and a configured shell hook that was
 # never consented to. Both report success everywhere and simply do nothing.
 $hermesPluginIssues = @()
+$hermesDiscouragedPluginIssues = @()
+$discouragedHermesPlugins = @()
+if ($capCatalog) {
+  foreach ($comp in @($capCatalog.components | Where-Object { $_.hook_policy -eq 'off' -and $_.discouraged_provider_plugins })) {
+    $providerBlock = $comp.discouraged_provider_plugins.PSObject.Properties['Hermes']
+    if ($providerBlock) { $discouragedHermesPlugins += @($providerBlock.Value | ForEach-Object { [string]$_ }) }
+  }
+  $discouragedHermesPlugins = @($discouragedHermesPlugins | Where-Object { $_ } | Select-Object -Unique)
+}
 if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $hermesHomeRoot 'config.yaml') -PathType Leaf)) {
   foreach ($profileName in @('default', 'roblox', 'skyrim')) {
     $pHome = if ($profileName -eq 'default') { $hermesHomeRoot } else { Join-Path $hermesHomeRoot (Join-Path 'profiles' $profileName) }
@@ -565,6 +574,9 @@ if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $herme
       if ($line -match '^  enabled:\s*$') { $inEnabled = $true; continue }
       if ($inEnabled -and $line -match '^  \S') { $inEnabled = $false }
       if ($inEnabled -and $line -match '^\s+-\s+(.+?)\s*$') { $names += $Matches[1].Trim("'" + '"') }
+    }
+    foreach ($name in @($names | Where-Object { $discouragedHermesPlugins -contains $_ })) {
+      $hermesDiscouragedPluginIssues += ('{0}: plugin ''{1}'' is enabled but its catalog hook_policy is off' -f $profileName, $name)
     }
     foreach ($name in $names) {
       $top = ([string]$name).Split(@('/', [char]92))[0]
@@ -596,7 +608,7 @@ if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath $hermesCfgPath -P
     if (-not $isApproved) { $hermesHookIssues += ('shell hook will NOT fire (never consented): {0}' -f (Split-Path -Leaf $s)) }
   }
 }
-if ($hermesPluginIssues.Count -or $hermesHookIssues.Count) {
+if ($hermesPluginIssues.Count -or $hermesDiscouragedPluginIssues.Count -or $hermesHookIssues.Count) {
   Write-Host ''
   Write-UabsStep 'Hermes plugins and shell hooks'
   foreach ($m in $hermesPluginIssues) {
@@ -605,6 +617,13 @@ if ($hermesPluginIssues.Count -or $hermesHookIssues.Count) {
   }
   if ($hermesPluginIssues.Count) {
     Write-Host '     A cloned profile copies the enabled list, never the payload. Fix: TOOLS\Migrate-HermesProfiles.ps1 -Apply' -ForegroundColor DarkGray
+  }
+  foreach ($m in $hermesDiscouragedPluginIssues) {
+    Write-UabsWarn $m
+    $warnings += $m
+  }
+  if ($hermesDiscouragedPluginIssues.Count) {
+    Write-Host '     Fix with backup and verification: TOOLS\Migrate-HermesProfiles.ps1 -Apply' -ForegroundColor DarkGray
   }
   foreach ($m in $hermesHookIssues) {
     Write-UabsWarn $m
@@ -810,7 +829,7 @@ $autostartReport = @($autostarts | ForEach-Object {
 })
 
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
-$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_hook_issues=@($hermesHookIssues);codex_skill_index=$script:codexSkillIndex;ai_autostarts=@($autostartReport);hook_misdirection=@($hookMisdirection);shadowed_tools=@($shadowReport);result=$doctorResult}
+$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_discouraged_plugin_issues=@($hermesDiscouragedPluginIssues);hermes_hook_issues=@($hermesHookIssues);codex_skill_index=$script:codexSkillIndex;ai_autostarts=@($autostartReport);hook_misdirection=@($hookMisdirection);shadowed_tools=@($shadowReport);result=$doctorResult}
 $reportPath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\installed-state-doctor.json'
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
 if($errors.Count){Write-UabsBad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}

@@ -25,6 +25,7 @@
     note               one-line comment written above TOML entries
     key                optional env var name; copied into env when set
     env_passthrough    env var names copied into env when set
+    env_static         literal non-secret env values always written for the server
     project_args       appended when written project-scoped (path is known)
     global_args        appended instead when written machine-wide (-Global)
     requires           optional preconditions (see Test-UabsServerRequirement)
@@ -436,10 +437,15 @@ function Resolve-UabsServerEnv {
      variable with no value is indistinguishable, to the server, from a user who
      typed their key wrong. #>
   param($Server)
+  $out = @{}
+  if ($Server.Contains('env_static') -and $Server['env_static']) {
+    foreach ($k in $Server['env_static'].Keys) {
+      $out[[string]$k] = [string]$Server['env_static'][$k]
+    }
+  }
   $names = @()
   if ($Server.Contains('key') -and $Server['key']) { $names += $Server['key'] }
   if ($Server.Contains('env_passthrough') -and $Server['env_passthrough']) { $names += @($Server['env_passthrough']) }
-  $out = @{}
   foreach ($n in ($names | Select-Object -Unique)) {
     $v = [Environment]::GetEnvironmentVariable($n)
     if ($v) { $out[$n] = $v }
