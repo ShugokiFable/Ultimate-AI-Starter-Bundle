@@ -25,6 +25,8 @@
 - Made the MCP path regression fixture process-local. The pack gate no longer
   edits persistent user environment variables, and a dead process-level
   houseCARL hint now falls through to the valid user-level path.
+- Routed every Python pack-gate check through the shared executable resolver;
+  extracted validation no longer depends on a bare `python` command on PATH.
 
 ## 8.7.4
 

@@ -612,8 +612,10 @@ Section '14. Evidence-behaviour scenarios still contain their defects'
 $scenCheck = Join-Path $PackRoot 'TESTS\evidence-scenarios\check_fixtures.py'
 if (-not (Test-UabsPackPath $scenCheck)) {
     Bad 'TESTS\evidence-scenarios\check_fixtures.py missing from the pack'
+} elseif (-not $py) {
+    Bad 'python not found; evidence scenario fixtures skipped'
 } else {
-    $scenOut = & python $scenCheck 2>&1 | Out-String
+    $scenOut = & $py.Source $scenCheck 2>&1 | Out-String
     if ($scenOut -match 'EVIDENCE SCENARIOS: fixtures intact') {
         Good 'evidence scenario fixtures intact'
     } else {
@@ -627,8 +629,10 @@ if (-not (Test-UabsPackPath $scenCheck)) {
 $routeCheck = Join-Path $PackRoot 'TESTS\routing-scenarios\check_fixtures.py'
 if (-not (Test-UabsPackPath $routeCheck)) {
     Bad 'TESTS\routing-scenarios\check_fixtures.py missing from the pack'
+} elseif (-not $py) {
+    Bad 'python not found; routing scenario fixtures skipped'
 } else {
-    $routeOut = & python $routeCheck 2>&1 | Out-String
+    $routeOut = & $py.Source $routeCheck 2>&1 | Out-String
     if ($routeOut -match 'ROUTING SCENARIOS: fixtures intact') {
         Good 'routing scenario fixtures intact'
     } else {

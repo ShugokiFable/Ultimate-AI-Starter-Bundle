@@ -4857,6 +4857,9 @@ def test_pack_gate_does_not_write_persistent_environment() -> None:
     assert "$env:HOUSECARL_MCP = $liveExe" in gate, (
         "the houseCARL resolver fixture is no longer isolated to the test process"
     )
+    assert not re.search(r"&\s+python(?:\.exe)?\b", gate, re.IGNORECASE), (
+        "the pack gate bypasses Get-UabsPythonExecutable and requires bare python on PATH"
+    )
 
 if __name__ == "__main__":
     raise SystemExit(main())

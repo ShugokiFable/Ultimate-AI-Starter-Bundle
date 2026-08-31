@@ -34451,8 +34451,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 141581,
-  "sha256": "c2f58d6a8e7ba73b31892a78f94b07fbf1ed298521ef86be8d364bd0d56927bd"
+  "size": 141736,
+  "sha256": "190a8677b15aee7ce4d7d573ee92e099babcb6e2475964370088c1317d01ec7a"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34616,8 +34616,8 @@
  },
  {
   "path": "TESTS/Test-Pack.ps1",
-  "size": 39908,
-  "sha256": "9c812da390a4ba3fcbe8913bb7429eb09924c1b4a0f45da71b6cfcb75976696c"
+  "size": 40085,
+  "sha256": "f5e7e89bd205a0242c89d76e399850aae081799eb9f7ffedd11ec72685d7e2d8"
  },
  {
   "path": "TESTS/Test-ProviderDetection.ps1",
@@ -34786,8 +34786,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 253363,
-  "sha256": "cebe96e5f5fa65cae11aecf169f4e544052c547bb1361d03be92596993b3cc18"
+  "size": 253536,
+  "sha256": "baa0274dea0b11ae87bbcec5db315ed088c5402475008a6785d5a83ae308fb65"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -35056,8 +35056,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 2653,
-  "sha256": "c7569c6d97bc5e14334646d3f14deefc0c9851b6a63b34319ffedf641f4c568a"
+  "size": 2752,
+  "sha256": "30153701f068c9f53ed03d0fb351b3dbd8a96a9f4cf7035b910822cce3427204"
  },
  {
   "path": "VERSION.txt",
@@ -41531,7 +41531,7 @@
  },
  {
   "path": "docs/history/V8.7.5-CHANGELOG.md",
-  "size": 2294,
-  "sha256": "33554a77ed58d127977900d38f23c1579d72d6640be81eb1a5953d31e3b44c34"
+  "size": 2476,
+  "sha256": "ff58501f7047b27165420a3cb53e825edb324a28eaf83c7a68d725bb5448e851"
  }
 ]
