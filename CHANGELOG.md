@@ -16,6 +16,9 @@
 - Persistently allowlisted only the three exact, self-tested bundle hook
   commands in Hermes; the previous process-only verification left fresh hooks
   configured but unable to fire.
+- Reused the bundle's verified Python resolver for profile requirements and MCP
+  commands, so Roblox/Saints Row profiles no longer fail on a missing bare
+  `python` alias when Forge, Hermes, `py`, or WindowsApps already provides one.
 
 ## 8.7.6
 

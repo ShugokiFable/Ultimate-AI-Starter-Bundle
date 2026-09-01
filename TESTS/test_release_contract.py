@@ -4832,11 +4832,20 @@ def test_mcp_proofs_do_not_require_a_python_path_alias() -> None:
     common = ps_code(ROOT / "TOOLS" / "UABS-Common.ps1")
     probe = ps_code(ROOT / "TOOLS" / "Test-McpHandshake.ps1")
     pack = ps_code(ROOT / "TESTS" / "Test-Pack.ps1")
+    profile = ps_code(ROOT / "TOOLS" / "Set-McpProfile.ps1")
+    writer = ps_code(ROOT / "TOOLS" / "UABS-Mcp-Write.ps1")
 
     assert "function Get-UabsPythonExecutable" in common
     for evidence in ("SKYRIM_FORGE_PYTHON", "Get-Command py", "hermes\\hermes-agent\\venv"):
         assert evidence in common, "shared Python resolver lost fallback: %s" % evidence
     assert "Get-UabsPythonExecutable" in probe and "Get-UabsPythonExecutable" in pack
+    assert profile.index("UABS-Common.ps1") < profile.index("UABS-Mcp-Write.ps1"), (
+        "profile routing does not load the shared Python resolver before its writer"
+    )
+    expand = writer.split("function Expand-UabsTemplate", 1)[1].split("\nfunction ", 1)[0]
+    assert "Get-UabsPythonExecutable" in expand and "$out -ieq 'python'" in expand, (
+        "profile commands again write a bare Python alias instead of the resolved executable"
+    )
     assert "Get-Command python -ErrorAction Stop" not in probe, (
         "the live MCP proof again hard-requires a `python` PATH alias"
     )

@@ -339,6 +339,12 @@ function Expand-UabsTemplate {
     if ([string]::IsNullOrEmpty($ProjectPath)) { return '' }
     $out = $out.Replace('{project}', $ProjectPath.TrimEnd('\', '/'))
   }
+  # Fresh Windows installs can own a real Python through py, Hermes, Forge, or
+  # WindowsApps without exposing a working bare `python` command on this PATH.
+  if ($out -ieq 'python' -and (Get-Command Get-UabsPythonExecutable -CommandType Function -ErrorAction SilentlyContinue)) {
+    $python = Get-UabsPythonExecutable
+    if ($python) { $out = $python }
+  }
   return $out
 }
 

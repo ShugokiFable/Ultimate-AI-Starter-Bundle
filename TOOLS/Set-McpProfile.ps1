@@ -65,7 +65,9 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
-# Join-Path, not Join-UabsPath: the helper lives in the file being sourced.
+# Load the shared runtime resolver before the MCP writer. The writer deliberately
+# replaces the smaller path helpers below, while keeping Get-UabsPythonExecutable.
+. ([IO.Path]::Combine($PSScriptRoot, 'UABS-Common.ps1'))
 . (Join-Path $PSScriptRoot 'UABS-Mcp-Write.ps1')
 
 # Accept both -Providers Claude,Codex (one comma string, which is what

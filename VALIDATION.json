@@ -1,7 +1,7 @@
 {
   "pack": "Ultimate AI Starter Bundle",
   "version": "8.7.7",
-  "generated": "2026-08-31T21:37:51Z",
+  "generated": "2026-09-01T02:11:16Z",
   "release_tag": "v8.7.7",
   "canonical_skills": 167,
   "provider_trees": 5,
@@ -19,6 +19,6 @@
     "TESTS/Test-McpProfiles.ps1",
     "TOOLS/mcp_handshake.py --selftest"
   ],
-  "runtime_status": "v8.7.7 pre-push validation passed: the full Windows pack gate, all 120 release contracts, RTK and Hermes hook self-tests, live Claude/Grok/Hermes hook-shape checks, Hermes hook doctor, official RTK v0.46.0 offline-asset hash verification, a four-provider OnlineLatest install, 12 core MCP handshakes, 167/167 installed-skill accounting on Claude/Codex/Grok/Hermes, and the final installed-state doctor. Kimi remains supported in fresh-install tests but was not touched locally because it is not installed/used here. Build, extracted-artifact, and exact-SHA CI evidence are produced after this file is committed.",
+  "runtime_status": "v8.7.7 pre-push validation passed: the full Windows pack and MCP-profile gates, all 120 release contracts, RTK and Hermes hook self-tests, live Claude/Grok/Hermes hook-shape checks, Hermes hook doctor, official RTK v0.46.0 offline-asset hash verification, a four-provider OnlineLatest install, 12 core MCP handshakes, 167/167 installed-skill accounting on Claude/Codex/Grok/Hermes, the installed-state doctor, and a live profile-list probe that resolved Roblox and Saints Row through the shared Python runtime helper. Kimi remains supported in fresh-install tests but was not touched locally because it is not installed/used here. Build, extracted-artifact, and exact-SHA CI evidence are produced after this file is committed.",
   "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

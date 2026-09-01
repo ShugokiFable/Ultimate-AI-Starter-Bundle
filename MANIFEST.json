@@ -34456,8 +34456,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 145040,
-  "sha256": "229379abaaee9d0699a6a4e995239be1a2120f3db0b574ab634d6f8e006b3ec5"
+  "size": 145275,
+  "sha256": "d1a85012c43de0fcc93138957ce8bac29c0e334e779667aa7d7ceca2eccb69f4"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34616,8 +34616,8 @@
  },
  {
   "path": "TESTS/Test-McpProfiles.ps1",
-  "size": 54429,
-  "sha256": "572c808fd973a08c947491caf562c539873e2f4882baed45128eada65d69d62f"
+  "size": 54895,
+  "sha256": "ae1e012f3fe7e34ead71bc0011f8723b934e39bd8e0ab083f2c7897ee7bc4436"
  },
  {
   "path": "TESTS/Test-Pack.ps1",
@@ -34791,8 +34791,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 262549,
-  "sha256": "cee666f62136915746c275f00c872be613334c711f1760e1462797c4fd98528a"
+  "size": 263123,
+  "sha256": "2d6bae8eb5b7604fd6231443674593bb471cf99dde1ba4ba2c8a97f034d89898"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -34876,8 +34876,8 @@
  },
  {
   "path": "TOOLS/Set-McpProfile.ps1",
-  "size": 43313,
-  "sha256": "558fde76dff567b38884fce1a37412f121877ea210967dec61cf9b04c94ab24c"
+  "size": 43459,
+  "sha256": "0890b25f48ffd47040624ddef0646f4a0317e3acd5fa98011dc64449573bc3ab"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
@@ -34911,8 +34911,8 @@
  },
  {
   "path": "TOOLS/UABS-Mcp-Write.ps1",
-  "size": 37414,
-  "sha256": "b9348b3e3369998155b85150d3b6092eb6f46596cf0f22019016eb69f2b488d3"
+  "size": 37775,
+  "sha256": "cc2219706dd08076d61e76048bd19b3c79d62f5f783b7a8dc51290a03bf129c0"
  },
  {
   "path": "TOOLS/Update-From-GitHub.ps1",
@@ -35066,8 +35066,8 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1725,
-  "sha256": "39cd00fd98a5b59a8bcdd3bc5ca2bdfeab0ce0e2ca8a79ca75a8b1e4f9e3f425"
+  "size": 1840,
+  "sha256": "67ec587dd6ba94d3ec5a5f4070a62fb256d272069131118ee0c09acd73b9b848"
  },
  {
   "path": "VERSION.txt",
@@ -41551,7 +41551,7 @@
  },
  {
   "path": "docs/history/V8.7.7-CHANGELOG.md",
-  "size": 2837,
-  "sha256": "097fee178a290c7b9e012cfb365d10db373c9cce360f17d4edb94d05a83c4ed8"
+  "size": 3227,
+  "sha256": "b05674fb0a507d85ed01e152ea386ec85080e4a55b1c1bc41f1444ee3d1c8e79"
  }
 ]

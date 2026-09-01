@@ -224,6 +224,12 @@ Section 'requirement gating'
 Is (Expand-UabsTemplate -Text '{project}\Library\x.exe' -ProjectPath 'C:\proj') 'C:\proj\Library\x.exe' '{project} expands'
 Is (Expand-UabsTemplate -Text '{project}\x' -ProjectPath '') '' '{project} with no project resolves to empty'
 
+$script:fakeProfilePython = Join-Path $sandbox 'python.exe'
+[IO.File]::WriteAllBytes($script:fakeProfilePython, [byte[]]@(0))
+function Get-UabsPythonExecutable { return $script:fakeProfilePython }
+Is (Expand-UabsTemplate -Text 'python' -ProjectPath '') $script:fakeProfilePython 'bare python resolves through the shared runtime helper'
+Is (Test-UabsCommandAvailable -Command 'python' -ProjectPath '') $true 'resolved Python satisfies a profile command requirement'
+
 $noCmd = @{ id = 'x'; command = 'q'; args = @(); note = 'n'; requires = @{ command = 'definitely-not-a-real-command-9f3a' } }
 $r = Test-UabsServerRequirement -Server $noCmd -ProjectPath ''
 Is $r.Ok $false 'a missing command fails the gate'
