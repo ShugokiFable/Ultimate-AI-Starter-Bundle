@@ -18,6 +18,7 @@ param(
 )
 
 $ErrorActionPreference = 'Continue'
+. (Join-Path $PSScriptRoot 'UABS-Mcp-Write.ps1')
 
 function Test-Has {
   param([string]$Name)
@@ -70,7 +71,7 @@ $mcpMaps = @(
   @{ Name = 'Kimi'; Path = (Join-Path $env:USERPROFILE '.kimi-code\mcp.json'); Kind = 'json-kimi' }
 )
 
-# Grok inherits ~/.claude.json when its own toml has zero servers.
+# Grok inherits ~/.claude.json only while its compatibility cell permits it.
 $grokOwn = Get-TomlMcpIds (Join-Path $env:USERPROFILE '.grok\config.toml')
 $claudeIds = Get-JsonMcpIds (Join-Path $env:USERPROFILE '.claude.json') 'mcpServers'
 
@@ -90,7 +91,7 @@ foreach ($m in $mcpMaps) {
   }
 }
 
-if ($grokOwn.Count -eq 0 -and $claudeIds.Count) {
+if ((Test-UabsGrokInheritsClaudeMcp) -and $grokOwn.Count -eq 0 -and $claudeIds.Count) {
   $lines.Add("- **Grok (inherited from ~/.claude.json):** $($claudeIds -join ', ')")
 }
 

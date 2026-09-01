@@ -32,7 +32,7 @@
   TOOLS\Measure-McpSchemaCost.ps1 -Command 'npx -y firecrawl-mcp@3.24.0'
 
 .EXAMPLE
-  TOOLS\Measure-McpSchemaCost.ps1 -Command 'npx -y @upstash/context7-mcp@4.0.2' -Name context7
+  TOOLS\Measure-McpSchemaCost.ps1 -Command 'npx -y @upstash/context7-mcp@4.0.4' -Name context7
 #>
 [CmdletBinding()]
 param(

@@ -1,3 +1,12 @@
+## 8.7.8
+
+- Updated the project-scoped shadcn MCP pin from 4.19.0 to 4.19.1 in both the component catalog and web profile.
+- Bound CodeBurn 0.9.23 to its official npm integrity and disabled lifecycle scripts during install.
+- Fixed upgrade convergence when an older release had installed CodeBurn or Impeccable through Hermes' private Node prefix. The installer now uses npm's own uninstall only after the active global root contains the exact catalog version and the Hermes-private version is strictly older.
+- Updated current Context7 fallback and example commands to the catalog's 4.0.4 pin.
+- Replaced stale Grok MCP diagnostics that still treated Claude compatibility as the source of truth, recommended the retired npm GitHub server, and reported one machine's server count as universal. The shipped skill now follows native Grok TOML and the bundle's `compat.claude mcps=false` setting.
+- Added no skills or MCP schemas. Windows MCP remains off by default; RTK remains default-installed behind its narrow measured allowlist.
+
 ## 8.7.7
 
 - Installed RTK 0.46.0 by default and added its official Windows archive to the

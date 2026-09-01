@@ -2,8 +2,7 @@
 
 Operating and debugging the multi-provider AI tooling stack on this Windows machine:
 Claude Code, Codex, Grok CLI, Kimi, Hermes, and their MCP servers (houseCARL,
-skyrim-forge, codebase-memory, headroom, firecrawl, context7, github,
-sequential-thinking).
+skyrim-forge, codebase-memory, headroom, firecrawl, context7, and github).
 
 ## When to Use
 
@@ -20,29 +19,31 @@ The user's "it used to work and was quick" is evidence — when a symptom starts
 after a change, revert-test that change FIRST instead of inventing a latency theory.
 Never present a mechanism as fact until a probe or log line confirms it.
 
-## Provider MCP config map (this machine)
+## Provider MCP config map (bundle defaults)
 
 | Provider | Config file | Notes |
 |---|---|---|
-| Claude Code | `~/.claude.json` → `mcpServers` | The compat source Grok also imports |
+| Claude Code | `~/.claude.json` → `mcpServers` | Upstream Grok can import this, but the bundle disables that compatibility cell and wires Grok natively |
 | **Claude Desktop app** | `claude_desktop_config.json` — normal install `%APPDATA%\Claude\`, **Store/MSIX install `%LOCALAPPDATA%\Packages\Claude_*\LocalCache\Roaming\Claude\`** | The app does NOT read `~/.claude.json` for its own MCP; code/cowork sessions run a bundled Claude Code that does. Schema: `command`/`args`/`env`, no `type`. Write BOTH files for CLI + app coverage |
 | Codex | `~/.codex/config.toml` → `[mcp_servers.X]` | `startup_timeout_sec` supported |
 | Kimi | `~/.kimi-code/mcp.json` | JSON, walk for entries |
 | Hermes | `hermes config path` → `config.yaml` `mcp_servers` | safe YAML merge, never hand-edit blindly |
-| Grok | **do NOT edit `~/.grok/config.toml`** | its config manager rewrites the file and drops user `[mcp_servers]` sections; it imports from `~/.claude.json` at session start |
+| Grok | `~/.grok/config.toml` → `[mcp_servers.<name>]` | Native sections persist. The bundle sets `[compat.claude] mcps = false`, so discovered Claude entries are not active |
 
 All `npx`-based servers must be **version-pinned** in every config
-(`firecrawl-mcp@3.24.0`, `server-github@2025.4.8`, `context7-mcp@4.0.2`,
-`server-sequential-thinking@2026.7.4`). Unpinned entries cold-resolve on first
-spawn and can blow past a 30s startup timeout.
+(`firecrawl-mcp@3.24.0`, `@upstash/context7-mcp@4.0.4`,
+`@modelcontextprotocol/server-sequential-thinking@2026.7.4`). GitHub is the
+bundle's official versioned binary, not an npm reference server. Unpinned npx
+entries cold-resolve on first spawn and can blow past a 30s startup timeout.
 
 ## Verification protocol (do this BEFORE touching config)
 
-For any "server unavailable" report, spawn each server standalone and time
-`initialize` + `tools/list` — see `scripts/probe_mcp_servers.py`. All 8 servers
-on this machine answer in 0.1–3.6s when healthy. A server that dies instantly
-(0-byte stderr log) or hangs is the culprit; "unavailable" can also be
-collateral of ONE wedged server blocking the client's tool enumeration.
+For any "server unavailable" report, spawn each configured server standalone
+and time `initialize` + `tools/list` — use the bundle's
+`TOOLS\Test-McpHandshake.ps1` or this skill's `scripts/probe_mcp_servers.py`.
+A server that dies instantly (0-byte stderr log) or hangs is the culprit;
+"unavailable" can also be collateral of one wedged server blocking the
+client's tool enumeration.
 
 Per-server stderr logs: `~/.grok/logs/mcp/<name>.stderr.log` (empty file =
 spawned but produced nothing = suspicious; healthy npx servers print npm

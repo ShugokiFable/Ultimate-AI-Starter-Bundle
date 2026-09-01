@@ -2389,6 +2389,7 @@ def main() -> int:
         test_profile_repair_and_frontend_detection_are_default,
         test_new_creative_skills_are_pinned_and_single_writer,
         test_skill_discovery_is_search_only,
+        test_outdated_hermes_npm_duplicates_are_removed_only_after_current_install,
     ]
     failed = []
     for fn in tests:
@@ -2826,6 +2827,15 @@ def test_retired_github_package_cannot_become_live_config() -> None:
         if retired in config_code(p)
     ]
     assert not bad, f"retired package {retired} in a live provider template: " + ", ".join(bad)
+    for path in (
+        ROOT / "TOOLS" / "MCP-CONFIG-EXAMPLES.toml.txt",
+        CANON / "mcp-server-diagnostics" / "references" / "provider-cli-ops.md",
+    ):
+        assert retired not in read(path), f"retired GitHub npm server is still recommended by {path}"
+    toolbelt = ps_code(ROOT / "TOOLS" / "Build-Toolbelt.ps1")
+    assert "Test-UabsGrokInheritsClaudeMcp" in toolbelt, (
+        "the toolbelt reports Claude MCPs as active in Grok even when the bundle disables that import"
+    )
 
 
 def test_hermes_readme_matches_the_shipped_starter() -> None:
@@ -4900,6 +4910,10 @@ def test_versioned_online_tools_pin_the_same_version_offline() -> None:
     assert codeburn["version"] in codeburn["npm_spec"], (
         "CodeBurn's catalog version does not constrain the npm install"
     )
+    assert codeburn["npm_integrity"] == (
+        "sha512-0/u52Lg8hjGy18vDEZrQgPT91EyOsVa8LkLCLOkYiM+YbuWITgon2Qsrt2i9A4JEuw2gyz0YLD6w8NwNdPBaJA=="
+    )
+    assert codeburn["npm_args"] == ["--ignore-scripts"]
 
 
 def test_github_auth_guidance_matches_the_official_oauth_binary() -> None:
@@ -5000,6 +5014,29 @@ def test_skill_discovery_is_search_only() -> None:
     assert not re.search(r"['\"](?:add|update|remove|experimental_sync)['\"]", wrapper)
     for command in ("skills add", "skills update", "skills remove", "skills experimental_sync"):
         assert command in skill, f"discovery skill does not forbid {command}"
+
+
+def test_outdated_hermes_npm_duplicates_are_removed_only_after_current_install() -> None:
+    """A successful update must not leave its former Hermes-private copy behind."""
+    installer = ps_code(ROOT / "INSTALL-AIO.ps1")
+    start = installer.index("function Remove-UabsOutdatedHermesNpmDuplicate")
+    end = installer.index("function Remove-UabsGlobalMcpRegistration", start)
+    repair = installer[start:end]
+
+    assert "Get-UabsNpxPackageBase" in repair
+    assert "$activeVersion -ne $expectedVersion" in repair
+    assert "([version]$legacyVersion) -ge ([version]$activeVersion)" in repair, (
+        "the repair can remove an equal or newer Hermes-private package"
+    )
+    assert "[StringComparison]::OrdinalIgnoreCase" in repair, (
+        "the repair can mistake the active Hermes npm root for another Windows path"
+    )
+    assert "'uninstall', '-g', $packageName" in repair
+
+    branch = installer.split("'npx-or-npm'", 1)[1].split("'pip-or-wheel'", 1)[0]
+    installed = branch.index("if (Invoke-UabsNative $npm.Source $npmArgs)")
+    cleanup = branch.index("Remove-UabsOutdatedHermesNpmDuplicate")
+    assert installed < cleanup, "legacy cleanup runs before the exact current package exists"
 
 
 def test_batch_launchers_drop_incompatible_powershell_module_roots() -> None:

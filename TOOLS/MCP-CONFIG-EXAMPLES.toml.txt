@@ -17,16 +17,15 @@
 # startup_timeout_sec = 120                 # startup timeout and the server reports
 #                                           # "unavailable" having printed nothing.
 
-# [mcp_servers.github]
-# command = "npx"
-# args = ["-y", "@modelcontextprotocol/server-github@2025.4.8"]   # PIN IT (same rule)
-# enabled = true
+# GitHub is the official versioned binary installed by this bundle, not an npx
+# reference server. Let TOOLS\Add-Reasoning-MCPs.ps1 discover its exact path and
+# write: args = ["stdio", "--toolsets", "context,repos,pull_requests,actions,issues"]
 
 # Rule: PIN EVERY npx MCP server. Versioned pins that have been field-verified:
-#   firecrawl-mcp@3.24.0  server-github@2025.4.8  @upstash/context7-mcp@4.0.2
+#   firecrawl-mcp@3.24.0  @upstash/context7-mcp@4.0.4
 #   @modelcontextprotocol/server-sequential-thinking@2026.7.4
-# Grok-specific notes: see GROK-MCP-TROUBLESHOOTING.md. As of v7.4.0 Grok MCP is
-# OFF by default ([compat.claude] mcps = false): grok-cli 1.0.4 charged ~65s to
+# Grok-specific notes: see GROK-MCP-TROUBLESHOOTING.md. The Claude-compat MCP
+# import is OFF by default ([compat.claude] mcps = false): grok-cli 1.0.4 charged ~65s to
 # the first turn of every session and attached ZERO tools (tool_count stayed at
 # 26, its built-in count, with 8 servers configured and with 0). Native
 # [mcp_servers.*] sections DO work and persist - the older "grok rewrites them"

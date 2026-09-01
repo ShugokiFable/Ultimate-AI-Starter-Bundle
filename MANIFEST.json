@@ -4856,8 +4856,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
-  "size": 2956,
-  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+  "size": 2869,
+  "sha256": "62e7d9eafd001cc64a069a7e2ee28975fbdfc560ee5c1c381a10a2086eba14e8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
@@ -4871,18 +4871,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
-  "size": 2662,
-  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+  "size": 2725,
+  "sha256": "6420bf398a8bdf08509e1c7022a1e61c81494ab353a1d595b9df66bebfb20632"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
-  "size": 6011,
-  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+  "size": 6157,
+  "sha256": "c044186310bdb1b62602d207a1472c8d6fcdf486faffe3e54d1f5a78114932f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
-  "size": 2929,
-  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+  "size": 2902,
+  "sha256": "5626ae7132b9e6f76976a3a1f0d463f8051d4ddc7c1a355e5377cc08146ad1c9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
@@ -10871,8 +10871,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
-  "size": 2956,
-  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+  "size": 2869,
+  "sha256": "62e7d9eafd001cc64a069a7e2ee28975fbdfc560ee5c1c381a10a2086eba14e8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
@@ -10886,18 +10886,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
-  "size": 2662,
-  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+  "size": 2725,
+  "sha256": "6420bf398a8bdf08509e1c7022a1e61c81494ab353a1d595b9df66bebfb20632"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
-  "size": 6011,
-  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+  "size": 6157,
+  "sha256": "c044186310bdb1b62602d207a1472c8d6fcdf486faffe3e54d1f5a78114932f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
-  "size": 2929,
-  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+  "size": 2902,
+  "sha256": "5626ae7132b9e6f76976a3a1f0d463f8051d4ddc7c1a355e5377cc08146ad1c9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
@@ -16871,8 +16871,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
-  "size": 2956,
-  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+  "size": 2869,
+  "sha256": "62e7d9eafd001cc64a069a7e2ee28975fbdfc560ee5c1c381a10a2086eba14e8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
@@ -16886,18 +16886,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
-  "size": 2662,
-  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+  "size": 2725,
+  "sha256": "6420bf398a8bdf08509e1c7022a1e61c81494ab353a1d595b9df66bebfb20632"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
-  "size": 6011,
-  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+  "size": 6157,
+  "sha256": "c044186310bdb1b62602d207a1472c8d6fcdf486faffe3e54d1f5a78114932f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
-  "size": 2929,
-  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+  "size": 2902,
+  "sha256": "5626ae7132b9e6f76976a3a1f0d463f8051d4ddc7c1a355e5377cc08146ad1c9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
@@ -22871,8 +22871,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
-  "size": 2956,
-  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+  "size": 2869,
+  "sha256": "62e7d9eafd001cc64a069a7e2ee28975fbdfc560ee5c1c381a10a2086eba14e8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
@@ -22886,18 +22886,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
-  "size": 2662,
-  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+  "size": 2725,
+  "sha256": "6420bf398a8bdf08509e1c7022a1e61c81494ab353a1d595b9df66bebfb20632"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
-  "size": 6011,
-  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+  "size": 6157,
+  "sha256": "c044186310bdb1b62602d207a1472c8d6fcdf486faffe3e54d1f5a78114932f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
-  "size": 2929,
-  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+  "size": 2902,
+  "sha256": "5626ae7132b9e6f76976a3a1f0d463f8051d4ddc7c1a355e5377cc08146ad1c9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
@@ -28881,8 +28881,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/grok-mcp.md",
-  "size": 2956,
-  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+  "size": 2869,
+  "sha256": "62e7d9eafd001cc64a069a7e2ee28975fbdfc560ee5c1c381a10a2086eba14e8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/headless-browser-verification.md",
@@ -28896,18 +28896,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
-  "size": 2662,
-  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+  "size": 2725,
+  "sha256": "6420bf398a8bdf08509e1c7022a1e61c81494ab353a1d595b9df66bebfb20632"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/provider-cli-ops.md",
-  "size": 6011,
-  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+  "size": 6157,
+  "sha256": "c044186310bdb1b62602d207a1472c8d6fcdf486faffe3e54d1f5a78114932f9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/providers-windows.md",
-  "size": 2929,
-  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+  "size": 2902,
+  "sha256": "5626ae7132b9e6f76976a3a1f0d463f8051d4ddc7c1a355e5377cc08146ad1c9"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/mcp-server-diagnostics/references/roblox-studio-mcp.md",
@@ -31506,18 +31506,18 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 40839,
-  "sha256": "a26c41f48334866a41e7abdcc755e0045abe7366d826047cf97466099968309c"
+  "size": 41017,
+  "sha256": "6b355f0ffc1288faed5af24ec7448c27d7b7da52dc708a75cacb3894c8488230"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1659,
-  "sha256": "410446b0dc6142c9ec8ce88836d55678f213a2a16096c9511a58ab8219fc8fb1"
+  "sha256": "860c82197bfe5302034ff2855013d863ee64e6183ed20cf38251386f4aea641c"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
   "size": 31569,
-  "sha256": "296ae55c173675a082e3ca43c4d51730bfb988a5cbdee429356f73b6e035a247"
+  "sha256": "240ad2973d140bf3a89f6f8d98b0d738c50de5f0e90bbb1b07f9df5924fec12e"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -34456,8 +34456,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 145275,
-  "sha256": "d1a85012c43de0fcc93138957ce8bac29c0e334e779667aa7d7ceca2eccb69f4"
+  "size": 146308,
+  "sha256": "11e570952dd609187ed3a49200dd42661ca9c63d18a2c65a653965e00c0d7718"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34531,8 +34531,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 130350,
-  "sha256": "b65622de1493c73491db4e8d3d5aaa1300ba1b4bc7f297c14a4337bf83f413c7"
+  "size": 133186,
+  "sha256": "398b0857cee286a26ab1e689b2173c741b2a5d60d0b3be21523062f67fc767f7"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -34581,8 +34581,8 @@
  },
  {
   "path": "README.md",
-  "size": 58086,
-  "sha256": "1622854f9d96ad9ebe45008eb155c2a10d187abe93d7f4232cb639ef51822451"
+  "size": 58774,
+  "sha256": "5fa66726a1cc15344a8b7a8892389d1ef2f9292b27a5eccdc6e2fa814072f37a"
  },
  {
   "path": "SECURITY.md",
@@ -34592,12 +34592,12 @@
  {
   "path": "START-HERE.bat",
   "size": 729,
-  "sha256": "cf8c951c5b0acb5fab4945a74cdde6f86ab0c1be34a2a8926d92cdcdd607a42d"
+  "sha256": "02bd64819f8ab4f95fe48e3cd30282ac0286727b34b89a6ddab2a65de0e3b0a7"
  },
  {
   "path": "START-HERE.txt",
   "size": 9681,
-  "sha256": "a1a3934fd77745464db02c57f684ecc345268cac78a32d673c21d074f182eee6"
+  "sha256": "996e9d5369ae12b96def0eeab13802303abfbe9c691b716ad58f82f7d7d607a2"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -34617,7 +34617,7 @@
  {
   "path": "TESTS/Test-McpProfiles.ps1",
   "size": 54895,
-  "sha256": "ae1e012f3fe7e34ead71bc0011f8723b934e39bd8e0ab083f2c7897ee7bc4436"
+  "sha256": "0aeb98d1f4e73afe6687e8f0f84d8f68a8a4dfebb7bca4074cb230488c545600"
  },
  {
   "path": "TESTS/Test-Pack.ps1",
@@ -34791,13 +34791,13 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 263123,
-  "sha256": "2d6bae8eb5b7604fd6231443674593bb471cf99dde1ba4ba2c8a97f034d89898"
+  "size": 265125,
+  "sha256": "1fe148a13a5ea97c058c904869522f3384fa42d06ef3f6e8fdccd70b0c1421fe"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
   "size": 14762,
-  "sha256": "9b824df1f158b79c615c8799a11244e68440753eb60f5ccc74a62eb565926abc"
+  "sha256": "cff191688a8b05b504cc5c413c8ae5001f3ec065871ca72f3d1db004fff14d80"
  },
  {
   "path": "TOOLS/Build-Release.ps1",
@@ -34806,8 +34806,8 @@
  },
  {
   "path": "TOOLS/Build-Toolbelt.ps1",
-  "size": 5732,
-  "sha256": "f16f59246289e1312bc2eb5967411706be2df7cd46df85e60711aaa6922c55d4"
+  "size": 5829,
+  "sha256": "3a3b4329c1e123552e346ecaa1e63ffeba2cc3e5d089b5e2462c277bf589f136"
  },
  {
   "path": "TOOLS/Clean-StaleState.ps1",
@@ -34851,18 +34851,18 @@
  },
  {
   "path": "TOOLS/MCP-CONFIG-EXAMPLES.toml.txt",
-  "size": 2834,
-  "sha256": "a35f36f5e24acb5c1eabb3325e24162d9027f8782ec7df3984d030b6f77c47e2"
+  "size": 2918,
+  "sha256": "8d0060e5bb20a8cd6bedfab6be51d8b62cd5ab07ee6f0da0abf02daef6f46172"
  },
  {
   "path": "TOOLS/Measure-McpSchemaCost.ps1",
   "size": 8102,
-  "sha256": "bffcdaa5cbed8f565e3746a4a4e44864786188bceeb1c27a8b06231096921546"
+  "sha256": "835f8950217e118162b54f52af1dcde50309cb65d2269cc616c67ae6f997f6a5"
  },
  {
   "path": "TOOLS/Migrate-HermesProfiles.ps1",
   "size": 44536,
-  "sha256": "f993f85070c3b714a79dcbcedb3045305f94ccfe3f28eaf86df77616fb9e663d"
+  "sha256": "0a801bc9f85a8a0850dcf42165c04826e5b838bb1a1cf4b97900d3865196a769"
  },
  {
   "path": "TOOLS/RECOMMENDED-INSTALLS.md",
@@ -35066,13 +35066,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1840,
-  "sha256": "67ec587dd6ba94d3ec5a5f4070a62fb256d272069131118ee0c09acd73b9b848"
+  "size": 1961,
+  "sha256": "18307bbf922465c6fd0a392853a1aa0d426cae2e9725874d4dc3cc83be3ee3fb"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "553b7d63216e09e09c44687b3899c827ddfad5552e4b58a43d2447e66f67136b"
+  "sha256": "7fa8b55c0c08a04734408ca5ecc7340811edd09830720e0e2a8ad7aa61795798"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -38496,8 +38496,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/grok-mcp.md",
-  "size": 2956,
-  "sha256": "12feb08f7ca1f39eff94da20ed79355ef2a0dcd16644856e9a31606e8b5f6906"
+  "size": 2869,
+  "sha256": "62e7d9eafd001cc64a069a7e2ee28975fbdfc560ee5c1c381a10a2086eba14e8"
  },
  {
   "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/headless-browser-verification.md",
@@ -38511,18 +38511,18 @@
  },
  {
   "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/mcp-path-sweep-checklist.md",
-  "size": 2662,
-  "sha256": "915d9a468041d9c875351d922a5cca7e2b07399ac74ed215f7644dde819ec927"
+  "size": 2725,
+  "sha256": "6420bf398a8bdf08509e1c7022a1e61c81494ab353a1d595b9df66bebfb20632"
  },
  {
   "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/provider-cli-ops.md",
-  "size": 6011,
-  "sha256": "c6c030b32d1db5f19584c924a9790dc9a42eeec4d7a598510f1d302445dab2aa"
+  "size": 6157,
+  "sha256": "c044186310bdb1b62602d207a1472c8d6fcdf486faffe3e54d1f5a78114932f9"
  },
  {
   "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/providers-windows.md",
-  "size": 2929,
-  "sha256": "0d61d95e11708b6894d51f110fffb64b41d594603e2be245c125e6a18f8ad3d5"
+  "size": 2902,
+  "sha256": "5626ae7132b9e6f76976a3a1f0d463f8051d4ddc7c1a355e5377cc08146ad1c9"
  },
  {
   "path": "_CANONICAL-SKILLS/mcp-server-diagnostics/references/roblox-studio-mcp.md",
@@ -41553,5 +41553,10 @@
   "path": "docs/history/V8.7.7-CHANGELOG.md",
   "size": 3227,
   "sha256": "b05674fb0a507d85ed01e152ea386ec85080e4a55b1c1bc41f1444ee3d1c8e79"
+ },
+ {
+  "path": "docs/history/V8.7.8-CHANGELOG.md",
+  "size": 1491,
+  "sha256": "06ba30294dedf2a8eb84cf6b5a9affea4bd3be34fe18446f7bdeabb633e1f26d"
  }
 ]

@@ -280,6 +280,55 @@ function Invoke-UabsNative {
   return ($null -eq $LASTEXITCODE) -or ($LASTEXITCODE -eq 0)
 }
 
+function Remove-UabsOutdatedHermesNpmDuplicate {
+  <#
+  Older pack releases could install CodeBurn/Impeccable through Hermes' private
+  Node prefix. Once normal npm became first on PATH, updates landed elsewhere
+  and left the old package plus every dependency behind. Remove only that one
+  proven shape: this run installed the exact catalog version in the active
+  global root, its command resolves there, and Hermes carries a lower version.
+  #>
+  param([object]$Component, [string]$ActiveNpm)
+  try {
+    $spec = [string]$Component.npm_spec
+    $expectedVersion = [string]$Component.version
+    if (-not $expectedVersion -or -not $spec.EndsWith('@' + $expectedVersion)) { return }
+    $packageName = Get-UabsNpxPackageBase -Arguments @($spec)
+    if (-not $packageName) { return }
+    $legacyPrefix = Join-Path $env:LOCALAPPDATA 'hermes\node'
+    $legacyNpm = Join-Path $legacyPrefix 'npm.cmd'
+    $legacyRoot = Join-Path $legacyPrefix 'node_modules'
+    $legacyJson = Join-Path (Join-Path $legacyRoot $packageName) 'package.json'
+    if (-not (Test-Path -LiteralPath $legacyNpm -PathType Leaf) -or
+        -not (Test-Path -LiteralPath $legacyJson -PathType Leaf)) { return }
+
+    $activeRootText = [string](& $ActiveNpm root -g | Select-Object -Last 1)
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($activeRootText)) { return }
+    $activeRoot = [IO.Path]::GetFullPath($activeRootText.Trim()).TrimEnd('\')
+    $legacyRootFull = [IO.Path]::GetFullPath($legacyRoot).TrimEnd('\')
+    if ([string]::Equals($activeRoot, $legacyRootFull, [StringComparison]::OrdinalIgnoreCase)) { return }
+    $activeJson = Join-Path (Join-Path $activeRoot $packageName) 'package.json'
+    if (-not (Test-Path -LiteralPath $activeJson -PathType Leaf)) { return }
+
+    $activeVersion = [string](([IO.File]::ReadAllText($activeJson) | ConvertFrom-Json).version)
+    $legacyVersion = [string](([IO.File]::ReadAllText($legacyJson) | ConvertFrom-Json).version)
+    if ($activeVersion -ne $expectedVersion -or
+        ([version]$legacyVersion) -ge ([version]$activeVersion)) { return }
+
+    if (Invoke-UabsNative $legacyNpm @('--prefix', $legacyPrefix, 'uninstall', '-g', $packageName)) {
+      if (Test-Path -LiteralPath $legacyJson -PathType Leaf) {
+        Write-UabsWarn "$packageName $legacyVersion remains in Hermes' private Node prefix after npm uninstall"
+      } else {
+        Write-UabsOk "removed obsolete Hermes-private $packageName $legacyVersion (active: $activeVersion)"
+      }
+    } else {
+      Write-UabsWarn "could not remove obsolete Hermes-private $packageName $legacyVersion; active $activeVersion is still correct"
+    }
+  } catch {
+    Write-UabsWarn ("left Hermes-private npm duplicate alone: " + $_.Exception.Message)
+  }
+}
+
 function Remove-UabsGlobalMcpRegistration {
   param([string[]]$Ids, [string[]]$FromProviders)
   $removed = @()
@@ -327,7 +376,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.7 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.8 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1327,6 +1376,7 @@ if (-not $SkillsOnly) {
             if (Invoke-UabsNative $npm.Source $npmArgs) {
               $installed[$id] = @{ status='npm-global'; spec=$comp.npm_spec; integrity=$comp.npm_integrity; args=@($comp.npm_args) }
               Write-UabsOk "npm -g $($comp.npm_spec)"
+              Remove-UabsOutdatedHermesNpmDuplicate -Component $comp -ActiveNpm $npm.Source
             } else { throw "npm exited with code $LASTEXITCODE" }
           } catch {
             if ($_.Exception.Message -like 'INTEGRITY:*') {
@@ -2066,7 +2116,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-  version = '8.7.7'
+  version = '8.7.8'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

@@ -1,12 +1,12 @@
-# MCP config per provider (Windows, verified 2026-08)
+# MCP config per provider (Windows, verified 2026-09)
 
 | Client | Config file | Section | Test command | Notes |
 |---|---|---|---|---|
 | Hermes | `%LOCALAPPDATA%\hermes\config.yaml` (from `hermes config path`) | `mcp_servers:` | `hermes mcp test <name>` | `args: []` for local stdio tools; safe YAML merge (backup first) since `hermes mcp add` needs a TTY |
-| Claude Code | `~/.claude.json` | `mcpServers` | — | The SHARED source other clients import |
+| Claude Code | `~/.claude.json` | `mcpServers` | — | Upstream Grok can import this; the bundle disables that compatibility cell |
 | Codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | — | Supports `startup_timeout_sec` |
 | Kimi | `~/.kimi-code/mcp.json` | nested server objects | — | — |
-| Grok | `~/.grok/config.toml` | `[mcp_servers.<name>]` | `grok mcp list --json` | **User TOML beats the compat import from `~/.claude.json`.** Grok's own list may show `[]` while sessions still import 8 servers from claude.json — define servers explicitly in the TOML to take control. |
+| Grok | `~/.grok/config.toml` | `[mcp_servers.<name>]` | `grok mcp list --json` | Native TOML persists. The bundle sets `[compat.claude] mcps = false` and writes its own entries, so Claude-discovered servers are not active. |
 
 ## Grok specifics
 

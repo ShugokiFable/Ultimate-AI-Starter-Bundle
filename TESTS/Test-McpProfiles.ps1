@@ -288,7 +288,7 @@ Section 'the same server under a different name'
 # `playwright-mcp` -- two entries, two handshakes, one server each.
 Is (Get-UabsNpxPackageBase -Arguments @('-y', '@playwright/mcp@0.0.79')) '@playwright/mcp' 'scoped package base, version dropped'
 Is (Get-UabsNpxPackageBase -Arguments @('-y', 'firecrawl-mcp@3.24.0')) 'firecrawl-mcp' 'unscoped package base'
-Is (Get-UabsNpxPackageBase -Arguments @('-y', 'shadcn@4.19.0', 'mcp')) 'shadcn' 'the first non-flag argument wins'
+Is (Get-UabsNpxPackageBase -Arguments @('-y', 'shadcn@4.19.1', 'mcp')) 'shadcn' 'the first non-flag argument wins'
 Is (Get-UabsNpxPackageBase -Arguments @()) '' 'no arguments means no package'
 
 $yaml = @"

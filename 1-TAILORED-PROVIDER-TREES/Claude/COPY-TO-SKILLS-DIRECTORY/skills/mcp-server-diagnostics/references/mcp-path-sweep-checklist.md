@@ -13,7 +13,7 @@ missed because they're not in the mental model: the Store-app desktop config
 | Claude Code | `~/.claude.json` → `mcpServers` |
 | **Claude Desktop app** | `claude_desktop_config.json` — glob `%LOCALAPPDATA%\Packages\Claude_*\LocalCache\Roaming\Claude\` (Store install; package folder is hash-suffixed, never hardcode) or `%APPDATA%\Claude\` (normal install) |
 | Codex | `~/.codex/config.toml` |
-| Grok | `~/.grok/config.toml` (imports from `~/.claude.json`; also its own `mcpServers` section) |
+| Grok | `~/.grok/config.toml` → `[mcp_servers.<name>]` (the bundle disables Claude MCP compatibility; inspect both files only on machines that re-enabled it) |
 | Kimi | `~/.kimi-code/mcp.json` |
 | Hermes | `%LOCALAPPDATA%\hermes\config.yaml` → `mcp_servers` |
 | Skill roots | every provider's `~/.<provider>/skills/<tool>/INSTALLATION.json` (Claude, Codex, Grok, Kimi, Hermes) |

@@ -1,4 +1,4 @@
-# Grok MCP: the 8-server cliff and the disabled list (verified 2026-08-19)
+# Grok MCP: the 8-server cliff and the disabled list (verified 2026-09)
 
 ## Corrected belief (the old "never edit config.toml" note was wrong)
 
@@ -15,12 +15,10 @@ same ("the older 'grok rewrites them' note was wrong").
   exits, no reply. 7 fine. Authoritative doc: bundle
   `GROK-MCP-TROUBLESHOOTING.md` (v7.4.3 corrections).
 - Running count = configured `[mcp_servers.*]` + **plugin-provided servers**.
-  claude-mem's `mcp-search` loads via Claude-code plugin compat even with
-  `mcps = false` — it is the classic free-rider. It is deadweight under Grok:
-  `[compat.claude] hooks = false` means claude-mem's capture hooks never run,
-  so mcp-search points at a DB Grok never writes to.
-- Budgets: **7 configured** once the plugin server is disabled, **6 while it
-  loads**.
+  `[compat.claude] mcps = false` blocks Claude's config import but does not make
+  an enabled plugin's own MCP disappear.
+- Bundle default: at most **6 configured**, reserving one slot for a plugin.
+  Raise it to 7 only after `grok inspect --json` proves no plugin server runs.
 - Evidence, fastest first:
   - `~/.grok/logs/unified.jsonl`: `session.create.*` ctx carries
     `mcp_server_count` (over the cliff = wedge), `shell.turn.tool_prep_done`
@@ -36,9 +34,9 @@ same ("the older 'grok rewrites them' note was wrong").
   `grok mcp disable <name>` → persists `disabled_mcp_servers = [...]` in
   `~/.grok/config.toml`; known names include plugin and `.mcp.json` servers.
   `grok mcp enable <name>` reverses. Unknown names exit 1.
-- Or trim `[mcp_servers.*]` to 6. On this machine the working 7 are:
-  housecarl, skyrim-forge, codebase-memory-mcp, firecrawl-mcp, context7,
-  github, headroom.
+- Or trim `[mcp_servers.*]` to the bundle's six-server ceiling. Project and
+  profile servers count too; do not replace the measured budget with a fixed
+  server-name list.
 - Any config edit: verify with a REAL one-shot call, never `tool_count`:
   `grok --always-approve -p "use search_tool to discover MCP tools, then use_tool to call <server>__<tool>"`.
   A completed reply = healthy. ~20-50s, exits 0.

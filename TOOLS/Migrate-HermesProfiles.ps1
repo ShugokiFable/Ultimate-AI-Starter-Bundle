@@ -569,7 +569,7 @@ try {
     try { $catalog = [IO.File]::ReadAllText($catalogPath) | ConvertFrom-Json }
     catch { Write-Warning "CATALOG.json is unreadable at $catalogPath - using the previous known-good Context7 pin and no houseCARL tool budget." }
   }
-  $context7Args = @('-y', '@upstash/context7-mcp@4.0.3')
+  $context7Args = @('-y', '@upstash/context7-mcp@4.0.4')
   if ($catalog) {
     foreach ($comp in @($catalog.components | Where-Object { $_.hook_policy -eq 'off' -and $_.discouraged_provider_plugins })) {
       $providerBlock = $comp.discouraged_provider_plugins.PSObject.Properties['Hermes']

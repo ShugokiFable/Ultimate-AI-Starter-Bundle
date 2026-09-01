@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.7
+# Ultimate AI Starter Bundle v8.7.8
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -683,6 +683,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.8** - 2026-09-01. Maintenance convergence: shadcn MCP is pinned to 4.19.1 in both catalog and web profile, every current Context7 fallback/example now says 4.0.4, and CodeBurn 0.9.23 is registry-integrity-bound with install scripts disabled. After a successful exact-version npm install, the installer removes only a strictly older duplicate from Hermes' private Node prefix; equal/newer or unverified copies are left alone. Grok diagnostics now follow native TOML plus the bundle's disabled Claude-MCP compatibility instead of recommending the retired npm GitHub server. No new skills or MCP schemas; Windows MCP stays off by default and RTK keeps its narrow measured allowlist.
 
 **v8.7.7** - 2026-08-31. RTK 0.46.0 is now installed by default with a bundle-owned fail-open allowlist instead of its broad upstream hook: exact standalone Git status plus human-facing pytest/cargo/go tests are routed automatically; diffs/logs/show, compound find, search/read/curl/gh, machine output, pipes and mutating Git remain raw. A five-state Git fixture was line-identical through status compression, while a large RTK diff omitted 5,531 changed lines, which is why broad routing stays disabled. Claude/Grok/Hermes receive the executable pre-hook; Codex/Kimi get the same narrow instruction. Full-Offline now includes the hash-recorded RTK archive. No new MCP schemas.
 
