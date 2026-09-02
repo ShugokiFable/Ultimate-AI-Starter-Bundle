@@ -22,8 +22,8 @@ const isSafeElement = (line) => /<(?:blockquote|nav[\s>]|pre[\s>]|code[\s>]|a\s|
  *  content-text analyzers don't false-positive on code or CSS. */
 function stripHtmlToText(html) {
   return html
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, ' ')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, ' ')
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, ' ')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, ' ')
     .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ');
@@ -262,24 +262,23 @@ function blankHtmlComments(text) {
 }
 
 function blankCssLineCommentsInStyleBlocks(text) {
-  const re = /<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi;
+  const re = /(<style\b[^>]*>)([\s\S]*?)(<\/style\b[^>]*>)/gi;
   let output = '';
   let lastIndex = 0;
   let match;
   while ((match = re.exec(text)) !== null) {
-    const inner = match[1];
-    const openLength = match[0].length - inner.length - '</style>'.length;
+    const inner = match[2];
     output += text.slice(lastIndex, match.index);
-    output += match[0].slice(0, openLength);
+    output += match[1];
     output += blankCssLineComments(inner);
-    output += match[0].slice(openLength + inner.length);
+    output += match[3];
     lastIndex = re.lastIndex;
   }
   return output + text.slice(lastIndex);
 }
 
 function blankHtmlAndCssCommentsOutsideScripts(text) {
-  const re = /<script\b[^>]*>[\s\S]*?<\/script\s*>/gi;
+  const re = /<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi;
   let output = '';
   let lastIndex = 0;
   let match;

@@ -2843,7 +2843,7 @@ function buildHtmlPatternCorpora(html) {
   }
   const styleParts = [];
   const classParts = [];
-  const styleBlockRe = /<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi;
+  const styleBlockRe = /<style\b[^>]*>([\s\S]*?)<\/style\b[^>]*>/gi;
   let m;
   while ((m = styleBlockRe.exec(source)) !== null) styleParts.push(m[1]);
   const tagRe = /<[a-zA-Z][^>]*>/g;
@@ -3040,8 +3040,8 @@ function checkHtmlPatterns(html, corpora) {
   // runs in the bundled browser path too, not just the CLI/static path.
   {
     const bodyText = html
-      .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, ' ')
-      .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, ' ')
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/gi, ' ')
+      .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, ' ')
       .replace(/<[^>]+>/g, ' ');
     const tm = /\b(\w+)\s+theater\b/i.exec(bodyText);
     if (tm) findings.push({ id: 'theater-slop-phrase', snippet: `"${tm[0].trim()}"` });

@@ -665,7 +665,7 @@ function stripStyleAndJoin(lines, block) {
       // HTML. The source file remains the authority for the final write.
       // codeql[js/incomplete-multi-character-sanitization]
       line = line
-        .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/g, '')
+        .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/g, '')
         .replace(/<style\b[^>]*\/\s*>/g, '');
 
       // If a <style> opener remains (multi-line body starts here), strip from
@@ -678,10 +678,10 @@ function stripStyleAndJoin(lines, block) {
       out.push(line);
     } else {
       // In multi-line style body; drop everything until we see </style>.
-      const closeIdx = line.search(/<\/style\s*>/);
+      const closeIdx = line.search(/<\/style\b[^>]*>/);
       if (closeIdx !== -1) {
         inStyle = false;
-        out.push(line.slice(closeIdx).replace(/<\/style\s*>/, ''));
+        out.push(line.slice(closeIdx).replace(/<\/style\b[^>]*>/, ''));
       }
       // else: skip line entirely
     }
@@ -771,7 +771,7 @@ function extractCss(lines, block, id) {
       // Self-closing: nothing to carbonize.
       if (/<style\b[^>]*\/\s*>/.test(line)) return null;
       // Same-line open + close: extract inner text.
-      const sameLine = line.match(/<style\b[^>]*>([\s\S]*?)<\/style\s*>/);
+      const sameLine = line.match(/<style\b[^>]*>([\s\S]*?)<\/style\b[^>]*>/);
       if (sameLine) {
         const inner = stripJsxTemplateWrap(sameLine[1]);
         return inner.length > 0 ? inner.split('\n') : null;

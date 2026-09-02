@@ -2293,6 +2293,14 @@ def test_local_security_boundaries_stay_hardened() -> None:
     live_browser = read(impeccable / "live-browser.js")
     assert ".replace(/^-ms-/, '-ms-')" not in live_browser
     assert "escapeRegExp(attrMatch)" in read(impeccable / "live-accept.mjs")
+    regression = subprocess.run(
+        ["node", str(ROOT / "TESTS" / "impeccable-security-regressions.mjs")],
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert regression.returncode == 0, regression.stdout + regression.stderr
+    assert "impeccable security regressions PASS" in regression.stdout
 
     ponytail = read(ROOT / "BUNDLED-TOOLS" / "plugins" / "ponytail" / "hooks" / "ponytail-instructions.js")
     assert r'^-\s*([^\s:][^:]*):[ \t]*"' in ponytail

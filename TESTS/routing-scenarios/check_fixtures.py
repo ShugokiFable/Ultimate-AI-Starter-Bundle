@@ -26,7 +26,11 @@ def read(*parts):
 
 def visible_text(html):
     """What a non-rendering fetch can actually see: markup minus script bodies."""
-    return re.sub(r"(?is)<script.*?</script\s*>", "", html)
+    return re.sub(r"(?is)<script.*?</script\b[^>]*>", "", html)
+
+
+check("plain fetch ignores malformed script closing tags",
+      "streamline your" not in visible_text("<script>streamline your</script \t bogus><p>safe</p>"))
 
 
 # A: the payload must be invisible without executing JS.

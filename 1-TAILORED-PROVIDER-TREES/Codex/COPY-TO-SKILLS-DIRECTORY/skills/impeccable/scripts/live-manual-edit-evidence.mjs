@@ -353,17 +353,11 @@ function normalizeText(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
 }
 
-function decodeBasicHtml(value) {
+export function decodeBasicHtml(value) {
   // Evidence normalization only; the decoded value is compared with source
   // text and is never written to an HTML sink.
-  // codeql[js/double-escaping]
-  return value
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
+  const entities = { '&quot;': '"', '&#39;': "'", '&apos;': "'", '&amp;': '&', '&lt;': '<', '&gt;': '>' };
+  return String(value || '').replace(/&(?:quot|#39|apos|amp|lt|gt);/g, (entity) => entities[entity]);
 }
 
 function escapeRegExp(value) {

@@ -135,9 +135,9 @@ export function substitutePropsWithExprs(markup, contract) {
 
 export function parseSvelteComponentFile(content) {
   const text = String(content || '');
-  const scriptMatch = text.match(/^([\s\S]*?)<script\b[^>]*>[\s\S]*?<\/script\s*>/i);
+  const scriptMatch = text.match(/^([\s\S]*?)<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/i);
   const withoutScript = scriptMatch ? text.slice(scriptMatch[0].length) : text;
-  const styleMatch = withoutScript.match(/<style\b[^>]*>[\s\S]*?<\/style\s*>/i);
+  const styleMatch = withoutScript.match(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/i);
   const styleBlock = styleMatch ? styleMatch[0] : '';
   const markup = styleMatch
     ? withoutScript.slice(0, styleMatch.index).trim()
@@ -145,7 +145,7 @@ export function parseSvelteComponentFile(content) {
   const cssLines = styleBlock
     ? styleBlock
       .replace(/^<style\b[^>]*>/i, '')
-      .replace(/<\/style\s*>$/i, '')
+      .replace(/<\/style\b[^>]*>$/i, '')
       .split('\n')
       .map((line) => line.trimEnd())
     : [];
@@ -292,7 +292,7 @@ function escapeSelectorToken(token) {
  */
 export function extractMatchingSourceCss(routeSource, originalMarkup) {
   const empty = { css: '', supersedable: new Set() };
-  const styleMatch = String(routeSource || '').match(/<style\b[^>]*>([\s\S]*?)<\/style\s*>/i);
+  const styleMatch = String(routeSource || '').match(/<style\b[^>]*>([\s\S]*?)<\/style\b[^>]*>/i);
   if (!styleMatch) return empty;
   const classNames = new Set();
   const classRe = /class\s*=\s*(["'])(.*?)\1/g;
@@ -475,7 +475,7 @@ function appendCssToSvelteStyle(lines, cssLines) {
 
 function findLastStyleCloseLine(lines) {
   for (let i = lines.length - 1; i >= 0; i--) {
-    if (/<\/style\s*>/.test(lines[i])) return i;
+    if (/<\/style\b[^>]*>/.test(lines[i])) return i;
   }
   return -1;
 }
@@ -760,7 +760,7 @@ export function inlineSvelteComponentAccept(manifest, variantNum, paramValues = 
   // codeql[js/incomplete-multi-character-sanitization]
   const outsideMarkup = [...sourceLines.slice(0, start), ...sourceLines.slice(end + 1)]
     .join('\n')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, '');
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style\b[^>]*>/gi, '');
   const outsideClasses = new Set();
   {
     const attrRe = /class\s*=\s*(["'])(.*?)\1/g;
@@ -843,7 +843,7 @@ export function reindentPreservingStructure(lines, indent) {
 }
 
 function styleBlockText(sourceText) {
-  const match = String(sourceText || '').match(/<style\b[^>]*>([\s\S]*?)<\/style\s*>/i);
+  const match = String(sourceText || '').match(/<style\b[^>]*>([\s\S]*?)<\/style\b[^>]*>/i);
   return match ? match[1] : '';
 }
 
@@ -854,7 +854,7 @@ function styleBlockText(sourceText) {
  */
 export function removeSelectorsFromSvelteSource(sourceText, selectors) {
   const text = String(sourceText || '');
-  const styleRe = /<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi;
+  const styleRe = /<style\b[^>]*>([\s\S]*?)<\/style\b[^>]*>/gi;
   let lastMatch = null;
   let m;
   while ((m = styleRe.exec(text))) lastMatch = m;
@@ -918,7 +918,7 @@ function readDeclaredParams(manifest, variantNum, cwd) {
  */
 export function mergeCssIntoSvelteSource(sourceText, incomingCss) {
   const text = String(sourceText || '');
-  const styleRe = /<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi;
+  const styleRe = /<style\b[^>]*>([\s\S]*?)<\/style\b[^>]*>/gi;
   let lastMatch = null;
   let m;
   while ((m = styleRe.exec(text))) lastMatch = m;
@@ -1019,8 +1019,8 @@ function svelteMarkupHasVisibleContent(markup) {
   // reaches an HTML sink.
   // codeql[js/incomplete-multi-character-sanitization]
   const text = String(markup || '')
-    .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
-    .replace(/<style[\s\S]*?<\/style\s*>/gi, '')
+    .replace(/<script[\s\S]*?<\/script\b[^>]*>/gi, '')
+    .replace(/<style[\s\S]*?<\/style\b[^>]*>/gi, '')
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')
