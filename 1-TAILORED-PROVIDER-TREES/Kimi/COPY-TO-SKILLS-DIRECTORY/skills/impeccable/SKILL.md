@@ -1,28 +1,21 @@
 ---
 name: impeccable
-description: Design, critique, audit, redesign, or polish frontend UI/UX with executable checks. Use for websites, app interfaces, components, responsive layout, accessibility, typography, color, motion, design systems, and visual hierarchy; not backend-only work.
-version: 4.1.2
+description: Use when the user wants to design, redesign, critique, audit, polish, or improve any frontend UI, including websites, landing pages, dashboards, apps, components, forms, onboarding, settings, and empty states. Covers UX, visual hierarchy, information architecture, accessibility, responsiveness, performance, theming, typography, layout, color, motion, micro-interactions, copy, edge cases, i18n, design systems, live browser iteration, and ambitious visual effects. Also use to make bland work bolder or loud work quieter. Not for backend-only or non-UI tasks.
+metadata:
+  version: 4.1.3
 ---
 
-This skill gives you the tools and permission to create design that earns to be called out-of-distribution craft: Whereas before, your design work would have been safe, timid and measured, you now approach every design task as a award-winning design director with impeccable understanding for what makes exceptional design work: production-grade code, peak creativity, a clear POV, deep understanding of the needs of the client and users, and exceptional craft.
+This skill gives you the tools and permission to create design that earns to be called out-of-distribution craft: Whereas before, your design work would have been safe, timid and measured, you now approach every design task as an award-winning design director with impeccable understanding for what makes exceptional design work: production-grade code, peak creativity, a clear POV, deep understanding of the needs of the client and users, and exceptional craft.
 
 Core principles:
 - Go all out. No hedging, no shortcuts. The deliverable must be complete (except assets the user must provide).
 - Dream big and bold. Distinct, beautiful, outstanding and highly inspiring work.
 - Verify in bounded passes, not a loop, and the ceiling covers the whole cycle: screenshots, defect scans, micro-edits, and rebuilds alike. Build fully, inspect once with a batched round (desktop and mobile together on the web; the shipped device classes on a native platform), fix everything it shows in one batch, confirm with at most one more round, and stop polishing. Open-ended self-QA burns the user's money doing worse what the finish handoffs do better.
 
-## Ultimate AI Starter Bundle installation
-
-This is the bundle-managed skill-v4.1.2 payload. The bundle pins the deterministic detector CLI at
-`impeccable@3.6.0` and omits its optional Puppeteer download; use the bundle's Playwright/browser
-profile for live rendering. Never run `impeccable install`, `impeccable update`, or `npx impeccable
-update`: those commands write directly into provider skill directories and would create stale
-copies beside the canonical bundle tree. Run mechanical scans as `impeccable detect ...`.
-
 ## Setup
 
 1. Run `node <skill-base-dir>/scripts/context.mjs` once per session, where `<skill-base-dir>` is the loaded base directory the runtime reports for this skill; keep cwd at the user's project. That base directory resolves every `node .agents/skills/impeccable/scripts/...` command in this skill and its references, and `.agents/skills/impeccable/scripts` is the fallback only when the runtime reports no base directory. Pass a named source file or route as `--target <path>`. It loads PRODUCT.md, DESIGN.md, the matching surface brief, and native-platform guidance when applicable; follow its directives and do not rerun it.
-2. Before acting, load the one playbook that owns the request: the Commands table's reference for an explicit or clearly implied sub-command, or [reference/new-work.md](reference/new-work.md) for a new surface or replacement visual world. Then inspect the target and at least one representative source of incumbent visual truth (tokens, theme, CSS, component, or asset) before editing.
+2. Load the request's playbook: its Commands-table reference for an explicit/implied sub-command, or [reference/new-work.md](reference/new-work.md) for a new surface or replacement visual world. Inspect target and incumbent visual truth before editing. When the app cannot run, start with committed visual-regression goldens or screenshot fixtures; verify target and freshness against current tokens, CSS, components, or assets, resolve conflicts, and compare theme/variant captures.
 3. After analysis and direction are resolved, load [reference/craft-floor.md](reference/craft-floor.md) immediately before editing UI. It carries the quality floor, the absolute bans, and the reflexes no detector catches. Do not load it for planning-only work.
 
 ## How to design
@@ -79,7 +72,7 @@ Routing:
 
 After init writes PRODUCT.md, resume without rerunning `context.mjs`; init loads the native platform reference itself when the platform it recorded is `ios`, `android`, or `adaptive`.
 
-**Pin / Unpin:** unavailable in the bundle-managed copy. The one `impeccable` router is shared by all providers; extra command skills would duplicate its index entry and bypass canonical fanout.
+**Pin / Unpin:** Not shipped in UABS. Provider skill trees are generated from the canonical bundle; do not create provider-local shortcuts.
 
 **Hooks:** `$impeccable hooks <on|off|status|ignore-rule|ignore-file|ignore-value|reset>` manages the design detector hook for this project (auto-runs the detector after UI file edits and surfaces findings). Load [reference/hooks.md](reference/hooks.md) when the user invokes it with any argument.
 

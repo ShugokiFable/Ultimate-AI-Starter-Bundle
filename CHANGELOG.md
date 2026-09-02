@@ -1,3 +1,14 @@
+## 8.7.9
+
+- Removed the Superpowers brainstorm companion bearer key from page JavaScript and `sessionStorage`. Keyed loads now set an encoded HttpOnly cookie, strip the URL, and use cookie-authenticated same-origin WebSockets; hostile script-terminator regression tests cover query, cookie, bootstrap, and reconnect paths.
+- Updated Impeccable to official skill 4.1.3 and CLI 3.6.1 from checksum/integrity-bound assets. Preserved the bundle's license and one-writer policy while adding executable visual contracts, framework-churn fixes, and quieter detection.
+- Hardened Impeccable's local live server: poll and lease retention are capped at ten minutes, literal attribute markers are regex-escaped, malformed closing tags tolerate whitespace, and proven text-classification false positives carry source-level CodeQL explanations.
+- Replaced Ponytail's overlapping malformed-bullet regex and added a 100,000-space regression. Rewrote the Hermes vision lookup to a linear line scan instead of a nested multiline regex.
+- Updated Playwright MCP to 0.0.80, shadcn to 4.20.0, and Blender MCP to 1.9.1. Blender's project profile now enables both the supported telemetry opt-out and its new safe code validator; initialize/tools-list measured 28 tools, 29,274 schema bytes, about 7,318 tokens per enabled turn.
+- Updated RTK to checksum-verified 0.47.0 and re-ran its pinned Git corpus. The bundle's safe status/test allowlist still passes; broad rewrite remains disabled because it still catches mutating Git and lossy/broken command surfaces. The last moving benchmark row is now anchored to v8.6.5.
+- Added a standard-library catalog freshness auditor for npm, PyPI, GitHub releases, and secondary skill assets. All 19 tracked release surfaces were current on 2026-09-02; the check remains operator-run rather than a nondeterministic scheduled CI failure.
+- Removed the stale hardcoded 8.0.0 installer User-Agent. Added release contracts for the security boundaries and auditor self-test. Windows MCP remains installed but off by default; no always-on MCP schemas were added.
+
 ## 8.7.8
 
 - Updated the project-scoped shadcn MCP pin from 4.19.0 to 4.19.1 in both the component catalog and web profile.

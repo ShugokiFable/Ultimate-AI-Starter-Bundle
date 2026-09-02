@@ -1446,8 +1446,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/THIRD-PARTY-NOTICES.md",
-  "size": 4444,
-  "sha256": "da7268e929cb5c4abe8010a1105c9f55e310f51e1d13c458e407790851e583fc"
+  "size": 4566,
+  "sha256": "e7a54a7f41c5a2ebda1c93d45b0ad8e09d7ca982c3633216d9af89ad680b3705"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -1536,13 +1536,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/helper.js",
-  "size": 5615,
-  "sha256": "43c6d69954a46ec34a2a262bcc62a9a7e83e839c739f199cb72646d397c686e3"
+  "size": 5379,
+  "sha256": "1dab014d8e39e4cd946edfc3dafa18c808b520395c7ceccff70e649b31f98a92"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/server.cjs",
-  "size": 25693,
-  "sha256": "2d2961ea8d11f56c5f4c3a1a68d22709efa5d7601a2246d8c880774e7e9e8412"
+  "size": 25701,
+  "sha256": "6baa9e5ee22e1205daa6dea6d4c0992b43687fc0731e22d95656620c8278131d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/start-server.sh",
@@ -4001,13 +4001,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/SKILL.md",
-  "size": 10527,
-  "sha256": "9bf6cc2c7b438ca166fc2b21afe20523dc08c34ff8e067eafac024a0555e87db"
+  "size": 10367,
+  "sha256": "0193416119479a1fee8de144bc8a2016d1a22ccded91cbea867323bceaf1976c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_asset_producer.toml",
-  "size": 9931,
-  "sha256": "d2be0f7b066b1af4f52a9c61539e4c50deaf4b0673e2bf2b7ea429e4c02c830f"
+  "size": 6161,
+  "sha256": "e69f902dc96a63c9566f30361ced3dc83765097d9f3dd2f9cbd83ec50f6af1b3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_documenter.toml",
@@ -4016,8 +4016,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_finish_reviewer.toml",
-  "size": 13793,
-  "sha256": "59efadb3b5a0209e052fb0d3671a633aed6c6be3cbb61db034b9a7fc12bae692"
+  "size": 15290,
+  "sha256": "b3c6137e444e2e54a853413161958c0532f332f8d8159dfe48d7e1ea5996b1f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_manual_edit_applier.toml",
@@ -4056,8 +4056,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/audit.native.md",
-  "size": 8362,
-  "sha256": "fc16e78aca0c183a91dac3d8876d1211fca99aa979367fcb50090d934806b2fb"
+  "size": 8357,
+  "sha256": "1b10f9ad3d3a1494ee1bbdf35bb6aa453e98defa6e1ae99177b167795054a4f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/bolder.md",
@@ -4086,13 +4086,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/critique.md",
-  "size": 45696,
-  "sha256": "ff3208d915f2bfb5af7ba3aba7066aab6fcb28829709a041fbb98bd535341b2d"
+  "size": 45920,
+  "sha256": "a763d1474f5c1125a937b5872abb1fc40b2bd44dd7d4a7701ac2147401bf4b2b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/asset-producer.md",
-  "size": 10093,
-  "sha256": "e28c0d9e42b127ebf09762ae160b9e94a376576f66fb1d66888871467fb11884"
+  "size": 6323,
+  "sha256": "2993ce6409702ae2e01e4ee37f8f98089aeccc4877c4c9d836e161dee364b510"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/documenter.md",
@@ -4101,8 +4101,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/finish-reviewer.md",
-  "size": 13893,
-  "sha256": "c70d4bd77fe9142bbe7e3b412d3ca44443e0914bdb323577dc2acb59e8d72078"
+  "size": 15390,
+  "sha256": "5ae494910f0a7c6eca239cdd866f70833b42655ed6e2f88b8c756dfca028c1fd"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/manual-edit-applier.md",
@@ -4121,8 +4121,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/doctor.md",
-  "size": 5447,
-  "sha256": "2c110874c88f7e1509181a4b09e5214cd211021251225d365e5be486add1fd5b"
+  "size": 5463,
+  "sha256": "c7a439efd70bdc232da970d0695c60502525e5b7e882ad9d5b1f4794b00dd260"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/document.md",
@@ -4141,8 +4141,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/hooks.md",
-  "size": 13111,
-  "sha256": "18b8597f03d9ed100e09187550d5c737d6da696188b8e75289317398e7dbdf4e"
+  "size": 13310,
+  "sha256": "e61722ab3ace649d9ad016f564e3cd137926d562418ec2e3fd73de8a7e3e94d6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/init.md",
@@ -4156,8 +4156,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/layout.md",
-  "size": 5127,
-  "sha256": "972941eabcb28681019eb57ebc8b7b1085382822db49e365118d01857ca867ed"
+  "size": 5159,
+  "sha256": "2d5eba1b9493f85c149a197fe6c4e9d015f5e68c49f24f5210a237cee4e44348"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/live-setup.md",
@@ -4171,8 +4171,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/new-work.md",
-  "size": 44091,
-  "sha256": "0213d9ed6c852ce0e9c9e1abbce29b0dd3db576669aefca76e1fb2fdb03e6946"
+  "size": 52029,
+  "sha256": "e378818dc2095c701b3affe8a6d8e46c2b7788206b5a025e67af07b75199419c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/onboard.md",
@@ -4196,8 +4196,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/polish.md",
-  "size": 5592,
-  "sha256": "e6bbc05a9e1f905811d19401c1e6c7b97588375454e1462dbd811f803d239b07"
+  "size": 6635,
+  "sha256": "e25e675a476e08fa9dc33eecef6c0538a36fcef39c052c9728b8be9209bba124"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/quieter.md",
@@ -4206,8 +4206,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/routing.md",
-  "size": 2865,
-  "sha256": "428b75b6524906b556ebc89922ef231c5dd3b3ab5e3dc4a76272390e7e082a5e"
+  "size": 2901,
+  "sha256": "35a5cd381e2bba7ef7cfcd48c9b6316ebcf40fe9e7abb4fb212b24106e08195b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/shape.md",
@@ -4216,13 +4216,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/typeset.md",
-  "size": 5222,
-  "sha256": "0b9bc45334a79da9a50efc4605502d0db6f2fd2b2c88404b134b9088625e4a98"
+  "size": 5254,
+  "sha256": "6d803447fb419ee718012f6263d2685ad462a14dc08c338392e28b79823a0553"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/visualize.md",
-  "size": 16644,
-  "sha256": "1a0a68caa14cb16fbcabba663e3603ffd3337aaec4f2679f72b279bad8ce4a08"
+  "size": 11204,
+  "sha256": "9080ea9439a24e005367128389fc5b1a3f58f63d1eb4c16b4ca8dc197053c6c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/build-phase.mjs",
+  "size": 77334,
+  "sha256": "38006f01777542f1f111a2b4e4079d6fa406b8d27fad149138fba57eca7f287f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/command-metadata.json",
@@ -4230,24 +4235,44 @@
   "sha256": "6bdbc3f745ceee15e10b050f109ce42bbeb53ab3c3b5239257de1d596654dee7"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-diff.mjs",
+  "size": 21349,
+  "sha256": "943560b54fbc37e48e0e6b503cb48f6904ecce8c413ae84773a050b2850b2c08"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-spec.mjs",
+  "size": 31488,
+  "sha256": "95a492b2a3ab53f5971c5af5d9ca474c6f7a01fb96a6c0b010c5f7a9baefd8ff"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/concept-seed.mjs",
-  "size": 39651,
-  "sha256": "8ea706b9aedaa2a5c8cac88cf5cf5a2252bd90ff9430f0e7c1e79bddfa50fa17"
+  "size": 45418,
+  "sha256": "b9088d654fc652a9a23e94fe7ed6c2ffeaf2e846a90972f49eecac26a8133072"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context-signals.mjs",
-  "size": 14021,
-  "sha256": "9d882021a76d02b8492fec20334f4af66605fd186687b8de0f202e7a11e1567c"
+  "size": 14033,
+  "sha256": "c7c70735fae0834576636fb9b9c32504a7f08efc95fdc4db97a469f6ca4dd2c4"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context.mjs",
-  "size": 58756,
-  "sha256": "26d54294f3b04710991168d751e2c4931b1ecce3c0f1c8562a495ee5223dbaac"
+  "size": 67737,
+  "sha256": "e0d4b1ee9a143438a449c4c25ec2556d299b5c13782bf0ee61335e48a3f01a65"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/critique-storage.mjs",
-  "size": 8485,
-  "sha256": "17c14fc03d9c53f7f48dfe6e8ef2a15d2a35c9b8f341ddb25720e01cc1ca68e9"
+  "size": 18703,
+  "sha256": "12f9fece61dc54c56f106c2c999a3b7f3583a378f3aa32619db3356f34a3fe75"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index-failures.json",
+  "size": 2437,
+  "sha256": "835f19a0a3812f3652dd6979a2ce5597f654fd01f26e1b420b92d5f42b997ce4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index.json",
+  "size": 1100013,
+  "sha256": "47edbdfaf27073c47033d1ac7dfee881be49e2dcbda7671d1157300481dde6da"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect-csp.mjs",
@@ -4256,13 +4281,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect.mjs",
-  "size": 620,
-  "sha256": "f5dfd05ca1e314acd8ed79c6301a20a1b844f2eb6691bd63e04116a8e7efb187"
+  "size": 1235,
+  "sha256": "b2c5731c367c129e361bdfb28c4f697e84818c77e04d88ad21eeb89320f06a0e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/browser/injected/index.mjs",
-  "size": 84358,
-  "sha256": "88d1a32a8dcd8270614749ab7d2c4ad535d726b0b12ce4305551b0ff3eb56cdf"
+  "size": 91086,
+  "sha256": "30d70ec4d1804b333be05f2448a0cc5a39b517fc8fc860d650215457dfd93402"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/cli/main.mjs",
@@ -4271,13 +4296,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/design-system.mjs",
-  "size": 49637,
-  "sha256": "cacf7ae83b4ccfff84ceb6ab06549b399e0ec88750f053249db65371dd302de1"
+  "size": 49814,
+  "sha256": "b6aefa5c9f4e3fea8449e1cbaa345a68570689654ade16cddc5c900659892112"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns-browser.js",
-  "size": 390675,
-  "sha256": "55b3f96bf882c6704015c3d8533c2c4987d7c4ce2669d0e15bf10e60d64b453b"
+  "size": 410092,
+  "sha256": "ef45727251c6626dd402fd6e6a30bd973b19d219e2a65549ad62c6b28dfca7fe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns.mjs",
@@ -4286,23 +4311,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/browser/detect-url.mjs",
-  "size": 14431,
-  "sha256": "a972cb4fc1390ba131e6cd9707b4b20aa2730ad04c43b0a9551321777c04c8e9"
+  "size": 16196,
+  "sha256": "af6d28bfb1bb2fc667f56823b9fa12d4ee56ee5b3afbea28c5b81fecb66b84dc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/regex/detect-text.mjs",
-  "size": 53313,
-  "sha256": "8e0ecc091bcecc24eb34d34dab9bcabb1057af6a6dcf34f186fb370b26e61157"
+  "size": 51795,
+  "sha256": "e2160fa496fd40a4596a68419892232e7ab56420c39952664b2c39ef1ff8a7fc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/css-cascade.mjs",
-  "size": 45985,
-  "sha256": "6809969a6e2c58992d863c23d6f2c6fb6b8ddacc503dac2ad0e5452bf2725c54"
+  "size": 46017,
+  "sha256": "5cf85f8a00b50c12c0cd0a5e2f5ad456c414cf67bc34f4a5c36eb64a7e667cc3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/detect-html.mjs",
-  "size": 13351,
-  "sha256": "481b584ccdf3ac28065dbab11f65d638e3e7a35e14c7e62bc5da3d59d2a7efd7"
+  "size": 12726,
+  "sha256": "9fedd7d3d42c51058bd491d98193abd5931ce83550269124bb788efadb7b7c97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/visual/screenshot-contrast.mjs",
@@ -4326,13 +4351,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/registry/antipatterns.mjs",
-  "size": 27900,
-  "sha256": "4544ccca3d7c341d878b941fbe20620750dbf9d29dd6d15e063128a1e390b345"
+  "size": 29094,
+  "sha256": "57aaf32be744db6375d604a36079bc731fa60eaa4b34bb61d00d002d56af6079"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/rules/checks.mjs",
-  "size": 254664,
-  "sha256": "e63f6adbd0893d75105e825b1656a268c512a9bc7e5f3d17d4ac70ef412d6e57"
+  "size": 265818,
+  "sha256": "760152474cf9c748ea04fd9a0b9eeca825c784af9ddbcfc5852f866c067e70bf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/color.mjs",
@@ -4341,8 +4366,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/constants.mjs",
-  "size": 4675,
-  "sha256": "606f50159d56b5e972724c13933e63220696636215292e5316846426f3e12896"
+  "size": 5183,
+  "sha256": "fcf86301e635bd1591ae5d9fdbaae0696ac4bbc9d2e52d38c5c3232faa366a9f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/fonts.mjs",
@@ -4356,8 +4381,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/page.mjs",
-  "size": 252,
-  "sha256": "b4cef5548d84fa90d15e6b42b20be9ef74ed05e4e6e46076ec5acc61b343315c"
+  "size": 386,
+  "sha256": "0e2bc96b8bbafafb40c451771c6724db8193dd65d9b67e1912fc217291ed1945"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/doctor.mjs",
@@ -4366,18 +4391,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/embed-prompt.mjs",
-  "size": 7843,
-  "sha256": "4614260ccaa091bea10a6096027d2aca306160e1764765ce155aadcbe674dbc5"
+  "size": 7354,
+  "sha256": "4227f850b60a32cc6b8a167d9b49e4e00817823a1b93a9fdb9a3823345140daf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/font-match.mjs",
+  "size": 28759,
+  "sha256": "8f8303918a92af6ddd2cdeac3344223e43d66059e5098741bf059e89b409d9c6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/generate-image.mjs",
-  "size": 11462,
-  "sha256": "0994c7ab8bc280b9b09676bc0296ca9eea8609b00b1a48eb783486f145c0f338"
+  "size": 22797,
+  "sha256": "121d366da52fc16df6c44efd2676652ae4706196d5db1fc4c1d025335c586b7f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-admin.mjs",
-  "size": 31282,
-  "sha256": "b1a6759805eb39f117b1153c5a4e1b4691a7a9b685420fe5257e00b8d0f8c543"
+  "size": 32431,
+  "sha256": "d6f3e24b5a83f7a5c52c734e5a9cb0a888a147ab7d7f572e0773e26f2e9ed89d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-before-edit.mjs",
@@ -4386,8 +4416,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-lib.mjs",
-  "size": 100372,
-  "sha256": "c556f48b547bc540f60b1c06f437777ee9b93bf256d1779d966641248cce2dd1"
+  "size": 102895,
+  "sha256": "d6d65ecfd069c632b162b23b6bf4a46e8fe0014f0caddd32725a38dbf0e80206"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook.mjs",
@@ -4406,13 +4436,33 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/concept-catalog.mjs",
-  "size": 19896,
-  "sha256": "7ac70294e0f429d89464ff2e0c814b70acfd5e101184d5a45b8b2a50dfaa8266"
+  "size": 19895,
+  "sha256": "b32e535296b6db3fdc613ceb585640943cc1bd8291ca4f8a5ab2077506ac5436"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/design-parser.mjs",
-  "size": 27441,
-  "sha256": "42d37e97db82ca8082033f582bcdbd341373d0cc1c6927605d1a4385f8f34131"
+  "size": 27178,
+  "sha256": "d1012667cffaf8e0d24317077dd54386ed274f49313b53346e67b00cd96aa487"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-fingerprint.mjs",
+  "size": 29235,
+  "sha256": "a35764b55d33d03cb0fe4dfac059306683fe3e89016bb62f4715c39deaa0f9c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-index.mjs",
+  "size": 6573,
+  "sha256": "31cb952b43055ddd93ddc7e9ee35e86f9224ff57a14285467d772963ec603fa3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/hero-checks.mjs",
+  "size": 14926,
+  "sha256": "1315e294f713f542c2c996dbd14555d520d7484d3b5c78b3ba820042f19d44f7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/image-metrics.mjs",
+  "size": 14207,
+  "sha256": "c4844deaeadf0fe421d95b46ca020c0f9232228ad602f176e4d5cbd691694e97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/impeccable-config.mjs",
@@ -4430,14 +4480,29 @@
   "sha256": "2d6c37f821cb42161264068b81c4c97629a653b661403cedadb5eb23099d0acc"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/live-path-globs.mjs",
+  "size": 847,
+  "sha256": "f2657a25351ae5bc4d503e7257f84e014815fc562225ebf8fe15d3e277ca6f53"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/open-system-browser.mjs",
   "size": 848,
   "sha256": "3785ef4ba47bbbe176469e2536e8ef29e885f955970404f46ff34763f831bf11"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/png.mjs",
+  "size": 10735,
+  "sha256": "6994615c52f75af071664e0675b9cac91de39ac5ad0ecc7de4873ee0fd227926"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/provider.mjs",
   "size": 327,
   "sha256": "998c57324fdab98a0bfbd01a6099eadac7276038da961697d6069bbdeb0e5856"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/raster.mjs",
+  "size": 9876,
+  "sha256": "97038c3790f9a76e0dc09a8aa967e0679778a6015723873715a577d21ac7172a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/roll-selection.mjs",
@@ -4481,23 +4546,28 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-accept.mjs",
-  "size": 35874,
-  "sha256": "f823b4f71a6ae21ffb8b52aa3a78768f0bee551329cf76ad4144e4680a05c154"
+  "size": 36104,
+  "sha256": "e89aff2150572b085387beac8f27b76ab704291f9d3a9886fd10c026c8bbb3fb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-dom.js",
-  "size": 4250,
-  "sha256": "bcfa4022e741f8034b841aed76b9ea3f6a64a8e08e4dfa43ba99f8be65a73393"
+  "size": 4917,
+  "sha256": "de1b7404f4cdfd7b515196afb17b74b1980f0bc88cb8681ae93a76ca48ec7bdb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-ignores.js",
+  "size": 10346,
+  "sha256": "c1cb6877ca99a0c1b38ba0c7d59f32702d3022f6821d8045f7133f7c40b6362f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-session.js",
-  "size": 3297,
-  "sha256": "dddcb8b941f7460aa6a134f7d456b1820747172c12e01de36dab3265b1065cff"
+  "size": 4090,
+  "sha256": "edddeb3fad88adec9a055b1bf9d5c75418cbe97a13b1a7f6765e73249e482563"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser.js",
-  "size": 500861,
-  "sha256": "9aeb60163add083cd4701a4c70be38b9008afbd407a4f71e0e952db0668b433a"
+  "size": 513801,
+  "sha256": "24241e41e394f18cc00a788e9b44117424b25dbed1391b2e8152ec8f395ffccf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-commit-manual-edits.mjs",
@@ -4521,8 +4591,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-inject.mjs",
-  "size": 18536,
-  "sha256": "0e1bc4e9a43b74d4b4571ff2191f813b8716346a4bcafe7d42bd84a47397d92e"
+  "size": 17585,
+  "sha256": "bb3a120472b757e96dbc2f5e24b37f39f31dee3c54d785c571baf686cf71096d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-insert.mjs",
@@ -4531,8 +4601,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-manual-edit-evidence.mjs",
-  "size": 11857,
-  "sha256": "c5a36c361c435fc023e17be16a78aaf672adb48a6a74e8177cfa775592502638"
+  "size": 12013,
+  "sha256": "00dcd9f43d5bab6d95f66d717d98fafe4249e171afd1caa2a134f5efd612177f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-poll.mjs",
@@ -4546,8 +4616,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-server.mjs",
-  "size": 68882,
-  "sha256": "96e27a4e70d173e2493a8e32732d85355eebaee5797677b29e58aecc49f701f1"
+  "size": 70004,
+  "sha256": "e3801156dc319fa7e02c55e7350f62e4656ba9f33be3199c6d8e8571dda807d8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-status.mjs",
@@ -4566,8 +4636,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live.mjs",
-  "size": 13617,
-  "sha256": "d59eb657dfb142fcb3fc9c159efd7ec50d62f2294eabecc6134c6cabda6d3996"
+  "size": 12909,
+  "sha256": "9188f42a93e02ec341335c3441af5de16391196efdf78710e87dd7ef0fb6cb7e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/accept-css.mjs",
@@ -4581,8 +4651,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/browser-script-parts.mjs",
-  "size": 3185,
-  "sha256": "74e9d7cdfb5851eb827770e6c44ec4eac532522c54f51999be7a42676f6e234e"
+  "size": 3674,
+  "sha256": "2ceb3083de7fe80160f40379c0ed47220bade5e4a1964cde4ae8e745049061c5"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/completion.mjs",
@@ -4690,6 +4760,11 @@
   "sha256": "a516bc942c55b66be915619794f4ec79aadf94d6966c6fc7aee24f1fbaa60ab3"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/project-ignores.mjs",
+  "size": 6427,
+  "sha256": "b4088c6fbc231bc13b11804bea90a223d077d3762f3d93990c6044c7ea10d9e1"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/roots.mjs",
   "size": 20887,
   "sha256": "715e9658cb28746c126faf24bbd3cd949e1ebc5dd189eb455887544ae4efbf12"
@@ -4716,8 +4791,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/svelte-component.mjs",
-  "size": 52297,
-  "sha256": "234dae2735aae9385716416a4e958d6890ec7cb42dec2e158fe128e8856eaf97"
+  "size": 52605,
+  "sha256": "43113cab6787e30cb5b0f0442c54cdcfa58b30048c9deddf5f30065a198e0c73"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/sveltekit-adapter.mjs",
@@ -4751,8 +4826,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/serve-question.mjs",
-  "size": 120005,
-  "sha256": "6475a64fb5bdb6d8df635c67cad7d389b9898e733fcbad6e12f59fe832a944a2"
+  "size": 121787,
+  "sha256": "48999dd4d8e68797da20ece68618008e395f73ace6f3b8e029303153ca097785"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/surface-brief.mjs",
@@ -7461,8 +7536,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/THIRD-PARTY-NOTICES.md",
-  "size": 4444,
-  "sha256": "da7268e929cb5c4abe8010a1105c9f55e310f51e1d13c458e407790851e583fc"
+  "size": 4566,
+  "sha256": "e7a54a7f41c5a2ebda1c93d45b0ad8e09d7ca982c3633216d9af89ad680b3705"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -7551,13 +7626,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/helper.js",
-  "size": 5615,
-  "sha256": "43c6d69954a46ec34a2a262bcc62a9a7e83e839c739f199cb72646d397c686e3"
+  "size": 5379,
+  "sha256": "1dab014d8e39e4cd946edfc3dafa18c808b520395c7ceccff70e649b31f98a92"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/server.cjs",
-  "size": 25693,
-  "sha256": "2d2961ea8d11f56c5f4c3a1a68d22709efa5d7601a2246d8c880774e7e9e8412"
+  "size": 25701,
+  "sha256": "6baa9e5ee22e1205daa6dea6d4c0992b43687fc0731e22d95656620c8278131d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/start-server.sh",
@@ -10016,13 +10091,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/SKILL.md",
-  "size": 10527,
-  "sha256": "9bf6cc2c7b438ca166fc2b21afe20523dc08c34ff8e067eafac024a0555e87db"
+  "size": 10367,
+  "sha256": "0193416119479a1fee8de144bc8a2016d1a22ccded91cbea867323bceaf1976c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_asset_producer.toml",
-  "size": 9931,
-  "sha256": "d2be0f7b066b1af4f52a9c61539e4c50deaf4b0673e2bf2b7ea429e4c02c830f"
+  "size": 6161,
+  "sha256": "e69f902dc96a63c9566f30361ced3dc83765097d9f3dd2f9cbd83ec50f6af1b3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_documenter.toml",
@@ -10031,8 +10106,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_finish_reviewer.toml",
-  "size": 13793,
-  "sha256": "59efadb3b5a0209e052fb0d3671a633aed6c6be3cbb61db034b9a7fc12bae692"
+  "size": 15290,
+  "sha256": "b3c6137e444e2e54a853413161958c0532f332f8d8159dfe48d7e1ea5996b1f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_manual_edit_applier.toml",
@@ -10071,8 +10146,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/audit.native.md",
-  "size": 8362,
-  "sha256": "fc16e78aca0c183a91dac3d8876d1211fca99aa979367fcb50090d934806b2fb"
+  "size": 8357,
+  "sha256": "1b10f9ad3d3a1494ee1bbdf35bb6aa453e98defa6e1ae99177b167795054a4f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/bolder.md",
@@ -10101,13 +10176,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/critique.md",
-  "size": 45696,
-  "sha256": "ff3208d915f2bfb5af7ba3aba7066aab6fcb28829709a041fbb98bd535341b2d"
+  "size": 45920,
+  "sha256": "a763d1474f5c1125a937b5872abb1fc40b2bd44dd7d4a7701ac2147401bf4b2b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/asset-producer.md",
-  "size": 10093,
-  "sha256": "e28c0d9e42b127ebf09762ae160b9e94a376576f66fb1d66888871467fb11884"
+  "size": 6323,
+  "sha256": "2993ce6409702ae2e01e4ee37f8f98089aeccc4877c4c9d836e161dee364b510"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/documenter.md",
@@ -10116,8 +10191,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/finish-reviewer.md",
-  "size": 13893,
-  "sha256": "c70d4bd77fe9142bbe7e3b412d3ca44443e0914bdb323577dc2acb59e8d72078"
+  "size": 15390,
+  "sha256": "5ae494910f0a7c6eca239cdd866f70833b42655ed6e2f88b8c756dfca028c1fd"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/manual-edit-applier.md",
@@ -10136,8 +10211,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/doctor.md",
-  "size": 5447,
-  "sha256": "2c110874c88f7e1509181a4b09e5214cd211021251225d365e5be486add1fd5b"
+  "size": 5463,
+  "sha256": "c7a439efd70bdc232da970d0695c60502525e5b7e882ad9d5b1f4794b00dd260"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/document.md",
@@ -10156,8 +10231,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/hooks.md",
-  "size": 13111,
-  "sha256": "18b8597f03d9ed100e09187550d5c737d6da696188b8e75289317398e7dbdf4e"
+  "size": 13310,
+  "sha256": "e61722ab3ace649d9ad016f564e3cd137926d562418ec2e3fd73de8a7e3e94d6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/init.md",
@@ -10171,8 +10246,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/layout.md",
-  "size": 5127,
-  "sha256": "972941eabcb28681019eb57ebc8b7b1085382822db49e365118d01857ca867ed"
+  "size": 5159,
+  "sha256": "2d5eba1b9493f85c149a197fe6c4e9d015f5e68c49f24f5210a237cee4e44348"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/live-setup.md",
@@ -10186,8 +10261,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/new-work.md",
-  "size": 44091,
-  "sha256": "0213d9ed6c852ce0e9c9e1abbce29b0dd3db576669aefca76e1fb2fdb03e6946"
+  "size": 52029,
+  "sha256": "e378818dc2095c701b3affe8a6d8e46c2b7788206b5a025e67af07b75199419c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/onboard.md",
@@ -10211,8 +10286,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/polish.md",
-  "size": 5592,
-  "sha256": "e6bbc05a9e1f905811d19401c1e6c7b97588375454e1462dbd811f803d239b07"
+  "size": 6635,
+  "sha256": "e25e675a476e08fa9dc33eecef6c0538a36fcef39c052c9728b8be9209bba124"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/quieter.md",
@@ -10221,8 +10296,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/routing.md",
-  "size": 2865,
-  "sha256": "428b75b6524906b556ebc89922ef231c5dd3b3ab5e3dc4a76272390e7e082a5e"
+  "size": 2901,
+  "sha256": "35a5cd381e2bba7ef7cfcd48c9b6316ebcf40fe9e7abb4fb212b24106e08195b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/shape.md",
@@ -10231,13 +10306,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/typeset.md",
-  "size": 5222,
-  "sha256": "0b9bc45334a79da9a50efc4605502d0db6f2fd2b2c88404b134b9088625e4a98"
+  "size": 5254,
+  "sha256": "6d803447fb419ee718012f6263d2685ad462a14dc08c338392e28b79823a0553"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/visualize.md",
-  "size": 16644,
-  "sha256": "1a0a68caa14cb16fbcabba663e3603ffd3337aaec4f2679f72b279bad8ce4a08"
+  "size": 11204,
+  "sha256": "9080ea9439a24e005367128389fc5b1a3f58f63d1eb4c16b4ca8dc197053c6c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/build-phase.mjs",
+  "size": 77334,
+  "sha256": "38006f01777542f1f111a2b4e4079d6fa406b8d27fad149138fba57eca7f287f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/command-metadata.json",
@@ -10245,24 +10325,44 @@
   "sha256": "6bdbc3f745ceee15e10b050f109ce42bbeb53ab3c3b5239257de1d596654dee7"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-diff.mjs",
+  "size": 21349,
+  "sha256": "943560b54fbc37e48e0e6b503cb48f6904ecce8c413ae84773a050b2850b2c08"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-spec.mjs",
+  "size": 31488,
+  "sha256": "95a492b2a3ab53f5971c5af5d9ca474c6f7a01fb96a6c0b010c5f7a9baefd8ff"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/concept-seed.mjs",
-  "size": 39651,
-  "sha256": "8ea706b9aedaa2a5c8cac88cf5cf5a2252bd90ff9430f0e7c1e79bddfa50fa17"
+  "size": 45418,
+  "sha256": "b9088d654fc652a9a23e94fe7ed6c2ffeaf2e846a90972f49eecac26a8133072"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context-signals.mjs",
-  "size": 14021,
-  "sha256": "9d882021a76d02b8492fec20334f4af66605fd186687b8de0f202e7a11e1567c"
+  "size": 14033,
+  "sha256": "c7c70735fae0834576636fb9b9c32504a7f08efc95fdc4db97a469f6ca4dd2c4"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context.mjs",
-  "size": 58756,
-  "sha256": "26d54294f3b04710991168d751e2c4931b1ecce3c0f1c8562a495ee5223dbaac"
+  "size": 67737,
+  "sha256": "e0d4b1ee9a143438a449c4c25ec2556d299b5c13782bf0ee61335e48a3f01a65"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/critique-storage.mjs",
-  "size": 8485,
-  "sha256": "17c14fc03d9c53f7f48dfe6e8ef2a15d2a35c9b8f341ddb25720e01cc1ca68e9"
+  "size": 18703,
+  "sha256": "12f9fece61dc54c56f106c2c999a3b7f3583a378f3aa32619db3356f34a3fe75"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index-failures.json",
+  "size": 2437,
+  "sha256": "835f19a0a3812f3652dd6979a2ce5597f654fd01f26e1b420b92d5f42b997ce4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index.json",
+  "size": 1100013,
+  "sha256": "47edbdfaf27073c47033d1ac7dfee881be49e2dcbda7671d1157300481dde6da"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect-csp.mjs",
@@ -10271,13 +10371,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect.mjs",
-  "size": 620,
-  "sha256": "f5dfd05ca1e314acd8ed79c6301a20a1b844f2eb6691bd63e04116a8e7efb187"
+  "size": 1235,
+  "sha256": "b2c5731c367c129e361bdfb28c4f697e84818c77e04d88ad21eeb89320f06a0e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/browser/injected/index.mjs",
-  "size": 84358,
-  "sha256": "88d1a32a8dcd8270614749ab7d2c4ad535d726b0b12ce4305551b0ff3eb56cdf"
+  "size": 91086,
+  "sha256": "30d70ec4d1804b333be05f2448a0cc5a39b517fc8fc860d650215457dfd93402"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/cli/main.mjs",
@@ -10286,13 +10386,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/design-system.mjs",
-  "size": 49637,
-  "sha256": "cacf7ae83b4ccfff84ceb6ab06549b399e0ec88750f053249db65371dd302de1"
+  "size": 49814,
+  "sha256": "b6aefa5c9f4e3fea8449e1cbaa345a68570689654ade16cddc5c900659892112"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns-browser.js",
-  "size": 390675,
-  "sha256": "55b3f96bf882c6704015c3d8533c2c4987d7c4ce2669d0e15bf10e60d64b453b"
+  "size": 410092,
+  "sha256": "ef45727251c6626dd402fd6e6a30bd973b19d219e2a65549ad62c6b28dfca7fe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns.mjs",
@@ -10301,23 +10401,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/browser/detect-url.mjs",
-  "size": 14431,
-  "sha256": "a972cb4fc1390ba131e6cd9707b4b20aa2730ad04c43b0a9551321777c04c8e9"
+  "size": 16196,
+  "sha256": "af6d28bfb1bb2fc667f56823b9fa12d4ee56ee5b3afbea28c5b81fecb66b84dc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/regex/detect-text.mjs",
-  "size": 53313,
-  "sha256": "8e0ecc091bcecc24eb34d34dab9bcabb1057af6a6dcf34f186fb370b26e61157"
+  "size": 51795,
+  "sha256": "e2160fa496fd40a4596a68419892232e7ab56420c39952664b2c39ef1ff8a7fc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/css-cascade.mjs",
-  "size": 45985,
-  "sha256": "6809969a6e2c58992d863c23d6f2c6fb6b8ddacc503dac2ad0e5452bf2725c54"
+  "size": 46017,
+  "sha256": "5cf85f8a00b50c12c0cd0a5e2f5ad456c414cf67bc34f4a5c36eb64a7e667cc3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/detect-html.mjs",
-  "size": 13351,
-  "sha256": "481b584ccdf3ac28065dbab11f65d638e3e7a35e14c7e62bc5da3d59d2a7efd7"
+  "size": 12726,
+  "sha256": "9fedd7d3d42c51058bd491d98193abd5931ce83550269124bb788efadb7b7c97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/visual/screenshot-contrast.mjs",
@@ -10341,13 +10441,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/registry/antipatterns.mjs",
-  "size": 27900,
-  "sha256": "4544ccca3d7c341d878b941fbe20620750dbf9d29dd6d15e063128a1e390b345"
+  "size": 29094,
+  "sha256": "57aaf32be744db6375d604a36079bc731fa60eaa4b34bb61d00d002d56af6079"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/rules/checks.mjs",
-  "size": 254664,
-  "sha256": "e63f6adbd0893d75105e825b1656a268c512a9bc7e5f3d17d4ac70ef412d6e57"
+  "size": 265818,
+  "sha256": "760152474cf9c748ea04fd9a0b9eeca825c784af9ddbcfc5852f866c067e70bf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/color.mjs",
@@ -10356,8 +10456,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/constants.mjs",
-  "size": 4675,
-  "sha256": "606f50159d56b5e972724c13933e63220696636215292e5316846426f3e12896"
+  "size": 5183,
+  "sha256": "fcf86301e635bd1591ae5d9fdbaae0696ac4bbc9d2e52d38c5c3232faa366a9f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/fonts.mjs",
@@ -10371,8 +10471,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/page.mjs",
-  "size": 252,
-  "sha256": "b4cef5548d84fa90d15e6b42b20be9ef74ed05e4e6e46076ec5acc61b343315c"
+  "size": 386,
+  "sha256": "0e2bc96b8bbafafb40c451771c6724db8193dd65d9b67e1912fc217291ed1945"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/doctor.mjs",
@@ -10381,18 +10481,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/embed-prompt.mjs",
-  "size": 7843,
-  "sha256": "4614260ccaa091bea10a6096027d2aca306160e1764765ce155aadcbe674dbc5"
+  "size": 7354,
+  "sha256": "4227f850b60a32cc6b8a167d9b49e4e00817823a1b93a9fdb9a3823345140daf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/font-match.mjs",
+  "size": 28759,
+  "sha256": "8f8303918a92af6ddd2cdeac3344223e43d66059e5098741bf059e89b409d9c6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/generate-image.mjs",
-  "size": 11462,
-  "sha256": "0994c7ab8bc280b9b09676bc0296ca9eea8609b00b1a48eb783486f145c0f338"
+  "size": 22797,
+  "sha256": "121d366da52fc16df6c44efd2676652ae4706196d5db1fc4c1d025335c586b7f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-admin.mjs",
-  "size": 31282,
-  "sha256": "b1a6759805eb39f117b1153c5a4e1b4691a7a9b685420fe5257e00b8d0f8c543"
+  "size": 32431,
+  "sha256": "d6f3e24b5a83f7a5c52c734e5a9cb0a888a147ab7d7f572e0773e26f2e9ed89d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-before-edit.mjs",
@@ -10401,8 +10506,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-lib.mjs",
-  "size": 100372,
-  "sha256": "c556f48b547bc540f60b1c06f437777ee9b93bf256d1779d966641248cce2dd1"
+  "size": 102895,
+  "sha256": "d6d65ecfd069c632b162b23b6bf4a46e8fe0014f0caddd32725a38dbf0e80206"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook.mjs",
@@ -10421,13 +10526,33 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/concept-catalog.mjs",
-  "size": 19896,
-  "sha256": "7ac70294e0f429d89464ff2e0c814b70acfd5e101184d5a45b8b2a50dfaa8266"
+  "size": 19895,
+  "sha256": "b32e535296b6db3fdc613ceb585640943cc1bd8291ca4f8a5ab2077506ac5436"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/design-parser.mjs",
-  "size": 27441,
-  "sha256": "42d37e97db82ca8082033f582bcdbd341373d0cc1c6927605d1a4385f8f34131"
+  "size": 27178,
+  "sha256": "d1012667cffaf8e0d24317077dd54386ed274f49313b53346e67b00cd96aa487"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-fingerprint.mjs",
+  "size": 29235,
+  "sha256": "a35764b55d33d03cb0fe4dfac059306683fe3e89016bb62f4715c39deaa0f9c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-index.mjs",
+  "size": 6573,
+  "sha256": "31cb952b43055ddd93ddc7e9ee35e86f9224ff57a14285467d772963ec603fa3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/hero-checks.mjs",
+  "size": 14926,
+  "sha256": "1315e294f713f542c2c996dbd14555d520d7484d3b5c78b3ba820042f19d44f7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/image-metrics.mjs",
+  "size": 14207,
+  "sha256": "c4844deaeadf0fe421d95b46ca020c0f9232228ad602f176e4d5cbd691694e97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/impeccable-config.mjs",
@@ -10445,14 +10570,29 @@
   "sha256": "2d6c37f821cb42161264068b81c4c97629a653b661403cedadb5eb23099d0acc"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/live-path-globs.mjs",
+  "size": 847,
+  "sha256": "f2657a25351ae5bc4d503e7257f84e014815fc562225ebf8fe15d3e277ca6f53"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/open-system-browser.mjs",
   "size": 848,
   "sha256": "3785ef4ba47bbbe176469e2536e8ef29e885f955970404f46ff34763f831bf11"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/png.mjs",
+  "size": 10735,
+  "sha256": "6994615c52f75af071664e0675b9cac91de39ac5ad0ecc7de4873ee0fd227926"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/provider.mjs",
   "size": 327,
   "sha256": "998c57324fdab98a0bfbd01a6099eadac7276038da961697d6069bbdeb0e5856"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/raster.mjs",
+  "size": 9876,
+  "sha256": "97038c3790f9a76e0dc09a8aa967e0679778a6015723873715a577d21ac7172a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/roll-selection.mjs",
@@ -10496,23 +10636,28 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-accept.mjs",
-  "size": 35874,
-  "sha256": "f823b4f71a6ae21ffb8b52aa3a78768f0bee551329cf76ad4144e4680a05c154"
+  "size": 36104,
+  "sha256": "e89aff2150572b085387beac8f27b76ab704291f9d3a9886fd10c026c8bbb3fb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-dom.js",
-  "size": 4250,
-  "sha256": "bcfa4022e741f8034b841aed76b9ea3f6a64a8e08e4dfa43ba99f8be65a73393"
+  "size": 4917,
+  "sha256": "de1b7404f4cdfd7b515196afb17b74b1980f0bc88cb8681ae93a76ca48ec7bdb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-ignores.js",
+  "size": 10346,
+  "sha256": "c1cb6877ca99a0c1b38ba0c7d59f32702d3022f6821d8045f7133f7c40b6362f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-session.js",
-  "size": 3297,
-  "sha256": "dddcb8b941f7460aa6a134f7d456b1820747172c12e01de36dab3265b1065cff"
+  "size": 4090,
+  "sha256": "edddeb3fad88adec9a055b1bf9d5c75418cbe97a13b1a7f6765e73249e482563"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser.js",
-  "size": 500861,
-  "sha256": "9aeb60163add083cd4701a4c70be38b9008afbd407a4f71e0e952db0668b433a"
+  "size": 513801,
+  "sha256": "24241e41e394f18cc00a788e9b44117424b25dbed1391b2e8152ec8f395ffccf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-commit-manual-edits.mjs",
@@ -10536,8 +10681,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-inject.mjs",
-  "size": 18536,
-  "sha256": "0e1bc4e9a43b74d4b4571ff2191f813b8716346a4bcafe7d42bd84a47397d92e"
+  "size": 17585,
+  "sha256": "bb3a120472b757e96dbc2f5e24b37f39f31dee3c54d785c571baf686cf71096d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-insert.mjs",
@@ -10546,8 +10691,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-manual-edit-evidence.mjs",
-  "size": 11857,
-  "sha256": "c5a36c361c435fc023e17be16a78aaf672adb48a6a74e8177cfa775592502638"
+  "size": 12013,
+  "sha256": "00dcd9f43d5bab6d95f66d717d98fafe4249e171afd1caa2a134f5efd612177f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-poll.mjs",
@@ -10561,8 +10706,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-server.mjs",
-  "size": 68882,
-  "sha256": "96e27a4e70d173e2493a8e32732d85355eebaee5797677b29e58aecc49f701f1"
+  "size": 70004,
+  "sha256": "e3801156dc319fa7e02c55e7350f62e4656ba9f33be3199c6d8e8571dda807d8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-status.mjs",
@@ -10581,8 +10726,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live.mjs",
-  "size": 13617,
-  "sha256": "d59eb657dfb142fcb3fc9c159efd7ec50d62f2294eabecc6134c6cabda6d3996"
+  "size": 12909,
+  "sha256": "9188f42a93e02ec341335c3441af5de16391196efdf78710e87dd7ef0fb6cb7e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/accept-css.mjs",
@@ -10596,8 +10741,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/browser-script-parts.mjs",
-  "size": 3185,
-  "sha256": "74e9d7cdfb5851eb827770e6c44ec4eac532522c54f51999be7a42676f6e234e"
+  "size": 3674,
+  "sha256": "2ceb3083de7fe80160f40379c0ed47220bade5e4a1964cde4ae8e745049061c5"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/completion.mjs",
@@ -10705,6 +10850,11 @@
   "sha256": "a516bc942c55b66be915619794f4ec79aadf94d6966c6fc7aee24f1fbaa60ab3"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/project-ignores.mjs",
+  "size": 6427,
+  "sha256": "b4088c6fbc231bc13b11804bea90a223d077d3762f3d93990c6044c7ea10d9e1"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/roots.mjs",
   "size": 20887,
   "sha256": "715e9658cb28746c126faf24bbd3cd949e1ebc5dd189eb455887544ae4efbf12"
@@ -10731,8 +10881,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/svelte-component.mjs",
-  "size": 52297,
-  "sha256": "234dae2735aae9385716416a4e958d6890ec7cb42dec2e158fe128e8856eaf97"
+  "size": 52605,
+  "sha256": "43113cab6787e30cb5b0f0442c54cdcfa58b30048c9deddf5f30065a198e0c73"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/sveltekit-adapter.mjs",
@@ -10766,8 +10916,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/serve-question.mjs",
-  "size": 120005,
-  "sha256": "6475a64fb5bdb6d8df635c67cad7d389b9898e733fcbad6e12f59fe832a944a2"
+  "size": 121787,
+  "sha256": "48999dd4d8e68797da20ece68618008e395f73ace6f3b8e029303153ca097785"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/surface-brief.mjs",
@@ -13461,8 +13611,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/THIRD-PARTY-NOTICES.md",
-  "size": 4444,
-  "sha256": "da7268e929cb5c4abe8010a1105c9f55e310f51e1d13c458e407790851e583fc"
+  "size": 4566,
+  "sha256": "e7a54a7f41c5a2ebda1c93d45b0ad8e09d7ca982c3633216d9af89ad680b3705"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -13551,13 +13701,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/helper.js",
-  "size": 5615,
-  "sha256": "43c6d69954a46ec34a2a262bcc62a9a7e83e839c739f199cb72646d397c686e3"
+  "size": 5379,
+  "sha256": "1dab014d8e39e4cd946edfc3dafa18c808b520395c7ceccff70e649b31f98a92"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/server.cjs",
-  "size": 25693,
-  "sha256": "2d2961ea8d11f56c5f4c3a1a68d22709efa5d7601a2246d8c880774e7e9e8412"
+  "size": 25701,
+  "sha256": "6baa9e5ee22e1205daa6dea6d4c0992b43687fc0731e22d95656620c8278131d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/start-server.sh",
@@ -16016,13 +16166,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/SKILL.md",
-  "size": 10527,
-  "sha256": "9bf6cc2c7b438ca166fc2b21afe20523dc08c34ff8e067eafac024a0555e87db"
+  "size": 10367,
+  "sha256": "0193416119479a1fee8de144bc8a2016d1a22ccded91cbea867323bceaf1976c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_asset_producer.toml",
-  "size": 9931,
-  "sha256": "d2be0f7b066b1af4f52a9c61539e4c50deaf4b0673e2bf2b7ea429e4c02c830f"
+  "size": 6161,
+  "sha256": "e69f902dc96a63c9566f30361ced3dc83765097d9f3dd2f9cbd83ec50f6af1b3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_documenter.toml",
@@ -16031,8 +16181,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_finish_reviewer.toml",
-  "size": 13793,
-  "sha256": "59efadb3b5a0209e052fb0d3671a633aed6c6be3cbb61db034b9a7fc12bae692"
+  "size": 15290,
+  "sha256": "b3c6137e444e2e54a853413161958c0532f332f8d8159dfe48d7e1ea5996b1f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_manual_edit_applier.toml",
@@ -16071,8 +16221,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/audit.native.md",
-  "size": 8362,
-  "sha256": "fc16e78aca0c183a91dac3d8876d1211fca99aa979367fcb50090d934806b2fb"
+  "size": 8357,
+  "sha256": "1b10f9ad3d3a1494ee1bbdf35bb6aa453e98defa6e1ae99177b167795054a4f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/bolder.md",
@@ -16101,13 +16251,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/critique.md",
-  "size": 45696,
-  "sha256": "ff3208d915f2bfb5af7ba3aba7066aab6fcb28829709a041fbb98bd535341b2d"
+  "size": 45920,
+  "sha256": "a763d1474f5c1125a937b5872abb1fc40b2bd44dd7d4a7701ac2147401bf4b2b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/asset-producer.md",
-  "size": 10093,
-  "sha256": "e28c0d9e42b127ebf09762ae160b9e94a376576f66fb1d66888871467fb11884"
+  "size": 6323,
+  "sha256": "2993ce6409702ae2e01e4ee37f8f98089aeccc4877c4c9d836e161dee364b510"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/documenter.md",
@@ -16116,8 +16266,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/finish-reviewer.md",
-  "size": 13893,
-  "sha256": "c70d4bd77fe9142bbe7e3b412d3ca44443e0914bdb323577dc2acb59e8d72078"
+  "size": 15390,
+  "sha256": "5ae494910f0a7c6eca239cdd866f70833b42655ed6e2f88b8c756dfca028c1fd"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/manual-edit-applier.md",
@@ -16136,8 +16286,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/doctor.md",
-  "size": 5447,
-  "sha256": "2c110874c88f7e1509181a4b09e5214cd211021251225d365e5be486add1fd5b"
+  "size": 5463,
+  "sha256": "c7a439efd70bdc232da970d0695c60502525e5b7e882ad9d5b1f4794b00dd260"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/document.md",
@@ -16156,8 +16306,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/hooks.md",
-  "size": 13111,
-  "sha256": "18b8597f03d9ed100e09187550d5c737d6da696188b8e75289317398e7dbdf4e"
+  "size": 13310,
+  "sha256": "e61722ab3ace649d9ad016f564e3cd137926d562418ec2e3fd73de8a7e3e94d6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/init.md",
@@ -16171,8 +16321,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/layout.md",
-  "size": 5127,
-  "sha256": "972941eabcb28681019eb57ebc8b7b1085382822db49e365118d01857ca867ed"
+  "size": 5159,
+  "sha256": "2d5eba1b9493f85c149a197fe6c4e9d015f5e68c49f24f5210a237cee4e44348"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/live-setup.md",
@@ -16186,8 +16336,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/new-work.md",
-  "size": 44091,
-  "sha256": "0213d9ed6c852ce0e9c9e1abbce29b0dd3db576669aefca76e1fb2fdb03e6946"
+  "size": 52029,
+  "sha256": "e378818dc2095c701b3affe8a6d8e46c2b7788206b5a025e67af07b75199419c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/onboard.md",
@@ -16211,8 +16361,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/polish.md",
-  "size": 5592,
-  "sha256": "e6bbc05a9e1f905811d19401c1e6c7b97588375454e1462dbd811f803d239b07"
+  "size": 6635,
+  "sha256": "e25e675a476e08fa9dc33eecef6c0538a36fcef39c052c9728b8be9209bba124"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/quieter.md",
@@ -16221,8 +16371,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/routing.md",
-  "size": 2865,
-  "sha256": "428b75b6524906b556ebc89922ef231c5dd3b3ab5e3dc4a76272390e7e082a5e"
+  "size": 2901,
+  "sha256": "35a5cd381e2bba7ef7cfcd48c9b6316ebcf40fe9e7abb4fb212b24106e08195b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/shape.md",
@@ -16231,13 +16381,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/typeset.md",
-  "size": 5222,
-  "sha256": "0b9bc45334a79da9a50efc4605502d0db6f2fd2b2c88404b134b9088625e4a98"
+  "size": 5254,
+  "sha256": "6d803447fb419ee718012f6263d2685ad462a14dc08c338392e28b79823a0553"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/visualize.md",
-  "size": 16644,
-  "sha256": "1a0a68caa14cb16fbcabba663e3603ffd3337aaec4f2679f72b279bad8ce4a08"
+  "size": 11204,
+  "sha256": "9080ea9439a24e005367128389fc5b1a3f58f63d1eb4c16b4ca8dc197053c6c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/build-phase.mjs",
+  "size": 77334,
+  "sha256": "38006f01777542f1f111a2b4e4079d6fa406b8d27fad149138fba57eca7f287f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/command-metadata.json",
@@ -16245,24 +16400,44 @@
   "sha256": "6bdbc3f745ceee15e10b050f109ce42bbeb53ab3c3b5239257de1d596654dee7"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-diff.mjs",
+  "size": 21349,
+  "sha256": "943560b54fbc37e48e0e6b503cb48f6904ecce8c413ae84773a050b2850b2c08"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-spec.mjs",
+  "size": 31488,
+  "sha256": "95a492b2a3ab53f5971c5af5d9ca474c6f7a01fb96a6c0b010c5f7a9baefd8ff"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/concept-seed.mjs",
-  "size": 39651,
-  "sha256": "8ea706b9aedaa2a5c8cac88cf5cf5a2252bd90ff9430f0e7c1e79bddfa50fa17"
+  "size": 45418,
+  "sha256": "b9088d654fc652a9a23e94fe7ed6c2ffeaf2e846a90972f49eecac26a8133072"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context-signals.mjs",
-  "size": 14021,
-  "sha256": "9d882021a76d02b8492fec20334f4af66605fd186687b8de0f202e7a11e1567c"
+  "size": 14033,
+  "sha256": "c7c70735fae0834576636fb9b9c32504a7f08efc95fdc4db97a469f6ca4dd2c4"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context.mjs",
-  "size": 58756,
-  "sha256": "26d54294f3b04710991168d751e2c4931b1ecce3c0f1c8562a495ee5223dbaac"
+  "size": 67737,
+  "sha256": "e0d4b1ee9a143438a449c4c25ec2556d299b5c13782bf0ee61335e48a3f01a65"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/critique-storage.mjs",
-  "size": 8485,
-  "sha256": "17c14fc03d9c53f7f48dfe6e8ef2a15d2a35c9b8f341ddb25720e01cc1ca68e9"
+  "size": 18703,
+  "sha256": "12f9fece61dc54c56f106c2c999a3b7f3583a378f3aa32619db3356f34a3fe75"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index-failures.json",
+  "size": 2437,
+  "sha256": "835f19a0a3812f3652dd6979a2ce5597f654fd01f26e1b420b92d5f42b997ce4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index.json",
+  "size": 1100013,
+  "sha256": "47edbdfaf27073c47033d1ac7dfee881be49e2dcbda7671d1157300481dde6da"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect-csp.mjs",
@@ -16271,13 +16446,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect.mjs",
-  "size": 620,
-  "sha256": "f5dfd05ca1e314acd8ed79c6301a20a1b844f2eb6691bd63e04116a8e7efb187"
+  "size": 1235,
+  "sha256": "b2c5731c367c129e361bdfb28c4f697e84818c77e04d88ad21eeb89320f06a0e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/browser/injected/index.mjs",
-  "size": 84358,
-  "sha256": "88d1a32a8dcd8270614749ab7d2c4ad535d726b0b12ce4305551b0ff3eb56cdf"
+  "size": 91086,
+  "sha256": "30d70ec4d1804b333be05f2448a0cc5a39b517fc8fc860d650215457dfd93402"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/cli/main.mjs",
@@ -16286,13 +16461,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/design-system.mjs",
-  "size": 49637,
-  "sha256": "cacf7ae83b4ccfff84ceb6ab06549b399e0ec88750f053249db65371dd302de1"
+  "size": 49814,
+  "sha256": "b6aefa5c9f4e3fea8449e1cbaa345a68570689654ade16cddc5c900659892112"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns-browser.js",
-  "size": 390675,
-  "sha256": "55b3f96bf882c6704015c3d8533c2c4987d7c4ce2669d0e15bf10e60d64b453b"
+  "size": 410092,
+  "sha256": "ef45727251c6626dd402fd6e6a30bd973b19d219e2a65549ad62c6b28dfca7fe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns.mjs",
@@ -16301,23 +16476,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/browser/detect-url.mjs",
-  "size": 14431,
-  "sha256": "a972cb4fc1390ba131e6cd9707b4b20aa2730ad04c43b0a9551321777c04c8e9"
+  "size": 16196,
+  "sha256": "af6d28bfb1bb2fc667f56823b9fa12d4ee56ee5b3afbea28c5b81fecb66b84dc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/regex/detect-text.mjs",
-  "size": 53313,
-  "sha256": "8e0ecc091bcecc24eb34d34dab9bcabb1057af6a6dcf34f186fb370b26e61157"
+  "size": 51795,
+  "sha256": "e2160fa496fd40a4596a68419892232e7ab56420c39952664b2c39ef1ff8a7fc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/css-cascade.mjs",
-  "size": 45985,
-  "sha256": "6809969a6e2c58992d863c23d6f2c6fb6b8ddacc503dac2ad0e5452bf2725c54"
+  "size": 46017,
+  "sha256": "5cf85f8a00b50c12c0cd0a5e2f5ad456c414cf67bc34f4a5c36eb64a7e667cc3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/detect-html.mjs",
-  "size": 13351,
-  "sha256": "481b584ccdf3ac28065dbab11f65d638e3e7a35e14c7e62bc5da3d59d2a7efd7"
+  "size": 12726,
+  "sha256": "9fedd7d3d42c51058bd491d98193abd5931ce83550269124bb788efadb7b7c97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/visual/screenshot-contrast.mjs",
@@ -16341,13 +16516,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/registry/antipatterns.mjs",
-  "size": 27900,
-  "sha256": "4544ccca3d7c341d878b941fbe20620750dbf9d29dd6d15e063128a1e390b345"
+  "size": 29094,
+  "sha256": "57aaf32be744db6375d604a36079bc731fa60eaa4b34bb61d00d002d56af6079"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/rules/checks.mjs",
-  "size": 254664,
-  "sha256": "e63f6adbd0893d75105e825b1656a268c512a9bc7e5f3d17d4ac70ef412d6e57"
+  "size": 265818,
+  "sha256": "760152474cf9c748ea04fd9a0b9eeca825c784af9ddbcfc5852f866c067e70bf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/color.mjs",
@@ -16356,8 +16531,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/constants.mjs",
-  "size": 4675,
-  "sha256": "606f50159d56b5e972724c13933e63220696636215292e5316846426f3e12896"
+  "size": 5183,
+  "sha256": "fcf86301e635bd1591ae5d9fdbaae0696ac4bbc9d2e52d38c5c3232faa366a9f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/fonts.mjs",
@@ -16371,8 +16546,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/page.mjs",
-  "size": 252,
-  "sha256": "b4cef5548d84fa90d15e6b42b20be9ef74ed05e4e6e46076ec5acc61b343315c"
+  "size": 386,
+  "sha256": "0e2bc96b8bbafafb40c451771c6724db8193dd65d9b67e1912fc217291ed1945"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/doctor.mjs",
@@ -16381,18 +16556,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/embed-prompt.mjs",
-  "size": 7843,
-  "sha256": "4614260ccaa091bea10a6096027d2aca306160e1764765ce155aadcbe674dbc5"
+  "size": 7354,
+  "sha256": "4227f850b60a32cc6b8a167d9b49e4e00817823a1b93a9fdb9a3823345140daf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/font-match.mjs",
+  "size": 28759,
+  "sha256": "8f8303918a92af6ddd2cdeac3344223e43d66059e5098741bf059e89b409d9c6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/generate-image.mjs",
-  "size": 11462,
-  "sha256": "0994c7ab8bc280b9b09676bc0296ca9eea8609b00b1a48eb783486f145c0f338"
+  "size": 22797,
+  "sha256": "121d366da52fc16df6c44efd2676652ae4706196d5db1fc4c1d025335c586b7f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-admin.mjs",
-  "size": 31282,
-  "sha256": "b1a6759805eb39f117b1153c5a4e1b4691a7a9b685420fe5257e00b8d0f8c543"
+  "size": 32431,
+  "sha256": "d6f3e24b5a83f7a5c52c734e5a9cb0a888a147ab7d7f572e0773e26f2e9ed89d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-before-edit.mjs",
@@ -16401,8 +16581,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-lib.mjs",
-  "size": 100372,
-  "sha256": "c556f48b547bc540f60b1c06f437777ee9b93bf256d1779d966641248cce2dd1"
+  "size": 102895,
+  "sha256": "d6d65ecfd069c632b162b23b6bf4a46e8fe0014f0caddd32725a38dbf0e80206"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook.mjs",
@@ -16421,13 +16601,33 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/concept-catalog.mjs",
-  "size": 19896,
-  "sha256": "7ac70294e0f429d89464ff2e0c814b70acfd5e101184d5a45b8b2a50dfaa8266"
+  "size": 19895,
+  "sha256": "b32e535296b6db3fdc613ceb585640943cc1bd8291ca4f8a5ab2077506ac5436"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/design-parser.mjs",
-  "size": 27441,
-  "sha256": "42d37e97db82ca8082033f582bcdbd341373d0cc1c6927605d1a4385f8f34131"
+  "size": 27178,
+  "sha256": "d1012667cffaf8e0d24317077dd54386ed274f49313b53346e67b00cd96aa487"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-fingerprint.mjs",
+  "size": 29235,
+  "sha256": "a35764b55d33d03cb0fe4dfac059306683fe3e89016bb62f4715c39deaa0f9c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-index.mjs",
+  "size": 6573,
+  "sha256": "31cb952b43055ddd93ddc7e9ee35e86f9224ff57a14285467d772963ec603fa3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/hero-checks.mjs",
+  "size": 14926,
+  "sha256": "1315e294f713f542c2c996dbd14555d520d7484d3b5c78b3ba820042f19d44f7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/image-metrics.mjs",
+  "size": 14207,
+  "sha256": "c4844deaeadf0fe421d95b46ca020c0f9232228ad602f176e4d5cbd691694e97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/impeccable-config.mjs",
@@ -16445,14 +16645,29 @@
   "sha256": "2d6c37f821cb42161264068b81c4c97629a653b661403cedadb5eb23099d0acc"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/live-path-globs.mjs",
+  "size": 847,
+  "sha256": "f2657a25351ae5bc4d503e7257f84e014815fc562225ebf8fe15d3e277ca6f53"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/open-system-browser.mjs",
   "size": 848,
   "sha256": "3785ef4ba47bbbe176469e2536e8ef29e885f955970404f46ff34763f831bf11"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/png.mjs",
+  "size": 10735,
+  "sha256": "6994615c52f75af071664e0675b9cac91de39ac5ad0ecc7de4873ee0fd227926"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/provider.mjs",
   "size": 327,
   "sha256": "998c57324fdab98a0bfbd01a6099eadac7276038da961697d6069bbdeb0e5856"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/raster.mjs",
+  "size": 9876,
+  "sha256": "97038c3790f9a76e0dc09a8aa967e0679778a6015723873715a577d21ac7172a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/roll-selection.mjs",
@@ -16496,23 +16711,28 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-accept.mjs",
-  "size": 35874,
-  "sha256": "f823b4f71a6ae21ffb8b52aa3a78768f0bee551329cf76ad4144e4680a05c154"
+  "size": 36104,
+  "sha256": "e89aff2150572b085387beac8f27b76ab704291f9d3a9886fd10c026c8bbb3fb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-dom.js",
-  "size": 4250,
-  "sha256": "bcfa4022e741f8034b841aed76b9ea3f6a64a8e08e4dfa43ba99f8be65a73393"
+  "size": 4917,
+  "sha256": "de1b7404f4cdfd7b515196afb17b74b1980f0bc88cb8681ae93a76ca48ec7bdb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-ignores.js",
+  "size": 10346,
+  "sha256": "c1cb6877ca99a0c1b38ba0c7d59f32702d3022f6821d8045f7133f7c40b6362f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-session.js",
-  "size": 3297,
-  "sha256": "dddcb8b941f7460aa6a134f7d456b1820747172c12e01de36dab3265b1065cff"
+  "size": 4090,
+  "sha256": "edddeb3fad88adec9a055b1bf9d5c75418cbe97a13b1a7f6765e73249e482563"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser.js",
-  "size": 500861,
-  "sha256": "9aeb60163add083cd4701a4c70be38b9008afbd407a4f71e0e952db0668b433a"
+  "size": 513801,
+  "sha256": "24241e41e394f18cc00a788e9b44117424b25dbed1391b2e8152ec8f395ffccf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-commit-manual-edits.mjs",
@@ -16536,8 +16756,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-inject.mjs",
-  "size": 18536,
-  "sha256": "0e1bc4e9a43b74d4b4571ff2191f813b8716346a4bcafe7d42bd84a47397d92e"
+  "size": 17585,
+  "sha256": "bb3a120472b757e96dbc2f5e24b37f39f31dee3c54d785c571baf686cf71096d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-insert.mjs",
@@ -16546,8 +16766,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-manual-edit-evidence.mjs",
-  "size": 11857,
-  "sha256": "c5a36c361c435fc023e17be16a78aaf672adb48a6a74e8177cfa775592502638"
+  "size": 12013,
+  "sha256": "00dcd9f43d5bab6d95f66d717d98fafe4249e171afd1caa2a134f5efd612177f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-poll.mjs",
@@ -16561,8 +16781,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-server.mjs",
-  "size": 68882,
-  "sha256": "96e27a4e70d173e2493a8e32732d85355eebaee5797677b29e58aecc49f701f1"
+  "size": 70004,
+  "sha256": "e3801156dc319fa7e02c55e7350f62e4656ba9f33be3199c6d8e8571dda807d8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-status.mjs",
@@ -16581,8 +16801,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live.mjs",
-  "size": 13617,
-  "sha256": "d59eb657dfb142fcb3fc9c159efd7ec50d62f2294eabecc6134c6cabda6d3996"
+  "size": 12909,
+  "sha256": "9188f42a93e02ec341335c3441af5de16391196efdf78710e87dd7ef0fb6cb7e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/accept-css.mjs",
@@ -16596,8 +16816,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/browser-script-parts.mjs",
-  "size": 3185,
-  "sha256": "74e9d7cdfb5851eb827770e6c44ec4eac532522c54f51999be7a42676f6e234e"
+  "size": 3674,
+  "sha256": "2ceb3083de7fe80160f40379c0ed47220bade5e4a1964cde4ae8e745049061c5"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/completion.mjs",
@@ -16705,6 +16925,11 @@
   "sha256": "a516bc942c55b66be915619794f4ec79aadf94d6966c6fc7aee24f1fbaa60ab3"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/project-ignores.mjs",
+  "size": 6427,
+  "sha256": "b4088c6fbc231bc13b11804bea90a223d077d3762f3d93990c6044c7ea10d9e1"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/roots.mjs",
   "size": 20887,
   "sha256": "715e9658cb28746c126faf24bbd3cd949e1ebc5dd189eb455887544ae4efbf12"
@@ -16731,8 +16956,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/svelte-component.mjs",
-  "size": 52297,
-  "sha256": "234dae2735aae9385716416a4e958d6890ec7cb42dec2e158fe128e8856eaf97"
+  "size": 52605,
+  "sha256": "43113cab6787e30cb5b0f0442c54cdcfa58b30048c9deddf5f30065a198e0c73"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/sveltekit-adapter.mjs",
@@ -16766,8 +16991,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/serve-question.mjs",
-  "size": 120005,
-  "sha256": "6475a64fb5bdb6d8df635c67cad7d389b9898e733fcbad6e12f59fe832a944a2"
+  "size": 121787,
+  "sha256": "48999dd4d8e68797da20ece68618008e395f73ace6f3b8e029303153ca097785"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/surface-brief.mjs",
@@ -19461,8 +19686,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/THIRD-PARTY-NOTICES.md",
-  "size": 4444,
-  "sha256": "da7268e929cb5c4abe8010a1105c9f55e310f51e1d13c458e407790851e583fc"
+  "size": 4566,
+  "sha256": "e7a54a7f41c5a2ebda1c93d45b0ad8e09d7ca982c3633216d9af89ad680b3705"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -19551,13 +19776,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/helper.js",
-  "size": 5615,
-  "sha256": "43c6d69954a46ec34a2a262bcc62a9a7e83e839c739f199cb72646d397c686e3"
+  "size": 5379,
+  "sha256": "1dab014d8e39e4cd946edfc3dafa18c808b520395c7ceccff70e649b31f98a92"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/server.cjs",
-  "size": 25693,
-  "sha256": "2d2961ea8d11f56c5f4c3a1a68d22709efa5d7601a2246d8c880774e7e9e8412"
+  "size": 25701,
+  "sha256": "6baa9e5ee22e1205daa6dea6d4c0992b43687fc0731e22d95656620c8278131d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/start-server.sh",
@@ -22016,13 +22241,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/SKILL.md",
-  "size": 10527,
-  "sha256": "9bf6cc2c7b438ca166fc2b21afe20523dc08c34ff8e067eafac024a0555e87db"
+  "size": 10367,
+  "sha256": "0193416119479a1fee8de144bc8a2016d1a22ccded91cbea867323bceaf1976c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_asset_producer.toml",
-  "size": 9931,
-  "sha256": "d2be0f7b066b1af4f52a9c61539e4c50deaf4b0673e2bf2b7ea429e4c02c830f"
+  "size": 6161,
+  "sha256": "e69f902dc96a63c9566f30361ced3dc83765097d9f3dd2f9cbd83ec50f6af1b3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_documenter.toml",
@@ -22031,8 +22256,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_finish_reviewer.toml",
-  "size": 13793,
-  "sha256": "59efadb3b5a0209e052fb0d3671a633aed6c6be3cbb61db034b9a7fc12bae692"
+  "size": 15290,
+  "sha256": "b3c6137e444e2e54a853413161958c0532f332f8d8159dfe48d7e1ea5996b1f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_manual_edit_applier.toml",
@@ -22071,8 +22296,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/audit.native.md",
-  "size": 8362,
-  "sha256": "fc16e78aca0c183a91dac3d8876d1211fca99aa979367fcb50090d934806b2fb"
+  "size": 8357,
+  "sha256": "1b10f9ad3d3a1494ee1bbdf35bb6aa453e98defa6e1ae99177b167795054a4f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/bolder.md",
@@ -22101,13 +22326,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/critique.md",
-  "size": 45696,
-  "sha256": "ff3208d915f2bfb5af7ba3aba7066aab6fcb28829709a041fbb98bd535341b2d"
+  "size": 45920,
+  "sha256": "a763d1474f5c1125a937b5872abb1fc40b2bd44dd7d4a7701ac2147401bf4b2b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/asset-producer.md",
-  "size": 10093,
-  "sha256": "e28c0d9e42b127ebf09762ae160b9e94a376576f66fb1d66888871467fb11884"
+  "size": 6323,
+  "sha256": "2993ce6409702ae2e01e4ee37f8f98089aeccc4877c4c9d836e161dee364b510"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/documenter.md",
@@ -22116,8 +22341,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/finish-reviewer.md",
-  "size": 13893,
-  "sha256": "c70d4bd77fe9142bbe7e3b412d3ca44443e0914bdb323577dc2acb59e8d72078"
+  "size": 15390,
+  "sha256": "5ae494910f0a7c6eca239cdd866f70833b42655ed6e2f88b8c756dfca028c1fd"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/manual-edit-applier.md",
@@ -22136,8 +22361,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/doctor.md",
-  "size": 5447,
-  "sha256": "2c110874c88f7e1509181a4b09e5214cd211021251225d365e5be486add1fd5b"
+  "size": 5463,
+  "sha256": "c7a439efd70bdc232da970d0695c60502525e5b7e882ad9d5b1f4794b00dd260"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/document.md",
@@ -22156,8 +22381,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/hooks.md",
-  "size": 13111,
-  "sha256": "18b8597f03d9ed100e09187550d5c737d6da696188b8e75289317398e7dbdf4e"
+  "size": 13310,
+  "sha256": "e61722ab3ace649d9ad016f564e3cd137926d562418ec2e3fd73de8a7e3e94d6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/init.md",
@@ -22171,8 +22396,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/layout.md",
-  "size": 5127,
-  "sha256": "972941eabcb28681019eb57ebc8b7b1085382822db49e365118d01857ca867ed"
+  "size": 5159,
+  "sha256": "2d5eba1b9493f85c149a197fe6c4e9d015f5e68c49f24f5210a237cee4e44348"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/live-setup.md",
@@ -22186,8 +22411,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/new-work.md",
-  "size": 44091,
-  "sha256": "0213d9ed6c852ce0e9c9e1abbce29b0dd3db576669aefca76e1fb2fdb03e6946"
+  "size": 52029,
+  "sha256": "e378818dc2095c701b3affe8a6d8e46c2b7788206b5a025e67af07b75199419c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/onboard.md",
@@ -22211,8 +22436,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/polish.md",
-  "size": 5592,
-  "sha256": "e6bbc05a9e1f905811d19401c1e6c7b97588375454e1462dbd811f803d239b07"
+  "size": 6635,
+  "sha256": "e25e675a476e08fa9dc33eecef6c0538a36fcef39c052c9728b8be9209bba124"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/quieter.md",
@@ -22221,8 +22446,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/routing.md",
-  "size": 2865,
-  "sha256": "428b75b6524906b556ebc89922ef231c5dd3b3ab5e3dc4a76272390e7e082a5e"
+  "size": 2901,
+  "sha256": "35a5cd381e2bba7ef7cfcd48c9b6316ebcf40fe9e7abb4fb212b24106e08195b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/shape.md",
@@ -22231,13 +22456,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/typeset.md",
-  "size": 5222,
-  "sha256": "0b9bc45334a79da9a50efc4605502d0db6f2fd2b2c88404b134b9088625e4a98"
+  "size": 5254,
+  "sha256": "6d803447fb419ee718012f6263d2685ad462a14dc08c338392e28b79823a0553"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/visualize.md",
-  "size": 16644,
-  "sha256": "1a0a68caa14cb16fbcabba663e3603ffd3337aaec4f2679f72b279bad8ce4a08"
+  "size": 11204,
+  "sha256": "9080ea9439a24e005367128389fc5b1a3f58f63d1eb4c16b4ca8dc197053c6c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/build-phase.mjs",
+  "size": 77334,
+  "sha256": "38006f01777542f1f111a2b4e4079d6fa406b8d27fad149138fba57eca7f287f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/command-metadata.json",
@@ -22245,24 +22475,44 @@
   "sha256": "6bdbc3f745ceee15e10b050f109ce42bbeb53ab3c3b5239257de1d596654dee7"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-diff.mjs",
+  "size": 21349,
+  "sha256": "943560b54fbc37e48e0e6b503cb48f6904ecce8c413ae84773a050b2850b2c08"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-spec.mjs",
+  "size": 31488,
+  "sha256": "95a492b2a3ab53f5971c5af5d9ca474c6f7a01fb96a6c0b010c5f7a9baefd8ff"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/concept-seed.mjs",
-  "size": 39651,
-  "sha256": "8ea706b9aedaa2a5c8cac88cf5cf5a2252bd90ff9430f0e7c1e79bddfa50fa17"
+  "size": 45418,
+  "sha256": "b9088d654fc652a9a23e94fe7ed6c2ffeaf2e846a90972f49eecac26a8133072"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context-signals.mjs",
-  "size": 14021,
-  "sha256": "9d882021a76d02b8492fec20334f4af66605fd186687b8de0f202e7a11e1567c"
+  "size": 14033,
+  "sha256": "c7c70735fae0834576636fb9b9c32504a7f08efc95fdc4db97a469f6ca4dd2c4"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context.mjs",
-  "size": 58756,
-  "sha256": "26d54294f3b04710991168d751e2c4931b1ecce3c0f1c8562a495ee5223dbaac"
+  "size": 67737,
+  "sha256": "e0d4b1ee9a143438a449c4c25ec2556d299b5c13782bf0ee61335e48a3f01a65"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/critique-storage.mjs",
-  "size": 8485,
-  "sha256": "17c14fc03d9c53f7f48dfe6e8ef2a15d2a35c9b8f341ddb25720e01cc1ca68e9"
+  "size": 18703,
+  "sha256": "12f9fece61dc54c56f106c2c999a3b7f3583a378f3aa32619db3356f34a3fe75"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index-failures.json",
+  "size": 2437,
+  "sha256": "835f19a0a3812f3652dd6979a2ce5597f654fd01f26e1b420b92d5f42b997ce4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index.json",
+  "size": 1100013,
+  "sha256": "47edbdfaf27073c47033d1ac7dfee881be49e2dcbda7671d1157300481dde6da"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect-csp.mjs",
@@ -22271,13 +22521,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect.mjs",
-  "size": 620,
-  "sha256": "f5dfd05ca1e314acd8ed79c6301a20a1b844f2eb6691bd63e04116a8e7efb187"
+  "size": 1235,
+  "sha256": "b2c5731c367c129e361bdfb28c4f697e84818c77e04d88ad21eeb89320f06a0e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/browser/injected/index.mjs",
-  "size": 84358,
-  "sha256": "88d1a32a8dcd8270614749ab7d2c4ad535d726b0b12ce4305551b0ff3eb56cdf"
+  "size": 91086,
+  "sha256": "30d70ec4d1804b333be05f2448a0cc5a39b517fc8fc860d650215457dfd93402"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/cli/main.mjs",
@@ -22286,13 +22536,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/design-system.mjs",
-  "size": 49637,
-  "sha256": "cacf7ae83b4ccfff84ceb6ab06549b399e0ec88750f053249db65371dd302de1"
+  "size": 49814,
+  "sha256": "b6aefa5c9f4e3fea8449e1cbaa345a68570689654ade16cddc5c900659892112"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns-browser.js",
-  "size": 390675,
-  "sha256": "55b3f96bf882c6704015c3d8533c2c4987d7c4ce2669d0e15bf10e60d64b453b"
+  "size": 410092,
+  "sha256": "ef45727251c6626dd402fd6e6a30bd973b19d219e2a65549ad62c6b28dfca7fe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns.mjs",
@@ -22301,23 +22551,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/browser/detect-url.mjs",
-  "size": 14431,
-  "sha256": "a972cb4fc1390ba131e6cd9707b4b20aa2730ad04c43b0a9551321777c04c8e9"
+  "size": 16196,
+  "sha256": "af6d28bfb1bb2fc667f56823b9fa12d4ee56ee5b3afbea28c5b81fecb66b84dc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/regex/detect-text.mjs",
-  "size": 53313,
-  "sha256": "8e0ecc091bcecc24eb34d34dab9bcabb1057af6a6dcf34f186fb370b26e61157"
+  "size": 51795,
+  "sha256": "e2160fa496fd40a4596a68419892232e7ab56420c39952664b2c39ef1ff8a7fc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/css-cascade.mjs",
-  "size": 45985,
-  "sha256": "6809969a6e2c58992d863c23d6f2c6fb6b8ddacc503dac2ad0e5452bf2725c54"
+  "size": 46017,
+  "sha256": "5cf85f8a00b50c12c0cd0a5e2f5ad456c414cf67bc34f4a5c36eb64a7e667cc3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/detect-html.mjs",
-  "size": 13351,
-  "sha256": "481b584ccdf3ac28065dbab11f65d638e3e7a35e14c7e62bc5da3d59d2a7efd7"
+  "size": 12726,
+  "sha256": "9fedd7d3d42c51058bd491d98193abd5931ce83550269124bb788efadb7b7c97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/visual/screenshot-contrast.mjs",
@@ -22341,13 +22591,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/registry/antipatterns.mjs",
-  "size": 27900,
-  "sha256": "4544ccca3d7c341d878b941fbe20620750dbf9d29dd6d15e063128a1e390b345"
+  "size": 29094,
+  "sha256": "57aaf32be744db6375d604a36079bc731fa60eaa4b34bb61d00d002d56af6079"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/rules/checks.mjs",
-  "size": 254664,
-  "sha256": "e63f6adbd0893d75105e825b1656a268c512a9bc7e5f3d17d4ac70ef412d6e57"
+  "size": 265818,
+  "sha256": "760152474cf9c748ea04fd9a0b9eeca825c784af9ddbcfc5852f866c067e70bf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/color.mjs",
@@ -22356,8 +22606,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/constants.mjs",
-  "size": 4675,
-  "sha256": "606f50159d56b5e972724c13933e63220696636215292e5316846426f3e12896"
+  "size": 5183,
+  "sha256": "fcf86301e635bd1591ae5d9fdbaae0696ac4bbc9d2e52d38c5c3232faa366a9f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/fonts.mjs",
@@ -22371,8 +22621,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/page.mjs",
-  "size": 252,
-  "sha256": "b4cef5548d84fa90d15e6b42b20be9ef74ed05e4e6e46076ec5acc61b343315c"
+  "size": 386,
+  "sha256": "0e2bc96b8bbafafb40c451771c6724db8193dd65d9b67e1912fc217291ed1945"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/doctor.mjs",
@@ -22381,18 +22631,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/embed-prompt.mjs",
-  "size": 7843,
-  "sha256": "4614260ccaa091bea10a6096027d2aca306160e1764765ce155aadcbe674dbc5"
+  "size": 7354,
+  "sha256": "4227f850b60a32cc6b8a167d9b49e4e00817823a1b93a9fdb9a3823345140daf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/font-match.mjs",
+  "size": 28759,
+  "sha256": "8f8303918a92af6ddd2cdeac3344223e43d66059e5098741bf059e89b409d9c6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/generate-image.mjs",
-  "size": 11462,
-  "sha256": "0994c7ab8bc280b9b09676bc0296ca9eea8609b00b1a48eb783486f145c0f338"
+  "size": 22797,
+  "sha256": "121d366da52fc16df6c44efd2676652ae4706196d5db1fc4c1d025335c586b7f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-admin.mjs",
-  "size": 31282,
-  "sha256": "b1a6759805eb39f117b1153c5a4e1b4691a7a9b685420fe5257e00b8d0f8c543"
+  "size": 32431,
+  "sha256": "d6f3e24b5a83f7a5c52c734e5a9cb0a888a147ab7d7f572e0773e26f2e9ed89d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-before-edit.mjs",
@@ -22401,8 +22656,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-lib.mjs",
-  "size": 100372,
-  "sha256": "c556f48b547bc540f60b1c06f437777ee9b93bf256d1779d966641248cce2dd1"
+  "size": 102895,
+  "sha256": "d6d65ecfd069c632b162b23b6bf4a46e8fe0014f0caddd32725a38dbf0e80206"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook.mjs",
@@ -22421,13 +22676,33 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/concept-catalog.mjs",
-  "size": 19896,
-  "sha256": "7ac70294e0f429d89464ff2e0c814b70acfd5e101184d5a45b8b2a50dfaa8266"
+  "size": 19895,
+  "sha256": "b32e535296b6db3fdc613ceb585640943cc1bd8291ca4f8a5ab2077506ac5436"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/design-parser.mjs",
-  "size": 27441,
-  "sha256": "42d37e97db82ca8082033f582bcdbd341373d0cc1c6927605d1a4385f8f34131"
+  "size": 27178,
+  "sha256": "d1012667cffaf8e0d24317077dd54386ed274f49313b53346e67b00cd96aa487"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-fingerprint.mjs",
+  "size": 29235,
+  "sha256": "a35764b55d33d03cb0fe4dfac059306683fe3e89016bb62f4715c39deaa0f9c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-index.mjs",
+  "size": 6573,
+  "sha256": "31cb952b43055ddd93ddc7e9ee35e86f9224ff57a14285467d772963ec603fa3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/hero-checks.mjs",
+  "size": 14926,
+  "sha256": "1315e294f713f542c2c996dbd14555d520d7484d3b5c78b3ba820042f19d44f7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/image-metrics.mjs",
+  "size": 14207,
+  "sha256": "c4844deaeadf0fe421d95b46ca020c0f9232228ad602f176e4d5cbd691694e97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/impeccable-config.mjs",
@@ -22445,14 +22720,29 @@
   "sha256": "2d6c37f821cb42161264068b81c4c97629a653b661403cedadb5eb23099d0acc"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/live-path-globs.mjs",
+  "size": 847,
+  "sha256": "f2657a25351ae5bc4d503e7257f84e014815fc562225ebf8fe15d3e277ca6f53"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/open-system-browser.mjs",
   "size": 848,
   "sha256": "3785ef4ba47bbbe176469e2536e8ef29e885f955970404f46ff34763f831bf11"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/png.mjs",
+  "size": 10735,
+  "sha256": "6994615c52f75af071664e0675b9cac91de39ac5ad0ecc7de4873ee0fd227926"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/provider.mjs",
   "size": 327,
   "sha256": "998c57324fdab98a0bfbd01a6099eadac7276038da961697d6069bbdeb0e5856"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/raster.mjs",
+  "size": 9876,
+  "sha256": "97038c3790f9a76e0dc09a8aa967e0679778a6015723873715a577d21ac7172a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/roll-selection.mjs",
@@ -22496,23 +22786,28 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-accept.mjs",
-  "size": 35874,
-  "sha256": "f823b4f71a6ae21ffb8b52aa3a78768f0bee551329cf76ad4144e4680a05c154"
+  "size": 36104,
+  "sha256": "e89aff2150572b085387beac8f27b76ab704291f9d3a9886fd10c026c8bbb3fb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-dom.js",
-  "size": 4250,
-  "sha256": "bcfa4022e741f8034b841aed76b9ea3f6a64a8e08e4dfa43ba99f8be65a73393"
+  "size": 4917,
+  "sha256": "de1b7404f4cdfd7b515196afb17b74b1980f0bc88cb8681ae93a76ca48ec7bdb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-ignores.js",
+  "size": 10346,
+  "sha256": "c1cb6877ca99a0c1b38ba0c7d59f32702d3022f6821d8045f7133f7c40b6362f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-session.js",
-  "size": 3297,
-  "sha256": "dddcb8b941f7460aa6a134f7d456b1820747172c12e01de36dab3265b1065cff"
+  "size": 4090,
+  "sha256": "edddeb3fad88adec9a055b1bf9d5c75418cbe97a13b1a7f6765e73249e482563"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser.js",
-  "size": 500861,
-  "sha256": "9aeb60163add083cd4701a4c70be38b9008afbd407a4f71e0e952db0668b433a"
+  "size": 513801,
+  "sha256": "24241e41e394f18cc00a788e9b44117424b25dbed1391b2e8152ec8f395ffccf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-commit-manual-edits.mjs",
@@ -22536,8 +22831,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-inject.mjs",
-  "size": 18536,
-  "sha256": "0e1bc4e9a43b74d4b4571ff2191f813b8716346a4bcafe7d42bd84a47397d92e"
+  "size": 17585,
+  "sha256": "bb3a120472b757e96dbc2f5e24b37f39f31dee3c54d785c571baf686cf71096d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-insert.mjs",
@@ -22546,8 +22841,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-manual-edit-evidence.mjs",
-  "size": 11857,
-  "sha256": "c5a36c361c435fc023e17be16a78aaf672adb48a6a74e8177cfa775592502638"
+  "size": 12013,
+  "sha256": "00dcd9f43d5bab6d95f66d717d98fafe4249e171afd1caa2a134f5efd612177f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-poll.mjs",
@@ -22561,8 +22856,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-server.mjs",
-  "size": 68882,
-  "sha256": "96e27a4e70d173e2493a8e32732d85355eebaee5797677b29e58aecc49f701f1"
+  "size": 70004,
+  "sha256": "e3801156dc319fa7e02c55e7350f62e4656ba9f33be3199c6d8e8571dda807d8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-status.mjs",
@@ -22581,8 +22876,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live.mjs",
-  "size": 13617,
-  "sha256": "d59eb657dfb142fcb3fc9c159efd7ec50d62f2294eabecc6134c6cabda6d3996"
+  "size": 12909,
+  "sha256": "9188f42a93e02ec341335c3441af5de16391196efdf78710e87dd7ef0fb6cb7e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/accept-css.mjs",
@@ -22596,8 +22891,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/browser-script-parts.mjs",
-  "size": 3185,
-  "sha256": "74e9d7cdfb5851eb827770e6c44ec4eac532522c54f51999be7a42676f6e234e"
+  "size": 3674,
+  "sha256": "2ceb3083de7fe80160f40379c0ed47220bade5e4a1964cde4ae8e745049061c5"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/completion.mjs",
@@ -22705,6 +23000,11 @@
   "sha256": "a516bc942c55b66be915619794f4ec79aadf94d6966c6fc7aee24f1fbaa60ab3"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/project-ignores.mjs",
+  "size": 6427,
+  "sha256": "b4088c6fbc231bc13b11804bea90a223d077d3762f3d93990c6044c7ea10d9e1"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/roots.mjs",
   "size": 20887,
   "sha256": "715e9658cb28746c126faf24bbd3cd949e1ebc5dd189eb455887544ae4efbf12"
@@ -22731,8 +23031,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/svelte-component.mjs",
-  "size": 52297,
-  "sha256": "234dae2735aae9385716416a4e958d6890ec7cb42dec2e158fe128e8856eaf97"
+  "size": 52605,
+  "sha256": "43113cab6787e30cb5b0f0442c54cdcfa58b30048c9deddf5f30065a198e0c73"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/sveltekit-adapter.mjs",
@@ -22766,8 +23066,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/serve-question.mjs",
-  "size": 120005,
-  "sha256": "6475a64fb5bdb6d8df635c67cad7d389b9898e733fcbad6e12f59fe832a944a2"
+  "size": 121787,
+  "sha256": "48999dd4d8e68797da20ece68618008e395f73ace6f3b8e029303153ca097785"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/surface-brief.mjs",
@@ -25471,8 +25771,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/THIRD-PARTY-NOTICES.md",
-  "size": 4444,
-  "sha256": "da7268e929cb5c4abe8010a1105c9f55e310f51e1d13c458e407790851e583fc"
+  "size": 4566,
+  "sha256": "e7a54a7f41c5a2ebda1c93d45b0ad8e09d7ca982c3633216d9af89ad680b3705"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/adult-character-sheet/SKILL.md",
@@ -25561,13 +25861,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/helper.js",
-  "size": 5615,
-  "sha256": "43c6d69954a46ec34a2a262bcc62a9a7e83e839c739f199cb72646d397c686e3"
+  "size": 5379,
+  "sha256": "1dab014d8e39e4cd946edfc3dafa18c808b520395c7ceccff70e649b31f98a92"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/server.cjs",
-  "size": 25693,
-  "sha256": "2d2961ea8d11f56c5f4c3a1a68d22709efa5d7601a2246d8c880774e7e9e8412"
+  "size": 25701,
+  "sha256": "6baa9e5ee22e1205daa6dea6d4c0992b43687fc0731e22d95656620c8278131d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/brainstorming/scripts/start-server.sh",
@@ -28026,13 +28326,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/SKILL.md",
-  "size": 10527,
-  "sha256": "9bf6cc2c7b438ca166fc2b21afe20523dc08c34ff8e067eafac024a0555e87db"
+  "size": 10367,
+  "sha256": "0193416119479a1fee8de144bc8a2016d1a22ccded91cbea867323bceaf1976c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_asset_producer.toml",
-  "size": 9931,
-  "sha256": "d2be0f7b066b1af4f52a9c61539e4c50deaf4b0673e2bf2b7ea429e4c02c830f"
+  "size": 6161,
+  "sha256": "e69f902dc96a63c9566f30361ced3dc83765097d9f3dd2f9cbd83ec50f6af1b3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_documenter.toml",
@@ -28041,8 +28341,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_finish_reviewer.toml",
-  "size": 13793,
-  "sha256": "59efadb3b5a0209e052fb0d3671a633aed6c6be3cbb61db034b9a7fc12bae692"
+  "size": 15290,
+  "sha256": "b3c6137e444e2e54a853413161958c0532f332f8d8159dfe48d7e1ea5996b1f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/agents/impeccable_manual_edit_applier.toml",
@@ -28081,8 +28381,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/audit.native.md",
-  "size": 8362,
-  "sha256": "fc16e78aca0c183a91dac3d8876d1211fca99aa979367fcb50090d934806b2fb"
+  "size": 8357,
+  "sha256": "1b10f9ad3d3a1494ee1bbdf35bb6aa453e98defa6e1ae99177b167795054a4f1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/bolder.md",
@@ -28111,13 +28411,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/critique.md",
-  "size": 45696,
-  "sha256": "ff3208d915f2bfb5af7ba3aba7066aab6fcb28829709a041fbb98bd535341b2d"
+  "size": 45920,
+  "sha256": "a763d1474f5c1125a937b5872abb1fc40b2bd44dd7d4a7701ac2147401bf4b2b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/asset-producer.md",
-  "size": 10093,
-  "sha256": "e28c0d9e42b127ebf09762ae160b9e94a376576f66fb1d66888871467fb11884"
+  "size": 6323,
+  "sha256": "2993ce6409702ae2e01e4ee37f8f98089aeccc4877c4c9d836e161dee364b510"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/documenter.md",
@@ -28126,8 +28426,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/finish-reviewer.md",
-  "size": 13893,
-  "sha256": "c70d4bd77fe9142bbe7e3b412d3ca44443e0914bdb323577dc2acb59e8d72078"
+  "size": 15390,
+  "sha256": "5ae494910f0a7c6eca239cdd866f70833b42655ed6e2f88b8c756dfca028c1fd"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/degraded/manual-edit-applier.md",
@@ -28146,8 +28446,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/doctor.md",
-  "size": 5447,
-  "sha256": "2c110874c88f7e1509181a4b09e5214cd211021251225d365e5be486add1fd5b"
+  "size": 5463,
+  "sha256": "c7a439efd70bdc232da970d0695c60502525e5b7e882ad9d5b1f4794b00dd260"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/document.md",
@@ -28166,8 +28466,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/hooks.md",
-  "size": 13111,
-  "sha256": "18b8597f03d9ed100e09187550d5c737d6da696188b8e75289317398e7dbdf4e"
+  "size": 13310,
+  "sha256": "e61722ab3ace649d9ad016f564e3cd137926d562418ec2e3fd73de8a7e3e94d6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/init.md",
@@ -28181,8 +28481,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/layout.md",
-  "size": 5127,
-  "sha256": "972941eabcb28681019eb57ebc8b7b1085382822db49e365118d01857ca867ed"
+  "size": 5159,
+  "sha256": "2d5eba1b9493f85c149a197fe6c4e9d015f5e68c49f24f5210a237cee4e44348"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/live-setup.md",
@@ -28196,8 +28496,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/new-work.md",
-  "size": 44091,
-  "sha256": "0213d9ed6c852ce0e9c9e1abbce29b0dd3db576669aefca76e1fb2fdb03e6946"
+  "size": 52029,
+  "sha256": "e378818dc2095c701b3affe8a6d8e46c2b7788206b5a025e67af07b75199419c"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/onboard.md",
@@ -28221,8 +28521,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/polish.md",
-  "size": 5592,
-  "sha256": "e6bbc05a9e1f905811d19401c1e6c7b97588375454e1462dbd811f803d239b07"
+  "size": 6635,
+  "sha256": "e25e675a476e08fa9dc33eecef6c0538a36fcef39c052c9728b8be9209bba124"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/quieter.md",
@@ -28231,8 +28531,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/routing.md",
-  "size": 2865,
-  "sha256": "428b75b6524906b556ebc89922ef231c5dd3b3ab5e3dc4a76272390e7e082a5e"
+  "size": 2901,
+  "sha256": "35a5cd381e2bba7ef7cfcd48c9b6316ebcf40fe9e7abb4fb212b24106e08195b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/shape.md",
@@ -28241,13 +28541,18 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/typeset.md",
-  "size": 5222,
-  "sha256": "0b9bc45334a79da9a50efc4605502d0db6f2fd2b2c88404b134b9088625e4a98"
+  "size": 5254,
+  "sha256": "6d803447fb419ee718012f6263d2685ad462a14dc08c338392e28b79823a0553"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/reference/visualize.md",
-  "size": 16644,
-  "sha256": "1a0a68caa14cb16fbcabba663e3603ffd3337aaec4f2679f72b279bad8ce4a08"
+  "size": 11204,
+  "sha256": "9080ea9439a24e005367128389fc5b1a3f58f63d1eb4c16b4ca8dc197053c6c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/build-phase.mjs",
+  "size": 77334,
+  "sha256": "38006f01777542f1f111a2b4e4079d6fa406b8d27fad149138fba57eca7f287f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/command-metadata.json",
@@ -28255,24 +28560,44 @@
   "sha256": "6bdbc3f745ceee15e10b050f109ce42bbeb53ab3c3b5239257de1d596654dee7"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-diff.mjs",
+  "size": 21349,
+  "sha256": "943560b54fbc37e48e0e6b503cb48f6904ecce8c413ae84773a050b2850b2c08"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/comp-spec.mjs",
+  "size": 31488,
+  "sha256": "95a492b2a3ab53f5971c5af5d9ca474c6f7a01fb96a6c0b010c5f7a9baefd8ff"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/concept-seed.mjs",
-  "size": 39651,
-  "sha256": "8ea706b9aedaa2a5c8cac88cf5cf5a2252bd90ff9430f0e7c1e79bddfa50fa17"
+  "size": 45418,
+  "sha256": "b9088d654fc652a9a23e94fe7ed6c2ffeaf2e846a90972f49eecac26a8133072"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context-signals.mjs",
-  "size": 14021,
-  "sha256": "9d882021a76d02b8492fec20334f4af66605fd186687b8de0f202e7a11e1567c"
+  "size": 14033,
+  "sha256": "c7c70735fae0834576636fb9b9c32504a7f08efc95fdc4db97a469f6ca4dd2c4"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/context.mjs",
-  "size": 58756,
-  "sha256": "26d54294f3b04710991168d751e2c4931b1ecce3c0f1c8562a495ee5223dbaac"
+  "size": 67737,
+  "sha256": "e0d4b1ee9a143438a449c4c25ec2556d299b5c13782bf0ee61335e48a3f01a65"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/critique-storage.mjs",
-  "size": 8485,
-  "sha256": "17c14fc03d9c53f7f48dfe6e8ef2a15d2a35c9b8f341ddb25720e01cc1ca68e9"
+  "size": 18703,
+  "sha256": "12f9fece61dc54c56f106c2c999a3b7f3583a378f3aa32619db3356f34a3fe75"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index-failures.json",
+  "size": 2437,
+  "sha256": "835f19a0a3812f3652dd6979a2ce5597f654fd01f26e1b420b92d5f42b997ce4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/data/font-index.json",
+  "size": 1100013,
+  "sha256": "47edbdfaf27073c47033d1ac7dfee881be49e2dcbda7671d1157300481dde6da"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect-csp.mjs",
@@ -28281,13 +28606,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detect.mjs",
-  "size": 620,
-  "sha256": "f5dfd05ca1e314acd8ed79c6301a20a1b844f2eb6691bd63e04116a8e7efb187"
+  "size": 1235,
+  "sha256": "b2c5731c367c129e361bdfb28c4f697e84818c77e04d88ad21eeb89320f06a0e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/browser/injected/index.mjs",
-  "size": 84358,
-  "sha256": "88d1a32a8dcd8270614749ab7d2c4ad535d726b0b12ce4305551b0ff3eb56cdf"
+  "size": 91086,
+  "sha256": "30d70ec4d1804b333be05f2448a0cc5a39b517fc8fc860d650215457dfd93402"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/cli/main.mjs",
@@ -28296,13 +28621,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/design-system.mjs",
-  "size": 49637,
-  "sha256": "cacf7ae83b4ccfff84ceb6ab06549b399e0ec88750f053249db65371dd302de1"
+  "size": 49814,
+  "sha256": "b6aefa5c9f4e3fea8449e1cbaa345a68570689654ade16cddc5c900659892112"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns-browser.js",
-  "size": 390675,
-  "sha256": "55b3f96bf882c6704015c3d8533c2c4987d7c4ce2669d0e15bf10e60d64b453b"
+  "size": 410092,
+  "sha256": "ef45727251c6626dd402fd6e6a30bd973b19d219e2a65549ad62c6b28dfca7fe"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/detect-antipatterns.mjs",
@@ -28311,23 +28636,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/browser/detect-url.mjs",
-  "size": 14431,
-  "sha256": "a972cb4fc1390ba131e6cd9707b4b20aa2730ad04c43b0a9551321777c04c8e9"
+  "size": 16196,
+  "sha256": "af6d28bfb1bb2fc667f56823b9fa12d4ee56ee5b3afbea28c5b81fecb66b84dc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/regex/detect-text.mjs",
-  "size": 53313,
-  "sha256": "8e0ecc091bcecc24eb34d34dab9bcabb1057af6a6dcf34f186fb370b26e61157"
+  "size": 51795,
+  "sha256": "e2160fa496fd40a4596a68419892232e7ab56420c39952664b2c39ef1ff8a7fc"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/css-cascade.mjs",
-  "size": 45985,
-  "sha256": "6809969a6e2c58992d863c23d6f2c6fb6b8ddacc503dac2ad0e5452bf2725c54"
+  "size": 46017,
+  "sha256": "5cf85f8a00b50c12c0cd0a5e2f5ad456c414cf67bc34f4a5c36eb64a7e667cc3"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/static-html/detect-html.mjs",
-  "size": 13351,
-  "sha256": "481b584ccdf3ac28065dbab11f65d638e3e7a35e14c7e62bc5da3d59d2a7efd7"
+  "size": 12726,
+  "sha256": "9fedd7d3d42c51058bd491d98193abd5931ce83550269124bb788efadb7b7c97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/engines/visual/screenshot-contrast.mjs",
@@ -28351,13 +28676,13 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/registry/antipatterns.mjs",
-  "size": 27900,
-  "sha256": "4544ccca3d7c341d878b941fbe20620750dbf9d29dd6d15e063128a1e390b345"
+  "size": 29094,
+  "sha256": "57aaf32be744db6375d604a36079bc731fa60eaa4b34bb61d00d002d56af6079"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/rules/checks.mjs",
-  "size": 254664,
-  "sha256": "e63f6adbd0893d75105e825b1656a268c512a9bc7e5f3d17d4ac70ef412d6e57"
+  "size": 265818,
+  "sha256": "760152474cf9c748ea04fd9a0b9eeca825c784af9ddbcfc5852f866c067e70bf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/color.mjs",
@@ -28366,8 +28691,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/constants.mjs",
-  "size": 4675,
-  "sha256": "606f50159d56b5e972724c13933e63220696636215292e5316846426f3e12896"
+  "size": 5183,
+  "sha256": "fcf86301e635bd1591ae5d9fdbaae0696ac4bbc9d2e52d38c5c3232faa366a9f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/fonts.mjs",
@@ -28381,8 +28706,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/detector/shared/page.mjs",
-  "size": 252,
-  "sha256": "b4cef5548d84fa90d15e6b42b20be9ef74ed05e4e6e46076ec5acc61b343315c"
+  "size": 386,
+  "sha256": "0e2bc96b8bbafafb40c451771c6724db8193dd65d9b67e1912fc217291ed1945"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/doctor.mjs",
@@ -28391,18 +28716,23 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/embed-prompt.mjs",
-  "size": 7843,
-  "sha256": "4614260ccaa091bea10a6096027d2aca306160e1764765ce155aadcbe674dbc5"
+  "size": 7354,
+  "sha256": "4227f850b60a32cc6b8a167d9b49e4e00817823a1b93a9fdb9a3823345140daf"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/font-match.mjs",
+  "size": 28759,
+  "sha256": "8f8303918a92af6ddd2cdeac3344223e43d66059e5098741bf059e89b409d9c6"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/generate-image.mjs",
-  "size": 11462,
-  "sha256": "0994c7ab8bc280b9b09676bc0296ca9eea8609b00b1a48eb783486f145c0f338"
+  "size": 22797,
+  "sha256": "121d366da52fc16df6c44efd2676652ae4706196d5db1fc4c1d025335c586b7f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-admin.mjs",
-  "size": 31282,
-  "sha256": "b1a6759805eb39f117b1153c5a4e1b4691a7a9b685420fe5257e00b8d0f8c543"
+  "size": 32431,
+  "sha256": "d6f3e24b5a83f7a5c52c734e5a9cb0a888a147ab7d7f572e0773e26f2e9ed89d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-before-edit.mjs",
@@ -28411,8 +28741,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook-lib.mjs",
-  "size": 100372,
-  "sha256": "c556f48b547bc540f60b1c06f437777ee9b93bf256d1779d966641248cce2dd1"
+  "size": 102895,
+  "sha256": "d6d65ecfd069c632b162b23b6bf4a46e8fe0014f0caddd32725a38dbf0e80206"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/hook.mjs",
@@ -28431,13 +28761,33 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/concept-catalog.mjs",
-  "size": 19896,
-  "sha256": "7ac70294e0f429d89464ff2e0c814b70acfd5e101184d5a45b8b2a50dfaa8266"
+  "size": 19895,
+  "sha256": "b32e535296b6db3fdc613ceb585640943cc1bd8291ca4f8a5ab2077506ac5436"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/design-parser.mjs",
-  "size": 27441,
-  "sha256": "42d37e97db82ca8082033f582bcdbd341373d0cc1c6927605d1a4385f8f34131"
+  "size": 27178,
+  "sha256": "d1012667cffaf8e0d24317077dd54386ed274f49313b53346e67b00cd96aa487"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-fingerprint.mjs",
+  "size": 29235,
+  "sha256": "a35764b55d33d03cb0fe4dfac059306683fe3e89016bb62f4715c39deaa0f9c4"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/font-index.mjs",
+  "size": 6573,
+  "sha256": "31cb952b43055ddd93ddc7e9ee35e86f9224ff57a14285467d772963ec603fa3"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/hero-checks.mjs",
+  "size": 14926,
+  "sha256": "1315e294f713f542c2c996dbd14555d520d7484d3b5c78b3ba820042f19d44f7"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/image-metrics.mjs",
+  "size": 14207,
+  "sha256": "c4844deaeadf0fe421d95b46ca020c0f9232228ad602f176e4d5cbd691694e97"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/impeccable-config.mjs",
@@ -28455,14 +28805,29 @@
   "sha256": "2d6c37f821cb42161264068b81c4c97629a653b661403cedadb5eb23099d0acc"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/live-path-globs.mjs",
+  "size": 847,
+  "sha256": "f2657a25351ae5bc4d503e7257f84e014815fc562225ebf8fe15d3e277ca6f53"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/open-system-browser.mjs",
   "size": 848,
   "sha256": "3785ef4ba47bbbe176469e2536e8ef29e885f955970404f46ff34763f831bf11"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/png.mjs",
+  "size": 10735,
+  "sha256": "6994615c52f75af071664e0675b9cac91de39ac5ad0ecc7de4873ee0fd227926"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/provider.mjs",
   "size": 327,
   "sha256": "998c57324fdab98a0bfbd01a6099eadac7276038da961697d6069bbdeb0e5856"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/raster.mjs",
+  "size": 9876,
+  "sha256": "97038c3790f9a76e0dc09a8aa967e0679778a6015723873715a577d21ac7172a"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/lib/roll-selection.mjs",
@@ -28506,23 +28871,28 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-accept.mjs",
-  "size": 35874,
-  "sha256": "f823b4f71a6ae21ffb8b52aa3a78768f0bee551329cf76ad4144e4680a05c154"
+  "size": 36104,
+  "sha256": "e89aff2150572b085387beac8f27b76ab704291f9d3a9886fd10c026c8bbb3fb"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-dom.js",
-  "size": 4250,
-  "sha256": "bcfa4022e741f8034b841aed76b9ea3f6a64a8e08e4dfa43ba99f8be65a73393"
+  "size": 4917,
+  "sha256": "de1b7404f4cdfd7b515196afb17b74b1980f0bc88cb8681ae93a76ca48ec7bdb"
+ },
+ {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-ignores.js",
+  "size": 10346,
+  "sha256": "c1cb6877ca99a0c1b38ba0c7d59f32702d3022f6821d8045f7133f7c40b6362f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser-session.js",
-  "size": 3297,
-  "sha256": "dddcb8b941f7460aa6a134f7d456b1820747172c12e01de36dab3265b1065cff"
+  "size": 4090,
+  "sha256": "edddeb3fad88adec9a055b1bf9d5c75418cbe97a13b1a7f6765e73249e482563"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-browser.js",
-  "size": 500861,
-  "sha256": "9aeb60163add083cd4701a4c70be38b9008afbd407a4f71e0e952db0668b433a"
+  "size": 513801,
+  "sha256": "24241e41e394f18cc00a788e9b44117424b25dbed1391b2e8152ec8f395ffccf"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-commit-manual-edits.mjs",
@@ -28546,8 +28916,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-inject.mjs",
-  "size": 18536,
-  "sha256": "0e1bc4e9a43b74d4b4571ff2191f813b8716346a4bcafe7d42bd84a47397d92e"
+  "size": 17585,
+  "sha256": "bb3a120472b757e96dbc2f5e24b37f39f31dee3c54d785c571baf686cf71096d"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-insert.mjs",
@@ -28556,8 +28926,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-manual-edit-evidence.mjs",
-  "size": 11857,
-  "sha256": "c5a36c361c435fc023e17be16a78aaf672adb48a6a74e8177cfa775592502638"
+  "size": 12013,
+  "sha256": "00dcd9f43d5bab6d95f66d717d98fafe4249e171afd1caa2a134f5efd612177f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-poll.mjs",
@@ -28571,8 +28941,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-server.mjs",
-  "size": 68882,
-  "sha256": "96e27a4e70d173e2493a8e32732d85355eebaee5797677b29e58aecc49f701f1"
+  "size": 70004,
+  "sha256": "e3801156dc319fa7e02c55e7350f62e4656ba9f33be3199c6d8e8571dda807d8"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live-status.mjs",
@@ -28591,8 +28961,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live.mjs",
-  "size": 13617,
-  "sha256": "d59eb657dfb142fcb3fc9c159efd7ec50d62f2294eabecc6134c6cabda6d3996"
+  "size": 12909,
+  "sha256": "9188f42a93e02ec341335c3441af5de16391196efdf78710e87dd7ef0fb6cb7e"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/accept-css.mjs",
@@ -28606,8 +28976,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/browser-script-parts.mjs",
-  "size": 3185,
-  "sha256": "74e9d7cdfb5851eb827770e6c44ec4eac532522c54f51999be7a42676f6e234e"
+  "size": 3674,
+  "sha256": "2ceb3083de7fe80160f40379c0ed47220bade5e4a1964cde4ae8e745049061c5"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/completion.mjs",
@@ -28715,6 +29085,11 @@
   "sha256": "a516bc942c55b66be915619794f4ec79aadf94d6966c6fc7aee24f1fbaa60ab3"
  },
  {
+  "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/project-ignores.mjs",
+  "size": 6427,
+  "sha256": "b4088c6fbc231bc13b11804bea90a223d077d3762f3d93990c6044c7ea10d9e1"
+ },
+ {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/roots.mjs",
   "size": 20887,
   "sha256": "715e9658cb28746c126faf24bbd3cd949e1ebc5dd189eb455887544ae4efbf12"
@@ -28741,8 +29116,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/svelte-component.mjs",
-  "size": 52297,
-  "sha256": "234dae2735aae9385716416a4e958d6890ec7cb42dec2e158fe128e8856eaf97"
+  "size": 52605,
+  "sha256": "43113cab6787e30cb5b0f0442c54cdcfa58b30048c9deddf5f30065a198e0c73"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/live/sveltekit-adapter.mjs",
@@ -28776,8 +29151,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/serve-question.mjs",
-  "size": 120005,
-  "sha256": "6475a64fb5bdb6d8df635c67cad7d389b9898e733fcbad6e12f59fe832a944a2"
+  "size": 121787,
+  "sha256": "48999dd4d8e68797da20ece68618008e395f73ace6f3b8e029303153ca097785"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/impeccable/scripts/surface-brief.mjs",
@@ -31506,18 +31881,18 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 41017,
-  "sha256": "6b355f0ffc1288faed5af24ec7448c27d7b7da52dc708a75cacb3894c8488230"
+  "size": 41267,
+  "sha256": "a2b534bbba2b7cbc3797e4e36cc90bf2bdb390f09e0e7e4eac9383026e98c314"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1659,
-  "sha256": "860c82197bfe5302034ff2855013d863ee64e6183ed20cf38251386f4aea641c"
+  "sha256": "5cdcc98e39a2924543f23d1959601291c1558d1522b09cc35970c8d5efaff94a"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
-  "size": 31569,
-  "sha256": "240ad2973d140bf3a89f6f8d98b0d738c50de5f0e90bbb1b07f9df5924fec12e"
+  "size": 32302,
+  "sha256": "b5e6b764c78cdb70d7335893d982d9b0e9a0964508efb3eefa272be32a170fe8"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -31621,8 +31996,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/offline/rtk-x86_64-pc-windows-msvc.zip",
-  "size": 4184125,
-  "sha256": "9bc5acd54d35a916e4a561435963e0acf2f1a0115cf43dcfe2b719f361c8a970"
+  "size": 4234070,
+  "sha256": "26401cf663797bfcfd0d7fbf3acfa5d81a6fb384e8cac188506d69c330d37596"
  },
  {
   "path": "BUNDLED-TOOLS/offline/spookys-automod-toolkit-v1.11.2.zip",
@@ -32196,8 +32571,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/ponytail/hooks/ponytail-instructions.js",
-  "size": 5487,
-  "sha256": "23c050103f28dbe6bad953ae21d98cd06d720a20f33d4716e9de419f947d495e"
+  "size": 5643,
+  "sha256": "d0c097a928275935bdb98d1dd248a35951fbfd0a32cf53cc3f2c7ced9f779213"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/ponytail/hooks/ponytail-mode-tracker.js",
@@ -32256,8 +32631,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/ponytail/pi-extension/test/helpers.test.js",
-  "size": 7213,
-  "sha256": "4c97ba0ad9cd26c9138e513afc2a2a9fcd0179cac1ccf754be8b9ef5c673f525"
+  "size": 7426,
+  "sha256": "be0e7614ab029099b69e4cf40b3e353268780112262c9e41d6d4fd63522d1cc7"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/ponytail/plugin.yaml",
@@ -32651,8 +33026,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/docs/superpowers/plans/2026-06-10-visual-companion-auth-hardening.md",
-  "size": 23632,
-  "sha256": "7387fa4ddbc9bf071088372802c9aed6e44b224875291d2309007d76929af2f2"
+  "size": 23948,
+  "sha256": "6344ae6bfe31d47bc5d69d4be0d6e826a12a39eba0e9b349614027c0e0b1515d"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/docs/superpowers/plans/2026-06-11-visual-companion-final-hardening-fixup.md",
@@ -32741,8 +33116,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/docs/superpowers/specs/2026-06-10-visual-companion-auth-hardening-design.md",
-  "size": 8314,
-  "sha256": "8d97d0384c61c0400fb67429a4384ad989bdc11953cce160069c368ac1f7e362"
+  "size": 8726,
+  "sha256": "d31c3ae8183f4cb36f9fba3859734a8e17add24f4f66738128c4c95498819a67"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/docs/superpowers/specs/2026-06-11-visual-companion-final-hardening-fixup-design.md",
@@ -32846,13 +33221,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/skills/brainstorming/scripts/helper.js",
-  "size": 5615,
-  "sha256": "43c6d69954a46ec34a2a262bcc62a9a7e83e839c739f199cb72646d397c686e3"
+  "size": 5379,
+  "sha256": "1dab014d8e39e4cd946edfc3dafa18c808b520395c7ceccff70e649b31f98a92"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/skills/brainstorming/scripts/server.cjs",
-  "size": 25693,
-  "sha256": "2d2961ea8d11f56c5f4c3a1a68d22709efa5d7601a2246d8c880774e7e9e8412"
+  "size": 25701,
+  "sha256": "6baa9e5ee22e1205daa6dea6d4c0992b43687fc0731e22d95656620c8278131d"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/skills/brainstorming/scripts/start-server.sh",
@@ -33101,13 +33476,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/tests/brainstorm-server/auth.test.js",
-  "size": 12084,
-  "sha256": "8efa43628b582973dcc543c0768e91066cf9834292e2e724657c6801b63df062"
+  "size": 12391,
+  "sha256": "2cc7e5c9d77f7b3a25be7881ad0c2a7a544db5e69a942025389e67151ac8f947"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/tests/brainstorm-server/branding.test.js",
-  "size": 12213,
-  "sha256": "b116f645b46130a3a58867493863a1398cf5426375d695203c858c95eb5e8d02"
+  "size": 12377,
+  "sha256": "00b7cee52dfee60c8b23bb2123bdc9110b5fa676abdfd660893b85962d1fcb57"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/tests/brainstorm-server/browser-launcher.test.js",
@@ -33116,13 +33491,13 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/tests/brainstorm-server/helper.test.js",
-  "size": 8240,
-  "sha256": "9917fc944e8c5594430ba2600035ff5fd8212119b9cae2d62c75f5725de94061"
+  "size": 7287,
+  "sha256": "bf13e85975636ed80969f540480b98f8e38d4a14836ce9f0ccd448a91352aa38"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/tests/brainstorm-server/lifecycle.test.js",
-  "size": 23092,
-  "sha256": "8146fc31bd814dec0e497da6dc1c9423e4352e0fb1c3cdebd1b9db42a2ac8d8e"
+  "size": 23346,
+  "sha256": "0177fdc91e732adae1449cedc3ea00bf6b3dcdcd9209843a5577f044eb54b7bc"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/tests/brainstorm-server/package-lock.json",
@@ -33136,8 +33511,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/tests/brainstorm-server/server.test.js",
-  "size": 23860,
-  "sha256": "fd1cc628222a6fcc657461b84f85f3b50d5a9709056dc9232241f9cb4182593a"
+  "size": 23905,
+  "sha256": "5253a9d4475be73af543511d73b755a23f2c7d10629f7b81f909e1cdb074a470"
  },
  {
   "path": "BUNDLED-TOOLS/plugins/superpowers/tests/brainstorm-server/start-server.test.sh",
@@ -34456,8 +34831,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 146308,
-  "sha256": "11e570952dd609187ed3a49200dd42661ca9c63d18a2c65a653965e00c0d7718"
+  "size": 148383,
+  "sha256": "2e3793ce2181edeeedf3c6a06bb37ec0fbb721eebfaf94e047691b11a76e6396"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34532,7 +34907,7 @@
  {
   "path": "INSTALL-AIO.ps1",
   "size": 133186,
-  "sha256": "398b0857cee286a26ab1e689b2173c741b2a5d60d0b3be21523062f67fc767f7"
+  "sha256": "5522b7c858f6c6166b5ccf50bdf2b0e8974d40619cf876f2d07851f8271f235e"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -34581,8 +34956,8 @@
  },
  {
   "path": "README.md",
-  "size": 58774,
-  "sha256": "5fa66726a1cc15344a8b7a8892389d1ef2f9292b27a5eccdc6e2fa814072f37a"
+  "size": 59711,
+  "sha256": "74f0f5fddf4e1257304ce45c9e96eb863f0715edba979953318ab39030590d4b"
  },
  {
   "path": "SECURITY.md",
@@ -34592,12 +34967,12 @@
  {
   "path": "START-HERE.bat",
   "size": 729,
-  "sha256": "02bd64819f8ab4f95fe48e3cd30282ac0286727b34b89a6ddab2a65de0e3b0a7"
+  "sha256": "50c90dfca6f45109fd7fa01fdaf7efc29eae29b72ca7f26f7848827004926d3b"
  },
  {
   "path": "START-HERE.txt",
   "size": 9681,
-  "sha256": "996e9d5369ae12b96def0eeab13802303abfbe9c691b716ad58f82f7d7d607a2"
+  "sha256": "07310d191401092c84e0131e60257ca7821d53e1d9120b088607a6bb739d20cd"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -34781,8 +35156,8 @@
  },
  {
   "path": "TESTS/routing-scenarios/check_fixtures.py",
-  "size": 2530,
-  "sha256": "42dfb3315a7e537f39116cf467aaf733814733a1e0e9095b587b009c60283f6b"
+  "size": 2533,
+  "sha256": "1525bba6a96d39d4b689af84423388b7974b4cd8aa1d5396518b0fa9a548c359"
  },
  {
   "path": "TESTS/test_hermes_bootstrap.py",
@@ -34791,8 +35166,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 265125,
-  "sha256": "1fe148a13a5ea97c058c904869522f3384fa42d06ef3f6e8fdccd70b0c1421fe"
+  "size": 268099,
+  "sha256": "bf1f80cc2a6085a1166e223d6867c72a47acb03a14abc4f8c4a5b1bc35f80fe3"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -34906,8 +35281,8 @@
  },
  {
   "path": "TOOLS/UABS-Common.ps1",
-  "size": 69552,
-  "sha256": "ac886133021b7f13e15f639d092476b670a839e51eca9561351ac110bce030c6"
+  "size": 69546,
+  "sha256": "e3f6f70cf2bbc17fefbafb783bf484fa2eb44ca572de4e8ae49fcde578f9c97e"
  },
  {
   "path": "TOOLS/UABS-Mcp-Write.ps1",
@@ -34918,6 +35293,11 @@
   "path": "TOOLS/Update-From-GitHub.ps1",
   "size": 3561,
   "sha256": "be33b068d1a34420932aa2b6990e53a161339c238e47b079b359f7a69d43b9b7"
+ },
+ {
+  "path": "TOOLS/audit_catalog_versions.py",
+  "size": 7920,
+  "sha256": "4fbbc29260a3c934793fe4e07b50b50cf6b1ee42eb23aa2888f326e18709e557"
  },
  {
   "path": "TOOLS/audit_skills.py",
@@ -34997,7 +35377,7 @@
  {
   "path": "TOOLS/hooks/rtk_safe_hook.py",
   "size": 5901,
-  "sha256": "128f1c22b7df5427173bdf47ea61beee081145faf9a3669975660669783df9f6"
+  "sha256": "e39a75af50f6498a16e8fdea50f9e98d9ffe786436134a187ddf463f84b3b51c"
  },
  {
   "path": "TOOLS/hooks/ultimate-bundle.json",
@@ -35066,13 +35446,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1961,
-  "sha256": "18307bbf922465c6fd0a392853a1aa0d426cae2e9725874d4dc3cc83be3ee3fb"
+  "size": 1688,
+  "sha256": "a968720aad4cbd983e8bfd4525e887b5273c7eb2654e66e1f80c8f9a102a4692"
  },
  {
   "path": "VERSION.txt",
   "size": 7,
-  "sha256": "7fa8b55c0c08a04734408ca5ecc7340811edd09830720e0e2a8ad7aa61795798"
+  "sha256": "eab3f4c8f82b9ba68b06ed44d310f4e1eca04b3f80a84374ced6f06e1d9589ab"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -35086,8 +35466,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/THIRD-PARTY-NOTICES.md",
-  "size": 4444,
-  "sha256": "da7268e929cb5c4abe8010a1105c9f55e310f51e1d13c458e407790851e583fc"
+  "size": 4566,
+  "sha256": "e7a54a7f41c5a2ebda1c93d45b0ad8e09d7ca982c3633216d9af89ad680b3705"
  },
  {
   "path": "_CANONICAL-SKILLS/adult-character-sheet/SKILL.md",
@@ -35176,13 +35556,13 @@
  },
  {
   "path": "_CANONICAL-SKILLS/brainstorming/scripts/helper.js",
-  "size": 5615,
-  "sha256": "43c6d69954a46ec34a2a262bcc62a9a7e83e839c739f199cb72646d397c686e3"
+  "size": 5379,
+  "sha256": "1dab014d8e39e4cd946edfc3dafa18c808b520395c7ceccff70e649b31f98a92"
  },
  {
   "path": "_CANONICAL-SKILLS/brainstorming/scripts/server.cjs",
-  "size": 25693,
-  "sha256": "2d2961ea8d11f56c5f4c3a1a68d22709efa5d7601a2246d8c880774e7e9e8412"
+  "size": 25701,
+  "sha256": "6baa9e5ee22e1205daa6dea6d4c0992b43687fc0731e22d95656620c8278131d"
  },
  {
   "path": "_CANONICAL-SKILLS/brainstorming/scripts/start-server.sh",
@@ -37641,13 +38021,13 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/SKILL.md",
-  "size": 10527,
-  "sha256": "9bf6cc2c7b438ca166fc2b21afe20523dc08c34ff8e067eafac024a0555e87db"
+  "size": 10367,
+  "sha256": "0193416119479a1fee8de144bc8a2016d1a22ccded91cbea867323bceaf1976c"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/agents/impeccable_asset_producer.toml",
-  "size": 9931,
-  "sha256": "d2be0f7b066b1af4f52a9c61539e4c50deaf4b0673e2bf2b7ea429e4c02c830f"
+  "size": 6161,
+  "sha256": "e69f902dc96a63c9566f30361ced3dc83765097d9f3dd2f9cbd83ec50f6af1b3"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/agents/impeccable_documenter.toml",
@@ -37656,8 +38036,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/agents/impeccable_finish_reviewer.toml",
-  "size": 13793,
-  "sha256": "59efadb3b5a0209e052fb0d3671a633aed6c6be3cbb61db034b9a7fc12bae692"
+  "size": 15290,
+  "sha256": "b3c6137e444e2e54a853413161958c0532f332f8d8159dfe48d7e1ea5996b1f1"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/agents/impeccable_manual_edit_applier.toml",
@@ -37696,8 +38076,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/audit.native.md",
-  "size": 8362,
-  "sha256": "fc16e78aca0c183a91dac3d8876d1211fca99aa979367fcb50090d934806b2fb"
+  "size": 8357,
+  "sha256": "1b10f9ad3d3a1494ee1bbdf35bb6aa453e98defa6e1ae99177b167795054a4f1"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/bolder.md",
@@ -37726,13 +38106,13 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/critique.md",
-  "size": 45696,
-  "sha256": "ff3208d915f2bfb5af7ba3aba7066aab6fcb28829709a041fbb98bd535341b2d"
+  "size": 45920,
+  "sha256": "a763d1474f5c1125a937b5872abb1fc40b2bd44dd7d4a7701ac2147401bf4b2b"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/degraded/asset-producer.md",
-  "size": 10093,
-  "sha256": "e28c0d9e42b127ebf09762ae160b9e94a376576f66fb1d66888871467fb11884"
+  "size": 6323,
+  "sha256": "2993ce6409702ae2e01e4ee37f8f98089aeccc4877c4c9d836e161dee364b510"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/degraded/documenter.md",
@@ -37741,8 +38121,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/degraded/finish-reviewer.md",
-  "size": 13893,
-  "sha256": "c70d4bd77fe9142bbe7e3b412d3ca44443e0914bdb323577dc2acb59e8d72078"
+  "size": 15390,
+  "sha256": "5ae494910f0a7c6eca239cdd866f70833b42655ed6e2f88b8c756dfca028c1fd"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/degraded/manual-edit-applier.md",
@@ -37761,8 +38141,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/doctor.md",
-  "size": 5447,
-  "sha256": "2c110874c88f7e1509181a4b09e5214cd211021251225d365e5be486add1fd5b"
+  "size": 5463,
+  "sha256": "c7a439efd70bdc232da970d0695c60502525e5b7e882ad9d5b1f4794b00dd260"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/document.md",
@@ -37781,8 +38161,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/hooks.md",
-  "size": 13111,
-  "sha256": "18b8597f03d9ed100e09187550d5c737d6da696188b8e75289317398e7dbdf4e"
+  "size": 13310,
+  "sha256": "e61722ab3ace649d9ad016f564e3cd137926d562418ec2e3fd73de8a7e3e94d6"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/init.md",
@@ -37796,8 +38176,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/layout.md",
-  "size": 5127,
-  "sha256": "972941eabcb28681019eb57ebc8b7b1085382822db49e365118d01857ca867ed"
+  "size": 5159,
+  "sha256": "2d5eba1b9493f85c149a197fe6c4e9d015f5e68c49f24f5210a237cee4e44348"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/live-setup.md",
@@ -37811,8 +38191,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/new-work.md",
-  "size": 44091,
-  "sha256": "0213d9ed6c852ce0e9c9e1abbce29b0dd3db576669aefca76e1fb2fdb03e6946"
+  "size": 52029,
+  "sha256": "e378818dc2095c701b3affe8a6d8e46c2b7788206b5a025e67af07b75199419c"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/onboard.md",
@@ -37836,8 +38216,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/polish.md",
-  "size": 5592,
-  "sha256": "e6bbc05a9e1f905811d19401c1e6c7b97588375454e1462dbd811f803d239b07"
+  "size": 6635,
+  "sha256": "e25e675a476e08fa9dc33eecef6c0538a36fcef39c052c9728b8be9209bba124"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/quieter.md",
@@ -37846,8 +38226,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/routing.md",
-  "size": 2865,
-  "sha256": "428b75b6524906b556ebc89922ef231c5dd3b3ab5e3dc4a76272390e7e082a5e"
+  "size": 2901,
+  "sha256": "35a5cd381e2bba7ef7cfcd48c9b6316ebcf40fe9e7abb4fb212b24106e08195b"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/shape.md",
@@ -37856,13 +38236,18 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/typeset.md",
-  "size": 5222,
-  "sha256": "0b9bc45334a79da9a50efc4605502d0db6f2fd2b2c88404b134b9088625e4a98"
+  "size": 5254,
+  "sha256": "6d803447fb419ee718012f6263d2685ad462a14dc08c338392e28b79823a0553"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/reference/visualize.md",
-  "size": 16644,
-  "sha256": "1a0a68caa14cb16fbcabba663e3603ffd3337aaec4f2679f72b279bad8ce4a08"
+  "size": 11204,
+  "sha256": "9080ea9439a24e005367128389fc5b1a3f58f63d1eb4c16b4ca8dc197053c6c4"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/build-phase.mjs",
+  "size": 77334,
+  "sha256": "38006f01777542f1f111a2b4e4079d6fa406b8d27fad149138fba57eca7f287f"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/command-metadata.json",
@@ -37870,24 +38255,44 @@
   "sha256": "6bdbc3f745ceee15e10b050f109ce42bbeb53ab3c3b5239257de1d596654dee7"
  },
  {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/comp-diff.mjs",
+  "size": 21349,
+  "sha256": "943560b54fbc37e48e0e6b503cb48f6904ecce8c413ae84773a050b2850b2c08"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/comp-spec.mjs",
+  "size": 31488,
+  "sha256": "95a492b2a3ab53f5971c5af5d9ca474c6f7a01fb96a6c0b010c5f7a9baefd8ff"
+ },
+ {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/concept-seed.mjs",
-  "size": 39651,
-  "sha256": "8ea706b9aedaa2a5c8cac88cf5cf5a2252bd90ff9430f0e7c1e79bddfa50fa17"
+  "size": 45418,
+  "sha256": "b9088d654fc652a9a23e94fe7ed6c2ffeaf2e846a90972f49eecac26a8133072"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/context-signals.mjs",
-  "size": 14021,
-  "sha256": "9d882021a76d02b8492fec20334f4af66605fd186687b8de0f202e7a11e1567c"
+  "size": 14033,
+  "sha256": "c7c70735fae0834576636fb9b9c32504a7f08efc95fdc4db97a469f6ca4dd2c4"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/context.mjs",
-  "size": 58756,
-  "sha256": "26d54294f3b04710991168d751e2c4931b1ecce3c0f1c8562a495ee5223dbaac"
+  "size": 67737,
+  "sha256": "e0d4b1ee9a143438a449c4c25ec2556d299b5c13782bf0ee61335e48a3f01a65"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/critique-storage.mjs",
-  "size": 8485,
-  "sha256": "17c14fc03d9c53f7f48dfe6e8ef2a15d2a35c9b8f341ddb25720e01cc1ca68e9"
+  "size": 18703,
+  "sha256": "12f9fece61dc54c56f106c2c999a3b7f3583a378f3aa32619db3356f34a3fe75"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/data/font-index-failures.json",
+  "size": 2437,
+  "sha256": "835f19a0a3812f3652dd6979a2ce5597f654fd01f26e1b420b92d5f42b997ce4"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/data/font-index.json",
+  "size": 1100013,
+  "sha256": "47edbdfaf27073c47033d1ac7dfee881be49e2dcbda7671d1157300481dde6da"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detect-csp.mjs",
@@ -37896,13 +38301,13 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detect.mjs",
-  "size": 620,
-  "sha256": "f5dfd05ca1e314acd8ed79c6301a20a1b844f2eb6691bd63e04116a8e7efb187"
+  "size": 1235,
+  "sha256": "b2c5731c367c129e361bdfb28c4f697e84818c77e04d88ad21eeb89320f06a0e"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/browser/injected/index.mjs",
-  "size": 84358,
-  "sha256": "88d1a32a8dcd8270614749ab7d2c4ad535d726b0b12ce4305551b0ff3eb56cdf"
+  "size": 91086,
+  "sha256": "30d70ec4d1804b333be05f2448a0cc5a39b517fc8fc860d650215457dfd93402"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/cli/main.mjs",
@@ -37911,13 +38316,13 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/design-system.mjs",
-  "size": 49637,
-  "sha256": "cacf7ae83b4ccfff84ceb6ab06549b399e0ec88750f053249db65371dd302de1"
+  "size": 49814,
+  "sha256": "b6aefa5c9f4e3fea8449e1cbaa345a68570689654ade16cddc5c900659892112"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/detect-antipatterns-browser.js",
-  "size": 390675,
-  "sha256": "55b3f96bf882c6704015c3d8533c2c4987d7c4ce2669d0e15bf10e60d64b453b"
+  "size": 410092,
+  "sha256": "ef45727251c6626dd402fd6e6a30bd973b19d219e2a65549ad62c6b28dfca7fe"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/detect-antipatterns.mjs",
@@ -37926,23 +38331,23 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/engines/browser/detect-url.mjs",
-  "size": 14431,
-  "sha256": "a972cb4fc1390ba131e6cd9707b4b20aa2730ad04c43b0a9551321777c04c8e9"
+  "size": 16196,
+  "sha256": "af6d28bfb1bb2fc667f56823b9fa12d4ee56ee5b3afbea28c5b81fecb66b84dc"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/engines/regex/detect-text.mjs",
-  "size": 53313,
-  "sha256": "8e0ecc091bcecc24eb34d34dab9bcabb1057af6a6dcf34f186fb370b26e61157"
+  "size": 51795,
+  "sha256": "e2160fa496fd40a4596a68419892232e7ab56420c39952664b2c39ef1ff8a7fc"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/engines/static-html/css-cascade.mjs",
-  "size": 45985,
-  "sha256": "6809969a6e2c58992d863c23d6f2c6fb6b8ddacc503dac2ad0e5452bf2725c54"
+  "size": 46017,
+  "sha256": "5cf85f8a00b50c12c0cd0a5e2f5ad456c414cf67bc34f4a5c36eb64a7e667cc3"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/engines/static-html/detect-html.mjs",
-  "size": 13351,
-  "sha256": "481b584ccdf3ac28065dbab11f65d638e3e7a35e14c7e62bc5da3d59d2a7efd7"
+  "size": 12726,
+  "sha256": "9fedd7d3d42c51058bd491d98193abd5931ce83550269124bb788efadb7b7c97"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/engines/visual/screenshot-contrast.mjs",
@@ -37966,13 +38371,13 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/registry/antipatterns.mjs",
-  "size": 27900,
-  "sha256": "4544ccca3d7c341d878b941fbe20620750dbf9d29dd6d15e063128a1e390b345"
+  "size": 29094,
+  "sha256": "57aaf32be744db6375d604a36079bc731fa60eaa4b34bb61d00d002d56af6079"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/rules/checks.mjs",
-  "size": 254664,
-  "sha256": "e63f6adbd0893d75105e825b1656a268c512a9bc7e5f3d17d4ac70ef412d6e57"
+  "size": 265818,
+  "sha256": "760152474cf9c748ea04fd9a0b9eeca825c784af9ddbcfc5852f866c067e70bf"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/shared/color.mjs",
@@ -37981,8 +38386,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/shared/constants.mjs",
-  "size": 4675,
-  "sha256": "606f50159d56b5e972724c13933e63220696636215292e5316846426f3e12896"
+  "size": 5183,
+  "sha256": "fcf86301e635bd1591ae5d9fdbaae0696ac4bbc9d2e52d38c5c3232faa366a9f"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/shared/fonts.mjs",
@@ -37996,8 +38401,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/detector/shared/page.mjs",
-  "size": 252,
-  "sha256": "b4cef5548d84fa90d15e6b42b20be9ef74ed05e4e6e46076ec5acc61b343315c"
+  "size": 386,
+  "sha256": "0e2bc96b8bbafafb40c451771c6724db8193dd65d9b67e1912fc217291ed1945"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/doctor.mjs",
@@ -38006,18 +38411,23 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/embed-prompt.mjs",
-  "size": 7843,
-  "sha256": "4614260ccaa091bea10a6096027d2aca306160e1764765ce155aadcbe674dbc5"
+  "size": 7354,
+  "sha256": "4227f850b60a32cc6b8a167d9b49e4e00817823a1b93a9fdb9a3823345140daf"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/font-match.mjs",
+  "size": 28759,
+  "sha256": "8f8303918a92af6ddd2cdeac3344223e43d66059e5098741bf059e89b409d9c6"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/generate-image.mjs",
-  "size": 11462,
-  "sha256": "0994c7ab8bc280b9b09676bc0296ca9eea8609b00b1a48eb783486f145c0f338"
+  "size": 22797,
+  "sha256": "121d366da52fc16df6c44efd2676652ae4706196d5db1fc4c1d025335c586b7f"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/hook-admin.mjs",
-  "size": 31282,
-  "sha256": "b1a6759805eb39f117b1153c5a4e1b4691a7a9b685420fe5257e00b8d0f8c543"
+  "size": 32431,
+  "sha256": "d6f3e24b5a83f7a5c52c734e5a9cb0a888a147ab7d7f572e0773e26f2e9ed89d"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/hook-before-edit.mjs",
@@ -38026,8 +38436,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/hook-lib.mjs",
-  "size": 100372,
-  "sha256": "c556f48b547bc540f60b1c06f437777ee9b93bf256d1779d966641248cce2dd1"
+  "size": 102895,
+  "sha256": "d6d65ecfd069c632b162b23b6bf4a46e8fe0014f0caddd32725a38dbf0e80206"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/hook.mjs",
@@ -38046,13 +38456,33 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/concept-catalog.mjs",
-  "size": 19896,
-  "sha256": "7ac70294e0f429d89464ff2e0c814b70acfd5e101184d5a45b8b2a50dfaa8266"
+  "size": 19895,
+  "sha256": "b32e535296b6db3fdc613ceb585640943cc1bd8291ca4f8a5ab2077506ac5436"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/design-parser.mjs",
-  "size": 27441,
-  "sha256": "42d37e97db82ca8082033f582bcdbd341373d0cc1c6927605d1a4385f8f34131"
+  "size": 27178,
+  "sha256": "d1012667cffaf8e0d24317077dd54386ed274f49313b53346e67b00cd96aa487"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/font-fingerprint.mjs",
+  "size": 29235,
+  "sha256": "a35764b55d33d03cb0fe4dfac059306683fe3e89016bb62f4715c39deaa0f9c4"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/font-index.mjs",
+  "size": 6573,
+  "sha256": "31cb952b43055ddd93ddc7e9ee35e86f9224ff57a14285467d772963ec603fa3"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/hero-checks.mjs",
+  "size": 14926,
+  "sha256": "1315e294f713f542c2c996dbd14555d520d7484d3b5c78b3ba820042f19d44f7"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/image-metrics.mjs",
+  "size": 14207,
+  "sha256": "c4844deaeadf0fe421d95b46ca020c0f9232228ad602f176e4d5cbd691694e97"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/impeccable-config.mjs",
@@ -38070,14 +38500,29 @@
   "sha256": "2d6c37f821cb42161264068b81c4c97629a653b661403cedadb5eb23099d0acc"
  },
  {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/live-path-globs.mjs",
+  "size": 847,
+  "sha256": "f2657a25351ae5bc4d503e7257f84e014815fc562225ebf8fe15d3e277ca6f53"
+ },
+ {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/open-system-browser.mjs",
   "size": 848,
   "sha256": "3785ef4ba47bbbe176469e2536e8ef29e885f955970404f46ff34763f831bf11"
  },
  {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/png.mjs",
+  "size": 10735,
+  "sha256": "6994615c52f75af071664e0675b9cac91de39ac5ad0ecc7de4873ee0fd227926"
+ },
+ {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/provider.mjs",
   "size": 327,
   "sha256": "998c57324fdab98a0bfbd01a6099eadac7276038da961697d6069bbdeb0e5856"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/raster.mjs",
+  "size": 9876,
+  "sha256": "97038c3790f9a76e0dc09a8aa967e0679778a6015723873715a577d21ac7172a"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/lib/roll-selection.mjs",
@@ -38121,23 +38566,28 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-accept.mjs",
-  "size": 35874,
-  "sha256": "f823b4f71a6ae21ffb8b52aa3a78768f0bee551329cf76ad4144e4680a05c154"
+  "size": 36104,
+  "sha256": "e89aff2150572b085387beac8f27b76ab704291f9d3a9886fd10c026c8bbb3fb"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-browser-dom.js",
-  "size": 4250,
-  "sha256": "bcfa4022e741f8034b841aed76b9ea3f6a64a8e08e4dfa43ba99f8be65a73393"
+  "size": 4917,
+  "sha256": "de1b7404f4cdfd7b515196afb17b74b1980f0bc88cb8681ae93a76ca48ec7bdb"
+ },
+ {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/live-browser-ignores.js",
+  "size": 10346,
+  "sha256": "c1cb6877ca99a0c1b38ba0c7d59f32702d3022f6821d8045f7133f7c40b6362f"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-browser-session.js",
-  "size": 3297,
-  "sha256": "dddcb8b941f7460aa6a134f7d456b1820747172c12e01de36dab3265b1065cff"
+  "size": 4090,
+  "sha256": "edddeb3fad88adec9a055b1bf9d5c75418cbe97a13b1a7f6765e73249e482563"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-browser.js",
-  "size": 500861,
-  "sha256": "9aeb60163add083cd4701a4c70be38b9008afbd407a4f71e0e952db0668b433a"
+  "size": 513801,
+  "sha256": "24241e41e394f18cc00a788e9b44117424b25dbed1391b2e8152ec8f395ffccf"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-commit-manual-edits.mjs",
@@ -38161,8 +38611,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-inject.mjs",
-  "size": 18536,
-  "sha256": "0e1bc4e9a43b74d4b4571ff2191f813b8716346a4bcafe7d42bd84a47397d92e"
+  "size": 17585,
+  "sha256": "bb3a120472b757e96dbc2f5e24b37f39f31dee3c54d785c571baf686cf71096d"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-insert.mjs",
@@ -38171,8 +38621,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-manual-edit-evidence.mjs",
-  "size": 11857,
-  "sha256": "c5a36c361c435fc023e17be16a78aaf672adb48a6a74e8177cfa775592502638"
+  "size": 12013,
+  "sha256": "00dcd9f43d5bab6d95f66d717d98fafe4249e171afd1caa2a134f5efd612177f"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-poll.mjs",
@@ -38186,8 +38636,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-server.mjs",
-  "size": 68882,
-  "sha256": "96e27a4e70d173e2493a8e32732d85355eebaee5797677b29e58aecc49f701f1"
+  "size": 70004,
+  "sha256": "e3801156dc319fa7e02c55e7350f62e4656ba9f33be3199c6d8e8571dda807d8"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live-status.mjs",
@@ -38206,8 +38656,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live.mjs",
-  "size": 13617,
-  "sha256": "d59eb657dfb142fcb3fc9c159efd7ec50d62f2294eabecc6134c6cabda6d3996"
+  "size": 12909,
+  "sha256": "9188f42a93e02ec341335c3441af5de16391196efdf78710e87dd7ef0fb6cb7e"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live/accept-css.mjs",
@@ -38221,8 +38671,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live/browser-script-parts.mjs",
-  "size": 3185,
-  "sha256": "74e9d7cdfb5851eb827770e6c44ec4eac532522c54f51999be7a42676f6e234e"
+  "size": 3674,
+  "sha256": "2ceb3083de7fe80160f40379c0ed47220bade5e4a1964cde4ae8e745049061c5"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live/completion.mjs",
@@ -38330,6 +38780,11 @@
   "sha256": "a516bc942c55b66be915619794f4ec79aadf94d6966c6fc7aee24f1fbaa60ab3"
  },
  {
+  "path": "_CANONICAL-SKILLS/impeccable/scripts/live/project-ignores.mjs",
+  "size": 6427,
+  "sha256": "b4088c6fbc231bc13b11804bea90a223d077d3762f3d93990c6044c7ea10d9e1"
+ },
+ {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live/roots.mjs",
   "size": 20887,
   "sha256": "715e9658cb28746c126faf24bbd3cd949e1ebc5dd189eb455887544ae4efbf12"
@@ -38356,8 +38811,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live/svelte-component.mjs",
-  "size": 52297,
-  "sha256": "234dae2735aae9385716416a4e958d6890ec7cb42dec2e158fe128e8856eaf97"
+  "size": 52605,
+  "sha256": "43113cab6787e30cb5b0f0442c54cdcfa58b30048c9deddf5f30065a198e0c73"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/live/sveltekit-adapter.mjs",
@@ -38391,8 +38846,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/serve-question.mjs",
-  "size": 120005,
-  "sha256": "6475a64fb5bdb6d8df635c67cad7d389b9898e733fcbad6e12f59fe832a944a2"
+  "size": 121787,
+  "sha256": "48999dd4d8e68797da20ece68618008e395f73ace6f3b8e029303153ca097785"
  },
  {
   "path": "_CANONICAL-SKILLS/impeccable/scripts/surface-brief.mjs",
@@ -41021,8 +41476,8 @@
  },
  {
   "path": "docs/TOOL-EVALUATIONS.md",
-  "size": 27011,
-  "sha256": "2ef2a328137b244d7c8a7e1f9a53286386680abc889febb6e15484f0e1679f55"
+  "size": 27631,
+  "sha256": "a7681dc94cbec5ffca80ac4ec728950066bf18a2675de44b8f0628da244986c4"
  },
  {
   "path": "docs/history/FINAL-AUDIT-v5.0.0.md",
@@ -41558,5 +42013,10 @@
   "path": "docs/history/V8.7.8-CHANGELOG.md",
   "size": 1491,
   "sha256": "06ba30294dedf2a8eb84cf6b5a9affea4bd3be34fe18446f7bdeabb633e1f26d"
+ },
+ {
+  "path": "docs/history/V8.7.9-CHANGELOG.md",
+  "size": 2517,
+  "sha256": "313592674e0009b3a63dda25f4b808035a24bd3a96e412a2cc5ac31563425083"
  }
 ]

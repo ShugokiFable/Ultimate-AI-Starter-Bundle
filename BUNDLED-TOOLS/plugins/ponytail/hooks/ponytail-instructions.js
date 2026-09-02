@@ -29,7 +29,9 @@ function filterSkillBodyForMode(body, mode) {
       // this, an ordinary rule bullet that happens to start with a mode word
       // (e.g. "- Full: ...") is silently dropped in every other mode — it looks
       // like a worked example but is really prose meant to survive verbatim.
-      const exampleLabel = line.match(/^-\s*([^:]+):\s*"/);
+      // The first label character cannot be whitespace, so the two repeats do
+      // not overlap and a long malformed bullet stays linear-time.
+      const exampleLabel = line.match(/^-\s*([^\s:][^:]*):[ \t]*"/);
       if (exampleLabel) {
         const labelMode = normalizeMode(exampleLabel[1].trim());
         if (labelMode) return labelMode === effectiveMode;

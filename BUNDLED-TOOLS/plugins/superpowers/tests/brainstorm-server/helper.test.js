@@ -85,7 +85,7 @@ console.log('\n--- Reconnect state machine (mocked browser) ---');
 // Drive helper.js's browser code against mocked DOM/WebSocket/timers/clock so we
 // can exercise the actual reconnect/status/tombstone behaviour, not just grep it.
 function makeEnv() {
-  const state = { now: 1000, timers: [], reloads: 0, replacements: [], appended: [], sessionKey: 'stored-key-abc' };
+  const state = { now: 1000, timers: [], reloads: 0, replacements: [], appended: [] };
   const sockets = [];
   const statusEl = { textContent: '', style: { setProperty() {} } };
   class FakeWS {
@@ -102,8 +102,7 @@ function makeEnv() {
         host: 'localhost:7777',
         reload() { state.reloads++; },
         replace(url) { state.replacements.push(url); }
-      },
-      sessionStorage: { getItem: (key) => key === 'brainstorm-session-key' ? state.sessionKey : null }
+      }
     },
     document: {
       querySelector: (s) => s === '.status' ? statusEl : null,
@@ -131,16 +130,8 @@ function makeEnv() {
   };
 }
 
-test('uses sessionStorage key in the WebSocket URL when present', () => {
+test('uses the cookie-authenticated WebSocket URL without exposing a key to JavaScript', () => {
   const e = makeEnv();
-  e.state.sessionKey = 'stored-key-abc';
-  e.boot();
-  assert.strictEqual(e.sockets[0].url, 'ws://localhost:7777/?key=stored-key-abc');
-});
-
-test('uses cookie-only WebSocket URL when no sessionStorage key is present', () => {
-  const e = makeEnv();
-  e.state.sessionKey = null;
   e.boot();
   assert.strictEqual(e.sockets[0].url, 'ws://localhost:7777');
 });
@@ -171,24 +162,12 @@ test('shows the tombstone and Disconnected after the grace period', () => {
   assert.strictEqual(e.state.appended.length, 1, 'tombstone appended exactly once');
 });
 
-test('rebootstraps with stored key when a tombstoned connection comes back', () => {
+test('reloads through the authenticated cookie when a tombstoned connection comes back', () => {
   const e = makeEnv(); e.boot();
   e.last().open(); e.last().close();
   e.advance(20000); e.fireReconnect(); e.last().close(); // tombstone now shown
   assert.deepStrictEqual(e.state.replacements, []);
   e.fireReconnect(); e.last().open();                    // server back (e.g. same-port restart)
-  assert.strictEqual(e.state.reloads, 0, 'stored-key recovery should not reload bare /');
-  assert.deepStrictEqual(e.state.replacements, ['/?key=stored-key-abc']);
-});
-
-test('reloads to recover when tombstoned and no sessionStorage key is present', () => {
-  const e = makeEnv();
-  e.state.sessionKey = null;
-  e.boot();
-  e.last().open(); e.last().close();
-  e.advance(20000); e.fireReconnect(); e.last().close(); // tombstone now shown
-  assert.strictEqual(e.state.reloads, 0);
-  e.fireReconnect(); e.last().open();                    // server back (e.g. cookie-only page)
   assert.strictEqual(e.state.reloads, 1, 'reloads once on recovery');
   assert.deepStrictEqual(e.state.replacements, []);
 });

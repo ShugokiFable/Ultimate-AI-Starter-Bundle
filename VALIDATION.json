@@ -1,8 +1,8 @@
 {
   "pack": "Ultimate AI Starter Bundle",
-  "version": "8.7.8",
-  "generated": "2026-09-01T15:44:20Z",
-  "release_tag": "v8.7.8",
+  "version": "8.7.9",
+  "generated": "2026-09-02T15:13:34Z",
+  "release_tag": "v8.7.9",
   "canonical_skills": 167,
   "provider_trees": 5,
   "registry_entries": 167,
@@ -19,6 +19,6 @@
     "TESTS/Test-McpProfiles.ps1",
     "TOOLS/mcp_handshake.py --selftest"
   ],
-  "runtime_status": "v8.7.8 pre-push validation passed: the full Windows pack gate with all five live provider trees, MCP-profile and provider-sync gates, all 121 release contracts, five Hermes bootstrap cases, version synchronization, RTK and Hermes hook self-tests, offline-asset hash verification, and a successful all-five-provider OnlineLatest reinstall. All 15 always-on MCP initialize/tools-list handshakes passed (context7, official GitHub and Headroom across Claude, Codex, Grok, Kimi and Hermes); installed-state accounting is 167/167 for every provider and the final doctor passed. Upgrade-path falsification recreated an older Hermes-private CodeBurn and proved the installer removes it only after the exact active catalog version is installed. Build, extracted-artifact, exact-SHA CI and published-asset evidence are produced after this file is committed.",
+  "runtime_status": "v8.7.9 candidate validation covers all five generated provider trees, 123 release contracts, the full Windows pack gate, version and manifest consistency, RTK 0.47.0 corpus/rewrite checks, Superpowers auth/WebSocket regressions, Impeccable 4.1.3 syntax checks, Blender MCP 1.9.1 initialize/tools-list with telemetry off and safe mode on, and live catalog freshness across npm, PyPI and GitHub. The final all-provider reinstall, installed-state doctor, exact-SHA CI/CodeQL, build, publication and downloaded-asset byte verification are completed after this file is committed.",
   "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

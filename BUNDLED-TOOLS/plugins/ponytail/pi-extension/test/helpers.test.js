@@ -149,3 +149,8 @@ test("filterSkillBodyForMode keeps rule bullets that contain a colon", () => {
   assert.ok(!filtered.includes('lite: "Done'));
   assert.ok(!filtered.includes('ultra: "No cache'));
 });
+
+test("filterSkillBodyForMode handles a long malformed bullet without changing it", () => {
+  const body = `- ${" ".repeat(100_000)}not-an-example`;
+  assert.equal(filterSkillBodyForMode(body, "full"), body);
+});

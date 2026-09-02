@@ -1,5 +1,10 @@
 # Visual Companion Auth Hardening Implementation Plan
 
+> **UABS 2026-09-02 security note:** This is a historical implementation plan,
+> not current operating guidance. The shipped bootstrap keeps the bearer key
+> out of page JavaScript and `sessionStorage`, sets an encoded HttpOnly cookie,
+> redirects to `/`, and authenticates same-origin WebSockets with that cookie.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Harden the brainstorming visual companion auth and reconnect flow while preserving trusted same-origin screen JavaScript and future vendored UI libraries.

@@ -245,23 +245,23 @@
         "owner": "pbakaus"
       },
       "name": "Impeccable",
-      "version": "3.6.0",
-      "skill_version": "4.1.2",
+      "version": "3.6.1",
+      "skill_version": "4.1.3",
       "skill_asset": "universal.zip",
-      "skill_asset_sha256": "5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c",
+      "skill_asset_sha256": "fdcb41a24ddfb613786e3141bc7bb8466a406ffbd437a2e302f4ca70181bed9f",
       "offline_asset": null,
       "license": "Apache-2.0",
       "required_for": [
         "ui-quality",
         "frontend-design"
       ],
-      "npm_spec": "impeccable@3.6.0",
-      "npm_integrity": "sha512-nysc6/2OHTWqLrcSxTxZk4r4QMufhU8NTIuG2ic6p5zzyZe45AWBX3/18OA5S88pCWq+4z8pKsjUxhAM990RKg==",
+      "npm_spec": "impeccable@3.6.1",
+      "npm_integrity": "sha512-1PbJcM9jg+OXj83E7u3ckJnalg2KuIXAvVlqSNJdwdR8Llh8npSjMcl222EgP/9GhsX+w2FW2w8vdJ7GHMghow==",
       "npm_args": [
         "--omit=optional",
         "--ignore-scripts"
       ],
-      "scope_note": "The cross-provider skill is vendored from the official skill-v4.1.2 universal.zip and bound to its published SHA-256. The executable detector is the actually published npm 3.6.0 package, pinned by npm integrity. Optional Puppeteer is omitted: Playwright/browser profiles already own live rendering, and downloading a second browser would be duplication. Lifecycle scripts are disabled. UABS removes upstream self-update/pin paths so provider skill trees keep one writer. Zero MCP schemas, daemon, account or key."
+      "scope_note": "The cross-provider skill is vendored from the official skill-v4.1.3 universal.zip and bound to its published SHA-256. The executable detector is the actually published npm 3.6.1 package, pinned by npm integrity. Optional Puppeteer is omitted: Playwright/browser profiles already own live rendering, and downloading a second browser would be duplication. Lifecycle scripts are disabled. UABS removes upstream self-update/pin paths and generated hook cache so provider skill trees keep one writer. Zero MCP schemas, daemon, account or key."
     },
     {
       "install": "bundle-source",
@@ -379,7 +379,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "@playwright/mcp@0.0.79"
+        "@playwright/mcp@0.0.80"
       ],
       "extra_args_env": "PLAYWRIGHT_MCP_EXECUTABLE_PATH",
       "extra_args_template": [
@@ -393,7 +393,7 @@
         "Kimi",
         "Hermes"
       ],
-      "version": "0.0.79",
+      "version": "0.0.80",
       "runtimes": [
         "node22"
       ],
@@ -402,7 +402,7 @@
         "browser-automation"
       ],
       "offline_asset": null,
-      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly. BROWSER CHOICE: with no flags, playwright-mcp defaults to the Google Chrome channel and prompts you to install Chrome. To use your own browser (Opera GX, Edge, Brave, Vivaldi, ...), set user env PLAYWRIGHT_MCP_EXECUTABLE_PATH to the browser exe BEFORE running the installer - the wiring appends --executable-path automatically. Example (Opera GX): setx PLAYWRIGHT_MCP_EXECUTABLE_PATH \"%LOCALAPPDATA%\\Programs\\Opera GX\\opera.exe\". To change later, edit the args in your provider's MCP config (Grok/Codex config.toml, Kimi ~/.kimi-code/mcp.json). Pinned, not @latest: an unpinned npx server can change its tool surface mid-session, and npx will happily reuse a broken cache."
+      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly. Measured 2026-09-02: 24 tools, 18,502 schema bytes, ~4,626 tokens per enabled turn. BROWSER CHOICE: with no flags, playwright-mcp defaults to the Google Chrome channel and prompts you to install Chrome. To use your own browser (Opera GX, Edge, Brave, Vivaldi, ...), set user env PLAYWRIGHT_MCP_EXECUTABLE_PATH to the browser exe BEFORE running the installer - the wiring appends --executable-path automatically. Example (Opera GX): setx PLAYWRIGHT_MCP_EXECUTABLE_PATH \"%LOCALAPPDATA%\\Programs\\Opera GX\\opera.exe\". To change later, edit the args in your provider's MCP config (Grok/Codex config.toml, Kimi ~/.kimi-code/mcp.json). Pinned, not @latest: an unpinned npx server can change its tool surface mid-session, and npx will happily reuse a broken cache."
     },
     {
       "id": "firecrawl-mcp",
@@ -611,7 +611,7 @@
       "kind": "mcp-npx",
       "mcp": true,
       "license": "MIT",
-      "version": "4.19.1",
+      "version": "4.20.0",
       "github": {
         "owner": "shadcn-ui",
         "repo": "ui"
@@ -620,7 +620,7 @@
       "npx_command": "npx",
       "npx_args": [
         "-y",
-        "shadcn@4.19.1",
+        "shadcn@4.20.0",
         "mcp"
       ],
       "profile": "web",
@@ -629,7 +629,7 @@
       "required_for": [
         "component-registry"
       ],
-      "scope_note": "Resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only."
+      "scope_note": "Resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only. Measured 2026-09-02: 7 tools, 4,495 schema bytes, ~1,124 tokens per enabled turn."
     },
     {
       "id": "blender-mcp",
@@ -637,7 +637,7 @@
       "kind": "mcp-uvx",
       "mcp": true,
       "license": "MIT",
-      "version": "1.9.0",
+      "version": "1.9.1",
       "github": {
         "owner": "ahujasid",
         "repo": "blender-mcp"
@@ -645,7 +645,7 @@
       "install": "mcp-uvx",
       "npx_command": "uvx",
       "npx_args": [
-        "blender-mcp@1.9.0"
+        "blender-mcp@1.9.1"
       ],
       "profile": "engine-blender",
       "auto_register": false,
@@ -653,7 +653,7 @@
       "required_for": [
         "blender-scene-control"
       ],
-      "scope_note": "Talks to an addon inside a running Blender. Pinned: `uvx blender-mcp` was version-free through 7.9.6, and an unpinned invocation can change its tool surface mid-session. `uvx blender-mcp@1.9.0 install-addon` places the addon, but ENABLING it is inside the editor and cannot be done from outside that process -- so the profile prints the step rather than claiming it ran it. Note the difference between 'the MCP executable starts' and 'the addon is connected': the server answers initialize with no Blender running at all, and only a tool call that reaches the scene proves the second. Blender is discovered from %APPDATA%\\Blender Foundation, which Blender creates on first run whatever the install source -- 7.9.6 carried a maintainer's own Steam drive path here, which could never match on another machine. Measured 2026-08-31: 1.9.0 answers initialize/tools-list with 28 tools and 29,154 schema bytes (~7,288 tokens per turn), up from 25 tools and 24,757 bytes in 1.8.7. An unconfigured server posted an anonymous startup event to Supabase before Blender connected. The engine-blender profile now writes BLENDER_MCP_DISABLE_TELEMETRY=true; the same real probe then logged the supported opt-out and no HTTP request."
+      "scope_note": "Talks to an addon inside a running Blender. Pinned: `uvx blender-mcp` was version-free through 7.9.6, and an unpinned invocation can change its tool surface mid-session. `uvx blender-mcp@1.9.1 install-addon` places the addon, but ENABLING it is inside the editor and cannot be done from outside that process -- so the profile prints the step rather than claiming it ran it. Note the difference between 'the MCP executable starts' and 'the addon is connected': the server answers initialize with no Blender running at all, and only a tool call that reaches the scene proves the second. Blender is discovered from %APPDATA%\\Blender Foundation, which Blender creates on first run whatever the install source -- 7.9.6 carried a maintainer's own Steam drive path here, which could never match on another machine. Measured 2026-09-02 with telemetry disabled and safe mode enabled: 1.9.1 answers initialize/tools-list with 28 tools and 29,274 schema bytes (~7,318 tokens per enabled turn). The profile writes BLENDER_MCP_DISABLE_TELEMETRY=true and BLENDER_MCP_SAFE_MODE=true. Safe mode keeps normal bpy/bmesh/mathutils scene, render, save and import/export work while rejecting eval/exec/open, os/subprocess/network, persistence hooks and external .blend datablock loading before code reaches Blender."
     },
     {
       "id": "godot-mcp",
@@ -708,7 +708,7 @@
       "name": "RTK (Rust Token Killer)",
       "kind": "cli-optional",
       "license": "Apache-2.0",
-      "version": "0.46.0",
+      "version": "0.47.0",
       "github": {
         "owner": "rtk-ai",
         "repo": "rtk"
@@ -748,7 +748,7 @@
         ],
         "broad_upstream_hook": false
       },
-      "scope_note": "CLI output filter with zero standing schema tokens. GIT CORPUS, measured on this repo AT rtk 0.46.0 against pinned refs: git diff v8.6.1..v8.6.5 430,285 -> 54,251 bytes (87%), git log v8.6.1..v8.6.5 14,250 -> 1,661 (88%), git diff v8.6.4..v8.6.5 33,453 -> 24,977 (25%), and git log --stat -20 128,145 -> 128,145 (0%). Those are summaries, not lossless replacements: on the larger diff RTK retained 361 of 5,856 changed lines, with a 5,531-line multiset delta. Exact git status is different: a fixture covering staged, unstaged, deleted, renamed, Unicode and untracked paths was line-identical 5/5, while default status fell 551 -> 145 bytes. NON-GIT CORPUS measured 2026-08-27: rtk test kept the failure at about 93% saved; excluding truncating rows, the aggregate was 7.4% against git's 85.2%. TRUNCATION IS NOT SAVING: rtk json returned one of 5,425 array rows plus `... +5424 more`. rtk find works with a simple -name but breaks on compound predicates; rtk-ai/rtk#3410 reports its unconditional rewrite also intercepts find -delete/-exec. Archive correction: rtk test writes a complete tee for the measured 5.4 KB run and prints its path, but RTK documents a 1 MB raw tee cap. WINDOWS INTEGRATION, re-probed 2026-08-31: upstream rewrite catches lossy diff/log/show, broken find, cat/read, grep, curl, gh, and mutating git add/commit/push. Therefore broad upstream init and Hermes rtk-rewrite stay off. The bundle installs RTK by default and wires its own allowlist: exact standalone git status plus standalone human-facing pytest, cargo test and go test. Machine-readable output, pipes/redirection, all mutating Git, diff/show/log/find/search/read/curl/gh stay raw. Claude, Grok and Hermes receive the executable hook; Codex and Kimi receive the same narrow instruction because no trusted command-mutation hook is established there. Telemetry remains opt-in."
+      "scope_note": "CLI output filter with zero standing schema tokens. GIT CORPUS, measured on this repo AT rtk 0.47.0 against pinned refs: git diff v8.6.1..v8.6.5 430,285 -> 55,870 bytes (87%), git log v8.6.1..v8.6.5 14,250 -> 1,658 (88%), git diff v8.6.4..v8.6.5 33,453 -> 26,820 (20%), and git log --stat -20 v8.6.5 102,301 -> 102,301 (0%). Those are summaries, not lossless replacements: on the larger diff RTK retained 341 of 5,856 changed lines and omitted 5,515. Exact short status is different: a fixture covering staged, unstaged, deleted, renamed, Unicode and untracked paths was line-identical 5/5. NON-GIT CORPUS measured at 0.46.0 on 2026-08-27: rtk test kept the failure at about 93% saved; excluding truncating rows, the aggregate was 7.4% against git's 85.2%. TRUNCATION IS NOT SAVING: rtk json returned one of 5,425 array rows plus `... +5424 more`. rtk find works with a simple -name but breaks on compound predicates; rtk-ai/rtk#3410 reports its unconditional rewrite also intercepts find -delete/-exec. Archive correction: rtk test writes a complete tee for the measured 5.4 KB run and prints its path, but RTK documents a 1 MB raw tee cap. WINDOWS INTEGRATION, re-probed at 0.47.0 on 2026-09-02: upstream rewrite still catches lossy diff/log/show, broken find, cat/read, grep, curl, gh, and mutating git add/commit/push. Therefore broad upstream init and Hermes rtk-rewrite stay off. The bundle installs RTK by default and wires its own allowlist: exact standalone git status plus standalone human-facing pytest, cargo test and go test. Machine-readable output, pipes/redirection, all mutating Git, diff/show/log/find/search/read/curl/gh stay raw. Claude, Grok and Hermes receive the executable hook; Codex and Kimi receive the same narrow instruction because no trusted command-mutation hook is established there. Telemetry remains opt-in."
     },
     {
       "id": "omni",
@@ -825,7 +825,7 @@
       "scope_note": "A proxy MCP. It registers ONE server carrying 11 meta-tools and puts every other server behind on-demand discovery: search_tools by intent, get_tool_details for one schema, use_tool to call it. Measured 2026-08-27: 11 tools, 11,386 bytes, ~2,846 tokens per turn -- and that figure does NOT grow as more servers go behind it. The comparison that matters: houseCARL wired directly is 45 tools, 167,072 bytes, 41,768 tokens on EVERY turn, and Claude, Codex, Grok and Kimi cannot filter individual tools the way Hermes can, so on those four it is all 45 or nothing. Proven end to end against this pack's own houseCARL on 2026-08-27: search_tools('list the plugins in the active load order') -> get_tool_details (3,652 chars, ~913 tokens for that ONE schema) -> use_tool returned live data from the shim (2,999 mods, 2,995 plugins). Startup 1.2s, search 400ms, detail 200ms. NOT wired into a profile, and the reason is specific rather than cautious: the router reads its own config at %USERPROFILE%\\.super-mcp\\config.json, so enabling it means this pack writing and preserving a THIRD-PARTY tool's config file -- a second config writer with its own merge obligations, on a 24-star dependency. The measurement is what ships here; the wiring is its own release. One caveat to carry into that decision: BM25 ranking returned housecarl_merge_plugins FIRST for that read-only query, with the correct housecarl_load_order_status third. Discovery works, but the top hit is not automatically the safe one."
     }
   ],
-  "pack_version": "8.7.8",
+  "pack_version": "8.7.9",
   "updated_utc": "2026-08-31",
   "providers": {
     "Grok": {
@@ -904,7 +904,7 @@
   "provider_config_schemas": {
     "Hermes": 39
   },
-  "catalog_version": "8.7.8",
+  "catalog_version": "8.7.9",
   "updated": "2026-08-31",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

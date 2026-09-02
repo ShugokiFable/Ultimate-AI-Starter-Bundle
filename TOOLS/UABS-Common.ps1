@@ -1,6 +1,6 @@
 ﻿# UABS-Common.ps1 - shared helpers for Ultimate AI Starter Bundle AIO installer
 $script:UabsPackRoot = $null
-$script:UabsHeaders = @{ 'User-Agent' = 'Ultimate-AI-Starter-Bundle-AIO/8.0.0' }
+$script:UabsHeaders = @{ 'User-Agent' = 'Ultimate-AI-Starter-Bundle-AIO' }
 
 function Get-UabsStateRoot {
   $base = $env:LOCALAPPDATA

@@ -16,15 +16,19 @@ const { spawn } = require('child_process');
 const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const assert = require('assert');
 
 const SERVER_PATH = path.join(__dirname, '../../skills/brainstorming/scripts/server.cjs');
 const TEST_PORT = 3335;
-const TEST_DIR = '/tmp/brainstorm-auth-test';
+const TEST_DIR = path.join(os.tmpdir(), 'brainstorm-auth-test');
 const CONTENT_DIR = path.join(TEST_DIR, 'content');
-const TOKEN = 'testtoken-0123456789abcdef0123456789abcdef';
+// Deliberately contains a script terminator. The token must remain valid auth
+// material without ever becoming executable HTML or an invalid cookie value.
+const TOKEN = 'testtoken-0123456789abcdef</script><script>alert(1)</script>';
 const COOKIE_NAME = `brainstorm-key-${TEST_PORT}`;
+const COOKIE_VALUE = encodeURIComponent(TOKEN);
 const EXPECTED_SECURITY_HEADERS = {
   'referrer-policy': 'no-referrer',
   'cache-control': 'no-store',
@@ -43,7 +47,7 @@ async function sleep(ms) {
 
 // Raw HTTP GET with optional key query and Cookie header.
 function get(pathname, { key, cookie } = {}) {
-  const url = `http://localhost:${TEST_PORT}${pathname}` + (key !== undefined ? `?key=${key}` : '');
+  const url = `http://localhost:${TEST_PORT}${pathname}` + (key !== undefined ? `?key=${encodeURIComponent(key)}` : '');
   const headers = {};
   if (cookie) headers['Cookie'] = cookie;
   return new Promise((resolve, reject) => {
@@ -57,7 +61,7 @@ function get(pathname, { key, cookie } = {}) {
 
 // Try to open a WebSocket; resolve 'opened' or 'rejected'.
 function wsConnect({ key, cookie, origin } = {}) {
-  const url = `ws://localhost:${TEST_PORT}/` + (key !== undefined ? `?key=${key}` : '');
+  const url = `ws://localhost:${TEST_PORT}/` + (key !== undefined ? `?key=${encodeURIComponent(key)}` : '');
   const headers = {};
   if (cookie) headers['Cookie'] = cookie;
   if (origin) headers['Origin'] = origin;
@@ -85,12 +89,12 @@ function assertSecurityHeaders(headers) {
   }
 }
 
-function runBootstrapScript(html, sessionStorage) {
+function runBootstrapScript(html) {
   const match = html.match(/<script>\n([\s\S]*?)\n<\/script>/);
   assert(match, 'bootstrap response should contain a script block');
   const replacements = [];
   const location = { replace(url) { replacements.push(url); } };
-  new Function('sessionStorage', 'location', match[1])(sessionStorage, location);
+  new Function('location', match[1])(location);
   return replacements;
 }
 
@@ -147,7 +151,7 @@ async function runTests() {
 
     await test('server-started url includes the session key', () => {
       const msg = serverStartedMessage(initialStdout);
-      assert(msg.url.includes(`key=${TOKEN}`), `url should carry the key, got: ${msg.url}`);
+      assert(msg.url.includes(`key=${encodeURIComponent(TOKEN)}`), `url should carry the encoded key, got: ${msg.url}`);
     });
 
     console.log('\n--- HTTP / gate ---');
@@ -175,27 +179,23 @@ async function runTests() {
     });
 
     await test('GET / with wrong key and valid cookie is rejected with 403', async () => {
-      const res = await get('/', { key: 'wrong-token', cookie: `${COOKIE_NAME}=${TOKEN}` });
+      const res = await get('/', { key: 'wrong-token', cookie: `${COOKIE_NAME}=${COOKIE_VALUE}` });
       assert.strictEqual(res.status, 403, 'explicit wrong query key must not fall back to cookie auth');
     });
 
     await test('GET / with valid query returns bootstrap instead of screen content', async () => {
       const res = await get('/', { key: TOKEN });
       assert.strictEqual(res.status, 200);
-      assert(res.body.includes('sessionStorage'), 'bootstrap should store the session key in tab storage');
       assert(res.body.includes('location.replace'), 'bootstrap should navigate to the bare root URL');
+      assert(!res.body.includes('sessionStorage'), 'bootstrap must not expose the session key to page JavaScript');
+      assert(!res.body.includes(TOKEN), 'bootstrap must not reflect the raw session key');
       assert(!res.body.includes('Secret screen'), 'bootstrap must not serve screen HTML at the keyed URL');
     });
 
-    await test('bootstrap strips the key URL even when sessionStorage write fails', async () => {
+    await test('bootstrap strips the key URL without storing the secret in JavaScript', async () => {
       const res = await get('/', { key: TOKEN });
       assert.strictEqual(res.status, 200);
-      let replacements;
-      assert.doesNotThrow(() => {
-        replacements = runBootstrapScript(res.body, {
-        setItem() { throw new Error('storage blocked'); }
-        });
-      });
+      const replacements = runBootstrapScript(res.body);
       assert.deepStrictEqual(replacements, ['/']);
     });
 
@@ -208,13 +208,13 @@ async function runTests() {
     await test('valid key load sets an HttpOnly SameSite=Strict cookie', async () => {
       const res = await get('/', { key: TOKEN });
       const setCookie = (res.headers['set-cookie'] || []).join('; ');
-      assert(setCookie.includes(`${COOKIE_NAME}=${TOKEN}`), `should set ${COOKIE_NAME}`);
+      assert(setCookie.includes(`${COOKIE_NAME}=${COOKIE_VALUE}`), `should set an encoded ${COOKIE_NAME}`);
       assert(/HttpOnly/i.test(setCookie), 'cookie should be HttpOnly');
       assert(/SameSite=Strict/i.test(setCookie), 'cookie should be SameSite=Strict');
     });
 
     await test('GET / with valid cookie (no query key) serves the screen', async () => {
-      const res = await get('/', { cookie: `${COOKIE_NAME}=${TOKEN}` });
+      const res = await get('/', { cookie: `${COOKIE_NAME}=${COOKIE_VALUE}` });
       assert.strictEqual(res.status, 200);
       assert(res.body.includes('Secret screen'), 'cookie-authenticated bare root should serve the screen');
       assert(!res.body.includes("location.replace('/');"), 'bare screen response should not be the bootstrap page');
@@ -254,14 +254,14 @@ async function runTests() {
     });
 
     await test('WS upgrade with valid cookie opens', async () => {
-      const { outcome, ws } = await wsConnect({ cookie: `${COOKIE_NAME}=${TOKEN}` });
+      const { outcome, ws } = await wsConnect({ cookie: `${COOKIE_NAME}=${COOKIE_VALUE}` });
       ws.close();
       assert.strictEqual(outcome, 'opened');
     });
 
     await test('WS upgrade with valid cookie and same-origin Origin opens', async () => {
       const { outcome, ws } = await wsConnect({
-        cookie: `${COOKIE_NAME}=${TOKEN}`,
+        cookie: `${COOKIE_NAME}=${COOKIE_VALUE}`,
         origin: `http://localhost:${TEST_PORT}`
       });
       ws.close();
@@ -273,7 +273,7 @@ async function runTests() {
       if (fs.existsSync(eventsFile)) fs.unlinkSync(eventsFile);
 
       const { outcome, ws } = await wsConnect({
-        cookie: `${COOKIE_NAME}=${TOKEN}`,
+        cookie: `${COOKIE_NAME}=${COOKIE_VALUE}`,
         origin: 'http://localhost:9999'
       });
       if (outcome === 'opened') {

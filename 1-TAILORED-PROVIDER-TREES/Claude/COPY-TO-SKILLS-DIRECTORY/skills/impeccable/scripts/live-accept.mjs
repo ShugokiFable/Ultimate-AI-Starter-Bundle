@@ -661,6 +661,9 @@ function stripStyleAndJoin(lines, block) {
     if (!inStyle) {
       // Strip any complete <style> elements on this line (self-closed or
       // same-line-closed), including their body content.
+      // Structural marker parsing only; this text is not emitted as sanitized
+      // HTML. The source file remains the authority for the final write.
+      // codeql[js/incomplete-multi-character-sanitization]
       line = line
         .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/g, '')
         .replace(/<style\b[^>]*\/\s*>/g, '');
@@ -689,11 +692,11 @@ function stripStyleAndJoin(lines, block) {
 /**
  * Find the inner content of `<TAG ...attrMatch...>…</TAG>` inside `text`,
  * handling nested same-tag elements via depth counting. `attrMatch` is a
- * regex source fragment that must appear inside the opener tag.
+ * literal attribute marker that must appear inside the opener tag.
  * Returns the inner string (may be empty), or null if not found.
  */
 function extractInnerByAttr(text, attrMatch) {
-  const openerRe = new RegExp('<([A-Za-z][A-Za-z0-9]*)\\b[^>]*' + attrMatch + '[^>]*>');
+  const openerRe = new RegExp('<([A-Za-z][A-Za-z0-9]*)\\b[^>]*' + escapeRegExp(attrMatch) + '[^>]*>');
   const openMatch = text.match(openerRe);
   if (!openMatch) return null;
 

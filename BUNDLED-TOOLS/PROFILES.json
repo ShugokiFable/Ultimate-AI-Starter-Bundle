@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "catalog_version": "8.7.8",
-  "pack_version": "8.7.8",
+  "catalog_version": "8.7.9",
+  "pack_version": "8.7.9",
   "updated_utc": "2026-08-31T00:00:00Z",
   "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 146 skill bodies are far larger than the description index an agent actually reads. There is no equivalent discount for MCP. So the servers here are NOT registered globally: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
   "reads": "TOOLS/Set-McpProfile.ps1",
@@ -170,7 +170,7 @@
           "command": "npx",
           "args": [
             "-y",
-            "@playwright/mcp@0.0.79"
+            "@playwright/mcp@0.0.80"
           ],
           "providers": [
             "Codex",
@@ -183,12 +183,19 @@
             "--executable-path",
             "{value}"
           ],
-          "note": "drive a browser for testing and automation",
+          "note": "drive a browser for testing and automation (~4,626 tokens per turn while enabled)",
           "key": null,
           "requires": {
             "command": "npx"
           },
-          "requires_note": "Claude is excluded because it already has a browser pane. Set PLAYWRIGHT_MCP_EXECUTABLE_PATH before enabling to use Opera GX, Edge, Brave, or Vivaldi instead of the default Chrome channel."
+          "requires_note": "Claude is excluded because it already has a browser pane. Set PLAYWRIGHT_MCP_EXECUTABLE_PATH before enabling to use Opera GX, Edge, Brave, or Vivaldi instead of the default Chrome channel.",
+          "measured_cost": {
+            "tools": 24,
+            "schema_bytes": 18502,
+            "approx_tokens_per_turn": 4626,
+            "method": "real MCP initialize -> tools/list over stdio, tools array serialized compactly, via TOOLS/Measure-McpSchemaCost.ps1",
+            "measured_utc": "2026-09-02"
+          }
         },
         {
           "id": "chrome-devtools",
@@ -219,16 +226,23 @@
           "command": "npx",
           "args": [
             "-y",
-            "shadcn@4.19.1",
+            "shadcn@4.20.0",
             "mcp"
           ],
-          "note": "search, inspect and add components from configured shadcn registries",
+          "note": "search, inspect and add components from configured shadcn registries (~1,124 tokens per turn while enabled)",
           "key": null,
           "requires": {
             "command": "npx",
             "project_rel": "components.json"
           },
-          "requires_note": "The server resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only."
+          "requires_note": "The server resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only.",
+          "measured_cost": {
+            "tools": 7,
+            "schema_bytes": 4495,
+            "approx_tokens_per_turn": 1124,
+            "method": "real MCP initialize -> tools/list over stdio, tools array serialized compactly, via TOOLS/Measure-McpSchemaCost.ps1",
+            "measured_utc": "2026-09-02"
+          }
         }
       ]
     },
@@ -395,10 +409,11 @@
           "catalog_component": "blender-mcp",
           "command": "uvx",
           "args": [
-            "blender-mcp@1.9.0"
+            "blender-mcp@1.9.1"
           ],
           "env_static": {
-            "BLENDER_MCP_DISABLE_TELEMETRY": "true"
+            "BLENDER_MCP_DISABLE_TELEMETRY": "true",
+            "BLENDER_MCP_SAFE_MODE": "true"
           },
           "note": "live Blender scene inspection and control",
           "key": null,
@@ -411,10 +426,10 @@
               "%LOCALAPPDATA%\\Programs\\Blender Foundation\\*\\blender.exe"
             ]
           },
-          "editor_side": "uvx blender-mcp@1.9.0 install-addon",
+          "editor_side": "uvx blender-mcp@1.9.1 install-addon",
           "editor_side_note": "The server talks to an addon inside Blender. `install-addon` copies it into the user addons folder, but ENABLING it is inside the editor process and cannot be done from outside -- so Set-McpProfile prints the command rather than pretending it ran it. 'The MCP executable starts' and 'the addon is connected' are different claims: the server answers initialize with no Blender running at all. Only a tool call that reaches the scene proves the second.",
-          "requires_note": "Discovered, never hardcoded. 7.9.6 listed a Steam path on this maintainer's own drive letter, which could not match on anybody else's machine -- the exact class of path this pack forbids elsewhere. The first two entries are what `uvx blender-mcp@1.9.0 addon-paths` reports: Blender creates that user directory on first run whatever the install source, Steam included.",
-          "telemetry_note": "Measured 2026-08-31: an unconfigured 1.9.0 server posts an anonymous startup event to Supabase before Blender connects. The addon's consent toggle governs prompts, code, screenshots and scene data, but does not suppress that minimal event. This profile writes BLENDER_MCP_DISABLE_TELEMETRY=true into the server environment; a real initialize/tools-list probe then logged `Telemetry disabled via environment variable` and made no HTTP request."
+          "requires_note": "Discovered, never hardcoded. 7.9.6 listed a Steam path on this maintainer's own drive letter, which could not match on anybody else's machine -- the exact class of path this pack forbids elsewhere. The first two entries are what `uvx blender-mcp@1.9.1 addon-paths` reports: Blender creates that user directory on first run whatever the install source, Steam included.",
+          "telemetry_note": "Measured 2026-09-02: 1.9.1 answers initialize/tools-list with 28 tools and 29,274 schema bytes (~7,318 tokens) while BLENDER_MCP_DISABLE_TELEMETRY=true logs the supported opt-out and BLENDER_MCP_SAFE_MODE=true validates generated Python before it reaches Blender. Safe mode preserves normal scene/render/save/import-export work and blocks interpreter, process, network and persistence escape paths."
         }
       ]
     },

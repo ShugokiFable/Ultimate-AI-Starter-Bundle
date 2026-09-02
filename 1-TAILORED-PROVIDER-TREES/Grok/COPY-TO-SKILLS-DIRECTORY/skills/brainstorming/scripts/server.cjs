@@ -185,14 +185,12 @@ h1 { color: #333; } p { color: #666; } code { background: #f0f0f0; padding: 0.1e
 <p>This page needs the full URL your coding agent gave you, including the
 <code>?key=&hellip;</code> part. Copy the complete URL and open it again.</p></body></html>`;
 
-function bootstrapPage(key) {
-  const jsonKey = JSON.stringify(String(key));
+function bootstrapPage() {
   return `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><title>Opening Brainstorm Companion</title></head>
 <body>
 <script>
-try { sessionStorage.setItem('brainstorm-session-key', ${jsonKey}); } catch (e) {}
 location.replace('/');
 </script>
 </body>
@@ -284,7 +282,7 @@ function urlHostForHttp(host) {
 }
 
 function companionUrl() {
-  return 'http://' + urlHostForHttp(URL_HOST) + ':' + PORT + '/?key=' + TOKEN;
+  return 'http://' + urlHostForHttp(URL_HOST) + ':' + PORT + '/?key=' + encodeURIComponent(TOKEN);
 }
 
 function browserLauncherForPlatform(url, {
@@ -331,7 +329,10 @@ function parseCookies(header) {
   for (const part of header.split(';')) {
     const eq = part.indexOf('=');
     if (eq < 0) continue;
-    out[part.slice(0, eq).trim()] = part.slice(eq + 1).trim();
+    const name = part.slice(0, eq).trim();
+    const value = part.slice(eq + 1).trim();
+    try { out[name] = decodeURIComponent(value); }
+    catch (e) { out[name] = value; }
   }
   return out;
 }
@@ -396,13 +397,13 @@ function handleRequest(req, res) {
   // authenticate after bootstrap. HttpOnly keeps it away from page scripts; the
   // WebSocket Origin check below is what blocks cross-origin localhost injection.
   res.setHeader('Set-Cookie',
-    COOKIE_NAME + '=' + TOKEN + '; HttpOnly; SameSite=Strict; Path=/');
+    COOKIE_NAME + '=' + encodeURIComponent(TOKEN) + '; HttpOnly; SameSite=Strict; Path=/');
 
   const pathname = pathnameOf(req.url);
   const keyFromQuery = queryKey(req.url);
   if (req.method === 'GET' && pathname === '/' && keyFromQuery && timingSafeEqualStr(keyFromQuery, TOKEN)) {
     res.writeHead(200, securityHeaders({ 'Content-Type': 'text/html; charset=utf-8' }));
-    res.end(bootstrapPage(keyFromQuery));
+    res.end(bootstrapPage());
   } else if (req.method === 'GET' && pathname === '/') {
     const screenFile = getNewestScreen();
     let html = screenFile

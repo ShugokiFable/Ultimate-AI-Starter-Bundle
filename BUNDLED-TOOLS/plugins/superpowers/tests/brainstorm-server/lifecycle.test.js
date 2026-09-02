@@ -12,6 +12,7 @@
 const { spawn, execFileSync } = require('child_process');
 const WebSocket = require('ws');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const assert = require('assert');
 
@@ -128,7 +129,7 @@ async function runTests() {
   }
 
   await test('server-info reports the configured idle_timeout_ms', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-life-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-life-'));
     const srv = spawn('node', [SERVER], { env: { ...process.env, BRAINSTORM_PORT: 3401, BRAINSTORM_DIR: dir, BRAINSTORM_IDLE_TIMEOUT_MS: 1234567 } });
     let out = ''; srv.stdout.on('data', d => out += d.toString());
     for (let i = 0; i < 60 && !out.includes('server-started'); i++) await sleep(50);
@@ -142,7 +143,7 @@ async function runTests() {
   });
 
   await test('idle shutdown closes an open WebSocket and the process exits', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-life-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-life-'));
     const srv = spawn('node', [SERVER], { env: { ...process.env, BRAINSTORM_PORT: 3402, BRAINSTORM_DIR: dir, BRAINSTORM_TOKEN: 'lifetoken', BRAINSTORM_IDLE_TIMEOUT_MS: 200, BRAINSTORM_LIFECYCLE_CHECK_MS: 100 } });
     let out = ''; srv.stdout.on('data', d => out += d.toString());
     let exited = false, code = null; srv.on('exit', c => { exited = true; code = c; });
@@ -191,7 +192,7 @@ async function runTests() {
   });
 
   await test('server-started URL brackets IPv6 URL hosts', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-ipv6-url-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-ipv6-url-'));
     const srv = spawn('node', [SERVER], {
       env: {
         ...process.env,
@@ -215,7 +216,7 @@ async function runTests() {
   });
 
   await test('persists the bound port AND key, and restores both on restart', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-port-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-port-'));
     const portFile = path.join(dir, '.last-port');
     const tokenFile = path.join(dir, '.last-token');
     const env = { ...process.env, BRAINSTORM_PORT_FILE: portFile, BRAINSTORM_TOKEN_FILE: tokenFile, BRAINSTORM_LIFECYCLE_CHECK_MS: 100000 };
@@ -244,7 +245,7 @@ async function runTests() {
   });
 
   await test('hardens existing persisted token file permissions', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-token-mode-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-token-mode-'));
     const portFile = path.join(dir, '.last-port');
     const tokenFile = path.join(dir, '.last-token');
     const token = 'efefefefefefefefefefefefefefefef';
@@ -279,7 +280,7 @@ async function runTests() {
   });
 
   await test('stored key can authenticate WebSocket after same-port restart', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-reconnect-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-reconnect-'));
     const portFile = path.join(dir, '.last-port');
     const tokenFile = path.join(dir, '.last-token');
     const env = { ...process.env, BRAINSTORM_PORT_FILE: portFile, BRAINSTORM_TOKEN_FILE: tokenFile, BRAINSTORM_LIFECYCLE_CHECK_MS: 100000 };
@@ -321,7 +322,7 @@ async function runTests() {
   });
 
   await test('falls back to a random port when the preferred port is taken', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-port-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-port-'));
     const portFile = path.join(dir, '.last-port');
 
     const a = spawn('node', [SERVER], { env: { ...process.env, BRAINSTORM_DIR: path.join(dir, 'a'), BRAINSTORM_PORT: 3415, BRAINSTORM_LIFECYCLE_CHECK_MS: 100000 } });
@@ -347,7 +348,7 @@ async function runTests() {
   });
 
   await test('fallback with persisted token generates a fresh unpersisted key', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-port-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-port-'));
     const portFile = path.join(dir, '.last-port');
     const tokenFile = path.join(dir, '.last-token');
     const preferredToken = 'abababababababababababababababab';
@@ -398,7 +399,7 @@ async function runTests() {
   });
 
   await test('fallback with explicit BRAINSTORM_TOKEN fails closed', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-port-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-port-'));
     const portFile = path.join(dir, '.last-port');
     const explicitToken = 'cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd';
     let a = null, b = null;
@@ -445,7 +446,7 @@ async function runTests() {
   });
 
   await test('auto-opens the browser once, on the first screen', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-open-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-open-'));
     const marker = path.join(dir, 'opened.log');
     const openCmd = openCaptureCommand(dir, marker); // capture the launch instead of opening a browser
     const srv = spawn('node', [SERVER], { env: { ...process.env, BRAINSTORM_PORT: 3417, BRAINSTORM_DIR: dir, BRAINSTORM_OPEN: '1', BRAINSTORM_OPEN_CMD: openCmd, BRAINSTORM_LIFECYCLE_CHECK_MS: 100000 } });
@@ -475,7 +476,7 @@ async function runTests() {
   });
 
   await test('does NOT auto-open unless approved (BRAINSTORM_OPEN unset)', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-open-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-open-'));
     const marker = path.join(dir, 'opened.log');
     const openCmd = openCaptureCommand(dir, marker);
     // BRAINSTORM_OPEN intentionally NOT set — auto-open must stay off.
@@ -491,7 +492,7 @@ async function runTests() {
   });
 
   await test('unauthenticated requests do not defeat the idle timeout', async () => {
-    const dir = fs.mkdtempSync('/tmp/bs-life-');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bs-life-'));
     const srv = spawn('node', [SERVER], { env: { ...process.env, BRAINSTORM_PORT: 3419, BRAINSTORM_DIR: dir, BRAINSTORM_TOKEN: 'authtok', BRAINSTORM_IDLE_TIMEOUT_MS: 400, BRAINSTORM_LIFECYCLE_CHECK_MS: 100 } });
     let out = ''; srv.stdout.on('data', d => out += d.toString());
     let exited = false; srv.on('exit', () => { exited = true; });

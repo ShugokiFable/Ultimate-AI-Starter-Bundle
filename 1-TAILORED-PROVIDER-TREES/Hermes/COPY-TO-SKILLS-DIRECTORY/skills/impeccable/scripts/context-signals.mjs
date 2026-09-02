@@ -6,7 +6,7 @@
  *
  * It does NOT score or rank. The agent reasons over the raw signals using its
  * knowledge of the command catalog (see SKILL.md routing rule 1). Deliberately
- * light: no LLM calls, no detector run (`impeccable detect` is heavier and
+ * light: no LLM calls, no detector run (`npx impeccable detect` is heavier and
  * opt-in), no file writes. Every probe is best-effort and never throws; the
  * output is always valid JSON.
  *
@@ -264,7 +264,7 @@ function isVendoredPath(rel) {
  * may not even belong to this project. An HTML *file* or a source tree is
  * scanned by the cheap, jsdom-free static engine. This script does NOT run the
  * detector; it just surfaces the target(s) so the agent can run
- * `impeccable detect --json <targets>` and fold the hits in.
+ * `node <scripts>/detect.mjs --json <targets>` and fold the hits in.
  */
 function scanTargets(cwd, git) {
   // 1. Dirty tree wins: scan exactly the markup/style files in flight. It's

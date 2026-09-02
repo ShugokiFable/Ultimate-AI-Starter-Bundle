@@ -36,10 +36,12 @@ canonical fanout.
 ## Impeccable — `pbakaus/impeccable`, Apache-2.0
 
 `impeccable` is the `.agents/skills/impeccable` payload from the official
-**skill-v4.1.2** `universal.zip` (17,906,506 bytes, SHA-256
-`5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c`). UABS
-removes its provider-directory pin/self-update path and routes deterministic
-scans through the separately pinned CLI. The included `LICENSE` is upstream's.
+**skill-v4.1.3** `universal.zip` (29,823,936 bytes, SHA-256
+`fdcb41a24ddfb613786e3141bc7bb8466a406ffbd437a2e302f4ca70181bed9f`). UABS
+removes its provider-directory pin/self-update path and generated hook cache and
+applies the bundle's security hardening. Its vendored detector handles local,
+offline scans; the separately pinned CLI supplies explicit CLI and hook actions.
+The included `LICENSE` is upstream's.
 
 ## skills CLI — `vercel-labs/skills`, MIT
 

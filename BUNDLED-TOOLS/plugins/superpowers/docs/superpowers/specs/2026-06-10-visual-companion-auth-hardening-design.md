@@ -3,6 +3,13 @@
 **Date:** 2026-06-10
 **Status:** Draft for Drew review
 
+> **UABS 2026-09-02 security note:** This is a historical design record, not
+> current operating guidance. The shipped implementation no longer exposes the
+> bearer key to page JavaScript or `sessionStorage`: the bootstrap sets an
+> encoded HttpOnly cookie and redirects to `/`, and same-origin WebSockets use
+> that cookie. The focused `auth.test.js` and `helper.test.js` tests are the
+> executable authority.
+
 ## Goal
 
 Fix the security and reliability gaps found in PR #1720's brainstorming visual

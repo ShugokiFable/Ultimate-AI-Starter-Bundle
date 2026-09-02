@@ -416,17 +416,17 @@ So the blanket claim was false for the one subcommand where an archive matters
 most — a test runner, where you filter to the failure and may then want the
 full log. `rtk test` prints the path to it. Both documents now say this.
 
-### Broad hook rejected; narrow hook adopted (re-probed 2026-08-31)
+### Broad hook rejected; narrow hook adopted (re-probed 2026-09-02)
 
 The 2026-08-27 verdict rejected RTK's whole hook. That was too binary. Re-probing
-0.46.0 found a small safe subset and also showed that upstream's rewrite table
-had broadened:
+0.47.0 preserved a small safe subset and also showed that upstream's rewrite
+table remains broad:
 
 | Typed | Upstream rewrite | Bundle policy |
 |---|---|---|
 | exact standalone `git status` / `--short` / `-s` | `rtk git status ...` | automatic; a five-state fixture was line-identical 5/5 |
 | standalone `pytest`, `cargo test`, `go test` | matching RTK test filter | automatic only for human-facing output |
-| `git diff`, `git show`, `git log` | RTK summary | raw; a large diff retained 361 of 5,856 changed lines |
+| `git diff`, `git show`, `git log` | RTK summary | raw; a large diff retained 341 of 5,856 changed lines |
 | `git add`, `git commit`, `git push` | **rewritten despite mutation** | raw |
 | compound `find` | broken `rtk find` | raw |
 | `cat`, `grep`, `curl`, `gh` | rewritten | raw: zero-gain, lossy, or exact-body surfaces |
@@ -438,6 +438,13 @@ fails open, and is installed as PreToolUse only for Claude, Grok and Hermes.
 Codex and Kimi receive the same narrow instruction without pretending they have
 a trusted command-mutation hook. Its self-test pins every unsafe category above,
 and a version guard leaves a newer RTK raw until its rewrite table is re-measured.
+
+The pinned Git corpus was re-run for 0.47.0: `git log v8.6.1..v8.6.5`
+measured 14,250 -> 1,658 bytes; the large diff 430,285 -> 55,870; the small
+diff 33,453 -> 26,820; and `git log --stat -20 v8.6.5` remained byte-identical
+at 102,301 bytes. The explicit `v8.6.5` fixes the last moving row in the old
+table. Byte savings are not fidelity: the large diff omitted 5,515 changed
+lines, so broad diff routing remains rejected.
 
 Harnesses: `test_rtk_is_documented_as_a_git_tool_not_a_general_filter` keeps the
 measurement caveats; `test_rtk_safe_hook_is_default_narrow_and_self_testing`
@@ -464,15 +471,15 @@ symlinks, and 38 tests were skipped. Its forge is Python 3.10+ stdlib. UABS adds
 only a path-contained UTF-8 Python resolver and keeps one canonical skill
 writer.
 
-### TAKEN — Impeccable skill 4.1.2 + CLI 3.6.0 (`pbakaus/impeccable`), Apache-2.0
+### TAKEN — Impeccable skill 4.1.3 + CLI 3.6.1 (`pbakaus/impeccable`), Apache-2.0
 
 The official skill adds a broad UI-design router; the CLI makes part of that
 quality floor executable. The published universal skill archive is bound to
-SHA-256 `5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c`.
-The npm registry does not publish the repository's advertised 3.6.1 CLI, so the
-bundle pins the actually published 3.6.0 package and its registry integrity.
-In an isolated install its detector returned exit 2 and identified a deliberate
-low-contrast fixture. All 101 retained JavaScript modules pass `node --check`.
+SHA-256 `fdcb41a24ddfb613786e3141bc7bb8466a406ffbd437a2e302f4ca70181bed9f`.
+The bundle pins the published npm 3.6.1 package and its registry integrity.
+Skill 4.1.3 adds executable visual contracts, framework-churn hardening, and
+quieter deterministic detection. UABS keeps the license and removes upstream's
+self-writer and generated hook cache before fanout.
 
 Optional Puppeteer is omitted because Playwright already owns browser rendering.
 Upstream self-update and provider-directory pinning are removed so generated
@@ -513,9 +520,12 @@ OmniRoute does not solve that narrower problem more cheaply.
 
 ### ALREADY COVERED — Playwright MCP and Anthropic official plugins
 
-Playwright MCP is already pinned at 0.0.79 behind the `web` profile, alongside
+Playwright MCP is already pinned at 0.0.80 behind the `web` profile, alongside
 Chrome DevTools rather than duplicated. The profile no longer turns on for
 every backend-only `package.json`; it requires a frontend marker or dependency.
+Its real initialize/tools-list surface is 24 tools, 18,502 schema bytes
+(~4,626 tokens per enabled turn). shadcn 4.20.0 adds 7 tools / 4,495 bytes
+(~1,124 tokens) only when the same project profile finds `components.json`.
 Anthropic's official marketplace is already registered selectively. Enabling
 the whole marketplace would reintroduce provider-specific duplicates, keyed
 MCPs, and skills already carried by the canonical tree.

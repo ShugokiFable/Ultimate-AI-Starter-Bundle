@@ -5,6 +5,7 @@
 const { spawn } = require('child_process');
 const http = require('http');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const assert = require('assert');
 
@@ -75,7 +76,7 @@ function writeFragment(dir) {
 }
 
 function createPackagedServerFixture(version) {
-  const root = fs.mkdtempSync(path.join('/tmp', 'superpowers-packaged-server-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'superpowers-packaged-server-'));
   const scriptDir = path.join(root, 'skills/brainstorming/scripts');
   fs.cpSync(path.join(REPO_ROOT, 'skills/brainstorming/scripts'), scriptDir, { recursive: true });
   fs.mkdirSync(path.join(root, '.codex-plugin'), { recursive: true });
@@ -244,7 +245,7 @@ async function main() {
 
   await test('framed screens render versioned Prime Radiant logo by default', async () => {
     const port = 3451;
-    const dir = '/tmp/brainstorm-branding-default';
+    const dir = path.join(os.tmpdir(), 'brainstorm-branding-default');
     await withServer({ port, dir }, async () => {
       writeFragment(dir);
       await sleep(300);
@@ -260,7 +261,7 @@ async function main() {
 
   await test('waiting screen renders versioned Prime Radiant logo by default', async () => {
     const port = 3452;
-    const dir = '/tmp/brainstorm-branding-waiting';
+    const dir = path.join(os.tmpdir(), 'brainstorm-branding-waiting');
     await withServer({ port, dir }, async () => {
       const html = await fetchHtml(port);
       assert(html.includes('Waiting for the agent'), 'waiting page should still render');
@@ -272,7 +273,7 @@ async function main() {
 
   await test('packaged Codex plugin reads version from .codex-plugin manifest', async () => {
     const port = 3457;
-    const dir = '/tmp/brainstorm-branding-packaged-codex';
+    const dir = path.join(os.tmpdir(), 'brainstorm-branding-packaged-codex');
     const packagedVersion = '7.8.9';
     const fixture = createPackagedServerFixture(packagedVersion);
 
@@ -292,7 +293,7 @@ async function main() {
 
   await test('SUPERPOWERS_DISABLE_TELEMETRY=true omits remote image but keeps local branding', async () => {
     const port = 3453;
-    const dir = '/tmp/brainstorm-branding-disabled';
+    const dir = path.join(os.tmpdir(), 'brainstorm-branding-disabled');
     await withServer({ port, dir, env: { SUPERPOWERS_DISABLE_TELEMETRY: 'true' } }, async () => {
       writeFragment(dir);
       await sleep(300);
@@ -304,7 +305,7 @@ async function main() {
 
   await test('SUPERPOWERS_DISABLE_TELEMETRY=yes also omits the remote image on the waiting screen', async () => {
     const port = 3454;
-    const dir = '/tmp/brainstorm-branding-disabled-waiting';
+    const dir = path.join(os.tmpdir(), 'brainstorm-branding-disabled-waiting');
     await withServer({ port, dir, env: { SUPERPOWERS_DISABLE_TELEMETRY: 'yes' } }, async () => {
       const html = await fetchHtml(port);
       assertBrandedFallbackText(html);
@@ -314,7 +315,7 @@ async function main() {
 
   await test('DISABLE_TELEMETRY=true omits remote image for Claude Code telemetry opt-out', async () => {
     const port = 3455;
-    const dir = '/tmp/brainstorm-branding-claude-disable-telemetry';
+    const dir = path.join(os.tmpdir(), 'brainstorm-branding-claude-disable-telemetry');
     await withServer({ port, dir, env: { DISABLE_TELEMETRY: 'true' } }, async () => {
       writeFragment(dir);
       await sleep(300);
@@ -326,7 +327,7 @@ async function main() {
 
   await test('CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 omits remote image for Claude Code traffic opt-out', async () => {
     const port = 3456;
-    const dir = '/tmp/brainstorm-branding-claude-disable-nonessential';
+    const dir = path.join(os.tmpdir(), 'brainstorm-branding-claude-disable-nonessential');
     await withServer({ port, dir, env: { CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1' } }, async () => {
       const html = await fetchHtml(port);
       assertBrandedFallbackText(html);

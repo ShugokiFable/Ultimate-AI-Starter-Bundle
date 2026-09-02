@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.8
+# Ultimate AI Starter Bundle v8.7.9
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -355,25 +355,25 @@ are covered in `local-model-ops/references/sillytavern.md`.
 Installed by default with a **bundle-owned narrow hook**; RTK's broad upstream
 hook remains disabled. [RTK](https://github.com/rtk-ai/rtk) (Apache-2.0, single
 Rust binary) filters noisy dev commands. Measured here
-**at rtk 0.46.0** against **pinned tag ranges**, so the corpus cannot drift:
+**at rtk 0.47.0** against **pinned tag ranges**, so the corpus cannot drift:
 
 | Command | Raw | Through rtk | Saved |
 |---|---|---|---|
-| `git log v8.6.1..v8.6.5` | 14,250 B | 1,661 B | **88%** |
-| `git diff v8.6.1..v8.6.5` | 430,285 B | 54,251 B | **87%** |
-| `git diff v8.6.4..v8.6.5` | 33,453 B | 24,977 B | **25%** |
-| `git log --stat -20` | 128,145 B | 128,145 B | **0%** |
+| `git log v8.6.1..v8.6.5` | 14,250 B | 1,658 B | **88%** |
+| `git diff v8.6.1..v8.6.5` | 430,285 B | 55,870 B | **87%** |
+| `git diff v8.6.4..v8.6.5` | 33,453 B | 26,820 B | **20%** |
+| `git log --stat -20 v8.6.5` | 102,301 B | 102,301 B | **0%** |
 
 **0% to 88%, depending entirely on the command.** A single headline number for
 this tool is not honest -- an earlier version of this table quoted 97% from
 `git diff HEAD~3`, which moves with every commit and measures 82.5% today.
 
 **Pin the tool version too, not just the corpus.** That last row used to read
-**95%**, measured at rtk 0.45.0. Upgrading to 0.46.0 dropped it to zero: plain
-`git log` still compresses ~86%, but `--stat` now passes straight through. The
-other three rows reproduced to the byte across the same upgrade. Pinning the git
-refs stopped the *corpus* from moving and did nothing about the *tool* moving,
-which is why every number here now carries the version it was taken on.
+**95%**, measured at rtk 0.45.0. Upgrading to 0.46.0 dropped it to zero, and
+0.47.0 still passes `--stat` straight through. The 0.47.0 diff fixes changed
+both diff rows, so every row was measured again. The old `git log --stat -20`
+row also moved with HEAD despite the rest of the table being pinned; it now
+ends at `v8.6.5`. Pinning only the corpus or only the tool is insufficient.
 
 It is a CLI, so it costs **zero standing tokens** -- the same reason this pack
 prefers Forge's CLI over Forge's MCP.
@@ -458,7 +458,7 @@ safe hook rewrites only commands whose shape and output were measured:
 | `git add`, `git commit`, `git push` | unchanged | mutating Git is never wrapped |
 | `find`, `rg`/`grep`, `cat`, `curl`, `gh` | unchanged | broken, lossy, zero-gain, or exact-body surfaces stay raw |
 | JSON/JUnit/report output, pipes, redirects, compound commands | unchanged | machine-readable and composable output stays raw |
-| `npm test`, `dotnet test`, `python x.py` | *not rewritten* | RTK 0.46.0 provides no matching safe rewrite |
+| `npm test`, `dotnet test`, `python x.py` | *not rewritten* | RTK 0.47.0 provides no matching safe rewrite |
 
 Claude, Grok and Hermes receive the executable hook. Codex and Kimi receive the
 same narrow routing rule in their installed instructions; no trusted
@@ -683,6 +683,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.9** - 2026-09-02. Security and same-day dependency convergence: Superpowers' local brainstorm companion keeps its bearer key out of page JavaScript and authenticates through an encoded HttpOnly cookie; Impeccable's poll leases are bounded, dynamic regex input is escaped, HTML marker parsing is hardened, and Ponytail's malformed-bullet matcher stays linear. Impeccable skill 4.1.3/CLI 3.6.1, Playwright MCP 0.0.80, shadcn 4.20.0, Blender MCP 1.9.1, and RTK 0.47.0 are pinned after checksum, syntax, handshake, schema, or corpus tests as applicable. Blender's profile enables telemetry opt-out and its new safe code validator. A stdlib catalog auditor checks npm, PyPI, GitHub, and secondary skill releases without creating a flaky scheduled CI gate. RTK's moving `--stat` benchmark is now tag-pinned; its narrow default allowlist remains, the broad hook stays off, Windows MCP stays off, and no always-on MCP schema was added.
 
 **v8.7.8** - 2026-09-01. Maintenance convergence: shadcn MCP is pinned to 4.19.1 in both catalog and web profile, every current Context7 fallback/example now says 4.0.4, and CodeBurn 0.9.23 is registry-integrity-bound with install scripts disabled. After a successful exact-version npm install, the installer removes only a strictly older duplicate from Hermes' private Node prefix; equal/newer or unverified copies are left alone. Grok diagnostics now follow native TOML plus the bundle's disabled Claude-MCP compatibility instead of recommending the retired npm GitHub server. No new skills or MCP schemas; Windows MCP stays off by default and RTK keeps its narrow measured allowlist.
 

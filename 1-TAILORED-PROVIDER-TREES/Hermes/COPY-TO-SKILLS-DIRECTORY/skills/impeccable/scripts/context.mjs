@@ -67,6 +67,20 @@ const UI_EXTENSIONS = new Set(['.html', '.htm', '.jsx', '.tsx', '.vue', '.svelte
 const VISUAL_SCAN_FILE_LIMIT = 250;
 const VISUAL_SCAN_DEPTH_LIMIT = 4;
 
+// ─── Update check ──────────────────────────────────────────────────────────
+// Piggyback a lightweight skill-version check on the once-per-session boot.
+// When a newer skill ships, append an UPDATE_AVAILABLE directive so the agent
+// can offer `npx impeccable update`. Everything here is best-effort and
+// silent on failure: a network problem, sandbox, or missing cache must never
+// block context output or print an error.
+
+const UPDATE_HOST = (process.env.IMPECCABLE_UPDATE_HOST || 'https://impeccable.style').replace(/\/$/, '');
+const UPDATE_CACHE_PATH =
+  process.env.IMPECCABLE_UPDATE_CACHE || path.join(os.homedir(), '.impeccable', 'update-check.json');
+const CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000; // throttle the network poll to once a day
+const RENOTIFY_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000; // don't re-surface the same version for a week
+const FETCH_TIMEOUT_MS = 1200;
+
 export function resolveContextDir(cwd = process.cwd(), options = {}) {
   return resolveContext(cwd, options).contextDir;
 }
@@ -835,6 +849,9 @@ export function hasVisualImplementation(projectRoot) {
       return false;
     }
 
+    // Classification only: comments are removed to count authored visual
+    // signals. This text is never emitted as sanitized HTML.
+    // codeql[js/incomplete-multi-character-sanitization]
     const evidence = body
       .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/<!--[\s\S]*?-->/g, '')
@@ -943,6 +960,94 @@ export function extractPlatform(product) {
   return null;
 }
 
+/**
+ * Read the installed skill's own version from the sibling SKILL.md frontmatter
+ * (this file lives at `<skill>/scripts/context.mjs`). Returns null when the
+ * frontmatter is missing or unreadable.
+ */
+function parseSkillFrontmatterVersion(content) {
+  const match = String(content).match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---(?:[ \t]*\r?\n|[ \t]*$)/);
+  if (!match) return null;
+
+  let metadataVersion = null;
+  let topLevelVersion = null;
+  let inMetadata = false;
+  let metadataIndent = null;
+
+  for (const line of match[1].split(/\r?\n/)) {
+    if (!line.trim() || line.trimStart().startsWith('#')) continue;
+    const indentText = line.match(/^[ \t]*/)[0];
+    const indent = indentText.replace(/\t/g, '  ').length;
+
+    if (indent === 0) {
+      inMetadata = /^metadata:\s*(?:#.*)?$/.test(line);
+      metadataIndent = null;
+      const version = line.match(/^version:\s*(.+?)\s*$/);
+      if (version) topLevelVersion = version[1];
+      continue;
+    }
+
+    if (!inMetadata) continue;
+    if (metadataIndent === null) metadataIndent = indent;
+    if (indent !== metadataIndent) continue;
+    const version = line.trim().match(/^version:\s*(.+?)\s*$/);
+    if (version) metadataVersion = version[1];
+  }
+
+  const value = metadataVersion || topLevelVersion;
+  return value ? value.trim().replace(/^(["'])(.*)\1$/, '$2') : null;
+}
+
+function readLocalSkillVersion() {
+  try {
+    const here = path.dirname(fileURLToPath(import.meta.url));
+    const skillMd = path.join(here, '..', 'SKILL.md');
+    const content = fs.readFileSync(skillMd, 'utf-8');
+    return parseSkillFrontmatterVersion(content);
+  } catch {
+    return null;
+  }
+}
+
+function readUpdateCache() {
+  try {
+    return JSON.parse(fs.readFileSync(UPDATE_CACHE_PATH, 'utf-8'));
+  } catch {
+    return {};
+  }
+}
+
+function writeUpdateCache(cache) {
+  try {
+    fs.mkdirSync(path.dirname(UPDATE_CACHE_PATH), { recursive: true });
+    fs.writeFileSync(UPDATE_CACHE_PATH, JSON.stringify(cache));
+  } catch {
+    // Best-effort: a read-only home dir just means we re-poll next session.
+  }
+}
+
+/** Compare dotted numeric versions. Returns >0 when a is newer than b. */
+function compareSemver(a, b) {
+  const pa = String(a).split('.').map(n => parseInt(n, 10) || 0);
+  const pb = String(b).split('.').map(n => parseInt(n, 10) || 0);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const diff = (pa[i] || 0) - (pb[i] || 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
+}
+
+async function fetchLatestSkillVersion() {
+  try {
+    const res = await fetch(`${UPDATE_HOST}/api/version`, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return typeof data?.skills === 'string' ? data.skills : null;
+  } catch {
+    return null; // offline, sandboxed, timed out, or bad JSON: all non-fatal
+  }
+}
+
 // Destroy fetch's global undici dispatcher before process.exit(): a live
 // keep-alive socket trips a libuv assertion on Windows/Node 24 after a
 // successful boot (nodejs/node#56645, issue #573).
@@ -964,6 +1069,79 @@ async function finishCli(output) {
   process.exit(0);
 }
 
+// Two instructions used to sit in one directive: ask, and "if they agree, run
+// it". Nothing gated the second on an answer, and the same sentence said to
+// continue without waiting, so a run that could never establish agreement was
+// still spelled out as the next command. The offer stays; the command leaves
+// this turn entirely, because installing over the skill mid-session changes
+// files the session is reading and only takes effect in the next one anyway.
+function buildUpdateDirective(localVersion, latestVersion) {
+  return (
+    `UPDATE_AVAILABLE: A newer Impeccable skill is available ` +
+    `(installed v${localVersion}, latest v${latestVersion}). ` +
+    `Mention it once, in this form: "A newer Impeccable (v${latestVersion}) is available. ` +
+    `Update now? It runs \`npx impeccable update\`." ` +
+    `Do not run \`npx impeccable update\` in this turn, whatever the user answers: it rewrites the skill files ` +
+    `this session is reading, and the update only takes effect in the next session, so there is nothing to gain now. ` +
+    `Run it in a later turn, only after the user has asked for it in their own words. ` +
+    `Continue the current task now without waiting, and do not raise this again.`
+  );
+}
+
+/**
+ * Best-effort update directive for the boot output. Returns a string to append
+ * or null. Polls the version endpoint at most once per day (cached globally in
+ * the user's home dir) and re-surfaces a given version at most once per week so
+ * the agent never nags. Opt out entirely with IMPECCABLE_NO_UPDATE_CHECK=1.
+ */
+// Read the unified config's top-level `updateCheck` (local overrides shared).
+// Inlined rather than importing hook-lib so the boot path stays lightweight.
+function updateCheckDisabledByConfig(cwd = process.cwd()) {
+  let value;
+  for (const name of ['config.json', 'config.local.json']) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(path.join(cwd, '.impeccable', name), 'utf-8'));
+      if (raw && typeof raw === 'object' && typeof raw.updateCheck === 'boolean') value = raw.updateCheck;
+    } catch { /* missing or malformed: ignore */ }
+  }
+  return value === false;
+}
+
+async function computeUpdateDirective(now = Date.now()) {
+  try {
+    if (process.env.IMPECCABLE_NO_UPDATE_CHECK) return null;
+    if (updateCheckDisabledByConfig()) return null;
+    const localVersion = readLocalSkillVersion();
+    if (!localVersion) return null;
+
+    const cache = readUpdateCache();
+
+    // Poll the network only when the throttle window has elapsed. Stamp
+    // lastCheck even on failure so an offline machine doesn't poll every boot.
+    if (!cache.lastCheck || now - cache.lastCheck > CHECK_INTERVAL_MS) {
+      const latest = await fetchLatestSkillVersion();
+      cache.lastCheck = now;
+      if (latest) cache.latestVersion = latest;
+      writeUpdateCache(cache);
+    }
+
+    const latest = cache.latestVersion;
+    if (!latest || compareSemver(latest, localVersion) <= 0) return null;
+
+    // Anti-nag: surface a given version at most once per RENOTIFY window.
+    if (cache.notifiedVersion === latest && cache.notifiedAt && now - cache.notifiedAt < RENOTIFY_INTERVAL_MS) {
+      return null;
+    }
+    cache.notifiedVersion = latest;
+    cache.notifiedAt = now;
+    writeUpdateCache(cache);
+
+    return buildUpdateDirective(localVersion, latest);
+  } catch {
+    return null;
+  }
+}
+
 async function cli() {
   let cliOptions;
   try {
@@ -983,6 +1161,7 @@ async function cli() {
     process.exit(0);
   }
   const ctx = loadContext(process.cwd(), cliOptions);
+  const updateDirective = await computeUpdateDirective();
 
   if (!ctx.hasProduct) {
     // Direct stdout message instead of relying on empty output as a signal
@@ -1028,6 +1207,7 @@ async function cli() {
     appendDetectorFallback(parts, ctx);
     appendImageGenDirective(parts);
     appendBuildPathDirective(parts, ctx);
+    await appendCompRoundOpenDirective(parts, ctx);
     appendAutonomyCounterDirective(parts);
     appendSubagentAuthorizationDirective(parts);
     if (shouldWarnMissingTarget(ctx, targetProvided, targetExists)) {
@@ -1035,6 +1215,7 @@ async function cli() {
     }
     appendImageToolsDirective(parts);
     appendStalenessDirective(parts, ctx, cliOptions);
+    if (updateDirective) parts.push(updateDirective);
     await finishCli(parts.join('\n\n---\n\n') + '\n');
   }
   const parts = [`# PRODUCT.md\n\n${ctx.product.trim()}`];
@@ -1046,6 +1227,7 @@ async function cli() {
   appendDetectorFallback(parts, ctx);
   appendImageGenDirective(parts);
   appendBuildPathDirective(parts, ctx);
+  await appendCompRoundOpenDirective(parts, ctx);
   appendAutonomyCounterDirective(parts);
   appendSubagentAuthorizationDirective(parts);
   if (shouldWarnMissingTarget(ctx, targetProvided, targetExists)) {
@@ -1080,6 +1262,7 @@ async function cli() {
       );
     }
   }
+  if (updateDirective) parts.push(updateDirective);
   await finishCli(parts.join('\n\n---\n\n') + '\n');
 }
 
@@ -1183,6 +1366,25 @@ function readBuildPathAt(root) {
 // selecting another workspace, cwd is the caller's app, not the target's, and
 // letting it rank above the repo root hands one workspace another's workflow.
 // It stands in only when no project resolved at all.
+// A direction was dealt for a comp-led build and the phase machine never
+// started, or stopped short of the hero gate: the comp round is open. Said
+// here because every model in the corpus ran context.mjs unprompted, and
+// the run that skipped the round did so between the roll and the first
+// write; a boot that names the open round is a boot the write cannot claim
+// it never saw. Reads build-phase's own helper so the two agree.
+async function appendCompRoundOpenDirective(parts, ctx) {
+  try {
+    const { compRoundOpen } = await import('./build-phase.mjs');
+    const roots = [...new Set([ctx?.projectRoot || process.cwd(), ctx?.repoRoot].filter(Boolean).map((r) => path.resolve(r)))];
+    for (const root of roots) {
+      const open = compRoundOpen(root);
+      if (!open) continue;
+      parts.push(`COMP_ROUND_OPEN: ${open.reason}. On a comp-led build no page code is written before build-phase.mjs closes the comps, spec, plates, and hero gates; run \`node ${path.dirname(fileURLToPath(import.meta.url))}/build-phase.mjs status\` and follow its NEXT line. A page written past an open round is what the finish reviewer sends back.`);
+      return;
+    }
+  } catch { /* build-phase absent: nothing to say */ }
+}
+
 function appendBuildPathDirective(parts, ctx) {
   const roots = [...new Set(
     [ctx?.projectRoot || process.cwd(), ctx?.repoRoot].filter(Boolean).map((root) => path.resolve(root)),
@@ -1207,6 +1409,7 @@ function appendBuildPathDirective(parts, ctx) {
 // harness's own image tools.
 function appendImageGenDirective(parts) {
   if (!process.env.OPENAI_API_KEY) return;
+  const scriptsPath = path.dirname(fileURLToPath(import.meta.url));
   parts.push([
     'IMAGE_GEN_AVAILABLE: your harness-native image tool is always the first choice for generation; use it whenever one exists.',
     'This environment also carries an OpenAI key as the fallback for harnesses with no native tool:',
@@ -1256,7 +1459,7 @@ function appendDetectorFallback(parts, ctx) {
   const scriptsPath = path.dirname(fileURLToPath(import.meta.url));
   parts.push([
     'MANUAL_DETECTOR_REQUIRED: No automatic Impeccable design hook is active this session.',
-    'Once the changed web UI is finished, run the mechanical detector over it: `impeccable detect --json <changed targets>`.',
+    `Once the changed web UI is finished, run the mechanical detector over it: \`node ${scriptsPath}/detect.mjs --json <changed targets>\`.`,
     'Run it once, and not earlier during concept selection.',
   ].join(' '));
 }

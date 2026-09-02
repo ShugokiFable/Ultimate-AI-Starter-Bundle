@@ -354,6 +354,9 @@ function normalizeText(value) {
 }
 
 function decodeBasicHtml(value) {
+  // Evidence normalization only; the decoded value is compared with source
+  // text and is never written to an HTML sink.
+  // codeql[js/double-escaping]
   return value
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")

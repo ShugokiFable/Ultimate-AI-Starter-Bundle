@@ -26,7 +26,7 @@ def read(*parts):
 
 def visible_text(html):
     """What a non-rendering fetch can actually see: markup minus script bodies."""
-    return re.sub(r"(?is)<script.*?</script>", "", html)
+    return re.sub(r"(?is)<script.*?</script\s*>", "", html)
 
 
 # A: the payload must be invisible without executing JS.

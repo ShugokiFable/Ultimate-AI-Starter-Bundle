@@ -135,7 +135,7 @@ export function substitutePropsWithExprs(markup, contract) {
 
 export function parseSvelteComponentFile(content) {
   const text = String(content || '');
-  const scriptMatch = text.match(/^([\s\S]*?)<script\b[^>]*>[\s\S]*?<\/script>/i);
+  const scriptMatch = text.match(/^([\s\S]*?)<script\b[^>]*>[\s\S]*?<\/script\s*>/i);
   const withoutScript = scriptMatch ? text.slice(scriptMatch[0].length) : text;
   const styleMatch = withoutScript.match(/<style\b[^>]*>[\s\S]*?<\/style\s*>/i);
   const styleBlock = styleMatch ? styleMatch[0] : '';
@@ -756,6 +756,8 @@ export function inlineSvelteComponentAccept(manifest, variantNum, paramValues = 
   // alone, and removing it would strip styling from markup this accept never
   // touched. Keeping it risks a visible re-attachment quirk on the accepted
   // region; deleting it breaks the rest of the route. Keep it.
+  // Visibility accounting only; stripped text is never emitted as sanitized HTML.
+  // codeql[js/incomplete-multi-character-sanitization]
   const outsideMarkup = [...sourceLines.slice(0, start), ...sourceLines.slice(end + 1)]
     .join('\n')
     .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, '');
@@ -1013,9 +1015,12 @@ function inlineSvelteComponentInsertAccept({
 }
 
 function svelteMarkupHasVisibleContent(markup) {
+  // Text/element presence classification only; the transformed string never
+  // reaches an HTML sink.
+  // codeql[js/incomplete-multi-character-sanitization]
   const text = String(markup || '')
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+    .replace(/<style[\s\S]*?<\/style\s*>/gi, '')
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')

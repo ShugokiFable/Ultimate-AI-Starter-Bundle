@@ -2,7 +2,7 @@
 """Rewrite only RTK commands whose output is safe to compress automatically.
 
 The upstream RTK hook rewrites far more than output-only commands: measured at
-0.46.0 it also catches mutating Git, lossy diffs/logs, broken compound ``find``
+0.47.0 it also catches mutating Git, lossy diffs/logs, broken compound ``find``
 expressions, and file/search commands whose output is no longer pipe-safe. This
 hook keeps that broad policy off and delegates only exact ``git status`` plus
 standalone, human-facing pytest/cargo/go test runs.
@@ -25,7 +25,7 @@ except Exception:  # installed beside assumption_gate.py; fail open if incomplet
 
 
 TIMEOUT = 5
-EXPECTED_RTK_VERSION = "0.46.0"
+EXPECTED_RTK_VERSION = "0.47.0"
 SHELL_META = re.compile(r"[\r\n;&|<>`]|\$\(")
 GIT_STATUS = re.compile(r"^\s*git(?:\.exe)?\s+status(?:\s+(?:--short|-s))?\s*$", re.I)
 TEST_COMMAND = re.compile(

@@ -1099,9 +1099,21 @@ def test_hermes_starter_ships_a_verified_fallback_chain() -> None:
         "the config no longer warns that the first fallback is text-only")
 
     # Vision cannot be pointed at a text-only model.
-    vision = re.search(r"(?ms)^  vision:\n(?:.*?\n)*?    model:\s*(\S+)", text)
-    assert vision, "auxiliary vision model not found in the starter"
-    assert vision.group(1) != "poolside/laguna-s-2.1:free", (
+    vision_model = None
+    in_vision = False
+    for line in text.splitlines():
+        if line == "  vision:":
+            in_vision = True
+            continue
+        if in_vision and line and not line.startswith("    "):
+            break
+        if in_vision:
+            model = re.match(r"^    model:\s*(\S+)", line)
+            if model:
+                vision_model = model.group(1)
+                break
+    assert vision_model, "auxiliary vision model not found in the starter"
+    assert vision_model != "poolside/laguna-s-2.1:free", (
         "the vision auxiliary points at a text-only model; images would be dropped")
 
 
@@ -2207,6 +2219,10 @@ def test_blender_is_pinned_and_discovered() -> None:
         "blender-mcp sends a startup event before Blender connects; the profile "
         "must carry its supported environment opt-out"
     )
+    assert blender.get("env_static", {}).get("BLENDER_MCP_SAFE_MODE") == "true", (
+        "blender-mcp can validate generated Python before it reaches Blender; "
+        "the optional profile must enable that boundary"
+    )
     writer = read(ROOT / "TOOLS" / "UABS-Mcp-Write.ps1")
     assert "env_static" in writer and "Resolve-UabsServerEnv" in writer, (
         "the Blender telemetry opt-out is decorative; the shared provider writer "
@@ -2253,6 +2269,46 @@ def test_profile_package_pins_follow_the_component_catalog() -> None:
         "versioned profile components are not bound to the catalog: "
         + ", ".join(sorted(expected_links - seen))
     )
+
+
+def test_local_security_boundaries_stay_hardened() -> None:
+    """Bind the exact trust boundaries that produced actionable CodeQL alerts."""
+    canonical_server = read(CANON / "brainstorming" / "scripts" / "server.cjs")
+    canonical_helper = read(CANON / "brainstorming" / "scripts" / "helper.js")
+    bundled = ROOT / "BUNDLED-TOOLS" / "plugins" / "superpowers"
+    assert canonical_server == read(bundled / "skills" / "brainstorming" / "scripts" / "server.cjs")
+    assert canonical_helper == read(bundled / "skills" / "brainstorming" / "scripts" / "helper.js")
+    assert "sessionStorage" not in canonical_server + canonical_helper
+    assert "encodeURIComponent(TOKEN)" in canonical_server
+    assert "decodeURIComponent(value)" in canonical_server
+    assert "new WebSocket(websocketUrl())" in canonical_helper
+    auth_test = read(bundled / "tests" / "brainstorm-server" / "auth.test.js")
+    assert "</script><script>alert(1)</script>" in auth_test
+    assert "COOKIE_VALUE = encodeURIComponent(TOKEN)" in auth_test
+
+    impeccable = CANON / "impeccable" / "scripts"
+    live_server = read(impeccable / "live-server.mjs")
+    assert "boundedPollDuration(url.searchParams.get('timeout')" in live_server
+    assert "boundedPollDuration(url.searchParams.get('leaseMs')" in live_server
+    live_browser = read(impeccable / "live-browser.js")
+    assert ".replace(/^-ms-/, '-ms-')" not in live_browser
+    assert "escapeRegExp(attrMatch)" in read(impeccable / "live-accept.mjs")
+
+    ponytail = read(ROOT / "BUNDLED-TOOLS" / "plugins" / "ponytail" / "hooks" / "ponytail-instructions.js")
+    assert r'^-\s*([^\s:][^:]*):[ \t]*"' in ponytail
+    assert "100_000" in read(ROOT / "BUNDLED-TOOLS" / "plugins" / "ponytail" / "pi-extension" / "test" / "helpers.test.js")
+    assert "Ultimate-AI-Starter-Bundle-AIO/8.0.0" not in read(ROOT / "TOOLS" / "UABS-Common.ps1")
+
+
+def test_catalog_freshness_auditor_self_checks() -> None:
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "TOOLS" / "audit_catalog_versions.py"), "--self-test"],
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "self-test PASS" in result.stdout
 
 
 def main() -> int:
@@ -2390,6 +2446,8 @@ def main() -> int:
         test_new_creative_skills_are_pinned_and_single_writer,
         test_skill_discovery_is_search_only,
         test_outdated_hermes_npm_duplicates_are_removed_only_after_current_install,
+        test_local_security_boundaries_stay_hardened,
+        test_catalog_freshness_auditor_self_checks,
     ]
     failed = []
     for fn in tests:
@@ -4995,14 +5053,15 @@ def test_new_creative_skills_are_pinned_and_single_writer() -> None:
     assert re.search(r'(?m)^name = "transformers"\nversion = "5\.16\.1"$', vision_lock)
     assert node_package["devDependencies"]["esbuild"] == "0.28.2"
     assert node_lock["packages"]["node_modules/esbuild"]["version"] == "0.28.2"
-    assert impeccable["version"] == "3.6.0" and impeccable["skill_version"] == "4.1.2"
-    assert impeccable["skill_asset_sha256"] == "5ee960e62e308d423e5290c29277958115827813aad70cb91045f0481c22742c"
+    assert impeccable["version"] == "3.6.1" and impeccable["skill_version"] == "4.1.3"
+    assert impeccable["skill_asset_sha256"] == "fdcb41a24ddfb613786e3141bc7bb8466a406ffbd437a2e302f4ca70181bed9f"
     assert impeccable["npm_integrity"].startswith("sha512-")
     assert impeccable["npm_args"] == ["--omit=optional", "--ignore-scripts"]
     assert "view $comp.npm_spec dist.integrity" in installer and "blocked-integrity" in installer
-    assert re.search(r"(?m)^version:\s*4\.1\.2\s*$", ui_skill)
+    assert re.search(r"(?m)^\s+version:\s*4\.1\.3\s*$", ui_skill)
     assert not (CANON / "impeccable" / "scripts" / "pin.mjs").exists()
-    assert "impeccable detect" in read(CANON / "impeccable" / "reference" / "routing.md")
+    routing = read(CANON / "impeccable" / "reference" / "routing.md")
+    assert "scripts/detect.mjs --json" in routing and "no network, no npx" in routing
 
 
 def test_skill_discovery_is_search_only() -> None:

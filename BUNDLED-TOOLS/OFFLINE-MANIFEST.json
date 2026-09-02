@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-01",
-  "pack_version": "8.7.8",
+  "generated": "2026-09-02",
+  "pack_version": "8.7.9",
   "assets": [
     {
       "file": "codebase-memory-mcp-windows-amd64.zip",
@@ -29,8 +29,8 @@
     },
     {
       "file": "rtk-x86_64-pc-windows-msvc.zip",
-      "size": 4184125,
-      "sha256": "9bc5acd54d35a916e4a561435963e0acf2f1a0115cf43dcfe2b719f361c8a970"
+      "size": 4234070,
+      "sha256": "26401cf663797bfcfd0d7fbf3acfa5d81a6fb384e8cac188506d69c330d37596"
     },
     {
       "file": "spookys-automod-toolkit-v1.11.2.zip",
