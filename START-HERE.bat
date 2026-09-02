@@ -2,7 +2,7 @@
 setlocal
 set "PSModulePath="
 cd /d "%~dp0"
-title Ultimate AI Starter Bundle v8.7.9
+title Ultimate AI Starter Bundle v8.7.10
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0INSTALL-AIO.ps1" %*
 set "EXITCODE=%ERRORLEVEL%"
 echo.

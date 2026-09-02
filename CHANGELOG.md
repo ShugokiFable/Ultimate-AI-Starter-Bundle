@@ -1,3 +1,9 @@
+## 8.7.10
+
+- Updated the project-scoped shadcn MCP pin from 4.20.0 to 4.20.1 in both the component catalog and web profile.
+- Compared the exact npm package payloads and repeated a real MCP initialize/tools-list measurement: the surface remains 7 tools, 4,495 schema bytes, about 1,124 tokens per enabled turn.
+- Re-ran the catalog freshness gate: all 19 tracked release surfaces are current. No skill, profile, or always-on MCP schema changed.
+
 ## 8.7.9
 
 - Removed the Superpowers brainstorm companion bearer key from page JavaScript and `sessionStorage`. Keyed loads now set an encoded HttpOnly cookie, strip the URL, and use cookie-authenticated same-origin WebSockets; hostile script-terminator regression tests cover query, cookie, bootstrap, and reconnect paths.

@@ -524,7 +524,7 @@ Playwright MCP is already pinned at 0.0.80 behind the `web` profile, alongside
 Chrome DevTools rather than duplicated. The profile no longer turns on for
 every backend-only `package.json`; it requires a frontend marker or dependency.
 Its real initialize/tools-list surface is 24 tools, 18,502 schema bytes
-(~4,626 tokens per enabled turn). shadcn 4.20.0 adds 7 tools / 4,495 bytes
+(~4,626 tokens per enabled turn). shadcn 4.20.1 adds 7 tools / 4,495 bytes
 (~1,124 tokens) only when the same project profile finds `components.json`.
 Anthropic's official marketplace is already registered selectively. Enabling
 the whole marketplace would reintroduce provider-specific duplicates, keyed

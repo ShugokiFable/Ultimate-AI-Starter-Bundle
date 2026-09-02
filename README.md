@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.9
+# Ultimate AI Starter Bundle v8.7.10
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -683,6 +683,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.10** - 2026-09-02. Same-day dependency convergence: shadcn's project-scoped MCP pin moves from 4.20.0 to 4.20.1 after an exact npm-package comparison and a real initialize/tools-list measurement. Its surface remains 7 tools / 4,495 schema bytes (~1,124 tokens per enabled turn). All 19 tracked release surfaces are current; no skill, profile, or always-on schema changed.
 
 **v8.7.9** - 2026-09-02. Security and same-day dependency convergence: Superpowers' local brainstorm companion keeps its bearer key out of page JavaScript and authenticates through an encoded HttpOnly cookie; Impeccable's poll leases are bounded, dynamic regex input is escaped, HTML marker parsing is hardened, and Ponytail's malformed-bullet matcher stays linear. Impeccable skill 4.1.3/CLI 3.6.1, Playwright MCP 0.0.80, shadcn 4.20.0, Blender MCP 1.9.1, and RTK 0.47.0 are pinned after checksum, syntax, handshake, schema, or corpus tests as applicable. Blender's profile enables telemetry opt-out and its new safe code validator. A stdlib catalog auditor checks npm, PyPI, GitHub, and secondary skill releases without creating a flaky scheduled CI gate. RTK's moving `--stat` benchmark is now tag-pinned; its narrow default allowlist remains, the broad hook stays off, Windows MCP stays off, and no always-on MCP schema was added.
 
