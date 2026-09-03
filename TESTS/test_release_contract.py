@@ -2457,6 +2457,7 @@ def main() -> int:
         test_local_security_boundaries_stay_hardened,
         test_catalog_freshness_auditor_self_checks,
         test_release_assets_are_digest_checked_before_cache_reuse,
+        test_installed_state_doctor_keeps_provider_probes_local,
     ]
     failed = []
     for fn in tests:
@@ -5174,6 +5175,20 @@ def test_release_assets_are_digest_checked_before_cache_reuse() -> None:
     assert "same-size stale cache" in gate and "last known-good cache" in gate
     assert "Test-ReleaseAssetCache.ps1" in pack_gate, (
         "the focused cache regression exists but the full pack gate never runs it"
+    )
+
+
+def test_installed_state_doctor_keeps_provider_probes_local() -> None:
+    """Hermes --version fetches upstream; a local doctor must never call it."""
+    doctor = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+    provider_probe = doctor.split("foreach($provider in $Providers)", 1)[1].split(
+        "$providerHome=Get-UabsProviderHome", 1
+    )[0]
+    assert "$provider -eq 'Hermes'" in provider_probe
+    assert "@('--help')" in provider_probe
+    assert "& $exe @probeArgs" in provider_probe
+    assert not re.search(r"&\s+\$exe\s+--version\b", provider_probe), (
+        "the installed-state doctor again turns Hermes executable discovery into a network fetch"
     )
 
 if __name__ == "__main__":

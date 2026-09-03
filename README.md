@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.11
+# Ultimate AI Starter Bundle v8.7.12
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -683,6 +683,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.12** - 2026-09-02. Hermes 0.21's `--version` now performs an upstream fetch, so the installed-state doctor uses its local-only help path for executable validation instead of turning a local health check into a multi-minute network wait. No skills, MCP registrations, or schema budgets changed.
 
 **v8.7.11** - 2026-09-02. Release-asset integrity repair: GitHub assets with reused filenames are now cacheable only when their published SHA-256 matches, downloads are validated before atomic replacement, and failed refreshes preserve the last known-good file. The installer records and verifies RTK's executable/version after extraction; the doctor independently binds the active RTK binary to CATALOG. A Windows PowerShell 5.1 regression proves same-name, same-size stale bytes are rejected.
 

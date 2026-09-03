@@ -1,3 +1,8 @@
+## 8.7.12
+
+- Kept the installed-state doctor local-only after Hermes 0.21 changed `--version` to perform an upstream Git fetch. Hermes now uses its local argparse help path for executable validation, avoiding multi-minute startup checks during installs and audits.
+- Added a release contract binding that provider-specific probe to the exact doctor loop. No skills, MCP registrations, or schema budgets changed.
+
 ## 8.7.11
 
 - Fixed OnlineLatest cache reuse for upstreams such as RTK that publish new releases under the same asset filename. Existing files now require the release's exact SHA-256; size-only or missing-digest caches are refreshed.
