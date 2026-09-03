@@ -23,6 +23,7 @@ graph of animation files that costs tokens on every query and answers nothing. R
 | Dead code | `search_graph(max_degree=0, exclude_entry_points=true)` |
 | Cross-service edges | `query_graph` with Cypher |
 | Impact of local changes | `detect_changes()` |
+| Did the graph cover the source tree? | `check_index_coverage()` |
 | Risk-classified trace | `trace_path(risk_labels=true)` |
 | Text search | `search_code` or Grep |
 
@@ -42,11 +43,15 @@ graph of animation files that costs tokens on every query and answers nothing. R
 - High fan-out: `search_graph(min_degree=10, relationship="CALLS", direction="outbound")`
 - High fan-in: `search_graph(min_degree=10, relationship="CALLS", direction="inbound")`
 
-## 14 MCP Tools
+## 15 MCP Tools
 `index_repository`, `index_status`, `list_projects`, `delete_project`,
 `search_graph`, `search_code`, `trace_path`, `detect_changes`,
-`query_graph`, `get_graph_schema`, `get_code_snippet`, `get_architecture`,
+`query_graph`, `get_graph_schema`, `get_code_snippet`, `get_architecture`, `check_index_coverage`,
 `manage_adr`, `ingest_traces`
+
+Measured on 0.10.8 (2026-09-03): 23,974 schema bytes, about 5,994 tokens on
+every turn while connected. Use Claude/Grok project scope or Hermes' native
+`code` profile; do not register it globally just because the executable exists.
 
 ## Edge Types
 CALLS, HTTP_CALLS, ASYNC_CALLS, IMPORTS, DEFINES, DEFINES_METHOD,

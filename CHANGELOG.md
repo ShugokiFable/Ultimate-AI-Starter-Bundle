@@ -1,3 +1,11 @@
+## 8.7.14
+
+- Added a native Hermes `code` profile containing codebase-memory while keeping Hermes `default` at context7 + GitHub + Headroom. The live initialize/tools-list handshake returns all 15 tools; a second check proves codebase-memory is absent from default.
+- Fixed first-time Hermes profile creation: planned profiles now read the default preferences they will clone instead of querying a profile that does not exist and aborting before `CreateProfile`.
+- Corrected the codebase-memory skill and catalog to the measured 0.10.8 surface: 15 tools, 23,974 schema bytes, about 5,994 tokens per enabled turn, including `check_index_coverage`.
+- Kept Claude and Grok project-scoped, and kept Codex/Kimi unregistered by default because those clients have no project-path MCP scope. No always-on MCP schema was added.
+- Evaluated OpenMontage at 1,829 passing tests and Graft at 1,214 passing tests. OpenMontage remains a separate specialist project; Graft remains watch-only despite its small six-tool/~841-token MCP because it overlaps the existing graph, semantic search needs a configured model, and upstream `init` writes hooks/configs the bundle already owns.
+
 ## 8.7.13
 
 - Fixed the v8.7.12 Windows PowerShell 5.1 provider-probe regression. A one-item array emitted by `if` collapsed to a string, and splatting passed `--version`/`--help` one character at a time; literal branch arguments now validate Claude, Codex, Grok, Kimi, and Hermes correctly.

@@ -1,8 +1,8 @@
 {
   "pack": "Ultimate AI Starter Bundle",
-  "version": "8.7.13",
-  "generated": "2026-09-03T14:51:33Z",
-  "release_tag": "v8.7.13",
+  "version": "8.7.14",
+  "generated": "2026-09-03T20:13:14Z",
+  "release_tag": "v8.7.14",
   "canonical_skills": 167,
   "provider_trees": 5,
   "registry_entries": 167,
@@ -20,6 +20,6 @@
     "TESTS/Test-McpProfiles.ps1",
     "TOOLS/mcp_handshake.py --selftest"
   ],
-  "runtime_status": "v8.7.13 candidate validation covers all five generated provider trees, 125 release contracts, the full Windows pack gate, version and manifest consistency, RTK 0.47.0 cache/download/install/runtime version checks, Windows PowerShell 5.1-safe local provider startup probes, fail-closed Hermes profile migration, Codex built-in shadow cleanup with verified backup, Superpowers auth/WebSocket regressions, Impeccable 4.1.3 syntax checks, Blender MCP 1.9.1 initialize/tools-list with telemetry off and safe mode on, shadcn MCP 4.20.1 initialize/tools-list and schema measurement, and live catalog freshness across npm, PyPI and GitHub. The final all-provider reinstall, installed-state doctor, exact-SHA CI/CodeQL, build, publication and downloaded-asset byte verification are completed after this file is committed.",
+  "runtime_status": "v8.7.14 candidate validation covers all five generated provider trees, 125 release contracts, the full Windows pack gate, version and manifest consistency, RTK 0.47.0 cache/download/install/runtime version checks, first-create and idempotent Hermes native profile migration, live codebase-memory handshakes in Claude, Grok and Hermes code, default-profile isolation, Codex built-in shadow cleanup with verified backup, Superpowers auth/WebSocket regressions, Impeccable 4.1.3 syntax checks, Blender MCP 1.9.1 initialize/tools-list with telemetry off and safe mode on, shadcn MCP 4.20.1 initialize/tools-list and schema measurement, and live catalog freshness across npm, PyPI and GitHub. The final all-provider reinstall, installed-state doctor, exact-SHA CI/CodeQL, build, publication and downloaded-asset byte verification are completed after this file is committed.",
   "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  Normalize Hermes into default, roblox, and skyrim MCP profiles.
+  Normalize Hermes into default, code, roblox, and skyrim MCP profiles.
 
 .DESCRIPTION
   Default: context7, github, headroom
+  Code:    default + codebase-memory-mcp
   Roblox:  default + Roblox Studio's official MCP
   Skyrim:  default + houseCARL
 
@@ -11,7 +12,7 @@
   enabled/command/args fields are changed. Before the first write, exact config
   bytes are copied to a timestamped rollback directory. A failed verification
   restores those bytes and removes profiles created by the failed run.
-  A game profile is created only when its local capability is installed.
+  A specialist profile is created only when its local capability is installed.
 
 .PARAMETER Apply
   Perform the migration. Without this switch, print the plan only.
@@ -139,6 +140,7 @@ function Test-UabsServerFamily($Entry, [string]$Family) {
     'context7' { return $text.Contains('context7-mcp') }
     'github' { return $text.Contains('github-mcp-server') }
     'headroom' { return $text.Contains('headroom') -and $text.Contains('mcp') }
+    'codebase-memory' { return $text.Contains('codebase-memory-mcp') }
     'roblox' { return $text.Contains('roblox') -and ($text.Contains('studiomcp') -or $text.Contains('mcp.bat')) }
     'housecarl' { return $text.Contains('housecarl-mcp') }
     'skyrim-forge' { return $text.Contains('skyrim-forge') -or $text.Contains('skyrim_forge') }
@@ -329,6 +331,15 @@ function Get-UabsFallbackSignature($Chain) {
 }
 
 function Get-UabsProfilePrefs([string]$Profile) {
+  # A profile planned below does not exist until the apply phase. It will be
+  # created with --clone-from default, so default is also the only truthful
+  # pre-write view of its preferences. Querying `hermes -p <new>` here made a
+  # first install fail during its own dry run before CreateProfile could run.
+  if ($Profile -ne 'default' -and @($script:Plan | Where-Object {
+      $_.Kind -eq 'CreateProfile' -and $_.Profile -eq $Profile
+    }).Count) {
+    return Get-UabsProfilePrefs 'default'
+  }
   $out = @{ fallback = @(); aliases = @{}; plugins = @(); disabled_plugins = @() }
   $fb = Invoke-UabsHermes -Arguments @('-p', $Profile, 'config', 'get', 'fallback_providers', '--json') -AllowMissing
   if ($fb.Code -eq 0) {
@@ -520,6 +531,10 @@ try {
   $maps = @{}
   $maps['default'] = Get-UabsMcpMap 'default'
 
+  $codebaseMemory = [Environment]::GetEnvironmentVariable('CODEBASE_MEMORY_MCP', 'Process')
+  if (-not $codebaseMemory) { $codebaseMemory = [Environment]::GetEnvironmentVariable('CODEBASE_MEMORY_MCP', 'User') }
+  if (-not $codebaseMemory) { $codebaseMemory = Join-Path $env:LOCALAPPDATA 'Programs\codebase-memory-mcp\codebase-memory-mcp.exe' }
+  $codeAvailable = Test-Path -LiteralPath $codebaseMemory -PathType Leaf
   $robloxBat = Join-Path $env:LOCALAPPDATA 'Roblox\mcp.bat'
   $robloxAvailable = Test-Path -LiteralPath $robloxBat -PathType Leaf
   $houseCarl = [Environment]::GetEnvironmentVariable('HOUSECARL_MCP', 'Process')
@@ -544,9 +559,13 @@ try {
     Add-UabsLedger 'untouched' "Spooky's AutoMod capability (not installed; no MCP entry created)"
   }
 
-  foreach ($profile in @('roblox', 'skyrim')) {
+  foreach ($profile in @('code', 'roblox', 'skyrim')) {
     $dir = Join-Path $profileDirs $profile
-    $available = if ($profile -eq 'roblox') { $robloxAvailable } else { $skyrimAvailable }
+    $available = switch ($profile) {
+      'code' { $codeAvailable }
+      'roblox' { $robloxAvailable }
+      'skyrim' { $skyrimAvailable }
+    }
     if (-not $available) {
       Add-UabsLedger 'untouched' "Hermes profile '$profile' (required local capability is not installed)"
       continue
@@ -600,6 +619,9 @@ try {
   $robloxStudio = @{
     command = 'cmd.exe'; args = @('/c', $robloxBat); enabled = $true; connect_timeout = 30
   }
+  $codebaseSpec = @{
+    command = $codebaseMemory; args = @(); enabled = $true; connect_timeout = 90
+  }
 
   # The tool budget is DATA. Reading it here rather than hardcoding names keeps
   # the measured numbers and the applied filter in one place, and makes the next
@@ -641,6 +663,16 @@ try {
     foreach ($item in $core) {
       Ensure-UabsServer $profile $maps[$profile] $item.Id $item.Spec $item.Family
       Normalize-UabsAliases $profile $maps[$profile] $item.Id $item.Aliases $item.Family
+    }
+  }
+
+  if ($codeAvailable) {
+    Ensure-UabsServer 'code' $maps['code'] 'codebase-memory-mcp' $codebaseSpec 'codebase-memory'
+    Normalize-UabsAliases 'code' $maps['code'] 'codebase-memory-mcp' @('codebase-memory') 'codebase-memory'
+    foreach ($profile in @('default', 'roblox', 'skyrim') | Where-Object { $managedProfiles -contains $_ }) {
+      foreach ($id in @('codebase-memory-mcp', 'codebase-memory')) {
+        Remove-UabsServer $profile $maps[$profile] $id 'codebase-memory'
+      }
     }
   }
 
@@ -733,6 +765,7 @@ try {
 
   $expected = @{
     default = @('context7', 'github', 'headroom')
+    code = @('context7', 'github', 'headroom', 'codebase-memory-mcp')
     roblox = @('context7', 'github', 'headroom', 'Roblox_Studio')
     skyrim = @('context7', 'github', 'headroom', 'housecarl')
   }
@@ -740,6 +773,7 @@ try {
   if ($forgeCompatSkyrim) { $expected.skyrim += 'skyrim-forge' }
   $expectedFamilies = @{
     context7 = 'context7'; github = 'github'; headroom = 'headroom'
+    'codebase-memory-mcp' = 'codebase-memory'
     Roblox_Studio = 'roblox'; housecarl = 'housecarl'
     robloxforge = 'robloxforge'; 'skyrim-forge' = 'skyrim-forge'
   }
@@ -779,7 +813,11 @@ try {
   $backup = New-UabsBackup $existingProfiles
   try {
     foreach ($item in $script:Plan | Where-Object { $_.Kind -eq 'CreateProfile' }) {
-      $description = if ($item.Profile -eq 'roblox') { 'Roblox development with the official Studio MCP.' } else { 'Skyrim development with houseCARL load-order evidence.' }
+      $description = switch ($item.Profile) {
+        'code' { 'Code exploration with project graph memory.' }
+        'roblox' { 'Roblox development with the official Studio MCP.' }
+        default { 'Skyrim development with houseCARL load-order evidence.' }
+      }
       [void](Invoke-UabsHermes -Arguments @('profile', 'create', $item.Profile, '--clone-from', 'default', '--description', $description))
       [void]$script:CreatedProfiles.Add($item.Profile)
     }

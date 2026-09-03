@@ -530,6 +530,55 @@ Anthropic's official marketplace is already registered selectively. Enabling
 the whole marketplace would reintroduce provider-specific duplicates, keyed
 MCPs, and skills already carried by the canonical tree.
 
+## 2026-09-03 — OpenMontage, Graft, and code graph routing
+
+### EXTERNAL, NOT BUNDLED — OpenMontage (`calesthio/OpenMontage`), AGPL-3.0
+
+This is a real new capability: an end-to-end agentic video-production project,
+not another browser or memory wrapper. The evaluated tree at
+`cd9f3c1f03368be87b140af494914b8ee4e3c7a4` completed **1,829 tests**, with 11
+skipped and 3 expected failures, on an isolated Python 3.13 environment. It
+supports free local/archive/stock-media paths as well as optional paid providers.
+
+It is not a bundle component. The tree carries 138 `SKILL.md` files and 1,057
+skill markdown files, its Python dependencies are lower bounds without a lock,
+and its Windows quick start assumes a `py` launcher. Fanout would swamp every
+provider's skill index and make OpenMontage's project contract compete with the
+bundle's own. Use it as a separate specialist project today. Reconsider an
+optional pinned installer when upstream publishes a reproducible dependency
+set; never copy its whole skill tree into `_CANONICAL-SKILLS`.
+
+### WATCH — Graft (`trailhq/Graft`), MIT
+
+The source tree at `05760b07abc0e427f5af8ad378889ee402c5afc6`
+advertises 0.17.0, while the npm registry still publishes 0.16.0. Its locked
+source install audited at zero vulnerabilities and ran **1,214 passing tests**
+with 6 skipped. Building its own graph covered 265 source files, 2,038 nodes,
+6,082 edges and 265 cards in 5.1 seconds; `graft check` passed.
+
+Its MCP is impressively small: 6 tools, 3,363 schema bytes, about 841 tokens per
+enabled turn. That does not make it a free replacement. The first natural-
+language query for its own agent/provider integration returned no result without
+the deep semantic layer; deep mode needs a separately configured model/provider.
+`graft init` also writes provider hooks, skills and MCP config, while anonymous
+telemetry is on unless `DO_NOT_TRACK=1`. Those are second writers for surfaces
+UABS already owns, and the structural graph duplicates codebase-memory.
+
+Do not ship it yet. Re-test after 0.17.0 is published and only adopt a
+bundle-owned, telemetry-off, no-`init` wrapper if its query reliability beats
+codebase-memory on the same corpus. The schema size alone is not that proof.
+
+### TAKEN — scoped codebase-memory for Hermes
+
+The installed codebase-memory-mcp 0.10.8 now exposes 15 tools, including
+`check_index_coverage`: 23,974 schema bytes, about **5,994 tokens per enabled
+turn**. Registering it globally on every provider would spend that budget in
+unrelated chats. Claude and Grok therefore keep the project-scoped `code-intel`
+profile; Codex and Kimi remain unregistered by default because they have no
+project-path MCP scope. Hermes now gets a native `code` profile, selected with
+`hermes -p code`, so its graph tools do not leak into the default profile.
+`auto_index=false` and `auto_watch=false` remain mandatory.
+
 ## How to add a row
 
 Run the candidate through the four gates in order and write down where it

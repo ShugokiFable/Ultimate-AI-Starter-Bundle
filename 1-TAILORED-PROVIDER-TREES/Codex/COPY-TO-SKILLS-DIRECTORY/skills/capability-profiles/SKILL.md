@@ -12,8 +12,8 @@ are off until something needs them.
 ## Why servers are not like skills
 
 A skill costs nothing until its description matches. Its body is loaded on
-demand. Measured in this pack: the 146 SKILL.md files are ~163,000 tokens,
-while the name-and-description index the agent actually reads is ~6,900.
+demand. The complete skill-body corpus is far larger than the compact
+name-and-description index an agent reads before choosing one.
 
 **MCP tool schemas have no such discount.** Every tool of every connected server
 is in context on every turn, in every session, whether or not the task is
@@ -128,8 +128,9 @@ is not a reason to expect `find_symbol` in this session.
 every task: current API docs instead of recalled signatures, verified pushes
 instead of hoped-for ones, and context compression that pays for itself.
 Everything else is a profile. The general router uses project scope; Hermes
-uses its native named homes for `roblox` and `skyrim` because it has profiles
-but no project-path MCP scope.
+uses native named homes because it has profiles but no project-path MCP scope.
+`code` adds codebase-memory, `roblox` adds the official Studio bridge, and
+`skyrim` adds houseCARL.
 
 `sequential-thinking` was the third until 7.9.7 measured it: 1 tool, but a
 4,590-byte schema — ~1,148 tokens on every turn of every session, as much as
@@ -158,8 +159,10 @@ wrong unit, bytes is the right one.** Measure before arguing about it —
 
 `code-intel` was called `code-deep` before 7.9.6. The old id still resolves.
 
-Hermes has a smaller native topology: `default` is the always-on three,
-`roblox` adds the official Roblox Studio MCP, and `skyrim` adds houseCARL.
+Hermes has a smaller native topology: `default` is the always-on three, `code`
+adds codebase-memory, `roblox` adds the official Roblox Studio MCP, and `skyrim`
+adds houseCARL. Use `hermes -p code` in a code repository; its measured ~5,994
+tokens/turn do not spill into ordinary Hermes sessions.
 The Skyrim toolset still includes all three specialists: houseCARL through the
 profile MCP, Skyrim Forge through its skill/CLI, and Spooky's AutoMod through
 the routed specialist skills/CLI. Forge's MCP is opt-in compatibility, not a
@@ -196,7 +199,7 @@ router exists to avoid:
 | Grok | `<project>\.grok\config.toml` — `grok mcp add -s project`. This one *is* a file in the project. |
 | Codex | none. A project `.codex/config.toml` is ignored. |
 | Kimi | none found; it reads `%USERPROFILE%\.kimi-code\mcp.json`. |
-| Hermes | native named homes/configs (`default`, `roblox`, `skyrim`), selected with `-p` or the generated aliases; no project-path scope. |
+| Hermes | native named homes/configs (`default`, `code`, `roblox`, `skyrim`), selected with `-p` or the generated aliases; no project-path scope. |
 
 For Codex and Kimi the MCP server is skipped and the reason is printed. The
 matching game skill can still run an installed Forge through its CLI, so the

@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "catalog_version": "8.7.13",
-  "pack_version": "8.7.13",
-  "updated_utc": "2026-09-03T01:31:08Z",
-  "why": "MCP tool schemas are not lazy. A skill costs nothing until its description matches; a connected MCP server puts every one of its tool schemas into the model's context on every turn, in every session, whether or not the task is related. Measured in this pack: 146 skill bodies are far larger than the description index an agent actually reads. There is no equivalent discount for MCP. So the servers here are NOT registered globally: every profile below is project-scoped, wired only for the one project whose markers asked for it, and only when the machine can actually run it. Decided by TOOLS/Set-McpProfile.ps1 from the markers in 'detect' and the preconditions in 'requires'.",
+  "catalog_version": "8.7.14",
+  "pack_version": "8.7.14",
+  "updated_utc": "2026-09-03T20:13:14Z",
+  "why": "MCP tool schemas are not lazy. A skill body loads only after its compact description matches; a connected MCP server puts every tool schema into every turn of every session covered by that config. There is no equivalent discount for MCP. So the profiles below are project-scoped and wired only where the project markers and local prerequisites agree. Claude and Grok support that scope directly. Hermes' separate native code profile is managed by Migrate-HermesProfiles.ps1; Codex and Kimi stay unregistered unless the user explicitly chooses global cost.",
   "reads": "TOOLS/Set-McpProfile.ps1",
   "always_on_note": "The always-on core is context7, github, and headroom, in TOOLS/Add-Reasoning-MCPs.ps1, not here. They earn permanent slots for current documentation, verified repository state, and context inspection/compression. sequential-thinking is the opt-in reasoning profile after measurement showed its permanent schema cost. Playwright is in the web profile; Firecrawl and Perplexity register only when their keys exist.",
   "requires_forms": {
@@ -21,7 +21,7 @@
       "id": "code-intel",
       "title": "Repository graph plus language-server-accurate navigation and editing",
       "scope": "project",
-      "why": "Serena drives real language servers, so find-symbol, find-referencing-symbols and replace-symbol-body answer from the compiler's view of the code rather than from a text match. It overlaps codebase-memory-mcp deliberately: that one answers 'where is this in the graph', Serena answers 'what exactly does this symbol resolve to, and rewrite its body'. Worth the context on a real codebase, not worth it on a two-file mod -- which is why it is wired for that codebase and nowhere else. Named code-intel, not code-deep: it was renamed in 7.9.6 and has nothing to do with any package of a similar name.",
+      "why": "Serena drives real language servers, so find-symbol, find-referencing-symbols and replace-symbol-body answer from the compiler's view of the code rather than from a text match. It overlaps codebase-memory-mcp deliberately: that one answers 'where is this in the graph', Serena answers 'what exactly does this symbol resolve to, and rewrite its body'. Worth the context on a real codebase, not worth it on a two-file mod -- which is why Claude and Grok receive it only for that codebase. Hermes has no project-path scope and uses a separate native code profile containing codebase-memory; Codex and Kimi remain unregistered by default rather than paying this schema in every session. Named code-intel, not code-deep: it was renamed in 7.9.6 and has nothing to do with any package of a similar name.",
       "detect": {
         "files": [
           "pyproject.toml",
@@ -599,7 +599,7 @@
     "Grok": "<project>\\.grok\\config.toml, the `project` scope of `grok mcp add -s project` (verified against grok 1.0.5). This one IS a file inside the project, because it is the only project mechanism grok-cli has.",
     "Codex": "None. `codex mcp add` has no scope flag and a project-local .codex/config.toml is ignored -- verified against codex-cli 0.147.0 by putting one there and reading `codex mcp list`. Capability servers are therefore not written for Codex unless -Global is passed.",
     "Kimi": "None found. kimi-code reads %USERPROFILE%\\.kimi-code\\mcp.json; a project-local .kimi-code\\mcp.json was not picked up by `kimi doctor`. Not written unless -Global.",
-    "Hermes": "Hermes has native named profiles, each with its own home/config, but no project-path MCP scope. TOOLS/Migrate-HermesProfiles.ps1 owns the default/roblox/skyrim topology; this path-based router skips Hermes unless -Global is explicit."
+    "Hermes": "Hermes has native named profiles, each with its own home/config, but no project-path MCP scope. TOOLS/Migrate-HermesProfiles.ps1 owns the default/code/roblox/skyrim topology; this path-based router skips Hermes unless -Global is explicit."
   },
   "arg_forms": {
     "args": "Base arguments. May contain %ENVVAR% and {project}.",

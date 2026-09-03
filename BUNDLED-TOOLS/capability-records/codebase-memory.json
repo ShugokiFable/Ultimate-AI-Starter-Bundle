@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "record": "mcp-schema-cost",
+  "id": "codebase-memory",
+  "version": "0.10.8",
+  "measured_date": "2026-09-03",
+  "measured_with": "TOOLS/Measure-McpSchemaCost.ps1",
+  "command": "%LOCALAPPDATA%\\Programs\\codebase-memory-mcp\\codebase-memory-mcp.exe",
+  "tools": 15,
+  "schema_bytes": 23974,
+  "approx_tokens_per_turn": 5994,
+  "scope": "Claude and Grok code-intel projects plus the Hermes code profile; never always-on."
+}

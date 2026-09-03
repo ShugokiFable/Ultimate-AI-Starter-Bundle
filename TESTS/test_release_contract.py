@@ -413,6 +413,7 @@ def test_hermes_cost_contract() -> None:
 def test_hermes_native_profile_migration_contract() -> None:
     body = read(ROOT / "TOOLS" / "Migrate-HermesProfiles.ps1")
     installer = read(ROOT / "INSTALL-AIO.ps1")
+    doctor = read(ROOT / "TOOLS" / "Test-Installed-State.ps1")
 
     for token in (
         "profile', 'create'",
@@ -424,17 +425,35 @@ def test_hermes_native_profile_migration_contract() -> None:
         "if (-not $script:Plan.Count)",
         "Roblox\\mcp.bat",
         "command = 'cmd.exe'",
+        "CODEBASE_MEMORY_MCP",
+        "codebase-memory-mcp",
         "HOUSECARL_MCP",
         "SKYRIM_MO2_INSTANCE",
         "SPOOKY_AUTOMOD_ROOT",
         "WithForgeCompatibility",
+        "return Get-UabsProfilePrefs 'default'",
         "unowned/user-specific",
     ):
         assert token in body, f"Hermes native-profile migration lost {token!r}"
 
     assert "default = @('context7', 'github', 'headroom')" in body
+    assert "code = @('context7', 'github', 'headroom', 'codebase-memory-mcp')" in body
     assert "roblox = @('context7', 'github', 'headroom', 'Roblox_Studio')" in body
     assert "skyrim = @('context7', 'github', 'headroom', 'housecarl')" in body
+    assert "foreach ($profile in @('code', 'roblox', 'skyrim'))" in body
+    assert "Remove-UabsServer $profile $maps[$profile] $id 'codebase-memory'" in body, (
+        "Hermes codebase-memory can leak back into default/game profiles"
+    )
+    assert "profiles=@('default','code','roblox','skyrim')" in installer
+    assert "mcp-profiles.json" in doctor and "scoped_for = @()" in doctor
+    assert "'Hermes/' + $profileDir.Name" in doctor, (
+        "the doctor cannot report MCP servers isolated in Hermes named profiles"
+    )
+    cbm_cost = json.loads(read(ROOT / "BUNDLED-TOOLS" / "capability-records" / "codebase-memory.json"))
+    assert cbm_cost.get("record") == "mcp-schema-cost"
+    assert cbm_cost.get("tools") == 15 and cbm_cost.get("schema_bytes") == 23974, (
+        "the codebase-memory doctor cost no longer matches the measured 0.10.8 tools/list surface"
+    )
     assert "Migrate-HermesProfiles.ps1" in installer, "the installer no longer runs the profile migration"
     assert "'-File', $hermesProfiles, '-Apply'" in installer, (
         "the installer no longer applies the migration; a dry run writes nothing "

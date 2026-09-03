@@ -376,7 +376,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.13 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.14 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -2142,7 +2142,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-version = '8.7.13'
+version = '8.7.14'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -2203,7 +2203,7 @@ if (-not $ToolsOnly) {
       if ($SkyrimToolset) { $profileArgs += @('-SkyrimToolset', $SkyrimToolset) }
       & (Get-Command powershell.exe -ErrorAction Stop).Source @profileArgs
       if ($LASTEXITCODE -ne 0) { throw "Hermes profile migrator failed with exit code $LASTEXITCODE" }
-      $installed['hermes-native-profiles'] = @{ status='evaluated'; profiles=@('default','roblox','skyrim'); skyrim_toolset=$(if ($SkyrimToolset) { $SkyrimToolset } else { 'default (Lean)' }) }
+      $installed['hermes-native-profiles'] = @{ status='evaluated'; profiles=@('default','code','roblox','skyrim'); skyrim_toolset=$(if ($SkyrimToolset) { $SkyrimToolset } else { 'default (Lean)' }) }
       L 'Hermes native profiles evaluated'
     } catch {
       Write-UabsWarn ('Hermes native profiles: ' + $_.Exception.Message)
@@ -2366,14 +2366,14 @@ if ($enabledProfiles.Count) {
   Write-Host '     one-command fix, not an install problem:' -ForegroundColor Yellow
   Write-Host '       TOOLS\Set-McpProfile.ps1 -Detect -Path "<your project>"   # what applies' -ForegroundColor Yellow
   Write-Host '       TOOLS\Set-McpProfile.ps1 -Auto   -Path "<your project>"   # enable it' -ForegroundColor Yellow
-  Write-Host '     Works for Claude, Codex, Grok, Kimi and Hermes. Restart the app after.' -ForegroundColor Yellow
+  Write-Host '     Project scope is supported by Claude and Grok. Hermes uses the native code profile below.' -ForegroundColor Yellow
 }
 Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Hermes: run hermes --accept-hooks once if it asks for hook trust.'
 Write-Host '  9. Leftovers from older versions are removed automatically each install.'
 Write-Host '     See what would go without deleting: TOOLS\Clean-StaleState.ps1'
-Write-Host '     Native MCP profiles when installed: hermes (core), roblox (official Studio MCP), skyrim (houseCARL).'
+Write-Host '     Native MCP profiles when installed: hermes (core), code (codebase-memory), roblox (official Studio MCP), skyrim (houseCARL).'
 Write-Host '     Audit/migrate: TOOLS\Migrate-HermesProfiles.ps1 [-Apply]'
 Write-Host '     houseCARL costs ~41,768 tokens/turn at full size. The skyrim profile registers a'
 Write-Host '     Lean subset (~31,369, -25%). Cheaper: -SkyrimToolset ReadOnly (~17,604, -58%).'

@@ -146,7 +146,7 @@
       ],
       "install": "zip-extract",
       "exe_rel": "codebase-memory-mcp.exe",
-      "scope_note": "Installed globally, enabled only through the project-scoped code-intel profile. NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default.",
+      "scope_note": "Installed globally but never registered in a provider's global/default MCP set. Claude and Grok get it only through a project-scoped code-intel profile; Hermes gets it only in the native code profile. Codex and Kimi stay unregistered unless the user explicitly accepts machine-wide schema cost. NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default. Measured 0.10.8: 15 tools, 23,974 schema bytes, ~5,994 tokens per enabled turn.",
       "server_id": "codebase-memory-mcp"
     },
     {
@@ -575,7 +575,7 @@
         "symbol-navigation",
         "symbol-level-edits"
       ],
-      "scope_note": "Language-server-backed symbol search and editing. NOT registered globally and NOT registered machine-wide: TOOLS\\Set-McpProfile.ps1 wires it for the one project that shows source-tree markers, because every connected server's tool schemas ride in context on every turn of every session that config covers. Claude Code takes it in projects[\"<abs path>\"].mcpServers, Grok in the project's own .grok\\config.toml; Codex, Kimi and Hermes have no project-scoped MCP config and are skipped unless -Global is passed. Registered with a per-client --context so the tool set is trimmed to what the client does not already provide -- Serena 1.7.0 ships one for claude-code, codex and grok, and Kimi/Hermes fall back to the generic 'agent' context -- and with --project <path> so it activates the project it was written for. Overlaps codebase-memory-mcp deliberately: that answers 'where is this in the graph', this answers 'what does this symbol resolve to, and rewrite its body'."
+      "scope_note": "Language-server-backed symbol search and editing. NOT registered globally and NOT registered machine-wide: TOOLS\\Set-McpProfile.ps1 wires it for the one project that shows source-tree markers, because every connected server's tool schemas ride in context on every turn of every session that config covers. Claude Code takes it in projects[\"<abs path>\"].mcpServers, Grok in the project's own .grok\\config.toml; Codex and Kimi have no project-scoped MCP config and are skipped unless -Global is passed. Hermes uses its separate native code profile for codebase-memory without adding Serena to default. Registered with a per-client --context so the tool set is trimmed to what the client does not already provide -- Serena 1.7.0 ships one for claude-code, codex and grok, and Kimi falls back to the generic 'agent' context -- and with --project <path> so it activates the project it was written for. Overlaps codebase-memory-mcp deliberately: that answers 'where is this in the graph', this answers 'what does this symbol resolve to, and rewrite its body'."
     },
     {
       "id": "chrome-devtools-mcp",
@@ -825,8 +825,8 @@
       "scope_note": "A proxy MCP. It registers ONE server carrying 11 meta-tools and puts every other server behind on-demand discovery: search_tools by intent, get_tool_details for one schema, use_tool to call it. Measured 2026-08-27: 11 tools, 11,386 bytes, ~2,846 tokens per turn -- and that figure does NOT grow as more servers go behind it. The comparison that matters: houseCARL wired directly is 45 tools, 167,072 bytes, 41,768 tokens on EVERY turn, and Claude, Codex, Grok and Kimi cannot filter individual tools the way Hermes can, so on those four it is all 45 or nothing. Proven end to end against this pack's own houseCARL on 2026-08-27: search_tools('list the plugins in the active load order') -> get_tool_details (3,652 chars, ~913 tokens for that ONE schema) -> use_tool returned live data from the shim (2,999 mods, 2,995 plugins). Startup 1.2s, search 400ms, detail 200ms. NOT wired into a profile, and the reason is specific rather than cautious: the router reads its own config at %USERPROFILE%\\.super-mcp\\config.json, so enabling it means this pack writing and preserving a THIRD-PARTY tool's config file -- a second config writer with its own merge obligations, on a 24-star dependency. The measurement is what ships here; the wiring is its own release. One caveat to carry into that decision: BM25 ranking returned housecarl_merge_plugins FIRST for that read-only query, with the correct housecarl_load_order_status third. Discovery works, but the top hit is not automatically the safe one."
     }
   ],
-  "pack_version": "8.7.13",
-  "updated_utc": "2026-09-02",
+  "pack_version": "8.7.14",
+  "updated_utc": "2026-09-03",
   "providers": {
     "Grok": {
       "skills": "skills",
@@ -904,7 +904,7 @@
   "provider_config_schemas": {
     "Hermes": 39
   },
-  "catalog_version": "8.7.13",
-  "updated": "2026-09-02",
-  "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are NOT registered by the installer, and since 7.9.6 are not registered machine-wide either: BUNDLED-TOOLS/PROFILES.json holds their wiring and TOOLS/Set-McpProfile.ps1 applies a profile to ONE project -- the one whose markers asked for it -- when the machine satisfies its requirements. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session; measured on a real machine, eight connected servers were 188 tool schemas per turn. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok; Codex, Kimi and Hermes have no project-scoped MCP config, so they are skipped with the reason printed rather than written machine-wide. Prove any registration with TOOLS/Test-McpHandshake.ps1."
+  "catalog_version": "8.7.14",
+  "updated": "2026-09-03",
+  "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are not registered machine-wide by Set-McpProfile.ps1: BUNDLED-TOOLS/PROFILES.json holds their wiring and applies a profile only where the project markers and local prerequisites agree. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok. Codex and Kimi have no project-scoped MCP config and are skipped rather than written globally. Hermes has no project-path scope, so Migrate-HermesProfiles.ps1 isolates codebase-memory in its native code profile instead of default. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

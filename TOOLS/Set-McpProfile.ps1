@@ -5,9 +5,9 @@
 .DESCRIPTION
   Skills are lazy: a skill costs nothing until its description matches the task.
   MCP servers are not. Every connected server puts all of its tool schemas into
-  the model's context on every turn of every session, related or not. Measured in
-  this pack: 144 skill bodies are ~154,000 tokens against a ~5,500-token
-  description index. There is no equivalent discount for MCP.
+  the model's context on every turn of every session, related or not. Skill
+  bodies are loaded only when their compact description matches; there is no
+  equivalent discount for MCP.
 
   Two words that are not the same thing, and 7.9.5 shipped them conflated:
 
@@ -29,7 +29,7 @@
 
   Codex and Kimi are skipped with the reason printed rather than registered
   machine-wide behind a comment that says "project-scoped". -Global is the
-  explicit opt-in, and it says what it costs. Hermes' default/roblox/skyrim
+  explicit opt-in, and it says what it costs. Hermes' default/code/roblox/skyrim
   topology is owned separately by Migrate-HermesProfiles.ps1; Forge MCPs stay
   out of those native profiles unless compatibility is explicitly requested.
 
@@ -670,6 +670,7 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
     }
   }
   Write-Host ''
+  Write-Host '  Hermes native profile: hermes -p code  (codebase-memory, isolated from default)' -ForegroundColor DarkGray
   foreach ($skipped in @($catalog['evaluated_not_shipped'])) {
     Write-Host ("  not shipped: {0} -- {1}" -f $skipped['id'], $skipped['reason']) -ForegroundColor DarkGray
   }

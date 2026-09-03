@@ -378,6 +378,27 @@ $capabilityStates = @()
 $capRecordDir = Join-Path $PackRoot 'BUNDLED-TOOLS\capability-records'
 try { $capCatalog = Get-UabsCatalog } catch { $capCatalog = $null }
 try { $mcpTargets = Get-UabsMcpTargets } catch { $mcpTargets = @{} }
+$projectScopedMcp = @{}
+$profileStatePath = Join-Path (Split-Path -Parent $statePath) 'mcp-profiles.json'
+if (Test-Path -LiteralPath $profileStatePath -PathType Leaf) {
+  try {
+    $profileState = [IO.File]::ReadAllText($profileStatePath) | ConvertFrom-Json
+    foreach ($profileProp in $profileState.profiles.PSObject.Properties) {
+      $profileId = [string]$profileProp.Name
+      foreach ($projectProp in $profileProp.Value.projects.PSObject.Properties) {
+        $record = $projectProp.Value
+        foreach ($serverId in @($record.servers | Where-Object { $_ })) {
+          $serverId = [string]$serverId
+          if (-not $projectScopedMcp.ContainsKey($serverId)) { $projectScopedMcp[$serverId] = @() }
+          foreach ($provider in @($record.providers | Where-Object { $_ })) {
+            $projectScopedMcp[$serverId] += ('{0}/{1}' -f $provider, $profileId)
+          }
+        }
+      }
+    }
+  } catch { }
+}
+$hermesHomeRoot = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCALAPPDATA 'hermes' }
 if ($capCatalog) {
   foreach ($comp in @($capCatalog.components | Where-Object { $_.mcp })) {
     # $capState, not $state: $state holds the parsed install-state.json that
@@ -399,6 +420,7 @@ if ($capCatalog) {
       # launch, so a boolean here would be false either way.
       install_state = 'unknown'
       registered_for = @()
+      scoped_for = @()
       keyless_tools = @()
       credentialled = $false
       schema_bytes = $null
@@ -451,6 +473,25 @@ if ($capCatalog) {
         }
       } catch { }
     }
+    if ($projectScopedMcp.ContainsKey($sid)) {
+      $capState.scoped_for += @($projectScopedMcp[$sid])
+    }
+    $hermesProfilesRoot = Join-Path $hermesHomeRoot 'profiles'
+    if (Test-Path -LiteralPath $hermesProfilesRoot -PathType Container) {
+      foreach ($profileDir in @(Get-ChildItem -LiteralPath $hermesProfilesRoot -Directory -ErrorAction SilentlyContinue)) {
+        $profileCfg = Join-Path $profileDir.FullName 'config.yaml'
+        if (-not (Test-Path -LiteralPath $profileCfg -PathType Leaf)) { continue }
+        try {
+          $yaml = [IO.File]::ReadAllText($profileCfg)
+          $mcpBlock = [regex]::Match($yaml, '(?ms)^mcp_servers:\s*\r?\n(?<body>(?:^[ \t].*(?:\r?\n|$))*)')
+          $serverLine = '(?m)^  ["'']?' + [regex]::Escape($sid) + '["'']?:\s*$'
+          if ($mcpBlock.Success -and $mcpBlock.Groups['body'].Value -match $serverLine) {
+            $capState.scoped_for += ('Hermes/' + $profileDir.Name)
+          }
+        } catch { }
+      }
+    }
+    $capState.scoped_for = @($capState.scoped_for | Where-Object { $_ } | Select-Object -Unique)
     if ($state -and $state.components) {
       $rec = $state.components.PSObject.Properties[$cid]
       if ($rec -and $rec.Value.status) { $capState.install_state = [string]$rec.Value.status }
@@ -470,13 +511,14 @@ if ($capabilityStates.Count) {
   # profiles are project-scoped by design (7.9.6), so a profile enabled for one
   # project correctly shows as not registered machine-wide. Say so, rather than
   # let the column read as "this capability is absent".
-  Write-Host '     registered = machine-wide config only; project-scoped profiles: Set-McpProfile.ps1 -List' -ForegroundColor DarkGray
+  Write-Host '     registered = machine-wide; scoped = project or Hermes named profile' -ForegroundColor DarkGray
   foreach ($s in $capabilityStates) {
     $reg = if ($s.registered_for.Count) { ($s.registered_for -join ',') } else { 'none' }
+    $scoped = if ($s.scoped_for.Count) { '; scoped: ' + ($s.scoped_for -join ',') } else { '' }
     $kl  = if ($s.keyless_tools.Count) { "$($s.keyless_tools.Count) keyless" } else { 'keyless unmeasured' }
     $cost = if ($s.schema_bytes) { "$([math]::Round($s.schema_bytes/4)) tok/turn" } else { 'cost unmeasured' }
     $cred = if ($s.credentialled) { 'key set' } else { 'no key' }
-    Write-UabsOk ("{0,-16} registered: {1,-22} {2}, {3}, {4}" -f $s.component, $reg, $kl, $cred, $cost)
+    Write-UabsOk ("{0,-16} registered: {1,-22} {2}, {3}, {4}{5}" -f $s.component, $reg, $kl, $cred, $cost, $scoped)
     if ($s.not_registered_because) {
       Write-Host ("     " + $s.not_registered_because) -ForegroundColor DarkGray
     }
@@ -502,7 +544,6 @@ if ($capabilityStates.Count) {
 # It is also completely invisible: `hermes mcp test` reports what the SERVER
 # advertises, not what Hermes registers. Show what each profile actually costs.
 $hermesBudgets = @()
-$hermesHomeRoot = if ($env:HERMES_HOME) { $env:HERMES_HOME } else { Join-Path $env:LOCALAPPDATA 'hermes' }
 if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $hermesHomeRoot 'config.yaml') -PathType Leaf)) {
   $budgetCatalog = @{}
   if ($capCatalog) {
@@ -510,7 +551,7 @@ if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $herme
       $budgetCatalog[[string]$comp.id] = $comp.mcp_tool_budget
     }
   }
-  foreach ($profileName in @('default', 'roblox', 'skyrim')) {
+  foreach ($profileName in @('default', 'code', 'roblox', 'skyrim')) {
     $profileCfg = if ($profileName -eq 'default') {
       Join-Path $hermesHomeRoot 'config.yaml'
     } else {
@@ -604,7 +645,7 @@ if ($capCatalog) {
   $discouragedHermesPlugins = @($discouragedHermesPlugins | Where-Object { $_ } | Select-Object -Unique)
 }
 if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $hermesHomeRoot 'config.yaml') -PathType Leaf)) {
-  foreach ($profileName in @('default', 'roblox', 'skyrim')) {
+  foreach ($profileName in @('default', 'code', 'roblox', 'skyrim')) {
     $pHome = if ($profileName -eq 'default') { $hermesHomeRoot } else { Join-Path $hermesHomeRoot (Join-Path 'profiles' $profileName) }
     $pCfg = Join-Path $pHome 'config.yaml'
     if (-not (Test-Path -LiteralPath $pCfg -PathType Leaf)) { continue }

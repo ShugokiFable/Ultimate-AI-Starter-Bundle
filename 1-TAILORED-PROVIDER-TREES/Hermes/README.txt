@@ -18,7 +18,7 @@ nothing was watching.
 WHY IT IS EMPTY
 
 MCP registration is owned by INSTALL-AIO.ps1 (the always-on core),
-TOOLS\Migrate-HermesProfiles.ps1 (native default/roblox/skyrim profiles), and
+TOOLS\Migrate-HermesProfiles.ps1 (native default/code/roblox/skyrim profiles), and
 TOOLS\Set-McpProfile.ps1 (the remaining capability router). Those read what is
 actually installed and pick the scope each server belongs in. A template
 cannot know any of that, and the copy is whole-file: anything left here becomes

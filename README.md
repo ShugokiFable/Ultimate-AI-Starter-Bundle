@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.13
+# Ultimate AI Starter Bundle v8.7.14
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -27,7 +27,7 @@ The 167 **skills** are the opposite deal: they all sit installed and cost nearly
 
 Exactly three servers in every default profile: `context7` (library docs), `github` (repo access — zero-config for new users), `headroom` (context compression). Total: ~3,700 tokens/turn. Everything else is **parked**: installed, harmless, invisible, free.
 
-When the matching local tool is installed, Hermes also gets native named profiles without loading them into default: `roblox` adds the official Roblox Studio MCP; `skyrim` connects houseCARL while Skyrim Forge and Spooky's AutoMod remain available through their routed skills/CLIs. Forge MCP compatibility is explicit.
+When the matching local tool is installed, Hermes also gets native named profiles without loading them into default: `code` adds codebase-memory, `roblox` adds the official Roblox Studio MCP, and `skyrim` connects houseCARL while Skyrim Forge and Spooky's AutoMod remain available through their routed skills/CLIs. Forge MCP compatibility is explicit.
 
 ### There is NO auto-disable. No timer. No expiry.
 
@@ -36,6 +36,7 @@ If your AI enables something to do a job — say, the Roblox Studio server durin
 ```powershell
 # Hermes (then restart the app)
 hermes config set mcp_servers.<name>.enabled false   # true to re-enable
+hermes -p code mcp list                              # isolated code graph profile
 hermes -p roblox mcp list                            # isolated Roblox profile
 hermes -p skyrim mcp list                            # isolated Skyrim profile
 
@@ -496,10 +497,10 @@ tools appear -- three surprises for one double-click, so it moved behind a flag:
 
 - **Provider skills** — 167 skills per AI (Claude, Codex, Grok, Kimi, Hermes), all generated from one canonical tree.
 - **Native plugins** — Superpowers and Ponytail use each provider's official/native plugin lifecycle; Claude-only `claude-mem` installs Bun automatically when needed.
-- **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Hermes isolates the official Studio MCP in `roblox` and houseCARL in `skyrim`; the remaining browser/editor/game profiles stay off outside matching projects, and credentialed servers stay off until their key exists.
+- **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Hermes isolates codebase-memory in `code`, the official Studio MCP in `roblox`, and houseCARL in `skyrim`; the remaining browser/editor/game profiles stay off outside matching projects, and credentialed servers stay off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
-- **codebase-memory-mcp** — installed but enabled only by `code-intel`; `.cbmignore` + `TOOLS/Setup-CodebaseMemory-Index.ps1` keep the graph on source, not asset trees
+- **codebase-memory-mcp** — installed but enabled only by Claude/Grok's project-scoped `code-intel` or Hermes' native `code` profile; `.cbmignore` + `TOOLS/Setup-CodebaseMemory-Index.ps1` keep the graph on source, not asset trees
 - **Headroom** (context compression, registered as an MCP server — see [Headroom + Grok](#headroom--grok))
 - **Superpowers** + **Ponytail** plugins/skills
 - **CodeBurn** (optional, via npm/npx)
@@ -683,6 +684,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.14** - 2026-09-03. Code graph memory now reaches Hermes without taxing every Hermes chat: a native `code` profile carries codebase-memory while `default` remains the three-core baseline. Claude and Grok keep project-scoped `code-intel`; Codex and Kimi remain unregistered by default because they cannot scope MCPs per repository. The live 0.10.8 surface is corrected to 15 tools / 23,974 schema bytes (~5,994 tokens per enabled turn), including `check_index_coverage`. First-time Hermes profile creation no longer queries a profile before creating it. OpenMontage passed 1,829 tests but stays an external specialist project; Graft passed 1,214 tests and measured only ~841 schema tokens, but remains watch-only because its useful structural tier overlaps codebase-memory, semantic search missed without a configured model, and `init` is a second hook/config writer.
 
 **v8.7.13** - 2026-09-03. Fresh-install hotfix: Windows PowerShell 5.1 no longer splits provider startup options into individual characters, so the final doctor validates all five CLIs correctly while keeping Hermes on its local-only help path. Codex built-in name collisions are backed up and removed even when an obsolete provider rewrite modified the shadow copy; normal plugin-owned user edits remain protected. Hermes profile migration now fails closed if its child process exits nonzero.
 
