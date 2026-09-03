@@ -229,6 +229,28 @@ function Get-UabsReleaseAsset {
   return $null
 }
 
+function Test-UabsReleaseAssetFile {
+  param($Asset, [string]$Path, [switch]$RequireDigest)
+  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+  $file = Get-Item -LiteralPath $Path
+  if ($file.Length -le 0) { return $false }
+
+  $expectedSize = 0L
+  try { $expectedSize = [long]$Asset.size } catch { $expectedSize = 0L }
+  if ($expectedSize -gt 0 -and $file.Length -ne $expectedSize) { return $false }
+
+  $digest = ''
+  try { $digest = [string]$Asset.digest } catch { $digest = '' }
+  $match = [regex]::Match($digest, '^sha256:([0-9a-fA-F]{64})$')
+  if ($match.Success) {
+    $actual = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash
+    return [string]::Equals($actual, $match.Groups[1].Value, [StringComparison]::OrdinalIgnoreCase)
+  }
+  if ($digest -or $expectedSize -le 0) { return $false }
+  if ($RequireDigest) { return $false }
+  return $true
+}
+
 function Save-UabsUrl {
   param([string]$Url, [string]$OutFile)
   $dir = Split-Path $OutFile -Parent
@@ -236,6 +258,27 @@ function Save-UabsUrl {
   Write-UabsStep ("Download " + (Split-Path $OutFile -Leaf))
   Invoke-WebRequest -Uri $Url -OutFile $OutFile -Headers $script:UabsHeaders -TimeoutSec 900
   Write-UabsOk (("{0:N1} MB" -f ((Get-Item $OutFile).Length / 1MB)))
+}
+
+function Save-UabsReleaseAsset {
+  param($Asset, [string]$OutFile, [switch]$ReuseValid)
+  if (-not $Asset -or -not $Asset.browser_download_url) { throw 'GitHub release asset has no download URL.' }
+  if ($ReuseValid -and (Test-UabsReleaseAssetFile -Asset $Asset -Path $OutFile -RequireDigest)) {
+    Write-UabsOk ("Verified cached " + (Split-Path $OutFile -Leaf))
+    return $OutFile
+  }
+
+  $part = $OutFile + '.part-' + $PID + '-' + [Guid]::NewGuid().ToString('N')
+  try {
+    Save-UabsUrl -Url $Asset.browser_download_url -OutFile $part
+    if (-not (Test-UabsReleaseAssetFile -Asset $Asset -Path $part)) {
+      throw ("Downloaded release asset failed size or SHA-256 validation: " + $Asset.name)
+    }
+    Move-Item -LiteralPath $part -Destination $OutFile -Force
+    return $OutFile
+  } finally {
+    Remove-Item -LiteralPath $part -Force -ErrorAction SilentlyContinue
+  }
 }
 
 function Expand-UabsZip {

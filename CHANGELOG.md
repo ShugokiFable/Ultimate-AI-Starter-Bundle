@@ -1,3 +1,10 @@
+## 8.7.11
+
+- Fixed OnlineLatest cache reuse for upstreams such as RTK that publish new releases under the same asset filename. Existing files now require the release's exact SHA-256; size-only or missing-digest caches are refreshed.
+- Downloads now land in a validated sibling temporary file before replacing the cache, preserving the last known-good asset after a failed or corrupted refresh. The component updater uses the same shared boundary.
+- The generic ZIP installer records executable paths and verifies RTK's extracted version against CATALOG. The installed-state doctor independently checks the active RTK binary, turning the previously silent 0.46.0/0.47.0 drift into a hard failure.
+- Added a Windows PowerShell 5.1 regression for same-name, same-size stale bytes, malformed digests, valid reuse, refresh, and failed-refresh preservation. The release-contract suite now contains 124 checks.
+
 ## 8.7.10
 
 - Updated the project-scoped shadcn MCP pin from 4.20.0 to 4.20.1 in both the component catalog and web profile.

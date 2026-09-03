@@ -164,6 +164,16 @@ if (-not (Test-Path $manPath)) {
     }
 }
 
+Section '4b. Release asset cache validates reused filenames'
+$releaseCacheGate = Join-Path $PackRoot 'TESTS\Test-ReleaseAssetCache.ps1'
+try {
+    $releaseCacheOut = & $releaseCacheGate -PackRoot $PackRoot 2>&1 | Out-String
+    if ($releaseCacheOut -match 'RELEASE ASSET CACHE GATE: PASS') { Good 'release asset cache gate PASS' }
+    else { Bad ('release asset cache gate did not report PASS: ' + $releaseCacheOut.Trim()) }
+} catch {
+    Bad ('release asset cache gate failed: ' + $_.Exception.Message)
+}
+
 Section '5. Evidence registry sanity'
 if ($py) {
     $reg = Join-Path $PackRoot '_CANONICAL-SKILLS\skyrim-memory\references\ERROR-REGISTRY.json'

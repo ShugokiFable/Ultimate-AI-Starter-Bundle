@@ -20,6 +20,7 @@ if (-not $PackRoot) { $PackRoot = Split-Path -Parent $PSScriptRoot }
 $Providers = @($Providers | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 $catalog = Get-UabsCatalog
 $state = $null
+$rtkRuntime = $null
 $errors = New-Object System.Collections.Generic.List[string]
 $warnings = New-Object System.Collections.Generic.List[string]
 function Err([string]$m){ [void]$errors.Add($m); Write-UabsBad $m }
@@ -57,6 +58,40 @@ else{
       if($prop.Value.status -in @('error','failed')){Err "component $($prop.Name) status=$($prop.Value.status)"}
     }
   }catch{Err ('install-state unreadable: '+$_.Exception.Message)}
+}
+
+# A path can be exactly where the installer recorded it and still contain the
+# wrong release. This happened when GitHub reused RTK's asset filename: an old
+# cache archive was accepted by size alone and copied over the newer offline
+# payload. Bind the executable that actually wins on PATH to CATALOG's version.
+$rtkComponent = @($catalog.components | Where-Object { $_.id -eq 'rtk' }) | Select-Object -First 1
+$rtkInstalled = $null
+if ($state -and $state.components) {
+  $rtkProperty = $state.components.PSObject.Properties['rtk']
+  if ($rtkProperty) { $rtkInstalled = $rtkProperty.Value }
+}
+if ($rtkComponent -and $rtkInstalled) {
+  $rtkCommand = Get-Command rtk -ErrorAction SilentlyContinue
+  if (-not $rtkCommand -or -not $rtkCommand.Source) {
+    Err 'rtk is recorded as installed but does not resolve on PATH.'
+  } else {
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+      $rtkVersionText = (& $rtkCommand.Source --version 2>&1 | Out-String).Trim()
+      $rtkVersionExit = $LASTEXITCODE
+    } finally { $ErrorActionPreference = $prevEap }
+    $rtkVersionMatch = [regex]::Match($rtkVersionText, '(?im)^rtk\s+([0-9]+(?:\.[0-9]+){2,})\s*$')
+    $rtkActual = if ($rtkVersionMatch.Success) { $rtkVersionMatch.Groups[1].Value } else { $null }
+    $rtkRuntime = [ordered]@{ path = $rtkCommand.Source; version = $rtkActual; expected = [string]$rtkComponent.version }
+    if ($rtkVersionExit -ne 0 -or -not $rtkActual) {
+      Err "rtk failed its active --version check: $rtkVersionText"
+    } elseif ($rtkActual -ne [string]$rtkComponent.version) {
+      Err "active rtk version is $rtkActual, expected $($rtkComponent.version): $($rtkCommand.Source)"
+    } else {
+      Write-UabsOk "RTK active version $rtkActual matches CATALOG: $($rtkCommand.Source)"
+    }
+  }
 }
 if(-not $SkipSkills){
   foreach($provider in $Providers){
@@ -829,7 +864,7 @@ $autostartReport = @($autostarts | ForEach-Object {
 })
 
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
-$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_discouraged_plugin_issues=@($hermesDiscouragedPluginIssues);hermes_hook_issues=@($hermesHookIssues);codex_skill_index=$script:codexSkillIndex;ai_autostarts=@($autostartReport);hook_misdirection=@($hookMisdirection);shadowed_tools=@($shadowReport);result=$doctorResult}
+$report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);rtk_runtime=$rtkRuntime;capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_discouraged_plugin_issues=@($hermesDiscouragedPluginIssues);hermes_hook_issues=@($hermesHookIssues);codex_skill_index=$script:codexSkillIndex;ai_autostarts=@($autostartReport);hook_misdirection=@($hookMisdirection);shadowed_tools=@($shadowReport);result=$doctorResult}
 $reportPath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\installed-state-doctor.json'
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
 if($errors.Count){Write-UabsBad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}

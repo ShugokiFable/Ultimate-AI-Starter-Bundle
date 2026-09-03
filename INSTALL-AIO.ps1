@@ -376,7 +376,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.10 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.11 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -436,9 +436,7 @@ function Get-ComponentAssetPath {
         if ($Comp.asset_match) { $asset = Get-UabsReleaseAsset -Release $rel -Patterns @($Comp.asset_match) }
         if ($asset) {
           $dest = Join-Path $cache $asset.name
-          if (-not (Test-Path $dest) -or (Get-Item $dest).Length -lt 1000) {
-            Save-UabsUrl -Url $asset.browser_download_url -OutFile $dest
-          }
+          [void](Save-UabsReleaseAsset -Asset $asset -OutFile $dest -ReuseValid)
           return $dest
         }
         if ($Comp.kind -eq 'skills-plugin') {
@@ -472,7 +470,7 @@ function Get-ComponentAssetPath {
       if ($Comp.asset_match) { $asset = Get-UabsReleaseAsset -Release $rel -Patterns @($Comp.asset_match) }
       if ($asset) {
         $dest = Join-Path $cache $asset.name
-        Save-UabsUrl -Url $asset.browser_download_url -OutFile $dest
+        [void](Save-UabsReleaseAsset -Asset $asset -OutFile $dest -ReuseValid)
         return $dest
       }
     } catch {}
@@ -1615,7 +1613,33 @@ if (-not $SkillsOnly) {
               Write-Host '     Nothing else in this install was affected.' -ForegroundColor DarkGray
             } else {
               Copy-UabsRobo -From $rootExtract -To $target
-              $installed[$id] = @{ status='installed'; root=$target }
+              $componentState = @{ status='installed'; root=$target }
+              if ($comp.exe_rel) {
+                $installedExe = Join-Path $target $comp.exe_rel
+                if (-not (Test-Path -LiteralPath $installedExe -PathType Leaf)) {
+                  throw "$id executable missing after extract: $installedExe"
+                }
+                $componentState.exe = $installedExe
+                if ($id -eq 'rtk' -and $comp.version) {
+                  $prevEap = $ErrorActionPreference
+                  $ErrorActionPreference = 'Continue'
+                  try {
+                    $versionText = (& $installedExe --version 2>&1 | Out-String).Trim()
+                    $versionExit = $LASTEXITCODE
+                  } finally { $ErrorActionPreference = $prevEap }
+                  $versionMatch = [regex]::Match($versionText, '(?im)^rtk\s+([0-9]+(?:\.[0-9]+){2,})\s*$')
+                  if ($versionExit -ne 0 -or -not $versionMatch.Success) {
+                    throw "rtk failed its installed --version check: $versionText"
+                  }
+                  $actualVersion = $versionMatch.Groups[1].Value
+                  if ($actualVersion -ne [string]$comp.version) {
+                    throw "rtk installed version $actualVersion, expected $($comp.version)"
+                  }
+                  $componentState.version = $actualVersion
+                  Write-UabsOk "rtk $actualVersion installed and verified"
+                }
+              }
+              $installed[$id] = $componentState
             }
           }
         } finally {
@@ -2116,7 +2140,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-  version = '8.7.10'
+  version = '8.7.11'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

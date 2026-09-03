@@ -2456,6 +2456,7 @@ def main() -> int:
         test_outdated_hermes_npm_duplicates_are_removed_only_after_current_install,
         test_local_security_boundaries_stay_hardened,
         test_catalog_freshness_auditor_self_checks,
+        test_release_assets_are_digest_checked_before_cache_reuse,
     ]
     failed = []
     for fn in tests:
@@ -5135,6 +5136,44 @@ def test_pack_gate_does_not_write_persistent_environment() -> None:
     )
     assert not re.search(r"&\s+python(?:\.exe)?\b", gate, re.IGNORECASE), (
         "the pack gate bypasses Get-UabsPythonExecutable and requires bare python on PATH"
+    )
+
+
+def test_release_assets_are_digest_checked_before_cache_reuse() -> None:
+    """A reused GitHub asset name must not make an old binary look current."""
+    common = ps_code(ROOT / "TOOLS" / "UABS-Common.ps1")
+    installer = ps_code(ROOT / "INSTALL-AIO.ps1")
+    installer_raw = read(ROOT / "INSTALL-AIO.ps1")
+    updater = ps_code(ROOT / "TOOLS" / "Update-From-GitHub.ps1")
+    doctor = ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1")
+    gate = read(ROOT / "TESTS" / "Test-ReleaseAssetCache.ps1")
+    pack_gate = read(ROOT / "TESTS" / "Test-Pack.ps1")
+
+    assert "function Test-UabsReleaseAssetFile" in common
+    assert "function Save-UabsReleaseAsset" in common
+    assert "Get-FileHash" in common and "RequireDigest" in common
+    assert "Move-Item -LiteralPath $part" in common and ".part-" in common
+
+    asset_path = installer_raw.split("function Get-ComponentAssetPath", 1)[1].split(
+        "# ---------- Skills", 1
+    )[0]
+    assert "Save-UabsReleaseAsset" in asset_path and "-ReuseValid" in asset_path
+    assert "Length -lt 1000" not in asset_path, (
+        "OnlineLatest again trusts a reused filename plus a nontrivial byte count"
+    )
+    assert "Save-UabsReleaseAsset" in updater, (
+        "the component updater bypasses the shared release-asset integrity boundary"
+    )
+
+    zip_branch = installer.split("'zip-extract'", 1)[1].split("'skills-git'", 1)[0]
+    for evidence in ("$comp.exe_rel", "& $installedExe --version", "$comp.version", "$componentState.version"):
+        assert evidence in zip_branch, "zip installer lost version proof: %s" % evidence
+    assert "Get-Command rtk" in doctor and "$rtkComponent.version" in doctor
+    assert "rtk_runtime" in doctor, "doctor report omits the active RTK path/version"
+
+    assert "same-size stale cache" in gate and "last known-good cache" in gate
+    assert "Test-ReleaseAssetCache.ps1" in pack_gate, (
+        "the focused cache regression exists but the full pack gate never runs it"
     )
 
 if __name__ == "__main__":

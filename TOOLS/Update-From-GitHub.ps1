@@ -44,7 +44,7 @@ foreach ($id in $Components) {
     $out = $null
     if ($asset) {
       $out = Join-Path $cache $asset.name
-      Save-UabsUrl -Url $asset.browser_download_url -OutFile $out
+      [void](Save-UabsReleaseAsset -Asset $asset -OutFile $out)
       if ($UpdateCatalogOffline -and $comp.offline_asset) {
         Copy-Item $out (Join-Path $offline $comp.offline_asset) -Force
         Write-UabsOk "offline snapshot updated: $($comp.offline_asset)"

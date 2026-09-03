@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.10
+# Ultimate AI Starter Bundle v8.7.11
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -683,6 +683,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.11** - 2026-09-02. Release-asset integrity repair: GitHub assets with reused filenames are now cacheable only when their published SHA-256 matches, downloads are validated before atomic replacement, and failed refreshes preserve the last known-good file. The installer records and verifies RTK's executable/version after extraction; the doctor independently binds the active RTK binary to CATALOG. A Windows PowerShell 5.1 regression proves same-name, same-size stale bytes are rejected.
 
 **v8.7.10** - 2026-09-02. Same-day dependency convergence: shadcn's project-scoped MCP pin moves from 4.20.0 to 4.20.1 after an exact npm-package comparison and a real initialize/tools-list measurement. Its surface remains 7 tools / 4,495 schema bytes (~1,124 tokens per enabled turn). All 19 tracked release surfaces are current; no skill, profile, or always-on schema changed.
 
