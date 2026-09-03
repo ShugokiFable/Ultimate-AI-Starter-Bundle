@@ -440,6 +440,11 @@ def test_hermes_native_profile_migration_contract() -> None:
         "the installer no longer applies the migration; a dry run writes nothing "
         "and the profile topology never lands"
     )
+    profile_call = installer[installer.index("& (Get-Command powershell.exe -ErrorAction Stop).Source @profileArgs"):]
+    profile_call = profile_call[:profile_call.index("$installed['hermes-native-profiles']")]
+    assert "$LASTEXITCODE -ne 0" in profile_call and "throw" in profile_call, (
+        "the installer records Hermes profiles as evaluated even when the child migrator exits nonzero"
+    )
     # The migrator refuses while Hermes.exe is up. The install closes the
     # desktop app inside the PLUGIN block, which -SkipNativePlugins skips, so
     # the migration call site has to close it too or the topology silently
@@ -3804,9 +3809,9 @@ def test_codex_builtin_skills_are_discovered_not_hardcoded() -> None:
         "the installer no longer dedupes copies Codex itself owns"
     )
     # It must reuse the verified remover, which backs up first and compares to
-    # the provider-tailored source. That source may equal canonical today, but
-    # it is the byte authority installed into this provider and is allowed to
-    # diverge on the next fanout without being mislabeled as a user edit.
+    # the provider-tailored source. Built-in names are different from ordinary
+    # plugin dedupe: a modified copy still shadows Codex's own definition, so
+    # move it to backup rather than leaving an unusable duplicate active.
     tailored = (ROOT / "1-TAILORED-PROVIDER-TREES" / "Codex" /
                 "COPY-TO-SKILLS-DIRECTORY" / "skills" / "skill-creator" / "SKILL.md")
     assert tailored.is_file(), "Codex's expected provider source is absent"
@@ -3817,6 +3822,10 @@ def test_codex_builtin_skills_are_discovered_not_hardcoded() -> None:
     )
     assert "$expectedSkills" in codex_dedupe and "-ExpectedRoot $expectedSkills" in codex_dedupe, (
         "Codex built-in dedupe compares its tailored copy to canonical again"
+    )
+    assert "-BackupModified" in codex_dedupe, (
+        "a stale provider-tailored rewrite can shadow a Codex built-in forever; "
+        "built-in collisions must be backed up and moved even when modified"
     )
     remover = common.split("function Remove-UabsPluginOwnedSkillCopies", 1)[1].split("\nfunction ", 1)[0]
     assert "$ExpectedRoot" in remover and "$CanonicalRoot" not in remover, (
@@ -5184,11 +5193,18 @@ def test_installed_state_doctor_keeps_provider_probes_local() -> None:
     provider_probe = doctor.split("foreach($provider in $Providers)", 1)[1].split(
         "$providerHome=Get-UabsProviderHome", 1
     )[0]
-    assert "$provider -eq 'Hermes'" in provider_probe
-    assert "@('--help')" in provider_probe
-    assert "& $exe @probeArgs" in provider_probe
-    assert not re.search(r"&\s+\$exe\s+--version\b", provider_probe), (
-        "the installed-state doctor again turns Hermes executable discovery into a network fetch"
+    assert re.search(
+        r"if\s*\(\$provider\s+-eq\s+'Hermes'\)\s*\{[^{}]*"
+        r"&\s+\$exe\s+--help\b[^{}]*\}\s*else\s*\{[^{}]*"
+        r"&\s+\$exe\s+--version\b[^{}]*\}",
+        provider_probe,
+        re.DOTALL,
+    ), (
+        "provider probes must keep Hermes local while using literal arguments that Windows PowerShell 5.1 preserves"
+    )
+    assert "@probeArgs" not in provider_probe, (
+        "a one-item array emitted by if collapses to a string in Windows PowerShell 5.1; "
+        "splatting it passes the option one character at a time"
     )
 
 if __name__ == "__main__":

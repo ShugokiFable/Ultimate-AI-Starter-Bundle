@@ -1147,9 +1147,12 @@ function Remove-UabsPluginOwnedSkillCopies {
 
   Safety rules (the destructive step of the native-plugin rework):
     - skip names with no <SkillsDir>\<name> directory (nothing to do);
-    - NEVER remove a copy whose SKILL.md md5 differs from the exact provider
-      source (<ExpectedRoot>\<name>\SKILL.md) - a difference means the user may
-      have modified the copy, so warn loudly and record it as skipped_modified;
+    - by default, NEVER remove a copy whose SKILL.md md5 differs from the exact
+      provider source (<ExpectedRoot>\<name>\SKILL.md) - a difference means the
+      user may have modified the copy, so warn and record skipped_modified;
+    - BackupModified is reserved for names the provider itself owns. Such a
+      copy cannot remain active without shadowing/duplicating the provider's
+      built-in, so move it to the same verified backup instead of deleting it;
     - a copy with no SKILL.md, or a name absent from the expected tree, is
       unverifiable - keep it and record why;
     - before any Remove-Item, robocopy the directory to
@@ -1163,7 +1166,8 @@ function Remove-UabsPluginOwnedSkillCopies {
     [string[]]$Names,
     [string]$ExpectedRoot,
     [string]$BackupRoot,
-    [System.Collections.Generic.List[string]]$Log
+    [System.Collections.Generic.List[string]]$Log,
+    [switch]$BackupModified
   )
   $result = [ordered]@{ removed = @(); skipped_modified = @(); skipped = @() }
   if (-not (Test-Path -LiteralPath $SkillsDir -PathType Container)) { return $result }
@@ -1190,7 +1194,8 @@ function Remove-UabsPluginOwnedSkillCopies {
     }
     $hCopy = (Get-FileHash -LiteralPath $copyMd -Algorithm MD5).Hash
     $hExpected = (Get-FileHash -LiteralPath $expectedMd -Algorithm MD5).Hash
-    if ($hCopy -ne $hExpected) {
+    $wasModified = $hCopy -ne $hExpected
+    if ($wasModified -and -not $BackupModified) {
       $result.skipped_modified += $name
       Write-UabsWarn ('dedupe: REFUSED to remove ' + $target + ' - SKILL.md differs from the pack provider source (user-modified?). Back up your changes and remove it by hand if unwanted.')
       if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: REFUSED ' + $target + ' (md5 differs from provider source)') }
@@ -1200,7 +1205,11 @@ function Remove-UabsPluginOwnedSkillCopies {
     Copy-UabsRobo -From $target -To (Join-Path $bkDir $name)
     Remove-Item -LiteralPath $target -Recurse -Force
     $result.removed += $name
-    Write-UabsOk ('dedupe: removed plugin-owned copy ' + $name + ' (backup: ' + (Join-Path $bkDir $name) + ')')
+    if ($wasModified) {
+      Write-UabsWarn ('dedupe: moved modified copy shadowing provider-owned skill ' + $name + ' (backup: ' + (Join-Path $bkDir $name) + ')')
+    } else {
+      Write-UabsOk ('dedupe: removed plugin-owned copy ' + $name + ' (backup: ' + (Join-Path $bkDir $name) + ')')
+    }
     if ($Log) { [void]$Log.Add((Get-Date -Format o) + ' dedupe: removed ' + $target + ' (backup ' + $bkDir + ')') }
   }
   return $result

@@ -376,7 +376,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.12 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.13 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1067,8 +1067,10 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
         # Codex also ships skills of its OWN (<CodexHome>\skills\.system), and
         # a canonical skill sharing one of those names is indexed twice on Codex
         # alone. Same waste as a plugin-owned duplicate, different owner, so it
-        # reuses the same verified remover: md5 against this provider's shipped
-        # source, backup first, and a user-modified copy is refused.
+        # reuses the same verified remover and backup. A modified copy is moved
+        # too: keeping a second definition under a provider-owned name is never
+        # a usable customization, only a shadow/duplicate. The backup preserves
+        # its exact bytes for manual recovery.
         $expectedSkills = Join-Path $tailored 'Codex\COPY-TO-SKILLS-DIRECTORY\skills'
         $builtins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome | Where-Object {
           Test-Path -LiteralPath (Join-Path $expectedSkills $_) -PathType Container
@@ -1076,7 +1078,7 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
         if ($builtins.Count) {
           $pstate.codex_builtin_deduped = @($builtins)
           $bres = Remove-UabsPluginOwnedSkillCopies -Provider 'Codex' -SkillsDir $skillsDir `
-                    -Names $builtins -ExpectedRoot $expectedSkills -BackupRoot $backupRoot -Log $log
+                    -Names $builtins -ExpectedRoot $expectedSkills -BackupRoot $backupRoot -Log $log -BackupModified
           if (@($bres.removed).Count) {
             Write-UabsOk ('Codex: removed ' + @($bres.removed).Count +
               ' copy/copies of a skill Codex ships itself: ' + (@($bres.removed) -join ', '))
@@ -2140,7 +2142,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-  version = '8.7.12'
+version = '8.7.13'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -2200,6 +2202,7 @@ if (-not $ToolsOnly) {
       $profileArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $hermesProfiles, '-Apply')
       if ($SkyrimToolset) { $profileArgs += @('-SkyrimToolset', $SkyrimToolset) }
       & (Get-Command powershell.exe -ErrorAction Stop).Source @profileArgs
+      if ($LASTEXITCODE -ne 0) { throw "Hermes profile migrator failed with exit code $LASTEXITCODE" }
       $installed['hermes-native-profiles'] = @{ status='evaluated'; profiles=@('default','roblox','skyrim'); skyrim_toolset=$(if ($SkyrimToolset) { $SkyrimToolset } else { 'default (Lean)' }) }
       L 'Hermes native profiles evaluated'
     } catch {

@@ -100,12 +100,15 @@ if(-not $SkipSkills){
     # Hermes 0.21's --version performs an upstream git fetch. A local doctor
     # must not become a network health check (or wait minutes when GitHub is
     # slow), so use its local argparse help path as the executable probe.
-    $probeArgs = if ($provider -eq 'Hermes') { @('--help') } else { @('--version') }
     # Provider launchers can emit harmless warnings on stderr (Codex does when
     # CODEX_HOME is under TEMP). Under Stop that becomes a terminating
     # NativeCommandError before the exit code can be checked.
     $prevEap=$ErrorActionPreference; $ErrorActionPreference='Continue'
-    & $exe @probeArgs 2>&1 | Out-Null
+    if ($provider -eq 'Hermes') {
+      & $exe --help 2>&1 | Out-Null
+    } else {
+      & $exe --version 2>&1 | Out-Null
+    }
     $versionExit=$LASTEXITCODE
     $ErrorActionPreference=$prevEap
     if($versionExit -ne 0){Err "$provider executable failed its local startup probe."}

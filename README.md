@@ -1,4 +1,4 @@
-# Ultimate AI Starter Bundle v8.7.12
+# Ultimate AI Starter Bundle v8.7.13
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -683,6 +683,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.13** - 2026-09-03. Fresh-install hotfix: Windows PowerShell 5.1 no longer splits provider startup options into individual characters, so the final doctor validates all five CLIs correctly while keeping Hermes on its local-only help path. Codex built-in name collisions are backed up and removed even when an obsolete provider rewrite modified the shadow copy; normal plugin-owned user edits remain protected. Hermes profile migration now fails closed if its child process exits nonzero.
 
 **v8.7.12** - 2026-09-02. Hermes 0.21's `--version` now performs an upstream fetch, so the installed-state doctor uses its local-only help path for executable validation instead of turning a local health check into a multi-minute network wait. No skills, MCP registrations, or schema budgets changed.
 

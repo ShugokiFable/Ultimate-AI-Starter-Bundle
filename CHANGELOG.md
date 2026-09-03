@@ -1,3 +1,9 @@
+## 8.7.13
+
+- Fixed the v8.7.12 Windows PowerShell 5.1 provider-probe regression. A one-item array emitted by `if` collapsed to a string, and splatting passed `--version`/`--help` one character at a time; literal branch arguments now validate Claude, Codex, Grok, Kimi, and Hermes correctly.
+- Made Codex built-in collision cleanup converge when an obsolete provider rewrite changed the copied skill. Modified shadows are copied to the verified rollback directory before removal; ordinary plugin-owned modified skills keep the existing refusal boundary.
+- Made the installer check the Hermes profile migrator's child exit code before recording success. The existing migrator continues to back up and reversibly park catalog-rejected `rtk-rewrite` entries.
+
 ## 8.7.12
 
 - Kept the installed-state doctor local-only after Hermes 0.21 changed `--version` to perform an upstream Git fetch. Hermes now uses its local argparse help path for executable validation, avoiding multi-minute startup checks during installs and audits.
