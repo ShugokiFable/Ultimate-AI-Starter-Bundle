@@ -825,7 +825,7 @@
       "scope_note": "A proxy MCP. It registers ONE server carrying 11 meta-tools and puts every other server behind on-demand discovery: search_tools by intent, get_tool_details for one schema, use_tool to call it. Measured 2026-08-27: 11 tools, 11,386 bytes, ~2,846 tokens per turn -- and that figure does NOT grow as more servers go behind it. The comparison that matters: houseCARL wired directly is 45 tools, 167,072 bytes, 41,768 tokens on EVERY turn, and Claude, Codex, Grok and Kimi cannot filter individual tools the way Hermes can, so on those four it is all 45 or nothing. Proven end to end against this pack's own houseCARL on 2026-08-27: search_tools('list the plugins in the active load order') -> get_tool_details (3,652 chars, ~913 tokens for that ONE schema) -> use_tool returned live data from the shim (2,999 mods, 2,995 plugins). Startup 1.2s, search 400ms, detail 200ms. NOT wired into a profile, and the reason is specific rather than cautious: the router reads its own config at %USERPROFILE%\\.super-mcp\\config.json, so enabling it means this pack writing and preserving a THIRD-PARTY tool's config file -- a second config writer with its own merge obligations, on a 24-star dependency. The measurement is what ships here; the wiring is its own release. One caveat to carry into that decision: BM25 ranking returned housecarl_merge_plugins FIRST for that read-only query, with the correct housecarl_load_order_status third. Discovery works, but the top hit is not automatically the safe one."
     }
   ],
-  "pack_version": "8.7.14",
+  "pack_version": "8.7.15",
   "updated_utc": "2026-09-03",
   "providers": {
     "Grok": {
@@ -904,7 +904,7 @@
   "provider_config_schemas": {
     "Hermes": 39
   },
-  "catalog_version": "8.7.14",
+  "catalog_version": "8.7.15",
   "updated": "2026-09-03",
   "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are not registered machine-wide by Set-McpProfile.ps1: BUNDLED-TOOLS/PROFILES.json holds their wiring and applies a profile only where the project markers and local prerequisites agree. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok. Codex and Kimi have no project-scoped MCP config and are skipped rather than written globally. Hermes has no project-path scope, so Migrate-HermesProfiles.ps1 isolates codebase-memory in its native code profile instead of default. Prove any registration with TOOLS/Test-McpHandshake.ps1."
 }

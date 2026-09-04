@@ -97,6 +97,13 @@ package to a new version
 report remaining in-game tests
 ```
 
+## Player-facing quality gate
+
+When a mod has a menu, HUD, preview, visual asset, or interactive workflow, load `skyrim-mod-development` (or
+`skyrim-mod-reworking`) plus `visual-verification`. Require a real vertical slice with the final visual system, inspect the rendered
+pixels, and test supported inputs, UI scales, long lists, and empty/error states. Forge's structural validators cannot prove that a
+screen is readable, attractive, responsive, or pleasant to use.
+
 ## Public and Nexus Mods releases
 
 Treat any user request containing **shareable**, **public release**, **publish**, **Nexus**, **upload**, **release page**, or equivalent intent as a publication workflow, not ordinary ZIP creation.
@@ -110,9 +117,11 @@ Required sequence:
 5. Record dependencies that are required but not redistributed.
 6. Verify game terms, project/asset licences, collaborator credits, Donation Points compatibility, executable/network behaviour, adult-content classification, claim evidence, and AI assistance.
 7. The uploader must review and accept the attestation. An AI must never sign it or set `responsibility_accepted=true` without the user's explicit confirmation.
-8. Run `forge nexus-audit` and require `share_ready: true`. A normal ZIP, successful build, lint pass or xEdit pass is never sufficient for public sharing.
-9. Run `forge nexus-build` for the final tree, public rights documents, private audit and ZIP.
-10. Still require one real Vortex and MO2 installation test before publication.
+8. Load `skyrim-nexus-publishing` and `visual-verification`. Produce the final BBCode, crop-safe hero, proof-oriented gallery/video,
+   captions, alt text and media-rights inventory from the exact release. Do not substitute concept/generated art for gameplay evidence.
+9. Run `forge nexus-audit` and require `share_ready: true`. A normal ZIP, successful build, lint pass or xEdit pass is never sufficient for public sharing.
+10. Run `forge nexus-build` for the final tree, public rights documents, private audit and ZIP.
+11. Still require one real Vortex and MO2 installation test before publication.
 
 A normal `release-build` is not sufficient when public sharing is intended. Use `release-build --target nexus --publication-plan ...` or `nexus-build`.
 

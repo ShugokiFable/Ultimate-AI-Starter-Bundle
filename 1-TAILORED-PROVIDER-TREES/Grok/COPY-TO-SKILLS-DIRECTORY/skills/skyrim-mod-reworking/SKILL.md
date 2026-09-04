@@ -5,8 +5,8 @@ description: Orchestrate repair, modernization, compatibility work, or cleanup o
 compatibility: Windows 10/11; Skyrim Special Edition or Anniversary Edition; PowerShell and Python 3 when bundled scripts
   are used
 metadata:
-  version: 4.3.0
-  updated: '2026-07-22'
+  version: 4.4.0
+  updated: '2026-09-03'
   library: overseer-skyrim-agent-skills
   provider: grok
   provider_pack_version: 1.0.0
@@ -51,6 +51,10 @@ Load the matching specialist. Do not let this orchestrator become a second synta
 ## Validation
 
 Reproduce the original failure, prove the fix, then run regression checks for the preserved behavior. Use `skyrim-ship-gate` last.
+
+For player-facing UI or visual assets, also load `visual-verification`. Preserve intentional identity while fixing evidenced hierarchy,
+legibility, spacing, feedback, preview, navigation, scaling, empty/error-state, and input-path defects. Compare final rendered captures
+against the last known-good release; source changes alone do not prove a visual improvement.
 
 ## Evidence standard
 

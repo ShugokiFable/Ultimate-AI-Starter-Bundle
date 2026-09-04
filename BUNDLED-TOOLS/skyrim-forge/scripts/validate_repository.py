@@ -420,7 +420,11 @@ def validate_powershell(errors: list[str], warnings: list[str]) -> dict[str, Any
 def portable(value: Any) -> Any:
     if isinstance(value,dict): return {k:portable(v) for k,v in value.items()}
     if isinstance(value,list): return [portable(v) for v in value]
-    if isinstance(value,str): return value.replace(str(ROOT),"<REPOSITORY_ROOT>").replace(str(Path.home()),"<HOME>").replace(tempfile.gettempdir(),"<TEMP>")
+    if isinstance(value,str):
+        for path,label in ((ROOT,"<REPOSITORY_ROOT>"),(Path.home(),"<HOME>"),(Path(tempfile.gettempdir()),"<TEMP>")):
+            raw=str(path)
+            value=value.replace(raw,label).replace(json.dumps(raw)[1:-1],label).replace(raw.replace("\\","/"),label)
+        return value
     return value
 
 
@@ -446,9 +450,15 @@ def manifest() -> dict[str, Any]:
     return {"product": "Skyrim Forge", "version": VERSION, "files": [{"path": p.relative_to(ROOT).as_posix(), "size": len(git_normalized(p)), "sha256": sha256(git_normalized(p)), "executable": bool(p.stat().st_mode & 0o111)} for p in repository_files()]}
 
 
+def write_manifest() -> dict[str, Any]:
+    result=manifest()
+    (ROOT/"MANIFEST.json").write_text(json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+    return result
+
+
 def write_reports(report: dict[str, Any]) -> None:
     report=portable(report); (ROOT/"VALIDATION.json").write_text(json.dumps(report,indent=2,sort_keys=True)+"\n",encoding="utf-8")
-    man=manifest(); (ROOT/"MANIFEST.json").write_text(json.dumps(man,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+    man=write_manifest()
     binaries=[ROOT/"writer"/"published"/"linux-x64"/"SkyrimForge.Native",ROOT/"writer"/"published"/"win-x64"/"SkyrimForge.Native.exe"]
     (ROOT/"CHECKSUMS-SHA256.txt").write_text("\n".join(f"{sha256(p)}  {p.relative_to(ROOT).as_posix()}" for p in binaries)+"\n",encoding="utf-8")
     receipt={"product":"Skyrim Forge","version":VERSION,"result":report["result"],"native":report["checks"]["native"],"go":report["checks"]["go"],"mcp":report["checks"]["mcp"],"limitations":["Windows native helper and PowerShell installers require Windows execution; GitHub CI performs that gate.","Third-party modding tools are not bundled. Their legal local installations may be discovered, imported into the private tool vault when allowed, SHA-256 pinned, and selected only for exact catalog capabilities.","No Skyrim runtime, save, visual, navmesh, animation, or gameplay validation was performed in this environment.","Nexus publication checks validate declared evidence and machine-checkable policy gates; they do not authenticate legal ownership or replace the uploader's responsibility."]}
@@ -589,10 +599,12 @@ def main() -> int:
     parser.add_argument("--ci",action="store_true",help="Deprecated alias retained for compatibility")
     parser.add_argument("--scope",choices=sorted(VALIDATION_SCOPES),default="full")
     args=parser.parse_args()
-    report=validate(args.scope)
     if args.write_reports:
         if args.scope != "full":
             parser.error("--write-reports requires --scope full")
+        write_manifest()
+    report=validate(args.scope)
+    if args.write_reports:
         write_reports(report)
     print(json.dumps(portable(report),indent=2,sort_keys=True))
     return 0 if report["result"]=="PASS" else 1

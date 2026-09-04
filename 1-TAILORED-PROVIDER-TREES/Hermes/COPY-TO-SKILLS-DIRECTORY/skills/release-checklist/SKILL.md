@@ -3,8 +3,8 @@ name: release-checklist
 description: Use when preparing to version, tag, publish, or recover a GitHub release whose CI and shipped artifacts must be proven.
 compatibility: Windows 10/11; PowerShell 5.1 and Python 3; gh CLI authenticated.
 metadata:
-  version: 1.0.0
-  updated: '2026-08-20'
+  version: 1.1.0
+  updated: '2026-09-03'
   library: overseer-skyrim-agent-skills
   error_registry_revision: 4.3.0
 ---
@@ -14,6 +14,21 @@ metadata:
 Run in order. Every item is mandatory — the ones that look redundant are the
 ones that previously shipped broken releases. Nothing below depends on memory:
 each step reads the repo's actual files.
+
+## 0. Prove the public surface
+
+Before versioning, make the repository understandable and credible without requiring the user to open the source tree:
+
+- one sentence saying what it does and who it is for;
+- a real final-state hero screenshot or short demo near the top when the product has a visual surface;
+- a small feature list, quick start, supported platform/requirements, and an honest current-status note;
+- a compact gallery for distinct workflows, with alt text and captions that explain what each image proves;
+- verification/test commands and results kept separate from unperformed runtime tests;
+- authors, data/assets, licences, permissions, and source provenance; and
+- no stale screenshots, placeholders, private paths, tokens, personal data, or claims unsupported by the shipped artifact.
+
+Inspect the rendered README/release page and the actual image pixels with `visual-verification`. A file existing is not visual proof.
+If no real final-state screenshot is available, say so and provide a capture plan instead of inventing one.
 
 ## 1. Read the CI workflow before touching anything
 

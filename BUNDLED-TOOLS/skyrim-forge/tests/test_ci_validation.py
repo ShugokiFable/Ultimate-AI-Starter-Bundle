@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import re
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from _workflows import workflows_dir
 
@@ -51,6 +53,25 @@ class CIValidationScopeTests(unittest.TestCase):
             "go1.23.2",
             "embedded Forge rebuild helper lost the repository-root Go pin",
         )
+
+    def test_portable_report_redacts_paths_inside_nested_json(self):
+        home = str(Path.home())
+        nested = json.dumps({"path": str(Path.home() / "Private" / "fixture.txt")})
+        cleaned = self.module.portable({"raw": home, "nested": nested})
+        self.assertEqual(cleaned["raw"], "<HOME>")
+        self.assertIn("<HOME>", cleaned["nested"])
+        self.assertNotIn(json.dumps(home)[1:-1], cleaned["nested"])
+
+    def test_write_reports_refreshes_manifest_before_validation(self):
+        events = []
+        report = {"result": "PASS"}
+        with patch.object(self.module, "write_manifest", side_effect=lambda: events.append("manifest")), \
+             patch.object(self.module, "validate", side_effect=lambda scope: events.append("validate") or report), \
+             patch.object(self.module, "write_reports", side_effect=lambda result: events.append("reports")), \
+             patch("sys.argv", ["validate_repository.py", "--write-reports", "--scope", "full"]), \
+             patch("builtins.print"):
+            self.assertEqual(self.module.main(), 0)
+        self.assertEqual(events, ["manifest", "validate", "reports"])
 
 
 class WorkflowPinningTests(unittest.TestCase):

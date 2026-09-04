@@ -1,3 +1,12 @@
+## 8.7.15
+
+- Added a player-facing quality gate to new-mod, rework, Forge, and Skyrim routing skills. Menus, HUDs, previews, assets, and interactive workflows now require a real polished vertical slice, coherent hierarchy, live feedback, supported input/scale checks, long-list behavior, empty/error states, and final-pixel inspection.
+- Captured the useful design principles from Fitting Room without copying its assets or branding: preview-first split layouts, task navigation, search/filter/category structure, item cards, live character feedback, cohesive translucent surfaces, and compact controls.
+- Expanded Nexus publishing from release copy into a complete presentation contract: upload-ready media plan, crop-safe hero, proof-oriented gallery/video, alt text, captions, version matching, edit/generated-content disclosure, and author/source/licence/permission tracking for promotional media outside the ZIP.
+- Added the same public-surface gate to general GitHub releases: a clear purpose, real final-state preview, quick start, honest status, verification, credits, licences, and provenance.
+- Fixed Forge report hygiene at the source: private home/temp paths inside nested JSON are now redacted, and `--write-reports` refreshes its manifest before validation so a source change passes in one run.
+- Fanned the changes to Claude, Codex, Grok, Hermes, and Kimi. Added release regressions binding the product-quality, publication-quality, and private-report boundaries; 127 contracts pass with no new MCP schemas.
+
 ## 8.7.14
 
 - Added a native Hermes `code` profile containing codebase-memory while keeping Hermes `default` at context7 + GitHub + Headroom. The live initialize/tools-list handshake returns all 15 tools; a second check proves codebase-memory is absent from default.

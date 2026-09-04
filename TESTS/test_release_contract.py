@@ -2120,6 +2120,16 @@ def test_no_shipped_config_carries_a_maintainer_path() -> None:
     assert not offenders, "maintainer-specific paths in shipped config:\n  " + "\n  ".join(offenders)
 
 
+def test_generated_forge_reports_carry_no_private_user_path() -> None:
+    reports = (
+        ROOT / "BUNDLED-TOOLS" / "skyrim-forge" / "VALIDATION.json",
+        ROOT / "BUNDLED-TOOLS" / "skyrim-forge" / "BUILD-RECEIPT.json",
+    )
+    private_user = re.compile(r"(?i)[A-Z]:(?:\\{1,4}|/)+Users(?:\\{1,4}|/)+(?!<)[A-Za-z0-9._-]+")
+    offenders = [path.name for path in reports if private_user.search(read(path))]
+    assert not offenders, "generated Forge reports expose a private user path: " + ", ".join(offenders)
+
+
 def test_bundle_stays_free_and_accountless() -> None:
     """Supabase was withdrawn in 7.9.7 and must not come back, nor be replaced.
 
@@ -2397,6 +2407,7 @@ def main() -> int:
         test_upgrading_moves_a_globally_registered_profile,
         test_docs_do_not_contradict_the_profile_scope,
         test_no_shipped_config_carries_a_maintainer_path,
+        test_generated_forge_reports_carry_no_private_user_path,
         test_bundle_stays_free_and_accountless,
         test_visual_verification_ships_its_own_falsifiable_check,
         test_always_on_core_is_three_servers_and_says_why,
@@ -2482,6 +2493,7 @@ def main() -> int:
         test_catalog_freshness_auditor_self_checks,
         test_release_assets_are_digest_checked_before_cache_reuse,
         test_installed_state_doctor_keeps_provider_probes_local,
+        test_public_skyrim_workflow_requires_product_and_presentation_quality,
     ]
     failed = []
     for fn in tests:
@@ -5225,6 +5237,25 @@ def test_installed_state_doctor_keeps_provider_probes_local() -> None:
         "a one-item array emitted by if collapses to a string in Windows PowerShell 5.1; "
         "splatting it passes the option one character at a time"
     )
+
+
+def test_public_skyrim_workflow_requires_product_and_presentation_quality() -> None:
+    """The default route must not stop at a technically valid archive."""
+    development = read(ROOT / "_CANONICAL-SKILLS" / "skyrim-mod-development" / "SKILL.md")
+    publishing = read(ROOT / "_CANONICAL-SKILLS" / "skyrim-nexus-publishing" / "SKILL.md")
+    router = read(ROOT / "_CANONICAL-SKILLS" / "skyrim-tool-router" / "SKILL.md")
+    forge = read(ROOT / "_CANONICAL-SKILLS" / "skyrim-forge" / "SKILL.md")
+    release = read(ROOT / "_CANONICAL-SKILLS" / "release-checklist" / "SKILL.md")
+
+    assert "Player experience and visual direction" in development
+    assert "real player-facing interaction and final visual system" in development
+    assert "Player-facing menu, HUD, preview, or visual polish" in router
+    assert "Player-facing quality gate" in forge and "visual-verification" in forge
+    assert "NEXUS-MEDIA-PLAN.md" in publishing
+    assert "crop-safe 16:9 hero" in publishing
+    assert "Never present concept art or generated imagery as an in-game result" in publishing
+    assert "## 0. Prove the public surface" in release
+    assert "actual image pixels" in release
 
 if __name__ == "__main__":
     raise SystemExit(main())

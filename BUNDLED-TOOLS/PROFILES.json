@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "catalog_version": "8.7.14",
-  "pack_version": "8.7.14",
+  "catalog_version": "8.7.15",
+  "pack_version": "8.7.15",
   "updated_utc": "2026-09-03T20:13:14Z",
   "why": "MCP tool schemas are not lazy. A skill body loads only after its compact description matches; a connected MCP server puts every tool schema into every turn of every session covered by that config. There is no equivalent discount for MCP. So the profiles below are project-scoped and wired only where the project markers and local prerequisites agree. Claude and Grok support that scope directly. Hermes' separate native code profile is managed by Migrate-HermesProfiles.ps1; Codex and Kimi stay unregistered unless the user explicitly chooses global cost.",
   "reads": "TOOLS/Set-McpProfile.ps1",

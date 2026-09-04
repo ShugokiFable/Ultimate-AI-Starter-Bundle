@@ -1,4 +1,6 @@
-# Ultimate AI Starter Bundle v8.7.14
+# Ultimate AI Starter Bundle v8.7.15
+
+**v8.7.15:** Skyrim work now routes through in-game product-polish and honest public-presentation gates; generated Forge reports also redact private machine paths before shipping.
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -684,6 +686,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.15** - 2026-09-03. Skyrim work now has a player-facing quality gate, not just technical validation: new and reworked mods must design and visually verify the real UI/HUD/preview flow, supported inputs and scales, long lists, and empty/error states. The routed reference qualities include preview-dominant layouts, clear task navigation, search/filter/category hierarchy, live feedback, and cohesive controls without copying another author's assets or branding. Public Nexus work now produces a truthful media plan, crop-safe hero, proof-oriented gallery/video, captions, alt text, and rights/provenance for promotional media alongside Forge's existing archive/policy gate. GitHub releases get the same public-surface check for real final-state previews, quick start, verification, credits, and honest status. **167 canonical skills**, 126 release contracts, no new MCP schemas.
 
 **v8.7.14** - 2026-09-03. Code graph memory now reaches Hermes without taxing every Hermes chat: a native `code` profile carries codebase-memory while `default` remains the three-core baseline. Claude and Grok keep project-scoped `code-intel`; Codex and Kimi remain unregistered by default because they cannot scope MCPs per repository. The live 0.10.8 surface is corrected to 15 tools / 23,974 schema bytes (~5,994 tokens per enabled turn), including `check_index_coverage`. First-time Hermes profile creation no longer queries a profile before creating it. OpenMontage passed 1,829 tests but stays an external specialist project; Graft passed 1,214 tests and measured only ~841 schema tokens, but remains watch-only because its useful structural tier overlaps codebase-memory, semantic search missed without a configured model, and `init` is a second hook/config writer.
 

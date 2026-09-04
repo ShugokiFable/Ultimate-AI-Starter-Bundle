@@ -5,8 +5,8 @@ description: First router for any Skyrim SE/AE modding task. Classifies the job 
 compatibility: Windows 10/11; Skyrim Special Edition or Anniversary Edition; PowerShell and Python 3 when bundled scripts
   are used
 metadata:
-  version: 5.0.0
-  updated: '2026-07-31'
+  version: 5.1.0
+  updated: '2026-09-03'
   library: overseer-skyrim-agent-skills
   error_registry_revision: 4.3.0
 ---
@@ -49,6 +49,7 @@ Optional process overlays (not Skyrim-specific): `using-superpowers`, `systemati
 | DDS, NIF, parallax, PBR | `skyrim-assets-pbr` | Spooky `skyrim-nif`; houseCARL mesh tools when MCP up |
 | BSA/BA2 archive work | Forge `bsarch` tools | Spooky CLI `archive` module; `skyrim-fomod-packaging` for installers |
 | Audio FUZ/XWM/WAV | Spooky `skyrim-audio` | `skyrim-voiced-dialogue` |
+| Player-facing menu, HUD, preview, or visual polish | `skyrim-mod-development` or `skyrim-mod-reworking` | `visual-verification`; exact UI-framework docs/tools |
 | OAR, BFCO, Nemesis, Pandora, behavior | `skyrim-animation-behaviors` | crash diagnostics or DLL work |
 | Follower from RaceMenu preset | `skyrim-racemenu-followers` | plugin, Papyrus, assets; facegen diagnostics |
 | Dark/grey/black face | `facegen-diagnostics` | houseCARL VFS + mesh |

@@ -381,8 +381,8 @@
     {
       "executable": false,
       "path": "integrations/skyrim-forge/SKILL.md",
-      "sha256": "c6a68a83a82e93706cf68fb058636a2500db547bebf5746a0aeee11d754ed3ff",
-      "size": 9012
+      "sha256": "1f7a10a3962d9bdcc829c9785d6ff967a3a08e6ac22459974a5cc97f92c7f4fc",
+      "size": 9753
     },
     {
       "executable": false,
@@ -573,8 +573,8 @@
     {
       "executable": false,
       "path": "scripts/validate_repository.py",
-      "sha256": "8ea0ebf1b369bf78427d50ff656b4f5f25171977a4594dcf8cf1df08c513c680",
-      "size": 39128
+      "sha256": "daa32a8d1212f03fef0391c6c9acbe96dff0676452a713a8a4af947922339c1e",
+      "size": 39429
     },
     {
       "executable": false,
@@ -1101,8 +1101,8 @@
     {
       "executable": false,
       "path": "tests/test_ci_validation.py",
-      "sha256": "4838815a0865259863c466ee9625f75785cbcb1f7e65706deea3c782de76be66",
-      "size": 5192
+      "sha256": "035809b92fc91e183024dc76bdea8faaf029700001d4a7f41d10466bb1380dc9",
+      "size": 6388
     },
     {
       "executable": false,
