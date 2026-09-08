@@ -1,11 +1,13 @@
 ---
 name: github-fleet-maintenance
-description: Upgrade many GitHub repos in one fleet pass - CI workflows, dependabot, topics, licenses, tags, releases, and security alerts applied across an owner account and verified per repo.
+description: Create, finish, or maintain GitHub repos with CI, Dependabot, code scanning, security settings, docs, and verified release artifacts. Applies to one new repo or an explicitly requested fleet.
 ---
 
 # GitHub Fleet Maintenance
 
-Class-level workflow for "make all my repos max quality": one owner account, N repos, same upgrade applied everywhere (CI workflows, dependabot, topics/descriptions/licenses/tags/releases, security alerts), each repo verified individually. All commands assume `gh` authenticated with `workflow` scope.
+For one new repository, read [the repository completion contract](references/repository-completion.md) first. "Make a repo" includes a usable project, tested CI, applicable security coverage, documentation, and a concrete release handoff. Do not stop at `gh repo create` or a push. Respect an explicitly requested empty repository or prototype.
+
+Use the fleet loop only when multiple repositories are in scope. Reuse authenticated `gh` or the GitHub MCP; determine permissions from actual responses, never request or print credentials.
 
 ## Core loop (per fleet pass)
 
@@ -58,9 +60,9 @@ Also more semantically correct afterward: backtick-quote before a closing quote 
 - C++/CMake/vcpkg template: see `templates/ci-cpp-vcpkg.yml`; static HTML sites: tidy validation + lychee link check, single ubuntu job.
 - Before writing any workflow, READ the repo first: build system (xmake? cmake presets?), dependency fetch mechanism (vendored path? submodule?), hardcoded dev-machine paths (common failure: absolute path to a framework on the author's PC — replace with an explicit checkout + `-D<VAR>` cache flag).
 - Submodule stale/pinned too old: bump pointer via trees API (nested subtrees need recursive walk: find parent tree id, PUT new subtree with updated entry, then root tree with new parent).
-- Upstream-incompatible source (compiles nowhere): do NOT fake green. Mark that job `continue-on-error: true`, keep healthy jobs required, state the root cause in the report.
+- Upstream-incompatible source (compiles nowhere): fix the build or report the blocker. Do not use `continue-on-error`, unconditional skips, or an echo-only job to turn required validation green. Optional jobs must be explicitly identified as optional.
 - Forks often have Actions disabled or upstream workflows lacking `workflow_dispatch` — can't dispatch remotely without editing an upstream-tracked file; let the next push/PR trigger runs instead.
 
 ## Version tags & releases
 
-Derive versions from project metadata (CMakeLists `project(... VERSION x.y.z)` — beware grabbing `cmake_minimum_required(VERSION ...)` instead). Create annotated tag + release with `generate_release_notes`. Wrong tag created: delete BOTH the release (by ID, not tag) and the ref before recreating (`DELETE repos/{o}/{r}/releases/{id}`, then `DELETE git/refs/tags/<tag>`).
+Derive versions from project metadata (CMakeLists `project(... VERSION x.y.z)` — beware grabbing `cmake_minimum_required(VERSION ...)` instead). Use `release-checklist`: exact pushed commit, terminal-green checks, versioned runnable assets, publication when authorized, then downloaded-byte verification. Prefer a forward patch release for an already published defect; never delete releases or rewrite shared tags without explicit authorization.

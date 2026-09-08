@@ -22,3 +22,7 @@ Do not substitute activity for completion. “Code written”, “tests added”
 
 ## Failure pattern
 Weak agents often satisfy the literal noun but miss installation, packaging, entrypoints, docs, error paths, or validation. Treat those as implied deliverables whenever the user asked for something ready to use.
+
+## Repository requests
+
+For "make/create a repo", "put this on GitHub", or "finish this project", route to `github-fleet-maintenance` and its repository completion contract. Include real CI, applicable security settings/scanning and Dependabot coverage, documentation, usable artifacts, and the `release-checklist` handoff. Publishing follows existing authorization; if approval is missing, prepare the concrete release first and identify only that pending step. Respect explicit empty-repository or prototype scope.

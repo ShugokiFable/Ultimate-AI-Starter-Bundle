@@ -376,7 +376,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.15 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.16 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1064,26 +1064,6 @@ if (-not $ToolsOnly -and -not $SkipNativePlugins) {
           }
         }
 
-        # Codex also ships skills of its OWN (<CodexHome>\skills\.system), and
-        # a canonical skill sharing one of those names is indexed twice on Codex
-        # alone. Same waste as a plugin-owned duplicate, different owner, so it
-        # reuses the same verified remover and backup. A modified copy is moved
-        # too: keeping a second definition under a provider-owned name is never
-        # a usable customization, only a shadow/duplicate. The backup preserves
-        # its exact bytes for manual recovery.
-        $expectedSkills = Join-Path $tailored 'Codex\COPY-TO-SKILLS-DIRECTORY\skills'
-        $builtins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome | Where-Object {
-          Test-Path -LiteralPath (Join-Path $expectedSkills $_) -PathType Container
-        })
-        if ($builtins.Count) {
-          $pstate.codex_builtin_deduped = @($builtins)
-          $bres = Remove-UabsPluginOwnedSkillCopies -Provider 'Codex' -SkillsDir $skillsDir `
-                    -Names $builtins -ExpectedRoot $expectedSkills -BackupRoot $backupRoot -Log $log -BackupModified
-          if (@($bres.removed).Count) {
-            Write-UabsOk ('Codex: removed ' + @($bres.removed).Count +
-              ' copy/copies of a skill Codex ships itself: ' + (@($bres.removed) -join ', '))
-          }
-        }
       }
 
       'Claude' {
@@ -1283,6 +1263,29 @@ if (-not $ToolsOnly -and $SkipNativePlugins) {
       Write-UabsOk ("${prov}: existing $nativeId left unchanged; reconciled " + @($res.removed).Count + ' copied skill(s)')
     }
     $nativePlugins[$prov] = $pstate
+  }
+}
+
+# Built-in ownership is independent of plugin lifecycle. Run this once after
+# either full plugin reconciliation or -SkipNativePlugins, including skills-only
+# syncs. The verified backup preserves modified copies shadowing a built-in.
+if (-not $ToolsOnly -and ($Providers -contains 'Codex')) {
+  $providerHome = Get-UabsProviderHome -Provider 'Codex' -Catalog $catalog
+  $skillsDir = Get-UabsProviderSkillsDir -Provider 'Codex' -Catalog $catalog
+  $expectedSkills = Join-Path $tailored 'Codex\COPY-TO-SKILLS-DIRECTORY\skills'
+  $backupRoot = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\backups'
+  $builtins = @(Get-UabsCodexBuiltinSkillNames -CodexHome $providerHome | Where-Object {
+    Test-Path -LiteralPath (Join-Path $expectedSkills $_) -PathType Container
+  })
+  if ($builtins.Count) {
+    if (-not $nativePlugins['Codex']) { $nativePlugins['Codex'] = [ordered]@{ plugins = [ordered]@{} } }
+    $nativePlugins['Codex'].codex_builtin_deduped = @($builtins)
+    $bres = Remove-UabsPluginOwnedSkillCopies -Provider 'Codex' -SkillsDir $skillsDir `
+              -Names $builtins -ExpectedRoot $expectedSkills -BackupRoot $backupRoot -Log $log -BackupModified
+    if (@($bres.removed).Count) {
+      Write-UabsOk ('Codex: removed ' + @($bres.removed).Count +
+        ' copy/copies of a skill Codex ships itself: ' + (@($bres.removed) -join ', '))
+    }
   }
 }
 
@@ -2142,7 +2145,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-version = '8.7.15'
+version = '8.7.16'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -2326,7 +2329,11 @@ Write-Host '  2. Run /mcp and confirm the always-on core: context7, github, head
 Write-Host '  3. Claude houseCARL plugin: set MO2 instance to SKYRIM_MO2_INSTANCE path.'
 Write-Host '  4. Vortex users after LO changes: TOOLS\Setup-HouseCarl.ps1 -RefreshOnly'
 Write-Host '  5. Update tools later: TOOLS\Update-From-GitHub.ps1'
-Write-Host '  6. Core MCP handshakes passed during install. Re-check any provider with:'
+if (-not $SkillsOnly -and -not $SkipMcpWire -and -not $SkipMcpHandshake) {
+  Write-Host '  6. Core MCP handshakes passed during install. Re-check any provider with:'
+} else {
+  Write-Host '  6. Core MCP handshakes were not run in this install mode. Check any provider with:'
+}
 Write-Host '     TOOLS\Test-McpHandshake.ps1 -Provider Claude'
 Write-Host '     Capability profiles (code memory, games, browser, Serena, Blender, Godot, Unity, reasoning) are off'
 Write-Host '     until a project needs them, and are then wired for THAT project only:'
@@ -2368,10 +2375,18 @@ if ($enabledProfiles.Count) {
   Write-Host '       TOOLS\Set-McpProfile.ps1 -Auto   -Path "<your project>"   # enable it' -ForegroundColor Yellow
   Write-Host '     Project scope is supported by Claude and Grok. Hermes uses the native code profile below.' -ForegroundColor Yellow
 }
-Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
+if (-not $ToolsOnly -and -not $SkipPreamble) {
+  Write-Host '  7. Preamble: SOUL + AIO were wired into your agent files automatically.'
+} else {
+  Write-Host '  7. Preamble: existing agent instructions were left unchanged.'
+}
 Write-Host '     Web UIs (ChatGPT/Gemini) have no instruction file - paste 3-PREAMBLES\MANUAL-PASTE.txt.'
 Write-Host '  8. Hermes: run hermes --accept-hooks once if it asks for hook trust.'
-Write-Host '  9. Leftovers from older versions are removed automatically each install.'
+if (-not $SkipCleanup -and -not $ToolsOnly) {
+  Write-Host '  9. Bundle-owned leftovers were checked by the cleanup pass.'
+} else {
+  Write-Host '  9. General leftover cleanup was skipped in this install mode.'
+}
 Write-Host '     See what would go without deleting: TOOLS\Clean-StaleState.ps1'
 Write-Host '     Native MCP profiles when installed: hermes (core), code (codebase-memory), roblox (official Studio MCP), skyrim (houseCARL).'
 Write-Host '     Audit/migrate: TOOLS\Migrate-HermesProfiles.ps1 [-Apply]'

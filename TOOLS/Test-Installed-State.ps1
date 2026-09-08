@@ -93,6 +93,19 @@ if ($rtkComponent -and $rtkInstalled) {
     }
   }
 }
+$grokHookIssues = @()
+if ($Providers -contains 'Grok') {
+  $grokExe = Resolve-Exe 'Grok'
+  if ($grokExe) {
+    try {
+      $inspectionRaw = & $grokExe inspect --json
+      if ($LASTEXITCODE -ne 0) { throw 'grok inspect failed' }
+      $grokHookIssues = @(Get-UabsGrokHookIssues -Inspection ($inspectionRaw | ConvertFrom-Json))
+      foreach ($issue in $grokHookIssues) { Err $issue }
+      if (-not $grokHookIssues.Count) { Write-UabsOk 'Grok hook discovery: no inherited bundle duplicates or native PowerShell parse errors.' }
+    } catch { Warn ('Grok hook discovery unverified: ' + $_.Exception.Message) }
+  }
+}
 if(-not $SkipSkills){
   foreach($provider in $Providers){
     $exe=Resolve-Exe $provider
@@ -914,6 +927,7 @@ $autostartReport = @($autostarts | ForEach-Object {
 $doctorResult = if ($errors.Count) { 'FAIL' } else { 'PASS' }
 $report=[ordered]@{version=$packBare;checked_utc=[DateTime]::UtcNow.ToString('o');errors=@($errors);warnings=@($warnings);rtk_runtime=$rtkRuntime;capability_states=@($capabilityStates);hermes_tool_budgets=@($hermesBudgets);hermes_plugin_issues=@($hermesPluginIssues);hermes_discouraged_plugin_issues=@($hermesDiscouragedPluginIssues);hermes_hook_issues=@($hermesHookIssues);codex_skill_index=$script:codexSkillIndex;ai_autostarts=@($autostartReport);hook_misdirection=@($hookMisdirection);shadowed_tools=@($shadowReport);result=$doctorResult}
 $reportPath=Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\installed-state-doctor.json'
+$report['grok_hook_issues'] = @($grokHookIssues)
 $enc=New-Object System.Text.UTF8Encoding($false); [IO.File]::WriteAllText($reportPath,($report|ConvertTo-Json -Depth 8),$enc)
 if($errors.Count){Write-UabsBad ("Installed-state doctor FAIL ($($errors.Count) error(s)). Report: $reportPath");exit 1}
 Write-UabsOk ("Installed-state doctor PASS. Report: $reportPath")

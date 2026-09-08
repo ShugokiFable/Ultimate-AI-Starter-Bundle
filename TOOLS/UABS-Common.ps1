@@ -701,7 +701,8 @@ function Set-UabsGrokCompatCells {
   #>
   param(
     [string]$ConfigPath = $null,
-    [switch]$AllowMcp
+    [switch]$AllowMcp,
+    [switch]$HooksOnly
   )
   if (-not $ConfigPath) {
     $grokDir = Join-Path $env:USERPROFILE '.grok'
@@ -714,44 +715,66 @@ function Set-UabsGrokCompatCells {
   $content = ''
   if (Test-Path -LiteralPath $ConfigPath) {
     $content = [IO.File]::ReadAllText($ConfigPath)
-    $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
-    Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.before-compat-' + $ts + '.bak') -Force
   }
-
-  $mcps = if ($AllowMcp) { 'true' } else { 'false' }
-  $block = @(
-    '[compat.claude]',
-    '# Grok inherits Claude Code config by default. hooks/MCP were measured',
-    '# as pure cost on grok-cli 1.0.4. skills is also off: AIO copies the',
-    '# pack into ~/.grok/skills; scanning ~/.claude duplicates superpowers',
-    '# skills (systematic-debugging) and pulls claude-mem into Grok.',
-    '# See GROK-MCP-TROUBLESHOOTING.md.',
-    'hooks = false',
-    ('mcps = ' + $mcps),
-    'skills = false'
-  ) -join "`r`n"
-
-    if ($content -match '(?m)^[ \t]*\[compat\.claude\][^\r\n]*(?:\r?\n(?![ \t]*\[)[^\r\n]*)*') {
-    # WARNING: the old pattern used `(?ms)...(?:(?![ \t]*\[).*\r?\n?)*` - the
-    # singleline `.` swallowed the WHOLE tail after [compat.claude], deleting
-    # every [mcp_servers.*] block on any machine that already had the section.
-    # The correct section body = lines that do NOT start with '[' - matched
-    # line-by-line above (see V7.5.1-CHANGELOG.md).
-    $content = [regex]::Replace(
-      $content,
-      '(?m)^[ \t]*\[compat\.claude\][^\r\n]*(?:\r?\n(?![ \t]*\[)[^\r\n]*)*',
-      ($block + "`r`n`r`n"))
+  $original = $content
+  $newline = if ($content.Contains("`r`n")) { "`r`n" } else { "`n" }
+  # Patch only owned booleans. A hook-only repair must not change a user's
+  # inherited MCPs, skills, rules, agents, or later tables.
+  $cells = [ordered]@{ hooks = 'false' }
+  if (-not $HooksOnly) {
+    $cells['mcps'] = if ($AllowMcp) { 'true' } else { 'false' }
+    $cells['skills'] = 'false'
+  }
+  $section = [regex]::Match($content, '(?m)^[ \t]*\[compat\.claude\][^\r\n]*(?:\r?\n(?![ \t]*\[)[^\r\n]*)*')
+  $block = if ($section.Success) { $section.Value } else { '[compat.claude]' + $newline }
+  foreach ($name in $cells.Keys) {
+    $pattern = '(?m)^([ \t]*' + $name + '[ \t]*=[ \t]*)(true|false)([ \t]*(?:#[^\r\n]*)?)(?=\r?$)'
+    # Preserve comments and unrelated keys, including future compatibility cells.
+    if ([regex]::IsMatch($block, $pattern)) {
+      $block = [regex]::Replace($block, $pattern, ('${1}' + $cells[$name] + '${3}'))
+    } else {
+      if ($block -match ('(?m)^[ \t]*' + $name + '[ \t]*=')) { throw "Grok compatibility cell '$name' is not a boolean; config left unchanged." }
+      $block = $block.TrimEnd("`r", "`n") + $newline + $name + ' = ' + $cells[$name] + $newline
+    }
+  }
+  if ($section.Success) {
+    $content = $content.Substring(0, $section.Index) + $block + $content.Substring($section.Index + $section.Length)
   } else {
-    if ($content -and -not $content.EndsWith("`n")) { $content += "`r`n" }
-    $content = $content + "`r`n" + $block + "`r`n"
+    $content = $content.TrimEnd("`r", "`n") + $newline + $newline + $block
   }
   # UTF-8 with NO BOM: PS 5.1's -Encoding utf8 emits a BOM, and a BOM makes the
   # first line unparseable TOML ("Invalid statement at line 1, column 1").
-  [System.IO.File]::WriteAllText($ConfigPath, $content, (New-Object System.Text.UTF8Encoding $false))
-  if ($AllowMcp) {
-    Write-UabsWarn 'Grok: Claude hook + skill inheritance OFF, MCP inheritance left ON by request (expect a ~65s first turn)'
+  if ($content -ne $original) {
+    if (Test-Path -LiteralPath $ConfigPath) {
+      Copy-Item -LiteralPath $ConfigPath -Destination ($ConfigPath + '.before-compat-' + (Get-Date -Format 'yyyyMMdd-HHmmssfff') + '.bak')
+    }
+    [System.IO.File]::WriteAllText($ConfigPath, $content, (New-Object System.Text.UTF8Encoding $false))
+  }
+  if ($HooksOnly) {
+    Write-UabsOk 'Grok: Claude hook inheritance disabled; other compatibility settings preserved'
+  } elseif ($AllowMcp) {
+    Write-UabsOk 'Grok: Claude hook + skill inheritance disabled; MCP inheritance retained by request'
   } else {
-    Write-UabsOk 'Grok: Claude hook + MCP + skill inheritance disabled (turn time 97s -> ~2s; no claude-mem skill leak)'
+    Write-UabsOk 'Grok: Claude hook + MCP + skill inheritance disabled'
+  }
+}
+
+function Get-UabsGrokHookIssues {
+  param([Parameter(Mandatory=$true)]$Inspection)
+  # inspect lists discovered hooks even when disabled. Consult the effective
+  # compatibility cell before treating a discovered Claude hook as active.
+  $cell = @($Inspection.externalCompat.cells | Where-Object { $_.vendor -eq 'claude' -and $_.surface -eq 'hooks' })
+  if ($cell.Count -ne 1) { throw 'Grok inspect did not report its effective Claude hooks compatibility cell.' }
+  $managed = 'completeness_gate\.py|assumption_gate\.py|rtk_safe_hook\.py'
+  $native = @($Inspection.hooks | Where-Object { $_.target -match $managed -and $_.source.path -match '[\\/]\.grok[\\/]hooks$' })
+  $inherited = @($Inspection.hooks | Where-Object { $_.target -match $managed -and $_.source.path -match '[\\/]\.claude(?:[\\/]|$)' })
+  if ($native.Count -and $inherited.Count -and $cell[0].enabled -eq $true) {
+    'Grok is inheriting duplicate Claude bundle hooks. Run TOOLS\Install-Completeness-Gate.ps1 -Providers Grok, then restart Grok.'
+  }
+  foreach ($hook in $native) {
+    $parseErrors = $null; $tokens = $null
+    [void][System.Management.Automation.Language.Parser]::ParseInput($hook.target, [ref]$tokens, [ref]$parseErrors)
+    if ($parseErrors.Count) { 'Grok native ' + $hook.event + ' bundle hook is not valid PowerShell. Re-run the hook installer.' }
   }
 }
 

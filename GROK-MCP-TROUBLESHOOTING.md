@@ -32,6 +32,20 @@ kept in place rather than quietly edited out.
 
 ---
 
+## Two working Stop hooks plus two failed ones after a config reset
+
+Reproduced on Grok 1.0.13 (2026-09-07): the global config no longer contained
+`[compat.claude] hooks = false`. Native bundle hooks had the required PowerShell
+`&` call operator; the two inherited Claude Stop hooks lacked it and each failed
+PowerShell parsing. This is a duplicate registration problem, not a gate denial.
+
+Run `TOOLS\Install-Completeness-Gate.ps1 -Providers Grok`, then restart Grok.
+The repair backs up the config, disables only Claude hook inheritance, preserves
+other user settings and MCP choices, and resolves a real Python executable.
+The installed-state doctor checks `grok inspect --json`'s effective compatibility
+cell as well as native commands. Discovered Claude hooks can remain in that
+inventory when disabled; their presence alone is not evidence they are active.
+
 ## Cause 1 — Grok runs Claude Code's hooks (real; fix stands)
 
 Grok's Claude compatibility loads `~/.claude/settings.json` hooks **and** every

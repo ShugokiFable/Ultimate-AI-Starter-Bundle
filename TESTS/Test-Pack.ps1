@@ -487,10 +487,8 @@ if ($doctorSrc -match 'bundle-contract') {
     Bad 'installed-state doctor still calls removed Forge 5.x bundle-contract'
 } elseif ($doctorSrc -match '-m\s+skyrim_forge\s+doctor') { Good 'installed-state doctor uses Forge 6 health contract' }
 else { Bad 'installed-state doctor does not run Forge doctor' }
-$common = [IO.File]::ReadAllText((Join-Path $PackRoot 'TOOLS\UABS-Common.ps1'))
-if ($common -match "skills = false") {
-    Good 'Set-UabsGrokCompatCells writes skills = false'
-} else { Bad 'UABS-Common.ps1 does not write [compat.claude] skills = false' }
+# Section 17 executes Set-UabsGrokCompatCells on real temp configs and verifies
+# all three default cells; a source-string match cannot prove the written TOML.
 if ($aio -match 'Repair-UabsGrokDuplicatePlugins') {
     Good 'AIO collapses duplicate Grok superpowers plugins'
 } else { Bad 'INSTALL-AIO.ps1 does not call Repair-UabsGrokDuplicatePlugins' }
@@ -754,6 +752,13 @@ if (-not (Test-UabsPackPath $detectGate)) {
         Bad ('provider detection gate failed:' + [Environment]::NewLine + ($detectOut.Trim()))
     }
 }
+
+Section '17. Grok hook repair and effective discovery'
+$hookRepairGate = Join-Path $PackRoot 'TESTS\Test-GrokHookRepair.ps1'
+$hookRepairOut = & (Get-Command powershell.exe -ErrorAction Stop).Source -NoProfile -ExecutionPolicy Bypass -File $hookRepairGate -PackRoot $PackRoot 2>&1 | Out-String
+if ($LASTEXITCODE -eq 0 -and $hookRepairOut -match 'GROK HOOK REPAIR GATE: PASS') {
+    Good 'hook repair preserves settings, is idempotent, and detects effective duplicate/invalid hooks'
+} else { Bad ('Grok hook repair failed:' + [Environment]::NewLine + $hookRepairOut) }
 
 Write-Host ''
 if ($fail -eq 0) {

@@ -99,11 +99,9 @@ $hooksSrc  = Join-Path $PackRoot 'TOOLS\hooks'
 $pluginSrc = Join-Path $hooksSrc 'plugin'
 $wireSrc   = Join-Path $hooksSrc 'hermes_wire.py'
 
-# Add-UabsMarketplacePluginEntry lives in the installer's shared module. The
-# gate also runs standalone, so this load is optional - without it the
-# marketplace is still built, just with a warning instead of the entry.
+# Share the verified Python resolver and configuration merge with the AIO.
 $v7Common = Join-Path $PackRoot 'TOOLS\UABS-Common.ps1'
-if (Test-Path -LiteralPath $v7Common) { . $v7Common }
+. $v7Common
 
 # Every gate the pack ships, with the tools each one needs to see.
 $gates = @(
@@ -119,17 +117,7 @@ foreach ($g in $gates) {
 $installRoot = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\hooks'
 $marketRoot  = Join-Path $env:LOCALAPPDATA 'Ultimate-AI-Starter-Bundle\codex-marketplace'
 
-$python = $null
-$candidates = @(
-  $env:SKYRIM_FORGE_PYTHON
-  (Get-Command python  -ErrorAction SilentlyContinue).Source
-  (Get-Command python3 -ErrorAction SilentlyContinue).Source
-) | Where-Object { $_ -and (Test-Path -LiteralPath $_) }
-$candidates = @($candidates | Where-Object { $_ -notlike '*\WindowsApps\*' }) +
-              @($candidates | Where-Object { $_ -like  '*\WindowsApps\*' })
-foreach ($c in $candidates) {
-  try { if ((& $c -c "print('ok')" 2>&1 | Out-String) -match 'ok') { $python = $c; break } } catch { }
-}
+$python = Get-UabsPythonExecutable
 if (-not $python) {
   Write-Host 'SKIP: no working python found. Install Python 3.9+ and re-run.' -ForegroundColor Yellow
   exit 0
@@ -268,8 +256,16 @@ foreach ($p in $Providers) {
       if (-not (Test-Path -LiteralPath (Split-Path -Parent $dir))) { Write-Host 'Grok    not installed'; break }
       if ($CheckOnly) { Write-Host "Grok    would write $dir\ultimate-bundle.json"; break }
       New-Item -ItemType Directory -Force -Path $dir | Out-Null
+      # A config reset can resurrect the two incompatible Claude Stop hooks.
+      # The standalone repair must fix inheritance too, without changing MCPs.
+      Set-UabsGrokCompatCells -HooksOnly
       $grokBlock = New-HookBlock -Py $python -Root $installRoot -CallOperator
-      Set-Utf8NoBom -Path (Join-Path $dir 'ultimate-bundle.json') -Text (([ordered]@{ hooks = $grokBlock }) | ConvertTo-Json -Depth 20)
+      $hookFile = Join-Path $dir 'ultimate-bundle.json'
+      $hookText = ([ordered]@{ hooks = $grokBlock }) | ConvertTo-Json -Depth 20
+      if ((Test-Path -LiteralPath $hookFile) -and [IO.File]::ReadAllText($hookFile) -ne $hookText) {
+        Copy-Item -LiteralPath $hookFile -Destination ($hookFile + '.bak-gate-' + (Get-Date -Format 'yyyyMMdd-HHmmssfff'))
+      }
+      Set-Utf8NoBom -Path $hookFile -Text $hookText
       Write-Host "Grok    wired ~/.grok/hooks/ultimate-bundle.json ($($gates.Count) controls, PowerShell call-operator form)"
     }
 

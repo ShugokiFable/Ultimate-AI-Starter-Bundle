@@ -1,13 +1,14 @@
 {
   "pack": "Ultimate AI Starter Bundle",
-  "version": "8.7.15",
-  "generated": "2026-09-04T01:30:51Z",
-  "release_tag": "v8.7.15",
+  "version": "8.7.16",
+  "generated": "2026-09-07",
+  "release_tag": "v8.7.16",
   "canonical_skills": 167,
   "provider_trees": 5,
   "registry_entries": 167,
   "gates": [
     "TESTS/Test-Pack.ps1",
+    "TESTS/Test-GrokHookRepair.ps1",
     "TESTS/test_release_contract.py",
     "TESTS/test_hermes_bootstrap.py",
     "TOOLS/audit_skills.py",
@@ -20,6 +21,6 @@
     "TESTS/Test-McpProfiles.ps1",
     "TOOLS/mcp_handshake.py --selftest"
   ],
-  "runtime_status": "v8.7.15 candidate validation covers all five generated provider trees, 126 release contracts, the full Windows pack gate, version and manifest consistency, visual-canary proof, player-facing Skyrim UX routing, Nexus presentation/media-rights requirements, RTK 0.47.0 cache/download/install/runtime version checks, live codebase-memory handshakes in Claude, Grok and Hermes code, default-profile isolation, and the v8.7.14 dependency/security baseline. The final all-provider reinstall, installed-state doctor, exact-SHA CI/CodeQL, build, publication and downloaded-asset byte verification are completed after this file is committed.",
+  "runtime_status": "v8.7.16: Grok 1.0.13 effective Claude hook inheritance was verified off; all five installed native bundle hook commands executed through PowerShell with harmless isolated payloads, exit 0 in approximately 0.2 seconds each. Fresh/reset/CRLF/personal-setting/idempotency fixtures pass. Repository-completion guidance covers real CI, independent security settings, usable artifacts and publication proof. No live Grok model turn or Skyrim gameplay was run. Publication remains a separate approval and exact-SHA verification step.",
   "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

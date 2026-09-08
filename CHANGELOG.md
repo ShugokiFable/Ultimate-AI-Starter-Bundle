@@ -1,3 +1,12 @@
+## 8.7.16
+
+- Fixed skills-only Codex installs leaving a duplicate `skill-creator`: built-in ownership reconciliation now runs independently of plugin updates, with backups for modified copies.
+- Installer completion messages now distinguish skipped handshakes, preamble updates and cleanup from operations that ran.
+- Fixed Grok's duplicate Stop-hook failure after a config reset: standalone hook repair also disables Claude hook inheritance, preserving personal MCP/skill settings and other compatibility keys. Backups precede changes; repeated repairs do not churn config backups.
+- Reused the shared verified Python resolver for hook commands instead of storing launcher aliases. The installed-state doctor checks effective Grok compatibility and PowerShell parsing; fresh-install and upgrade regressions run in the pack gate.
+- Routed new GitHub projects through a complete repository contract: CI, applicable CodeQL, separate Dependabot controls, secret protection, vulnerability reporting, useful documentation, usable artifacts, release authorization and downloaded-hash verification. Existing skills carry it to all five provider trees with no new MCP or skill-index entries.
+- Preserved the local removal of an obsolete tracked SOUL backup; the current SOUL source is unchanged.
+
 ## 8.7.15
 
 - Added a player-facing quality gate to new-mod, rework, Forge, and Skyrim routing skills. Menus, HUDs, previews, assets, and interactive workflows now require a real polished vertical slice, coherent hierarchy, live feedback, supported input/scale checks, long-list behavior, empty/error states, and final-pixel inspection.

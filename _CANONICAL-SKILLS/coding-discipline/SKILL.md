@@ -24,6 +24,7 @@ when_to_use: Use for operating contract for changing code, scripts, configuratio
 3. Inspect the smallest relevant file set before proposing architecture.
 4. Write a plan first when the change is broad, risky, cross-file, or poorly specified.
 5. Define a measurable completion condition and the commands that will prove it.
+6. For creating or finishing a GitHub repository, load `github-fleet-maintenance` for CI, security, documentation and artifact requirements; use `release-checklist` for the release handoff. A created repository or pushed code is not the complete deliverable.
 
 ## During implementation
 

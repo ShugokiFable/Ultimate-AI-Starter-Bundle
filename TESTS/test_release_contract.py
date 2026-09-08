@@ -3839,6 +3839,9 @@ def test_codex_builtin_skills_are_discovered_not_hardcoded() -> None:
     assert "Get-UabsCodexBuiltinSkillNames" in installer, (
         "the installer no longer dedupes copies Codex itself owns"
     )
+    assert installer.index("$builtins = @(Get-UabsCodexBuiltinSkillNames") > installer.index(
+        "if (-not $ToolsOnly -and $SkipNativePlugins)"
+    ), "built-in dedupe is trapped inside plugin installation; skills-only sync recreates duplicates"
     # It must reuse the verified remover, which backs up first and compares to
     # the provider-tailored source. Built-in names are different from ordinary
     # plugin dedupe: a modified copy still shadows Codex's own definition, so
@@ -4957,6 +4960,16 @@ def test_mcp_proofs_do_not_require_a_python_path_alias() -> None:
     for evidence in ("SKYRIM_FORGE_PYTHON", "Get-Command py", "hermes\\hermes-agent\\venv"):
         assert evidence in common, "shared Python resolver lost fallback: %s" % evidence
     assert "Get-UabsPythonExecutable" in probe and "Get-UabsPythonExecutable" in pack
+    gate = ps_code(ROOT / "TOOLS" / "Install-Completeness-Gate.ps1")
+    assert "$python = Get-UabsPythonExecutable" in gate, (
+        "hook installer must resolve sys.executable, not persist a WindowsApps launcher"
+    )
+    assert "Set-UabsGrokCompatCells -HooksOnly" in gate, (
+        "standalone Grok hook repair leaves incompatible inherited Claude duplicates active"
+    )
+    assert "Get-UabsGrokHookIssues" in ps_code(ROOT / "TOOLS" / "Test-Installed-State.ps1"), (
+        "the doctor no longer checks effective Grok hook discovery"
+    )
     assert profile.index("UABS-Common.ps1") < profile.index("UABS-Mcp-Write.ps1"), (
         "profile routing does not load the shared Python resolver before its writer"
     )

@@ -1,6 +1,12 @@
-# Ultimate AI Starter Bundle v8.7.15
+# Ultimate AI Starter Bundle v8.7.16
 
-**v8.7.15:** Skyrim work now routes through in-game product-polish and honest public-presentation gates; generated Forge reports also redact private machine paths before shipping.
+**v8.7.16:** Grok hook repair now prevents inherited duplicates after config resets and uses a verified Python interpreter. New GitHub projects route through CI, security, documentation, packaging, and release completion requirements.
+
+### Creating a complete GitHub project
+
+"Make a repo" now routes the existing `coding-discipline` and `one-shot-completion` skills to the [repository completion contract](_CANONICAL-SKILLS/github-fleet-maintenance/references/repository-completion.md). It covers real CI, applicable CodeQL/code scanning, Dependabot alerts/security updates/version updates, secret scanning/push protection, vulnerability reporting, a useful README, and usable release assets. The AI must verify server-side settings separately from files and verify published downloads against its build. Public release approval is reused when already given; otherwise the release is prepared before asking. Explicit empty-repo requests stay empty. This adds no MCP server or skill-index entry.
+
+If Grok shows two working and two failed Stop hooks, run `TOOLS\Install-Completeness-Gate.ps1 -Providers Grok` and restart Grok. Its hook-only repair preserves your MCP choices and other settings; the doctor detects effective duplicate registrations.
 
 **Ultimate multi-provider AI starter kit** - not a Skyrim-only pack.
 
@@ -686,6 +692,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.16** - 2026-09-07. Repairs duplicate Grok hooks after configuration resets, resolves a real hook interpreter, and detects effective hook drift. New GitHub projects inherit CI, security, documentation, packaging and verified release requirements through the existing skills. **167 canonical skills**, no new MCP schemas. See [release notes](docs/history/V8.7.16-CHANGELOG.md).
 
 **v8.7.15** - 2026-09-03. Skyrim work now has a player-facing quality gate, not just technical validation: new and reworked mods must design and visually verify the real UI/HUD/preview flow, supported inputs and scales, long lists, and empty/error states. The routed reference qualities include preview-dominant layouts, clear task navigation, search/filter/category hierarchy, live feedback, and cohesive controls without copying another author's assets or branding. Public Nexus work now produces a truthful media plan, crop-safe hero, proof-oriented gallery/video, captions, alt text, and rights/provenance for promotional media alongside Forge's existing archive/policy gate. GitHub releases get the same public-surface check for real final-state previews, quick start, verification, credits, and honest status. **167 canonical skills**, 126 release contracts, no new MCP schemas.
 
