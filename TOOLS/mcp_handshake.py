@@ -31,13 +31,20 @@ def _stop_tree(proc: subprocess.Popen) -> None:
         proc.kill()
 
 
-def probe(command: str, args: list[str], timeout: int) -> dict:
+def probe(command: str, args: list[str], timeout: int, shell_command: str | None = None) -> dict:
     stderr = collections.deque(maxlen=3)
     messages: queue.Queue = queue.Queue()
     flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    argv = [command, *args]
+    if shell_command is not None:
+        if os.name != "nt":
+            return {"ok": False, "reason": "shell_command is a Windows command line; use command/args on other systems"}
+        # -Command is explicitly shell syntax. Do not feed it through
+        # list2cmdline as an argument: its backslash-quoted quotes break cmd.exe.
+        argv = subprocess.list2cmdline([os.environ["COMSPEC"]]) + ' /d /s /c "' + shell_command + '"'
     try:
         proc = subprocess.Popen(
-            [command, *args],
+            argv,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -80,7 +87,7 @@ def probe(command: str, args: list[str], timeout: int) -> dict:
                 message = messages.get(timeout=min(0.2, deadline - time.monotonic()))
             except queue.Empty:
                 continue
-            if message.get("id") == message_id:
+            if isinstance(message, dict) and message.get("id") == message_id:
                 return message
         return None
 
@@ -106,21 +113,49 @@ def probe(command: str, args: list[str], timeout: int) -> dict:
             return {"ok": False, "reason": reason}
         if initialized.get("error"):
             return {"ok": False, "reason": "server returned error: " + json.dumps(initialized["error"], separators=(",", ":"))}
+        if not isinstance(initialized.get("result"), dict):
+            return {"ok": False, "reason": "invalid initialize response"}
 
         send({"jsonrpc": "2.0", "method": "notifications/initialized"})
-        send({"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}})
-        listed = wait_for(2, deadline)
-        if not listed:
-            return {"ok": False, "reason": "initialized but never answered tools/list"}
-        if listed.get("error"):
-            return {"ok": False, "reason": "server returned error: " + json.dumps(listed["error"], separators=(",", ":"))}
+        tools, cursors, names = [], set(), set()
+        params = {}
+        for message_id in range(2, 102):
+            send({"jsonrpc": "2.0", "id": message_id, "method": "tools/list", "params": params})
+            listed = wait_for(message_id, deadline)
+            if not listed:
+                return {"ok": False, "reason": "initialized but never answered tools/list"}
+            page = listed.get("result")
+            if listed.get("error") or not isinstance(page, dict) or not isinstance(page.get("tools"), list):
+                return {"ok": False, "reason": "invalid or error tools/list response"}
+            for tool in page["tools"]:
+                if (not isinstance(tool, dict) or not isinstance(tool.get("name"), str)
+                        or not tool["name"] or tool["name"] in names
+                        or not isinstance(tool.get("inputSchema"), dict)):
+                    return {"ok": False, "reason": "invalid or duplicate tool definition"}
+                names.add(tool["name"])
+                tools.append(tool)
+            cursor = page.get("nextCursor")
+            if cursor is None:
+                break
+            if not isinstance(cursor, str) or not cursor or cursor in cursors:
+                return {"ok": False, "reason": "invalid or repeated tools/list cursor"}
+            cursors.add(cursor)
+            params = {"cursor": cursor}
+        else:
+            return {"ok": False, "reason": "tools/list exceeded 100 pages"}
         result = initialized.get("result") or {}
-        tools = (listed.get("result") or {}).get("tools") or []
+        def json_bytes(value):
+            return len(json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+        size = json_bytes(tools)
         return {
             "ok": True,
             "protocol": result.get("protocolVersion", ""),
             "server_name": (result.get("serverInfo") or {}).get("name", ""),
             "tool_count": len(tools),
+            "schema_bytes": size,
+            "schema_tokens_estimate": size / 4,
+            "measurement_basis": "compact UTF-8 tools array; bytes/4 estimate, not prompt or billed tokens",
+            "per_tool": [{"name": tool["name"], "bytes": json_bytes(tool)} for tool in tools],
         }
     except (BrokenPipeError, OSError, ValueError) as exc:
         return {"ok": False, "reason": f"MCP exchange failed: {exc}"}
@@ -138,7 +173,7 @@ def selftest() -> int:
         "sys.stdin.readline()"
     )
     result = probe(sys.executable, ["-u", "-c", child], 10)
-    if result.get("ok") and result.get("tool_count") == 1:
+    if result.get("ok") and result.get("tool_count") == 1 and result["schema_bytes"] == result["per_tool"][0]["bytes"] + 2:
         print("MCP HANDSHAKE SELFTEST: PASS")
         return 0
     print("MCP HANDSHAKE SELFTEST: FAIL " + json.dumps(result, separators=(",", ":")))
@@ -155,7 +190,7 @@ def main() -> int:
     if not ns.spec:
         parser.error("--spec is required")
     spec = json.loads(base64.b64decode(ns.spec).decode("utf-8"))
-    result = probe(spec["command"], list(spec.get("args") or []), int(spec.get("timeout") or 60))
+    result = probe(spec["command"], list(spec.get("args") or []), int(spec.get("timeout") or 60), spec.get("shell_command"))
     print(json.dumps(result, separators=(",", ":")))
     return 0 if result.get("ok") else 1
 

@@ -49,8 +49,8 @@ graph of animation files that costs tokens on every query and answers nothing. R
 `query_graph`, `get_graph_schema`, `get_code_snippet`, `get_architecture`, `check_index_coverage`,
 `manage_adr`, `ingest_traces`
 
-Measured on 0.10.8 (2026-09-03): 23,974 schema bytes, about 5,994 tokens on
-every turn while connected. Use Claude/Grok project scope or Hermes' native
+Measured on 0.10.8 (2026-09-03): 23,974 schema bytes, about 5,994 schema tokens
+(bytes/4, not measured billing). Use Claude/Grok/trusted Codex project scope or Hermes' native
 `code` profile; do not register it globally just because the executable exists.
 
 ## Edge Types

@@ -124,6 +124,16 @@ Is $read.mcpServers.keepme.command 'x' 'removal leaves siblings alone'
 # ------------------------------------------------------------------- TOML ----
 Section 'TOML providers'
 
+# Refresh must never erase a user's tool selection or approval policy.
+$policyPath = Join-Path $sandbox 'policy.toml'
+foreach ($policy in @('enabled_tools = ["read"]', 'disabled_tools = ["write"]', 'enabled = false', 'default_tools_approval_mode = "prompt"', "[mcp_servers.serena.tools.read]`nenabled = false")) {
+  Set-Utf8NoBom -Path $policyPath -Text ("[mcp_servers.serena]`ncommand = 'user-command'`nargs = []`n" + $policy + "`n")
+  $before = (Get-FileHash -LiteralPath $policyPath -Algorithm SHA256).Hash
+  $replacement = @{ id = 'serena'; command = 'replacement'; args = @(); note = 'fixture'; key = $null }
+  [void](Add-UabsMcpToml -Path $policyPath -Section 'mcp_servers' -Servers @($replacement) -Provider 'Codex' -Refresh)
+  Is (Get-FileHash -LiteralPath $policyPath -Algorithm SHA256).Hash $before ('Codex custom policy survives refresh: ' + $policy)
+}
+
 $tomlPath = Join-Path $sandbox 'config.toml'
 Set-Utf8NoBom -Path $tomlPath -Text @"
 [general]
@@ -595,14 +605,20 @@ if ($grokProject -match '"grok"') { Good 'Grok gets the grok context' } else { B
 if ((Get-UabsBoxText (Join-Path $box.Home '.grok\config.toml')) -notmatch 'serena') { Good 'nothing went into the machine-wide Grok config' }
 else { Bad 'Serena reached the machine-wide Grok config' }
 
-# Codex, Kimi and Hermes have no project-scoped MCP config. Skipping them with
-# the reason printed is the point; writing them machine-wide behind a
-# "project-scoped" comment is the bug.
+# Codex supports trusted-project configs. Never grant trust or leak the server
+# globally. Kimi and Hermes still need their distinct scope handling.
+$codexProject = Get-UabsBoxText (Join-Path $box.Proj '.codex\config.toml')
+if ($codexProject -match '\[mcp_servers\.serena\]') { Good 'Codex receives a project-scoped server' }
+else { Bad 'Codex project config has no serena entry' }
+if ($out -match 'Trust was not changed') { Good 'Codex trust requirement is explicit' }
+else { Bad 'Codex project configuration was presented as activation proof' }
+if ((Get-UabsBoxText (Join-Path $box.Home '.codex\config.toml')) -notmatch 'trust_level') { Good 'the installer does not grant Codex project trust' }
+else { Bad 'the installer granted Codex project trust' }
 if ((Get-UabsBoxText (Join-Path $box.Home '.codex\config.toml')) -notmatch 'serena') { Good 'Codex is not written machine-wide by a project enable' }
 else { Bad 'Serena reached the machine-wide Codex config' }
 if ((Get-UabsBoxText (Join-Path $box.Home '.kimi-code\mcp.json')) -notmatch 'serena') { Good 'Kimi is not written machine-wide by a project enable' }
 else { Bad 'Serena reached the machine-wide Kimi config' }
-if ($out -match 'no project-scoped MCP config') { Good 'the providers that cannot be scoped say so' }
+if ($out -match 'Kimi\s+not written: kimi-code reads only') { Good 'the providers that cannot be scoped say so' }
 else { Bad "a provider was skipped without a reason: $out" }
 if ((Get-UabsBoxText (Join-Path $box.Home '.codex\config.toml')) -match 'keepme') { Good 'an unrelated Codex server is untouched' }
 else { Bad 'writing a profile removed an unrelated Codex server' }
@@ -653,6 +669,13 @@ if ($out -match '(?m)^\s*codebase-memory-mcp\s+REGISTERED' -and $out -match '(?m
 } else { Bad "-List lost registered ids from a multi-server array: $out" }
 
 # ---- -Disable ----------------------------------------------------------------
+# Add just Codex to a Claude-owned scope; the next repair must retain both.
+$out = Invoke-UabsProfile -Box $rbox -Arguments @('-Enable', 'code-intel', '-Path', $rbox.Proj) -ProviderList 'Codex'
+$ledger = Get-UabsBoxText (Join-Path $rbox.Local 'Ultimate-AI-Starter-Bundle\mcp-profiles.json') | ConvertFrom-Json
+$providerNames = @($ledger.profiles.'code-intel'.projects.($rbox.Proj).providers)
+if ($providerNames -contains 'Claude' -and $providerNames -contains 'Codex') { Good 'single-provider enable preserves other provider ownership' }
+else { Bad ('single-provider enable forgot ownership: ' + ($providerNames -join ',')) }
+
 # No -Path: every project the profile was enabled for. The cwd is not a default
 # for turning something off -- that swept a directory nobody asked about and
 # left the real registration in place.
@@ -661,6 +684,8 @@ if (-not (Test-UabsBoxProjectServer $box $box.Proj 'serena')) { Good '-Disable w
 else { Bad '-Disable left the Claude project entry behind' }
 if ((Get-UabsBoxText (Join-Path $box.Proj '.grok\config.toml')) -notmatch '\[mcp_servers\.serena\]') { Good '-Disable reaches the Grok project file' }
 else { Bad '-Disable left the Grok project entry behind' }
+if ((Get-UabsBoxText (Join-Path $box.Proj '.codex\config.toml')) -notmatch '\[mcp_servers\.serena\]') { Good '-Disable reaches the Codex project file' }
+else { Bad '-Disable left the Codex project entry behind' }
 if ((Get-UabsBoxClaude $box).mcpServers.PSObject.Properties.Name -contains 'context7') { Good '-Disable leaves unrelated servers alone' }
 else { Bad '-Disable removed an unrelated server' }
 # The old id has to keep working, or every habit and script that names it breaks.

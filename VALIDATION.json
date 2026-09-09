@@ -1,8 +1,8 @@
 {
   "pack": "Ultimate AI Starter Bundle",
-  "version": "8.7.16",
-  "generated": "2026-09-07",
-  "release_tag": "v8.7.16",
+  "version": "8.7.17",
+  "generated": "2026-09-08",
+  "release_tag": "v8.7.17",
   "canonical_skills": 167,
   "provider_trees": 5,
   "registry_entries": 167,
@@ -21,6 +21,6 @@
     "TESTS/Test-McpProfiles.ps1",
     "TOOLS/mcp_handshake.py --selftest"
   ],
-  "runtime_status": "v8.7.16: Grok 1.0.13 effective Claude hook inheritance was verified off; all five installed native bundle hook commands executed through PowerShell with harmless isolated payloads, exit 0 in approximately 0.2 seconds each. Fresh/reset/CRLF/personal-setting/idempotency fixtures pass. Repository-completion guidance covers real CI, independent security settings, usable artifacts and publication proof. No live Grok model turn or Skyrim gameplay was run. Publication remains a separate approval and exact-SHA verification step.",
+  "runtime_status": "v8.7.17: native Codex 0.152.0 trusted/untrusted project scope, unrelated-folder isolation, effective diagnostic discovery, filtered tool registration and a harmless app-server tool call verified without login or inference. Strict UTF-8 protocol fixtures cover zero/one/paginated schemas, malformed responses, cursor loops and Windows quoting. Context7 4.0.4 completed a real handshake: 2 advertised tools, 4864 compact UTF-8 array bytes. No actual loaded/cached/billed token savings or model tool-selection quality was measured. Publication is a separate approval and exact-SHA verification step.",
   "notes": "V8 uses stable versionless pack/state paths, official Codex plugin lifecycle, provider-native plugin updates, hash-ledger cleanup of unchanged retired skills, full-catalog default installation, and mandatory handshake checks for the three always-on MCP servers. Credentialed and project/editor MCPs remain unregistered until their prerequisites exist. Historical V7 release records are retained under docs/history."
 }

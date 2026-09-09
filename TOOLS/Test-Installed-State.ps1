@@ -529,14 +529,14 @@ if ($capabilityStates.Count) {
     $reg = if ($s.registered_for.Count) { ($s.registered_for -join ',') } else { 'none' }
     $scoped = if ($s.scoped_for.Count) { '; scoped: ' + ($s.scoped_for -join ',') } else { '' }
     $kl  = if ($s.keyless_tools.Count) { "$($s.keyless_tools.Count) keyless" } else { 'keyless unmeasured' }
-    $cost = if ($s.schema_bytes) { "$([math]::Round($s.schema_bytes/4)) tok/turn" } else { 'cost unmeasured' }
+    $cost = if ($s.schema_bytes) { "~$([math]::Round($s.schema_bytes/4)) schema tokens (bytes/4)" } else { 'cost unmeasured' }
     $cred = if ($s.credentialled) { 'key set' } else { 'no key' }
     Write-UabsOk ("{0,-16} registered: {1,-22} {2}, {3}, {4}{5}" -f $s.component, $reg, $kl, $cred, $cost, $scoped)
     if ($s.not_registered_because) {
       Write-Host ("     " + $s.not_registered_because) -ForegroundColor DarkGray
     }
     # Registered, no key, and only a sliver of it works keyless: the machine is
-    # paying full schema price on every turn for a fraction of the server. An
+    # advertising a large schema for a fraction of the server. An
     # earlier -WithExtras run could have done this before 7.9.9 stopped it.
     # Tell, do not edit -- the same rule sequential-thinking got in 7.9.7. A
     # server someone chose does not vanish because a measurement went the other
@@ -545,7 +545,7 @@ if ($capabilityStates.Count) {
         $s.keyless_tools.Count -and $s.schema_bytes -and $s.tools_total -and
         ($s.keyless_tools.Count * 4) -lt $s.tools_total) {
       $perTurn = [math]::Round($s.schema_bytes / 4)
-      Write-Host ("     $($s.component) is registered on $($s.registered_for.Count) provider(s) with no key: ~$perTurn tokens every turn for $($s.keyless_tools.Count) of its $($s.tools_total) tools.") -ForegroundColor DarkGray
+      Write-Host ("     $($s.component) is registered on $($s.registered_for.Count) provider(s) with no key: ~$perTurn schema-token estimate for $($s.keyless_tools.Count) usable tools out of $($s.tools_total) advertised.") -ForegroundColor DarkGray
       Write-Host ("     Nothing here removed it. Keep it, set $($s.key_env) to unlock the rest, or drop the entry from those configs.") -ForegroundColor DarkGray
     }
   }
@@ -553,9 +553,9 @@ if ($capabilityStates.Count) {
 
 # ---- Hermes profile tool budgets -------------------------------------------
 # Hermes filters MCP servers at the individual-TOOL level (tools.include /
-# tools.exclude, enforced at registration), which no other provider here can do.
+# tools.exclude, enforced at registration). Codex has native filters too.
 # It is also completely invisible: `hermes mcp test` reports what the SERVER
-# advertises, not what Hermes registers. Show what each profile actually costs.
+# advertises, not what Hermes registers. Report recorded subset schema estimates.
 $hermesBudgets = @()
 if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $hermesHomeRoot 'config.yaml') -PathType Leaf)) {
   $budgetCatalog = @{}
@@ -619,6 +619,7 @@ if ($Providers -contains 'Hermes' -and (Test-Path -LiteralPath (Join-Path $herme
         tools_active = $activeTools; tools_total = $allTools
         approx_tokens_per_turn = $tokens
         full_tokens_per_turn = [int]$budget.all_tokens_per_turn
+        measurement_basis = 'Legacy *_tokens_per_turn fields are schema bytes/4 estimates; loaded, cached and billed tokens are unmeasured.'
       }
     }
   }
@@ -627,7 +628,7 @@ if ($hermesBudgets.Count) {
   Write-Host ''
   Write-UabsStep 'Hermes profile tool budgets'
   foreach ($b in $hermesBudgets) {
-    $cost = if ($null -ne $b.approx_tokens_per_turn) { "~$($b.approx_tokens_per_turn) tok/turn" } else { 'cost unmeasured' }
+    $cost = if ($null -ne $b.approx_tokens_per_turn) { "~$($b.approx_tokens_per_turn) schema tokens (bytes/4)" } else { 'cost unmeasured' }
     $line = "{0,-8} {1,-12} {2}/{3} tools  {4}" -f $b.profile, $b.server, $b.tools_active, $b.tools_total, $cost
     if ($b.set -eq 'Full') {
       Write-UabsWarn ($line + '  (no filter)')
@@ -639,7 +640,7 @@ if ($hermesBudgets.Count) {
       Write-UabsOk ($line + ("  [{0}] full is ~{1}, saving ~{2}" -f $b.set, $b.full_tokens_per_turn, ($b.full_tokens_per_turn - $b.approx_tokens_per_turn)))
     }
   }
-  Write-Host '     Figures are the recorded per-set measurement, not a per-tool average: schema size is very uneven.' -ForegroundColor DarkGray
+  Write-Host '     Figures estimate recorded per-set schemas, not a per-tool average or a bill. Loaded/cached/billed tokens are unmeasured.' -ForegroundColor DarkGray
   Write-Host '     Change the set: hermes -p skyrim mcp configure housecarl  (interactive, survives re-installs)' -ForegroundColor DarkGray
 }
 

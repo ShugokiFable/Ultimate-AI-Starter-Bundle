@@ -26,8 +26,8 @@
  },
  {
   "path": ".gitignore",
-  "size": 1494,
-  "sha256": "9a221d0414ed53da6b9ea4e41d6be79f97f48c98c6bc031012966130335685da"
+  "size": 1500,
+  "sha256": "e7f887572f519edf661da983a3df0322a4ba7b40a082cd92a6e1343c05cce5e1"
  },
  {
   "path": "0-UNRESTRAINT-PACKS/AIO-INSTRUCTION \u2014 Compact.md",
@@ -1466,8 +1466,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 7894,
-  "sha256": "e60fd629a0ccb39a04fada68c2601bc44043f56dcbd8e808e66434527b7330eb"
+  "size": 6528,
+  "sha256": "11b2d9cf5c11f57a9659700a4a14e407df51fba2a02d4221fcfb12befd3da650"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -1676,8 +1676,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 15442,
-  "sha256": "052fe2486b9dae7d8028bc19804fbb3c0209973fc891d02209e880a8f427bbd6"
+  "size": 11029,
+  "sha256": "4f5f8f555d297207d1696e923e3363106192b78793644db67284720721368397"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -1941,8 +1941,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 16152,
-  "sha256": "ed563d65ecb7e7d7e4c9799bfe076259d3c4f502af00f6a00042b89db04d10c9"
+  "size": 16175,
+  "sha256": "0c266d6e00b7c0148c9b6b3cc0883bf87b0caf658c7a4fefc449e828dba3e7ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -7016,8 +7016,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 8454,
-  "sha256": "a5529e4d8e1912b14a08809a33d1539e6f1e57fd7c6e256977a5f81f2d3674e3"
+  "size": 8557,
+  "sha256": "3b4f4fde9d3ac78bfa4f662a29016bf487f76ac2f4513a42e25f2860eda8578f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -7221,8 +7221,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/SKILL.md",
-  "size": 6428,
-  "sha256": "0b9ffa69cf3532661a4c95e44b038b10642ec76d48e80c924ba0561a473b93c6"
+  "size": 6459,
+  "sha256": "89011efd97f3a7ee5e3bc0b884e0a36136b9140bc4acd0db79d6f7fcf52144c1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/references/shell-output-compression.md",
@@ -7231,8 +7231,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 8586,
-  "sha256": "6bd8023c2dbbd287c4c41f3774b3f6a9d26b3f4e3a2a210eb004786b1737b43e"
+  "size": 8585,
+  "sha256": "d6cd4708f3e262e8272a53e15dfc04695678bfa9ab2b9aa9390777b4ebc1221b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Claude/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
@@ -7561,8 +7561,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 7894,
-  "sha256": "e60fd629a0ccb39a04fada68c2601bc44043f56dcbd8e808e66434527b7330eb"
+  "size": 6528,
+  "sha256": "11b2d9cf5c11f57a9659700a4a14e407df51fba2a02d4221fcfb12befd3da650"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -7771,8 +7771,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 15442,
-  "sha256": "052fe2486b9dae7d8028bc19804fbb3c0209973fc891d02209e880a8f427bbd6"
+  "size": 11029,
+  "sha256": "4f5f8f555d297207d1696e923e3363106192b78793644db67284720721368397"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -8036,8 +8036,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 16152,
-  "sha256": "ed563d65ecb7e7d7e4c9799bfe076259d3c4f502af00f6a00042b89db04d10c9"
+  "size": 16175,
+  "sha256": "0c266d6e00b7c0148c9b6b3cc0883bf87b0caf658c7a4fefc449e828dba3e7ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -13111,8 +13111,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 8454,
-  "sha256": "a5529e4d8e1912b14a08809a33d1539e6f1e57fd7c6e256977a5f81f2d3674e3"
+  "size": 8557,
+  "sha256": "3b4f4fde9d3ac78bfa4f662a29016bf487f76ac2f4513a42e25f2860eda8578f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -13316,8 +13316,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/SKILL.md",
-  "size": 6428,
-  "sha256": "0b9ffa69cf3532661a4c95e44b038b10642ec76d48e80c924ba0561a473b93c6"
+  "size": 6459,
+  "sha256": "89011efd97f3a7ee5e3bc0b884e0a36136b9140bc4acd0db79d6f7fcf52144c1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/references/shell-output-compression.md",
@@ -13326,8 +13326,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 8586,
-  "sha256": "6bd8023c2dbbd287c4c41f3774b3f6a9d26b3f4e3a2a210eb004786b1737b43e"
+  "size": 8585,
+  "sha256": "d6cd4708f3e262e8272a53e15dfc04695678bfa9ab2b9aa9390777b4ebc1221b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Codex/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
@@ -13641,8 +13641,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 7894,
-  "sha256": "e60fd629a0ccb39a04fada68c2601bc44043f56dcbd8e808e66434527b7330eb"
+  "size": 6528,
+  "sha256": "11b2d9cf5c11f57a9659700a4a14e407df51fba2a02d4221fcfb12befd3da650"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -13851,8 +13851,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 15442,
-  "sha256": "052fe2486b9dae7d8028bc19804fbb3c0209973fc891d02209e880a8f427bbd6"
+  "size": 11029,
+  "sha256": "4f5f8f555d297207d1696e923e3363106192b78793644db67284720721368397"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -14116,8 +14116,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 16152,
-  "sha256": "ed563d65ecb7e7d7e4c9799bfe076259d3c4f502af00f6a00042b89db04d10c9"
+  "size": 16175,
+  "sha256": "0c266d6e00b7c0148c9b6b3cc0883bf87b0caf658c7a4fefc449e828dba3e7ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -19191,8 +19191,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 8454,
-  "sha256": "a5529e4d8e1912b14a08809a33d1539e6f1e57fd7c6e256977a5f81f2d3674e3"
+  "size": 8557,
+  "sha256": "3b4f4fde9d3ac78bfa4f662a29016bf487f76ac2f4513a42e25f2860eda8578f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -19396,8 +19396,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/SKILL.md",
-  "size": 6428,
-  "sha256": "0b9ffa69cf3532661a4c95e44b038b10642ec76d48e80c924ba0561a473b93c6"
+  "size": 6459,
+  "sha256": "89011efd97f3a7ee5e3bc0b884e0a36136b9140bc4acd0db79d6f7fcf52144c1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/references/shell-output-compression.md",
@@ -19406,8 +19406,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 8586,
-  "sha256": "6bd8023c2dbbd287c4c41f3774b3f6a9d26b3f4e3a2a210eb004786b1737b43e"
+  "size": 8585,
+  "sha256": "d6cd4708f3e262e8272a53e15dfc04695678bfa9ab2b9aa9390777b4ebc1221b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Grok/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
@@ -19721,8 +19721,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 7894,
-  "sha256": "e60fd629a0ccb39a04fada68c2601bc44043f56dcbd8e808e66434527b7330eb"
+  "size": 6528,
+  "sha256": "11b2d9cf5c11f57a9659700a4a14e407df51fba2a02d4221fcfb12befd3da650"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -19931,8 +19931,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 15442,
-  "sha256": "052fe2486b9dae7d8028bc19804fbb3c0209973fc891d02209e880a8f427bbd6"
+  "size": 11029,
+  "sha256": "4f5f8f555d297207d1696e923e3363106192b78793644db67284720721368397"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -20196,8 +20196,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 16152,
-  "sha256": "ed563d65ecb7e7d7e4c9799bfe076259d3c4f502af00f6a00042b89db04d10c9"
+  "size": 16175,
+  "sha256": "0c266d6e00b7c0148c9b6b3cc0883bf87b0caf658c7a4fefc449e828dba3e7ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -25271,8 +25271,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 8454,
-  "sha256": "a5529e4d8e1912b14a08809a33d1539e6f1e57fd7c6e256977a5f81f2d3674e3"
+  "size": 8557,
+  "sha256": "3b4f4fde9d3ac78bfa4f662a29016bf487f76ac2f4513a42e25f2860eda8578f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -25476,8 +25476,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/SKILL.md",
-  "size": 6428,
-  "sha256": "0b9ffa69cf3532661a4c95e44b038b10642ec76d48e80c924ba0561a473b93c6"
+  "size": 6459,
+  "sha256": "89011efd97f3a7ee5e3bc0b884e0a36136b9140bc4acd0db79d6f7fcf52144c1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/references/shell-output-compression.md",
@@ -25486,8 +25486,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 8586,
-  "sha256": "6bd8023c2dbbd287c4c41f3774b3f6a9d26b3f4e3a2a210eb004786b1737b43e"
+  "size": 8585,
+  "sha256": "d6cd4708f3e262e8272a53e15dfc04695678bfa9ab2b9aa9390777b4ebc1221b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Hermes/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
@@ -25811,8 +25811,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/ai-tooling-stack/SKILL.md",
-  "size": 7894,
-  "sha256": "e60fd629a0ccb39a04fada68c2601bc44043f56dcbd8e808e66434527b7330eb"
+  "size": 6528,
+  "sha256": "11b2d9cf5c11f57a9659700a4a14e407df51fba2a02d4221fcfb12befd3da650"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/ambiguity-resolution/SKILL.md",
@@ -26021,8 +26021,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-profiles/SKILL.md",
-  "size": 15442,
-  "sha256": "052fe2486b9dae7d8028bc19804fbb3c0209973fc891d02209e880a8f427bbd6"
+  "size": 11029,
+  "sha256": "4f5f8f555d297207d1696e923e3363106192b78793644db67284720721368397"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/capability-routing/SKILL.md",
@@ -26286,8 +26286,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codebase-memory/SKILL.md",
-  "size": 16152,
-  "sha256": "ed563d65ecb7e7d7e4c9799bfe076259d3c4f502af00f6a00042b89db04d10c9"
+  "size": 16175,
+  "sha256": "0c266d6e00b7c0148c9b6b3cc0883bf87b0caf658c7a4fefc449e828dba3e7ea"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/codeburn/SKILL.md",
@@ -31361,8 +31361,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-tool-router/SKILL.md",
-  "size": 8454,
-  "sha256": "a5529e4d8e1912b14a08809a33d1539e6f1e57fd7c6e256977a5f81f2d3674e3"
+  "size": 8557,
+  "sha256": "3b4f4fde9d3ac78bfa4f662a29016bf487f76ac2f4513a42e25f2860eda8578f"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/skyrim-versioned-workspace/SKILL.md",
@@ -31566,8 +31566,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/SKILL.md",
-  "size": 6428,
-  "sha256": "0b9ffa69cf3532661a4c95e44b038b10642ec76d48e80c924ba0561a473b93c6"
+  "size": 6459,
+  "sha256": "89011efd97f3a7ee5e3bc0b884e0a36136b9140bc4acd0db79d6f7fcf52144c1"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/token-efficiency/references/shell-output-compression.md",
@@ -31576,8 +31576,8 @@
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/SKILL.md",
-  "size": 8586,
-  "sha256": "6bd8023c2dbbd287c4c41f3774b3f6a9d26b3f4e3a2a210eb004786b1737b43e"
+  "size": 8585,
+  "sha256": "d6cd4708f3e262e8272a53e15dfc04695678bfa9ab2b9aa9390777b4ebc1221b"
  },
  {
   "path": "1-TAILORED-PROVIDER-TREES/Kimi/COPY-TO-SKILLS-DIRECTORY/skills/tool-discovery/scripts/discover_tools.ps1",
@@ -31901,18 +31901,18 @@
  },
  {
   "path": "BUNDLED-TOOLS/CATALOG.json",
-  "size": 41558,
-  "sha256": "c812bed150f9ef38c766c7f1708f79991c5b175b0f1d464df89f4ab90c82c838"
+  "size": 41596,
+  "sha256": "771a8bc28605ae6f4810ca4829a9e9f1023001756a77d045b7267d4d58f7ab82"
  },
  {
   "path": "BUNDLED-TOOLS/OFFLINE-MANIFEST.json",
   "size": 1660,
-  "sha256": "5e33049a40d530fa68846c99b44ceeb1631ac4bc5a110aa2deb11bd1cdc78e20"
+  "sha256": "9a02eb42e04164cbee7163dca2ae7c93f3a8775615d3aaa520f01b7bf335f514"
  },
  {
   "path": "BUNDLED-TOOLS/PROFILES.json",
-  "size": 32384,
-  "sha256": "2d730ddd61b741ed32878ee1553e07f03e60fba40b77504488a0584d6dc76d47"
+  "size": 31762,
+  "sha256": "21309d2586fa2e54ec4c0582f5efa58573cbb8502df89f62b5e77a3f86a952d1"
  },
  {
   "path": "BUNDLED-TOOLS/README.md",
@@ -31951,8 +31951,8 @@
  },
  {
   "path": "BUNDLED-TOOLS/capability-records/game-mcp-schema-cost.json",
-  "size": 3604,
-  "sha256": "6ab86dad4a75f9d9c6c3edc039ae953b4367c776bae8c84e280da54d7f78f7a5"
+  "size": 3549,
+  "sha256": "5ee3f71d408ab8607c75dce1c78930fad04b8cfd7966d1f9fbfe0ead35e658e6"
  },
  {
   "path": "BUNDLED-TOOLS/lm-studio/Get-KvBudget.ps1",
@@ -34856,8 +34856,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 154952,
-  "sha256": "d3e43107c31543edaae1be69708c75393ffa587a99ed3a148b28b8a1759eb033"
+  "size": 156105,
+  "sha256": "b86103e72567e9ff9416399140366f49df6a2d371cbe3233dc76392c9c99f8b2"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -34931,8 +34931,8 @@
  },
  {
   "path": "INSTALL-AIO.ps1",
-  "size": 135382,
-  "sha256": "e4658870eb127027317b66dd07bf0a2d513bdaa52c8fd277f181b10e3c29e547"
+  "size": 135426,
+  "sha256": "9fe261c42fbe5d10c6dbce546f1295579a3cd494586fcafb3a4fbc72ad4a7aaa"
  },
  {
   "path": "INSTALL-REMOTE.bat",
@@ -34981,8 +34981,8 @@
  },
  {
   "path": "README.md",
-  "size": 64984,
-  "sha256": "5dfbf364da11bd92b4cdba4d73ccec55ac0b9273854150123a8944b63e50b362"
+  "size": 66603,
+  "sha256": "4223ee916ceaad00f34a543bc9207c39b02a6df5c5deb9b0d342935656d25cce"
  },
  {
   "path": "SECURITY.md",
@@ -34992,12 +34992,12 @@
  {
   "path": "START-HERE.bat",
   "size": 730,
-  "sha256": "e679f7a43ab16b3bfb84e2d3f97320693c7f722fc9b31bf9cda25eb1ffcc281b"
+  "sha256": "bc74c93d7756592c33a3537e6e654096ee572163dbc45676e2d71fd562a5f5b9"
  },
  {
   "path": "START-HERE.txt",
   "size": 9682,
-  "sha256": "217df24935b6c2116294c861121ea2e7152a586e2308a080d0e45272b3757a08"
+  "sha256": "00358009a66e913c4f1e621850ec9e768e705b8306354617f4c998b977057186"
  },
  {
   "path": "TESTS/Test-ForgeRootResolution.ps1",
@@ -35021,8 +35021,8 @@
  },
  {
   "path": "TESTS/Test-McpProfiles.ps1",
-  "size": 54895,
-  "sha256": "0aeb98d1f4e73afe6687e8f0f84d8f68a8a4dfebb7bca4074cb230488c545600"
+  "size": 57178,
+  "sha256": "8bc3021b0aed9e3407ffaae19969a3288a5ad308f95d7e846b843a269fcec4cc"
  },
  {
   "path": "TESTS/Test-Pack.ps1",
@@ -35200,19 +35200,29 @@
   "sha256": "cbcf4c529b504fa22406984a5c1f21f4dc808dfff12d94ec5e979b12a883b434"
  },
  {
+  "path": "TESTS/test_codex_native_profiles.py",
+  "size": 7080,
+  "sha256": "1be5cf36d0c04fbc6dc7bcceeb387118b927056029d8918d90b9927464e06ff5"
+ },
+ {
   "path": "TESTS/test_hermes_bootstrap.py",
   "size": 2933,
   "sha256": "00c4a1984d90be68c18f76ec446b201e2a5e262550c03acd90481c17870d595a"
  },
  {
+  "path": "TESTS/test_mcp_protocol.py",
+  "size": 2964,
+  "sha256": "76423a64cea77e6200df41661c8e963b21f49225c487fe0698e021eb6713961f"
+ },
+ {
   "path": "TESTS/test_release_contract.py",
-  "size": 275870,
-  "sha256": "668f1bfd1a57ed1a18e22ca23db1952482949ceb629bc5d0461e5bca7843c62d"
+  "size": 275193,
+  "sha256": "2981478c41b86fe5db188a01796747ecf1a8f12784261e262bfa50a42f24b722"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
-  "size": 14762,
-  "sha256": "cff191688a8b05b504cc5c413c8ae5001f3ec065871ca72f3d1db004fff14d80"
+  "size": 14780,
+  "sha256": "d9dfb0c838764afc4bb452107ca58e910a141ade1ff382253d791b415f27e906"
  },
  {
   "path": "TOOLS/Build-Release.ps1",
@@ -35271,13 +35281,13 @@
  },
  {
   "path": "TOOLS/Measure-McpSchemaCost.ps1",
-  "size": 8102,
-  "sha256": "835f8950217e118162b54f52af1dcde50309cb65d2269cc616c67ae6f997f6a5"
+  "size": 2834,
+  "sha256": "9339e997205839348668c30d8e253067797f7bfb3e32b66225b5b4615150d826"
  },
  {
   "path": "TOOLS/Migrate-HermesProfiles.ps1",
-  "size": 46457,
-  "sha256": "567efbf45b1445cf046c1883a6675e25be5d7fab940036c08ef046703729718c"
+  "size": 46601,
+  "sha256": "6b70b589b46efc2e24b01e8f168d9e76878cc285d2ff6b88eac6f94856a6e2a6"
  },
  {
   "path": "TOOLS/RECOMMENDED-INSTALLS.md",
@@ -35291,8 +35301,8 @@
  },
  {
   "path": "TOOLS/Set-McpProfile.ps1",
-  "size": 43554,
-  "sha256": "10f7717c97f2cdc0b6fe75a994c123930a3e3171919c0df2d7302c40f035fbd2"
+  "size": 44385,
+  "sha256": "d79bb4bd3ca1f88e1003d9a3ebcc6068638624943fc78bfc0f46d4ebaeb55c36"
  },
  {
   "path": "TOOLS/Setup-CodebaseMemory-Index.ps1",
@@ -35306,13 +35316,13 @@
  },
  {
   "path": "TOOLS/Test-Installed-State.ps1",
-  "size": 50442,
-  "sha256": "dac91827a80464cae0cd86dddbd44c4f80b4df84a81f30ed2cc6d355420440ea"
+  "size": 50642,
+  "sha256": "912176f89f050ceada65bae7cb1b86ee916d8ab08919d87d4ccf4b4da471608c"
  },
  {
   "path": "TOOLS/Test-McpHandshake.ps1",
-  "size": 11693,
-  "sha256": "e82c0e7e47053154c10ab14b448bc21e50fa93a2e2d72710ca4d58f9a656c9c2"
+  "size": 12614,
+  "sha256": "ef966fd0d7be727fe1902176a764a3a0de60ce7f8538c678af12d9c84fa336d9"
  },
  {
   "path": "TOOLS/Test-VisionCanary.ps1",
@@ -35326,8 +35336,8 @@
  },
  {
   "path": "TOOLS/UABS-Mcp-Write.ps1",
-  "size": 37785,
-  "sha256": "bb5e4dd9e6298fd6750b2433fd45c174bbc40c8aa545983f6fb7a83109d02401"
+  "size": 38457,
+  "sha256": "80e50bdcb28694e8162ef225495e544a065a885cb745664f711599c51f8e474a"
  },
  {
   "path": "TOOLS/Update-From-GitHub.ps1",
@@ -35441,13 +35451,13 @@
  },
  {
   "path": "TOOLS/mcp_handshake.py",
-  "size": 5793,
-  "sha256": "d85301645e939c053889fe191af433e9e3e59c6b13e4379044d5b86095dc98f7"
+  "size": 8015,
+  "sha256": "53bb8d41892acf7c32075713ab8e3159d790926ecd2c1511f5e7a3b0efd3cfdb"
  },
  {
   "path": "TOOLS/measure_mcp_capability.py",
-  "size": 15951,
-  "sha256": "c88d937b45f2f6608b3ae5544a1fb5bc51160496fde3ce1301816db0788c41fb"
+  "size": 15975,
+  "sha256": "821ab0222539bd37cbfa3b82332de6f6efb6b54e76bc306d8ac52dacdbc39615"
  },
  {
   "path": "TOOLS/merge_registry.py",
@@ -35486,13 +35496,13 @@
  },
  {
   "path": "VALIDATION.json",
-  "size": 1709,
-  "sha256": "6916c6c7a1fa8cb5ab190d56d66e0a0f791874fed191db607c4a38fee5916a5b"
+  "size": 1779,
+  "sha256": "e0b1d304e6dbb9800e05580bc8ea37779518605eea11f61edd827284959a1aa0"
  },
  {
   "path": "VERSION.txt",
   "size": 8,
-  "sha256": "ab259b4e958e00feb0c88c953ddfe0c690686d071292c72a158f46347dc89f80"
+  "sha256": "ad5ee8070a184ca0f324278e4ece1302f02357e188e63342c54834bebce8dd0f"
  },
  {
   "path": "WHICH-AI-SHOULD-I-USE-FOR-SKYRIM.md",
@@ -35526,8 +35536,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/ai-tooling-stack/SKILL.md",
-  "size": 7894,
-  "sha256": "e60fd629a0ccb39a04fada68c2601bc44043f56dcbd8e808e66434527b7330eb"
+  "size": 6528,
+  "sha256": "11b2d9cf5c11f57a9659700a4a14e407df51fba2a02d4221fcfb12befd3da650"
  },
  {
   "path": "_CANONICAL-SKILLS/ambiguity-resolution/SKILL.md",
@@ -35736,8 +35746,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/capability-profiles/SKILL.md",
-  "size": 15442,
-  "sha256": "052fe2486b9dae7d8028bc19804fbb3c0209973fc891d02209e880a8f427bbd6"
+  "size": 11029,
+  "sha256": "4f5f8f555d297207d1696e923e3363106192b78793644db67284720721368397"
  },
  {
   "path": "_CANONICAL-SKILLS/capability-routing/SKILL.md",
@@ -36001,8 +36011,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/codebase-memory/SKILL.md",
-  "size": 16152,
-  "sha256": "ed563d65ecb7e7d7e4c9799bfe076259d3c4f502af00f6a00042b89db04d10c9"
+  "size": 16175,
+  "sha256": "0c266d6e00b7c0148c9b6b3cc0883bf87b0caf658c7a4fefc449e828dba3e7ea"
  },
  {
   "path": "_CANONICAL-SKILLS/codeburn/SKILL.md",
@@ -41076,8 +41086,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/skyrim-tool-router/SKILL.md",
-  "size": 8454,
-  "sha256": "a5529e4d8e1912b14a08809a33d1539e6f1e57fd7c6e256977a5f81f2d3674e3"
+  "size": 8557,
+  "sha256": "3b4f4fde9d3ac78bfa4f662a29016bf487f76ac2f4513a42e25f2860eda8578f"
  },
  {
   "path": "_CANONICAL-SKILLS/skyrim-versioned-workspace/SKILL.md",
@@ -41281,8 +41291,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/token-efficiency/SKILL.md",
-  "size": 6428,
-  "sha256": "0b9ffa69cf3532661a4c95e44b038b10642ec76d48e80c924ba0561a473b93c6"
+  "size": 6459,
+  "sha256": "89011efd97f3a7ee5e3bc0b884e0a36136b9140bc4acd0db79d6f7fcf52144c1"
  },
  {
   "path": "_CANONICAL-SKILLS/token-efficiency/references/shell-output-compression.md",
@@ -41291,8 +41301,8 @@
  },
  {
   "path": "_CANONICAL-SKILLS/tool-discovery/SKILL.md",
-  "size": 8586,
-  "sha256": "6bd8023c2dbbd287c4c41f3774b3f6a9d26b3f4e3a2a210eb004786b1737b43e"
+  "size": 8585,
+  "sha256": "d6cd4708f3e262e8272a53e15dfc04695678bfa9ab2b9aa9390777b4ebc1221b"
  },
  {
   "path": "_CANONICAL-SKILLS/tool-discovery/scripts/discover_tools.ps1",
@@ -42058,6 +42068,11 @@
   "path": "docs/history/V8.7.16-CHANGELOG.md",
   "size": 2120,
   "sha256": "87779721c9d4689f11c304ada3f8723c6f486af017de4bc18f686cadd6bf1141"
+ },
+ {
+  "path": "docs/history/V8.7.17-CHANGELOG.md",
+  "size": 3461,
+  "sha256": "b5e2c5af711b4a9a9e6421e8916e54d5619aa928628813fd1c1a04f92159fb7d"
  },
  {
   "path": "docs/history/V8.7.2-CHANGELOG.md",

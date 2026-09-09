@@ -8,14 +8,14 @@
   the outside: a command that does not exist, a package upstream withdrew, a
   backslash escaped twice too many. Writing the config is not the finish line.
 
-  This reads a provider's own config, spawns each server exactly as that
-  provider would, and runs the real handshake over stdio:
+  This reads configured stdio command/args and runs a transport smoke test:
 
     initialize -> notifications/initialized -> tools/list
 
-  It reports the server's protocol version and tool count, which is also the
-  honest measure of what a server costs: every one of those tool schemas is in
-  the model's context on every turn of every session.
+  Counts are advertised tools, not loaded schemas or billed tokens. Config env,
+  cwd overrides and provider-specific tool filters are not replayed; the test
+  inherits this shell's environment. Codex discovery uses its native CLI so
+  untrusted project configuration is never launched by this diagnostic.
 
   Nothing is written. This is a read-only check.
 
@@ -27,8 +27,8 @@
 
 .PARAMETER Path
   A project directory. Capability profiles are registered per project, so
-  without this the check sees only the machine-wide config -- and reports a
-  cost that no session opened in that project would actually pay.
+  without this the generic check sees machine-wide config only. Codex uses the
+  native CLI's effective configuration in -Path (or the current directory).
 
 .PARAMETER TimeoutSeconds
   Per-server budget. Default 60: a cold `npx -y` has to download the package.
@@ -155,11 +155,28 @@ function Get-ServersFromFile {
 }
 
 function Get-ServersFromConfig {
-  <# What a session opened in $ProjectPath would actually see: the machine-wide
-     config, plus whatever that project adds. Reading only the first meant the
-     one tool that can answer "is this server working" was blind to every
-     capability profile, since those are registered per project. #>
+  # For Codex, ask the native trust/config resolver instead of guessing trust
+  # from files. Other readers cover the pack's command/args config shape.
   param([string]$Provider, [string]$ProjectPath)
+  if ($Provider -eq 'Codex') {
+    $cli = Get-Command codex -ErrorAction Stop
+    $pushed = $false
+    try {
+      if ($ProjectPath) { Push-Location -LiteralPath $ProjectPath; $pushed = $true }
+      $savedPreference = $ErrorActionPreference
+      try {
+        $ErrorActionPreference = 'Continue'
+        $raw = @(& $cli.Source mcp list --json 2>$null)
+      } finally { $ErrorActionPreference = $savedPreference }
+      if ($LASTEXITCODE -ne 0) { throw 'Codex native MCP discovery failed; no config-file fallback was launched.' }
+      $entries = ($raw -join "`n") | ConvertFrom-Json
+      return @($entries | Where-Object { $_.enabled -ne $false -and $_.transport.type -eq 'stdio' } | ForEach-Object {
+        @{ id = $_.name; command = $_.transport.command; args = @($_.transport.args); scope = 'native-effective' }
+      })
+    } finally {
+      if ($pushed) { Pop-Location }
+    }
+  }
   $t = (Get-UabsMcpTargets)[$Provider]
   if (-not (Test-UabsPath -LiteralPath $t.Path -PathType Leaf)) {
     throw "$Provider config not found at $($t.Path)"
@@ -225,8 +242,10 @@ if (-not $servers.Count) {
 }
 
 Write-Host ("MCP handshake: {0} ({1} server(s))" -f $Provider, $servers.Count) -ForegroundColor Cyan
-if ($Path) { Write-Host ("  as a session opened in {0}" -f $Path) -ForegroundColor DarkGray }
-else { Write-Host '  machine-wide config only -- pass -Path <project> to include that project''s own servers' -ForegroundColor DarkGray }
+if ($Path) { Write-Host ("  project: {0}" -f $Path) -ForegroundColor DarkGray }
+elseif ($Provider -ne 'Codex') { Write-Host '  machine-wide config only -- pass -Path <project> to include that project''s own servers' -ForegroundColor DarkGray }
+if ($Provider -eq 'Codex') { Write-Host '  Codex: native effective discovery (trust respected), stdio servers only.' }
+Write-Host '  Transport smoke test only: shell environment; config env/cwd and provider tool filters are not replayed.'
 Write-Host ''
 $failed = 0
 $totalTools = 0
@@ -247,9 +266,7 @@ foreach ($s in $servers) {
   }
 }
 Write-Host ''
-# The number that matters for cost: this many tool schemas ride along on every
-# turn of every session with this provider, whatever the task is.
-Write-Host ("  {0} tool schemas in context on every turn" -f $totalTools) -ForegroundColor DarkGray
+Write-Host ("  {0} advertised tools; loaded/cached/billed tokens unmeasured" -f $totalTools) -ForegroundColor DarkGray
 if ($failed) {
   Write-Host ("  {0} server(s) did not complete a handshake" -f $failed) -ForegroundColor Red
   exit 1

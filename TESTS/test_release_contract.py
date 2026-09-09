@@ -824,8 +824,8 @@ def test_tool_routing_prefers_the_free_cli_over_the_expensive_mcp() -> None:
     # The correction that makes the rest of it true.
     assert "Preferring a cheaper server you have" in skill, (
         "the skill no longer corrects 'prefer the cheaper MCP': preferring "
-        "around a registered server saves nothing, because both schemas are in "
-        "context every turn regardless of which one is called"
+        "around a registered server is not proof of savings; scope, native "
+        "filtering, discovery and actual usage determine the cost"
     )
     assert "not registering" in skill, "the skill no longer says where the saving actually comes from"
 
@@ -2369,6 +2369,7 @@ def main() -> int:
         test_optional_key_server_is_not_registered_for_a_sliver_of_itself,
         test_full_default_owns_optional_servers_and_coreonly_opts_out,
         test_schema_cost_is_measurable_not_just_asserted,
+        test_codex_scope_and_schema_claims_match_native_support,
         test_no_skill_restates_the_pack_version,
         test_skills,
         test_all_descriptions_under_budget,
@@ -3227,14 +3228,30 @@ def test_full_default_owns_optional_servers_and_coreonly_opts_out() -> None:
 
 
 def test_schema_cost_is_measurable_not_just_asserted() -> None:
-    """7.9.7 demoted a server on a byte count it shipped no way to reproduce."""
-    p = ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1"
-    assert p.is_file(), "TOOLS/Measure-McpSchemaCost.ps1 is missing"
-    code = ps_code(p)
-    assert "tools/list" in code and "initialize" in code, (
-        "the schema-cost tool no longer speaks real MCP"
-    )
-    assert "GetByteCount" in code, "the schema-cost tool no longer measures bytes"
+    """One protocol implementation and a real stdio measurement regression."""
+    code = ps_code(ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1")
+    assert "mcp_handshake.py" in code and "schema_bytes" in code
+    assert "tokens on every turn" not in code
+    subprocess.run([sys.executable, str(ROOT / "TESTS" / "test_mcp_protocol.py")],
+                   check=True, timeout=60)
+
+
+def test_codex_scope_and_schema_claims_match_native_support() -> None:
+    writer = read(ROOT / "TOOLS" / "UABS-Mcp-Write.ps1")
+    target = writer.split("function Get-UabsProviderProjectTarget", 1)[1].split("\nfunction ", 1)[0]
+    assert "'Codex'" in target and ".codex\\config.toml" in target
+    assert "enabled_tools|disabled_tools" in writer and "custom policy" in writer
+    profiles = json.loads(read(ROOT / "BUNDLED-TOOLS" / "PROFILES.json"))
+    assert "trusted" in profiles["provider_project_scope"]["Codex"]
+    skill = read(CANON / "capability-profiles" / "SKILL.md")
+    assert "enabled_tools" in skill and "Tool Search" in skill and "not billing evidence" in skill
+    native = read(ROOT / "TESTS" / "test_codex_native_profiles.py")
+    for boundary in ('"untrusted", "trusted"', "mcpServerStatus/list", "mcpServer/tool/call", "Test-McpHandshake.ps1"):
+        assert boundary in native, boundary
+    probe = ps_code(ROOT / "TOOLS" / "Test-McpHandshake.ps1")
+    assert "mcp list --json" in probe and "no config-file fallback" in probe
+    for path in ("TOOLS/Measure-McpSchemaCost.ps1", "TOOLS/Test-Installed-State.ps1", "TOOLS/Set-McpProfile.ps1"):
+        assert "tokens on every turn" not in ps_code(ROOT / path), path
 
 
 def test_no_shipped_text_file_carries_a_stray_control_character() -> None:
@@ -4889,52 +4906,14 @@ def test_desktop_control_can_never_be_switched_on_by_detection() -> None:
 
 
 def test_the_schema_cost_tool_does_not_send_a_byte_order_mark() -> None:
-    """It spent seven releases sending a BOM no provider sends.
-
-    Windows PowerShell 5.1 puts EF BB BF in front of the first frame written to
-    a child's stdin, and windows-mcp's pydantic parser rejects the whole
-    initialize message for it. Every server measured before it tolerated the BOM
-    silently, which is why a tool whose entire job is speaking MCP the way a
-    provider does went that long being wrong.
-
-    The fix is specific and the specificity is the point: wrapping
-    StandardInput.BaseStream in a BOM-less StreamWriter does NOT work, because
-    reading .StandardInput builds .NET's own writer and sets AutoFlush, and
-    Flush() emits the preamble before this script ever has a handle. That was
-    tried first and measured still emitting EF BB BF. Console::InputEncoding is
-    what that writer is constructed from, so it is the only lever early enough,
-    and it has to be set before Process.Start.
-    """
-    src = ps_code(ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1")
-
-    # Match the ASSIGNMENT, not the property name. Matching the name alone is
-    # satisfied by the line two above that only READS the previous value, so
-    # deleting the fix left this assertion green and blew up on .index() with
-    # "substring not found" instead of saying what broke. Caught by mutating it.
-    setter = "[Console]::InputEncoding = New-Object System.Text.UTF8Encoding $false"
-    assert setter in src, (
-        "the stdin BOM fix is gone; strict MCP servers will reject the "
-        "initialize frame this tool sends"
-    )
-    enc = src.index(setter)
-    start = src.index("[System.Diagnostics.Process]::Start($psi)")
-    assert enc < start, (
-        "Console::InputEncoding is set after Process.Start; the child's writer "
-        "is already built by then and the BOM is already in the pipe"
-    )
-    assert "$prevConsoleIn" in src, (
-        "the previous console encoding is not restored, so measuring a server "
-        "changes the encoding for everything that runs after it in the session"
-    )
-
-    # The BaseStream dead end has to stay documented, in the comments, or it
-    # gets re-attempted -- it is the obvious fix and it does not work.
-    prose = read(ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1")
-    assert "BaseStream" in prose and "AutoFlush" in prose, (
-        "the note explaining why the obvious BaseStream fix fails is gone; "
-        "without it the next person tries it, sees clean-looking code, and "
-        "ships the BOM back"
-    )
+    """All measurement frames use the strict UTF-8 Python transport now."""
+    code = ps_code(ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1")
+    assert "mcp_handshake.py" in code
+    assert "ProcessStartInfo" not in code and "Start-Sleep" not in code
+    probe = read(ROOT / "TOOLS" / "mcp_handshake.py")
+    assert 'encoding="utf-8"' in probe and 'encoding="utf-8-sig"' not in probe
+    assert probe.index("initialized = wait_for(1, deadline)") < probe.index('"method": "tools/list"')
+    assert "BaseStream" in read(ROOT / "TOOLS" / "Measure-McpSchemaCost.ps1")
 
 
 def test_mcp_proofs_do_not_require_a_python_path_alias() -> None:

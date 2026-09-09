@@ -71,19 +71,19 @@ One changed byte anywhere invalidates everything after it.
   means something is invalidating; do not assume caching is working because you
   configured it.
 
-Changing the tool list mid-session invalidates the whole prefix. That is a real
-cost of loading MCP servers "just in case."
+Changing the tool list mid-session can invalidate the affected cached prefix.
+Use provider cache-hit evidence before claiming a cost or a saving.
 
 ## Load capability, not catalogues
 
-This pack ships 142 skills. Their bodies total roughly **153,000 tokens**; the
-name-and-description index the agent actually needs is about **5,500**. That is a
-28x difference, and it is the single largest lever available.
+Keep the compact name-and-description index separate from skill bodies.
+Measure the current provider's index; old corpus totals are not current usage.
 
 - Skills load **by description**, and the body loads only on invocation. Never
   paste skill bodies into context speculatively.
-- MCP tool schemas are **not** lazy. Every connected server's tools sit in
-  context on every turn. Eight servers you might need cost more than two you do.
+- MCP loading is host-dependent: Claude Code supports deferred Tool Search;
+  Codex and Hermes support tool filters. Advertised schema bytes divided by four
+  estimate schema tokens, not loaded/cached/billed usage. Scope unused servers.
 - Scope servers that support it. The official GitHub MCP server groups its tools
   into 20 toolsets; this pack enables five. `--toolsets=all` would multiply the
   schema cost for tools nobody calls.

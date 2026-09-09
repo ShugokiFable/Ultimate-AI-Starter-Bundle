@@ -31,10 +31,9 @@
     requires           optional preconditions (see Test-UabsServerRequirement)
     scope              'project' (default) or 'global'
 
-  Scope is not decoration. A machine-wide entry puts its tool schemas in every
-  session on the box; a project-scoped one is only paid for by the project that
-  asked. Get-UabsProviderProjectTarget is where each provider's project mechanism
-  lives, and it returns $null for the three that have none.
+  Scope controls availability, not billed tokens. Actual context depends on the
+  provider's filtering, deferred discovery and cache. Get-UabsProviderProjectTarget
+  returns $null only for providers without a supported project-path mechanism.
 #>
 
 # Windows PowerShell 5.1's `Set-Content -Encoding utf8` writes a UTF-8 BOM. A BOM
@@ -251,8 +250,9 @@ function Get-UabsProviderProjectTarget {
                raises no trust prompt.
        Grok    <project>\.grok\config.toml -- `grok mcp add -s project`. This one
                is a file in the project, because grok-cli has no other form.
-       Codex   none. A .codex/config.toml inside a project did not appear in
-               `codex mcp list` run from that project.
+       Codex   <project>\.codex\config.toml, loaded only in trusted projects.
+               Verified with codex-cli 0.152.0 in isolated trusted/untrusted homes.
+               Never grant project trust from an installer.
        Kimi    none found. `kimi doctor` in a project holding .kimi-code/mcp.json
                reported only the home configs.
        Hermes  native named profiles exist, but they are not bound to a project
@@ -272,6 +272,14 @@ function Get-UabsProviderProjectTarget {
       return @{
         Style      = 'toml'
         Path       = (Join-UabsPath $ProjectPath '.grok\config.toml')
+        Section    = 'mcp_servers'
+        ProjectKey = ''
+      }
+    }
+    'Codex' {
+      return @{
+        Style      = 'toml'
+        Path       = (Join-UabsPath $ProjectPath '.codex\config.toml')
         Section    = 'mcp_servers'
         ProjectKey = ''
       }
@@ -301,7 +309,6 @@ function Get-UabsProviderNoProjectScope {
      rather than a capability that silently went missing. #>
   param([string]$Provider)
   switch ($Provider) {
-    'Codex'  { return 'codex-cli has no project-scoped MCP config (a project .codex/config.toml is ignored)' }
     'Kimi'   { return 'kimi-code reads only %USERPROFILE%\.kimi-code\mcp.json' }
     'Hermes' { return 'Hermes has native named profiles, but no project-path MCP scope; use Migrate-HermesProfiles.ps1 for default/code/roblox/skyrim' }
   }
@@ -623,6 +630,13 @@ function Add-UabsMcpToml {
       $family = [regex]::Escape("$Section.$($s['id'])")
       $existing = [regex]::Match($text, '(?ms)(?:^[ \t]*#[^\r\n]*\r?\n)?^\[' + $family + '\].*?(?=^(?:[ \t]*#[^\r\n]*\r?\n)?\[(?!' + $family + '\.)|\z)')
       if ($existing.Success -and $existing.Value.Trim() -eq $block.Trim()) { continue }
+      if ($Provider -eq 'Codex' -and $existing.Success -and
+          $existing.Value -match '(?m)^[ \t]*(?:enabled_tools|disabled_tools|enabled|default_tools_approval_mode|required|tool_timeout_sec)\s*=|^\[mcp_servers\.[^.\]]+\.tools\.') {
+        # User policy is not a template target. Leave the entry intact instead
+        # of dropping filters/approvals during a transport refresh.
+        Write-Host ("Codex   custom policy for {0} preserved; automatic transport refresh skipped" -f $s['id']) -ForegroundColor Yellow
+        continue
+      }
       $dropped = Remove-UabsMcpToml -Path $Path -Section $Section -Ids @($s['id']) -CheckOnly:$CheckOnly
       if ($dropped.Count -and -not $CheckOnly) { $text = [IO.File]::ReadAllText($Path) }
     }

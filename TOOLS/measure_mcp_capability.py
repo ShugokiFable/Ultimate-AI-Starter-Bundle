@@ -104,7 +104,7 @@ into whatever window has focus and running whatever PowerShell the sample
 produces.
 
 Nothing was called. For the numbers a profile decision actually needs -- tools,
-schema bytes, tokens per turn -- use the tool that only reads:
+schema bytes and schema-token estimates (not billing) -- use the tool that only reads:
 
     TOOLS\\Measure-McpSchemaCost.ps1 -Command '%s' -Name %s
 

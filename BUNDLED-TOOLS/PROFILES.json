@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "catalog_version": "8.7.16",
-  "pack_version": "8.7.16",
-  "updated_utc": "2026-09-03T20:13:14Z",
-  "why": "MCP tool schemas are not lazy. A skill body loads only after its compact description matches; a connected MCP server puts every tool schema into every turn of every session covered by that config. There is no equivalent discount for MCP. So the profiles below are project-scoped and wired only where the project markers and local prerequisites agree. Claude and Grok support that scope directly. Hermes' separate native code profile is managed by Migrate-HermesProfiles.ps1; Codex and Kimi stay unregistered unless the user explicitly chooses global cost.",
+  "catalog_version": "8.7.17",
+  "pack_version": "8.7.17",
+  "updated_utc": "2026-09-08",
+  "why": "Keep the optional MCP surface scoped to task evidence. Claude and Grok support project scope; Codex reads trusted-project .codex/config.toml (native 0.152.0 verified). Hermes uses native named profiles; Kimi needs explicit global opt-in. Schema bytes are not per-turn bills: native filtering, deferred discovery, caching and actual calls affect usage.",
   "reads": "TOOLS/Set-McpProfile.ps1",
   "always_on_note": "The always-on core is context7, github, and headroom, in TOOLS/Add-Reasoning-MCPs.ps1, not here. They earn permanent slots for current documentation, verified repository state, and context inspection/compression. sequential-thinking is the opt-in reasoning profile after measurement showed its permanent schema cost. Playwright is in the web profile; Firecrawl and Perplexity register only when their keys exist.",
   "requires_forms": {
@@ -21,7 +21,7 @@
       "id": "code-intel",
       "title": "Repository graph plus language-server-accurate navigation and editing",
       "scope": "project",
-      "why": "Serena drives real language servers, so find-symbol, find-referencing-symbols and replace-symbol-body answer from the compiler's view of the code rather than from a text match. It overlaps codebase-memory-mcp deliberately: that one answers 'where is this in the graph', Serena answers 'what exactly does this symbol resolve to, and rewrite its body'. Worth the context on a real codebase, not worth it on a two-file mod -- which is why Claude and Grok receive it only for that codebase. Hermes has no project-path scope and uses a separate native code profile containing codebase-memory; Codex and Kimi remain unregistered by default rather than paying this schema in every session. Named code-intel, not code-deep: it was renamed in 7.9.6 and has nothing to do with any package of a similar name.",
+      "why": "Serena provides language-server-backed symbol navigation and editing; codebase-memory provides repository graph queries. Claude, Grok and trusted Codex projects receive them only through code-intel. Hermes uses its separate native code profile; Kimi requires explicit -Global. Keep small text-only tasks on grep. code-intel replaces the old code-deep profile id.",
       "detect": {
         "files": [
           "pyproject.toml",
@@ -500,7 +500,7 @@
       "id": "reasoning",
       "title": "Explicit step-by-step decomposition (sequential-thinking)",
       "scope": "global",
-      "why": "Held an always-on slot through 7.9.6 and lost it on measurement in 7.9.7: one tool, but a 4,587-byte schema -- ~1,146 tokens on every turn of every session, as much as context7's two tools. It is a structured scratchpad, not a capability: it fetches nothing and reaches nothing the model could not write in its own reasoning, while this pack ships decomposition skills that cost nothing until they match and every provider it targets has native reasoning. Kept as an opt-in rather than deleted, because the benefit to WEAKER models was never benchmarked -- only the cost was. Turn it on with -Enable reasoning -Global if your provider has no native reasoning and you want it everywhere.",
+      "why": "Held an always-on slot through 7.9.6 and lost it on measurement in 7.9.7: one tool, but a 4,587-byte schema -- ~1,146 schema tokens (bytes/4, not a per-turn bill), as much as context7's two tools. It is a structured scratchpad, not a capability: it fetches nothing and reaches nothing the model could not write in its own reasoning, while this pack ships decomposition skills that cost nothing until they match and every provider it targets has native reasoning. Kept as an opt-in rather than deleted, because the benefit to WEAKER models was never benchmarked -- only schema size was. Turn it on with -Enable reasoning -Global if your provider has no native reasoning and you want it everywhere.",
       "detect": {
         "files": [],
         "globs": []
@@ -533,7 +533,7 @@
       "id": "windows",
       "title": "Windows desktop control through UI Automation (windows-mcp)",
       "scope": "global",
-      "why": "Every other optional MCP here stops at a file or browser tab. This one drives native Windows applications through UI Automation: clicking, typing, shortcuts, PowerShell, the registry, the filesystem, windows and processes. It is useful when a host has no native desktop control, or when UI Automation can expose controls more cheaply than repeated screenshots. It costs ~5,522 tokens on every turn while enabled (20 tools, 22,088 bytes, measured 2026-08-27), and provider-native computer-use availability is not uniform. That cost and its machine-mutating scope make it a poor default for ordinary coding, research and modding sessions. It stays installed and off by default; -Enable windows -Global is the one-command fallback for a host that actually needs it.",
+      "why": "Every other optional MCP here stops at a file or browser tab. This one drives native Windows applications through UI Automation: clicking, typing, shortcuts, PowerShell, the registry, the filesystem, windows and processes. It is useful when a host has no native desktop control, or when UI Automation can expose controls more cheaply than repeated screenshots. Its full advertised schema is ~5,522 estimated tokens (bytes/4, not measured billing) (20 tools, 22,088 bytes, measured 2026-08-27), and provider-native computer-use availability is not uniform. That surface size and its machine-mutating scope make it a poor default for ordinary coding, research and modding sessions. It stays installed and off by default; -Enable windows -Global is the one-command fallback for a host that actually needs it.",
       "detect": {
         "files": [],
         "globs": []
@@ -589,15 +589,15 @@
       "reason": "Scans skills and MCP configs for dangerous patterns and baseline-hashes configs to catch a rug-pull. The IDEA is right and this pack is most of the way to it already -- MANIFEST hashing, RETIRED-SKILLS.json, RETIRED-PLUGINS.json and an installed-state doctor. The instance is the problem. Checked 2026-08-27: last commit 2026-06-11, latest PUBLISHED release v0.8.0 from 2026-03-25 while the tree carries an unreleased 0.10.0 bump, and GitHub detects no OSI license (NOASSERTION). It is also from the same owner as CodeBurn, which this pack already ships and which committed twice in the last three days -- the security tool is the quiet side of that org, not its focus. A config-hash baseline belongs in Test-Installed-State.ps1, where it runs on this pack's own cadence and depends on nothing."
     }
   ],
-  "installed_vs_enabled": "Two different things, and conflating them is what made 7.9.5's code-deep expensive. INSTALLED means the executable exists on disk: it costs disk and nothing else, no model context, no startup time. ENABLED means an MCP entry is registered in a provider config, so the server is spawned and its tool schemas ride in context on every turn of every session that config covers. Set-McpProfile.ps1 will install a missing tool when it can (see auto_install) and still leave it disabled everywhere except the project that asked.",
+  "installed_vs_enabled": "Installed means files exist. Configured means an entry exists. Active requires provider scope/trust and connection; callable tools must also pass filters and permissions. Neither a file nor a direct handshake proves provider activation or billing. Set-McpProfile.ps1 installs missing prerequisites when possible, without silently making project tools global.",
   "scope_forms": {
     "project": "The default and, for every server in this file, the correct one. The entry is written where only sessions opened in that project can see it. What that means per provider is under provider_project_scope.",
-    "global": "Written into the provider's machine-wide config, where every session pays for it. One profile declares it: 'reasoning' is a thinking aid rather than a project capability, so a project scope would be meaningless. It has no detection markers, so -Auto never turns it on; -Enable reasoning -Global is deliberate. Everything else here is project-scoped, and TOOLS/Set-McpProfile.ps1 -Global is the per-run override."
+    "global": "Written into the provider's machine-wide config, available to sessions that load it; actual usage depends on the host. One profile declares it: 'reasoning' is a thinking aid rather than a project capability, so a project scope would be meaningless. It has no detection markers, so -Auto never turns it on; -Enable reasoning -Global is deliberate. Everything else here is project-scoped, and TOOLS/Set-McpProfile.ps1 -Global is the per-run override."
   },
   "provider_project_scope": {
     "Claude": "projects[\"<absolute project path>\"].mcpServers in %USERPROFILE%\\.claude.json -- the same place `claude mcp add --scope local` writes (verified against Claude Code 2.1.237). Chosen over the project's .mcp.json because it adds no file to the user's repository and raises no trust prompt. A team that wants the server checked in should copy the entry into .mcp.json by hand.",
     "Grok": "<project>\\.grok\\config.toml, the `project` scope of `grok mcp add -s project` (verified against grok 1.0.5). This one IS a file inside the project, because it is the only project mechanism grok-cli has.",
-    "Codex": "None. `codex mcp add` has no scope flag and a project-local .codex/config.toml is ignored -- verified against codex-cli 0.147.0 by putting one there and reading `codex mcp list`. Capability servers are therefore not written for Codex unless -Global is passed.",
+    "Codex": "<project>\\.codex\\config.toml, loaded only after the project is trusted. Native codex-cli 0.152.0 verified trusted/untrusted and unrelated-folder isolation plus enabled_tools/disabled_tools filtering and a harmless call. The installer never grants trust. Restart and run codex mcp list --json from that folder; writing the file alone is not activation proof.",
     "Kimi": "None found. kimi-code reads %USERPROFILE%\\.kimi-code\\mcp.json; a project-local .kimi-code\\mcp.json was not picked up by `kimi doctor`. Not written unless -Global.",
     "Hermes": "Hermes has native named profiles, each with its own home/config, but no project-path MCP scope. TOOLS/Migrate-HermesProfiles.ps1 owns the default/code/roblox/skyrim topology; this path-based router skips Hermes unless -Global is explicit."
   },

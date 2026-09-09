@@ -1,3 +1,12 @@
+## 8.7.17
+
+- Added trusted-project Codex MCP scope; the installer never grants trust. Custom tool filters, disabled flags and approval policy survive refresh.
+- Preserved existing provider ownership when adding another provider to a profile, so later repairs do not silently forget the others.
+- Added an opt-in native Codex test for trusted/untrusted scope, unrelated folders, the bundle diagnostic, filtered tool registration, a harmless call and teardown. It uses an isolated home with no login or model inference.
+- Reused one stdlib MCP transport for handshake and schema measurement. Wait for initialization, follow pagination, reject malformed/duplicate tools and cursor loops, keep UTF-8 BOM-free, and preserve quoted Windows command lines.
+- Corrected MCP token claims throughout current routing skills, catalog, doctor and README. Schema bytes/4 are estimates, not actual prompt/billing measurements. Codex filtering and Claude deferred Tool Search are native capabilities; no router daemon was added.
+- Fanned the revised guidance to all five packaged provider trees. Windows MCP remains off by default; RTK's narrow allowlist is unchanged.
+
 ## 8.7.16
 
 - Fixed skills-only Codex installs leaving a duplicate `skill-creator`: built-in ownership reconciliation now runs independently of plugin updates, with backups for modified copies.

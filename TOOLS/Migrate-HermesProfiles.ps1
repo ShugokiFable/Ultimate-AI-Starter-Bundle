@@ -26,9 +26,10 @@ param(
   [switch]$Apply,
   [switch]$WithForgeCompatibility,
   # How much of houseCARL to register in the skyrim profile. Measured, 1.9.0:
-  #   Full      45 tools  167,072 bytes  ~41,768 tok/turn
-  #   Lean      42 tools  125,476 bytes  ~31,369 tok/turn   -25%  (default)
-  #   ReadOnly  27 tools   70,418 bytes  ~17,604 tok/turn   -58%
+  # Historical schema estimates (bytes/4), not measured prompt usage or billing:
+  #   Full      45 tools  167,072 bytes  ~41,768 schema tokens
+  #   Lean      42 tools  125,476 bytes  ~31,369 schema tokens   -25%  (default)
+  #   ReadOnly  27 tools   70,418 bytes  ~17,604 schema tokens   -58%
   # Hermes enforces mcp_servers.<name>.tools.include/exclude at REGISTRATION,
   # so a filtered tool's schema never reaches the model. The sets live in
   # BUNDLED-TOOLS/CATALOG.json, not here.
@@ -643,7 +644,7 @@ try {
       $exc = @($chosen.exclude | Where-Object { $_ })
       if ($inc.Count) { $toolsFilter = @{ include = $inc } }
       elseif ($exc.Count) { $toolsFilter = @{ exclude = $exc } }
-      $toolsetNote = "$SkyrimToolset ($($chosen.tools)/$($budget.all_tools) tools, ~$($chosen.tokens_per_turn) tok/turn, -$($chosen.saving_pct)%)"
+      $toolsetNote = "$SkyrimToolset ($($chosen.tools)/$($budget.all_tools) tools, ~$($chosen.tokens_per_turn) schema tokens at bytes/4, -$($chosen.saving_pct)% schema size; billing unmeasured)"
     } else {
       Write-Warning "CATALOG.json declares no mcp_tool_budget set '$SkyrimToolset' for housecarl; registering every tool."
     }

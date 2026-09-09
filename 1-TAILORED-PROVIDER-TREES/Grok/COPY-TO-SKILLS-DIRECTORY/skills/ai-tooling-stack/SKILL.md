@@ -29,56 +29,28 @@ This skill is the **cross-tool index**. Exact syntax lives in specialist skills.
 | **Ponytail** | Minimal-diff / anti-over-engineering mode | `ponytail` + family | Bundled skill text works; plugin optional |
 | **CodeBurn** | Local AI token/cost analytics | `codeburn` | Optional `npx codeburn` |
 
-## What each tool COSTS (read before the cheat-sheet)
+## Capability and schema overhead
 
-An MCP server's tool schemas are serialized into the prompt on **every turn of
-every session**, whether you call it or not. A CLI costs **nothing** until you
-run it, and then only the command and its output. That difference dwarfs any
-preference between two tools that can both do the job.
+Prefer an existing CLI when it fully answers the task. A dormant CLI adds
+**0 tokens of MCP schema**; commands, instructions and output still consume
+context when used. houseCARL is **MCP only -- no CLI**, and provides live
+MO2 load-order evidence that an offline plugin reader cannot replace.
 
-Measured with `TOOLS\Measure-McpSchemaCost.ps1` (real `initialize` ->
-`tools/list`), houseCARL 1.9.0 and Skyrim Forge 6.0.0:
+Historical schema estimates, not per-turn bills: Forge MCP 52 tools / 17,488
+bytes / ~4,372 tokens (bytes/4); houseCARL Full 45 tools / 167,072 bytes /
+~41,768; Lean 125,476 bytes / ~31,369; ReadOnly 70,418 bytes / ~17,604.
+Tool count alone is a poor size proxy.
 
-| tool | surface | standing cost |
-|---|---|---|
-| **Skyrim Forge** | 52 subcommands, **CLI** (`forge <cmd>`) | **0 tokens** |
-| Skyrim Forge as MCP | the same 52 tools | ~4,372 tokens/turn |
-| **Spooky's AutoMod** | CLI with `--json` | **0 tokens** |
-| **houseCARL** | 45 tools, **MCP only -- no CLI** | ~41,768 tokens/turn (Full) |
-| houseCARL `Lean` | 42 tools | ~31,369 tokens/turn |
-| houseCARL `ReadOnly` | 27 tools | ~17,604 tokens/turn |
+**Preferring a cheaper server you have already connected does not guarantee
+lower usage.** Scope, native filtering, deferred discovery, caching and actual
+calls decide what enters context. Start by **not registering** irrelevant
+servers. Codex supports `enabled_tools` / `disabled_tools`; Hermes supports
+`tools.include` / `tools.exclude`; Claude Code supports deferred Tool Search.
+Do not buy a new router for a capability already native to the provider.
 
-**Forge has SEVEN more tools than houseCARL and, run as a CLI, costs nothing.**
-Every Forge MCP tool has a CLI twin: `forge plugin-build`, `forge record-query`,
-`forge papyrus-compile`, `forge fomod-build`, `forge release-build`,
-`forge lint`, `forge doctor`. Check `forge --help` before assuming otherwise.
-
-### The rule
-
-1. **Can Forge's CLI do it? Use the CLI.** Free, and it is the typed,
-   validated path this pack prefers anyway.
-2. **Can Spooky's CLI do it? Use the CLI.** Same reason.
-3. **Only houseCARL answers "what wins in MY load order".** Live MO2 truth,
-   conflict trees, VFS asset resolution and keyless Nexus lookup have no CLI
-   anywhere. That is what its schema is being paid for -- use it for that, and
-   route the rest to a CLI.
-
-### Two mistakes this table exists to prevent
-
-- **"Prefer the cheaper MCP server."** Preferring a cheaper server you have
-  already registered saves nothing: you pay both schemas every turn regardless
-  of which one gets called. The saving comes from **not registering** the
-  expensive one, or from registering fewer of its tools -- never from
-  preferring around it at call time.
-- **"Fewer tools means cheaper."** Ranking by tool count puts Forge (52) ahead
-  of houseCARL (45) as the thing to cut. That is backwards by an order of
-  magnitude. Count bytes; see `capability-profiles`.
-
-On Hermes specifically, MCP is billed per token on your own key, and Hermes is
-the one provider that can register a **subset** of a server's tools
-(`tools.include` / `tools.exclude`). The `skyrim` profile ships houseCARL's
-`Lean` set; `TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset ReadOnly -Apply`
-takes it to 27 tools when the session is diagnosis rather than authoring.
+Use Forge CLI for typed engineering, Spooky CLI for its specialist workflows,
+and houseCARL for live load-order truth, conflict trees, VFS and keyless Nexus.
+See `capability-profiles` for setup and measurement boundaries.
 
 ## Decision cheat-sheet
 

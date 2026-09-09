@@ -17,8 +17,8 @@ Never hardcode `C:\Users\<name>`, `S:\Apps`, or `Z:\Backup` as authority. Those 
 4. `PATH` / `where.exe` / `Get-Command`.
 5. User-supplied absolute path from the current conversation.
 6. **If the binary EXISTS but its MCP tools are not callable, stop — this is
-   not an install problem.** Most MCP servers in this pack are registered per
-   project on purpose (houseCARL alone costs ~41,768 tokens *every turn*), so
+   not necessarily an install problem.** Check scope, trust, filters and the
+   real handshake first. Most MCP servers here are registered per project, so
    "installed" and "enabled here" are different states. Recommending an install
    here tells the user to install something they already have.
 7. Only if the binary is genuinely absent from disk → **recommend install**

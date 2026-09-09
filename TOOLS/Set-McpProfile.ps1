@@ -3,18 +3,15 @@
   Turn a named set of MCP servers on or off, for one project, across providers.
 
 .DESCRIPTION
-  Skills are lazy: a skill costs nothing until its description matches the task.
-  MCP servers are not. Every connected server puts all of its tool schemas into
-  the model's context on every turn of every session, related or not. Skill
-  bodies are loaded only when their compact description matches; there is no
-  equivalent discount for MCP.
+  Skills load bodies on demand; MCP loading depends on the host. Native tool
+  filters, deferred discovery and caching change actual usage. Keep optional
+  servers scoped to task evidence, not to an assumed universal token charge.
 
   Two words that are not the same thing, and 7.9.5 shipped them conflated:
 
     INSTALLED  the executable exists on disk. Costs disk. Costs no context.
-    ENABLED    an entry is registered in a provider config, so the server is
-               spawned and its schemas ride in context on every turn of every
-               session that config covers.
+    ENABLED    an entry is configured. Trust, connection and tool filtering
+               still determine what is callable in a particular session.
 
   7.9.5 wrote every capability profile with scope "global", so enabling one for
   a single project registered it machine-wide until someone ran -Disable by
@@ -23,11 +20,11 @@
 
     Claude   projects["<abs path>"].mcpServers in ~/.claude.json
     Grok     <project>\.grok\config.toml
-    Codex    no project-scoped MCP config exists
+    Codex    <project>/.codex/config.toml (trusted projects only)
     Kimi     no project-scoped MCP config exists
     Hermes   native named profiles, not path-scoped project config
 
-  Codex and Kimi are skipped with the reason printed rather than registered
+  Kimi and Hermes are skipped with the reason printed rather than registered
   machine-wide behind a comment that says "project-scoped". -Global is the
   explicit opt-in, and it says what it costs. Hermes' default/code/roblox/skyrim
   topology is owned separately by Migrate-HermesProfiles.ps1; Forge MCPs stay
@@ -400,7 +397,7 @@ function Invoke-UabsProfileWrite {
     # -- addition.
     if (-not $Machine -and -not $project) {
       Write-Skip ("{0,-7} not written: {1}" -f $prov, (Get-UabsProviderNoProjectScope -Provider $prov))
-      Write-Host  ("          -Global registers it machine-wide instead, at the cost of every session's context.") -ForegroundColor DarkGray
+      Write-Host  '          -Global makes it available machine-wide instead; context cost depends on the provider.' -ForegroundColor DarkGray
       continue
     }
 
@@ -464,7 +461,8 @@ function Invoke-UabsProfileWrite {
       # Grok's only project mechanism puts a file inside the project. Better to
       # say so than to have it turn up in `git status` unexplained.
       if (-not $Machine -and $ProjectPath -and $target.Path.StartsWith($ProjectPath, [StringComparison]::OrdinalIgnoreCase)) {
-        Write-Host  '          that file is inside your project; add .grok/ to .gitignore to keep it out of commits' -ForegroundColor DarkGray
+        $configDir = if ($prov -eq 'Codex') { '.codex/' } else { '.grok/' }
+        Write-Host ("          machine-specific file inside your project; consider ignoring {0} in Git" -f $configDir) -ForegroundColor DarkGray
       }
     } else {
       # An identical rewrite is not a change, but it IS a registration, and
@@ -476,6 +474,10 @@ function Invoke-UabsProfileWrite {
       })
       if ($write.Count -and -not $missing.Count) { Write-Skip ("{0,-7} already registered" -f $prov); $touched += $prov }
       else { Write-Skip ("{0,-7} no change" -f $prov) }
+    }
+
+    if ($prov -eq 'Codex' -and -not $Machine) {
+      Write-Host '          configured, not activation proof: Codex loads project config only after you trust the project. Restart, then verify with codex mcp list from this folder. Trust was not changed.' -ForegroundColor Yellow
     }
 
     # Claude Desktop has no project, so a capability server there is machine-wide
@@ -620,8 +622,8 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
   Write-Host ''
   Write-Host 'MCP capability profiles' -ForegroundColor Cyan
   Write-Host '  INSTALLED means the tool is on disk. It costs no model context.'
-  Write-Host '  ENABLED means an MCP entry is registered, so its tool schemas ride'
-  Write-Host '  in context on every turn of every session that config covers.'
+  Write-Host '  ENABLED means an entry is configured; trust and connection still matter.'
+  Write-Host '  Schema size is not a bill: filtering, discovery and caching affect usage.'
   Write-Host '  Profiles are enabled per project, never machine-wide by default.'
   Write-Host ''
   foreach ($p in $allProfiles) {
@@ -649,7 +651,7 @@ if ($PSCmdlet.ParameterSetName -eq 'List') {
         if ($sid) { $registeredIds[$sid] = $true }
       }
     }
-    if ($isGlobal) { Write-Host '       enabled MACHINE-WIDE (-Global): every session pays for it' -ForegroundColor Yellow }
+    if ($isGlobal) { Write-Host '       enabled MACHINE-WIDE (-Global): available outside this project too' -ForegroundColor Yellow }
     foreach ($s in @($p['servers'])) {
       $req = Test-UabsServerRequirement -Server $s -ProjectPath $Path
       $status = if ($req.Ok) { 'installed and ready' } else { $req.Reason }
@@ -819,7 +821,7 @@ foreach ($id in $wanted) {
   $p = Get-UabsProfile $id
   Write-Head ("Enabling {0} -- {1}" -f $id, $p['title'])
   if ($Global) {
-    Write-Host '      -Global: machine-wide. Every session on this box carries these tool schemas.' -ForegroundColor Yellow
+    Write-Host '      -Global: machine-wide availability, not project isolation. Actual usage depends on the provider.' -ForegroundColor Yellow
   }
 
   $usable = @()
@@ -888,10 +890,15 @@ foreach ($id in $wanted) {
     continue
   }
   if (-not $state['profiles'].Contains($id)) { $state['profiles'][$id] = @{ projects = @{} } }
+  # Enabling one more provider must not forget previously configured providers.
+  # -Repair uses this ownership ledger to keep its scope narrow.
+  $previous = if ($Global) { $state['profiles'][$id]['global'] } else { $state['profiles'][$id]['projects'][$Path] }
+  $previousProviders = if ($previous) { @($previous['providers']) } else { @() }
+  $previousServers = if ($previous) { @($previous['servers']) } else { @() }
   $record = @{
     enabled_utc = [DateTime]::UtcNow.ToString('o')
-    servers     = @($usable | ForEach-Object { $_['id'] })
-    providers   = $written
+    servers     = @(@($previousServers) + @($usable | ForEach-Object { $_['id'] }) | Where-Object { $_ } | Select-Object -Unique)
+    providers   = @(@($previousProviders) + $written | Where-Object { $_ } | Select-Object -Unique)
   }
   if ($Global) { $state['profiles'][$id]['global'] = $record }
   if ($Path)   { $state['profiles'][$id]['projects'][$Path] = $record }

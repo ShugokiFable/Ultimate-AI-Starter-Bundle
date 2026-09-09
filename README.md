@@ -1,6 +1,6 @@
-# Ultimate AI Starter Bundle v8.7.16
+# Ultimate AI Starter Bundle v8.7.17
 
-**v8.7.16:** Grok hook repair now prevents inherited duplicates after config resets and uses a verified Python interpreter. New GitHub projects route through CI, security, documentation, packaging, and release completion requirements.
+**v8.7.17:** Codex gets trusted-project MCP profiles with preserved tool filters and real native tests. Schema reports distinguish advertised bytes from actual token usage. The v8.7.16 Grok hook and GitHub-completion improvements remain included.
 
 ### Creating a complete GitHub project
 
@@ -27,13 +27,13 @@ One distinction explains almost everything about how this pack behaves:
 | State | What it means | What it costs you |
 |---|---|---|
 | **INSTALLED** | The tool exists on disk | Disk space only. **Zero** effect on your AI chats. |
-| **ENABLED** | Registered in a provider's config | Its tool descriptions ride along inside **every message you send, in every chat, forever** — related to your task or not. |
+| **ENABLED** | Registered in a provider's config | Available in that scope after trust/connection checks; schema loading and billing depend on the provider. |
 
-The 167 **skills** are the opposite deal: they all sit installed and cost nearly nothing until one actually matches your task. MCP servers get **no such discount** — measured in this pack, houseCARL alone burns ~41,768 tokens *every single turn*. That's why the installer enables almost nothing.
+The 167 **skills** use a compact discovery index and load their bodies on demand. MCPs can also support deferred discovery or native filters. houseCARL's historical ~41,768 figure estimates its full schema at bytes/4; it is not a measured charge per turn. Profiles keep optional capabilities relevant and the default surface small.
 
 ### What's ON after install
 
-Exactly three servers in every default profile: `context7` (library docs), `github` (repo access — zero-config for new users), `headroom` (context compression). Total: ~3,700 tokens/turn. Everything else is **parked**: installed, harmless, invisible, free.
+The bundle's default core is `context7` (library docs), `github` (repo access), and `headroom` (context compression). Optional MCPs stay parked until needed; independently configured servers are preserved. Schema bytes are not per-turn bills: filtering, deferred discovery, caching and tool calls determine actual usage.
 
 When the matching local tool is installed, Hermes also gets native named profiles without loading them into default: `code` adds codebase-memory, `roblox` adds the official Roblox Studio MCP, and `skyrim` connects houseCARL while Skyrim Forge and Spooky's AutoMod remain available through their routed skills/CLIs. Forge MCP compatibility is explicit.
 
@@ -200,13 +200,13 @@ present on that machine.
 
 Hermes filters MCP servers at the individual-tool level — `tools.include` /
 `tools.exclude`, enforced at registration, so a filtered tool's schema never
-reaches the model. No other provider here can do that. On a BYOK provider it is
-also the only cost lever that works on every turn.
+reaches the model. Codex also supports `enabled_tools` / `disabled_tools`.
+Claude Code supports deferred Tool Search. These are distinct from prompt caching.
 
-houseCARL, measured:
+houseCARL 1.9.0, historical schema estimates (bytes/4, not billed tokens):
 
 ```
-Full      45 tools  ~41,768 tokens on every turn
+Full      45 tools  ~41,768 schema tokens
 Lean      42 tools  ~31,369   -25%   ← what the skyrim profile installs
 ReadOnly  27 tools  ~17,604   -58%   ← reads, diagnoses, Nexus; nothing writes
 ```
@@ -217,8 +217,24 @@ hermes -p skyrim mcp configure housecarl    # or pick tools by hand
 ```
 
 A filter you set by hand survives re-installs. `TOOLS\Test-Installed-State.ps1`
-prints what each profile currently costs, and refuses to guess a figure for a
-selection nobody has measured.
+reports the recorded schema estimate and refuses to price an unmeasured
+selection. Loaded, cached and billed tokens remain unmeasured by that check.
+
+### Codex: tools follow the trusted project
+
+`TOOLS\Set-McpProfile.ps1 -Auto -Path <project> -Providers Codex` writes matching
+servers to `<project>\.codex\config.toml`. Codex loads this only after you trust
+the project; the installer never grants trust. Restart and run
+`codex mcp list --json` from the folder to verify effective configuration.
+Custom filters and approval settings survive refresh; such entries are reported
+and left unchanged rather than having their transport rewritten automatically.
+
+The native Codex 0.152.0 test checks trusted/untrusted scope, unrelated-folder
+isolation, actual filtered registration and a harmless tool call without model
+inference. See [the verification notes](docs/history/V8.7.17-CHANGELOG.md).
+[Codex MCP documentation](https://learn.chatgpt.com/docs/extend/mcp?surface=cli)
+and [Claude Tool Search](https://code.claude.com/docs/en/mcp#scale-with-mcp-tool-search)
+document the native capabilities; a third-party routing daemon is not required.
 
 ### Hermes: which model to actually run
 
@@ -508,7 +524,7 @@ tools appear -- three surprises for one double-click, so it moved behind a flag:
 - **MCP servers** — context7, official GitHub, and Headroom are the verified always-on core. Hermes isolates codebase-memory in `code`, the official Studio MCP in `roblox`, and houseCARL in `skyrim`; the remaining browser/editor/game profiles stay off outside matching projects, and credentialed servers stay off until their key exists.
 - **houseCARL** MCP + MO2 instance or Vortex shim setup
 - **Spooky's AutoMod Toolkit**
-- **codebase-memory-mcp** — installed but enabled only by Claude/Grok's project-scoped `code-intel` or Hermes' native `code` profile; `.cbmignore` + `TOOLS/Setup-CodebaseMemory-Index.ps1` keep the graph on source, not asset trees
+- **codebase-memory-mcp** — installed but enabled only by Claude/Grok/trusted Codex project-scoped `code-intel` or Hermes' native `code` profile; `.cbmignore` + `TOOLS/Setup-CodebaseMemory-Index.ps1` keep the graph on source, not asset trees
 - **Headroom** (context compression, registered as an MCP server — see [Headroom + Grok](#headroom--grok))
 - **Superpowers** + **Ponytail** plugins/skills
 - **CodeBurn** (optional, via npm/npx)
@@ -519,7 +535,7 @@ tools appear -- three surprises for one double-click, so it moved behind a flag:
 
 ### Skyrim Forge
 
-**Skyrim Forge 6.0.0 is developed in this repository**, at `BUNDLED-TOOLS/skyrim-forge`. It is source, not a downloaded payload, so both release variants carry it in full and there is no separately released archive that can drift out of step with the installer that reads it -- which is exactly how v7.8.0 shipped an installer calling a contract field Forge never emitted. The AIO installs or repairs it into ONE versionless install root, migrating any version-stamped install onto it and preserving `Workspaces` and the virtualenv, refreshes the five provider skills/descriptors, sets `SKYRIM_FORGE_ROOT`, and proves the result runs with `forge doctor` before the final success banner. Its 52-tool MCP is no longer global: `game-skyrim` activates it only for matching Claude/Grok projects; Codex/Kimi/Hermes use the same installed CLI through the skill. Choose where it lands with `-ForgeRoot`; the default is `%LOCALAPPDATA%\Skyrim-Tools\Skyrim-Forge`.
+**Skyrim Forge 6.0.0 is developed in this repository**, at `BUNDLED-TOOLS/skyrim-forge`. It is source, not a downloaded payload, so both release variants carry it in full and there is no separately released archive that can drift out of step with the installer that reads it -- which is exactly how v7.8.0 shipped an installer calling a contract field Forge never emitted. The AIO installs or repairs it into ONE versionless install root, migrating any version-stamped install onto it and preserving `Workspaces` and the virtualenv, refreshes the five provider skills/descriptors, sets `SKYRIM_FORGE_ROOT`, and proves the result runs with `forge doctor` before the final success banner. Its 52-tool MCP is no longer global: `game-skyrim` activates it only for matching Claude/Grok/trusted Codex projects; Kimi/Hermes use the same installed CLI through the skill. Choose where it lands with `-ForgeRoot`; the default is `%LOCALAPPDATA%\Skyrim-Tools\Skyrim-Forge`.
 
 ## Update tools later
 
@@ -692,6 +708,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.17** - 2026-09-09. Trusted-project Codex MCP routing, preserved custom filters and provider ownership, native integration tests, and corrected schema measurement. **167 canonical skills**, no new MCP or dependency. See [release notes](docs/history/V8.7.17-CHANGELOG.md). Older dated entries retain historical conclusions; v8.7.17 corrects their universal per-turn billing and Codex scope claims.
 
 **v8.7.16** - 2026-09-07. Repairs duplicate Grok hooks after configuration resets, resolves a real hook interpreter, and detects effective hook drift. New GitHub projects inherit CI, security, documentation, packaging and verified release requirements through the existing skills. **167 canonical skills**, no new MCP schemas. See [release notes](docs/history/V8.7.16-CHANGELOG.md).
 

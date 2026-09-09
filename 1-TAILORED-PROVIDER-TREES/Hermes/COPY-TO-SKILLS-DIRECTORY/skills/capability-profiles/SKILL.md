@@ -9,139 +9,61 @@ The right number of connected MCP servers is **the fewest that can do the
 task**, and it changes per project. This pack ships the rest as profiles that
 are off until something needs them.
 
-## Why servers are not like skills
-
-A skill costs nothing until its description matches. Its body is loaded on
-demand. The complete skill-body corpus is far larger than the compact
-name-and-description index an agent reads before choosing one.
-
-**MCP tool schemas have no such discount.** Every tool of every connected server
-is in context on every turn, in every session, whether or not the task is
-related. Measured on a real machine with `TOOLS\Test-McpHandshake.ps1`:
-
-```
-housecarl  45   skyrim-forge  52   github  45   firecrawl  25
-codebase-memory 15   headroom 3   context7 2   sequential-thinking 1
-                                          = 188 tool schemas, every turn
-```
-
-That is the budget. Spend it on what the task uses.
-
-**Count bytes, not tools.** The same servers by serialized schema size —
-`TOOLS\Measure-McpSchemaCost.ps1`, real `initialize` → `tools/list`:
-
-```
-houseCARL 1.9.0      45 tools  167,072 bytes  ~41,768 tokens/turn
-firecrawl 3.24.0     25 tools   36,321 bytes   ~9,080 tokens/turn
-skyrim-forge 6.0.0   52 tools   17,488 bytes   ~4,372 tokens/turn
-context7              2 tools    5,124 bytes   ~1,281 tokens/turn
-sequential-thinking   1 tool     4,590 bytes   ~1,148 tokens/turn
-```
-
-Read the first and third rows together. **Skyrim Forge has SEVEN more tools
-than houseCARL and costs a tenth of the context.** Ranking these by tool count
-puts Forge first in line to be cut, which is backwards by an order of
-magnitude. houseCARL's schemas carry deep nested record objects — three tools
-(`bulk_create`, `create_record`, `bulk_apply`) are 41,596 bytes between them,
-more than the whole of Forge — while Forge's are typed and narrow at ~336 bytes
-each.
-
-One tool cost as much as two. A tool count tells you almost nothing about what
-a server charges you.
-
-houseCARL at ~41,768 tokens is roughly **21% of a 200k context window gone
-before the first user message**. That is not an argument for removing it: live
-MO2 load-order truth, conflict trees and keyless Nexus lookup have no cheaper
-substitute, and guessing at load order is the failure this pack exists to
-prevent. It is an argument for *scope* — it belongs in the `skyrim` profile and
-Hermes' `skyrim` home, never in the always-on core. Numbers:
-`BUNDLED-TOOLS/capability-records/game-mcp-schema-cost.json`.
-
-### The unit below a server: individual tools
-
-**Hermes can filter a server down to named tools; the others cannot.**
-
-```yaml
-mcp_servers:
-  housecarl:
-    tools:
-      exclude: [housecarl_bulk_create, housecarl_create_record, housecarl_bulk_apply]
-      # or include: [...] for a strict allowlist. fnmatch globs work in both.
-```
-
-Enforced at tool **registration** (`tools/mcp_tool.py`, on both the live
-discovery and schema-cache paths), so a filtered tool's schema never reaches the
-model. `hermes mcp configure <server>` writes this interactively.
-
-Two facts that decide which form to use:
-
-| | behaviour when the server adds a tool upstream | use for |
-|---|---|---|
-| `exclude` | the new tool IS registered | trimming a few known-huge tools |
-| `include` | the new tool is NOT registered | a set with a promise to keep, e.g. "nothing writes" |
-
-Measured on houseCARL 1.9.0, and shipped as named sets in `CATALOG.json`:
-
-```
-Full      45 tools  167,072 bytes  ~41,768 tok/turn
-Lean      42 tools  125,476 bytes  ~31,369 tok/turn   -25%   (default)
-ReadOnly  27 tools   70,418 bytes  ~17,604 tok/turn   -58%
-```
-
-Lean drops three tools and 25% of the cost, because schema size is wildly
-uneven: `bulk_create`, `create_record` and `bulk_apply` carry full nested record
-objects and are 41,596 bytes between them.
-
-**Never estimate a filtered cost by averaging.** `active_tools × (bytes ÷
-tools)` gives ~38,983 for the Lean set, which measures 31,369 — a 3.7× error in
-the saving, presented as a number. Measure the filtered set, or say unmeasured.
-
-```powershell
-TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset ReadOnly -Apply   # -58%
-TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset Full -Apply       # remove the filter
-hermes -p skyrim mcp configure housecarl                          # pick by hand
-```
-
-A hand-picked filter survives re-installs: the migrator fills the field when it
-is absent and never overwrites it, unless `-SkyrimToolset` is passed explicitly.
-
-For Claude, Codex, Grok and Kimi the whole server is still the unit. There, the
-answer is a project-scoped profile, not a smaller server.
-
 ## Installed is not enabled
 
-Two different things, and conflating them is what made the first cut of this
-router expensive:
+Installed means files exist on disk. Configured means a provider entry exists.
+Active means the provider accepted its scope/trust and connected successfully.
+Callable means the needed tool survived filters and permissions.
+Do not treat any one of these as proof of the next.
 
-| | means | costs |
-|---|---|---|
-| **installed** | the executable exists on disk | disk, nothing else |
-| **enabled** | an MCP entry is registered in a provider config | its tool schemas, every turn of every session that config covers |
+A skill's description has an index cost; its body is usually loaded on demand.
+MCP behavior is host-dependent. Claude Code supports deferred Tool Search;
+Codex and Hermes support individual-tool filters. Full advertised schemas are
+NOT automatically loaded or billed on every turn.
 
-`Set-McpProfile.ps1` will install a missing tool when it can, and still leave it
-disabled everywhere except the project that asked for it. "Serena is installed"
-is not a reason to expect `find_symbol` in this session.
+## Measure the right thing
+
+`TOOLS\Measure-McpSchemaCost.ps1` measures advertised compact UTF-8 schema bytes.
+Its bytes/4 figure is a schema-token estimate, not actual tokenization, prompt
+usage, cached tokens or billing. Tool results and discovery metadata have their
+own costs. Compare the same serialization and use provider usage for real cost.
+
+Historical houseCARL 1.9.0 measurements (sum of per-tool bytes, not array framing):
+
+| set | tools | schema bytes | bytes/4 estimate |
+|---|---:|---:|---:|
+| Full | 45 | 167,072 | 41,768 |
+| Lean | 42 | 125,476 | 31,369 |
+| ReadOnly | 27 | 70,418 | 17,604 |
+
+Three tools account for 41,596 bytes: tool count is not a reliable size proxy.
+Never average a full server's bytes to price a subset. Measure the selected set
+or report it unmeasured. Legacy JSON fields named `tokens_per_turn` retain
+schema estimates for compatibility; they are not billing evidence.
+
+## Narrow the tools using native support
+
+- Codex: `enabled_tools` allowlist and `disabled_tools` denylist on the server
+  entry; the denylist applies after the allowlist. Verified with native Codex
+  0.152.0 discovery, filtered registration and a harmless call, without inference.
+- Hermes: `tools.include` / `tools.exclude`; a custom filter survives normal
+  reinstallation. `TOOLS\Migrate-HermesProfiles.ps1 -SkyrimToolset ReadOnly -Apply`
+  explicitly selects the packaged set; `Full` removes the filter.
+- Claude Code: prefer native Tool Search when supported by the active
+  model/deployment. Do not force it on an unsupported proxy.
+- Grok/Kimi: use the narrowest supported scope and server-native toolset flags;
+  do not assume they implement Codex or Hermes filter keys.
+
+An allowlist does not admit newly added tools; a denylist normally does.
+A tool named ReadOnly is not an OS security boundary: still inspect the actual
+operation, target and permissions.
 
 ## The always-on three
 
-`context7`, `github`, and `headroom` are wired globally because they apply to
-every task: current API docs instead of recalled signatures, verified pushes
-instead of hoped-for ones, and context compression that pays for itself.
-Everything else is a profile. The general router uses project scope; Hermes
-uses native named homes because it has profiles but no project-path MCP scope.
-`code` adds codebase-memory, `roblox` adds the official Studio bridge, and
-`skyrim` adds houseCARL.
-
-`sequential-thinking` was the third until 7.9.7 measured it: 1 tool, but a
-4,590-byte schema — ~1,148 tokens on every turn of every session, as much as
-context7's two tools, for a structured scratchpad rather than a capability.
-It is the opt-in `reasoning` profile now, with no detection markers so `-Auto`
-can never reach it.
-
-This is the one number to keep in view when judging any server: **tools is the
-wrong unit, bytes is the right one.** Measure before arguing about it —
-`TOOLS\Measure-McpSchemaCost.ps1 -Command 'npx -y <package>'` runs the real
-`initialize` → `tools/list` and prints per-tool bytes.
+`context7`, `github`, and `headroom` are the small core. Keep optional servers
+scoped to task evidence. Windows desktop control stays off by default.
+`sequential-thinking` remains opt-in (`reasoning`, no auto-detection markers):
+its historical 4,590 schema bytes are not evidence of better answers.
 
 ## Profiles
 
@@ -161,8 +83,8 @@ wrong unit, bytes is the right one.** Measure before arguing about it —
 
 Hermes has a smaller native topology: `default` is the always-on three, `code`
 adds codebase-memory, `roblox` adds the official Roblox Studio MCP, and `skyrim`
-adds houseCARL. Use `hermes -p code` in a code repository; its measured ~5,994
-tokens/turn do not spill into ordinary Hermes sessions.
+adds houseCARL. Use `hermes -p code` in a code repository; its ~5,994 schema-token
+estimate is not a bill, and its servers are absent from ordinary Hermes sessions.
 The Skyrim toolset still includes all three specialists: houseCARL through the
 profile MCP, Skyrim Forge through its skill/CLI, and Spooky's AutoMod through
 the routed specialist skills/CLI. Forge's MCP is opt-in compatibility, not a
@@ -189,59 +111,34 @@ reason printed.
 
 ## What "project-scoped" means per provider
 
-Not every CLI has the concept. Where one does not, this pack does **not**
-quietly register the server machine-wide instead — that is the cost the whole
-router exists to avoid:
-
 | provider | mechanism |
 |---|---|
-| Claude Code | `projects["<abs path>"].mcpServers` in `~/.claude.json` — where `claude mcp add --scope local` writes. No file in your repo, no trust prompt. |
-| Grok | `<project>\.grok\config.toml` — `grok mcp add -s project`. This one *is* a file in the project. |
-| Codex | none. A project `.codex/config.toml` is ignored. |
-| Kimi | none found; it reads `%USERPROFILE%\.kimi-code\mcp.json`. |
-| Hermes | native named homes/configs (`default`, `code`, `roblox`, `skyrim`), selected with `-p` or the generated aliases; no project-path scope. |
+| Claude Code | `projects["<abs path>"].mcpServers` in `~/.claude.json` (local scope) |
+| Grok | `<project>\.grok\config.toml` |
+| Codex | `<project>\.codex\config.toml`, loaded only for a trusted project |
+| Kimi | no project scope established; skip unless `-Global` is explicit |
+| Hermes | native named homes via `-p default/code/roblox/skyrim`, not project-path scope |
 
-For Codex and Kimi the MCP server is skipped and the reason is printed. The
-matching game skill can still run an installed Forge through its CLI, so the
-capability remains available without paying its schemas in every session.
-`-Global` is the explicit opt-in, and it registers machine-wide — Serena then
-gets `--project-from-cwd` rather than one baked path, so it follows the session
-instead of activating one project everywhere.
+Use `TOOLS\Set-McpProfile.ps1 -Auto -Path <project> -Providers Codex` for matching
+Codex profiles. The installer never grants trust. Restart and run
+`codex mcp list --json` from that project to verify effective configuration.
+A successful file write is not activation proof. Keep machine-specific project
+config out of Git. `-Global` is an explicit wider scope, never a silent fallback.
 
-## When a server is configured but shows no tools
+## Configured but no tools?
 
-This is the failure mode to recognize on sight, because the provider says
-nothing about it. Every instance in this pack's history had one of five causes:
+Check the scope, Codex trust, disabled flags/filters, binary path, package pin,
+host application, and restart status before recommending another install.
 
-- the command does not exist (a version-stamped folder that was renamed)
-- the package was withdrawn upstream (a valid name, a dead command)
-- a backslash escaped twice too many, so the path parses to nothing
-- `npx` without `-y`, blocking forever on an install prompt
-- the entry is registered for a *different* project than the one you are in
+`TOOLS\Test-McpHandshake.ps1 -Provider Codex -Path <project> -RequireMatch`
+uses native Codex discovery, then checks stdio command/args with a real
+`initialize` -> `tools/list`. For other providers it reads the pack's config
+shape. This is a transport smoke test using the current shell environment, not
+full provider parity: config env/cwd and tool filters are not replayed. It does
+not prove authentication, model selection, tool execution or billed usage.
 
-Do not guess between them:
-
-```powershell
-TOOLS\Test-McpHandshake.ps1 -Provider Claude -Path <project>
-```
-
-It spawns each server exactly as the provider does and runs the real
-`initialize` -> `tools/list` exchange. A server that answers is working; one
-that does not gets a reason instead of a shrug.
-
-**Pass `-Path`.** Without it the check reads the machine-wide config only, and
-every capability profile is registered per project — so the servers most likely
-to need this question asked are the ones it cannot see. With `-Path` it reports
-what a session opened there would actually pay. Measured on the development
-machine for this pack's own repository:
-
-```
-machine-wide before profiles   188 tool schemas every turn
-+ code-intel for one project   209   (serena [project]  21 tools)
-```
-
-Those 21 are paid by that project and by nothing else. For the "wrong project"
-cause, `Set-McpProfile.ps1 -List` prints which project each profile is on for.
+Sources: [Codex MCP](https://learn.chatgpt.com/docs/extend/mcp?surface=cli),
+[Claude Tool Search](https://code.claude.com/docs/en/mcp#scale-with-mcp-tool-search).
 
 ## Pick the capability the evidence needs
 

@@ -143,7 +143,7 @@ param(
   # it to Migrate-HermesProfiles.ps1's own default (Lean) AND do not override a
   # filter the user set by hand -- passing the switch through on every install
   # would replace their `hermes mcp configure housecarl` choice every time.
-  #   Full 45 tools ~41,768 tok/turn | Lean 42 ~31,369 (-25%) | ReadOnly 27 ~17,604 (-58%)
+  #   Full 45 tools ~41,768 schema tokens | Lean 42 ~31,369 (-25%) | ReadOnly 27 ~17,604 (-58%); bytes/4, not billing.
   [ValidateSet('', 'Full', 'Lean', 'ReadOnly')]
   [string]$SkyrimToolset = '',
   # Leftovers this pack created and never removed: skills it stopped shipping,
@@ -376,7 +376,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.16 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.17 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -1802,7 +1802,7 @@ if (-not $SkillsOnly) {
             # Installed is not registered. A server whose keyless surface is a
             # small fraction of its schema costs full price for a sliver of
             # capability -- firecrawl-mcp keyless is 2 usable tools out of 25,
-            # ~9,080 tokens every turn, duplicating a native capability. Through
+            # ~9,080 schema-token estimate, duplicating a native capability. Through
             # 7.9.8 -WithExtras registered it anyway and said so in one line
             # nobody reads. Note this is an mcp-npx component: registering IS
             # installing, because npx resolves the package on first launch. So
@@ -2145,7 +2145,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-version = '8.7.16'
+version = '8.7.17'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode
@@ -2390,8 +2390,8 @@ if (-not $SkipCleanup -and -not $ToolsOnly) {
 Write-Host '     See what would go without deleting: TOOLS\Clean-StaleState.ps1'
 Write-Host '     Native MCP profiles when installed: hermes (core), code (codebase-memory), roblox (official Studio MCP), skyrim (houseCARL).'
 Write-Host '     Audit/migrate: TOOLS\Migrate-HermesProfiles.ps1 [-Apply]'
-Write-Host '     houseCARL costs ~41,768 tokens/turn at full size. The skyrim profile registers a'
-Write-Host '     Lean subset (~31,369, -25%). Cheaper: -SkyrimToolset ReadOnly (~17,604, -58%).'
+Write-Host '     houseCARL full schema: ~41,768 estimated tokens (bytes/4), not a per-turn bill.'
+Write-Host '     Lean: ~31,369 schema estimate (-25%); ReadOnly: ~17,604 (-58%). Actual usage is unmeasured.'
 Write-Host ''
 Write-Host 'AI usage: skills load automatically. Start with skyrim-memory + skyrim-tool-router.'
 Write-Host 'Missing tools: run TOOLS\Ensure-Tools.ps1 or INSTALL-AIO.ps1 - do not invent paths.'

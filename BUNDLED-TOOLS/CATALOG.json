@@ -31,7 +31,8 @@
       "mcp_tool_budget": {
         "measured_utc": "2026-08-25T17:20:00Z",
         "measured_with": "TOOLS/Measure-McpSchemaCost.ps1",
-        "mechanism": "Hermes mcp_servers.<name>.tools.include (allowlist) / tools.exclude (blocklist), enforced at tool REGISTRATION (tools/mcp_tool.py, both the live-discovery and schema-cache paths), so a filtered tool's schema never reaches the model. fnmatch globs are supported. Claude/Codex/Grok/Kimi have no equivalent; there the whole server is the unit.",
+        "mechanism": "Hermes tools.include/tools.exclude filter at tool registration; fnmatch globs are supported. Codex has native enabled_tools/disabled_tools; Claude Code supports deferred Tool Search. These sets describe Hermes selections, not a universal provider surface or a bill.",
+        "measurement_basis": "Historical sum of per-tool UTF-8 JSON bytes, excluding array framing. Legacy *_tokens_per_turn fields are bytes/4 schema estimates; saving_pct is a schema-size reduction, not measured billed savings.",
         "all_tools": 45,
         "all_schema_bytes": 167072,
         "all_tokens_per_turn": 41768,
@@ -146,7 +147,7 @@
       ],
       "install": "zip-extract",
       "exe_rel": "codebase-memory-mcp.exe",
-      "scope_note": "Installed globally but never registered in a provider's global/default MCP set. Claude and Grok get it only through a project-scoped code-intel profile; Hermes gets it only in the native code profile. Codex and Kimi stay unregistered unless the user explicitly accepts machine-wide schema cost. NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default. Measured 0.10.8: 15 tools, 23,974 schema bytes, ~5,994 tokens per enabled turn.",
+      "scope_note": "Installed globally but absent from global/default MCP sets. Claude, Grok and trusted Codex projects get it through code-intel; Hermes through its native code profile. Kimi needs explicit global opt-in. NEVER enable --ui / install.ps1 --ui (Windows Codebase Discovery Open-With). auto_index=false auto_watch=false default. Recorded 0.10.8: 15 tools, 23,974 schema bytes, ~5,994 schema tokens (bytes/4), not a per-turn bill.",
       "server_id": "codebase-memory-mcp"
     },
     {
@@ -402,7 +403,7 @@
         "browser-automation"
       ],
       "offline_asset": null,
-      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly. Measured 2026-09-02: 24 tools, 18,502 schema bytes, ~4,626 tokens per enabled turn. BROWSER CHOICE: with no flags, playwright-mcp defaults to the Google Chrome channel and prompts you to install Chrome. To use your own browser (Opera GX, Edge, Brave, Vivaldi, ...), set user env PLAYWRIGHT_MCP_EXECUTABLE_PATH to the browser exe BEFORE running the installer - the wiring appends --executable-path automatically. Example (Opera GX): setx PLAYWRIGHT_MCP_EXECUTABLE_PATH \"%LOCALAPPDATA%\\Programs\\Opera GX\\opera.exe\". To change later, edit the args in your provider's MCP config (Grok/Codex config.toml, Kimi ~/.kimi-code/mcp.json). Pinned, not @latest: an unpinned npx server can change its tool surface mid-session, and npx will happily reuse a broken cache."
+      "scope_note": "Browser automation for CLIs with no built-in browser. Claude Code already ships a browser pane, so it is skipped there. Never used for Nexus lookups - houseCARL does those keylessly. Measured 2026-09-02: 24 tools, 18,502 schema bytes, ~4,626 schema tokens (bytes/4; actual usage unmeasured). BROWSER CHOICE: with no flags, playwright-mcp defaults to the Google Chrome channel and prompts you to install Chrome. To use your own browser (Opera GX, Edge, Brave, Vivaldi, ...), set user env PLAYWRIGHT_MCP_EXECUTABLE_PATH to the browser exe BEFORE running the installer - the wiring appends --executable-path automatically. Example (Opera GX): setx PLAYWRIGHT_MCP_EXECUTABLE_PATH \"%LOCALAPPDATA%\\Programs\\Opera GX\\opera.exe\". To change later, edit the args in your provider's MCP config (Grok/Codex config.toml, Kimi ~/.kimi-code/mcp.json). Pinned, not @latest: an unpinned npx server can change its tool surface mid-session, and npx will happily reuse a broken cache."
     },
     {
       "id": "firecrawl-mcp",
@@ -551,7 +552,7 @@
       "api_key_optional": true,
       "auth_mode": "built-in-oauth-or-optional-pat",
       "toolsets": "context,repos,pull_requests,actions,issues",
-      "scope_note": "GitHub's official server, replacing @modelcontextprotocol/server-github, which npm marks 'Package no longer supported'. Official release binaries since 1.5.0 carry GitHub's OAuth application: no PAT is required on github.com; the first authenticated tool call opens GitHub's browser authorization and keeps that token in the server process only. A GITHUB_PERSONAL_ACCESS_TOKEN is optional and takes precedence when the user deliberately configures one. initialize + tools/list proves the binary and protocol, not completion of that later browser authorization. Registered with a scoped --toolsets list, not 'all': the server exposes 20 toolset groups and every enabled group costs tool-schema tokens on every turn. Widen it per project, never globally.",
+      "scope_note": "GitHub's official server, replacing @modelcontextprotocol/server-github, which npm marks 'Package no longer supported'. Official release binaries since 1.5.0 carry GitHub's OAuth application: no PAT is required on github.com; the first authenticated tool call opens GitHub's browser authorization and keeps that token in the server process only. A GITHUB_PERSONAL_ACCESS_TOKEN is optional and takes precedence when the user deliberately configures one. initialize + tools/list proves the binary and protocol, not completion of that later browser authorization. Registered with a scoped --toolsets list, not 'all': the server exposes 20 toolset groups and enabled groups enlarge the advertised schema; actual prompt and billed usage depend on provider discovery and caching. Widen it per project, never globally.",
       "server_id": "github"
     },
     {
@@ -575,7 +576,7 @@
         "symbol-navigation",
         "symbol-level-edits"
       ],
-      "scope_note": "Language-server-backed symbol search and editing. NOT registered globally and NOT registered machine-wide: TOOLS\\Set-McpProfile.ps1 wires it for the one project that shows source-tree markers, because every connected server's tool schemas ride in context on every turn of every session that config covers. Claude Code takes it in projects[\"<abs path>\"].mcpServers, Grok in the project's own .grok\\config.toml; Codex and Kimi have no project-scoped MCP config and are skipped unless -Global is passed. Hermes uses its separate native code profile for codebase-memory without adding Serena to default. Registered with a per-client --context so the tool set is trimmed to what the client does not already provide -- Serena 1.7.0 ships one for claude-code, codex and grok, and Kimi falls back to the generic 'agent' context -- and with --project <path> so it activates the project it was written for. Overlaps codebase-memory-mcp deliberately: that answers 'where is this in the graph', this answers 'what does this symbol resolve to, and rewrite its body'."
+      "scope_note": "Language-server-backed symbol search and editing. NOT registered globally and NOT registered machine-wide: TOOLS\\Set-McpProfile.ps1 wires it for the one project that shows source-tree markers, to keep optional capability in relevant projects. Claude Code takes it in projects[\"<abs path>\"].mcpServers, Grok in the project's .grok\\config.toml and Codex in trusted-project .codex\\config.toml. Kimi is skipped unless -Global is passed. Hermes uses its separate native code profile for codebase-memory without adding Serena to default. Registered with a per-client --context so the tool set is trimmed to what the client does not already provide -- Serena 1.7.0 ships one for claude-code, codex and grok, and Kimi falls back to the generic 'agent' context -- and with --project <path> so it activates the project it was written for. Overlaps codebase-memory-mcp deliberately: that answers 'where is this in the graph', this answers 'what does this symbol resolve to, and rewrite its body'."
     },
     {
       "id": "chrome-devtools-mcp",
@@ -629,7 +630,7 @@
       "required_for": [
         "component-registry"
       ],
-      "scope_note": "Resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only. Measured 2026-09-02: 7 tools, 4,495 schema bytes, ~1,124 tokens per enabled turn."
+      "scope_note": "Resolves registries from the project's components.json, so it is meaningless outside a shadcn project and is written project-scoped only. Measured 2026-09-02: 7 tools, 4,495 schema bytes, ~1,124 schema tokens (bytes/4; actual usage unmeasured)."
     },
     {
       "id": "blender-mcp",
@@ -653,7 +654,7 @@
       "required_for": [
         "blender-scene-control"
       ],
-      "scope_note": "Talks to an addon inside a running Blender. Pinned: `uvx blender-mcp` was version-free through 7.9.6, and an unpinned invocation can change its tool surface mid-session. `uvx blender-mcp@1.9.1 install-addon` places the addon, but ENABLING it is inside the editor and cannot be done from outside that process -- so the profile prints the step rather than claiming it ran it. Note the difference between 'the MCP executable starts' and 'the addon is connected': the server answers initialize with no Blender running at all, and only a tool call that reaches the scene proves the second. Blender is discovered from %APPDATA%\\Blender Foundation, which Blender creates on first run whatever the install source -- 7.9.6 carried a maintainer's own Steam drive path here, which could never match on another machine. Measured 2026-09-02 with telemetry disabled and safe mode enabled: 1.9.1 answers initialize/tools-list with 28 tools and 29,274 schema bytes (~7,318 tokens per enabled turn). The profile writes BLENDER_MCP_DISABLE_TELEMETRY=true and BLENDER_MCP_SAFE_MODE=true. Safe mode keeps normal bpy/bmesh/mathutils scene, render, save and import/export work while rejecting eval/exec/open, os/subprocess/network, persistence hooks and external .blend datablock loading before code reaches Blender."
+      "scope_note": "Talks to an addon inside a running Blender. Pinned: `uvx blender-mcp` was version-free through 7.9.6, and an unpinned invocation can change its tool surface mid-session. `uvx blender-mcp@1.9.1 install-addon` places the addon, but ENABLING it is inside the editor and cannot be done from outside that process -- so the profile prints the step rather than claiming it ran it. Note the difference between 'the MCP executable starts' and 'the addon is connected': the server answers initialize with no Blender running at all, and only a tool call that reaches the scene proves the second. Blender is discovered from %APPDATA%\\Blender Foundation, which Blender creates on first run whatever the install source -- 7.9.6 carried a maintainer's own Steam drive path here, which could never match on another machine. Measured 2026-09-02 with telemetry disabled and safe mode enabled: 1.9.1 answers initialize/tools-list with 28 tools and 29,274 schema bytes (~7,318 schema tokens (bytes/4; actual usage unmeasured)). The profile writes BLENDER_MCP_DISABLE_TELEMETRY=true and BLENDER_MCP_SAFE_MODE=true. Safe mode keeps normal bpy/bmesh/mathutils scene, render, save and import/export work while rejecting eval/exec/open, os/subprocess/network, persistence hooks and external .blend datablock loading before code reaches Blender."
     },
     {
       "id": "godot-mcp",
@@ -793,7 +794,7 @@
       "runtimes": [
         "python313"
       ],
-      "scope_note": "Desktop control through UI Automation: click, type, send shortcuts, run PowerShell, read and write the registry and the filesystem, enumerate windows and processes. This is the one operating surface the pack had no way to reach -- Playwright and chrome-devtools stop at the browser. UIA also lets an agent PERCEIVE controls without spending a vision call, which is most of why it earns its schema. Measured 2026-08-27 with TOOLS\\Measure-McpSchemaCost.ps1 against `uvx windows-mcp@0.8.5 serve`: 20 tools, 22,088 bytes, ~5,522 tokens on every turn while enabled -- less than firecrawl-mcp's 36,337 and about four times context7, for the whole desktop. OFF by default and never auto-detected: the `windows` profile carries no detect markers, so -Auto cannot reach it. Turn it on deliberately with TOOLS\\Set-McpProfile.ps1 -Enable windows -Global. controls_machine is why TOOLS/measure_mcp_capability.py refuses to sweep it: that sweep calls every advertised tool with arguments synthesized from the schema, which here means typing into whatever window has focus and running whatever PowerShell the sample produces."
+      "scope_note": "Desktop control through UI Automation: click, type, send shortcuts, run PowerShell, read and write the registry and the filesystem, enumerate windows and processes. This is the one operating surface the pack had no way to reach -- Playwright and chrome-devtools stop at the browser. UIA also lets an agent PERCEIVE controls without spending a vision call, which is most of why it earns its schema. Measured 2026-08-27 with TOOLS\\Measure-McpSchemaCost.ps1 against `uvx windows-mcp@0.8.5 serve`: 20 tools, 22,088 bytes, ~5,522 schema tokens (bytes/4; actual usage unmeasured) -- less than firecrawl-mcp's 36,337 and about four times context7, for the whole desktop. OFF by default and never auto-detected: the `windows` profile carries no detect markers, so -Auto cannot reach it. Turn it on deliberately with TOOLS\\Set-McpProfile.ps1 -Enable windows -Global. controls_machine is why TOOLS/measure_mcp_capability.py refuses to sweep it: that sweep calls every advertised tool with arguments synthesized from the schema, which here means typing into whatever window has focus and running whatever PowerShell the sample produces."
     },
     {
       "id": "super-mcp-router",
@@ -822,11 +823,11 @@
       "runtimes": [
         "node22"
       ],
-      "scope_note": "A proxy MCP. It registers ONE server carrying 11 meta-tools and puts every other server behind on-demand discovery: search_tools by intent, get_tool_details for one schema, use_tool to call it. Measured 2026-08-27: 11 tools, 11,386 bytes, ~2,846 tokens per turn -- and that figure does NOT grow as more servers go behind it. The comparison that matters: houseCARL wired directly is 45 tools, 167,072 bytes, 41,768 tokens on EVERY turn, and Claude, Codex, Grok and Kimi cannot filter individual tools the way Hermes can, so on those four it is all 45 or nothing. Proven end to end against this pack's own houseCARL on 2026-08-27: search_tools('list the plugins in the active load order') -> get_tool_details (3,652 chars, ~913 tokens for that ONE schema) -> use_tool returned live data from the shim (2,999 mods, 2,995 plugins). Startup 1.2s, search 400ms, detail 200ms. NOT wired into a profile, and the reason is specific rather than cautious: the router reads its own config at %USERPROFILE%\\.super-mcp\\config.json, so enabling it means this pack writing and preserving a THIRD-PARTY tool's config file -- a second config writer with its own merge obligations, on a 24-star dependency. The measurement is what ships here; the wiring is its own release. One caveat to carry into that decision: BM25 ranking returned housecarl_merge_plugins FIRST for that read-only query, with the correct housecarl_load_order_status third. Discovery works, but the top hit is not automatically the safe one."
+      "scope_note": "A proxy MCP. It registers ONE server carrying 11 meta-tools and puts every other server behind on-demand discovery: search_tools by intent, get_tool_details for one schema, use_tool to call it. Measured 2026-08-27: 11 tools, 11,386 bytes, ~2,846 meta-tool schema tokens (bytes/4), excluding discovered schemas, results and provider billing. The comparison that matters: houseCARL wired directly is 45 tools, 167,072 bytes, ~41,768 full-schema tokens by the same heuristic. Correction 2026-09-08: Codex has native enabled_tools/disabled_tools filters; Claude Code supports deferred Tool Search. The earlier universal all-tools-every-turn comparison was wrong; no billed saving was measured. Proven end to end against this pack's own houseCARL on 2026-08-27: search_tools('list the plugins in the active load order') -> get_tool_details (3,652 chars, ~913 tokens for that ONE schema) -> use_tool returned live data from the shim (2,999 mods, 2,995 plugins). Startup 1.2s, search 400ms, detail 200ms. NOT wired into a profile, and the reason is specific rather than cautious: the router reads its own config at %USERPROFILE%\\.super-mcp\\config.json, so enabling it means this pack writing and preserving a THIRD-PARTY tool's config file -- a second config writer with its own merge obligations, on a 24-star dependency. The measurement is what ships here; the wiring is its own release. One caveat to carry into that decision: BM25 ranking returned housecarl_merge_plugins FIRST for that read-only query, with the correct housecarl_load_order_status third. Discovery works, but the top hit is not automatically the safe one."
     }
   ],
-  "pack_version": "8.7.16",
-  "updated_utc": "2026-09-03",
+  "pack_version": "8.7.17",
+  "updated_utc": "2026-09-08",
   "providers": {
     "Grok": {
       "skills": "skills",
@@ -904,7 +905,7 @@
   "provider_config_schemas": {
     "Hermes": 39
   },
-  "catalog_version": "8.7.16",
+  "catalog_version": "8.7.17",
   "updated": "2026-09-03",
-  "spec_notes": "MCP servers in this pack are local stdio; the 2026-07-28 stateless spec requires no change to them. Components carrying a 'profile' are not registered machine-wide by Set-McpProfile.ps1: BUNDLED-TOOLS/PROFILES.json holds their wiring and applies a profile only where the project markers and local prerequisites agree. MCP tool schemas are in context on every turn, so a machine-wide registration is a permanent cost paid by every unrelated session. Project scope means projects[\"<abs path>\"].mcpServers in ~/.claude.json for Claude Code and <project>/.grok/config.toml for Grok. Codex and Kimi have no project-scoped MCP config and are skipped rather than written globally. Hermes has no project-path scope, so Migrate-HermesProfiles.ps1 isolates codebase-memory in its native code profile instead of default. Prove any registration with TOOLS/Test-McpHandshake.ps1."
+  "spec_notes": "Profile wiring lives in PROFILES.json. Claude uses projects[\"<abs path>\"].mcpServers in ~/.claude.json; Grok uses project .grok/config.toml; Codex uses trusted-project .codex/config.toml. Kimi needs explicit global opt-in. Hermes uses native named profiles. The installer never grants project trust. Schema bytes are not prompt or billing measurements: native filtering, deferred discovery, caching and calls affect usage. Test-McpHandshake.ps1 proves a stdio transport exchange, not full provider activation or authentication. See TESTS/test_codex_native_profiles.py for the opt-in native Codex boundary test."
 }

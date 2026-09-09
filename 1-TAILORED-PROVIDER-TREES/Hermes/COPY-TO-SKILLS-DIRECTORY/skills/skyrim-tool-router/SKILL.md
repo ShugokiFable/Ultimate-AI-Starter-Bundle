@@ -82,7 +82,7 @@ Optional process overlays (not Skyrim-specific): `using-superpowers`, `systemati
 
   | Symptom | Meaning | What to tell the user |
   |---|---|---|
-  | MCP tool search returns **0 results**, or a `housecarl_*` / `skyrim_forge_*` tool is not callable | Installed, but its MCP is **not enabled for this project**. This pack registers most MCP servers per project on purpose — houseCARL alone costs ~41,768 tokens *every turn* | Give them the exact command (below). **Do not tell them to install it.** |
+  | MCP tool search returns **0 results**, or a `housecarl_*` / `skyrim_forge_*` tool is not callable | If installed, it may be **not enabled for this project**, untrusted, filtered or disconnected. A failed search alone does not identify the cause | Verify discovery and handshake; if scope is missing, give the exact command below. **Do not tell them to install it.** |
   | The binary/CLI itself is absent from disk | Genuinely not installed | Load `tool-discovery` and **recommend install** |
 
   Never fake results for either one.
@@ -90,7 +90,8 @@ Optional process overlays (not Skyrim-specific): `using-superpowers`, `systemati
 ### houseCARL or Forge tools not there? Say this
 
 Do not stop at "MCP is disconnected". Name the fix, with the project path filled
-in. Works for Claude, Codex, Grok, Kimi and Hermes alike:
+in. Claude/Grok use project scope, Codex requires project trust, Kimi needs
+explicit global scope, and Hermes uses its native `skyrim` profile:
 
 ```powershell
 # see which profiles this project qualifies for

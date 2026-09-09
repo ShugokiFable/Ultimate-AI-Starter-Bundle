@@ -13,7 +13,7 @@
 
   Not here any more: sequential-thinking. It held the third slot until 7.9.7
   and lost it on measurement. Speaking real MCP to it gives one tool and a
-  4,587-byte schema -- ~1,146 tokens on every turn of every session, as much as
+  4,587-byte schema -- ~1,146 schema tokens (bytes/4, not a per-turn bill), as much as
   context7's two tools -- for a structured scratchpad rather than a capability:
   it fetches nothing and reaches nothing the model could not write in its own
   reasoning. It is the 'reasoning' profile now, off unless asked for:
@@ -126,7 +126,7 @@ function Show-UabsSequentialThinkingNotice {
   Write-Host ''
   Write-Host ("sequential-thinking is still registered for: {0}" -f (($found | Sort-Object -Unique) -join ', ')) -ForegroundColor Yellow
   Write-Host  '  It left the always-on core in 7.9.7 on measurement: 1 tool, 4,587-byte schema,' -ForegroundColor DarkGray
-  Write-Host  '  ~1,146 tokens on every turn of every session. Nothing here removed it for you.' -ForegroundColor DarkGray
+  Write-Host  '  ~1,146 schema tokens (bytes/4); actual usage unmeasured. Nothing here removed it for you.' -ForegroundColor DarkGray
   Write-Host  '  Keep it:   TOOLS\Set-McpProfile.ps1 -Enable reasoning -Global' -ForegroundColor DarkGray
   Write-Host  '  Drop it:   TOOLS\Set-McpProfile.ps1 -Disable reasoning' -ForegroundColor DarkGray
 }
