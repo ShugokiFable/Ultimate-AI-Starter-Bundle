@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "catalog_version": "8.7.17",
-  "pack_version": "8.7.17",
+  "catalog_version": "8.7.18",
+  "pack_version": "8.7.18",
   "updated_utc": "2026-09-08",
   "why": "Keep the optional MCP surface scoped to task evidence. Claude and Grok support project scope; Codex reads trusted-project .codex/config.toml (native 0.152.0 verified). Hermes uses native named profiles; Kimi needs explicit global opt-in. Schema bytes are not per-turn bills: native filtering, deferred discovery, caching and actual calls affect usage.",
   "reads": "TOOLS/Set-McpProfile.ps1",

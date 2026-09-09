@@ -1,6 +1,6 @@
-# Ultimate AI Starter Bundle v8.7.17
+# Ultimate AI Starter Bundle v8.7.18
 
-**v8.7.17:** Codex gets trusted-project MCP profiles with preserved tool filters and real native tests. Schema reports distinguish advertised bytes from actual token usage. The v8.7.16 Grok hook and GitHub-completion improvements remain included.
+**v8.7.18:** Fixes the failed RTK install: every download path uses the tested catalog version, stale fallback archives are rejected, and RTK is validated before atomic replacement with a recoverable backup. The v8.7.17 Codex profile and packaging fixes remain included.
 
 ### Creating a complete GitHub project
 
@@ -159,9 +159,18 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\INSTALL-AIO.ps1
 
 | Mode | Behavior |
 |------|----------|
-| `OnlineLatest` (default) | Fetch official current releases; fall back to bundled assets if offline |
+| `OnlineLatest` (default) | Fetch official current releases; RTK stays at the tested catalog pin. Fall back to verified bundled RTK if offline |
 | `BundledFirst` | Use `BUNDLED-TOOLS\offline`, fall back to GitHub |
 | `BundledOnly` | Offline zips only (no network) |
+
+RTK is deliberately pinned to **0.47.0** in both the installer and component
+updater: the narrow rewrite hook and measurements are version-specific. A
+new upstream release is not automatically treated as tested. RTK fallback
+archives must match the shipped SHA-256 manifest; a rejected replacement
+leaves the previous executable intact. Successful replacements retain a
+`rtk.exe.bak-uabs-*` backup beside the executable. If v8.7.17 stopped with
+`rtk installed version 0.48.0, expected 0.47.0`, rerun `START-HERE.bat` from
+v8.7.18 to repair it and finish the interrupted install.
 
 ### There are exactly two .bat files, and they do different things
 
@@ -708,6 +717,8 @@ registry.
   remote bootstrap download and extract path was exercised against a local archive.
 
 ## Version
+
+**v8.7.18** - 2026-09-09. RTK version-selection and transactional-install hotfix, with executable regression coverage. **167 canonical skills**, no new dependency or always-on server. See [release notes](docs/history/V8.7.18-CHANGELOG.md).
 
 **v8.7.17** - 2026-09-09. Trusted-project Codex MCP routing, preserved custom filters and provider ownership, native integration tests, and corrected schema measurement. **167 canonical skills**, no new MCP or dependency. See [release notes](docs/history/V8.7.17-CHANGELOG.md). Older dated entries retain historical conclusions; v8.7.17 corrects their universal per-turn billing and Codex scope claims.
 

@@ -35,9 +35,9 @@ foreach ($id in $Components) {
   $comp = $catalog.components | Where-Object { $_.id -eq $id } | Select-Object -First 1
   if (-not $comp) { Write-UabsWarn "Unknown component $id"; continue }
   if (-not $comp.github) { Write-UabsWarn "$id has no GitHub source (manual)"; continue }
-  Write-UabsStep "GitHub latest: $($comp.github.owner)/$($comp.github.repo)"
+  Write-UabsStep "GitHub release (RTK uses the measured catalog pin): $($comp.github.owner)/$($comp.github.repo)"
   try {
-    $rel = Invoke-UabsGitHubLatest -Owner $comp.github.owner -Repo $comp.github.repo
+    $rel = Get-UabsComponentGitHubRelease -Comp $comp
     Write-UabsOk "tag $($rel.tag_name)"
     $asset = $null
     if ($comp.asset_match) { $asset = Get-UabsReleaseAsset -Release $rel -Patterns @($comp.asset_match) }

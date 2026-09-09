@@ -1,3 +1,11 @@
+## 8.7.18
+
+- Fixed the provider bootstrap still using Hermes' network-fetching `--version`; it now uses the same local `--help` startup probe as the installed-state doctor.
+- Fixed the default installer selecting upstream RTK 0.48.0 while its catalog and safe hook require the measured 0.47.0. Installer and component updater now resolve RTK's exact catalog tag; other components retain their existing update policy.
+- Require the shipped SHA-256 for offline/cache RTK fallback. Core installations without an offline asset fetch the same catalog tag, never silently reuse an unverified archive.
+- Validate the candidate before touching the live RTK executable, replace atomically, keep a recoverable backup, and roll back a failed post-check. Locked destinations remain intact.
+- Extended the existing Windows regression gate with the real bundled executable, online/newer-release and offline-cache fixtures, fresh install, wrong-version rejection, locked-file preservation, backup and rollback checks. No new dependency or broader RTK rewrite rules.
+
 ## 8.7.17
 
 - Added trusted-project Codex MCP scope; the installer never grants trust. Custom tool filters, disabled flags and approval policy survive refresh.

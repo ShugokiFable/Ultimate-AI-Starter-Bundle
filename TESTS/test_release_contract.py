@@ -300,7 +300,7 @@ def test_provider_bootstrap_contract() -> None:
     }
     for provider, url in expected.items():
         assert provider in text and url in text, f"{provider}: official Windows installer missing"
-    for token in ("git --version", "claude --version", "codex --version", "grok --version", "kimi --version", "hermes --version"):
+    for token in ("git --version", "claude --version", "codex --version", "grok --version", "kimi --version", "hermes --help"):
         assert token.lower() in text.lower(), f"provider bootstrap missing verification {token!r}"
     assert "Refresh-ProcessPath" in text, "provider installers can update User PATH without the current process seeing it"
     assert "AUTH_REQUIRED" in text, "unavoidable account/OAuth state must be reported explicitly"
@@ -5234,8 +5234,16 @@ def test_release_assets_are_digest_checked_before_cache_reuse() -> None:
     )
 
     zip_branch = installer.split("'zip-extract'", 1)[1].split("'skills-git'", 1)[0]
-    for evidence in ("$comp.exe_rel", "& $installedExe --version", "$comp.version", "$componentState.version"):
+    for evidence in ("Install-UabsRtkExecutable", "-Source (Join-Path $rootExtract $comp.exe_rel)", "-ExpectedVersion $comp.version"):
         assert evidence in zip_branch, "zip installer lost version proof: %s" % evidence
+    assert asset_path.count("Get-UabsComponentGitHubRelease -Comp $Comp") == 2
+    assert "Get-UabsComponentGitHubRelease -Comp $comp" in updater
+    assert "Get-UabsRtkFallbackAsset" in asset_path
+    transaction = common.split("function Install-UabsRtkExecutable", 1)[1].split("function Get-UabsReleaseAsset", 1)[0]
+    assert transaction.index("Get-UabsRtkVersion -Path $Source") < transaction.index("Copy-Item")
+    assert "[IO.File]::Replace" in transaction and "$backup" in transaction
+    for evidence in ("catalog tag", "poisoned RTK fallback", "wrong RTK candidate", "post-check did not roll back RTK"):
+        assert evidence in gate, "missing runnable RTK regression: %s" % evidence
     assert "Get-Command rtk" in doctor and "$rtkComponent.version" in doctor
     assert "rtk_runtime" in doctor, "doctor report omits the active RTK path/version"
 
@@ -5251,10 +5259,15 @@ def test_installed_state_doctor_keeps_provider_probes_local() -> None:
     provider_probe = doctor.split("foreach($provider in $Providers)", 1)[1].split(
         "$providerHome=Get-UabsProviderHome", 1
     )[0]
-    assert re.search(
+    bootstrap = ps_code(ROOT / "TOOLS" / "Ensure-Provider-CLIs.ps1")
+    probe_pattern = (
         r"if\s*\(\$provider\s+-eq\s+'Hermes'\)\s*\{[^{}]*"
         r"&\s+\$exe\s+--help\b[^{}]*\}\s*else\s*\{[^{}]*"
-        r"&\s+\$exe\s+--version\b[^{}]*\}",
+        r"&\s+\$exe\s+--version\b[^{}]*\}"
+    )
+    assert re.search(probe_pattern, bootstrap, re.DOTALL), "bootstrap must also use the local Hermes probe"
+    assert re.search(
+        probe_pattern,
         provider_probe,
         re.DOTALL,
     ), (

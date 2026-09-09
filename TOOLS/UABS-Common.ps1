@@ -220,6 +220,89 @@ function Invoke-UabsGitHubLatest {
   return Invoke-RestMethod -Uri $uri -Headers $script:UabsHeaders -TimeoutSec 60
 }
 
+function Get-UabsComponentGitHubRelease {
+  param($Comp)
+  if ($Comp.id -ne 'rtk') {
+    return Invoke-UabsGitHubLatest -Owner $Comp.github.owner -Repo $Comp.github.repo
+  }
+  # RTK's hook and benchmarks require the catalog version, not upstream latest.
+  if ([string]$Comp.version -notmatch '^\d+\.\d+\.\d+$') { throw 'RTK catalog version is invalid.' }
+  $tag = 'v' + $Comp.version
+  $uri = "https://api.github.com/repos/$($Comp.github.owner)/$($Comp.github.repo)/releases/tags/$tag"
+  $release = Invoke-RestMethod -Uri $uri -Headers $script:UabsHeaders -TimeoutSec 60
+  if ($release.tag_name -ne $tag) { throw "RTK release tag mismatch: expected $tag" }
+  return $release
+}
+
+function Get-UabsRtkFallbackAsset {
+  param($Comp, [string]$PackRoot, [string]$Cache, [string]$Offline)
+  # A reused asset filename proves no version. Only trust the shipped digest
+  # without a network response; Core has no offline row and fails closed here.
+  $manifest = Get-Content -LiteralPath (Join-Path $PackRoot 'BUNDLED-TOOLS\OFFLINE-MANIFEST.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  $row = @($manifest.assets | Where-Object { $_.file -eq $Comp.offline_asset } | Select-Object -First 1)
+  if (-not $row.Count) { return $null }
+  $asset = [pscustomobject]@{ size=$row[0].size; digest=('sha256:' + $row[0].sha256) }
+  foreach ($dir in @($Offline, $Cache)) {
+    $path = Join-Path $dir $Comp.offline_asset
+    if (Test-UabsReleaseAssetFile -Asset $asset -Path $path -RequireDigest) { return $path }
+  }
+  return $null
+}
+
+function Get-UabsRtkVersion {
+  param([string]$Path, [string]$ExpectedVersion)
+  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { throw "RTK executable missing: $Path" }
+  $previous = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    $text = (& $Path --version 2>&1 | Out-String).Trim()
+    $code = $LASTEXITCODE
+  } finally { $ErrorActionPreference = $previous }
+  $match = [regex]::Match($text, '(?im)^rtk\s+([0-9]+(?:\.[0-9]+){2,})\s*$')
+  if ($code -ne 0 -or -not $match.Success) { throw "RTK --version check failed (exit $code): $text" }
+  $actual = $match.Groups[1].Value
+  if ($actual -ne $ExpectedVersion) { throw "RTK candidate version $actual, expected $ExpectedVersion; replacement refused." }
+  return $actual
+}
+
+function Install-UabsRtkExecutable {
+  param([string]$Source, [string]$Destination, [string]$ExpectedVersion)
+  $Source = [IO.Path]::GetFullPath($Source)
+  $Destination = [IO.Path]::GetFullPath($Destination)
+  if ($Source -eq $Destination) { throw 'RTK source and destination must differ.' }
+  # Validate before touching the existing binary. Stage beside it for an atomic
+  # file replacement, retaining the previous executable as a recoverable backup.
+  [void](Get-UabsRtkVersion -Path $Source -ExpectedVersion $ExpectedVersion)
+  $digest = (Get-FileHash -LiteralPath $Source -Algorithm SHA256).Hash
+  $parent = Split-Path -Parent $Destination
+  New-Item -ItemType Directory -Force -Path $parent | Out-Null
+  $nonce = [Guid]::NewGuid().ToString('N')
+  $part = Join-Path $parent ('rtk.part-' + $nonce + '.exe')
+  $backup = $Destination + '.bak-uabs-' + $nonce
+  $hadPrevious = Test-Path -LiteralPath $Destination -PathType Leaf
+  $committed = $false
+  try {
+    Copy-Item -LiteralPath $Source -Destination $part
+    if ((Get-FileHash -LiteralPath $part -Algorithm SHA256).Hash -ne $digest) { throw 'RTK staged hash mismatch.' }
+    if ($hadPrevious) { [IO.File]::Replace($part, $Destination, $backup) }
+    else { [IO.File]::Move($part, $Destination) }
+    $committed = $true
+    if ((Get-FileHash -LiteralPath $Destination -Algorithm SHA256).Hash -ne $digest) { throw 'RTK installed hash mismatch.' }
+    $version = Get-UabsRtkVersion -Path $Destination -ExpectedVersion $ExpectedVersion
+    return @{ status='installed'; root=$parent; exe=$Destination; version=$version; backup=$(if ($hadPrevious) { $backup } else { $null }) }
+  } catch {
+    # Roll back only our exact replacement; never clobber a concurrent writer.
+    if ($committed -and (Test-Path -LiteralPath $Destination -PathType Leaf) -and
+        (Get-FileHash -LiteralPath $Destination -Algorithm SHA256).Hash -eq $digest) {
+      if ($hadPrevious) { [IO.File]::Replace($backup, $Destination, [NullString]::Value) }
+      else { [IO.File]::Delete($Destination) }
+    }
+    throw
+  } finally {
+    if (Test-Path -LiteralPath $part -PathType Leaf) { [IO.File]::Delete($part) }
+  }
+}
+
 function Get-UabsReleaseAsset {
   param($Release, [string[]]$Patterns)
   foreach ($pat in $Patterns) {

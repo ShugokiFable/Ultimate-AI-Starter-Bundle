@@ -376,7 +376,7 @@ function Find-UabsBunExecutable {
 
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Magenta
-Write-Host " Ultimate AI Starter Bundle v8.7.17 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
+Write-Host " Ultimate AI Starter Bundle v8.7.18 - ALL-IN-ONE INSTALLER" -ForegroundColor Magenta
 Write-Host " Mode=$Mode  Providers=$($Providers -join ',') [$script:UabsProviderSource]" -ForegroundColor Magenta
 if ($script:UabsSkippedProviders.Count) {
   Write-Host (" Not installed here, so not touched: " + ($script:UabsSkippedProviders -join ', ') + "  (add them with -AllProviders)") -ForegroundColor DarkGray
@@ -416,7 +416,7 @@ if (-not $SkipRuntimes -and -not $SkillsOnly) {
 }
 
 # Fresh-machine provider bootstrap. Existing commands are preserved; only missing
-# CLIs use official vendor Windows installers and every command is --version tested.
+# CLIs use official vendor Windows installers and every command is startup tested.
 if (-not $ToolsOnly -and -not $SkipProviderBootstrap) {
   $providerBootstrap = Join-Path $PackRoot 'TOOLS\Ensure-Provider-CLIs.ps1'
   if (-not (Test-Path -LiteralPath $providerBootstrap -PathType Leaf)) { throw 'Provider bootstrap script missing.' }
@@ -431,7 +431,7 @@ function Get-ComponentAssetPath {
     # prefer cache newest matching
     if ($Comp.github) {
       try {
-        $rel = Invoke-UabsGitHubLatest -Owner $Comp.github.owner -Repo $Comp.github.repo
+        $rel = Get-UabsComponentGitHubRelease -Comp $Comp
         $asset = $null
         if ($Comp.asset_match) { $asset = Get-UabsReleaseAsset -Release $rel -Patterns @($Comp.asset_match) }
         if ($asset) {
@@ -450,7 +450,10 @@ function Get-ComponentAssetPath {
       } catch { Write-UabsWarn "OnlineLatest failed for $($Comp.id): $($_.Exception.Message)" }
     }
   }
-  if ($name) {
+  if ($Comp.id -eq 'rtk') {
+    $p = Get-UabsRtkFallbackAsset -Comp $Comp -PackRoot $PackRoot -Cache $cache -Offline $offline
+    if ($p) { return $p }
+  } elseif ($name) {
     $p = Join-Path $offline $name
     if (Test-Path $p) { return $p }
     # any cache match
@@ -465,7 +468,7 @@ function Get-ComponentAssetPath {
   # fallback online
   if ($Comp.github) {
     try {
-      $rel = Invoke-UabsGitHubLatest -Owner $Comp.github.owner -Repo $Comp.github.repo
+      $rel = Get-UabsComponentGitHubRelease -Comp $Comp
       $asset = $null
       if ($Comp.asset_match) { $asset = Get-UabsReleaseAsset -Release $rel -Patterns @($Comp.asset_match) }
       if ($asset) {
@@ -1579,6 +1582,11 @@ if (-not $SkillsOnly) {
               Write-UabsWarn "Optional: run SpookysAutomodSetup.exe inside the toolkit folder for headers/compiler"
             }
           }
+          elseif ($id -eq 'rtk') {
+            $installed[$id] = Install-UabsRtkExecutable -Source (Join-Path $rootExtract $comp.exe_rel) `
+              -Destination (Join-Path $target $comp.exe_rel) -ExpectedVersion $comp.version
+            Write-UabsOk ("rtk " + $installed[$id].version + ' installed and verified')
+          }
           else {
             # A component whose binary is CURRENTLY RUNNING cannot be
             # overwritten, and robocopy's answer to that is exit code 8, which
@@ -1625,24 +1633,6 @@ if (-not $SkillsOnly) {
                   throw "$id executable missing after extract: $installedExe"
                 }
                 $componentState.exe = $installedExe
-                if ($id -eq 'rtk' -and $comp.version) {
-                  $prevEap = $ErrorActionPreference
-                  $ErrorActionPreference = 'Continue'
-                  try {
-                    $versionText = (& $installedExe --version 2>&1 | Out-String).Trim()
-                    $versionExit = $LASTEXITCODE
-                  } finally { $ErrorActionPreference = $prevEap }
-                  $versionMatch = [regex]::Match($versionText, '(?im)^rtk\s+([0-9]+(?:\.[0-9]+){2,})\s*$')
-                  if ($versionExit -ne 0 -or -not $versionMatch.Success) {
-                    throw "rtk failed its installed --version check: $versionText"
-                  }
-                  $actualVersion = $versionMatch.Groups[1].Value
-                  if ($actualVersion -ne [string]$comp.version) {
-                    throw "rtk installed version $actualVersion, expected $($comp.version)"
-                  }
-                  $componentState.version = $actualVersion
-                  Write-UabsOk "rtk $actualVersion installed and verified"
-                }
               }
               $installed[$id] = $componentState
             }
@@ -2145,7 +2135,7 @@ if ($priorState -and $priorState.providers) { $knownProviders += @($priorState.p
 $stateProviders = @($script:UabsAllProviders | Where-Object { $knownProviders -contains $_ })
 
   $state = @{
-version = '8.7.17'
+version = '8.7.18'
   status = 'verifying'
   installed_utc = [DateTime]::UtcNow.ToString('o')
   mode = $Mode

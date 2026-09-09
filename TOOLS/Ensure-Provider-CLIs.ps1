@@ -120,10 +120,20 @@ foreach ($provider in $Providers) {
     $exe = Resolve-ProviderExe $provider
   }
   if (-not $exe) { throw "$provider installer returned but its executable cannot be found." }
-  & $exe --version | Out-Host
-  if ($LASTEXITCODE -ne 0) { throw "$provider --version failed with exit code $LASTEXITCODE." }
+  # Hermes --version fetches upstream; --help proves local startup without
+  # making the bootstrap wait on a network update check (as the doctor does).
+  $previous = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+  try {
+    if ($provider -eq 'Hermes') {
+      & $exe --help 2>&1 | Out-Null
+    } else {
+      & $exe --version 2>&1 | Out-Host
+    }
+    $probeExit = $LASTEXITCODE
+  } finally { $ErrorActionPreference = $previous }
+  if ($probeExit -ne 0) { throw "$provider local startup probe failed with exit code $probeExit." }
   # Literal verification contracts kept visible for audit tooling:
-  # claude --version | codex --version | grok --version | kimi --version | hermes --version
+  # claude --version | codex --version | grok --version | kimi --version | hermes --help
   $auth = 'AUTH_REQUIRED'
   if ($provider -eq 'Grok' -and ((Test-Path (Join-Path $env:USERPROFILE '.grok\auth.json')) -or $env:XAI_API_KEY)) { $auth='AUTH_PRESENT' }
   if ($provider -eq 'Codex' -and ((Test-Path (Join-Path $env:USERPROFILE '.codex\auth.json')) -or $env:OPENAI_API_KEY)) { $auth='AUTH_PRESENT' }
