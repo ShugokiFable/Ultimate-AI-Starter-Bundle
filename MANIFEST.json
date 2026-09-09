@@ -34856,8 +34856,8 @@
  },
  {
   "path": "CHANGELOG.md",
-  "size": 156105,
-  "sha256": "b86103e72567e9ff9416399140366f49df6a2d371cbe3233dc76392c9c99f8b2"
+  "size": 156290,
+  "sha256": "ce50d490a6193676ba71b3fb4239ab926055ccef0ed5706e73a4c0d9fddf047c"
  },
  {
   "path": "COPY-TO-YOUR-WORKSPACE/AGENTS.md",
@@ -35216,8 +35216,8 @@
  },
  {
   "path": "TESTS/test_release_contract.py",
-  "size": 275193,
-  "sha256": "2981478c41b86fe5db188a01796747ecf1a8f12784261e262bfa50a42f24b722"
+  "size": 277027,
+  "sha256": "eb9882a9344bd7be3b8616b40f28193074fbdfe0d56b6bb2dd4f2a0ab059adfe"
  },
  {
   "path": "TOOLS/Add-Reasoning-MCPs.ps1",
@@ -35361,8 +35361,8 @@
  },
  {
   "path": "TOOLS/build_release.py",
-  "size": 10455,
-  "sha256": "7a1e585a38713b91b0f6e8aaf1502edf00003aad7eb62592e7b652def865eb70"
+  "size": 11410,
+  "sha256": "fdd80df1e90899f9a7591eeed0c09c07e33111462e67ef5205f0676fcdb4b7f1"
  },
  {
   "path": "TOOLS/discover_tools.ps1",
@@ -35376,8 +35376,8 @@
  },
  {
   "path": "TOOLS/generate_manifest.py",
-  "size": 3940,
-  "sha256": "76857e8879034c71ca9bfe2eea881a29478ee5d48175f036319e067a1edd157e"
+  "size": 3950,
+  "sha256": "fad2019732900aa9c3251a79f461d87bd218e659808ad04815f7f2117c5ff1d3"
  },
  {
   "path": "TOOLS/generate_retired_skills.py",
@@ -35497,7 +35497,7 @@
  {
   "path": "VALIDATION.json",
   "size": 1779,
-  "sha256": "e0b1d304e6dbb9800e05580bc8ea37779518605eea11f61edd827284959a1aa0"
+  "sha256": "7bc1f27ca70ad2cf9ca9f1b711acfaab29b6c8536b6618ccf81d13c32b9fd49d"
  },
  {
   "path": "VERSION.txt",
@@ -42071,8 +42071,8 @@
  },
  {
   "path": "docs/history/V8.7.17-CHANGELOG.md",
-  "size": 3461,
-  "sha256": "b5e2c5af711b4a9a9e6421e8916e54d5619aa928628813fd1c1a04f92159fb7d"
+  "size": 3804,
+  "sha256": "d56ac9219906eb76f75b35b2d6d3634b1b764a539aa6920709fac781f2476657"
  },
  {
   "path": "docs/history/V8.7.2-CHANGELOG.md",

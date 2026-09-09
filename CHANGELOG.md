@@ -5,6 +5,7 @@
 - Added an opt-in native Codex test for trusted/untrusted scope, unrelated folders, the bundle diagnostic, filtered tool registration, a harmless call and teardown. It uses an isolated home with no login or model inference.
 - Reused one stdlib MCP transport for handshake and schema measurement. Wait for initialization, follow pagination, reject malformed/duplicate tools and cursor loops, keep UTF-8 BOM-free, and preserve quoted Windows command lines.
 - Corrected MCP token claims throughout current routing skills, catalog, doctor and README. Schema bytes/4 are estimates, not actual prompt/billing measurements. Codex filtering and Claude deferred Tool Search are native capabilities; no router daemon was added.
+- Bound both release archives to the tracked-file manifest so ignored personal MCP settings and other unrecorded files cannot enter a build; archive verification rejects extra entries.
 - Fanned the revised guidance to all five packaged provider trees. Windows MCP remains off by default; RTK's narrow allowlist is unchanged.
 
 ## 8.7.16

@@ -1307,6 +1307,7 @@ def test_manifest_generator_excludes_developer_state() -> None:
     for token in (
         ".git", ".worktrees", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache",
         ".tox", ".nox", "htmlcov", "node_modules", ".venv", "venv", "cache", "dist", "artifacts",
+        ".codex", ".grok", ".serena",
     ):
         assert repr(token) in text or f'"{token}"' in text, f"manifest generator can record developer state: {token}"
     assert "SKIP_NAMES" in text and "'.git'" in text, "linked-worktree .git control file can enter source manifest"
@@ -1359,6 +1360,7 @@ def test_release_builder_contract() -> None:
             "BUNDLED-TOOLS/offline/optional-tool.zip": b"optional",
             # Source, not a payload: Core must carry it in full.
             "BUNDLED-TOOLS/skyrim-forge/VERSION.txt": b"Skyrim Forge 9.9.9\n",
+            "BUNDLED-TOOLS/skyrim-forge/Install-or-Update.ps1": b"# fixture\n",
             "BUNDLED-TOOLS/skyrim-forge/skyrim_forge/__init__.py": b"\n",
             "BUNDLED-TOOLS/skyrim-forge/writer/published/linux-x64/SkyrimForge.Native": b"binary",
         }
@@ -1369,8 +1371,17 @@ def test_release_builder_contract() -> None:
             path.write_bytes(data)
             rows.append({"path": rel, "size": len(data), "sha256": hashlib.sha256(data).hexdigest()})
         (fake / "MANIFEST.json").write_text(json.dumps(rows, indent=1) + "\n", encoding="utf-8")
+        # A developer checkout has ignored state; a clean CI checkout does not.
+        # Neither named provider files nor arbitrary unrecorded content may ship.
+        private_paths = (".codex/config.toml", ".grok/config.toml",
+                         ".serena/project.yml", ".env", "personal-notes.txt")
+        for rel in private_paths:
+            path = fake / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("fixture-private-state", encoding="utf-8")
         out = Path(td) / "Core.zip"
         module.build(fake, out, True)
+        module.verify(out, fake)
         with zipfile.ZipFile(out) as z:
             prefix = f"Ultimate-AI-Starter-Bundle-{VERSION}/"
             core_manifest = json.loads(z.read(prefix + "MANIFEST.json"))
@@ -1394,6 +1405,30 @@ def test_release_builder_contract() -> None:
             assert row["size"] == len(shipped) and row["sha256"] == hashlib.sha256(shipped).hexdigest(), (
                 "Core MANIFEST.json records the source offline inventory, not the rewritten one"
             )
+            assert not {prefix + rel for rel in private_paths} & set(z.namelist())
+
+        full = Path(td) / "Full.zip"
+        module.build(fake, full, False)
+        module.verify(full, fake)
+        with zipfile.ZipFile(full) as z:
+            assert set(z.namelist()) == {prefix + rel for rel in required} | {prefix + "MANIFEST.json"}
+        # Verification must also reject a ZIP containing an unrecorded file.
+        with zipfile.ZipFile(full, "a") as z:
+            z.writestr(prefix + "personal-notes.txt", "fixture-private-state")
+        try:
+            module.verify(full, fake)
+        except RuntimeError as exc:
+            assert "archive entries differ" in str(exc)
+        else:
+            raise AssertionError("archive verification accepted an unrecorded file")
+        rows.append({"path": "../outside.txt"})
+        (fake / "MANIFEST.json").write_text(json.dumps(rows), encoding="utf-8")
+        try:
+            list(module.files(fake, False))
+        except RuntimeError as exc:
+            assert "unsafe source manifest path" in str(exc)
+        else:
+            raise AssertionError("release builder accepted a manifest path outside the source root")
 
     ps = read(ROOT / "TOOLS" / "Build-Release.ps1")
     assert "build_release.py" in ps, "PowerShell release path can drift from deterministic Python builder"

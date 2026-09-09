@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Deterministic UTF-8-safe release ZIP builder for Ultimate AI Starter Bundle.
 
-Builds Core and Full-Offline archives from the working tree while excluding
-.git, caches, venvs, __pycache__, developer state, and previous release output.
+Builds Core and Full-Offline archives from the source manifest, never from an
+unrestricted filesystem walk that could include ignored personal settings.
 Each ZIP is CRC-tested, extracted under a path containing spaces + Unicode, and
 hashed with SHA256 before success is reported.
 """
@@ -48,9 +48,18 @@ CORE_NOTE=(
 ).encode('utf-8')
 
 def files(root:Path, core:bool):
-    for p in sorted(root.rglob('*'), key=lambda x:x.relative_to(root).as_posix().lower()):
-        if not p.is_file(): continue
-        rel=p.relative_to(root)
+    # The tracked-file manifest is the release allowlist, including when built
+    # from an extracted release with no Git checkout. Ignore unrecorded files.
+    manifest=json.loads((root/'MANIFEST.json').read_text(encoding='utf-8'))
+    rows=manifest.get('files',[]) if isinstance(manifest,dict) else manifest
+    paths=[str(row['path']) for row in rows]+['MANIFEST.json']
+    if len(paths)!=len(set(paths)): raise RuntimeError('duplicate source manifest path')
+    for name in sorted(paths, key=lambda x:(x.lower(),x)):
+        rel=Path(name)
+        p=root/rel
+        if rel.is_absolute() or '..' in rel.parts or not p.resolve().is_relative_to(root.resolve()):
+            raise RuntimeError(f'unsafe source manifest path: {name}')
+        if not p.is_file(): raise RuntimeError(f'source manifest file missing: {name}')
         if excluded(rel): continue
         # Core drops every vendored third-party payload; the installer's
         # BundledFirst online fallback fetches them. Forge is unaffected --
@@ -157,6 +166,10 @@ def verify(path:Path,root:Path)->None:
             if not manifest.is_file(): raise RuntimeError('extracted MANIFEST.json missing')
             rows=json.loads(manifest.read_text(encoding='utf-8'))
             rows=rows.get('files',[]) if isinstance(rows,dict) else rows
+            expected={str(PurePosixPath(_prefix(root))/str(row['path'])) for row in rows}
+            expected.add(_prefix(root)+'/MANIFEST.json')
+            if len(names)!=len(set(names)) or set(names)!=expected:
+                raise RuntimeError('archive entries differ from its manifest')
             for row in rows:
                 rel=Path(str(row['path']))
                 target=top/rel
